@@ -76,7 +76,7 @@ auto msg(Arg&& arg);
  *  @param[in] args - Remaining metadata strings
  */
 template <typename Arg, typename ...Args>
-auto entry(Arg&& arg, Args&&... args);
+constexpr auto entry(Arg&& arg, Args&&... args);
 
 namespace details
 {
@@ -140,7 +140,7 @@ auto msg(Arg&& arg)
 }
 
 template <typename Arg, typename ...Args>
-auto entry(Arg&& arg, Args&&... args)
+constexpr auto entry(Arg&& arg, Args&&... args)
 {
     auto entry_tuple = std::make_tuple(std::forward<Arg>(arg),
                                        std::forward<Args>(args)...);

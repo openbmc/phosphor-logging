@@ -1,0 +1,13 @@
+---
+SW:
+    FILE_NOT_FOUND_ERROR:
+        msg: "A required file was not found"
+        level: INFO
+        meta_i: [ ERRNUM ]
+        meta_s: [ FILE_PATH, FILE_NAME ]
+    GETSCOM_ERROR:
+        msg: "Getscom call failed"
+        level: ERR
+        meta_i: [ DEV_ADDR,
+                  DEV_ID ]
+        meta_s: [ DEV_NAME ]
