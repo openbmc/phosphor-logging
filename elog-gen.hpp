@@ -16,6 +16,7 @@ namespace _file_not_found
 struct errnum
 {
     static constexpr auto str = "ERRNO=%d";
+    static constexpr auto str_short = "ERRNO";
     using type = std::tuple<std::decay_t<decltype(str)>,int>;
     explicit constexpr errnum(int a) : _entry(entry(str, a)) {};
     type _entry;
@@ -24,6 +25,7 @@ struct errnum
 struct file_path
 {
     static constexpr auto str = "FILE_PATH=%s";
+    static constexpr auto str_short = "FILE_PATH";
     using type = std::tuple<std::decay_t<decltype(str)>,const char*>;
     explicit constexpr file_path(const char *a) : _entry(entry(str,a)) {};
     type _entry;
@@ -32,6 +34,7 @@ struct file_path
 struct file_name
 {
    static constexpr auto str = "FILE_NAME=%s";
+   static constexpr auto str_short = "FILE_NAME";
    using type = std::tuple<std::decay_t<decltype(str)>,const char*>;
    explicit constexpr file_name(const char *a) : _entry(entry(str,a)) {};
    type _entry;
