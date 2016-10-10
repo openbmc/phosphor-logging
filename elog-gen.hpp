@@ -16,10 +16,10 @@ typedef struct
 
 struct FILE_NOT_FOUND_ERROR
 {
-    std::string exc_msg = "org.freedesktop.FILE_NOT_FOUND_ERROR";
-    std::string msg = "File was not found";
-    std::string msgid = "0fbc349a-4ad9-4657-9cd7-17bba1e18964";
-    level L = level::INFO;
+    static constexpr auto exc_msg = "org.freedesktop.FILE_NOT_FOUND_ERROR";
+    static constexpr auto msg = "File was not found and that is bad!";
+    static constexpr auto  msgid = "0fbc349a-4ad9-4657-9cd7-17bba1e18964";
+    static constexpr level L = level::DEBUG;
     std::vector<std::string> META_LIST {"ERRNO", "FILE_PATH", "FILE_NAME", };
 };
 

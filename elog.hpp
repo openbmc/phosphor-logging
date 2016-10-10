@@ -32,6 +32,7 @@ void commit()
 template <typename E, typename ...Args>
 void elog(E&& i_e, Args... i_args)
 {
+    std::cout << "elog: About to make the log for " << i_e.msg << "\n";
     phosphor::logging::log<i_e.L>(msg(i_e.msg), std::forward<Args>(i_args)...);
 }
 
@@ -43,6 +44,8 @@ void elog(E&& i_e, Args... i_args)
 template <typename M, typename Arg>
 auto new_entry(M i_m, Arg&& arg)
 {
+
+    std::cout << "elog:new_entry: About to make the new_entry " << i_m.md_entry << "!\n";
     return entry(i_m.md_entry, arg); // defined in log.hpp
 }
 

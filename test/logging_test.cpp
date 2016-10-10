@@ -17,16 +17,32 @@ int main()
 
     log<level::DEBUG>(
             msg("THIS IS A PHOSPHOR LOGGING TEST"),
-            entry("FILE_NAME=%s_%x", file_name, number));
+            entry("FILE_NAME_TEST=%s_%x", file_name, number));
 
-    number = 0xFFFF;
+    number = 0x1234;
+    struct FILE_NOT_FOUND_ERROR a;
 
-    // TODO - next task
-    //struct FILE_NOT_FOUND_ERROR a;
-//    elog(a,
-//         (new_entry(ERRNO,99)),
-//         (new_entry(FILE_NAME,name))
-//         (prev_entry(FILE_NAME)));
+    // This one works fine, log shows up in journal
+    //elog(a);
+
+    // This one seg faults
+    //elog(a,
+    //    (new_entry(ERRNO,number)));
+    // Debug Traces
+    //elog:new_entry: About to make the new_entry ERRNO=%d!
+    //log:entry: About to make the entry!
+    //elog: About to make the log for File was not found and that is bad!
+    //log: About to make the log!
+    //log: About to make the details!
+    //log: details:log start!
+    //log: details:log we got the size of 6
+    //Segmentation fault (core dumped)
+
+    // This next test passes but the log does not show up in the journal
+    // and neither does the FILE_PATH entry.
+    const char *file_path = "/tmp/wish_this_worked.txt";
+    elog(a,
+        (new_entry(FILE_PATH,file_path)));
 
     return 0;
 }

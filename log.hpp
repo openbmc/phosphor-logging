@@ -104,6 +104,8 @@ auto prio()
 template <typename T, size_t ...I>
 void helper_log(T&& e, std::integer_sequence<size_t, I...>)
 {
+    // https://www.freedesktop.org/software/systemd/man/sd_journal_print.html
+    //std::cout << "Format string = " << I...;
     sd_journal_send(std::get<I>(std::forward<T>(e))..., NULL);
 }
 
@@ -116,8 +118,11 @@ void helper_log(T&& e, std::integer_sequence<size_t, I...>)
 template <typename T>
 void log(T&& e)
 {
+    std::cout << "log: details:log start!\n";
     constexpr auto e_size = std::tuple_size<typename std::decay<T>::type>::value;
+    std::cout << "log: details:log we got the size of " << e_size << "\n";
     helper_log(std::forward<T>(e), std::make_index_sequence<e_size>{});
+    std::cout << "log: details:log just called helper_log!\n";
 }
 
 } // namespace details
@@ -125,10 +130,14 @@ void log(T&& e)
 template <level L, typename Msg, typename ...Entry>
 void log(Msg msg, Entry... entry)
 {
+
+    std::cout << "log: About to make the log!\n";
     auto log_tuple = std::tuple_cat(details::prio<L>(),
                                     std::forward<Msg>(msg),
                                     std::forward<Entry>(entry)...);
+    std::cout << "log: About to make the details!\n";
     details::log(log_tuple);
+    std::cout << "log:Done!\n";
 }
 
 template <typename Arg>
@@ -142,6 +151,8 @@ auto msg(Arg&& arg)
 template <typename Arg, typename ...Args>
 auto entry(Arg&& arg, Args&&... args)
 {
+
+    std::cout << "log:entry: About to make the entry!\n";
     auto entry_tuple = std::make_tuple(std::forward<Arg>(arg),
                                        std::forward<Args>(args)...);
     return entry_tuple;
