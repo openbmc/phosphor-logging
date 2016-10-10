@@ -95,6 +95,7 @@ constexpr auto prio()
 template <typename T, size_t ...I>
 void helper_log(T&& e, std::integer_sequence<size_t, I...>)
 {
+    // https://www.freedesktop.org/software/systemd/man/sd_journal_print.html
     sd_journal_send(std::get<I>(std::forward<T>(e))..., NULL);
 }
 
