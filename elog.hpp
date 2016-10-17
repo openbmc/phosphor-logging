@@ -44,6 +44,22 @@ template <typename T> using deduce_entry_type_t =
         typename deduce_entry_type<T>::type;
 
 
+class elogException : public std::exception
+{
+public:
+
+    std::string err_code;
+    std::string err_msg;
+
+    elogException (const std::string& i_errCode, const std::string& i_errMsg) :
+        err_code(i_errCode), err_msg(i_errMsg) {}
+
+    virtual const char* what()
+    {
+        return err_code.c_str();
+    }
+};
+
 /** @fn commit()
  *  @brief Create an error log entry based on journal
  *          entry with a specified MSG_ID
@@ -75,6 +91,9 @@ void elog(Args... i_args)
 
     log<T::L>(T::err_msg,
               deduce_entry_type<Args>{i_args}.get()...);
+
+    // Now throw an exception for this error
+    throw elogException(T::err_code, T::err_msg);
 }
 
 } // namespace logging
