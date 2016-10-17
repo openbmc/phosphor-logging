@@ -70,9 +70,16 @@ int main()
     // TEST 3 - Create error log with 2 meta data fields (rvalue and lvalue)
     number = 0x1234;
     const char *test_string = "/tmp/test_string/";
-    elog<file_not_found>(file_not_found::errnum(number),
-                         file_not_found::file_path(test_string),
-                         file_not_found::file_name("elog_test_3.txt"));
+    try
+    {
+        elog<file_not_found>(file_not_found::errnum(number),
+                             file_not_found::file_path(test_string),
+                             file_not_found::file_name("elog_test_3.txt"));
+    }
+    catch (elogException<file_not_found>& e)
+    {
+        std::cout << "elog exception caught: " << e.what() << std::endl;
+    }
 
     // Now read back and verify our data made it into the journal
     rc = validate_journal(file_not_found::errnum::str_short,
@@ -92,10 +99,16 @@ int main()
 
     // TEST 4 - Create error log with previous entry use
     number = 0xFEDC;
-    elog<file_not_found>(file_not_found::errnum(number),
-                         prev_entry<file_not_found::file_path>(),
-                         file_not_found::file_name("elog_test_4.txt"));
-
+    try
+    {
+        elog<file_not_found>(file_not_found::errnum(number),
+                             prev_entry<file_not_found::file_path>(),
+                             file_not_found::file_name("elog_test_4.txt"));
+    }
+    catch (elogExceptionBase& e)
+    {
+        std::cout << "elog exception caught: " << e.what() << std::endl;
+    }
     // Now read back and verify our data made it into the journal
     rc = validate_journal(file_not_found::errnum::str_short,
                           std::to_string(number).c_str());

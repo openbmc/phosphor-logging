@@ -66,6 +66,24 @@ template <typename T> using deduce_entry_type_t =
 
 } // namespace details
 
+/**
+ * @brief Error log exception base class
+ *
+ * This allows people to capture all error log exceptions if desired
+ */
+class elogExceptionBase : public std::exception {};
+
+/**
+ * @brief Error log exception class
+ *
+ * This is for capturing specific error log exceptions
+ */
+template <typename T> class elogException : public elogExceptionBase
+{
+public:
+    const char* what() const noexcept override { return T::err_code; }
+};
+
 /** @fn commit()
  *  @brief Create an error log entry based on journal
  *          entry with a specified MSG_ID
@@ -98,6 +116,9 @@ void elog(Args... i_args)
 
     log<T::L>(T::err_msg,
               details::deduce_entry_type<Args>{i_args}.get()...);
+
+    // Now throw an exception for this error
+    throw elogException<T>();
 }
 
 } // namespace logging
