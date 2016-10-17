@@ -10,6 +10,22 @@ namespace phosphor
 namespace logging
 {
 
+class elogException : public std::exception
+{
+public:
+
+    std::string err_code;
+    std::string err_msg;
+
+    elogException (const std::string& i_errCode, const std::string& i_errMsg) :
+        err_code(i_errCode), err_msg(i_errMsg) {}
+
+    virtual const char* what()
+    {
+        return err_code.c_str();
+    }
+};
+
 /** @fn commit()
  *  @brief Create an error log entry based on journal
  *          entry with a specified MSG_ID
@@ -39,8 +55,12 @@ void elog(Args... i_args)
                                ::value,
                   "You are not passing in required arguments for this error");
 
+    // Send metadata over to log interface
     log<T::L>(msg(T::err_msg),
               std::forward<typename Args::type>(i_args._entry)...);
+
+    // Now throw an exception for this error
+    throw elogException(T::err_code, T::err_msg);
 }
 
 } // namespace logging
