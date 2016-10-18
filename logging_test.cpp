@@ -1,9 +1,10 @@
 // A basic unit test that runs on a BMC (qemu or hardware)
 
 #include <iostream>
-#include <elog.hpp>
-#include <log.hpp>
 #include <systemd/sd-journal.h>
+#include "elog.hpp"
+#include "log.hpp"
+#include "elog-gen.hpp"
 
 using namespace phosphor;
 using namespace logging;

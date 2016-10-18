@@ -21,33 +21,30 @@ struct errnum
     explicit constexpr errnum(int a) : _entry(entry(str, a)) {};
     type _entry;
 };
-
 struct file_path
 {
     static constexpr auto str = "FILE_PATH=%s";
     static constexpr auto str_short = "FILE_PATH";
-    using type = std::tuple<std::decay_t<decltype(str)>,const char*>;
-    explicit constexpr file_path(const char *a) : _entry(entry(str,a)) {};
+    using type = std::tuple<std::decay_t<decltype(str)>,const char *>;
+    explicit constexpr file_path(const char * a) : _entry(entry(str, a)) {};
+    type _entry;
+};
+struct file_name
+{
+    static constexpr auto str = "FILE_NAME=%s";
+    static constexpr auto str_short = "FILE_NAME";
+    using type = std::tuple<std::decay_t<decltype(str)>,const char *>;
+    explicit constexpr file_name(const char * a) : _entry(entry(str, a)) {};
     type _entry;
 };
 
-struct file_name
-{
-   static constexpr auto str = "FILE_NAME=%s";
-   static constexpr auto str_short = "FILE_NAME";
-   using type = std::tuple<std::decay_t<decltype(str)>,const char*>;
-   explicit constexpr file_name(const char *a) : _entry(entry(str,a)) {};
-   type _entry;
-};
-
-} // namespace _file_not_found
+}  // namespace _file_not_found
 
 struct file_not_found
 {
-    static constexpr auto err_code = "xyz.openbmc_project.logging.FILE_NOT_FOUND_ERROR";
+    static constexpr auto err_code = "xyz.openbmc_project.logging.file_not_found";
     static constexpr auto err_msg = "A required file was not found";
     static constexpr level L = level::INFO;
-
     using errnum = _file_not_found::errnum;
     using file_path = _file_not_found::file_path;
     using file_name = _file_not_found::file_name;
@@ -55,8 +52,40 @@ struct file_not_found
     using metadata_types = std::tuple<errnum, file_path, file_name>;
 };
 
+namespace _scom_fail
+{
+struct address
+{
+    static constexpr auto str = "ADDRESS=%s";
+    static constexpr auto str_short = "ADDRESS";
+    using type = std::tuple<std::decay_t<decltype(str)>,const char *>;
+    explicit constexpr address(const char * a) : _entry(entry(str, a)) {};
+    type _entry;
+};
+struct chip
+{
+    static constexpr auto str = "CHIP=%s";
+    static constexpr auto str_short = "CHIP";
+    using type = std::tuple<std::decay_t<decltype(str)>,const char *>;
+    explicit constexpr chip(const char * a) : _entry(entry(str, a)) {};
+    type _entry;
+};
+
+}  // namespace _scom_fail
+
+struct scom_fail
+{
+    static constexpr auto err_code = "xyz.openbmc_project.logging.scom_fail";
+    static constexpr auto err_msg = "A scom operation has failed";
+    static constexpr level L = level::INFO;
+    using address = _scom_fail::address;
+    using chip = _scom_fail::chip;
+
+    using metadata_types = std::tuple<address, chip>;
+};
 
 
 } // namespace logging
 
 } // namespace phosphor
+
