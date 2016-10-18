@@ -1,9 +1,11 @@
 // A basic unit test that runs on a BMC (qemu or hardware)
 
 #include <iostream>
-#include <elog.hpp>
-#include <log.hpp>
 #include <systemd/sd-journal.h>
+#include <sstream>
+#include "elog.hpp"
+#include "log.hpp"
+#include "elog-gen.hpp"
 
 using namespace phosphor;
 using namespace logging;
@@ -44,7 +46,8 @@ int validate_journal(const char *i_entry, const char *i_value)
     rc = (validated) ? 0 : 1;
     if(rc)
     {
-        std::cerr << "Failed to find " << i_entry << " in journal!" << "\n";
+        std::cerr << "Failed to find " << i_entry << " with value " << i_value
+                  <<" in journal!" << "\n";
     }
 
     return rc;
@@ -72,45 +75,49 @@ int main()
     // TEST 3 - Create error log with 2 meta data fields (rvalue and lvalue)
     number = 0x1234;
     const char *test_string = "/tmp/test_string/";
-    elog<file_not_found>(file_not_found::errnum(number),
-                         file_not_found::file_path(test_string),
-                         file_not_found::file_name("elog_test_3.txt"));
+    elog<FILE_NOT_FOUND>(FILE_NOT_FOUND::ERRNUM(number),
+                         FILE_NOT_FOUND::FILE_PATH(test_string),
+                         FILE_NOT_FOUND::FILE_NAME("elog_test_3.txt"));
 
     // Now read back and verify our data made it into the journal
-    rc = validate_journal(file_not_found::errnum::str_short,
-                          std::to_string(number).c_str());
+    std::stringstream stream;
+    stream << std::hex << number;
+    rc = validate_journal(FILE_NOT_FOUND::ERRNUM::str_short,
+                          std::string(stream.str()).c_str());
     if(rc)
         return(rc);
 
-    rc = validate_journal(file_not_found::file_path::str_short,
+    rc = validate_journal(FILE_NOT_FOUND::FILE_PATH::str_short,
                           test_string);
     if(rc)
         return(rc);
 
-    rc = validate_journal(file_not_found::file_name::str_short,
+    rc = validate_journal(FILE_NOT_FOUND::FILE_NAME::str_short,
                           "elog_test_3.txt");
     if(rc)
         return(rc);
 
     // TEST 4 - Create error log with previous entry use
-    number = 0xFEDC;
-    elog<file_not_found>(file_not_found::errnum(number),
-                         prev_entry<file_not_found::file_path>(),
-                         file_not_found::file_name("elog_test_4.txt"));
+    number = 0x9876;
+    elog<FILE_NOT_FOUND>(FILE_NOT_FOUND::ERRNUM(number),
+                         prev_entry<FILE_NOT_FOUND::FILE_PATH>(),
+                         FILE_NOT_FOUND::FILE_NAME("elog_test_4.txt"));
 
     // Now read back and verify our data made it into the journal
-    rc = validate_journal(file_not_found::errnum::str_short,
-                          std::to_string(number).c_str());
+    stream.str("");
+    stream << std::hex << number;
+    rc = validate_journal(FILE_NOT_FOUND::ERRNUM::str_short,
+                          std::string(stream.str()).c_str());
     if(rc)
         return(rc);
 
     // This should just be equal to what we put in test 3
-    rc = validate_journal(file_not_found::file_path::str_short,
+    rc = validate_journal(FILE_NOT_FOUND::FILE_PATH::str_short,
                           test_string);
     if(rc)
         return(rc);
 
-    rc = validate_journal(file_not_found::file_name::str_short,
+    rc = validate_journal(FILE_NOT_FOUND::FILE_NAME::str_short,
                           "elog_test_4.txt");
     if(rc)
         return(rc);
@@ -118,13 +125,13 @@ int main()
     // Compile fail tests
 
     // Simple test to prove we fail to compile due to missing param
-    //elog<file_not_found>(file_not_found::errnum(1),
-    //                     file_not_found::file_path("test"));
+    //elog<FILE_NOT_FOUND>(FILE_NOT_FOUND::ERRNUM(1),
+    //                     FILE_NOT_FOUND::FILE_PATH("test"));
 
     // Simple test to prove we fail to compile due to invalid param
-    //elog<file_not_found>(file_not_found::errnum(1),
-    //                     file_not_found::file_path("test"),
-    //                     file_not_found::file_name(1));
+    //elog<FILE_NOT_FOUND>(FILE_NOT_FOUND::ERRNUM(1),
+    //                     FILE_NOT_FOUND::FILE_PATH("test"),
+    //                     FILE_NOT_FOUND::FILE_NAME(1));
 
     return 0;
 }
