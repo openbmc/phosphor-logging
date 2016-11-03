@@ -18,7 +18,8 @@ import yaml
 import sys
 import os
 
-def gen_elog_hpp(i_elog_yaml, i_output_hpp):
+
+def gen_elog_hpp(i_elog_yaml, i_input_mako, i_output_hpp):
     r"""
     Read the input yaml file, grab the relevant data and call the mako
     template to generate the header file.
@@ -29,10 +30,10 @@ def gen_elog_hpp(i_elog_yaml, i_output_hpp):
     """
 
     # Input parameters to mako template
-    errors = dict()     # Main error codes
+    errors = dict()  # Main error codes
     error_msg = dict()  # Error msg that corresponds to error code
     error_lvl = dict()  # Error code log level (debug, info, error, ...)
-    meta = list()       # The meta data names associated (ERRNO, FILE_NAME, ...)
+    meta = list()  # The meta data names associated (ERRNO, FILE_NAME, ...)
     meta_data = dict()  # The meta data info (type, format)
 
     # see elog.yaml for reference
@@ -45,7 +46,7 @@ def gen_elog_hpp(i_elog_yaml, i_output_hpp):
         prop = ifile['SW'][i]
         error_msg[i] = prop['msg']
         error_lvl[i] = prop['level']
-        tmp_meta=[]
+        tmp_meta = []
         # grab all the meta data fields and info
         for j in prop['meta']:
             str_short = j['str'].split('=')[0]
@@ -55,10 +56,10 @@ def gen_elog_hpp(i_elog_yaml, i_output_hpp):
             meta_data[str_short]['str_short'] = str_short
             meta_data[str_short]['type'] = j['type']
         meta.append(tmp_meta)
-        err_count+=1
+        err_count += 1
 
     # Debug
-    #for i in errors:
+    # for i in errors:
     #    print "ERROR: " + errors[i]
     #    print " MSG:  " + error_msg[errors[i]]
     #    print " LVL:  " + error_lvl[errors[i]]
@@ -66,21 +67,26 @@ def gen_elog_hpp(i_elog_yaml, i_output_hpp):
     #    print meta[i]
 
     # Load the mako template and call it with the required data
-    mytemplate = Template(filename='elog-gen-template.mako.hpp')
-    f = open(i_output_hpp,'w')
-    f.write(mytemplate.render(errors=errors,error_msg=error_msg,
-                            error_lvl=error_lvl,meta=meta,
-                            meta_data=meta_data))
+    mytemplate = Template(filename=i_input_mako)
+    f = open(i_output_hpp, 'w')
+    f.write(mytemplate.render(errors=errors, error_msg=error_msg,
+                              error_lvl=error_lvl, meta=meta,
+                              meta_data=meta_data))
     f.close()
 
 
 def main(i_args):
     parser = OptionParser()
 
-    parser.add_option("-e","--elog",dest="elog_yaml",default="elog.yaml",
+    parser.add_option("-e", "--elog", dest="elog_yaml", default="elog.yaml",
                       help="input error yaml file to parse");
 
-    parser.add_option("-o","--output",dest="output_hpp", default="elog-gen.hpp",
+    parser.add_option("-m", "--mako", dest="elog_mako",
+                      default="elog-gen-template.mako.hpp",
+                      help="input mako template file to use");
+
+    parser.add_option("-o", "--output", dest="output_hpp",
+                      default="elog-gen.hpp",
                       help="output hpp to generate, elog-gen.hpp is default");
 
     (options, args) = parser.parse_args(i_args)
@@ -89,7 +95,8 @@ def main(i_args):
         print "Can not find input yaml file " + options.elog_yaml
         exit(1);
 
-    gen_elog_hpp(options.elog_yaml,options.output_hpp)
+    gen_elog_hpp(options.elog_yaml, options.elog_mako,
+                 options.output_hpp)
 
 # Only run if it's a script
 if __name__ == '__main__':
