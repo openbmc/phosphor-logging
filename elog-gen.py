@@ -18,7 +18,7 @@ import yaml
 import sys
 import os
 
-def gen_elog_hpp(i_elog_yaml, i_output_hpp):
+def gen_elog_hpp(i_elog_yaml, i_input_mako, i_output_hpp):
     r"""
     Read the input yaml file, grab the relevant data and call the mako
     template to generate the header file.
@@ -66,7 +66,7 @@ def gen_elog_hpp(i_elog_yaml, i_output_hpp):
     #    print meta[i]
 
     # Load the mako template and call it with the required data
-    mytemplate = Template(filename='elog-gen-template.mako.hpp')
+    mytemplate = Template(filename=i_input_mako)
     f = open(i_output_hpp,'w')
     f.write(mytemplate.render(errors=errors,error_msg=error_msg,
                             error_lvl=error_lvl,meta=meta,
@@ -80,7 +80,12 @@ def main(i_args):
     parser.add_option("-e","--elog",dest="elog_yaml",default="elog.yaml",
                       help="input error yaml file to parse");
 
-    parser.add_option("-o","--output",dest="output_hpp", default="elog-gen.hpp",
+    parser.add_option("-m","--mako",dest="elog_mako",
+                      default="elog-gen-template.mako.hpp",
+                      help="input mako template file to use");
+
+    parser.add_option("-o","--output",dest="output_hpp",
+                      default="elog-gen.hpp", 
                       help="output hpp to generate, elog-gen.hpp is default");
 
     (options, args) = parser.parse_args(i_args)
@@ -89,7 +94,8 @@ def main(i_args):
         print "Can not find input yaml file " + options.elog_yaml
         exit(1);
 
-    gen_elog_hpp(options.elog_yaml,options.output_hpp)
+    gen_elog_hpp(options.elog_yaml,options.elog_mako,
+                 options.output_hpp)
 
 # Only run if it's a script
 if __name__ == '__main__':

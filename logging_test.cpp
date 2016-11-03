@@ -79,7 +79,7 @@ int main()
                              FILE_NOT_FOUND::FILE_PATH(test_string),
                              FILE_NOT_FOUND::FILE_NAME("elog_test_3.txt"));
     }
-    catch (elogException<file_not_found>& e)
+    catch (elogException<FILE_NOT_FOUND>& e)
     {
         std::cout << "elog exception caught: " << e.what() << std::endl;
     }
