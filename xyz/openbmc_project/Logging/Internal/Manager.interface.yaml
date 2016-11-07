@@ -1,0 +1,19 @@
+description: >
+    Implement to provide event/error logging management features.
+    This interface should be instantiated for the phosphor::logging namespace,
+    and only one is required.
+methods:
+    - name: Commit
+      description: >
+          Write the requested error/event entry with its associated metadata
+          fields to flash.
+      parameters:
+        - name: transactionId
+          type: uint64
+          description: >
+              The unique identifier of the journal entry(ies) to be committed.
+        - name: errMsg
+          type: string
+          description: >
+              The error exception message associated with the error
+              event log to be committed.
