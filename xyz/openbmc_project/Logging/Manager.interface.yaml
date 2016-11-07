@@ -1,0 +1,18 @@
+description: >
+    Implement to provide event/error logging management features.
+methods:
+    - name: Commit
+      description: >
+          Write the requested journal entry with its associated metadata fields
+          to flash.
+      parameters:
+        - name: msgid
+          type: i
+          description: >
+              The unique identifier of the journal entry to be committed.
+        - name: emsg
+          type: s
+          description: >
+              The error exception message string associated with the error
+              event log to be committed.
+

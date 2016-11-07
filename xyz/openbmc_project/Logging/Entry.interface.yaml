@@ -1,0 +1,24 @@
+description: >
+    Implement to provide event/error entry attributes.
+properties:
+    - name: Id
+      type: i
+      description: >
+          The error event entry id number.
+    - name: Severity
+      type: s
+      description: >
+          The severity of the error event entry.
+    - name: Message
+      type: s
+      description: >
+          The message description of the error event entry.
+    - name: MessageId
+      type: s
+      description: >
+          The message description of the error event entry.
+    - name: AdditionalData
+      type: as
+      description: >
+          Additional information in the form of metadata fields VAR=value
+
