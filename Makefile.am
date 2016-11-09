@@ -14,7 +14,7 @@ BUILT_SOURCES = elog-gen.hpp
 CLEANFILES=elog-gen.hpp
 
 # systemd required for journal interfaces
-logging_test_LDFLAGS = $(SYSTEMD_LIBS)
+logging_test_LDFLAGS = $(SYSTEMD_LIBS) $(libmapper_LIBS)
 
 ELOG_YAML ?= ${abs_srcdir}/elog.yaml
 ELOG_MAKO ?= ${abs_srcdir}/elog-gen-template.mako.hpp

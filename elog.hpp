@@ -2,6 +2,8 @@
 
 #include <tuple>
 #include <utility>
+#include <systemd/sd-bus.h>
+#include <mapper.h>
 #include "elog-gen.hpp"
 
 namespace phosphor
@@ -87,15 +89,55 @@ public:
 /** @fn commit()
  *  @brief Create an error log entry based on journal
  *          entry with a specified MSG_ID
+ *
+ *  TODO - This code will change once new sdbusplus bindings are done by
+ *         the log server
  *  @tparam E - Error log struct
  */
 template <typename E>
 void commit()
 {
-    // TODO placeholder function call
-    // to call the new error log server to create
-    // an error log on the BMC flash
+    constexpr const auto objName = "/xyz/openbmc_project/Logging";
+    constexpr const auto iface = "xyz.openbmc_project.Logging";
+    sd_bus_message *reply = nullptr;
+    sd_bus_error error = SD_BUS_ERROR_NULL;
+    sd_bus *bus = nullptr;
+    char *busName = nullptr;
+    int rc = 0;
+
+    // Open up a connection to the bus
+    rc = sd_bus_open_system(&bus);
+    if (rc < 0)
+    {
+        fprintf(stderr, "Failed to connect to system bus: %s\n",
+                strerror(-rc));
+        goto finish;
+    }
+
+    // Get bus name for the Logging object
+    rc = mapper_get_service(bus, objName, &busName);
+    if (rc < 0)
+    {
+        fprintf(stderr, "Failed to get bus name, return value: %s.\n",
+                strerror(-rc));
+        goto finish;
+    }
+
+    // Call the Commit method now
+    // TODO - The array (nullptr below) will be determined by the server in
+    //        this stories sprint.
+    rc = sd_bus_call_method(bus,busName,objName,iface,
+                           "Commit",&error, &reply, "sas",
+                            E::err_msg, nullptr);
+    if (rc < 0)
+    {
+        fprintf(stderr, "Failed to call Get Method: %s\n", strerror(-rc));
+        goto finish;
+    }
     // dbus_commit(E.msgid); // call server
+
+    finish:
+    return;
 }
 
 /** @fn elog()
