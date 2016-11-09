@@ -82,6 +82,7 @@ int main()
     catch (elogException<FILE_NOT_FOUND>& e)
     {
         std::cout << "elog exception caught: " << e.what() << std::endl;
+        commit<FILE_NOT_FOUND>();
     }
 
     // Now read back and verify our data made it into the journal
