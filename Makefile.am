@@ -4,6 +4,11 @@ include_HEADERS = log.hpp elog.hpp
 # Generate this header, don't export in a distro
 nodist_include_HEADERS = elog-gen.hpp
 
+# Event log server
+sbin_PROGRAMS = log_manager
+
+log_manager_SOURCES = log_manager.cpp
+
 # Application test which runs in obmc env (qemu, real hardware)
 bin_PROGRAMS = logging-test
 logging_test_SOURCES = logging_test.cpp
@@ -12,6 +17,9 @@ logging_test_SOURCES = logging_test.cpp
 BUILT_SOURCES = elog-gen.hpp
 
 CLEANFILES=elog-gen.hpp
+
+# systemd required for journal interfaces
+log_manager_LDFLAGS = $(SYSTEMD_LIBS) $(libmapper_LIBS)
 
 # systemd required for journal interfaces
 logging_test_LDFLAGS = $(SYSTEMD_LIBS) $(libmapper_LIBS)
