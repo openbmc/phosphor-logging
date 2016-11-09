@@ -15,6 +15,7 @@ AC_PROG_MAKE_SET
 # Surpress the --with-libtool-sysroot error
 LT_INIT
 
+AC_CHECK_LIB([mapper], [mapper_get_service])
 PKG_CHECK_MODULES([SYSTEMD], [libsystemd >= 221])
 
 AC_CHECK_HEADER(systemd/sd-journal.h, ,[AC_MSG_ERROR([Could not find \
