@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <sdbusplus/vtable.hpp>
+#include <sdbusplus/server.hpp>
 #include <systemd/sd-bus.h>
 #include "log.hpp"
 

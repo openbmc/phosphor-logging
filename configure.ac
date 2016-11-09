@@ -21,6 +21,9 @@ PKG_CHECK_MODULES([SYSTEMD], [libsystemd >= 221])
 AC_CHECK_HEADER(systemd/sd-journal.h, ,[AC_MSG_ERROR([Could not find \
 systemd/sd-journal.h...systemd developement package required])])
 
+AC_CHECK_HEADER(sdbusplus/server.hpp, ,[AC_MSG_ERROR([Could not find \
+sdbusplus/server.hpp...sdbusplus developement package required])])
+
 # Check/set gtest specific functions.
 AX_PTHREAD([GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=1"],[GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=0"])
 AC_SUBST(GTEST_CPPFLAGS)
