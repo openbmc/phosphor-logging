@@ -15,7 +15,16 @@ namespace logging
 {
 
     % for a in errors:
-namespace _${errors[a]}
+    <%
+        namespaces = errors[a].split('.')
+        classname = namespaces.pop()
+    %>
+    % for s in namespaces:
+namespace ${s}
+{
+    % endfor
+
+namespace _${classname}
 {
     % for b in meta[a]:
 struct ${b}
@@ -28,18 +37,22 @@ struct ${b}
 };
     % endfor
 
-}  // namespace _${errors[a]}
+}  // namespace _${classname}
 <% meta_string = ', '.join(meta[a]) %>
-struct ${errors[a]}
+struct ${classname}
 {
-    static constexpr auto err_code = "xyz.openbmc_project.logging.${errors[a]}";
+    static constexpr auto err_code = "${errors[a]}";
     static constexpr auto err_msg = "${error_msg[errors[a]]}";
     static constexpr auto L = level::${error_lvl[errors[a]]};
     % for b in meta[a]:
-    using ${b} = _${errors[a]}::${b};
+    using ${b} = _${classname}::${b};
     % endfor
     using metadata_types = std::tuple<${meta_string}>;
 };
+
+% for s in reversed(namespaces):
+} // namespace ${s}
+% endfor
 
     % endfor
 

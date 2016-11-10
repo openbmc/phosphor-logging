@@ -38,17 +38,15 @@ def gen_elog_hpp(i_elog_yaml, i_input_mako, i_output_hpp):
 
     # see elog.yaml for reference
     ifile = yaml.safe_load(open(i_elog_yaml))
-    err_count = 0;
-    for i in ifile['SW'].keys():
-        # Grab the main error
-        errors[err_count] = i
-        # Grab it's sub-items
-        prop = ifile['SW'][i]
-        error_msg[i] = prop['msg']
-        error_lvl[i] = prop['level']
+    err_count = 0
+    for i in ifile['error-codes']:
+        # Grab the main error and it's info
+        errors[err_count] = i['name']
+        error_msg[i['name']] = i['msg']
+        error_lvl[i['name']] = i['level']
         tmp_meta = []
         # grab all the meta data fields and info
-        for j in prop['meta']:
+        for j in i['meta']:
             str_short = j['str'].split('=')[0]
             tmp_meta.append(str_short)
             meta_data[str_short] = {}
@@ -59,12 +57,12 @@ def gen_elog_hpp(i_elog_yaml, i_input_mako, i_output_hpp):
         err_count += 1
 
     # Debug
-    # for i in errors:
-    #    print "ERROR: " + errors[i]
-    #    print " MSG:  " + error_msg[errors[i]]
-    #    print " LVL:  " + error_lvl[errors[i]]
-    #    print " META: "
-    #    print meta[i]
+    #for i in errors:
+    #   print "ERROR: " + errors[i]
+    #   print " MSG:  " + error_msg[errors[i]]
+    #   print " LVL:  " + error_lvl[errors[i]]
+    #   print " META: "
+    #   print meta[i]
 
     # Load the mako template and call it with the required data
     mytemplate = Template(filename=i_input_mako)
@@ -79,21 +77,21 @@ def main(i_args):
     parser = OptionParser()
 
     parser.add_option("-e", "--elog", dest="elog_yaml", default="elog.yaml",
-                      help="input error yaml file to parse");
+                      help="input error yaml file to parse")
 
     parser.add_option("-m", "--mako", dest="elog_mako",
                       default="elog-gen-template.mako.hpp",
-                      help="input mako template file to use");
+                      help="input mako template file to use")
 
     parser.add_option("-o", "--output", dest="output_hpp",
                       default="elog-gen.hpp",
-                      help="output hpp to generate, elog-gen.hpp is default");
+                      help="output hpp to generate, elog-gen.hpp is default")
 
     (options, args) = parser.parse_args(i_args)
 
     if (not (os.path.isfile(options.elog_yaml))):
         print "Can not find input yaml file " + options.elog_yaml
-        exit(1);
+        exit(1)
 
     gen_elog_hpp(options.elog_yaml, options.elog_mako,
                  options.output_hpp)
