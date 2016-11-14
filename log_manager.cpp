@@ -7,65 +7,38 @@
 #include <systemd/sd-bus.h>
 #include <systemd/sd-journal.h>
 #include "log.hpp"
+#include "log_manager.hpp"
 
-using namespace phosphor;
+namespace phosphor
+{
+namespace logging
+{
 
-/*
- * @fn commit()
- * @brief Create an error/event log based on specified id and metadata variable
- *        names that includes the journal message and the metadata values.
- */
-auto commit(sd_bus_message *msg, void *userdata, sd_bus_error *error)
+void Manager::commit(uint64_t transactionId, std::string errMsg)
 {
     // TODO Change /tmp path to a permanent location on flash
     constexpr const auto path = "/tmp/elog";
     constexpr const auto msgIdStr = "_PID";
 
-    // Read PID
-    int rc = -1;
-    char *msgId = nullptr;
-    rc = sd_bus_message_read(msg, "s", &msgId);
-    if (rc < 0)
-    {
-        logging::log<logging::level::ERR>("Failed to read msg id",
-                           logging::entry("DESCRIPTION=%s", strerror(-rc)));
-        return sd_bus_reply_method_return(msg, "i", rc);
-    }
-
     // Create log file
     std::string filename{};
     filename.append(path);
     // TODO Create error logs in their own separate dir once permanent location
-    // on flash is determined. Ex: ../msgId/1
-    filename.append(msgId);
+    // on flash is determined. Ex: ../transactionId/1
     std::ofstream efile;
     efile.open(filename);
     efile << "{" << std::endl;
 
-    // Read metadata variables passed as array of strings and store in vector
-    // TODO Read required metadata fields from header file instead
-    rc = sd_bus_message_enter_container(msg, SD_BUS_TYPE_ARRAY, "s");
-    if (rc < 0)
-    {
-        logging::log<logging::level::ERR>("Failed to read metadata vars",
-                           logging::entry("DESCRIPTION=%s", strerror(-rc)));
-        return sd_bus_reply_method_return(msg, nullptr);
-    }
-    const char* metaVar = nullptr;
+    //const char* metaVar = nullptr;
     std::vector<const char*> metaList;
-    while ((rc = sd_bus_message_read_basic(msg, 's', &metaVar)) > 0)
-    {
-        metaList.push_back(metaVar);
-    }
-    sd_bus_message_exit_container(msg);
 
     sd_journal *j = nullptr;
-    rc = sd_journal_open(&j, SD_JOURNAL_LOCAL_ONLY);
+    int rc = sd_journal_open(&j, SD_JOURNAL_LOCAL_ONLY);
     if (rc < 0)
     {
         logging::log<logging::level::ERR>("Failed to open journal",
                            logging::entry("DESCRIPTION=%s", strerror(-rc)));
-        return sd_bus_reply_method_return(msg, nullptr);
+        return;
     }
 
     // Read the journal from the end to get the most recent entry first.
@@ -83,12 +56,13 @@ auto commit(sd_bus_message *msg, void *userdata, sd_bus_error *error)
             continue;
         }
         std::string result(data);
-        if (result.find(msgId) == std::string::npos)
+#if 0
+        if (result.find(msgid) == std::string::npos)
         {
             // Match not found, continue to next journal entry
             continue;
         }
-
+#endif
         // Match found, write to file
         // TODO This is a draft format based on the redfish event logs written
         // in json, the final openbmc format is to be determined
@@ -128,87 +102,35 @@ auto commit(sd_bus_message *msg, void *userdata, sd_bus_error *error)
 
     efile << "}" << std::endl;
     efile.close();
-    return sd_bus_reply_method_return(msg, nullptr);
+    return;
 }
 
-constexpr sdbusplus::vtable::vtable_t log_vtable[] =
+Manager::Manager(sdbusplus::bus::bus &&bus,
+                 const char* busname,
+                 const char* obj,
+                 const char* iface) :
+    details::ServerObject<details::ManagerIface>(bus, obj),
+    _bus(std::move(bus)),
+    _manager(sdbusplus::server::manager::manager(_bus, obj))
 {
-    sdbusplus::vtable::start(),
-    sdbusplus::vtable::method("Commit", "sas", "", commit),
-    sdbusplus::vtable::end()
-};
+    _bus.request_name(busname);
+}
 
-int main(int argc, char *argv[])
+void Manager::run() noexcept
 {
-    constexpr const auto dbusLogObj = "/xyz/openbmc_project/Logging";
-    constexpr const auto dbusLogName = "xyz.openbmc_project.Logging";
-    int rc = -1;
-    sd_bus *bus = nullptr;
-
-    rc = sd_bus_open_system(&bus);
-    if (rc < 0)
+    while(true)
     {
-        logging::log<logging::level::ERR>("Failed to open system bus",
-                           logging::entry("DESCRIPTION=%s", strerror(-rc)));
-        goto cleanup;
-    }
-
-    rc = sd_bus_add_object_manager(bus, nullptr, dbusLogObj);
-    if (rc < 0)
-    {
-        logging::log<logging::level::ERR>("Failed to add object mgr",
-                           logging::entry("DESCRIPTION=%s", strerror(-rc)));
-        goto cleanup;
-    }
-
-    rc = sd_bus_add_object_vtable(bus,
-                                  nullptr,
-                                  dbusLogObj,
-                                  dbusLogName,
-                                  log_vtable,
-                                  nullptr);
-    if (rc < 0)
-    {
-        logging::log<logging::level::ERR>("Failed to add vtable",
-                           logging::entry("DESCRIPTION=%s", strerror(-rc)));
-        goto cleanup;
-    }
-
-    rc = sd_bus_request_name(bus, dbusLogName, 0);
-    if (rc < 0)
-    {
-        logging::log<logging::level::ERR>("Failed to acquire service name",
-                           logging::entry("DESCRIPTION=%s", strerror(-rc)));
-    }
-    else
-    {
-        for(;;)
+        try
         {
-            rc = sd_bus_process(bus, nullptr);
-            if (rc < 0)
-            {
-                logging::log<logging::level::ERR>("Failed to connect to bus",
-                           logging::entry("DESCRIPTION=%s", strerror(-rc)));
-                break;
-            }
-            if (rc > 0)
-            {
-                continue;
-            }
-
-            rc = sd_bus_wait(bus, (uint64_t) - 1);
-            if (rc < 0)
-            {
-                logging::log<logging::level::ERR>("Failed to wait on bus",
-                           logging::entry("DESCRIPTION=%s", strerror(-rc)));
-                break;
-            }
+            _bus.process_discard();
+            _bus.wait();
+        }
+        catch (std::exception &e)
+        {
+            std::cerr << e.what() << std::endl;
         }
     }
-
-cleanup:
-    sd_bus_unref(bus);
-
-    return rc;
 }
 
+} // namespace logging
+} // namepsace phosphor

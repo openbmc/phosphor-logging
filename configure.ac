@@ -19,6 +19,9 @@ PKG_CHECK_MODULES([SYSTEMD], [libsystemd >= 221])
 
 AC_CHECK_HEADER(systemd/sd-journal.h, ,[AC_MSG_ERROR([Could not find \
 systemd/sd-journal.h...systemd developement package required])])
+AC_CHECK_HEADER(systemd/sd-bus.h, ,[AC_MSG_ERROR([Could not find \
+systemd/sd-bus.h...systemd developement package required])])
+
 
 # Check/set gtest specific functions.
 AX_PTHREAD([GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=1"],[GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=0"])
@@ -43,6 +46,9 @@ AS_IF([test "x$enable_oe_sdk" == "xyes"],
     AC_SUBST([OESDK_TESTCASE_FLAGS], [$testcase_flags])
 )
 
+AC_DEFINE(BUSNAME, "xyz.openbmc_project.Logging.Manager", [The DBus busname to own.])
+AC_DEFINE(OBJ, "/xyz/openbmc_project/Logging", [The DBus object path.])
+AC_DEFINE(IFACE, "xyz.openbmc_project.Logging.Manager", [The manager DBus interface.])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile test/Makefile])
 AC_OUTPUT
