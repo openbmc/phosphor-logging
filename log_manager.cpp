@@ -8,7 +8,10 @@
 #include <systemd/sd-journal.h>
 #include "log.hpp"
 
-using namespace phosphor;
+namespace phosphor
+{
+namespace logging
+{
 
 /*
  * @fn commit()
@@ -138,77 +141,33 @@ constexpr sdbusplus::vtable::vtable_t log_vtable[] =
     sdbusplus::vtable::end()
 };
 
-int main(int argc, char *argv[])
+Manager::Manager(const char* bus,
+                 const char* obj,
+                 const char* iface) :
+    _bus(sdbusplus::bus::new_system())
 {
-    constexpr const auto dbusLogObj = "/xyz/openbmc_project/Logging";
-    constexpr const auto dbusLogName = "xyz.openbmc_project.Logging";
-    int rc = -1;
-    sd_bus *bus = nullptr;
+    _bus.add_object_manager(obj);
 
-    rc = sd_bus_open_system(&bus);
-    if (rc < 0)
-    {
-        logging::log<logging::level::ERR>("Failed to open system bus",
-                           logging::entry("DESCRIPTION=%s", strerror(-rc)));
-        goto cleanup;
-    }
+    _bus.add_object_vtable(obj, iface, *log_vtable);
 
-    rc = sd_bus_add_object_manager(bus, nullptr, dbusLogObj);
-    if (rc < 0)
-    {
-        logging::log<logging::level::ERR>("Failed to add object mgr",
-                           logging::entry("DESCRIPTION=%s", strerror(-rc)));
-        goto cleanup;
-    }
-
-    rc = sd_bus_add_object_vtable(bus,
-                                  nullptr,
-                                  dbusLogObj,
-                                  dbusLogName,
-                                  log_vtable,
-                                  nullptr);
-    if (rc < 0)
-    {
-        logging::log<logging::level::ERR>("Failed to add vtable",
-                           logging::entry("DESCRIPTION=%s", strerror(-rc)));
-        goto cleanup;
-    }
-
-    rc = sd_bus_request_name(bus, dbusLogName, 0);
-    if (rc < 0)
-    {
-        logging::log<logging::level::ERR>("Failed to acquire service name",
-                           logging::entry("DESCRIPTION=%s", strerror(-rc)));
-    }
-    else
-    {
-        for(;;)
-        {
-            rc = sd_bus_process(bus, nullptr);
-            if (rc < 0)
-            {
-                logging::log<logging::level::ERR>("Failed to connect to bus",
-                           logging::entry("DESCRIPTION=%s", strerror(-rc)));
-                break;
-            }
-            if (rc > 0)
-            {
-                continue;
-            }
-
-            rc = sd_bus_wait(bus, (uint64_t) - 1);
-            if (rc < 0)
-            {
-                logging::log<logging::level::ERR>("Failed to wait on bus",
-                           logging::entry("DESCRIPTION=%s", strerror(-rc)));
-                break;
-            }
-        }
-    }
-
-cleanup:
-    sd_bus_unref(bus);
-
-    return rc;
+    _bus.request_name(busName);
 }
 
+void Manager::run()
+{
+    while(true)
+    {
+        try
+        {
+            _bus.process();
+            _bus.wait();
+        }
+        catch (std::exception &e)
+        {
+            std::cerr << e.what() << std::endl;
+        }
+    }
+}
+
+} // namespace logging
+} // namepsace phosphor
