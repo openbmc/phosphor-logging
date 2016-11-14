@@ -8,6 +8,12 @@ nodist_include_HEADERS = elog-gen.hpp
 bin_PROGRAMS = logging-test
 logging_test_SOURCES = logging_test.cpp
 
+sbin_PROGRAMS = phosphor-log-manager
+phosphor_log_manager_SOURCES = \
+	xyz.openbmc_project.Logging.Internal.Manager.cpp \
+	log_manager.cpp \
+	log_manager_main.cpp
+
 # Be sure to build elog-gen.hpp before compiling
 BUILT_SOURCES = elog-gen.hpp
 
@@ -15,6 +21,7 @@ CLEANFILES=elog-gen.hpp
 
 # systemd required for journal interfaces
 logging_test_LDFLAGS = $(SYSTEMD_LIBS)
+phosphor_log_manager_LDFLAGS = $(SYSTEMD_LIBS)
 
 ELOG_YAML ?= xyz/openbmc_project/Example/Elog.errors.yaml
 ELOG_MAKO ?= elog-gen-template.mako.hpp
