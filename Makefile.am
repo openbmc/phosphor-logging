@@ -17,14 +17,14 @@ CLEANFILES=elog-gen.hpp
 logging_test_LDFLAGS = $(SYSTEMD_LIBS)
 
 ELOG_YAML ?= ${abs_srcdir}/elog.yaml
-ELOG_MAKO ?= ${abs_srcdir}/elog-gen-template.mako.hpp
-REQ_FILES_TO_GEN ?= ${abs_srcdir}/elog-gen.py $(ELOG_YAML) $(ELOG_MAKO)
+ELOG_MAKO ?= ${abs_srcdir}/tools/phosphor-logging/templates/elog-gen-template.mako.hpp
+REQ_FILES_TO_GEN ?= ${abs_srcdir}/tools/elog-gen.py $(ELOG_YAML) $(ELOG_MAKO)
 
 # Be sure to package up the required script, yaml, and mako template to
 # generate the header file
 EXTRA_DIST = $(REQ_FILES_TO_GEN)
 
 elog-gen.hpp: $(REQ_FILES_TO_GEN)
-	$(AM_V_at)${abs_srcdir}/elog-gen.py -e $(ELOG_YAML) -m $(ELOG_MAKO) -o ${abs_srcdir}/elog-gen.hpp
+	$(AM_V_at)${abs_srcdir}/tools/elog-gen.py -e $(ELOG_YAML) -m $(ELOG_MAKO) -o ${abs_srcdir}/elog-gen.hpp
 
 SUBDIRS = test
