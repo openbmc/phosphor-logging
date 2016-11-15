@@ -27,4 +27,4 @@ EXTRA_DIST = $(REQ_FILES_TO_GEN)
 elog-gen.hpp: $(REQ_FILES_TO_GEN)
 	$(AM_V_at)${abs_srcdir}/tools/elog-gen.py -e $(ELOG_YAML) -m $(ELOG_MAKO) -o ${abs_srcdir}/elog-gen.hpp
 
-SUBDIRS = test
+SUBDIRS = test tools

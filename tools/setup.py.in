@@ -1,0 +1,9 @@
+from distutils.core import setup
+
+setup(name='phosphor-logging',
+      version='1.0',
+      package_dir={'':'@top_srcdir@/tools'},
+      packages=['phosphor-logging'],
+      scripts=['@top_srcdir@/tools/elog-gen.py'],
+      package_data={'phosphor-loogging': ['templates/*.mako.*']},
+      )
