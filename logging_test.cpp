@@ -75,36 +75,36 @@ int main()
     const char *test_string = "/tmp/test_string/";
     try
     {
-        elog<org::freedesktop::DBus::Error::FileNotFound>(
-                org::freedesktop::DBus::Error::FileNotFound::
+        elog<org::test::logging::Error::TestErrorOne>(
+                org::test::logging::Error::TestErrorOne::
                     ERRNUM(number),
-                org::freedesktop::DBus::Error::FileNotFound::
+                org::test::logging::Error::TestErrorOne::
                     FILE_PATH(test_string),
-                org::freedesktop::DBus::Error::FileNotFound::
+                org::test::logging::Error::TestErrorOne::
                     FILE_NAME("elog_test_3.txt"));
     }
-    catch (elogException<org::freedesktop::DBus::Error::FileNotFound>& e)
+    catch (elogException<org::test::logging::Error::TestErrorOne>& e)
     {
         std::cout << "elog exception caught: " << e.what() << std::endl;
     }
 
     // Reduce our error namespaces
-    using namespace org::freedesktop::DBus::Error;
+    using namespace org::test::logging::Error;
 
     // Now read back and verify our data made it into the journal
     std::stringstream stream;
     stream << std::hex << number;
-    rc = validate_journal(FileNotFound::ERRNUM::str_short,
+    rc = validate_journal(TestErrorOne::ERRNUM::str_short,
                           std::string(stream.str()).c_str());
     if(rc)
         return(rc);
 
-    rc = validate_journal(FileNotFound::FILE_PATH::str_short,
+    rc = validate_journal(TestErrorOne::FILE_PATH::str_short,
                           test_string);
     if(rc)
         return(rc);
 
-    rc = validate_journal(FileNotFound::FILE_NAME::str_short,
+    rc = validate_journal(TestErrorOne::FILE_NAME::str_short,
                           "elog_test_3.txt");
     if(rc)
         return(rc);
@@ -113,9 +113,9 @@ int main()
     number = 0x9876;
     try
     {
-        elog<FileNotFound>(FileNotFound::ERRNUM(number),
-                             prev_entry<FileNotFound::FILE_PATH>(),
-                             FileNotFound::FILE_NAME("elog_test_4.txt"));
+        elog<TestErrorOne>(TestErrorOne::ERRNUM(number),
+                             prev_entry<TestErrorOne::FILE_PATH>(),
+                             TestErrorOne::FILE_NAME("elog_test_4.txt"));
     }
     catch (elogExceptionBase& e)
     {
@@ -125,18 +125,18 @@ int main()
     // Now read back and verify our data made it into the journal
     stream.str("");
     stream << std::hex << number;
-    rc = validate_journal(FileNotFound::ERRNUM::str_short,
+    rc = validate_journal(TestErrorOne::ERRNUM::str_short,
                           std::string(stream.str()).c_str());
     if(rc)
         return(rc);
 
     // This should just be equal to what we put in test 3
-    rc = validate_journal(FileNotFound::FILE_PATH::str_short,
+    rc = validate_journal(TestErrorOne::FILE_PATH::str_short,
                           test_string);
     if(rc)
         return(rc);
 
-    rc = validate_journal(FileNotFound::FILE_NAME::str_short,
+    rc = validate_journal(TestErrorOne::FILE_NAME::str_short,
                           "elog_test_4.txt");
     if(rc)
         return(rc);
@@ -144,13 +144,13 @@ int main()
     // Compile fail tests
 
     // Simple test to prove we fail to compile due to missing param
-    //elog<FileNotFound>(FileNotFound::ERRNUM(1),
-    //                   FileNotFound::FILE_PATH("test"));
+    //elog<TestErrorOne>(TestErrorOne::ERRNUM(1),
+    //                   TestErrorOne::FILE_PATH("test"));
 
     // Simple test to prove we fail to compile due to invalid param
-    //elog<FileNotFound>(FileNotFound::ERRNUM(1),
-    //                   FileNotFound::FILE_PATH("test"),
-    //                   FileNotFound::FILE_NAME(1));
+    //elog<TestErrorOne>(TestErrorOne::ERRNUM(1),
+    //                   TestErrorOne::FILE_PATH("test"),
+    //                   TestErrorOne::FILE_NAME(1));
 
     return 0;
 }
