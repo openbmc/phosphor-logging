@@ -1,5 +1,5 @@
-- name: org.freedesktop.DBus.Error.FileNotFound
-  description: A required file was not found
+- name: TestErrorOne
+  description: this is test error one
   level: INFO
   meta:
     - str: "ERRNUM=0x%.4X"
@@ -9,8 +9,8 @@
     - str: FILE_NAME=%s
       type: const char *
 
-- name: xyz.openbmc_project.Hwsv.Error.Scom
-  description: Getscom call failed
+- name: TestErrorTwo
+  description: This is test error two
   level: ERR
   meta:
         - str: DEV_ADDR=0x%.8X

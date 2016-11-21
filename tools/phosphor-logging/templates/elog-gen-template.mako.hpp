@@ -16,14 +16,16 @@ namespace logging
 
     % for a in errors:
 <%
-    namespaces = errors[a].split('.')
-    classname = namespaces.pop()
+    namespaces = elog_yaml.split('/')
+    namespaces.pop()
+    classname = errors[a]
 %>\
     % for s in namespaces:
 namespace ${s}
 {
     % endfor
-
+namespace Error
+{
 namespace _${classname}
 {
     % for b in meta[a]:
@@ -49,7 +51,7 @@ struct ${classname}
     % endfor
     using metadata_types = std::tuple<${meta_string}>;
 };
-
+} // namespace Error
 % for s in reversed(namespaces):
 } // namespace ${s}
 % endfor
