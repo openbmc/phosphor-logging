@@ -19,7 +19,8 @@ import sys
 import os
 
 
-def gen_elog_hpp(i_rootdir, i_elog_yaml, i_input_mako, i_output_hpp):
+def gen_elog_hpp(i_rootdir, i_elog_yaml, i_elog_meta_yaml,
+                 i_input_mako, i_output_hpp):
     r"""
     Read the input yaml file, grab the relevant data and call the mako
     template to generate the header file.
@@ -27,6 +28,7 @@ def gen_elog_hpp(i_rootdir, i_elog_yaml, i_input_mako, i_output_hpp):
     Description of arguments:
     i_rootdir                    base directory to search for yaml files
     i_elog_yaml                  yaml file describing the error logs
+    i_elog_meta_yaml             yaml file describing the meta data for elogs
     i_input_mako                 input mako template file to use
     i_output_hpp                 header file to output the generated code to
     """
@@ -39,16 +41,26 @@ def gen_elog_hpp(i_rootdir, i_elog_yaml, i_input_mako, i_output_hpp):
     meta_data = dict()  # The meta data info (type, format)
 
     # see elog.yaml for reference
-    ifile = yaml.safe_load(open("/".join((i_rootdir,i_elog_yaml))))
+    ifile = yaml.safe_load(open("/".join((i_rootdir, i_elog_yaml))))
+    mfile = yaml.safe_load(open(i_elog_meta_yaml))
     err_count = 0
     for i in ifile:
+        match = None
+        # Find the corresponding meta data for this entry
+        for m in mfile:
+            if m['name'] == i['name']:
+                match = m
+                break
+        if (match is None):
+            print "Error - Did not find meta data for " + i['name']
+            exit(1)
         # Grab the main error and it's info
         errors[err_count] = i['name']
         error_msg[i['name']] = i['description']
-        error_lvl[i['name']] = i['level']
+        error_lvl[i['name']] = match['level']
         tmp_meta = []
         # grab all the meta data fields and info
-        for j in i['meta']:
+        for j in match['meta']:
             str_short = j['str'].split('=')[0]
             tmp_meta.append(str_short)
             meta_data[str_short] = {}
@@ -101,19 +113,28 @@ def main(i_args):
     (options, args) = parser.parse_args(i_args)
 
     # Verify the input yaml file
-    yaml_path = "/".join((options.rootdir,options.elog_yaml))
+    yaml_path = "/".join((options.rootdir, options.elog_yaml))
     if (not (os.path.isfile(yaml_path))):
         print "Can not find input yaml file " + yaml_path
         exit(1)
 
+    # the meta data will be defined in a similar file name where we replace
+    # <Interface>.errors.yaml with <Interface>.logging.yaml
+    meta_file = options.elog_yaml.replace("errors", "logging")
+    meta_file = "/".join((options.rootdir, meta_file))
+    if (not (os.path.isfile(meta_file))):
+        print "Can not find meta yaml file " + meta_file
+        exit(1)
+
     # Verify the input mako file
-    template_path = "/".join((options.templatedir,options.elog_mako))
+    template_path = "/".join((options.templatedir, options.elog_mako))
     if (not (os.path.isfile(template_path))):
         print "Can not find input template file " + template_path
         exit(1)
 
     gen_elog_hpp(options.rootdir,
                  options.elog_yaml,
+                 meta_file,
                  template_path,
                  options.output_hpp)
 
