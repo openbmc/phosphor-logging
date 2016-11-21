@@ -16,7 +16,7 @@ CLEANFILES=elog-gen.hpp
 # systemd required for journal interfaces
 logging_test_LDFLAGS = $(SYSTEMD_LIBS)
 
-ELOG_YAML ?= ${abs_srcdir}/elog.yaml
+ELOG_YAML ?= ${abs_srcdir}/tools/example/xyz/openbmc_project/Example/Elog.errors.yaml
 ELOG_MAKO ?= ${abs_srcdir}/tools/phosphor-logging/templates/elog-gen-template.mako.hpp
 REQ_FILES_TO_GEN ?= ${abs_srcdir}/tools/elog-gen.py $(ELOG_YAML) $(ELOG_MAKO)
 
