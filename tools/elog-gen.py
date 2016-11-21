@@ -19,13 +19,15 @@ import sys
 import os
 
 
-def gen_elog_hpp(i_elog_yaml, i_input_mako, i_output_hpp):
+def gen_elog_hpp(i_rootdir, i_elog_yaml, i_input_mako, i_output_hpp):
     r"""
     Read the input yaml file, grab the relevant data and call the mako
     template to generate the header file.
 
     Description of arguments:
+    i_rootdir                    base directory to search for yaml files
     i_elog_yaml                  yaml file describing the error logs
+    i_input_mako                 input mako template file to use
     i_output_hpp                 header file to output the generated code to
     """
 
@@ -37,7 +39,7 @@ def gen_elog_hpp(i_elog_yaml, i_input_mako, i_output_hpp):
     meta_data = dict()  # The meta data info (type, format)
 
     # see elog.yaml for reference
-    ifile = yaml.safe_load(open(i_elog_yaml))
+    ifile = yaml.safe_load(open("/".join((i_rootdir,i_elog_yaml))))
     err_count = 0
     for i in ifile:
         # Grab the main error and it's info
@@ -69,14 +71,15 @@ def gen_elog_hpp(i_elog_yaml, i_input_mako, i_output_hpp):
     f = open(i_output_hpp, 'w')
     f.write(mytemplate.render(errors=errors, error_msg=error_msg,
                               error_lvl=error_lvl, meta=meta,
-                              meta_data=meta_data))
+                              meta_data=meta_data,elog_yaml=i_elog_yaml))
     f.close()
 
 
 def main(i_args):
     parser = OptionParser()
 
-    parser.add_option("-e", "--elog", dest="elog_yaml", default="elog.yaml",
+    parser.add_option("-e", "--elog", dest="elog_yaml",
+                      default="xyz/openbmc_project/Example/Elog.errors.yaml",
                       help="input error yaml file to parse")
 
     parser.add_option("-m", "--mako", dest="elog_mako",
@@ -87,13 +90,31 @@ def main(i_args):
                       default="elog-gen.hpp",
                       help="output hpp to generate, elog-gen.hpp is default")
 
+    parser.add_option("-r", "--rootdir", dest="rootdir",
+                      default="example",
+                      help="Base directory of yaml files to process")
+
+    parser.add_option("-t", "--templatedir", dest="templatedir",
+                      default="phosphor-logging/templates/",
+                      help="Base directory of files to process")
+
     (options, args) = parser.parse_args(i_args)
 
-    if (not (os.path.isfile(options.elog_yaml))):
-        print "Can not find input yaml file " + options.elog_yaml
+    # Verify the input yaml file
+    yaml_path = "/".join((options.rootdir,options.elog_yaml))
+    if (not (os.path.isfile(yaml_path))):
+        print "Can not find input yaml file " + yaml_path
         exit(1)
 
-    gen_elog_hpp(options.elog_yaml, options.elog_mako,
+    # Verify the input mako file
+    template_path = "/".join((options.templatedir,options.elog_mako))
+    if (not (os.path.isfile(template_path))):
+        print "Can not find input template file " + template_path
+        exit(1)
+
+    gen_elog_hpp(options.rootdir,
+                 options.elog_yaml,
+                 template_path,
                  options.output_hpp)
 
 # Only run if it's a script
