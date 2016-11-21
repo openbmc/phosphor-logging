@@ -39,10 +39,10 @@ def gen_elog_hpp(i_elog_yaml, i_input_mako, i_output_hpp):
     # see elog.yaml for reference
     ifile = yaml.safe_load(open(i_elog_yaml))
     err_count = 0
-    for i in ifile['error-codes']:
+    for i in ifile:
         # Grab the main error and it's info
         errors[err_count] = i['name']
-        error_msg[i['name']] = i['msg']
+        error_msg[i['name']] = i['description']
         error_lvl[i['name']] = i['level']
         tmp_meta = []
         # grab all the meta data fields and info
