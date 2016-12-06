@@ -20,8 +20,10 @@ BUILT_SOURCES = elog-gen.hpp
 CLEANFILES=elog-gen.hpp
 
 # systemd required for journal interfaces
-logging_test_LDFLAGS = $(SYSTEMD_LIBS)
-phosphor_log_manager_LDFLAGS = $(SYSTEMD_LIBS)
+logging_test_LDFLAGS = $(SYSTEMD_LIBS) $(SDBUSPLUS_LIBS)
+logging_test_CXXFLAGS = $(SYSTEMD_CFLAGS) $(SDBUSPLUS_CFLAGS)
+phosphor_log_manager_LDFLAGS = $(SYSTEMD_LIBS) $(SDBUSPLUS_LIBS)
+phosphor_log_manager_CXXFLAGS = $(SYSTEMD_CFLAGS) $(SDBUSPLUS_CFLAGS)
 
 ELOG_MAKO ?= elog-gen-template.mako.hpp
 ELOG_YAML_DIR ?= tools/example/xyz/openbmc_project/Example/
