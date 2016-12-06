@@ -115,7 +115,7 @@ void log(T&& e)
 } // namespace details
 
 template <level L, typename Msg, typename ...Entry>
-void log(Msg msg, Entry... entry)
+void log(Msg msg, Entry... e)
 {
     static_assert((std::is_same<const char*, std::decay_t<Msg>>::value ||
                    std::is_same<char*, std::decay_t<Msg>>::value),
@@ -124,9 +124,15 @@ void log(Msg msg, Entry... entry)
     constexpr const char *msg_str = "MESSAGE=%s";
     const auto msg_tuple = std::make_tuple(msg_str, std::forward<Msg>(msg));
 
+    constexpr auto transactionStr = "TRANSACTION_ID=%d";
+    // TODO Uncomment once libsdbusplus is available
+    // auto transactionId = sdbusplus::server::transaction::get_id();
+    auto transactionId = 12345; // Temporary placeholder
+
     auto log_tuple = std::tuple_cat(details::prio<L>(),
                                     msg_tuple,
-                                    std::forward<Entry>(entry)...);
+                                    entry(transactionStr, transactionId),
+                                    std::forward<Entry>(e)...);
     details::log(log_tuple);
 }
 
@@ -141,4 +147,3 @@ constexpr auto entry(Arg&& arg, Args&&... args)
 } // namespace logging
 
 } // namespace phosphor
-
