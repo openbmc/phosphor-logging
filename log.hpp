@@ -18,6 +18,7 @@
 
 #include <tuple>
 #include <systemd/sd-journal.h>
+#include <sdbusplus/transaction.hpp>
 
 namespace phosphor
 {
@@ -124,8 +125,13 @@ void log(Msg msg, Entry... entry)
     constexpr const char *msg_str = "MESSAGE=%s";
     const auto msg_tuple = std::make_tuple(msg_str, std::forward<Msg>(msg));
 
+    constexpr const char* transactionStr = "TRANSACTION_ID=%lld";
+    uint64_t transactionId = sdbusplus::server::transaction::get_id();
+    const auto transactionTuple = std::make_tuple(transactionStr, transactionId);
+
     auto log_tuple = std::tuple_cat(details::prio<L>(),
                                     msg_tuple,
+                                    transactionTuple,
                                     std::forward<Entry>(entry)...);
     details::log(log_tuple);
 }
