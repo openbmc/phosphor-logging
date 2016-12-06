@@ -7,12 +7,14 @@ nodist_include_HEADERS = elog-gen.hpp
 # Application test which runs in obmc env (qemu, real hardware)
 bin_PROGRAMS = logging-test
 logging_test_SOURCES = logging_test.cpp
+logging_test_LDADD = libsdbusplus.la
 
 sbin_PROGRAMS = phosphor-log-manager
 phosphor_log_manager_SOURCES = \
 	xyz.openbmc_project.Logging.Internal.Manager.cpp \
 	log_manager.cpp \
 	log_manager_main.cpp
+phosphor_log_manager_LDADD = libsdbusplus.la
 
 # Be sure to build elog-gen.hpp before compiling
 BUILT_SOURCES = elog-gen.hpp
