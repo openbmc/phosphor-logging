@@ -1,27 +1,28 @@
+# Initialization
 AC_PREREQ([2.69])
 AC_INIT([phosphor-logging], [1.0], [https://github.com/openbmc/phosphor-logging/issues])
-
+AC_LANG([C++])
 AM_INIT_AUTOMAKE([subdir-objects -Wall -Werror foreign dist-xz])
-AM_PROG_AR()
 AM_SILENT_RULES([yes])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AX_CXX_COMPILE_STDCXX_14([noext])
+AX_APPEND_COMPILE_FLAGS([-fpic -Wall -Werror], [CXXFLAGS])
 
 # Checks for programs
 AC_PROG_CXX
-AX_CXX_COMPILE_STDCXX_14([noext])
-AX_APPEND_COMPILE_FLAGS([-fpic -Wall -Werror], [CXXFLAGS])
 AC_PROG_INSTALL #Checks/sets the install variable to be used
 AC_PROG_MAKE_SET
 
-# Surpress the --with-libtool-sysroot error
-LT_INIT
-
+# Check for libraries.
 PKG_CHECK_MODULES([SYSTEMD], [libsystemd >= 221])
 
 AC_CHECK_HEADER(systemd/sd-journal.h, ,[AC_MSG_ERROR([Could not find \
 systemd/sd-journal.h...systemd developement package required])])
 AC_CHECK_HEADER(systemd/sd-bus.h, ,[AC_MSG_ERROR([Could not find \
 systemd/sd-bus.h...systemd developement package required])])
-
+AC_CHECK_HEADER(sdbusplus/server.hpp, ,[AC_MSG_ERROR([Could not find \
+sdbusplus/server.hpp...openbmc/sdbusplus package required])])
 
 # Check/set gtest specific functions.
 AX_PTHREAD([GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=1"],[GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=0"])
@@ -48,6 +49,8 @@ AS_IF([test "x$enable_oe_sdk" == "xyes"],
 
 AC_DEFINE(BUSNAME_LOGGING, "xyz.openbmc_project.Logging", [The log manager DBus busname to own.])
 AC_DEFINE(OBJ_INTERNAL, "/xyz/openbmc_project/Logging/Internal/Manager", [The private log manager DBus object path.])
+AC_DEFINE(BUSNAME_ENTRY, "xyz.openbmc_project.Logging.Entry", [The log entry DBus busname to own.])
+AC_DEFINE(OBJ_ENTRY, "/xyz/openbmc_project/Logging/Entry", [The log entry DBus object path.])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile test/Makefile])
 AC_OUTPUT
