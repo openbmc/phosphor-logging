@@ -19,7 +19,9 @@ phosphor_log_manager_LDADD = libsdbusplus.la
 # Be sure to build elog-gen.hpp before compiling
 BUILT_SOURCES = elog-gen.hpp
 
-CLEANFILES=elog-gen.hpp
+CLEANFILES = \
+	elog-gen.hpp \
+	elog-lookup.cpp
 
 # systemd required for journal interfaces
 logging_test_LDFLAGS = $(SYSTEMD_LIBS)
@@ -27,6 +29,7 @@ phosphor_log_manager_LDFLAGS = $(SYSTEMD_LIBS)
 
 ELOG_YAML ?= xyz/openbmc_project/Example/Elog.errors.yaml
 ELOG_MAKO ?= elog-gen-template.mako.hpp
+LOOKUP_MAKO ?= elog-lookup-template.mako.cpp
 ELOG_YAML_DIR ?= tools/example/
 ELOG_TEMPLATE_DIR ?= tools/phosphor-logging/templates/
 REQ_FILES_TO_GEN ?= ${abs_srcdir}/tools/elog-gen.py\
@@ -39,5 +42,7 @@ EXTRA_DIST = $(REQ_FILES_TO_GEN)
 
 elog-gen.hpp: $(REQ_FILES_TO_GEN)
 	$(AM_V_at)${abs_srcdir}/tools/elog-gen.py -r ${abs_srcdir}/${ELOG_YAML_DIR} -t ${abs_srcdir}/${ELOG_TEMPLATE_DIR} -e $(ELOG_YAML) -m $(ELOG_MAKO) -o ${abs_srcdir}/elog-gen.hpp
+elog-lookup.cpp: $(REQ_FILES_TO_GEN)
+	$(AM_V_at)${abs_srcdir}/tools/elog-gen.py -r ${abs_srcdir}/${ELOG_YAML_DIR} -t ${abs_srcdir}/${ELOG_TEMPLATE_DIR} -e $(ELOG_YAML) -m $(LOOKUP_MAKO) -o ${abs_srcdir}/elog-lookup.cpp
 
 SUBDIRS = test
