@@ -6,6 +6,7 @@
 #include <sdbusplus/vtable.hpp>
 #include <systemd/sd-bus.h>
 #include <systemd/sd-journal.h>
+#include "elog-lookup.cpp"
 #include "log.hpp"
 #include "log_manager.hpp"
 
@@ -18,7 +19,7 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
 {
     // TODO Change /tmp path to a permanent location on flash
     constexpr const auto path = "/tmp/elog";
-    constexpr const auto msgIdStr = "_PID";
+    constexpr const auto transactionIdVar = "TRANSACTION_ID";
 
     // Create log file
     std::string filename{};
@@ -29,9 +30,6 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     efile.open(filename);
     efile << "{" << std::endl;
 
-    //const char* metaVar = nullptr;
-    std::vector<const char*> metaList;
-
     sd_journal *j = nullptr;
     int rc = sd_journal_open(&j, SD_JOURNAL_LOCAL_ONLY);
     if (rc < 0)
@@ -41,6 +39,9 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
         return;
     }
 
+    std::string transactionIdStr = std::to_string(transactionId);
+    std::vector<std::string> metalist = g_errMetaMap[errMsg];
+
     // Read the journal from the end to get the most recent entry first.
     // The result from the sd_journal_get_data() is of the form VARIABLE=value.
     SD_JOURNAL_FOREACH_BACKWARDS(j)
@@ -48,24 +49,23 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
         const char *data = nullptr;
         size_t length = 0;
 
-        // Search for the msg id
-        rc = sd_journal_get_data(j, msgIdStr, (const void **)&data, &length);
+        // Look for the transaction id metadata variable
+        rc = sd_journal_get_data(j, transactionIdVar, (const void **)&data,
+                                &length);
         if (rc < 0)
         {
-            // Instance not found, continue to next journal entry
+            // This journal entry does not have the transaction id,
+            // continue to next entry
             continue;
         }
+
         std::string result(data);
-// TODO String msgid is now an int transaction id. This piece will be
-// uncommented and reworked with the upcoming change to read the metadata
-// fields from the header file.
-#if 0
-        if (result.find(msgid) == std::string::npos)
+        if (result.find(transactionIdStr) == std::string::npos)
         {
-            // Match not found, continue to next journal entry
+            // Requested transaction id  not found,
+            // continue to next journal entry.
             continue;
         }
-#endif
         // Match found, write to file
         // TODO This is a draft format based on the redfish event logs written
         // in json, the final openbmc format is to be determined
@@ -81,14 +81,15 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
         efile << "\t\"@" << data << "\"," << std::endl;
 
         // Search for the metadata variables in the current journal entry
-        for (auto i : metaList)
+        for (auto metaVarStr : metalist)
         {
-            rc = sd_journal_get_data(j, i, (const void **)&data, &length);
+            rc = sd_journal_get_data(j, metaVarStr.c_str(),
+                                    (const void **)&data, &length);
             if (rc < 0)
             {
                 // Not found, continue to next metadata variable
                 logging::log<logging::level::INFO>("Failed to find metadata",
-                                    logging::entry("META_FIELD=%s", i));
+                        logging::entry("META_FIELD=%s", metaVarStr.c_str()));
                 continue;
             }
 
@@ -98,7 +99,7 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
         efile << "\t}" << std::endl;
 
         // TODO Break only once all metadata fields have been found. Implement
-        // once this function reads the metadata fields from the header file.
+        // once this function saves the data to flash
         break;
     }
     sd_journal_close(j);
