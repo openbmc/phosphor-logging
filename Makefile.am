@@ -9,10 +9,13 @@ bin_PROGRAMS = logging-test
 logging_test_SOURCES = logging_test.cpp
 
 sbin_PROGRAMS = phosphor-log-manager
+
 phosphor_log_manager_SOURCES = \
 	xyz.openbmc_project.Logging.Internal.Manager.cpp \
 	log_manager.cpp \
-	log_manager_main.cpp
+	log_manager_main.cpp \
+	xyz.openbmc_project.Logging.Entry.cpp \
+	elog_entry.cpp
 
 # Be sure to build elog-gen.hpp before compiling
 BUILT_SOURCES = elog-gen.hpp
