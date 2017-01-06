@@ -23,15 +23,16 @@ class Manager
          *     Not allowed:
          *         - Default constructor to avoid nullptrs.
          *         - Copy operations due to internal unique_ptr.
+         *         - Move operations due to 'this' being registered as the
+         *           'context' with sdbus.
          *     Allowed:
-         *         - Move operations.
          *         - Destructor.
          */
         Manager() = delete;
         Manager(const Manager&) = delete;
         Manager& operator=(const Manager&) = delete;
         Manager(Manager&&) = default;
-        Manager& operator=(Manager&&) = default;
+        Manager& operator=(Manager&&) = delete;
         virtual ~Manager() = default;
 
         /** @brief Constructor to put object onto bus at a dbus path.

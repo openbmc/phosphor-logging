@@ -1,6 +1,6 @@
 #pragma once
 
-#include <sdbusplus/server.hpp>
+#include <sdbusplus/bus.hpp>
 #include "xyz/openbmc_project/Logging/Internal/Manager/server.hpp"
 
 namespace phosphor
@@ -23,28 +23,22 @@ using ManagerIface =
  *  @details A concrete implementation for the
  *  xyz.openbmc_project.Logging.Internal.Manager DBus API.
  */
-class Manager final :
-    public details::ServerObject<details::ManagerIface>
+class Manager : public details::ServerObject<details::ManagerIface>
 {
     public:
         Manager() = delete;
         Manager(const Manager&) = delete;
         Manager& operator=(const Manager&) = delete;
         Manager(Manager&&) = default;
-        Manager& operator=(Manager&&) = default;
-        ~Manager() = default;
+        Manager& operator=(Manager&&) = delete;
+        virtual ~Manager() = default;
 
-        /** @brief Constructor for the Log Manager object
-         *  @param[in] bus - DBus bus to attach to.
-         *  @param[in] busname - Name of DBus bus to own.
-         *  @param[in] obj - Object path to attach to.
+        /** @brief Constructor to put object onto bus at a dbus path.
+         *  @param[in] bus - Bus to attach to.
+         *  @param[in] path - Path to attach at.
          */
-        Manager(sdbusplus::bus::bus&& bus,
-                    const char* busname,
-                    const char* obj);
-
-        /** @brief Start processing DBus messages. */
-        void run() noexcept;
+        Manager(sdbusplus::bus::bus& bus, const char* objPath) :
+                details::ServerObject<details::ManagerIface>(bus, objPath) {};
 
         /*
          * @fn commit()
@@ -57,13 +51,6 @@ class Manager final :
          *                     error log to be committed.
          */
         void commit(uint64_t transactionId, std::string errMsg) override;
-
-    private:
-        /** @brief Persistent sdbusplus DBus bus connection. */
-        sdbusplus::bus::bus _bus;
-
-        /** @brief sdbusplus org.freedesktop.DBus.ObjectManager reference. */
-        sdbusplus::server::manager::manager _manager;
 };
 
 } // namespace logging
