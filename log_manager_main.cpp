@@ -1,33 +1,28 @@
+#include <sdbusplus/bus.hpp>
+#include <sdbusplus/server/manager.hpp>
 #include "config.h"
 #include "log_manager.hpp"
-#include <sdbusplus/bus.hpp>
-#include <cstdlib>
-#include <iostream>
-#include <exception>
 
 int main(int argc, char *argv[])
 {
-    try {
-        auto manager = phosphor::logging::Manager(
-                sdbusplus::bus::new_system(),
-                BUSNAME_LOGGING,
-                OBJ_INTERNAL);
+    auto bus = sdbusplus::bus::new_default();
 
-        auto bus = sdbusplus::bus::new_default();
+    phosphor::logging::Manager manager(bus, OBJ_INTERNAL);
 
-        // Add sdbusplus ObjectManager.
-        sdbusplus::server::manager::manager(bus, OBJ_ENTRY);
+    // Add sdbusplus ObjectManager.
+    sdbusplus::server::manager::manager objManager(bus, OBJ_INTERNAL);
 
-        // TODO Create error log dbus object on demand, when the Commit interface
-        // creates an error log it'd call this entry interface to create an object.
+    bus.request_name(BUSNAME_LOGGING);
 
-        manager.run();
+    // TODO Create error log dbus object on demand, when the Commit interface
+    // creates an error log it'd call this entry interface to create an object.
 
-        exit(EXIT_SUCCESS);
+    while(true)
+    {
+        bus.process_discard();
+        bus.wait();
     }
-    catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
-    }
-    exit(EXIT_FAILURE);
+
+    return 0;
 }
 
