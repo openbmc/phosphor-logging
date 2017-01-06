@@ -109,32 +109,6 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     return;
 }
 
-Manager::Manager(sdbusplus::bus::bus &&bus,
-                 const char* busname,
-                 const char* obj) :
-    details::ServerObject<details::ManagerIface>(bus, obj),
-    _bus(std::move(bus)),
-    _manager(sdbusplus::server::manager::manager(_bus, obj))
-{
-    _bus.request_name(busname);
-}
-
-void Manager::run() noexcept
-{
-    while(true)
-    {
-        try
-        {
-            _bus.process_discard();
-            _bus.wait();
-        }
-        catch (std::exception &e)
-        {
-            std::cerr << e.what() << std::endl;
-        }
-    }
-}
-
 } // namespace logging
 } // namepsace phosphor
 
