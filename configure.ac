@@ -49,7 +49,6 @@ AS_IF([test "x$enable_oe_sdk" == "xyes"],
 
 AC_DEFINE(BUSNAME_LOGGING, "xyz.openbmc_project.Logging", [The log manager DBus busname to own.])
 AC_DEFINE(OBJ_INTERNAL, "/xyz/openbmc_project/Logging/Internal/Manager", [The private log manager DBus object path.])
-AC_DEFINE(BUSNAME_ENTRY, "xyz.openbmc_project.Logging.Entry", [The log entry DBus busname to own.])
 AC_DEFINE(OBJ_ENTRY, "/xyz/openbmc_project/Logging/Entry", [The log entry DBus object path.])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile test/Makefile])
