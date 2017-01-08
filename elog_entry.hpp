@@ -24,8 +24,7 @@ using EntryIface =
  *  @details A concrete implementation for the
  *  xyz.openbmc_project.Logging.Entry DBus API.
  */
-class Entry final :
-    public details::ServerObject<details::EntryIface>
+class Entry : public details::ServerObject<details::EntryIface>
 {
     public:
         Entry() = delete;
@@ -35,11 +34,12 @@ class Entry final :
         Entry& operator=(Entry&&) = delete;
         virtual ~Entry() = default;
 
-        /** @brief Constructor for the Log Entry object
-         *  @param[in] bus - DBus bus to attach to.
-         *  @param[in] obj - Object path to attach to.
+        /** @brief Constructor to put object onto bus at a dbus path.
+         *  @param[in] bus - Bus to attach to.
+         *  @param[in] path - Path to attach at.
          */
-        Entry(sdbusplus::bus::bus& bus, const char* obj);
+        Entry(sdbusplus::bus::bus& bus, const char* path) :
+              details::ServerObject<details::EntryIface>(bus, path) {};
 };
 
 } // namespace logging
