@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sdbusplus/bus.hpp>
+#include "elog_entry.hpp"
 #include "xyz/openbmc_project/Logging/Internal/Manager/server.hpp"
 
 namespace phosphor
@@ -38,7 +39,8 @@ class Manager : public details::ServerObject<details::ManagerIface>
          *  @param[in] path - Path to attach at.
          */
         Manager(sdbusplus::bus::bus& bus, const char* path) :
-                details::ServerObject<details::ManagerIface>(bus, path) {};
+                details::ServerObject<details::ManagerIface>(bus, path),
+                busLog(bus) {};
 
         /*
          * @fn commit()
@@ -51,6 +53,14 @@ class Manager : public details::ServerObject<details::ManagerIface>
          *                     error log to be committed.
          */
         void commit(uint64_t transactionId, std::string errMsg) override;
+
+
+    private:
+        /** @brief Persistent sdbusplus DBus bus connection. */
+        sdbusplus::bus::bus& busLog;
+
+        /** @brief Persistent map of Entry dbus objects and their ID */
+        std::map<uint32_t, std::unique_ptr<Entry>> entries;
 };
 
 } // namespace logging
