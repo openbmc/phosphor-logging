@@ -38,9 +38,10 @@ class Manager : public details::ServerObject<details::ManagerIface>
          *  @param[in] bus - Bus to attach to.
          *  @param[in] path - Path to attach at.
          */
-        Manager(sdbusplus::bus::bus& bus, const char* path) :
-                details::ServerObject<details::ManagerIface>(bus, path),
-                busLog(bus) {};
+        Manager(sdbusplus::bus::bus& bus, const char* objPath) :
+                details::ServerObject<details::ManagerIface>(bus, objPath),
+                busLog(bus),
+                entryId(0) {};
 
         /*
          * @fn commit()
@@ -61,6 +62,9 @@ class Manager : public details::ServerObject<details::ManagerIface>
 
         /** @brief Persistent map of Entry dbus objects and their ID */
         std::map<uint32_t, std::unique_ptr<Entry>> entries;
+
+        /** @brief Id of last error log entry */
+        uint32_t entryId;
 };
 
 } // namespace logging
