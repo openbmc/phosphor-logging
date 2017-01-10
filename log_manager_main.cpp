@@ -14,9 +14,6 @@ int main(int argc, char *argv[])
 
     bus.request_name(BUSNAME_LOGGING);
 
-    // TODO Create error log dbus object on demand, when the Commit interface
-    // creates an error log it'd call this entry interface to create an object.
-
     while(true)
     {
         bus.process_discard();
