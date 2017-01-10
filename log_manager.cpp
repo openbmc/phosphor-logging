@@ -7,6 +7,8 @@
 #include <systemd/sd-bus.h>
 #include <systemd/sd-journal.h>
 #include "elog-lookup.cpp"
+#include "config.h"
+#include "elog_entry.hpp"
 #include "log.hpp"
 #include "log_manager.hpp"
 
@@ -21,7 +23,6 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     constexpr const auto path = "/tmp/elog";
     constexpr const auto transactionIdVar = "TRANSACTION_ID";
 
-    // Create log file
     std::string filename{};
     filename.append(path);
     // TODO Create error logs in their own separate dir once permanent location
@@ -41,6 +42,8 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
 
     std::string transactionIdStr = std::to_string(transactionId);
     std::vector<std::string> metalist = g_errMetaMap[errMsg];
+
+    Entry::Properties properties;
 
     // Read the journal from the end to get the most recent entry first.
     // The result from the sd_journal_get_data() is of the form VARIABLE=value.
@@ -78,6 +81,8 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
         {
             continue;
         }
+
+        properties.msg = data;
         efile << "\t\"@" << data << "\"," << std::endl;
 
         // Search for the metadata variables in the current journal entry
@@ -94,6 +99,7 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
             }
 
             // Metatdata variable found, write to file
+            properties.additionalData.push_back(std::string(data));
             efile << "\t\"@" << data << "\"," << std::endl;
         }
         efile << "\t}" << std::endl;
@@ -103,6 +109,13 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
         break;
     }
     sd_journal_close(j);
+
+    // TODO Increase Entry id as entries are created
+    // TODO Map journal priority to Entry severity
+    properties.id = 1;
+    properties.severity = Entry::Level::Informational;
+    auto objPath =  std::string(OBJ_ENTRY) + '/' + '1';
+    entries.push_back(std::make_unique<Entry>(busLog, objPath.c_str(), properties));
 
     efile << "}" << std::endl;
     efile.close();
