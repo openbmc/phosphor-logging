@@ -40,7 +40,8 @@ class Manager : public details::ServerObject<details::ManagerIface>
          */
         Manager(sdbusplus::bus::bus& bus, const char* objPath) :
                 details::ServerObject<details::ManagerIface>(bus, objPath),
-                busLog(bus) {};
+                busLog(bus),
+                entryId(0) {};
 
         /*
          * @fn commit()
@@ -61,6 +62,9 @@ class Manager : public details::ServerObject<details::ManagerIface>
 
         /** @brief Persistent list of elog entries (Entry dbus objects). */
         std::vector<std::unique_ptr<Entry>> entries;
+
+        /** @brief Id of last error log entry */
+        uint32_t entryId;
 };
 
 } // namespace logging
