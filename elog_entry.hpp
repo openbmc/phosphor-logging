@@ -27,6 +27,14 @@ using EntryIface =
 class Entry : public details::ServerObject<details::EntryIface>
 {
     public:
+        struct Properties
+        {
+            uint32_t id;
+            Level severity;
+            std::string msg;
+            std::vector<std::string> additionalData;
+        };
+
         Entry() = delete;
         Entry(const Entry&) = delete;
         Entry& operator=(const Entry&) = delete;
@@ -37,9 +45,22 @@ class Entry : public details::ServerObject<details::EntryIface>
         /** @brief Constructor to put object onto bus at a dbus path.
          *  @param[in] bus - Bus to attach to.
          *  @param[in] path - Path to attach at.
+         *  @param[in] properties - Struck with desired Entry properties
          */
-        Entry(sdbusplus::bus::bus& bus, const char* path) :
-              details::ServerObject<details::EntryIface>(bus, path) {};
+        Entry(sdbusplus::bus::bus& bus, const char* path,
+              Properties properties) :
+              details::ServerObject<details::EntryIface>(bus, path)
+        {
+            sdbusplus::xyz::openbmc_project::Logging::server::
+                Entry::id(properties.id);
+            sdbusplus::xyz::openbmc_project::Logging::server::
+                Entry::severity(properties.severity);
+            sdbusplus::xyz::openbmc_project::Logging::server::
+                Entry::message(properties.msg);
+            sdbusplus::xyz::openbmc_project::Logging::server::
+                Entry::additionalData(properties.additionalData);
+        };
+
 };
 
 } // namespace logging

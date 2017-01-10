@@ -61,6 +61,9 @@ class Manager : public details::ServerObject<details::ManagerIface>
 
         /** @brief Persistent list of elog entries (Entry dbus objects). */
         std::vector<std::unique_ptr<Entry>> entries;
+
+        /** @brief Id number of last error log entry, default to 0 */
+        uint32_t entryId = 0;
 };
 
 } // namespace logging
