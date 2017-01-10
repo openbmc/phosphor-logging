@@ -27,6 +27,14 @@ using EntryIface =
 class Entry : public details::ServerObject<details::EntryIface>
 {
     public:
+        struct Properties
+        {
+            uint32_t id;
+            Level severity;
+            std::string msg;
+            std::vector<std::string> additionalData;
+        };
+
         Entry() = delete;
         Entry(const Entry&) = delete;
         Entry& operator=(const Entry&) = delete;
@@ -35,11 +43,25 @@ class Entry : public details::ServerObject<details::EntryIface>
         virtual ~Entry() = default;
 
         /** @brief Constructor to put object onto bus at a dbus path.
+         *         Defer signal registration (pass true for deferSignal to the
+         *         base class) until after the properties are set.
          *  @param[in] bus - Bus to attach to.
          *  @param[in] path - Path to attach at.
+         *  @param[in] properties - Desired Entry properties.
          */
-        Entry(sdbusplus::bus::bus& bus, const char* path) :
-              details::ServerObject<details::EntryIface>(bus, path) {};
+        Entry(sdbusplus::bus::bus& bus, const std::string& path,
+            const Properties& properties) :
+            details::ServerObject<details::EntryIface>(bus, path.c_str(), true)
+        {
+            this->id(std::move(properties.id));
+            this->severity(std::move(properties.severity));
+            this->message(std::move(properties.msg));
+            this->additionalData(std::move(properties.additionalData));
+
+            // Emit deferred signal.
+            this->emit_object_added();
+        };
+
 };
 
 } // namespace logging
