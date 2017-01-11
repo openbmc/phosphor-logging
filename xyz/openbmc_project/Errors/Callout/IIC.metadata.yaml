@@ -1,0 +1,8 @@
+- name: IIC
+  inherits:
+    - xyz.openbmc_project.Errors.Callout.Callout
+  meta:
+    - str: "CALLOUT_IIC_BUS=%s"
+      type: string
+    - str: "CALLOUT_IIC_ADDR=%hu"
+      type: uint16
