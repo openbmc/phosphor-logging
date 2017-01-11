@@ -3,3 +3,8 @@
 
 - name: TestErrorTwo
   description: This is test error two
+
+- name: TestErrorThree
+  description: This is test error three. This adds an IIC callout.
+  inherits:
+    - xyz.openbmc_project.Error.Callout.IIC
