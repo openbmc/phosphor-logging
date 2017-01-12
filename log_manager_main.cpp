@@ -10,8 +10,8 @@ int main(int argc, char *argv[])
     try {
         auto manager = phosphor::logging::Manager(
                 sdbusplus::bus::new_system(),
-                BUSNAME,
-                OBJ);
+                BUSNAME_LOGGING,
+                OBJ_INTERNAL);
         manager.run();
         exit(EXIT_SUCCESS);
     }
