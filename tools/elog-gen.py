@@ -19,6 +19,21 @@ import sys
 import os
 
 
+def get_cpp_type(i_type):
+    typeMap = {
+        'int16': 'int16_t',
+        'int32': 'int32_t',
+        'int64': 'int64_t',
+        'uint16': 'uint16_t',
+        'uint32': 'uint32_t',
+        'uint64': 'uint64_t',
+        'double': 'double',
+        # const char* aids usage of constexpr
+        'string': 'const char*'}
+
+    return typeMap[i_type]
+
+
 def gen_elog_hpp(i_rootdir, i_elog_yaml, i_elog_meta_yaml,
                  i_input_mako, i_output_hpp):
     r"""
@@ -66,7 +81,7 @@ def gen_elog_hpp(i_rootdir, i_elog_yaml, i_elog_meta_yaml,
             meta_data[str_short] = {}
             meta_data[str_short]['str'] = j['str']
             meta_data[str_short]['str_short'] = str_short
-            meta_data[str_short]['type'] = j['type']
+            meta_data[str_short]['type'] = get_cpp_type(j['type'])
         meta.append(tmp_meta)
         err_count += 1
 
@@ -83,7 +98,7 @@ def gen_elog_hpp(i_rootdir, i_elog_yaml, i_elog_meta_yaml,
     f = open(i_output_hpp, 'w')
     f.write(mytemplate.render(errors=errors, error_msg=error_msg,
                               error_lvl=error_lvl, meta=meta,
-                              meta_data=meta_data,elog_yaml=i_elog_yaml))
+                              meta_data=meta_data, elog_yaml=i_elog_yaml))
     f.close()
 
 
