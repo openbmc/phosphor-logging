@@ -21,3 +21,4 @@ test/Makefile.in
 .deps*
 configure
 stamp-h1
+phosphor-logging-*.*
