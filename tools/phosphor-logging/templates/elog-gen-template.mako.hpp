@@ -4,6 +4,7 @@
 // See elog-gen.py for more details
 #pragma once
 
+#include <string>
 #include <tuple>
 #include <type_traits>
 #include "log.hpp"
