@@ -119,8 +119,8 @@ def main(i_args):
         exit(1)
 
     # the meta data will be defined in a similar file name where we replace
-    # <Interface>.errors.yaml with <Interface>.logging.yaml
-    meta_file = options.elog_yaml.replace("errors", "logging")
+    # <Interface>.errors.yaml with <Interface>.metadata.yaml
+    meta_file = options.elog_yaml.replace("errors", "metadata")
     meta_file = "/".join((options.rootdir, meta_file))
     if (not (os.path.isfile(meta_file))):
         print "Can not find meta yaml file " + meta_file
