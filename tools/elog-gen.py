@@ -65,6 +65,7 @@ def gen_elog_hpp(i_yaml_dir, i_output_hpp,
     error_lvl = dict()  # Error code log level (debug, info, error, ...)
     meta = list()  # The meta data names associated (ERRNO, FILE_NAME, ...)
     meta_data = dict()  # The meta data info (type, format)
+    parents = list()
 
     error_yamls = get_error_yaml_files(i_yaml_dir)
 
@@ -94,7 +95,8 @@ def gen_elog_hpp(i_yaml_dir, i_output_hpp,
                        error_msg,
                        error_lvl,
                        meta,
-                       meta_data))
+                       meta_data,
+                       parents))
 
     # Load the mako template and call it with the required data
     yaml_dir = i_yaml_dir.strip("./")
@@ -120,7 +122,7 @@ def get_elog_data(i_elog_yaml,
     i_elog_meta_yaml            metadata yaml file
     o_elog_data                 error metadata
     """
-    errors, error_msg, error_lvl, meta, meta_data = o_elog_data
+    errors, error_msg, error_lvl, meta, meta_data, parents = o_elog_data
     ifile = yaml.safe_load(open(i_elog_yaml))
     mfile = yaml.safe_load(open(i_elog_meta_yaml))
     for i in ifile:
@@ -135,6 +137,12 @@ def get_elog_data(i_elog_yaml,
             exit(1)
         # Grab the main error and it's info
         errors.append(i['name'])
+        parent = None
+        if('inherits' in i):
+            # xyz.openbmc.Foo, we need Foo
+            # Get 0th inherited error (current support - single inheritance)
+            parent = i['inherits'][0].split(".").pop()
+        parents.append(parent)
         error_msg[i['name']] = i['description']
         error_lvl[i['name']] = match['level']
         tmp_meta = []

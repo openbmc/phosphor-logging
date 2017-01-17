@@ -1,2 +1,4 @@
 - name: Foo
   description: this is test error Foo
+  inherits:
+      - example.xyz.openbmc_project.Example.TestErrorOne
