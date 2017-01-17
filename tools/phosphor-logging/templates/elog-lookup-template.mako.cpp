@@ -16,7 +16,7 @@ namespace logging
 std::map<std::string,std::vector<std::string>> g_errMetaMap = {
     % for a in errors:
     <% meta_string = '\",\"'.join(meta[a]) %> \
-    {"${errors[a]}",{"${meta_string}"}},
+    {"${a}",{"${meta_string}"}},
     % endfor
 };
 
