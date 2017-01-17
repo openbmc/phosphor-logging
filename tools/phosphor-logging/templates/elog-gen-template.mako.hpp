@@ -15,21 +15,22 @@ namespace phosphor
 namespace logging
 {
 
-    % for a in errors:
+    % for index, name in enumerate(errors):
 <%
-    namespaces = elog_yaml.split('/')
-    namespaces.pop()
-    classname = errors[a]
+    namespaces = yaml_dir.split('/')
+    ## In case someone provided a yaml_dir ending with '/', remove the last
+    ## split string, which would be an empty string.
+    if not namespaces[-1]:
+        namespaces = namespaces[:-1]
+    classname = name
 %>\
     % for s in namespaces:
 namespace ${s}
 {
     % endfor
-namespace Error
-{
 namespace _${classname}
 {
-    % for b in meta[a]:
+    % for b in meta[index]:
 struct ${b}
 {
     static constexpr auto str = "${meta_data[b]['str']}";
@@ -41,18 +42,17 @@ struct ${b}
     % endfor
 
 }  // namespace _${classname}
-<% meta_string = ', '.join(meta[a]) %>
+<% meta_string = ', '.join(meta[index]) %>
 struct ${classname}
 {
-    static constexpr auto err_code = "${errors[a]}";
-    static constexpr auto err_msg = "${error_msg[errors[a]]}";
-    static constexpr auto L = level::${error_lvl[errors[a]]};
-    % for b in meta[a]:
+    static constexpr auto err_code = "${name}";
+    static constexpr auto err_msg = "${error_msg[name]}";
+    static constexpr auto L = level::${error_lvl[name]};
+    % for b in meta[index]:
     using ${b} = _${classname}::${b};
     % endfor
     using metadata_types = std::tuple<${meta_string}>;
 };
-} // namespace Error
 % for s in reversed(namespaces):
 } // namespace ${s}
 % endfor
