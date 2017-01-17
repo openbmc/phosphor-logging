@@ -75,21 +75,21 @@ int main()
     const char *test_string = "/tmp/test_string/";
     try
     {
-        elog<xyz::openbmc_project::Example::Error::TestErrorOne>(
-                xyz::openbmc_project::Example::Error::TestErrorOne::
+        elog<example::xyz::openbmc_project::Example::TestErrorOne>(
+                example::xyz::openbmc_project::Example::TestErrorOne::
                     ERRNUM(number),
-                xyz::openbmc_project::Example::Error::TestErrorOne::
+                example::xyz::openbmc_project::Example::TestErrorOne::
                     FILE_PATH(test_string),
-                xyz::openbmc_project::Example::Error::TestErrorOne::
+                example::xyz::openbmc_project::Example::TestErrorOne::
                     FILE_NAME("elog_test_3.txt"));
     }
-    catch (elogException<xyz::openbmc_project::Example::Error::TestErrorOne>& e)
+    catch (elogException<example::xyz::openbmc_project::Example::TestErrorOne>& e)
     {
         std::cout << "elog exception caught: " << e.what() << std::endl;
     }
 
     // Reduce our error namespaces
-    using namespace xyz::openbmc_project::Example::Error;
+    using namespace example::xyz::openbmc_project::Example;
 
     // Now read back and verify our data made it into the journal
     std::stringstream stream;
