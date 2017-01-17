@@ -18,6 +18,14 @@ import sys
 import os
 
 
+def check_error_inheritance(i_errors, i_parents):
+    for parent in i_parents:
+        if(parent and (parent not in i_errors)):
+            print parent + " inhertied from, but not defined"
+            return False
+    return True
+
+
 def get_error_yaml_files(i_yaml_dir):
     yaml_files = filter(
         lambda file: file.endswith('.errors.yaml'),
@@ -98,6 +106,10 @@ def gen_elog_hpp(i_yaml_dir, i_output_hpp,
                        meta,
                        meta_data,
                        parents))
+
+    if(not check_error_inheritance(errors, parents)):
+        print "Error - failed to validate error inheritance"
+        exit(1)
 
     # Load the mako template and call it with the required data
     yaml_dir = i_yaml_dir.strip("./")
