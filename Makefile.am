@@ -23,9 +23,8 @@ CLEANFILES=elog-gen.hpp
 logging_test_LDFLAGS = $(SYSTEMD_LIBS)
 phosphor_log_manager_LDFLAGS = $(SYSTEMD_LIBS)
 
-ELOG_YAML ?= xyz/openbmc_project/Example/Elog.errors.yaml
 ELOG_MAKO ?= elog-gen-template.mako.hpp
-ELOG_YAML_DIR ?= tools/example/
+ELOG_YAML_DIR ?= tools/example/xyz/openbmc_project/Example/
 ELOG_TEMPLATE_DIR ?= tools/phosphor-logging/templates/
 REQ_FILES_TO_GEN ?= ${abs_srcdir}/tools/elog-gen.py\
 	${abs_srcdir}/$(ELOG_YAML_DIR)/$(ELOG_YAML)\
@@ -36,6 +35,6 @@ REQ_FILES_TO_GEN ?= ${abs_srcdir}/tools/elog-gen.py\
 EXTRA_DIST = $(REQ_FILES_TO_GEN)
 
 elog-gen.hpp: $(REQ_FILES_TO_GEN)
-	$(AM_V_at)${abs_srcdir}/tools/elog-gen.py -r ${abs_srcdir}/${ELOG_YAML_DIR} -t ${abs_srcdir}/${ELOG_TEMPLATE_DIR} -e $(ELOG_YAML) -m $(ELOG_MAKO) -o ${abs_srcdir}/elog-gen.hpp
+	$(AM_V_at)${abs_srcdir}/tools/elog-gen.py -y ${abs_srcdir}/${ELOG_YAML_DIR} -t ${abs_srcdir}/${ELOG_TEMPLATE_DIR} -m $(ELOG_MAKO) -o ${abs_srcdir}/elog-gen.hpp
 
 SUBDIRS = test
