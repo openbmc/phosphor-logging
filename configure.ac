@@ -1,6 +1,7 @@
 AC_PREREQ([2.69])
 AC_INIT([phosphor-logging], [1.0], [https://github.com/openbmc/phosphor-logging/issues])
 
+AC_LANG([C++])
 AM_INIT_AUTOMAKE([subdir-objects -Wall -Werror foreign dist-xz])
 AM_PROG_AR()
 AM_SILENT_RULES([yes])
@@ -21,7 +22,8 @@ AC_CHECK_HEADER(systemd/sd-journal.h, ,[AC_MSG_ERROR([Could not find \
 systemd/sd-journal.h...systemd developement package required])])
 AC_CHECK_HEADER(systemd/sd-bus.h, ,[AC_MSG_ERROR([Could not find \
 systemd/sd-bus.h...systemd developement package required])])
-
+AC_CHECK_HEADER(sdbusplus/server.hpp, ,[AC_MSG_ERROR([Could not find \
+sdbusplus/server.hpp...openbmc/sdbusplus package required])])
 
 # Check/set gtest specific functions.
 AX_PTHREAD([GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=1"],[GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=0"])
