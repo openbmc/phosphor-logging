@@ -30,7 +30,7 @@ namespace ${s}
     % endfor
 namespace _${classname}
 {
-    % for b in meta[index]:
+    % for b in meta[name]:
 struct ${b}
 {
     static constexpr auto str = "${meta_data[b]['str']}";
@@ -42,13 +42,13 @@ struct ${b}
     % endfor
 
 }  // namespace _${classname}
-<% meta_string = ', '.join(meta[index]) %>
+<% meta_string = ', '.join(meta[name]) %>
 struct ${classname}
 {
     static constexpr auto err_code = "${name}";
     static constexpr auto err_msg = "${error_msg[name]}";
     static constexpr auto L = level::${error_lvl[name]};
-    % for b in meta[index]:
+    % for b in meta[name]:
     using ${b} = _${classname}::${b};
     % endfor
     using metadata_types = std::tuple<${meta_string}>;
