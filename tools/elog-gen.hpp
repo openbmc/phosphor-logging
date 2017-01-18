@@ -21,58 +21,6 @@ namespace openbmc_project
 {
 namespace Example
 {
-namespace _TestErrorOne
-{
-struct ERRNUM
-{
-    static constexpr auto str = "ERRNUM=0x%.4X";
-    static constexpr auto str_short = "ERRNUM";
-    using type = std::tuple<std::decay_t<decltype(str)>,uint16_t>;
-    explicit constexpr ERRNUM(uint16_t a) : _entry(entry(str, a)) {};
-    type _entry;
-};
-struct FILE_PATH
-{
-    static constexpr auto str = "FILE_PATH=%s";
-    static constexpr auto str_short = "FILE_PATH";
-    using type = std::tuple<std::decay_t<decltype(str)>,std::string>;
-    explicit constexpr FILE_PATH(std::string a) : _entry(entry(str, a)) {};
-    type _entry;
-};
-struct FILE_NAME
-{
-    static constexpr auto str = "FILE_NAME=%s";
-    static constexpr auto str_short = "FILE_NAME";
-    using type = std::tuple<std::decay_t<decltype(str)>,std::string>;
-    explicit constexpr FILE_NAME(std::string a) : _entry(entry(str, a)) {};
-    type _entry;
-};
-
-}  // namespace _TestErrorOne
-
-struct TestErrorOne
-{
-    static constexpr auto err_code = "TestErrorOne";
-    static constexpr auto err_msg = "this is test error one";
-    static constexpr auto L = level::INFO;
-    using ERRNUM = _TestErrorOne::ERRNUM;
-    using FILE_PATH = _TestErrorOne::FILE_PATH;
-    using FILE_NAME = _TestErrorOne::FILE_NAME;
-    using metadata_types = std::tuple<ERRNUM, FILE_PATH, FILE_NAME>;
-};
-} // namespace Example
-} // namespace openbmc_project
-} // namespace xyz
-} // namespace example
-
-namespace example
-{
-namespace xyz
-{
-namespace openbmc_project
-{
-namespace Example
-{
 namespace _TestErrorTwo
 {
 struct DEV_ADDR
@@ -125,6 +73,58 @@ namespace openbmc_project
 {
 namespace Example
 {
+namespace _TestErrorOne
+{
+struct ERRNUM
+{
+    static constexpr auto str = "ERRNUM=0x%.4X";
+    static constexpr auto str_short = "ERRNUM";
+    using type = std::tuple<std::decay_t<decltype(str)>,uint16_t>;
+    explicit constexpr ERRNUM(uint16_t a) : _entry(entry(str, a)) {};
+    type _entry;
+};
+struct FILE_PATH
+{
+    static constexpr auto str = "FILE_PATH=%s";
+    static constexpr auto str_short = "FILE_PATH";
+    using type = std::tuple<std::decay_t<decltype(str)>,std::string>;
+    explicit constexpr FILE_PATH(std::string a) : _entry(entry(str, a)) {};
+    type _entry;
+};
+struct FILE_NAME
+{
+    static constexpr auto str = "FILE_NAME=%s";
+    static constexpr auto str_short = "FILE_NAME";
+    using type = std::tuple<std::decay_t<decltype(str)>,std::string>;
+    explicit constexpr FILE_NAME(std::string a) : _entry(entry(str, a)) {};
+    type _entry;
+};
+
+}  // namespace _TestErrorOne
+
+struct TestErrorOne
+{
+    static constexpr auto err_code = "TestErrorOne";
+    static constexpr auto err_msg = "this is test error one";
+    static constexpr auto L = level::INFO;
+    using ERRNUM = _TestErrorOne::ERRNUM;
+    using FILE_PATH = _TestErrorOne::FILE_PATH;
+    using FILE_NAME = _TestErrorOne::FILE_NAME;
+    using metadata_types = std::tuple<ERRNUM, FILE_PATH, FILE_NAME>;
+};
+} // namespace Example
+} // namespace openbmc_project
+} // namespace xyz
+} // namespace example
+
+namespace example
+{
+namespace xyz
+{
+namespace openbmc_project
+{
+namespace Example
+{
 namespace _Foo
 {
 struct FOO_DATA
@@ -145,6 +145,40 @@ struct Foo
     static constexpr auto L = level::INFO;
     using FOO_DATA = _Foo::FOO_DATA;
     using metadata_types = std::tuple<FOO_DATA>;
+};
+} // namespace Example
+} // namespace openbmc_project
+} // namespace xyz
+} // namespace example
+
+namespace example
+{
+namespace xyz
+{
+namespace openbmc_project
+{
+namespace Example
+{
+namespace _Bar
+{
+struct BAR_DATA
+{
+    static constexpr auto str = "BAR_DATA=%s";
+    static constexpr auto str_short = "BAR_DATA";
+    using type = std::tuple<std::decay_t<decltype(str)>,std::string>;
+    explicit constexpr BAR_DATA(std::string a) : _entry(entry(str, a)) {};
+    type _entry;
+};
+
+}  // namespace _Bar
+
+struct Bar
+{
+    static constexpr auto err_code = "Bar";
+    static constexpr auto err_msg = "this is test error Bar";
+    static constexpr auto L = level::INFO;
+    using BAR_DATA = _Bar::BAR_DATA;
+    using metadata_types = std::tuple<BAR_DATA>;
 };
 } // namespace Example
 } // namespace openbmc_project

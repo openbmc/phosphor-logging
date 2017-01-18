@@ -1,0 +1,4 @@
+- name: Bar
+  description: this is test error Bar
+  inherits:
+    - Foo
