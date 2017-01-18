@@ -18,10 +18,38 @@ import sys
 import os
 
 
+def order_inherited_errors(i_errors, i_parents):
+    has_inhertiance = False
+    for error in i_errors:
+        if(i_parents[error] is not None):
+            has_inheritance = True
+            break
+
+    if(has_inheritance):
+        # the ordered list of errors
+        errors = list()
+        # Order the error codes list such that an error is never placed
+        # before it's parent. This way generated code can ensure parent
+        # definitions preceed child error definitions.
+        while(len(errors) < len(i_errors)):
+            for error in i_errors:
+                if(error in errors):
+                    # already ordererd
+                    continue
+                if((not i_parents[error]) or (i_parents[error] in errors)):
+                    # parent present, or has no parent, either way this error
+                    # can be added
+                    errors.append(error)
+        i_errors = errors
+
+    return i_errors
+
+
 def check_error_inheritance(i_errors, i_parents):
-    for parent in i_parents:
-        if(parent and (parent not in i_errors)):
-            print parent + " inhertied from, but not defined"
+    for error in i_errors:
+        if(i_parents[error] and (i_parents[error] not in i_errors)):
+            print (error + " inherits " + i_parents[error] +
+                   " but the latter is not defined")
             return False
     return True
 
@@ -72,9 +100,9 @@ def gen_elog_hpp(i_yaml_dir, i_output_hpp,
     errors = list()  # Main error codes
     error_msg = dict()  # Error msg that corresponds to error code
     error_lvl = dict()  # Error code log level (debug, info, error, ...)
-    meta = list()  # The meta data names associated (ERRNO, FILE_NAME, ...)
+    meta = dict()  # The meta data names associated (ERRNO, FILE_NAME, ...)
     meta_data = dict()  # The meta data info (type, format)
-    parents = list()
+    parents = dict()
 
     error_yamls = get_error_yaml_files(i_yaml_dir)
 
@@ -110,6 +138,8 @@ def gen_elog_hpp(i_yaml_dir, i_output_hpp,
     if(not check_error_inheritance(errors, parents)):
         print "Error - failed to validate error inheritance"
         exit(1)
+
+    errors = order_inherited_errors(errors, parents)
 
     # Load the mako template and call it with the required data
     yaml_dir = i_yaml_dir.strip("./")
@@ -155,7 +185,7 @@ def get_elog_data(i_elog_yaml,
             # xyz.openbmc.Foo, we need Foo
             # Get 0th inherited error (current support - single inheritance)
             parent = i['inherits'][0].split(".").pop()
-        parents.append(parent)
+        parents[i['name']] = parent
         error_msg[i['name']] = i['description']
         error_lvl[i['name']] = match['level']
         tmp_meta = []
@@ -167,7 +197,7 @@ def get_elog_data(i_elog_yaml,
             meta_data[str_short]['str'] = j['str']
             meta_data[str_short]['str_short'] = str_short
             meta_data[str_short]['type'] = get_cpp_type(j['type'])
-        meta.append(tmp_meta)
+        meta[i['name']] = tmp_meta
 
     # Debug
     # for i in errors:
