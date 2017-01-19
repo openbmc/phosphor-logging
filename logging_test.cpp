@@ -81,7 +81,13 @@ int main()
                 example::xyz::openbmc_project::Example::TestErrorOne::
                     FILE_PATH(test_string),
                 example::xyz::openbmc_project::Example::TestErrorOne::
-                    FILE_NAME("elog_test_3.txt"));
+                    FILE_NAME("elog_test_3.txt"),
+                example::xyz::openbmc_project::Example::TestErrorTwo::
+                    DEV_ADDR(0xDEAD),
+                example::xyz::openbmc_project::Example::TestErrorTwo::
+                    DEV_ID(0x100),
+                example::xyz::openbmc_project::Example::TestErrorTwo::
+                    DEV_NAME("test case 3"));
     }
     catch (elogException<example::xyz::openbmc_project::Example::TestErrorOne>& e)
     {
@@ -115,7 +121,10 @@ int main()
     {
         elog<TestErrorOne>(TestErrorOne::ERRNUM(number),
                            prev_entry<TestErrorOne::FILE_PATH>(),
-                           TestErrorOne::FILE_NAME("elog_test_4.txt"));
+                           TestErrorOne::FILE_NAME("elog_test_4.txt"),
+                           TestErrorTwo::DEV_ADDR(0xDEAD),
+                           TestErrorTwo::DEV_ID(0x100),
+                           TestErrorTwo::DEV_NAME("test case 4"));
     }
     catch (elogExceptionBase& e)
     {
