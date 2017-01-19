@@ -43,8 +43,8 @@ struct DEV_NAME
 {
     static constexpr auto str = "DEV_NAME=%s";
     static constexpr auto str_short = "DEV_NAME";
-    using type = std::tuple<std::decay_t<decltype(str)>,std::string>;
-    explicit constexpr DEV_NAME(std::string a) : _entry(entry(str, a)) {};
+    using type = std::tuple<std::decay_t<decltype(str)>,const char*>;
+    explicit constexpr DEV_NAME(const char* a) : _entry(entry(str, a)) {};
     type _entry;
 };
 
@@ -87,16 +87,16 @@ struct FILE_PATH
 {
     static constexpr auto str = "FILE_PATH=%s";
     static constexpr auto str_short = "FILE_PATH";
-    using type = std::tuple<std::decay_t<decltype(str)>,std::string>;
-    explicit constexpr FILE_PATH(std::string a) : _entry(entry(str, a)) {};
+    using type = std::tuple<std::decay_t<decltype(str)>,const char*>;
+    explicit constexpr FILE_PATH(const char* a) : _entry(entry(str, a)) {};
     type _entry;
 };
 struct FILE_NAME
 {
     static constexpr auto str = "FILE_NAME=%s";
     static constexpr auto str_short = "FILE_NAME";
-    using type = std::tuple<std::decay_t<decltype(str)>,std::string>;
-    explicit constexpr FILE_NAME(std::string a) : _entry(entry(str, a)) {};
+    using type = std::tuple<std::decay_t<decltype(str)>,const char*>;
+    explicit constexpr FILE_NAME(const char* a) : _entry(entry(str, a)) {};
     type _entry;
 };
 
@@ -110,7 +110,7 @@ struct TestErrorOne
     using ERRNUM = _TestErrorOne::ERRNUM;
     using FILE_PATH = _TestErrorOne::FILE_PATH;
     using FILE_NAME = _TestErrorOne::FILE_NAME;
-    using metadata_types = std::tuple<ERRNUM, FILE_PATH, FILE_NAME>;
+    using metadata_types = std::tuple<ERRNUM, FILE_PATH, FILE_NAME, TestErrorTwo::DEV_ADDR, TestErrorTwo::DEV_ID, TestErrorTwo::DEV_NAME>;
 };
 } // namespace Example
 } // namespace openbmc_project
@@ -131,8 +131,8 @@ struct FOO_DATA
 {
     static constexpr auto str = "FOO_DATA=%s";
     static constexpr auto str_short = "FOO_DATA";
-    using type = std::tuple<std::decay_t<decltype(str)>,std::string>;
-    explicit constexpr FOO_DATA(std::string a) : _entry(entry(str, a)) {};
+    using type = std::tuple<std::decay_t<decltype(str)>,const char*>;
+    explicit constexpr FOO_DATA(const char* a) : _entry(entry(str, a)) {};
     type _entry;
 };
 
@@ -144,7 +144,7 @@ struct Foo
     static constexpr auto err_msg = "this is test error Foo";
     static constexpr auto L = level::INFO;
     using FOO_DATA = _Foo::FOO_DATA;
-    using metadata_types = std::tuple<FOO_DATA>;
+    using metadata_types = std::tuple<FOO_DATA, TestErrorOne::ERRNUM, TestErrorOne::FILE_PATH, TestErrorOne::FILE_NAME, TestErrorTwo::DEV_ADDR, TestErrorTwo::DEV_ID, TestErrorTwo::DEV_NAME>;
 };
 } // namespace Example
 } // namespace openbmc_project
@@ -165,8 +165,8 @@ struct BAR_DATA
 {
     static constexpr auto str = "BAR_DATA=%s";
     static constexpr auto str_short = "BAR_DATA";
-    using type = std::tuple<std::decay_t<decltype(str)>,std::string>;
-    explicit constexpr BAR_DATA(std::string a) : _entry(entry(str, a)) {};
+    using type = std::tuple<std::decay_t<decltype(str)>,const char*>;
+    explicit constexpr BAR_DATA(const char* a) : _entry(entry(str, a)) {};
     type _entry;
 };
 
@@ -178,7 +178,7 @@ struct Bar
     static constexpr auto err_msg = "this is test error Bar";
     static constexpr auto L = level::INFO;
     using BAR_DATA = _Bar::BAR_DATA;
-    using metadata_types = std::tuple<BAR_DATA>;
+    using metadata_types = std::tuple<BAR_DATA, Foo::FOO_DATA, TestErrorOne::ERRNUM, TestErrorOne::FILE_PATH, TestErrorOne::FILE_NAME, TestErrorTwo::DEV_ADDR, TestErrorTwo::DEV_ID, TestErrorTwo::DEV_NAME>;
 };
 } // namespace Example
 } // namespace openbmc_project

@@ -42,7 +42,16 @@ struct ${b}
     % endfor
 
 }  // namespace _${classname}
-<% meta_string = ', '.join(meta[name]) %>
+<%
+    meta_string = ', '.join(meta[name])
+
+    parent = parents[name]
+    while parent:
+        parent_meta = [parent + "::" + p for p in meta[parent]]
+        parent_meta = ', '.join(parent_meta)
+        meta_string = meta_string + ", " + parent_meta
+        parent = parents[parent]
+%>
 struct ${classname}
 {
     static constexpr auto err_code = "${name}";

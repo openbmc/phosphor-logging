@@ -149,7 +149,8 @@ def gen_elog_hpp(i_yaml_dir, i_output_hpp,
     f.write(template.render(
             errors=errors, error_msg=error_msg,
             error_lvl=error_lvl, meta=meta,
-            meta_data=meta_data, error_namespace=i_error_namespace))
+            meta_data=meta_data, error_namespace=i_error_namespace,
+            parents=parents))
     f.close()
 
 
