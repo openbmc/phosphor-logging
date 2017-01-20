@@ -83,9 +83,9 @@ int main()
                 example::xyz::openbmc_project::Example::TestErrorOne::
                     FILE_NAME("elog_test_3.txt"),
                 example::xyz::openbmc_project::Example::TestErrorTwo::
-                    DEV_ADDR(0xDEAD),
+                    DEV_ADDR(0xDEADDEAD),
                 example::xyz::openbmc_project::Example::TestErrorTwo::
-                    DEV_ID(0x100),
+                    DEV_ID(100),
                 example::xyz::openbmc_project::Example::TestErrorTwo::
                     DEV_NAME("test case 3"));
     }
@@ -115,6 +115,21 @@ int main()
     if(rc)
         return(rc);
 
+    rc = validate_journal(TestErrorTwo::DEV_ADDR::str_short,
+                          "0xDEADDEAD");
+    if(rc)
+        return(rc);
+
+    rc = validate_journal(TestErrorTwo::DEV_ID::str_short,
+                          "100");
+    if(rc)
+        return(rc);
+
+    rc = validate_journal(TestErrorTwo::DEV_NAME::str_short,
+                          "test case 3");
+    if(rc)
+        return(rc);
+
     // TEST 4 - Create error log with previous entry use
     number = 0x9876;
     try
@@ -122,8 +137,8 @@ int main()
         elog<TestErrorOne>(TestErrorOne::ERRNUM(number),
                            prev_entry<TestErrorOne::FILE_PATH>(),
                            TestErrorOne::FILE_NAME("elog_test_4.txt"),
-                           TestErrorTwo::DEV_ADDR(0xDEAD),
-                           TestErrorTwo::DEV_ID(0x100),
+                           TestErrorTwo::DEV_ADDR(0xDEADDEAD),
+                           TestErrorTwo::DEV_ID(100),
                            TestErrorTwo::DEV_NAME("test case 4"));
     }
     catch (elogExceptionBase& e)
@@ -147,6 +162,21 @@ int main()
 
     rc = validate_journal(TestErrorOne::FILE_NAME::str_short,
                           "elog_test_4.txt");
+    if(rc)
+        return(rc);
+
+    rc = validate_journal(TestErrorTwo::DEV_ADDR::str_short,
+                          "0xDEADDEAD");
+    if(rc)
+        return(rc);
+
+    rc = validate_journal(TestErrorTwo::DEV_ID::str_short,
+                          "100");
+    if(rc)
+        return(rc);
+
+    rc = validate_journal(TestErrorTwo::DEV_NAME::str_short,
+                          "test case 4");
     if(rc)
         return(rc);
 
