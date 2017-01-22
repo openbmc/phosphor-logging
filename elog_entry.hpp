@@ -44,6 +44,7 @@ class Entry : public details::ServerObject<details::EntryIface>
         Entry(sdbusplus::bus::bus& bus,
               const std::string& path,
               uint32_t idErr,
+              uint64_t timestampErr,
               Level severityErr,
               std::string msgErr,
               std::vector<std::string> additionalDataErr) :
@@ -51,6 +52,7 @@ class Entry : public details::ServerObject<details::EntryIface>
                     (bus, path.c_str(), true)
         {
             id(idErr);
+            timestamp(timestampErr);
             severity(severityErr);
             message(msgErr);
             additionalData(additionalDataErr);
