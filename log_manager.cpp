@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <chrono>
 #include <cstdio>
 #include <string>
 #include <vector>
@@ -110,12 +111,15 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
 
     // Create error Entry dbus object
     entryId++;
+    auto ms = std::chrono::system_clock::now().time_since_epoch() /
+            std::chrono::milliseconds(1);
     auto objPath =  std::string(OBJ_ENTRY) + '/' +
-        std::to_string(entryId);
+            std::to_string(entryId);
     entries.insert(std::make_pair(entryId, std::make_unique<Entry>(
             busLog,
             objPath,
             entryId,
+            ms, // Milliseconds since 1970
             (Entry::Level)g_errLevelMap[errMsg],
             std::move(errMsg),
             std::move(additionalData))));
