@@ -57,6 +57,10 @@ class Entry
         virtual uint32_t id() const;
         /** Set value of Id */
         virtual uint32_t id(uint32_t value);
+        /** Get value of Timestamp */
+        virtual int32_t timestamp() const;
+        /** Set value of Timestamp */
+        virtual int32_t timestamp(int32_t value);
         /** Get value of Severity */
         virtual Level severity() const;
         /** Set value of Severity */
@@ -85,6 +89,15 @@ class Entry
             sd_bus_message*, void*, sd_bus_error*);
         /** @brief sd-bus callback for set-property 'Id' */
         static int _callback_set_Id(
+            sd_bus*, const char*, const char*, const char*,
+            sd_bus_message*, void*, sd_bus_error*);
+
+        /** @brief sd-bus callback for get-property 'Timestamp' */
+        static int _callback_get_Timestamp(
+            sd_bus*, const char*, const char*, const char*,
+            sd_bus_message*, void*, sd_bus_error*);
+        /** @brief sd-bus callback for set-property 'Timestamp' */
+        static int _callback_set_Timestamp(
             sd_bus*, const char*, const char*, const char*,
             sd_bus_message*, void*, sd_bus_error*);
 
@@ -122,6 +135,7 @@ class Entry
                 _xyz_openbmc_project_Logging_Entry_interface;
 
         uint32_t _id{};
+        int32_t _timestamp{};
         Level _severity{};
         std::string _message{};
         std::vector<std::string> _additionalData{};

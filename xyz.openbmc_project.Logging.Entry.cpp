@@ -37,7 +37,7 @@ int Entry::_callback_get_Id(
 
     try
     {
-        auto m = message::message(sd_bus_message_ref(reply));
+        auto m = message::message(reply);
 
         auto o = static_cast<Entry*>(context);
         m.append(convertForMessage(o->id()));
@@ -70,7 +70,7 @@ int Entry::_callback_set_Id(
 {
     try
     {
-        auto m = message::message(sd_bus_message_ref(value));
+        auto m = message::message(value);
 
         auto o = static_cast<Entry*>(context);
 
@@ -96,6 +96,80 @@ static const auto _property_Id =
             uint32_t>());
 }
 }
+auto Entry::timestamp() const ->
+        int32_t
+{
+    return _timestamp;
+}
+
+int Entry::_callback_get_Timestamp(
+        sd_bus* bus, const char* path, const char* interface,
+        const char* property, sd_bus_message* reply, void* context,
+        sd_bus_error* error)
+{
+    using sdbusplus::server::binding::details::convertForMessage;
+
+    try
+    {
+        auto m = message::message(reply);
+
+        auto o = static_cast<Entry*>(context);
+        m.append(convertForMessage(o->timestamp()));
+    }
+    catch(sdbusplus::internal_exception_t& e)
+    {
+        sd_bus_error_set_const(error, e.name(), e.description());
+        return -EINVAL;
+    }
+
+    return true;
+}
+
+auto Entry::timestamp(int32_t value) ->
+        int32_t
+{
+    if (_timestamp != value)
+    {
+        _timestamp = value;
+        _xyz_openbmc_project_Logging_Entry_interface.property_changed("Timestamp");
+    }
+
+    return _timestamp;
+}
+
+int Entry::_callback_set_Timestamp(
+        sd_bus* bus, const char* path, const char* interface,
+        const char* property, sd_bus_message* value, void* context,
+        sd_bus_error* error)
+{
+    try
+    {
+        auto m = message::message(value);
+
+        auto o = static_cast<Entry*>(context);
+
+        int32_t v{};
+        m.read(v);
+        o->timestamp(v);
+    }
+    catch(sdbusplus::internal_exception_t& e)
+    {
+        sd_bus_error_set_const(error, e.name(), e.description());
+        return -EINVAL;
+    }
+
+    return true;
+}
+
+namespace details
+{
+namespace Entry
+{
+static const auto _property_Timestamp =
+    utility::tuple_to_array(message::types::type_id<
+            int32_t>());
+}
+}
 auto Entry::severity() const ->
         Level
 {
@@ -111,7 +185,7 @@ int Entry::_callback_get_Severity(
 
     try
     {
-        auto m = message::message(sd_bus_message_ref(reply));
+        auto m = message::message(reply);
 
         auto o = static_cast<Entry*>(context);
         m.append(convertForMessage(o->severity()));
@@ -144,7 +218,7 @@ int Entry::_callback_set_Severity(
 {
     try
     {
-        auto m = message::message(sd_bus_message_ref(value));
+        auto m = message::message(value);
 
         auto o = static_cast<Entry*>(context);
 
@@ -185,7 +259,7 @@ int Entry::_callback_get_Message(
 
     try
     {
-        auto m = message::message(sd_bus_message_ref(reply));
+        auto m = message::message(reply);
 
         auto o = static_cast<Entry*>(context);
         m.append(convertForMessage(o->message()));
@@ -218,7 +292,7 @@ int Entry::_callback_set_Message(
 {
     try
     {
-        auto m = message::message(sd_bus_message_ref(value));
+        auto m = message::message(value);
 
         auto o = static_cast<Entry*>(context);
 
@@ -259,7 +333,7 @@ int Entry::_callback_get_AdditionalData(
 
     try
     {
-        auto m = message::message(sd_bus_message_ref(reply));
+        auto m = message::message(reply);
 
         auto o = static_cast<Entry*>(context);
         m.append(convertForMessage(o->additionalData()));
@@ -292,7 +366,7 @@ int Entry::_callback_set_AdditionalData(
 {
     try
     {
-        auto m = message::message(sd_bus_message_ref(value));
+        auto m = message::message(value);
 
         auto o = static_cast<Entry*>(context);
 
@@ -370,6 +444,12 @@ const vtable::vtable_t Entry::_vtable[] = {
                         .data(),
                      _callback_get_Id,
                      _callback_set_Id,
+                     vtable::property_::emits_change),
+    vtable::property("Timestamp",
+                     details::Entry::_property_Timestamp
+                        .data(),
+                     _callback_get_Timestamp,
+                     _callback_set_Timestamp,
                      vtable::property_::emits_change),
     vtable::property("Severity",
                      details::Entry::_property_Severity
