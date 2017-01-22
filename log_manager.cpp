@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstdio>
 #include <string>
+#include <ctime>
 #include <vector>
 #include <sdbusplus/vtable.hpp>
 #include <systemd/sd-bus.h>
@@ -112,6 +113,7 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
 
     // Create error Entry dbus object
     properties.id = ++entryId;
+    properties.timestamp = std::time(nullptr);
     properties.severity = (Entry::Level)g_errLevelMap[errMsg];
     auto objPath =  std::string(OBJ_ENTRY) + '/' +
         std::to_string(properties.id);

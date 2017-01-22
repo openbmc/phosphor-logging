@@ -30,6 +30,7 @@ class Entry : public details::ServerObject<details::EntryIface>
         struct Properties
         {
             uint32_t id;
+            int32_t timestamp;
             Level severity;
             std::string msg;
             std::vector<std::string> additionalData;
@@ -54,6 +55,7 @@ class Entry : public details::ServerObject<details::EntryIface>
             details::ServerObject<details::EntryIface>(bus, path.c_str(), true)
         {
             this->id(properties.id);
+            this->timestamp(properties.timestamp);
             this->severity(properties.severity);
             this->message(properties.msg);
             this->additionalData(properties.additionalData);
