@@ -39,11 +39,16 @@ class Entry : public details::ServerObject<details::EntryIface>
          *         base class) until after the properties are set.
          *  @param[in] bus - Bus to attach to.
          *  @param[in] path - Path to attach at.
-         *  @param[in] properties - Desired Entry properties.
+         *  @param[in] idErr - The error entry id.
+         *  @param[in] timestampErr - The commit timestamp.
+         *  @param[in] severityErr - The severity of the error.
+         *  @param[in] msgErr - The message of the error.
+         *  @param[in] additionalDataErr - The error metadata.
          */
         Entry(sdbusplus::bus::bus& bus,
               const std::string& path,
               uint32_t idErr,
+              uint64_t timestampErr,
               Level severityErr,
               std::string&& msgErr,
               std::vector<std::string>&& additionalDataErr) :
@@ -52,6 +57,7 @@ class Entry : public details::ServerObject<details::EntryIface>
         {
             id(idErr);
             severity(severityErr);
+            timestamp(timestampErr);
             message(std::move(msgErr));
             additionalData(std::move(additionalDataErr));
 
