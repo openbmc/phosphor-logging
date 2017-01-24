@@ -1,5 +1,5 @@
 # export these headers
-include_HEADERS = log.hpp elog.hpp
+include_HEADERS = log.hpp elog.hpp elog-gen-host.hpp
 
 # Generate this header, don't export in a distro
 nodist_include_HEADERS = elog-gen.hpp
@@ -23,6 +23,8 @@ CLEANFILES=elog-gen.hpp
 logging_test_LDFLAGS = $(SYSTEMD_LIBS)
 phosphor_log_manager_LDFLAGS = $(SYSTEMD_LIBS)
 
+ELOG_HOST_YAML ?= xyz/openbmc_project/Logging/Host/Host.errors.yaml
+ELOG_HOST_YAML_DIR ?= ./
 ELOG_YAML ?= xyz/openbmc_project/Example/Elog.errors.yaml
 ELOG_MAKO ?= elog-gen-template.mako.hpp
 ELOG_YAML_DIR ?= tools/example/
@@ -37,5 +39,7 @@ EXTRA_DIST = $(REQ_FILES_TO_GEN)
 
 elog-gen.hpp: $(REQ_FILES_TO_GEN)
 	$(AM_V_at)${abs_srcdir}/tools/elog-gen.py -r ${abs_srcdir}/${ELOG_YAML_DIR} -t ${abs_srcdir}/${ELOG_TEMPLATE_DIR} -e $(ELOG_YAML) -m $(ELOG_MAKO) -o ${abs_srcdir}/elog-gen.hpp
+elog-gen-host.hpp: $(REQ_FILES_TO_GEN)
+	$(AM_V_at)${abs_srcdir}/tools/elog-gen.py -r ${abs_srcdir}/${ELOG_HOST_YAML_DIR} -t ${abs_srcdir}/${ELOG_TEMPLATE_DIR} -e $(ELOG_HOST_YAML) -m $(ELOG_MAKO) -o ${abs_srcdir}/elog-gen-host.hpp
 
 SUBDIRS = test
