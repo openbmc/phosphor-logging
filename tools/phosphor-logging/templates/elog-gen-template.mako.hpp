@@ -44,12 +44,13 @@ struct ${b}
 }  // namespace _${classname}
 <%
     meta_string = ', '.join(meta[name])
+    parent_meta = []
 
     parent = parents[name]
     while parent:
-        parent_meta = [parent + "::" + p for p in meta[parent]]
-        parent_meta = ', '.join(parent_meta)
-        meta_string = meta_string + ", " + parent_meta
+        parent_meta += [parent + "::" + p for p in meta[parent]]
+        parent_meta_short = ', '.join(meta[parent])
+        meta_string = meta_string + ", " + parent_meta_short
         parent = parents[parent]
 %>
 struct ${classname}
@@ -59,6 +60,9 @@ struct ${classname}
     static constexpr auto L = level::${error_lvl[name]};
     % for b in meta[name]:
     using ${b} = _${classname}::${b};
+    % endfor
+    % for b in parent_meta:
+    using ${b.split("::").pop()} = ${b};
     % endfor
     using metadata_types = std::tuple<${meta_string}>;
 };
