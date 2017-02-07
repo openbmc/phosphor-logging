@@ -92,6 +92,8 @@ int main()
     catch (elogException<example::xyz::openbmc_project::Example::TestErrorOne>& e)
     {
         std::cout << "elog exception caught: " << e.what() << std::endl;
+        commit<example::xyz::openbmc_project::Example::TestErrorOne>(e.what());
+        std::cout << "after commit\n";
     }
 
     // Reduce our error namespaces
