@@ -7,7 +7,7 @@ autom4te.cache*
 compile
 config.*
 depcomp
-elog-gen.hpp
+elog-errors.hpp
 install-sh
 logging-test
 logging_test.o
