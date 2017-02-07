@@ -14,6 +14,8 @@ AC_PROG_CXX
 AM_PROG_AR
 AC_PROG_INSTALL #Checks/sets the install variable to be used
 AC_PROG_MAKE_SET
+AC_PROG_MKDIR_P
+AC_CHECK_PROG([DIRNAME], dirname, dirname)
 # Python
 AM_PATH_PYTHON([2.7], [AC_SUBST([PYTHON], [echo "$PYTHON"])], [AC_MSG_ERROR(
     [Could not find python-2.7 installed...python-2.7 is required])])
@@ -63,6 +65,14 @@ AC_DEFINE(BUSNAME_LOGGING, "xyz.openbmc_project.Logging", [The log manager DBus 
 AC_DEFINE(OBJ_LOGGING, "/xyz/openbmc_project/logging", [The log manager DBus object path.])
 AC_DEFINE(OBJ_INTERNAL, "/xyz/openbmc_project/logging/internal/manager", [The private log manager DBus object path.])
 AC_DEFINE(OBJ_ENTRY, "/xyz/openbmc_project/logging/entry", [The log entry DBus object path.])
+
+AC_ARG_VAR(YAML_DIR_TEST, [The path to the test error yaml files.])
+AS_IF([test "x$YAML_DIR_TEST" == "x"], \
+    [YAML_DIR_TEST="${srcdir}/tools/"])
+AC_ARG_VAR(YAML_DIR, [The path to the yaml error files.])
+AS_IF([test "x$YAML_DIR" == "x"], \
+    [YAML_DIR="None"])
+
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile test/Makefile])
 AC_CONFIG_FILES([phosphor-logging.pc])
