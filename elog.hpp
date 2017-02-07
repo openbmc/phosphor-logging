@@ -2,6 +2,9 @@
 
 #include <tuple>
 #include <utility>
+#include <sdbusplus/bus.hpp>
+#include <sdbusplus/server/transaction.hpp>
+#include "config.h"
 #include "elog-gen.hpp"
 
 namespace phosphor
@@ -80,22 +83,43 @@ class elogExceptionBase : public std::exception {};
  */
 template <typename T> class elogException : public elogExceptionBase
 {
+private:
+    // Append the transaction id to the err_code, separate them with a period.
+    uint64_t id = sdbusplus::server::transaction::get_id();
+    std::string exceptionStr = std::string(T::err_code) + '.' +
+                                           std::to_string(id);
 public:
-    const char* what() const noexcept override { return T::err_code; }
+    const char* what() const noexcept override { return exceptionStr.c_str(); }
 };
 
 /** @fn commit()
  *  @brief Create an error log entry based on journal
- *          entry with a specified MSG_ID
+ *          entry with a specified transaction id.
  *  @tparam E - Error log struct
+ *  @param[in] exceptionStr - String with the err_code and transaction id.
  */
 template <typename E>
-void commit()
+void commit(std::string exceptionStr)
 {
-    // TODO placeholder function call
-    // to call the new error log server to create
-    // an error log on the BMC flash
-    // dbus_commit(E.msgid); // call server
+    // Transaction id is located at the end of the string separated by a period.
+    uint64_t id = 0;
+    auto idPos = exceptionStr.rfind(".");
+    if (idPos != std::string::npos)
+    {
+        // Remove the period and convert the string to integer.
+        id = std::stoul(exceptionStr.substr(idPos+1), nullptr, 0);
+    }
+
+    // Create error log by calling the dbus Commit method, which takes the
+    // transaction id and the err_code.
+    auto b = sdbusplus::bus::new_default();
+    auto m = b.new_method_call(BUSNAME_LOGGING,
+                               OBJ_INTERNAL,
+                               IFACE_INTERNAL,
+                               "Commit");
+    m.append(id, exceptionStr.substr(0, idPos));
+    b.call_noreply(m);
+    return;
 }
 
 /** @fn elog()
