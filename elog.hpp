@@ -2,7 +2,9 @@
 
 #include <tuple>
 #include <utility>
-#include "elog-gen.hpp"
+#include <sdbusplus/bus.hpp>
+#include <sdbusplus/server/transaction.hpp>
+#include "log.hpp"
 
 namespace phosphor
 {
@@ -80,22 +82,72 @@ class elogExceptionBase : public std::exception {};
  */
 template <typename T> class elogException : public elogExceptionBase
 {
+private:
+    // Append the transaction id to the err_code, separate them with a period.
+    uint64_t id = sdbusplus::server::transaction::get_id();
+    std::string exceptionStr = std::string(T::err_code) + '.' +
+                                           std::to_string(id);
 public:
-    const char* what() const noexcept override { return T::err_code; }
+    const char* what() const noexcept override { return exceptionStr.c_str(); }
 };
 
 /** @fn commit()
  *  @brief Create an error log entry based on journal
- *          entry with a specified MSG_ID
+ *          entry with a specified transaction id.
  *  @tparam E - Error log struct
+ *  @param[in] exceptionStr - String with the err_code and transaction id.
  */
 template <typename E>
-void commit()
+void commit(std::string exceptionStr)
 {
-    // TODO placeholder function call
-    // to call the new error log server to create
-    // an error log on the BMC flash
-    // dbus_commit(E.msgid); // call server
+    constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
+    constexpr auto MAPPER_PATH = "/xyz/openbmc_project/ObjectMapper";
+    constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
+
+    std::string OBJ_INTERNAL("/xyz/openbmc_project/Logging/Internal/Manager");
+    std::string IFACE_INTERNAL("xyz.openbmc_project.Logging.Internal.Manager");
+
+    // Transaction id is located at the end of the string separated by a period.
+    uint64_t id = 0;
+    auto idPos = exceptionStr.rfind(".");
+    if (idPos != std::string::npos)
+    {
+        // Remove the period and convert the string to integer.
+        id = std::stoul(exceptionStr.substr(idPos+1), nullptr, 0);
+    }
+
+    auto b = sdbusplus::bus::new_default();
+    auto mapper = b.new_method_call(
+            MAPPER_BUSNAME,
+            MAPPER_PATH,
+            MAPPER_INTERFACE,
+            "GetObject");
+    mapper.append(OBJ_INTERNAL);
+    std::vector<std::string> iface = {IFACE_INTERNAL};
+    mapper.append(iface);
+
+    auto mapperResponseMsg = b.call(mapper);
+    if (mapperResponseMsg.is_method_error())
+    {
+        return; // Error in mapper call
+    }
+
+    std::map<std::string, std::vector<std::string>> mapperResponse;
+    mapperResponseMsg.read(mapperResponse);
+    if (mapperResponse.begin() == mapperResponse.end())
+    {
+        return; // Error reading mapper response
+    }
+
+    auto host = mapperResponse.begin()->first;
+    auto m = b.new_method_call(
+            host.c_str(),
+            OBJ_INTERNAL.c_str(),
+            IFACE_INTERNAL.c_str(),
+            "Commit");
+    m.append(id, std::string(E::err_code));
+    b.call_noreply(m);
+    return;
 }
 
 /** @fn elog()
