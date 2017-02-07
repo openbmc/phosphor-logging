@@ -3,6 +3,7 @@
 #include <tuple>
 #include <utility>
 #include <phosphor-logging/log.hpp>
+#include <phosphor-logging/elog-errors.hpp>
 
 namespace phosphor
 {

@@ -4,9 +4,8 @@ nobase_include_HEADERS = \
 	phosphor-logging/elog.hpp \
 	phosphor-logging/elog-errors-HostEvent.hpp
 
-# Generate this header, don't export in a distro
 nodist_include_HEADERS = \
-	elog-gen.hpp \
+	phosphor-logging/elog-errors.hpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.hpp
 
 libphosphor_logging_FILES = \
@@ -35,13 +34,13 @@ phosphor_log_manager_SOURCES = \
 
 # Be sure to build needed files before compiling
 BUILT_SOURCES = \
-	elog-gen.hpp \
+	phosphor-logging/elog-errors.hpp \
 	elog-lookup.cpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.cpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.hpp
 
 CLEANFILES = \
-	elog-gen.hpp \
+	phosphor-logging/elog-errors.hpp \
 	elog-lookup.cpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.cpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.hpp
@@ -68,21 +67,19 @@ xyz/openbmc_project/Logging/Internal/Manager/server.hpp: xyz/openbmc_project/Log
 
 ELOG_MAKO ?= elog-gen-template.mako.hpp
 LOOKUP_MAKO ?= elog-lookup-template.mako.cpp
-ELOG_YAML_DIR ?= "None"
-ELOG_YAML_DIR_TEST ?= ${abs_srcdir}/tools/
 ELOG_TEMPLATE_DIR ?= ${abs_srcdir}/tools/phosphor-logging/templates/
 REQ_FILES_TO_GEN ?= ${abs_srcdir}/tools/elog-gen.py\
-	$(ELOG_YAML_DIR_TEST)/$(ELOG_YAML)\
 	${ELOG_TEMPLATE_DIR}/$(ELOG_MAKO)
 
 # Be sure to package up the required script, yaml, and mako template to
 # generate the header file
 EXTRA_DIST = $(REQ_FILES_TO_GEN)
 
-elog-gen.hpp: $(REQ_FILES_TO_GEN)
-	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${ELOG_YAML_DIR} -u ${ELOG_YAML_DIR_TEST} -t ${ELOG_TEMPLATE_DIR} -m $(ELOG_MAKO) -o ${abs_srcdir}/elog-gen.hpp
+phosphor-logging/elog-errors.hpp: $(REQ_FILES_TO_GEN)
+	@mkdir -p `dirname $@`
+	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${YAML_DIR} -u ${YAML_DIR_TEST} -t ${ELOG_TEMPLATE_DIR} -m $(ELOG_MAKO) -o $@
 elog-lookup.cpp: $(REQ_FILES_TO_GEN)
-	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${ELOG_YAML_DIR} -u ${ELOG_YAML_DIR_TEST} -t ${ELOG_TEMPLATE_DIR} -m $(LOOKUP_MAKO) -o ${abs_srcdir}/elog-lookup.cpp
+	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${YAML_DIR} -u ${YAML_DIR_TEST} -t ${ELOG_TEMPLATE_DIR} -m $(LOOKUP_MAKO) -o $@
 
 pkgconfiglibdir = ${libdir}/pkgconfig
 pkgconfiglib_DATA = phosphor-logging.pc
