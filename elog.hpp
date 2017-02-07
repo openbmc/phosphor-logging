@@ -80,15 +80,17 @@ class elogExceptionBase : public std::exception {};
  */
 template <typename T> class elogException : public elogExceptionBase
 {
-public:
-    const char* what() const noexcept override { return T::err_code; }
+    public:
+        const char* what() const noexcept override { return T::err_code; }
+        const char* name() const noexcept { return T::err_code; }
 };
 
 /** @fn commit()
  *  @brief Create an error log entry based on journal
  *          entry with a specified MSG_ID
+ *  @param[in] - Exception name
  */
-void commit();
+void commit(std::string&& name);
 
 /** @fn elog()
  *  @brief Create a journal log entry based on predefined
