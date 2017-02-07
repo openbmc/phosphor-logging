@@ -66,6 +66,11 @@ AS_IF([test "x$enable_oe_sdk" == "xyes"],
 AC_DEFINE(BUSNAME_LOGGING, "xyz.openbmc_project.Logging", [The log manager DBus busname to own.])
 AC_DEFINE(OBJ_INTERNAL, "/xyz/openbmc_project/Logging/Internal/Manager", [The private log manager DBus object path.])
 AC_DEFINE(OBJ_ENTRY, "/xyz/openbmc_project/Logging/Entry", [The log entry DBus object path.])
+
+AC_ARG_VAR(YAML_DIR, [The path to the yaml error files.])
+AS_IF([test "x$YAML_DIR" == "x"],
+    [YAML_DIR="$srcdir/tools/example/xyz/openbmc_project/Example/"]
+
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile test/Makefile])
 AC_OUTPUT
