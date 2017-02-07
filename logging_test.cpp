@@ -5,7 +5,7 @@
 #include <sstream>
 #include "elog.hpp"
 #include "log.hpp"
-#include "elog-gen.hpp"
+#include "elog-gen-test.hpp"
 
 using namespace phosphor;
 using namespace logging;

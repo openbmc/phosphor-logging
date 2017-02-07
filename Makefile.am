@@ -1,8 +1,8 @@
 # export these headers
-include_HEADERS = log.hpp elog.hpp
+include_HEADERS = log.hpp elog.hpp elog-gen.hpp
 
 # Generate this header, don't export in a distro
-nodist_include_HEADERS = elog-gen.hpp
+nodist_include_HEADERS = elog-gen-test.hpp
 
 # Application test which runs in obmc env (qemu, real hardware)
 bin_PROGRAMS = logging-test
@@ -18,10 +18,11 @@ phosphor_log_manager_SOURCES = \
 	elog_entry.cpp
 
 # Be sure to build needed files before compiling
-BUILT_SOURCES = elog-gen.hpp elog-lookup.cpp
+BUILT_SOURCES = elog-gen.hpp elog-gen-test.hpp elog-lookup.cpp
 
 CLEANFILES = \
 	elog-gen.hpp \
+	elog-gen-test.hpp \
 	elog-lookup.cpp
 
 # systemd required for journal interfaces
@@ -42,8 +43,8 @@ REQ_FILES_TO_GEN ?= ${abs_srcdir}/tools/elog-gen.py\
 # generate the header file
 EXTRA_DIST = $(REQ_FILES_TO_GEN)
 
-elog-gen.hpp: $(REQ_FILES_TO_GEN)
-	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${abs_srcdir}/${ELOG_YAML_DIR} -t ${abs_srcdir}/${ELOG_TEMPLATE_DIR} -m $(ELOG_MAKO) -o ${abs_srcdir}/elog-gen.hpp
+elog-gen-test.hpp: $(REQ_FILES_TO_GEN)
+	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${abs_srcdir}/${ELOG_YAML_DIR} -t ${abs_srcdir}/${ELOG_TEMPLATE_DIR} -m $(ELOG_MAKO) -o ${abs_srcdir}/elog-gen-test.hpp
 elog-lookup.cpp: $(REQ_FILES_TO_GEN)
 	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${abs_srcdir}/${ELOG_YAML_DIR} -t ${abs_srcdir}/${ELOG_TEMPLATE_DIR} -m $(LOOKUP_MAKO) -o ${abs_srcdir}/elog-lookup.cpp
 

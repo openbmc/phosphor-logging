@@ -8,6 +8,7 @@ compile
 config.*
 depcomp
 elog-gen.hpp
+elog-gen-test.hpp
 install-sh
 logging-test
 logging_test.o
