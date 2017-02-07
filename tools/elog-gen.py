@@ -238,15 +238,15 @@ def main(i_args):
                       help="input mako template file to use")
 
     parser.add_option("-o", "--output", dest="output_hpp",
-                      default="elog-gen.hpp",
-                      help="output hpp to generate, elog-gen.hpp is default")
+                      default="elog-errors.hpp",
+                      help="output hpp to generate, elog-errors.hpp default")
 
     parser.add_option("-y", "--yamldir", dest="yamldir",
                       default="None",
                       help="Base directory of yaml files to process")
 
     parser.add_option("-u", "--testdir", dest="testdir",
-                      default="./tools/example/",
+                      default="./tools/",
                       help="Unit test directory of yaml files to process")
 
     parser.add_option("-t", "--templatedir", dest="templatedir",
