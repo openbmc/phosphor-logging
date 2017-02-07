@@ -2,6 +2,7 @@
 
 #include <tuple>
 #include <utility>
+#include "elog-errors.hpp"
 #include "log.hpp"
 
 namespace phosphor

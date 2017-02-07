@@ -2,7 +2,7 @@
 include_HEADERS = log.hpp elog.hpp elog-errors-HostEvent.hpp
 
 # Generate this header, don't export in a distro
-nodist_include_HEADERS = elog-gen.hpp
+nodist_include_HEADERS = elog-errors.hpp
 
 libphosphor_logging_FILES = \
 	elog.cpp
@@ -29,10 +29,10 @@ phosphor_log_manager_SOURCES = \
 	elog_entry.cpp
 
 # Be sure to build needed files before compiling
-BUILT_SOURCES = elog-gen.hpp elog-lookup.cpp
+BUILT_SOURCES = elog-errors.hpp elog-lookup.cpp
 
 CLEANFILES = \
-	elog-gen.hpp \
+	elog-errors.hpp \
 	elog-lookup.cpp
 
 # systemd required for journal interfaces
@@ -49,20 +49,18 @@ phosphor_log_manager_CXXFLAGS = \
 
 ELOG_MAKO ?= elog-gen-template.mako.hpp
 LOOKUP_MAKO ?= elog-lookup-template.mako.cpp
-ELOG_YAML_DIR ?= ${abs_srcdir}/tools/
 ELOG_TEMPLATE_DIR ?= tools/phosphor-logging/templates/
 REQ_FILES_TO_GEN ?= ${abs_srcdir}/tools/elog-gen.py\
-	$(ELOG_YAML_DIR)/$(ELOG_YAML)\
 	${abs_srcdir}/${ELOG_TEMPLATE_DIR}/$(ELOG_MAKO)
 
 # Be sure to package up the required script, yaml, and mako template to
 # generate the header file
 EXTRA_DIST = $(REQ_FILES_TO_GEN)
 
-elog-gen.hpp: $(REQ_FILES_TO_GEN)
-	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -u ${ELOG_YAML_DIR} -t ${abs_srcdir}/${ELOG_TEMPLATE_DIR} -m $(ELOG_MAKO) -o ${abs_srcdir}/elog-gen.hpp
+elog-errors.hpp: $(REQ_FILES_TO_GEN)
+	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${YAML_DIR} -u ${YAML_DIR_TEST} -t ${abs_srcdir}/${ELOG_TEMPLATE_DIR} -m $(ELOG_MAKO) -o ${abs_srcdir}/elog-errors.hpp
 elog-lookup.cpp: $(REQ_FILES_TO_GEN)
-	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -u ${ELOG_YAML_DIR} -t ${abs_srcdir}/${ELOG_TEMPLATE_DIR} -m $(LOOKUP_MAKO) -o ${abs_srcdir}/elog-lookup.cpp
+	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${YAML_DIR} -u ${YAML_DIR_TEST} -t ${abs_srcdir}/${ELOG_TEMPLATE_DIR} -m $(LOOKUP_MAKO) -o ${abs_srcdir}/elog-lookup.cpp
 
 pkgconfiglibdir = ${libdir}/pkgconfig
 pkgconfiglib_DATA = phosphor-logging.pc
