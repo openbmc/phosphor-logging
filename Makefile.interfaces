@@ -1,0 +1,27 @@
+xyz/openbmc_project/Logging/Internal/Manager/server.cpp: xyz/openbmc_project/Logging/Internal/Manager.interface.yaml xyz/openbmc_project/Logging/Internal/Manager/server.hpp
+	@mkdir -p `dirname $@`
+	$(AM_V_at)$(PYTHON) $(SDBUSPLUSPLUS) -r $(srcdir) interface server-cpp xyz.openbmc_project.Logging.Internal.Manager > $@
+
+xyz/openbmc_project/Logging/Internal/Manager/server.hpp: xyz/openbmc_project/Logging/Internal/Manager.interface.yaml
+	@mkdir -p `dirname $@`
+	$(AM_V_at)$(PYTHON) $(SDBUSPLUSPLUS) -r $(srcdir) interface server-header xyz.openbmc_project.Logging.Internal.Manager > $@
+
+server_manager_cpp_SOURCES = \
+	xyz/openbmc_project/Logging/Internal/Manager/server.cpp
+
+server_manager_hpp_SOURCES = \
+	xyz/openbmc_project/Logging/Internal/Manager/server.hpp
+
+server_manager.cpp: $(server_manager_cpp_SOURCES)
+server_manager.hpp: $(server_manager_hpp_SOURCES)
+
+nobase_include_HEADERS = $(server_manager.hpp)
+
+.PHONY: clean-interfaces
+clean-interfaces:
+	for i in $(server_manager_cpp_SOURCES) \
+	         $(server_manager_hpp_SOURCES); \
+	do \
+	    test -e $$i && rm $$i ; \
+	    true; \
+	done

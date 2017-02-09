@@ -11,17 +11,21 @@ logging_test_SOURCES = logging_test.cpp
 sbin_PROGRAMS = phosphor-log-manager
 
 phosphor_log_manager_SOURCES = \
-	xyz.openbmc_project.Logging.Internal.Manager.cpp \
+	xyz/openbmc_project/Logging/Internal/Manager/server.cpp \
 	log_manager.cpp \
 	log_manager_main.cpp \
 	elog_entry.cpp
 
 # Be sure to build needed files before compiling
-BUILT_SOURCES = elog-gen.hpp elog-lookup.cpp
+BUILT_SOURCES = \
+	elog-gen.hpp \
+	elog-lookup.cpp \
+	server_manager.cpp
 
 CLEANFILES = \
 	elog-gen.hpp \
-	elog-lookup.cpp
+	elog-lookup.cpp \
+	server_manager.cpp
 
 # systemd required for journal interfaces
 logging_test_LDFLAGS = $(SYSTEMD_LIBS) $(SDBUSPLUS_LIBS)
@@ -53,3 +57,5 @@ elog-lookup.cpp: $(REQ_FILES_TO_GEN)
 	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${abs_srcdir}/${ELOG_YAML_DIR} -t ${abs_srcdir}/${ELOG_TEMPLATE_DIR} -m $(LOOKUP_MAKO) -o ${abs_srcdir}/elog-lookup.cpp
 
 SUBDIRS = test
+
+-include Makefile.interfaces
