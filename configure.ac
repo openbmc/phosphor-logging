@@ -28,6 +28,11 @@ PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus],,
 PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [phosphor-dbus-interfaces],,\
     AC_MSG_ERROR(["Requires phosphor-dbus-interfaces package."]))
 
+# Check for sdbus++
+AC_PATH_PROG([SDBUSPLUSPLUS], [sdbus++])
+AS_IF([test "x$SDBUSPLUSPLUS" == "x"],
+    AC_MSG_ERROR(["Requires sdbus++"]))
+
 AC_CHECK_HEADER(systemd/sd-journal.h, ,[AC_MSG_ERROR([Could not find \
 systemd/sd-journal.h...systemd developement package required])])
 AC_CHECK_HEADER(systemd/sd-bus.h, ,[AC_MSG_ERROR([Could not find \
@@ -57,6 +62,10 @@ AS_IF([test "x$enable_oe_sdk" == "xyes"],
     ]
     AC_SUBST([OESDK_TESTCASE_FLAGS], [$testcase_flags])
 )
+
+# Create configured output
+AC_CONFIG_FILES([Makefile.interfaces],
+    [${srcdir}/generate_makefile.sh ${srcdir} > Makefile.interfaces])
 
 AC_DEFINE(BUSNAME_LOGGING, "xyz.openbmc_project.Logging", [The log manager DBus busname to own.])
 AC_DEFINE(OBJ_INTERNAL, "/xyz/openbmc_project/Logging/Internal/Manager", [The private log manager DBus object path.])
