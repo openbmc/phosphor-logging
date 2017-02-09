@@ -25,6 +25,8 @@ LT_INIT
 PKG_CHECK_MODULES([SYSTEMD], [libsystemd >= 221])
 PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus],,
     AC_MSG_ERROR(["Requires sdbusplus package."]))
+PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [phosphor-dbus-interfaces],,\
+    AC_MSG_ERROR(["Requires phosphor-dbus-interfaces package."]))
 
 AC_CHECK_HEADER(systemd/sd-journal.h, ,[AC_MSG_ERROR([Could not find \
 systemd/sd-journal.h...systemd developement package required])])

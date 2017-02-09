@@ -14,7 +14,6 @@ phosphor_log_manager_SOURCES = \
 	xyz.openbmc_project.Logging.Internal.Manager.cpp \
 	log_manager.cpp \
 	log_manager_main.cpp \
-	xyz.openbmc_project.Logging.Entry.cpp \
 	elog_entry.cpp
 
 # Be sure to build needed files before compiling
@@ -27,8 +26,14 @@ CLEANFILES = \
 # systemd required for journal interfaces
 logging_test_LDFLAGS = $(SYSTEMD_LIBS) $(SDBUSPLUS_LIBS)
 logging_test_CXXFLAGS = $(SYSTEMD_CFLAGS) $(SDBUSPLUS_CFLAGS)
-phosphor_log_manager_LDFLAGS = $(SYSTEMD_LIBS) $(SDBUSPLUS_LIBS)
-phosphor_log_manager_CXXFLAGS = $(SYSTEMD_CFLAGS) $(SDBUSPLUS_CFLAGS)
+phosphor_log_manager_LDFLAGS = \
+		$(SYSTEMD_LIBS) \
+		$(SDBUSPLUS_LIBS) \
+		$(PHOSPHOR_DBUS_INTERFACES_LIBS)
+phosphor_log_manager_CXXFLAGS = \
+		$(SYSTEMD_CFLAGS) \
+		$(SDBUSPLUS_CFLAGS) \
+		$(PHOSPHOR_DBUS_INTERFACES_CFLAGS)
 
 ELOG_MAKO ?= elog-gen-template.mako.hpp
 LOOKUP_MAKO ?= elog-lookup-template.mako.cpp
