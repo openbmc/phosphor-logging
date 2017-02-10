@@ -52,4 +52,7 @@ elog-gen.hpp: $(REQ_FILES_TO_GEN)
 elog-lookup.cpp: $(REQ_FILES_TO_GEN)
 	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${abs_srcdir}/${ELOG_YAML_DIR} -t ${abs_srcdir}/${ELOG_TEMPLATE_DIR} -m $(LOOKUP_MAKO) -o ${abs_srcdir}/elog-lookup.cpp
 
+pkgconfiglibdir = ${libdir}/pkgconfig
+pkgconfiglib_DATA = phosphor-logging.pc
+
 SUBDIRS = test

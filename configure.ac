@@ -21,12 +21,28 @@ AM_PATH_PYTHON([2.7], [AC_SUBST([PYTHON], [echo "$PYTHON"])], [AC_MSG_ERROR(
 # Surpress the --with-libtool-sysroot error
 LT_INIT
 
-# Check for libraries.
-PKG_CHECK_MODULES([SYSTEMD], [libsystemd >= 221])
-PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus],,
-    AC_MSG_ERROR(["Requires sdbusplus package."]))
-PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [phosphor-dbus-interfaces],,\
-    AC_MSG_ERROR(["Requires phosphor-dbus-interfaces package."]))
+# Checks for libraries.
+AX_PKG_CHECK_MODULES(
+    [SYSTEMD],
+    [],
+    [libsystemd >= 221],
+    [],
+    [AC_MSG_ERROR(["systemd required and not found."])])
+
+# sdbusplus is non-private because we have no library to link.
+# If we ever have a library, move this to private.
+AX_PKG_CHECK_MODULES(
+    [SDBUSPLUS],
+    [sdbusplus],
+    [],
+    [],
+    [AC_MSG_ERROR(["sdbusplus required and not found."])])
+AX_PKG_CHECK_MODULES(
+    [PHOSPHOR_DBUS_INTERFACES],
+    [],
+    [phosphor-dbus-interfaces],
+    [],
+    [AC_MSG_ERROR(["phosphor-dbus-interfaces required and not found."])])
 
 AC_CHECK_HEADER(systemd/sd-journal.h, ,[AC_MSG_ERROR([Could not find \
 systemd/sd-journal.h...systemd developement package required])])
@@ -63,4 +79,5 @@ AC_DEFINE(OBJ_INTERNAL, "/xyz/openbmc_project/Logging/Internal/Manager", [The pr
 AC_DEFINE(OBJ_ENTRY, "/xyz/openbmc_project/Logging/Entry", [The log entry DBus object path.])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile test/Makefile])
+AC_CONFIG_FILES([phosphor-logging.pc])
 AC_OUTPUT
