@@ -8,10 +8,10 @@
 #include <systemd/sd-bus.h>
 #include <systemd/sd-journal.h>
 #include "elog-lookup.cpp"
-#include "elog-errors-HostEvent.hpp"
+#include <phosphor-logging/elog-errors-HostEvent.hpp>
 #include "config.h"
 #include "elog_entry.hpp"
-#include "log.hpp"
+#include <phosphor-logging/log.hpp>
 #include "log_manager.hpp"
 
 namespace phosphor
