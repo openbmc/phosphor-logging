@@ -3,8 +3,8 @@
 #include <iostream>
 #include <systemd/sd-journal.h>
 #include <sstream>
-#include "elog.hpp"
-#include "log.hpp"
+#include "phosphor-logging/elog.hpp"
+#include "phosphor-logging/log.hpp"
 #include "elog-gen.hpp"
 
 using namespace phosphor;
