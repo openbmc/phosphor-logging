@@ -1,6 +1,10 @@
 # export these headers
 include_HEADERS = log.hpp elog.hpp
 
+nobase_include_HEADERS = \
+        phosphor-logging/log.hpp \
+        phosphor-logging/elog.hpp
+
 # Generate this header, don't export in a distro
 nodist_include_HEADERS = elog-gen.hpp
 
