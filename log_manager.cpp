@@ -7,7 +7,7 @@
 #include <systemd/sd-bus.h>
 #include <systemd/sd-journal.h>
 #include "elog-lookup.cpp"
-#include "log.hpp"
+#include <phosphor-logging/log.hpp>
 #include "log_manager.hpp"
 
 namespace phosphor
