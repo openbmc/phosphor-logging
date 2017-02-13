@@ -7,7 +7,7 @@
 #include <tuple>
 #include <type_traits>
 #include <vector>
-#include "log.hpp"
+#include <phosphor-logging/log.hpp>
 
 namespace phosphor
 {

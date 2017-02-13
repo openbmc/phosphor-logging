@@ -2,7 +2,7 @@
 
 #include <tuple>
 #include <utility>
-#include "log.hpp"
+#include <phosphor-logging/log.hpp>
 
 namespace phosphor
 {
