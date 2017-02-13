@@ -4,7 +4,7 @@
 // See elog-gen.py for more details
 #include <map>
 #include <vector>
-#include "log.hpp"
+#include <phosphor-logging/log.hpp>
 
 namespace phosphor
 {

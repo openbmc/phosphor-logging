@@ -1,4 +1,4 @@
-#include "elog.hpp"
+#include <phosphor-logging/elog.hpp>
 
 namespace phosphor
 {

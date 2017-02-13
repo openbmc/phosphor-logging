@@ -1,5 +1,13 @@
 # export these headers
-include_HEADERS = log.hpp elog.hpp elog-errors-HostEvent.hpp
+include_HEADERS = \
+	phosphor-logging/log.hpp \
+	phosphor-logging/elog.hpp \
+	phosphor-logging/elog-errors-HostEvent.hpp
+
+nobase_include_HEADERS = \
+	phosphor-logging/log.hpp \
+	phosphor-logging/elog.hpp \
+	phosphor-logging/elog-errors-HostEvent.hpp
 
 # Generate this header, don't export in a distro
 nodist_include_HEADERS = elog-gen.hpp
