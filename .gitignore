@@ -22,3 +22,4 @@ test/Makefile.in
 configure
 stamp-h1
 phosphor-logging-*.*
+xyz/openbmc_project/Logging/Internal/Manager/
