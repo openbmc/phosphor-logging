@@ -1,0 +1,28 @@
+#!/bin/sh
+
+cd $1
+
+toplevel_dirs=xyz
+interfaces=`find $toplevel_dirs -name "*.interface.yaml"`
+
+for i in ${interfaces};
+do
+    iface_path=`dirname $i`/`basename $i .interface.yaml`
+    iface=`echo $iface_path | sed 's/\//./g'`
+    cat <<MAKEFILE
+
+${i%.interface.yaml}/server.cpp: ${i} ${i%.interface.yaml}/server.hpp
+	@mkdir -p \`dirname \$@\`
+	\$(SDBUSPLUSPLUS) -r \$(srcdir) interface server-cpp ${iface} > \$@
+
+${i%.interface.yaml}/server.hpp: ${i}
+	@mkdir -p \`dirname \$@\`
+	\$(SDBUSPLUSPLUS) -r \$(srcdir) interface server-header ${iface} > \$@
+
+MAKEFILE
+
+done
+
+cat << MAKEFILE
+
+MAKEFILE
