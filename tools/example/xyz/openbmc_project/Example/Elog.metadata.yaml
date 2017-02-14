@@ -7,6 +7,8 @@
       type: string
     - str: FILE_NAME=%s
       type: string
+  inherits:
+    - TestErrorTwo
 
 - name: TestErrorTwo
   level: ERR
