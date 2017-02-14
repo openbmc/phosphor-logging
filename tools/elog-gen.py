@@ -171,12 +171,12 @@ def get_elog_data(i_elog_yaml,
     errors, error_msg, error_lvl, meta, meta_data, parents = o_elog_data
     ifile = yaml.safe_load(open(i_elog_yaml))
     mfile = yaml.safe_load(open(i_elog_meta_yaml))
-    for i in ifile:
+    for i in mfile:
         match = None
         # Find the corresponding meta data for this entry
-        for m in mfile:
-            if m['name'] == i['name']:
-                match = m
+        for j in ifile:
+            if j['name'] == i['name']:
+                match = j
                 break
         if (match is None):
             print "Error - Did not find meta data for " + i['name']
@@ -189,11 +189,11 @@ def get_elog_data(i_elog_yaml,
             # Get 0th inherited error (current support - single inheritance)
             parent = i['inherits'][0].split(".").pop()
         parents[i['name']] = parent
-        error_msg[i['name']] = i['description']
-        error_lvl[i['name']] = match['level']
+        error_msg[i['name']] = match['description']
+        error_lvl[i['name']] = i['level']
         tmp_meta = []
         # grab all the meta data fields and info
-        for j in match['meta']:
+        for j in i['meta']:
             str_short = j['str'].split('=')[0]
             tmp_meta.append(str_short)
             meta_data[str_short] = {}

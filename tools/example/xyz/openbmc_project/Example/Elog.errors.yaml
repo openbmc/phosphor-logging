@@ -1,7 +1,5 @@
 - name: TestErrorOne
   description: this is test error one
-  inherits:
-    - TestErrorTwo
 
 - name: TestErrorTwo
   description: This is test error two
