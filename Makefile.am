@@ -5,7 +5,9 @@ nobase_include_HEADERS = \
 	phosphor-logging/elog-errors-HostEvent.hpp
 
 # Generate this header, don't export in a distro
-nodist_include_HEADERS = elog-gen.hpp
+nodist_include_HEADERS = \
+	elog-gen.hpp \
+	xyz/openbmc_project/Logging/Internal/Manager/server.hpp
 
 libphosphor_logging_FILES = \
 	elog.cpp
@@ -26,17 +28,23 @@ logging_test_SOURCES = logging_test.cpp
 sbin_PROGRAMS = phosphor-log-manager
 
 phosphor_log_manager_SOURCES = \
-	xyz.openbmc_project.Logging.Internal.Manager.cpp \
+	xyz/openbmc_project/Logging/Internal/Manager/server.cpp \
 	log_manager.cpp \
 	log_manager_main.cpp \
 	elog_entry.cpp
 
 # Be sure to build needed files before compiling
-BUILT_SOURCES = elog-gen.hpp elog-lookup.cpp
+BUILT_SOURCES = \
+	elog-gen.hpp \
+	elog-lookup.cpp \
+	xyz/openbmc_project/Logging/Internal/Manager/server.cpp \
+	xyz/openbmc_project/Logging/Internal/Manager/server.hpp
 
 CLEANFILES = \
 	elog-gen.hpp \
-	elog-lookup.cpp
+	elog-lookup.cpp \
+	xyz/openbmc_project/Logging/Internal/Manager/server.cpp \
+	xyz/openbmc_project/Logging/Internal/Manager/server.hpp
 
 # systemd required for journal interfaces
 logging_test_LDFLAGS = $(SYSTEMD_LIBS) $(SDBUSPLUS_LIBS)
@@ -49,6 +57,14 @@ phosphor_log_manager_CXXFLAGS = \
 		$(SYSTEMD_CFLAGS) \
 		$(SDBUSPLUS_CFLAGS) \
 		$(PHOSPHOR_DBUS_INTERFACES_CFLAGS)
+
+xyz/openbmc_project/Logging/Internal/Manager/server.cpp: xyz/openbmc_project/Logging/Internal/Manager.interface.yaml xyz/openbmc_project/Logging/Internal/Manager/server.hpp
+	@mkdir -p `dirname $@`
+	$(SDBUSPLUSPLUS) -r $(srcdir) interface server-cpp xyz.openbmc_project.Logging.Internal.Manager > $@
+
+xyz/openbmc_project/Logging/Internal/Manager/server.hpp: xyz/openbmc_project/Logging/Internal/Manager.interface.yaml
+	@mkdir -p `dirname $@`
+	$(SDBUSPLUSPLUS) -r $(srcdir) interface server-header xyz.openbmc_project.Logging.Internal.Manager > $@
 
 ELOG_MAKO ?= elog-gen-template.mako.hpp
 LOOKUP_MAKO ?= elog-lookup-template.mako.cpp
