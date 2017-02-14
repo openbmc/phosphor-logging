@@ -23,6 +23,29 @@ MAKEFILE
 
 done
 
+toplevel_dirs=tools/example/xyz
+errors=`find $toplevel_dirs -name "*.errors.yaml"`
+
+for e in ${errors};
+do
+    iface_path=`dirname $e`/`basename $e .errors.yaml`
+    iface=`echo $iface_path | sed 's/\//./g'`
+    cat <<MAKEFILE
+
+${e%.errors.yaml}/error.hpp: ${e}
+	@mkdir -p \`dirname \$@\`
+	\$(SDBUSPLUSPLUS) -r \$(srcdir) error exception-header ${iface} > \$@
+
+MAKEFILE
+
+done
+
+echo "elog-errors.hpp: \\"
+for e in ${errors};
+do
+    echo "  ${e%.errors.yaml}/error.hpp\\"
+done
+
 cat << MAKEFILE
 
 MAKEFILE

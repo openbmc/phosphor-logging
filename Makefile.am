@@ -17,7 +17,7 @@ phosphor_log_manager_SOURCES = \
 	elog_entry.cpp
 
 # Be sure to build needed files before compiling
-BUILT_SOURCES = elog-gen.hpp elog-lookup.cpp
+BUILT_SOURCES = elog-gen.hpp elog-lookup.cpp elog-errors.hpp
 
 CLEANFILES = \
 	elog-gen.hpp \
