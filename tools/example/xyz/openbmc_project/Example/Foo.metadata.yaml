@@ -3,3 +3,5 @@
   meta:
     - str: "FOO_DATA=%s"
       type: string
+  inherits:
+    - example.xyz.openbmc_project.Example.TestErrorOne
