@@ -8,6 +8,7 @@
 #include <systemd/sd-bus.h>
 #include <systemd/sd-journal.h>
 #include "elog-lookup.cpp"
+#include "elog-errors-HostEvent.hpp"
 #include "config.h"
 #include "elog_entry.hpp"
 #include "log.hpp"
@@ -43,6 +44,7 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
 
     std::string transactionIdStr = std::to_string(transactionId);
     std::vector<std::string> metalist = g_errMetaMap[errMsg];
+    std::vector<std::string> metalistHostEvent = g_errMetaMapHostEvent[errMsg];
     std::vector<std::string> additionalData;
 
     // Read the journal from the end to get the most recent entry first.
@@ -102,6 +104,24 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
             efile << "\t\"@" << data << "\"," << std::endl;
         }
         efile << "\t}" << std::endl;
+
+        for (auto metaVarStrHostEvent : metalistHostEvent)
+        {
+            rc = sd_journal_get_data(j, metaVarStrHostEvent.c_str(),
+                                    (const void **)&data, &length);
+            if (rc < 0)
+            {
+                // Not found, continue to next metadata variable
+                logging::log<logging::level::INFO>("Failed to find metadata",
+                        logging::entry("META_FIELD=%s",
+                        metaVarStrHostEvent.c_str()));
+                continue;
+            }
+
+            // Metatdata variable found, write to file
+            additionalData.push_back(std::string(data));
+            efile << "\t\"@" << data << "\"," << std::endl;
+        }
 
         // TODO Break only once all metadata fields have been found. Implement
         // once this function reads the metadata fields from the header file.
