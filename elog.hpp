@@ -2,7 +2,7 @@
 
 #include <tuple>
 #include <utility>
-#include "elog-gen.hpp"
+#include "log.hpp"
 
 namespace phosphor
 {
@@ -87,16 +87,8 @@ public:
 /** @fn commit()
  *  @brief Create an error log entry based on journal
  *          entry with a specified MSG_ID
- *  @tparam E - Error log struct
  */
-template <typename E>
-void commit()
-{
-    // TODO placeholder function call
-    // to call the new error log server to create
-    // an error log on the BMC flash
-    // dbus_commit(E.msgid); // call server
-}
+void commit();
 
 /** @fn elog()
  *  @brief Create a journal log entry based on predefined

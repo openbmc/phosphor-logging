@@ -4,6 +4,19 @@ include_HEADERS = log.hpp elog.hpp elog-errors-HostEvent.hpp
 # Generate this header, don't export in a distro
 nodist_include_HEADERS = elog-gen.hpp
 
+libphosphor_logging_FILES = \
+	elog.cpp
+libphosphor_loggingdir = ${libdir}
+libphosphor_logging_LTLIBRARIES = libphosphor_logging.la
+libphosphor_logging_la_SOURCES = $(libphosphor_logging_FILES)
+libphosphor_logging_la_LDFLAGS = \
+		$(SYSTEMD_LIBS) \
+		$(SDBUSPLUS_LIBS) \
+		-version-info 1:0:0 -shared
+libphosphor_logging_la_CXXFLAGS = \
+		$(SYSTEMD_CFLAGS) \
+		$(SDBUSPLUS_CFLAGS)
+
 # Application test which runs in obmc env (qemu, real hardware)
 bin_PROGRAMS = logging-test
 logging_test_SOURCES = logging_test.cpp

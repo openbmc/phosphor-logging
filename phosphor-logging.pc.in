@@ -9,5 +9,5 @@ URL: https://github.com/openbmc/phosphor-logging
 Version: @VERSION@
 Requires: @AX_PACKAGE_REQUIRES@
 Requires.private: @AX_PACKAGE_REQUIRES_PRIVATE@
-Libs:
+Libs: -L@libdir@ -lphosphor_logging
 Cflags: -I@includedir@
