@@ -50,8 +50,8 @@ def order_inherited_errors(i_errors, i_parents):
 def check_error_inheritance(i_errors, i_parents):
     for error in i_errors:
         if(i_parents[error] and (i_parents[error] not in i_errors)):
-            print (error + " inherits " + i_parents[error] +
-                   " but the latter is not defined")
+            print(error + " inherits " + i_parents[error] +
+                  " but the latter is not defined")
             return False
     return True
 
@@ -112,19 +112,19 @@ def gen_elog_hpp(i_yaml_dir, i_output_hpp,
         # Verify the error yaml file
         error_yaml = "/".join((i_yaml_dir, error_yaml))
         if (not (os.path.isfile(error_yaml))):
-            print "Can not find input yaml file " + error_yaml
+            print("Can not find input yaml file " + error_yaml)
             exit(1)
 
         # Verify the metadata yaml file
         meta_yaml = get_meta_yaml_file(error_yaml)
         if (not (os.path.isfile(meta_yaml))):
-            print "Can not find meta yaml file " + meta_yaml
+            print("Can not find meta yaml file " + meta_yaml)
             exit(1)
 
         # Verify the input mako file
         template_path = "/".join((i_template_dir, i_elog_mako))
         if (not (os.path.isfile(template_path))):
-            print "Can not find input template file " + template_path
+            print("Can not find input template file " + template_path)
             exit(1)
 
         get_elog_data(error_yaml,
@@ -138,7 +138,7 @@ def gen_elog_hpp(i_yaml_dir, i_output_hpp,
                        parents))
 
     if(not check_error_inheritance(errors, parents)):
-        print "Error - failed to validate error inheritance"
+        print("Error - failed to validate error inheritance")
         exit(1)
 
     errors = order_inherited_errors(errors, parents)
@@ -179,7 +179,7 @@ def get_elog_data(i_elog_yaml,
                 match = m
                 break
         if (match is None):
-            print "Error - Did not find meta data for " + i['name']
+            print("Error - Did not find meta data for " + i['name'])
             exit(1)
         # Grab the main error and it's info
         errors.append(i['name'])
