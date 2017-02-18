@@ -21,17 +21,7 @@ namespace logging
 
 void Manager::commit(uint64_t transactionId, std::string errMsg)
 {
-    // TODO Change /tmp path to a permanent location on flash
-    constexpr const auto path = "/tmp/elog";
     constexpr const auto transactionIdVar = "TRANSACTION_ID";
-
-    std::string filename{};
-    filename.append(path);
-    // TODO Create error logs in their own separate dir once permanent location
-    // on flash is determined. Ex: ../transactionId/1
-    std::ofstream efile;
-    efile.open(filename);
-    efile << "{" << std::endl;
 
     sd_journal *j = nullptr;
     int rc = sd_journal_open(&j, SD_JOURNAL_LOCAL_ONLY);
@@ -71,20 +61,6 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
             // continue to next journal entry.
             continue;
         }
-        // Match found, write to file
-        // TODO This is a draft format based on the redfish event logs written
-        // in json, the final openbmc format is to be determined
-        efile << "\t{" << std::endl;
-        efile << "\t\"@" << data << "\"," << std::endl;
-
-        // Include the journal message
-        rc = sd_journal_get_data(j, "MESSAGE", (const void **)&data, &length);
-        if (rc < 0)
-        {
-            continue;
-        }
-
-        efile << "\t\"@" << data << "\"," << std::endl;
 
         // Search for the metadata variables in the current journal entry
         for (auto metaVarStr : metalist)
@@ -101,9 +77,7 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
 
             // Metatdata variable found, write to file
             additionalData.push_back(std::string(data));
-            efile << "\t\"@" << data << "\"," << std::endl;
         }
-        efile << "\t}" << std::endl;
 
         // TODO Remove once host event error header file is auto-generated.
         // Tracking with issue openbmc/phosphor-logging#4
@@ -122,7 +96,6 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
 
             // Metatdata variable found, write to file
             additionalData.push_back(std::string(data));
-            efile << "\t\"@" << data << "\"," << std::endl;
         }
 
         // TODO Break only once all metadata fields have been found. Implement
@@ -145,9 +118,6 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
             (Entry::Level)g_errLevelMap[errMsg],
             std::move(errMsg),
             std::move(additionalData))));
-
-    efile << "}" << std::endl;
-    efile.close();
     return;
 }
 
