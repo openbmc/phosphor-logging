@@ -33,75 +33,72 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     }
 
     std::string transactionIdStr = std::to_string(transactionId);
-    std::vector<std::string> metalist = g_errMetaMap[errMsg];
-    std::vector<std::string> metalistHostEvent = g_errMetaMapHostEvent[errMsg];
+    auto& metalist = g_errMetaMap[errMsg];
+    const auto& metalistHostEvent = g_errMetaMapHostEvent[errMsg];
     std::vector<std::string> additionalData;
 
-    // Read the journal from the end to get the most recent entry first.
-    // The result from the sd_journal_get_data() is of the form VARIABLE=value.
-    SD_JOURNAL_FOREACH_BACKWARDS(j)
+    // TODO Remove once host event error header file is auto-generated.
+    // Also make metalist a const variable.
+    // Tracking with issue openbmc/phosphor-logging#4
+    for (auto& metaVarStrHostEvent : metalistHostEvent)
     {
-        const char *data = nullptr;
-        size_t length = 0;
-
-        // Look for the transaction id metadata variable
-        rc = sd_journal_get_data(j, transactionIdVar, (const void **)&data,
-                                &length);
-        if (rc < 0)
-        {
-            // This journal entry does not have the transaction id,
-            // continue to next entry
-            continue;
-        }
-
-        std::string result(data);
-        if (result.find(transactionIdStr) == std::string::npos)
-        {
-            // Requested transaction id  not found,
-            // continue to next journal entry.
-            continue;
-        }
-
-        // Search for the metadata variables in the current journal entry
-        for (auto metaVarStr : metalist)
-        {
-            rc = sd_journal_get_data(j, metaVarStr.c_str(),
-                                    (const void **)&data, &length);
-            if (rc < 0)
-            {
-                // Not found, continue to next metadata variable
-                logging::log<logging::level::INFO>("Failed to find metadata",
-                        logging::entry("META_FIELD=%s", metaVarStr.c_str()));
-                continue;
-            }
-
-            // Metatdata variable found, write to file
-            additionalData.push_back(std::string(data));
-        }
-
-        // TODO Remove once host event error header file is auto-generated.
-        // Tracking with issue openbmc/phosphor-logging#4
-        for (auto metaVarStrHostEvent : metalistHostEvent)
-        {
-            rc = sd_journal_get_data(j, metaVarStrHostEvent.c_str(),
-                                    (const void **)&data, &length);
-            if (rc < 0)
-            {
-                // Not found, continue to next metadata variable
-                logging::log<logging::level::INFO>("Failed to find metadata",
-                        logging::entry("META_FIELD=%s",
-                        metaVarStrHostEvent.c_str()));
-                continue;
-            }
-
-            // Metatdata variable found, write to file
-            additionalData.push_back(std::string(data));
-        }
-
-        // TODO Break only once all metadata fields have been found. Implement
-        // once this function reads the metadata fields from the header file.
-        break;
+        metalist.push_back(metaVarStrHostEvent);
     }
+
+    // Search for each metadata variable in the journal.
+    for (auto& metaVarStr : metalist)
+    {
+        const char *metadata = nullptr;
+
+        // Read the journal from the end to get the most recent entry first.
+        // The result from the sd_journal_get_data() is of the form VARIABLE=value.
+        SD_JOURNAL_FOREACH_BACKWARDS(j)
+        {
+            const char *data = nullptr;
+            size_t length = 0;
+            metadata = nullptr;
+
+            // Search for the metadata variables in the current journal entry
+            rc = sd_journal_get_data(j, metaVarStr.c_str(),
+                                    (const void **)&metadata, &length);
+            if (rc < 0)
+            {
+                // Metadata value not found, continue to next journal entry.
+                continue;
+            }
+
+            // Look for the transaction id metadata variable
+            rc = sd_journal_get_data(j, transactionIdVar, (const void **)&data,
+                                    &length);
+            if (rc < 0)
+            {
+                // This journal entry does not have the transaction id,
+                // continue to next entry
+                continue;
+            }
+
+            std::string result(data);
+            if (result.find(transactionIdStr) == std::string::npos)
+            {
+                // Requested transaction id  not found,
+                // continue to next journal entry.
+                continue;
+            }
+
+            // Metadata matching the transaction id found, save it
+            // and break out of the journal search loop
+            additionalData.push_back(std::string(metadata));
+            break;
+        }
+        if (!metadata)
+        {
+            // Metadata value not found in the journal.
+            logging::log<logging::level::INFO>("Failed to find metadata",
+                    logging::entry("META_FIELD=%s", metaVarStr.c_str()));
+            continue;
+        }
+    }
+
     sd_journal_close(j);
 
     // Create error Entry dbus object
