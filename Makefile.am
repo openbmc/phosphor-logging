@@ -49,7 +49,7 @@ phosphor_log_manager_CXXFLAGS = \
 
 ELOG_MAKO ?= elog-gen-template.mako.hpp
 LOOKUP_MAKO ?= elog-lookup-template.mako.cpp
-ELOG_YAML_DIR ?= ${abs_srcdir}/tools/example/
+ELOG_YAML_DIR ?= ${abs_srcdir}/tools/
 ELOG_TEMPLATE_DIR ?= tools/phosphor-logging/templates/
 REQ_FILES_TO_GEN ?= ${abs_srcdir}/tools/elog-gen.py\
 	$(ELOG_YAML_DIR)/$(ELOG_YAML)\
