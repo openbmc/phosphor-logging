@@ -208,7 +208,11 @@ def get_elog_data(i_elog_yaml,
             parent = i['inherits'][0].split(".").pop()
         parents[i['name']] = parent
         error_msg[i['name']] = match['description']
-        error_lvl[i['name']] = i['level']
+        try:
+            error_lvl[i['name']] = i['level']
+        except:
+            print ("No level found for: " + i['name'] + ", using INFO")
+            error_lvl[i['name']] = "INFO"
         tmp_meta = []
         # grab all the meta data fields and info
         for j in i['meta']:
