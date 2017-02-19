@@ -17,7 +17,7 @@ namespace logging
 
     % for index, name in enumerate(errors):
 <%
-    namespaces = error_namespace.split('/')
+    namespaces = error_namespace[name].split('/')
     ## In case someone provided a error_namespace ending with '/', remove the
     ## last split string, which would be an empty string.
     if not namespaces[-1]:
