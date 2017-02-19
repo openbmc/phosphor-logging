@@ -56,16 +56,23 @@ def check_error_inheritance(i_errors, i_parents):
     return True
 
 
+# The *_dir parameters are absolute paths to the subdir tree where the error
+# yaml files exist. Add a no-op separator '/./' to the path to be able to split
+# the base path from the subdir tree that will be used for the namespaces. Ex:
+# /usr/share/phosphor-dbus-interfaces/./xyz/openbmc_project/Error/Callout/
+#            ^Base Path^                         ^Namespace^
 def get_error_yaml_files(i_yaml_dir, i_test_dir):
-    yaml_files = []
+    yaml_files = dict()
     if i_yaml_dir != "None":
-        for root, dirs, files in os.walk(i_yaml_dir):
+        for root, dirs, files in os.walk(i_yaml_dir + '/./'):
             for files in filter(lambda file:
                                 file.endswith('.errors.yaml'), files):
-                yaml_files.append(os.path.join(root, files))
-    for root, dirs, files in os.walk(i_test_dir):
+                splitdir = root.split("/./")
+                yaml_files[(os.path.join(root, files))] = splitdir[1]
+    for root, dirs, files in os.walk(i_test_dir + '/./'):
         for files in filter(lambda file: file.endswith('.errors.yaml'), files):
-            yaml_files.append(os.path.join(root, files))
+            splitdir = root.split("/./")
+            yaml_files[(os.path.join(root, files))] = splitdir[1]
     return yaml_files
 
 
@@ -92,7 +99,7 @@ def get_cpp_type(i_type):
 
 
 def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
-                 i_template_dir, i_elog_mako, i_error_namespace):
+                 i_template_dir, i_elog_mako):
     r"""
     Read  yaml file(s) under input yaml dir, grab the relevant data and call
     the mako template to generate the output header file.
@@ -112,6 +119,7 @@ def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
     meta = dict()  # The meta data names associated (ERRNO, FILE_NAME, ...)
     meta_data = dict()  # The meta data info (type, format)
     parents = dict()
+    namespace = dict()
 
     error_yamls = get_error_yaml_files(i_yaml_dir, i_test_dir)
 
@@ -135,13 +143,15 @@ def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
 
         get_elog_data(error_yaml,
                       meta_yaml,
-                      # 3rd arg is a tuple
+                      error_yamls[error_yaml],
+                      # Last arg is a tuple
                       (errors,
                        error_msg,
                        error_lvl,
                        meta,
                        meta_data,
-                       parents))
+                       parents,
+                       namespace))
 
     if(not check_error_inheritance(errors, parents)):
         print("Error - failed to validate error inheritance")
@@ -157,13 +167,14 @@ def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
     f.write(template.render(
             errors=errors, error_msg=error_msg,
             error_lvl=error_lvl, meta=meta,
-            meta_data=meta_data, error_namespace=i_error_namespace,
+            meta_data=meta_data, error_namespace=namespace,
             parents=parents))
     f.close()
 
 
 def get_elog_data(i_elog_yaml,
                   i_elog_meta_yaml,
+                  i_namespace,
                   o_elog_data):
     r"""
     Parse the error and metadata yaml files in order to pull out
@@ -172,9 +183,11 @@ def get_elog_data(i_elog_yaml,
     Description of arguments:
     i_elog_yaml                 error yaml file
     i_elog_meta_yaml            metadata yaml file
+    i_namespace                 namespace data
     o_elog_data                 error metadata
     """
-    errors, error_msg, error_lvl, meta, meta_data, parents = o_elog_data
+    errors, error_msg, error_lvl, meta, meta_data, parents, namespace = \
+        o_elog_data
     ifile = yaml.safe_load(open(i_elog_yaml))
     mfile = yaml.safe_load(open(i_elog_meta_yaml))
     for i in mfile:
@@ -207,6 +220,7 @@ def get_elog_data(i_elog_yaml,
             meta_data[str_short]['str_short'] = str_short
             meta_data[str_short]['type'] = get_cpp_type(j['type'])
         meta[i['name']] = tmp_meta
+        namespace[i['name']] = i_namespace
 
     # Debug
     # for i in errors:
@@ -240,18 +254,13 @@ def main(i_args):
                       default="phosphor-logging/templates/",
                       help="Base directory of files to process")
 
-    parser.add_option("-n", "--namespace", dest="error_namespace",
-                      default="example/xyz/openbmc_project/Example",
-                      help="Error d-bus namespace")
-
     (options, args) = parser.parse_args(i_args)
 
     gen_elog_hpp(options.yamldir,
                  options.testdir,
                  options.output_hpp,
                  options.templatedir,
-                 options.elog_mako,
-                 options.error_namespace)
+                 options.elog_mako)
 
 # Only run if it's a script
 if __name__ == '__main__':
