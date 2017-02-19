@@ -57,9 +57,10 @@ def check_error_inheritance(i_errors, i_parents):
 
 
 def get_error_yaml_files(i_yaml_dir):
-    yaml_files = filter(
-        lambda file: file.endswith('.errors.yaml'),
-        os.listdir(i_yaml_dir))
+    yaml_files = []
+    for root, dirs, files in os.walk(i_yaml_dir):
+        for files in filter(lambda file: file.endswith('.errors.yaml'), files):
+            yaml_files.append(os.path.join(root, files))
     return yaml_files
 
 
@@ -110,7 +111,6 @@ def gen_elog_hpp(i_yaml_dir, i_output_hpp,
 
     for error_yaml in error_yamls:
         # Verify the error yaml file
-        error_yaml = "/".join((i_yaml_dir, error_yaml))
         if (not (os.path.isfile(error_yaml))):
             print "Can not find input yaml file " + error_yaml
             exit(1)
