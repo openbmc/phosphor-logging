@@ -68,7 +68,7 @@ def get_error_yaml_files(i_yaml_dir, i_test_dir):
             for files in filter(lambda file:
                                 file.endswith('.errors.yaml'), files):
                 splitdir = root.split("/./")
-            yaml_files[(os.path.join(root, files))] = splitdir[1]
+                yaml_files[(os.path.join(root, files))] = splitdir[1]
     for root, dirs, files in os.walk(i_test_dir + '/./'):
         for files in filter(lambda file: file.endswith('.errors.yaml'), files):
             splitdir = root.split("/./")
@@ -209,7 +209,11 @@ def get_elog_data(i_elog_yaml,
             parent = i['inherits'][0].split(".").pop()
         parents[i['name']] = parent
         error_msg[i['name']] = match['description']
-        error_lvl[i['name']] = i['level']
+        try:
+            error_lvl[i['name']] = i['level']
+        except:
+            print ("No level found for: " + i['name'] + ", using INFO")
+            error_lvl[i['name']] = "INFO"
         tmp_meta = []
         # grab all the meta data fields and info
         for j in i['meta']:
