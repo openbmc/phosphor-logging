@@ -68,20 +68,20 @@ xyz/openbmc_project/Logging/Internal/Manager/server.hpp: xyz/openbmc_project/Log
 
 ELOG_MAKO ?= elog-gen-template.mako.hpp
 LOOKUP_MAKO ?= elog-lookup-template.mako.cpp
-ELOG_YAML_DIR ?= tools/example/xyz/openbmc_project/Example/
-ELOG_TEMPLATE_DIR ?= tools/phosphor-logging/templates/
+ELOG_YAML_DIR ?= ${abs_srcdir}/tools/example/
+ELOG_TEMPLATE_DIR ?= ${abs_srcdir}/tools/phosphor-logging/templates/
 REQ_FILES_TO_GEN ?= ${abs_srcdir}/tools/elog-gen.py\
-	${abs_srcdir}/$(ELOG_YAML_DIR)/$(ELOG_YAML)\
-	${abs_srcdir}/${ELOG_TEMPLATE_DIR}/$(ELOG_MAKO)
+	$(ELOG_YAML_DIR)/$(ELOG_YAML)\
+	${ELOG_TEMPLATE_DIR}/$(ELOG_MAKO)
 
 # Be sure to package up the required script, yaml, and mako template to
 # generate the header file
 EXTRA_DIST = $(REQ_FILES_TO_GEN)
 
 elog-gen.hpp: $(REQ_FILES_TO_GEN)
-	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${abs_srcdir}/${ELOG_YAML_DIR} -t ${abs_srcdir}/${ELOG_TEMPLATE_DIR} -m $(ELOG_MAKO) -o ${abs_srcdir}/elog-gen.hpp
+	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${ELOG_YAML_DIR} -t ${ELOG_TEMPLATE_DIR} -m $(ELOG_MAKO) -o ${abs_srcdir}/elog-gen.hpp
 elog-lookup.cpp: $(REQ_FILES_TO_GEN)
-	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${abs_srcdir}/${ELOG_YAML_DIR} -t ${abs_srcdir}/${ELOG_TEMPLATE_DIR} -m $(LOOKUP_MAKO) -o ${abs_srcdir}/elog-lookup.cpp
+	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${ELOG_YAML_DIR} -t ${ELOG_TEMPLATE_DIR} -m $(LOOKUP_MAKO) -o ${abs_srcdir}/elog-lookup.cpp
 
 pkgconfiglibdir = ${libdir}/pkgconfig
 pkgconfiglib_DATA = phosphor-logging.pc
