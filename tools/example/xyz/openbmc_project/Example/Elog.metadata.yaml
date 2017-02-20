@@ -19,3 +19,9 @@
           type: uint32
         - str: DEV_NAME=%s
           type: string
+
+- name: AutoTestSimple
+  level: ERR
+  meta:
+    - str: STRING=%s
+      type: string

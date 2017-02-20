@@ -27,6 +27,7 @@ libphosphor_logging_la_CXXFLAGS = \
 # Application test which runs in obmc env (qemu, real hardware)
 bin_PROGRAMS = logging-test
 logging_test_SOURCES = logging_test.cpp
+logging_test_LDADD = libphosphor_logging.la
 
 sbin_PROGRAMS = phosphor-log-manager
 
