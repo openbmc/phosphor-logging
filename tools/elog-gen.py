@@ -63,6 +63,8 @@ def get_error_yaml_files(i_yaml_dir, i_test_dir):
             for files in filter(lambda file:
                                 file.endswith('.errors.yaml'), files):
                 splitdir = root.split(i_yaml_dir)[1]
+                if splitdir.startswith("/"):
+                    splitdir = splitdir[1:]
                 yaml_files[(os.path.join(root, files))] = splitdir
     for root, dirs, files in os.walk(i_test_dir):
         for files in filter(lambda file: file.endswith('.errors.yaml'), files):
@@ -114,7 +116,6 @@ def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
     meta = dict()  # The meta data names associated (ERRNO, FILE_NAME, ...)
     meta_data = dict()  # The meta data info (type, format)
     parents = dict()
-    namespace = dict()
 
     error_yamls = get_error_yaml_files(i_yaml_dir, i_test_dir)
 
@@ -145,8 +146,7 @@ def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
                        error_lvl,
                        meta,
                        meta_data,
-                       parents,
-                       namespace))
+                       parents))
 
     if(not check_error_inheritance(errors, parents)):
         print("Error - failed to validate error inheritance")
@@ -162,7 +162,7 @@ def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
     f.write(template.render(
             errors=errors, error_msg=error_msg,
             error_lvl=error_lvl, meta=meta,
-            meta_data=meta_data, error_namespace=namespace,
+            meta_data=meta_data,
             parents=parents))
     f.close()
 
@@ -181,8 +181,7 @@ def get_elog_data(i_elog_yaml,
     i_namespace                 namespace data
     o_elog_data                 error metadata
     """
-    errors, error_msg, error_lvl, meta, meta_data, parents, namespace = \
-        o_elog_data
+    errors, error_msg, error_lvl, meta, meta_data, parents = o_elog_data
     ifile = yaml.safe_load(open(i_elog_yaml))
     mfile = yaml.safe_load(open(i_elog_meta_yaml))
     for i in mfile:
@@ -196,19 +195,19 @@ def get_elog_data(i_elog_yaml,
             print("Error - Did not find meta data for " + i['name'])
             exit(1)
         # Grab the main error and it's info
-        errors.append(i['name'])
+        fullname = i_namespace.replace('/','.') + ('.') + i['name']
+        errors.append(fullname)
         parent = None
         if('inherits' in i):
-            # xyz.openbmc.Foo, we need Foo
             # Get 0th inherited error (current support - single inheritance)
-            parent = i['inherits'][0].split(".").pop()
-        parents[i['name']] = parent
-        error_msg[i['name']] = match['description']
+            parent = i['inherits'][0]
+        parents[fullname] = parent
+        error_msg[fullname] = match['description']
         try:
-            error_lvl[i['name']] = i['level']
+            error_lvl[fullname] = i['level']
         except:
             print ("No level found for: " + i['name'] + ", using INFO")
-            error_lvl[i['name']] = "INFO"
+            error_lvl[fullname] = "INFO"
         tmp_meta = []
         # grab all the meta data fields and info
         for j in i['meta']:
@@ -218,8 +217,7 @@ def get_elog_data(i_elog_yaml,
             meta_data[str_short]['str'] = j['str']
             meta_data[str_short]['str_short'] = str_short
             meta_data[str_short]['type'] = get_cpp_type(j['type'])
-        meta[i['name']] = tmp_meta
-        namespace[i['name']] = i_namespace
+        meta[fullname] = tmp_meta
 
     # Debug
     # for i in errors:

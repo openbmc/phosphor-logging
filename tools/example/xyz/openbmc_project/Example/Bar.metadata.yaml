@@ -4,4 +4,4 @@
     - str: "BAR_DATA=%s"
       type: string
   inherits:
-    - Foo
+    - example.xyz.openbmc_project.Example.Foo
