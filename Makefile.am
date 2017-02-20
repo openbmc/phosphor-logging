@@ -26,7 +26,8 @@ libphosphor_logging_la_CXXFLAGS = \
 
 # Application test which runs in obmc env (qemu, real hardware)
 bin_PROGRAMS = logging-test
-logging_test_SOURCES = logging_test.cpp
+logging_test_SOURCES = logging_test.cpp \
+	elog.cpp
 
 sbin_PROGRAMS = phosphor-log-manager
 
@@ -44,8 +45,12 @@ CLEANFILES = \
 	elog-lookup.cpp
 
 # systemd required for journal interfaces
-logging_test_LDFLAGS = $(SYSTEMD_LIBS) $(SDBUSPLUS_LIBS)
-logging_test_CXXFLAGS = $(SYSTEMD_CFLAGS) $(SDBUSPLUS_CFLAGS)
+logging_test_LDFLAGS = $(SYSTEMD_LIBS) \
+		$(SDBUSPLUS_LIBS) \
+		$(PHOSPHOR_LOGGING_LIBS)
+logging_test_CXXFLAGS = $(SYSTEMD_CFLAGS) \
+		$(SDBUSPLUS_CFLAGS) \
+		$(PHOSPHOR_LOGGING_CFLAGS)
 phosphor_log_manager_LDFLAGS = \
 		$(SYSTEMD_LIBS) \
 		$(SDBUSPLUS_LIBS) \
