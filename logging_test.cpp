@@ -10,6 +10,15 @@
 using namespace phosphor;
 using namespace logging;
 
+//TODO: more verbose
+const char *usage = "Usage: logging-test [OPTION]          \n\n\
+Options:                                                     \n\
+[NONE]                          Complete error-logging test. \n\
+-h, --help                      Display this usage text.     \n\
+-c, --commit <string>           Commit desired error.      \n\n\
+Valid errors to commit:                                      \n\
+test\n";
+
 // validate the journal metadata equals the input value
 int validate_journal(const char *i_entry, const char *i_value)
 {
@@ -53,7 +62,7 @@ int validate_journal(const char *i_entry, const char *i_value)
     return rc;
 }
 
-int main()
+int elog_test()
 {
     // TEST 1 - Basic log
     log<level::DEBUG>("Basic phosphor logging test");
@@ -194,4 +203,46 @@ int main()
     return 0;
 }
 
+void commitError(const char *text)
+{
+    if (strcmp(text, "test") == 0)
+    {
+        try
+        {
+            elog<example::xyz::openbmc_project::Example::test>(
+                example::xyz::openbmc_project::Example::test::STRING("FOO"));
+        }
+        catch (elogException<example::xyz::openbmc_project::Example::test>& e)
+        {
+            std::cout << "elog exception caught: " << e.what() << std::endl;
+            commit(e.name());
+        }
+    }
 
+    return;
+}
+
+int main(int argc, char *argv[])
+{
+    if (argc < 2)
+        return elog_test();
+
+    if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0)
+    {
+        std::cerr << usage;
+        return 1;
+    }
+
+    if (strcmp(argv[1], "-c") == 0 || strcmp(argv[1], "--commit") == 0)
+    {
+        if (argc > 2)
+        {
+            commitError(argv[2]);
+            return 0;
+        }
+        std::cerr << "Error not specified.\n";
+    }
+
+    std::cerr << usage;
+    return 1;
+}

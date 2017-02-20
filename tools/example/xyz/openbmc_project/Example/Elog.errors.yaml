@@ -3,3 +3,6 @@
 
 - name: TestErrorTwo
   description: This is test error two
+
+- name: test
+  description: This is a simple test error.
