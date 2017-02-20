@@ -17,12 +17,12 @@ namespace logging
 
     % for index, name in enumerate(errors):
 <%
-    namespaces = error_namespace[name].split('/')
-    ## In case someone provided a error_namespace ending with '/', remove the
-    ## last split string, which would be an empty string.
-    if not namespaces[-1]:
-        namespaces = namespaces[:-1]
-    classname = name
+    ## Ex: name: xyz.openbmc_project.Error.Callout.Device
+    namespaces = name.split('.')
+    ## classname is the last name item (Device)
+    classname = namespaces[-1]
+    ## namespaces are all the name items except the last one
+    namespaces = namespaces[:-1]
 %>\
     % for s in namespaces:
 namespace ${s}
@@ -48,7 +48,8 @@ struct ${b}
 
     parent = parents[name]
     while parent:
-        parent_meta += [parent + "::" + p for p in meta[parent]]
+        parent_meta += [parent.replace(".", "::") + "::" +
+                        p for p in meta[parent]]
         parent_meta_short = ', '.join(meta[parent])
         meta_string = meta_string + ", " + parent_meta_short
         parent = parents[parent]
