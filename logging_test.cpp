@@ -1,5 +1,6 @@
 // A basic unit test that runs on a BMC (qemu or hardware)
 
+#include <getopt.h>
 #include <iostream>
 #include <systemd/sd-journal.h>
 #include <sstream>
@@ -8,6 +9,14 @@
 
 using namespace phosphor;
 using namespace logging;
+
+const char *usage = "Usage: logging-test [OPTION]          \n\n\
+Options:                                                     \n\
+[NONE]                          Complete error-logging test. \n\
+-h, --help                      Display this usage text.     \n\
+-c, --commit <string>           Commit desired error.      \n\n\
+Valid errors to commit:                                      \n\
+AutoTestSimple\n";
 
 // validate the journal metadata equals the input value
 int validate_journal(const char *i_entry, const char *i_value)
@@ -52,7 +61,7 @@ int validate_journal(const char *i_entry, const char *i_value)
     return rc;
 }
 
-int main()
+int elog_test()
 {
     // TEST 1 - Basic log
     log<level::DEBUG>("Basic phosphor logging test");
@@ -192,4 +201,61 @@ int main()
     //                   TestErrorOne::FILE_NAME(1));
 
     return 0;
+}
+
+void commitError(const char *text)
+{
+    if (strcmp(text, "AutoTestSimple") == 0)
+    {
+        try
+        {
+            elog<example::xyz::openbmc_project::Example::Elog::
+                Error::AutoTestSimple>(
+                    example::xyz::openbmc_project::Example::Elog::
+                        Error::AutoTestSimple::STRING("FOO"));
+        }
+        catch (elogException<example::xyz::openbmc_project::Example::Elog::
+            Error::AutoTestSimple>& e)
+        {
+            std::cout << "elog exception caught: " << e.what() << std::endl;
+            commit(e.name());
+        }
+    }
+
+    return;
+}
+
+int main(int argc, char *argv[])
+{
+    char arg;
+
+    if (argc == 1)
+        return elog_test();
+
+    static struct option long_options[] =
+    {
+          {"help",    no_argument,       0, 'h'},
+          {"commit",  required_argument, 0, 'c'},
+          {0, 0, 0, 0}
+    };
+    int option_index = 0;
+
+    while((arg=getopt_long(argc,argv,"hc:",long_options,&option_index)) != -1)
+    {
+        switch (arg)
+        {
+            case 'c':
+                commitError(optarg);
+                return 0;
+
+            case 'h':
+            case '?':
+                std::cerr << usage;
+                return 1;
+
+        }
+    }
+
+    return 0;
+
 }
