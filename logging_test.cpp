@@ -74,27 +74,28 @@ int main()
     const char *test_string = "/tmp/test_string/";
     try
     {
-        elog<example::xyz::openbmc_project::Example::TestErrorOne>(
-                example::xyz::openbmc_project::Example::TestErrorOne::
-                    ERRNUM(number),
-                example::xyz::openbmc_project::Example::TestErrorOne::
-                    FILE_PATH(test_string),
-                example::xyz::openbmc_project::Example::TestErrorOne::
-                    FILE_NAME("elog_test_3.txt"),
-                example::xyz::openbmc_project::Example::TestErrorTwo::
-                    DEV_ADDR(0xDEADDEAD),
-                example::xyz::openbmc_project::Example::TestErrorTwo::
-                    DEV_ID(100),
-                example::xyz::openbmc_project::Example::TestErrorTwo::
-                    DEV_NAME("test case 3"));
+        elog<example::xyz::openbmc_project::Example::Elog::Error::TestErrorOne>(
+                example::xyz::openbmc_project::Example::Elog::Error::
+                    TestErrorOne::ERRNUM(number),
+                example::xyz::openbmc_project::Example::Elog::Error::
+                    TestErrorOne::FILE_PATH(test_string),
+                example::xyz::openbmc_project::Example::Elog::Error::
+                    TestErrorOne::FILE_NAME("elog_test_3.txt"),
+                example::xyz::openbmc_project::Example::Elog::Error::
+                    TestErrorTwo::DEV_ADDR(0xDEADDEAD),
+                example::xyz::openbmc_project::Example::Elog::Error::
+                    TestErrorTwo::DEV_ID(100),
+                example::xyz::openbmc_project::Example::Elog::Error::
+                    TestErrorTwo::DEV_NAME("test case 3"));
     }
-    catch (elogException<example::xyz::openbmc_project::Example::TestErrorOne>& e)
+    catch (elogException<example::xyz::openbmc_project::Example::Elog::Error::
+           TestErrorOne>& e)
     {
         std::cout << "elog exception caught: " << e.what() << std::endl;
     }
 
     // Reduce our error namespaces
-    using namespace example::xyz::openbmc_project::Example;
+    using namespace example::xyz::openbmc_project::Example::Elog::Error;
 
     // Now read back and verify our data made it into the journal
     std::stringstream stream;
@@ -192,5 +193,3 @@ int main()
 
     return 0;
 }
-
-

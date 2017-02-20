@@ -8,7 +8,7 @@
     - str: FILE_NAME=%s
       type: string
   inherits:
-    - TestErrorTwo
+    - example.xyz.openbmc_project.Example.Elog.TestErrorTwo
 
 - name: TestErrorTwo
   level: ERR
