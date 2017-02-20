@@ -3,12 +3,19 @@
 #include <iostream>
 #include <systemd/sd-journal.h>
 #include <sstream>
-#include <phosphor-logging/elog.hpp>
 #include <phosphor-logging/log.hpp>
 #include "elog-gen.hpp"
+#include "elog.cpp"
 
 using namespace phosphor;
 using namespace logging;
+
+//TODO: more verbose
+const char *usage = "Usage:                               \n\
+logging-test elog_test          Error-logging test.       \n\
+logging-test inject <string>    Throw desired error.    \n\n\
+Valid errors to inject:                                   \n\
+TestErrorOne\n";
 
 // validate the journal metadata equals the input value
 int validate_journal(const char *i_entry, const char *i_value)
@@ -53,7 +60,7 @@ int validate_journal(const char *i_entry, const char *i_value)
     return rc;
 }
 
-int main()
+int elog_test()
 {
     // TEST 1 - Basic log
     log<level::DEBUG>("Basic phosphor logging test");
@@ -62,36 +69,36 @@ int main()
     const char *file_name = "phosphor_logging_test.txt";
     int number = 0xFEFE;
     log<level::DEBUG>("phosphor logging test with attribute",
-            entry("FILE_NAME_WITH_NUM_TEST=%s_%x", file_name, number));
+          entry("FILE_NAME_WITH_NUM_TEST=%s_%x", file_name, number));
 
     // Now read back and verify our data made it into the journal
     int rc = validate_journal("FILE_NAME_WITH_NUM_TEST",
-                              "phosphor_logging_test.txt_fefe");
+                            "phosphor_logging_test.txt_fefe");
     if(rc)
-        return(rc);
+      return(rc);
 
     // TEST 3 - Create error log with 2 meta data fields (rvalue and lvalue)
     number = 0x1234;
     const char *test_string = "/tmp/test_string/";
     try
     {
-        elog<example::xyz::openbmc_project::Example::TestErrorOne>(
-                example::xyz::openbmc_project::Example::TestErrorOne::
-                    ERRNUM(number),
-                example::xyz::openbmc_project::Example::TestErrorOne::
-                    FILE_PATH(test_string),
-                example::xyz::openbmc_project::Example::TestErrorOne::
-                    FILE_NAME("elog_test_3.txt"),
-                example::xyz::openbmc_project::Example::TestErrorTwo::
-                    DEV_ADDR(0xDEADDEAD),
-                example::xyz::openbmc_project::Example::TestErrorTwo::
-                    DEV_ID(100),
-                example::xyz::openbmc_project::Example::TestErrorTwo::
-                    DEV_NAME("test case 3"));
+      elog<example::xyz::openbmc_project::Example::TestErrorOne>(
+              example::xyz::openbmc_project::Example::TestErrorOne::
+                  ERRNUM(number),
+              example::xyz::openbmc_project::Example::TestErrorOne::
+                  FILE_PATH(test_string),
+              example::xyz::openbmc_project::Example::TestErrorOne::
+                  FILE_NAME("elog_test_3.txt"),
+              example::xyz::openbmc_project::Example::TestErrorTwo::
+                  DEV_ADDR(0xDEADDEAD),
+              example::xyz::openbmc_project::Example::TestErrorTwo::
+                  DEV_ID(100),
+              example::xyz::openbmc_project::Example::TestErrorTwo::
+                  DEV_NAME("test case 3"));
     }
     catch (elogException<example::xyz::openbmc_project::Example::TestErrorOne>& e)
     {
-        std::cout << "elog exception caught: " << e.what() << std::endl;
+      std::cout << "elog exception caught: " << e.what() << std::endl;
     }
 
     // Reduce our error namespaces
@@ -101,84 +108,84 @@ int main()
     std::stringstream stream;
     stream << std::hex << number;
     rc = validate_journal(TestErrorOne::ERRNUM::str_short,
-                          std::string(stream.str()).c_str());
+                        std::string(stream.str()).c_str());
     if(rc)
-        return(rc);
+      return(rc);
 
     rc = validate_journal(TestErrorOne::FILE_PATH::str_short,
-                          test_string);
+                        test_string);
     if(rc)
-        return(rc);
+      return(rc);
 
     rc = validate_journal(TestErrorOne::FILE_NAME::str_short,
-                          "elog_test_3.txt");
+                        "elog_test_3.txt");
     if(rc)
-        return(rc);
+      return(rc);
 
     rc = validate_journal(TestErrorTwo::DEV_ADDR::str_short,
-                          "0xDEADDEAD");
+                        "0xDEADDEAD");
     if(rc)
-        return(rc);
+      return(rc);
 
     rc = validate_journal(TestErrorTwo::DEV_ID::str_short,
-                          "100");
+                        "100");
     if(rc)
-        return(rc);
+      return(rc);
 
     rc = validate_journal(TestErrorTwo::DEV_NAME::str_short,
-                          "test case 3");
+                        "test case 3");
     if(rc)
-        return(rc);
+      return(rc);
 
     // TEST 4 - Create error log with previous entry use
     number = 0x9876;
     try
     {
-        elog<TestErrorOne>(TestErrorOne::ERRNUM(number),
-                           prev_entry<TestErrorOne::FILE_PATH>(),
-                           TestErrorOne::FILE_NAME("elog_test_4.txt"),
-                           TestErrorTwo::DEV_ADDR(0xDEADDEAD),
-                           TestErrorTwo::DEV_ID(100),
-                           TestErrorTwo::DEV_NAME("test case 4"));
+      elog<TestErrorOne>(TestErrorOne::ERRNUM(number),
+                         prev_entry<TestErrorOne::FILE_PATH>(),
+                         TestErrorOne::FILE_NAME("elog_test_4.txt"),
+                         TestErrorTwo::DEV_ADDR(0xDEADDEAD),
+                         TestErrorTwo::DEV_ID(100),
+                         TestErrorTwo::DEV_NAME("test case 4"));
     }
     catch (elogExceptionBase& e)
     {
-        std::cout << "elog exception caught: " << e.what() << std::endl;
+      std::cout << "elog exception caught: " << e.what() << std::endl;
     }
 
     // Now read back and verify our data made it into the journal
     stream.str("");
     stream << std::hex << number;
     rc = validate_journal(TestErrorOne::ERRNUM::str_short,
-                          std::string(stream.str()).c_str());
+                        std::string(stream.str()).c_str());
     if(rc)
-        return(rc);
+      return(rc);
 
     // This should just be equal to what we put in test 3
     rc = validate_journal(TestErrorOne::FILE_PATH::str_short,
-                          test_string);
+                        test_string);
     if(rc)
-        return(rc);
+      return(rc);
 
     rc = validate_journal(TestErrorOne::FILE_NAME::str_short,
-                          "elog_test_4.txt");
+                        "elog_test_4.txt");
     if(rc)
-        return(rc);
+      return(rc);
 
     rc = validate_journal(TestErrorTwo::DEV_ADDR::str_short,
-                          "0xDEADDEAD");
+                        "0xDEADDEAD");
     if(rc)
-        return(rc);
+      return(rc);
 
     rc = validate_journal(TestErrorTwo::DEV_ID::str_short,
-                          "100");
+                        "100");
     if(rc)
-        return(rc);
+      return(rc);
 
     rc = validate_journal(TestErrorTwo::DEV_NAME::str_short,
-                          "test case 4");
+                        "test case 4");
     if(rc)
-        return(rc);
+      return(rc);
 
     // Compile fail tests
 
@@ -194,4 +201,54 @@ int main()
     return 0;
 }
 
+void inject(const char *text)
+{
+    if (strcmp(text, "TestErrorOne") == 0)
+    {
+        std::cerr << "Injecting TestErrorOne\n";
+        try
+        {
+            elog<example::xyz::openbmc_project::Example::TestErrorOne>(
+                example::xyz::openbmc_project::Example::TestErrorOne::
+                    ERRNUM(0xDAD5),
+                example::xyz::openbmc_project::Example::TestErrorOne::
+                    FILE_PATH("~"),
+                example::xyz::openbmc_project::Example::TestErrorOne::
+                    FILE_NAME("logging-test"),
+                example::xyz::openbmc_project::Example::TestErrorTwo::
+                    DEV_ADDR(0xDAD5DAD5),
+                example::xyz::openbmc_project::Example::TestErrorTwo::
+                    DEV_ID(200),
+                example::xyz::openbmc_project::Example::TestErrorTwo::
+                    DEV_NAME("michael"));
+        }
+        catch (elogException<example::xyz::openbmc_project::Example::TestErrorOne>& e)
+        {
+            std::cout << "elog exception caught: " << e.what() << std::endl;
+            commit(e.name());
+        }
+    }
 
+    return;
+}
+
+int main(int argc, char *argv[])
+{
+    if (argc < 2)
+    {
+        std::cerr << usage;
+        return 1;
+    }
+
+    if (strcmp(argv[1], "elog_test") == 0)
+        return elog_test();
+
+    if (argc > 2 && strcmp(argv[1], "inject") == 0)
+    {
+        inject(argv[2]);
+        return 0;
+    }
+
+    std::cerr << usage;
+    return 1;
+}
