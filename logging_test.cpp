@@ -10,6 +10,13 @@
 using namespace phosphor;
 using namespace logging;
 
+//TODO: more verbose
+const char *usage = "Usage:                               \n\
+logging-test elog_test          Error-logging test.       \n\
+logging-test inject <string>    Throw desired error.    \n\n\
+Valid errors to inject:                                   \n\
+test\n";
+
 // validate the journal metadata equals the input value
 int validate_journal(const char *i_entry, const char *i_value)
 {
@@ -53,7 +60,7 @@ int validate_journal(const char *i_entry, const char *i_value)
     return rc;
 }
 
-int main()
+int elog_test()
 {
     // TEST 1 - Basic log
     log<level::DEBUG>("Basic phosphor logging test");
@@ -194,4 +201,43 @@ int main()
     return 0;
 }
 
+void inject(const char *text)
+{
+    if (strcmp(text, "test") == 0)
+    {
+        std::cerr << "Injecting test\n";
+        try
+        {
+            elog<example::xyz::openbmc_project::Example::test>(
+                example::xyz::openbmc_project::Example::test::STRING("string"));
+        }
+        catch (elogException<example::xyz::openbmc_project::Example::test>& e)
+        {
+            std::cout << "elog exception caught: " << e.what() << std::endl;
+            commit(e.name());
+        }
+    }
 
+    return;
+}
+
+int main(int argc, char *argv[])
+{
+    if (argc < 2)
+    {
+        std::cerr << usage;
+        return 1;
+    }
+
+    if (strcmp(argv[1], "elog_test") == 0)
+        return elog_test();
+
+    if (argc > 2 && strcmp(argv[1], "inject") == 0)
+    {
+        inject(argv[2]);
+        return 0;
+    }
+
+    std::cerr << usage;
+    return 1;
+}
