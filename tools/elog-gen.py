@@ -56,9 +56,14 @@ def check_error_inheritance(i_errors, i_parents):
     return True
 
 
-def get_error_yaml_files(i_yaml_dir):
+def get_error_yaml_files(i_yaml_dir, i_test_dir):
     yaml_files = []
-    for root, dirs, files in os.walk(i_yaml_dir):
+    if i_yaml_dir != "None":
+        for root, dirs, files in os.walk(i_yaml_dir):
+            for files in filter(lambda file:
+                                file.endswith('.errors.yaml'), files):
+                yaml_files.append(os.path.join(root, files))
+    for root, dirs, files in os.walk(i_test_dir):
         for files in filter(lambda file: file.endswith('.errors.yaml'), files):
             yaml_files.append(os.path.join(root, files))
     return yaml_files
@@ -86,14 +91,15 @@ def get_cpp_type(i_type):
     return typeMap[i_type]
 
 
-def gen_elog_hpp(i_yaml_dir, i_output_hpp,
+def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
                  i_template_dir, i_elog_mako, i_error_namespace):
     r"""
     Read  yaml file(s) under input yaml dir, grab the relevant data and call
     the mako template to generate the output header file.
 
     Description of arguments:
-    i_yaml_dir                  directory containing error yaml files
+    i_yaml_dir                  directory containing base error yaml files
+    i_test_dir                  directory containing test error yaml files
     i_output_hpp                name of the to be generated output hpp
     i_template_dir              directory containing error mako templates
     i_elog_mako                 error mako template to render
@@ -107,7 +113,7 @@ def gen_elog_hpp(i_yaml_dir, i_output_hpp,
     meta_data = dict()  # The meta data info (type, format)
     parents = dict()
 
-    error_yamls = get_error_yaml_files(i_yaml_dir)
+    error_yamls = get_error_yaml_files(i_yaml_dir, i_test_dir)
 
     for error_yaml in error_yamls:
         # Verify the error yaml file
@@ -223,8 +229,12 @@ def main(i_args):
                       help="output hpp to generate, elog-gen.hpp is default")
 
     parser.add_option("-y", "--yamldir", dest="yamldir",
-                      default="./example/xyz/openbmc_project/Example",
+                      default="None",
                       help="Base directory of yaml files to process")
+
+    parser.add_option("-u", "--testdir", dest="testdir",
+                      default="./tools/example/",
+                      help="Unit test directory of yaml files to process")
 
     parser.add_option("-t", "--templatedir", dest="templatedir",
                       default="phosphor-logging/templates/",
@@ -237,6 +247,7 @@ def main(i_args):
     (options, args) = parser.parse_args(i_args)
 
     gen_elog_hpp(options.yamldir,
+                 options.testdir,
                  options.output_hpp,
                  options.templatedir,
                  options.elog_mako,
