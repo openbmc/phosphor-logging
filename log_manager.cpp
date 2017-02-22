@@ -2,6 +2,7 @@
 #include <iostream>
 #include <chrono>
 #include <cstdio>
+#include <set>
 #include <string>
 #include <vector>
 #include <sdbusplus/vtable.hpp>
@@ -33,7 +34,8 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     }
 
     std::string transactionIdStr = std::to_string(transactionId);
-    auto& metalist = g_errMetaMap[errMsg];
+    std::set<std::string> metalist(g_errMetaMap[errMsg].begin(),
+                                   g_errMetaMap[errMsg].end());
     const auto& metalistHostEvent = g_errMetaMapHostEvent[errMsg];
     std::vector<std::string> additionalData;
 
@@ -42,60 +44,63 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     // Tracking with issue openbmc/phosphor-logging#4
     for (auto& metaVarStrHostEvent : metalistHostEvent)
     {
-        metalist.push_back(metaVarStrHostEvent);
+        metalist.insert(metaVarStrHostEvent);
     }
 
-    // Search for each metadata variable in the journal.
-    for (auto& metaVarStr : metalist)
+    // Read the journal from the end to get the most recent entry first.
+    // The result from the sd_journal_get_data() is of the form VARIABLE=value.
+    SD_JOURNAL_FOREACH_BACKWARDS(j)
     {
-        const char *metadata = nullptr;
+        const char *data = nullptr;
+        size_t length = 0;
 
-        // Read the journal from the end to get the most recent entry first.
-        // The result from the sd_journal_get_data() is of the form VARIABLE=value.
-        SD_JOURNAL_FOREACH_BACKWARDS(j)
+        // Look for the transaction id metadata variable
+        rc = sd_journal_get_data(j, transactionIdVar, (const void **)&data,
+                                &length);
+        if (rc < 0)
         {
-            const char *data = nullptr;
-            size_t length = 0;
-            metadata = nullptr;
+            // This journal entry does not have the TRANSACTION_ID
+            // metadata variable.
+            continue;
+        }
 
-            // Search for the metadata variables in the current journal entry
-            rc = sd_journal_get_data(j, metaVarStr.c_str(),
-                                    (const void **)&metadata, &length);
+        std::string result(data, length);
+        if (result.find(transactionIdStr) == std::string::npos)
+        {
+            // The value of the TRANSACTION_ID metadata is not the requested
+            // transaction id number.
+            continue;
+        }
+
+        // Search for all metadata variables in the current journal entry.
+        for (auto i = metalist.cbegin(); i != metalist.cend();)
+        {
+            rc = sd_journal_get_data(j, (*i).c_str(),
+                                    (const void **)&data, &length);
             if (rc < 0)
             {
-                // Metadata value not found, continue to next journal entry.
+                // Metadata variable not found, check next metadata variable.
+                i++;
                 continue;
             }
 
-            // Look for the transaction id metadata variable
-            rc = sd_journal_get_data(j, transactionIdVar, (const void **)&data,
-                                    &length);
-            if (rc < 0)
-            {
-                // This journal entry does not have the transaction id,
-                // continue to next entry
-                continue;
-            }
-
-            std::string result(data);
-            if (result.find(transactionIdStr) == std::string::npos)
-            {
-                // Requested transaction id  not found,
-                // continue to next journal entry.
-                continue;
-            }
-
-            // Metadata matching the transaction id found, save it
-            // and break out of the journal search loop
-            additionalData.push_back(std::string(metadata));
+            // Metadata variable found, save it and remove it from the set.
+            additionalData.emplace_back(data, length);
+            i = metalist.erase(i);
+        }
+        if (metalist.empty())
+        {
+            // All metadata variables found, break out of journal loop.
             break;
         }
-        if (!metadata)
+    }
+    if (!metalist.empty())
+    {
+        // Not all the metadata variables were found in the journal.
+        for (auto& metaVarStr : metalist)
         {
-            // Metadata value not found in the journal.
             logging::log<logging::level::INFO>("Failed to find metadata",
                     logging::entry("META_FIELD=%s", metaVarStr.c_str()));
-            continue;
         }
     }
 
