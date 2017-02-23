@@ -1,9 +1,4 @@
 # export these headers
-include_HEADERS = \
-	phosphor-logging/log.hpp \
-	phosphor-logging/elog.hpp \
-	phosphor-logging/elog-errors-HostEvent.hpp
-
 nobase_include_HEADERS = \
 	phosphor-logging/log.hpp \
 	phosphor-logging/elog.hpp \
