@@ -1,4 +1,4 @@
-#include <elog.hpp>
+#include <phosphor-logging/elog.hpp>
 #include <gtest/gtest.h>
 
 // TODO - need to get gtest working in the SDK
