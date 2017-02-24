@@ -1,3 +1,4 @@
+#include "config.h"
 #include <phosphor-logging/elog.hpp>
 
 namespace phosphor
@@ -11,7 +12,6 @@ void commit(std::string&& e)
     constexpr auto MAPPER_PATH = "/xyz/openbmc_project/ObjectMapper";
     constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
 
-    constexpr auto OBJ_INTERNAL("/xyz/openbmc_project/Logging/Internal/Manager");
     constexpr auto IFACE_INTERNAL("xyz.openbmc_project.Logging.Internal.Manager");
 
     // Transaction id is located at the end of the string separated by a period.
