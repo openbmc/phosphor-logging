@@ -3,28 +3,24 @@
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/object.hpp>
 #include "xyz/openbmc_project/Logging/Entry/server.hpp"
+#include "org/openbmc/Associations/server.hpp"
 
 namespace phosphor
 {
 namespace logging
 {
-namespace details
-{
 
-template <typename T>
-using ServerObject = typename sdbusplus::server::object::object<T>;
-
-using EntryIface =
-    sdbusplus::xyz::openbmc_project::Logging::server::Entry;
-
-} // namespace details
+using EntryIfaces = sdbusplus::server::object::object<
+    sdbusplus::xyz::openbmc_project::Logging::server::Entry,
+    sdbusplus::org::openbmc::server::Associations>;
 
 /** @class Entry
  *  @brief OpenBMC logging entry implementation.
  *  @details A concrete implementation for the
- *  xyz.openbmc_project.Logging.Entry DBus API.
+ *  xyz.openbmc_project.Logging.Entry and
+ *  org.openbmc.Associations DBus APIs.
  */
-class Entry : public details::ServerObject<details::EntryIface>
+class Entry : public EntryIfaces
 {
     public:
         Entry() = delete;
@@ -52,8 +48,7 @@ class Entry : public details::ServerObject<details::EntryIface>
               Level severityErr,
               std::string&& msgErr,
               std::vector<std::string>&& additionalDataErr) :
-              details::ServerObject<details::EntryIface>
-                    (bus, path.c_str(), true)
+              EntryIfaces(bus, path.c_str(), true)
         {
             id(idErr);
             severity(severityErr);
