@@ -107,6 +107,7 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
                 std::chrono::system_clock::now().time_since_epoch()).count();
     auto objPath =  std::string(OBJ_ENTRY) + '/' +
             std::to_string(entryId);
+    AssociationList objects {};
     entries.insert(std::make_pair(entryId, std::make_unique<Entry>(
             busLog,
             objPath,
@@ -114,7 +115,8 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
             ms, // Milliseconds since 1970
             (Entry::Level)g_errLevelMap[errMsg],
             std::move(errMsg),
-            std::move(additionalData))));
+            std::move(additionalData),
+            std::move(objects))));
     return;
 }
 
