@@ -14,6 +14,9 @@ using EntryIfaces = sdbusplus::server::object::object<
     sdbusplus::xyz::openbmc_project::Logging::server::Entry,
     sdbusplus::org::openbmc::server::Associations>;
 
+using AssociationList =
+     std::vector<std::tuple<std::string, std::string, std::string>>;
+
 /** @class Entry
  *  @brief OpenBMC logging entry implementation.
  *  @details A concrete implementation for the
@@ -47,7 +50,8 @@ class Entry : public EntryIfaces
               uint64_t timestampErr,
               Level severityErr,
               std::string&& msgErr,
-              std::vector<std::string>&& additionalDataErr) :
+              std::vector<std::string>&& additionalDataErr,
+              AssociationList&& objects) :
               EntryIfaces(bus, path.c_str(), true)
         {
             id(idErr);
@@ -55,6 +59,7 @@ class Entry : public EntryIfaces
             timestamp(timestampErr);
             message(std::move(msgErr));
             additionalData(std::move(additionalDataErr));
+            associations(std::move(objects));
 
             // Emit deferred signal.
             this->emit_object_added();
