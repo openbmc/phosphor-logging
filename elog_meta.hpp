@@ -20,7 +20,7 @@ using HandlerType = void(std::string&&,
 /** @brief Metadata handler, specialize this template to implement
  *         handling a specific type of metadata.
  *  @tparam M - type of metadata
- *  @param [in] data - metadata to be handled
+ *  @param [in] match - metadata to be handled
  *  @param [in] data - metadata key=value entries
  *  @param [out] list - list of error association objects
  */
@@ -28,6 +28,16 @@ template <typename M>
 void handler(std::string&& match,
              const std::vector<std::string>& data,
              AssociationList& list) = delete;
+
+// Example template specialization - we don't want to do anything
+// for this metadata.
+using namespace example::xyz::openbmc_project::Example::Elog;
+template <>
+inline void handler<TestErrorTwo::DEV_ID>(std::string&& match,
+                                          const std::vector<std::string>& data,
+                                          AssociationList& list)
+{
+}
 
 } // namespace metadata
 } // namespace logging
