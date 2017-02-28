@@ -120,6 +120,7 @@ def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
     meta = dict()  # The meta data names associated (ERRNO, FILE_NAME, ...)
     meta_data = dict()  # The meta data info (type, format)
     parents = dict()
+    metadata_process = dict()  # metadata that have the 'process' keyword set
 
     error_yamls = get_error_yaml_files(i_yaml_dir, i_test_dir)
 
@@ -150,7 +151,8 @@ def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
                        error_lvl,
                        meta,
                        meta_data,
-                       parents))
+                       parents,
+                       metadata_process))
 
     if(not check_error_inheritance(errors, parents)):
         print("Error - failed to validate error inheritance")
@@ -164,10 +166,13 @@ def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
     template = Template(filename=template_path)
     f = open(i_output_hpp, 'w')
     f.write(template.render(
-            errors=errors, error_msg=error_msg,
-            error_lvl=error_lvl, meta=meta,
+            errors=errors,
+            error_msg=error_msg,
+            error_lvl=error_lvl,
+            meta=meta,
             meta_data=meta_data,
-            parents=parents))
+            parents=parents,
+            metadata_process=metadata_process))
     f.close()
 
 
@@ -185,7 +190,8 @@ def get_elog_data(i_elog_yaml,
     i_namespace                 namespace data
     o_elog_data                 error metadata
     """
-    errors, error_msg, error_lvl, meta, meta_data, parents = o_elog_data
+    (errors, error_msg, error_lvl, meta,
+     meta_data, parents, metadata_process) = o_elog_data
     ifile = yaml.safe_load(open(i_elog_yaml))
     mfile = yaml.safe_load(open(i_elog_meta_yaml))
     for i in mfile:
@@ -222,6 +228,8 @@ def get_elog_data(i_elog_yaml,
                 meta_data[str_short]['str'] = j['str']
                 meta_data[str_short]['str_short'] = str_short
                 meta_data[str_short]['type'] = get_cpp_type(j['type'])
+                if(('process' in j) and (True == j['process'])):
+                    metadata_process[str_short] = fullname + "." + str_short
             meta[fullname] = tmp_meta
 
     # Debug
