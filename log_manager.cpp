@@ -14,6 +14,11 @@
 #include "elog_entry.hpp"
 #include <phosphor-logging/log.hpp>
 #include "log_manager.hpp"
+#include "elog_meta.hpp"
+
+using namespace phosphor::logging;
+extern const std::map<metadata::Metadata,
+                      std::function<metadata::associations::Type>> meta;
 
 namespace phosphor
 {
@@ -127,7 +132,10 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
                 std::chrono::system_clock::now().time_since_epoch()).count();
     auto objPath =  std::string(OBJ_ENTRY) + '/' +
             std::to_string(entryId);
+
     AssociationList objects {};
+    processMetadata(errMsg, additionalData, objects);
+
     entries.insert(std::make_pair(entryId, std::make_unique<Entry>(
             busLog,
             objPath,
@@ -138,6 +146,27 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
             std::move(additionalData),
             std::move(objects))));
     return;
+}
+
+void Manager::processMetadata(const std::string& errorName,
+                              const std::vector<std::string>& additionalData,
+                              AssociationList& objects) const
+{
+    // additionalData is a list of "metadata=value"
+    constexpr auto separator = '=';
+    for(const auto& entry: additionalData)
+    {
+        auto found = entry.find(separator);
+        if(std::string::npos != found)
+        {
+            auto metadata = entry.substr(0, found);
+            auto iter = meta.find(metadata);
+            if(meta.end() != iter)
+            {
+                (iter->second)(metadata, additionalData, objects);
+            }
+        }
+    }
 }
 
 } // namespace logging
