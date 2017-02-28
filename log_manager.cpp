@@ -8,7 +8,6 @@
 #include <sdbusplus/vtable.hpp>
 #include <systemd/sd-bus.h>
 #include <systemd/sd-journal.h>
-#include "elog-lookup.cpp"
 #include <phosphor-logging/elog-errors-HostEvent.hpp>
 #include "config.h"
 #include "elog_entry.hpp"
@@ -34,8 +33,9 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     }
 
     std::string transactionIdStr = std::to_string(transactionId);
-    std::set<std::string> metalist(g_errMetaMap[errMsg].begin(),
-                                   g_errMetaMap[errMsg].end());
+    auto metamap = g_errMetaMap.find(errMsg);
+    std::set<std::string> metalist(metamap->second.begin(),
+                                   metamap->second.end());
     const auto& metalistHostEvent = g_errMetaMapHostEvent[errMsg];
     std::vector<std::string> additionalData;
 
@@ -112,12 +112,13 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
                 std::chrono::system_clock::now().time_since_epoch()).count();
     auto objPath =  std::string(OBJ_ENTRY) + '/' +
             std::to_string(entryId);
+    auto levelmap = g_errLevelMap.find(errMsg);
     entries.insert(std::make_pair(entryId, std::make_unique<Entry>(
             busLog,
             objPath,
             entryId,
             ms, // Milliseconds since 1970
-            (Entry::Level)g_errLevelMap[errMsg],
+            (Entry::Level)levelmap->second,
             std::move(errMsg),
             std::move(additionalData))));
     return;
