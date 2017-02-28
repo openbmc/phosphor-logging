@@ -17,6 +17,7 @@
           type: uint32
         - str: DEV_ID=%u
           type: uint32
+          process: true
         - str: DEV_NAME=%s
           type: string
 
