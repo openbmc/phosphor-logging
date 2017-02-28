@@ -11,14 +11,13 @@
 
 using namespace phosphor::logging::metadata;
 using namespace phosphor::logging::example::xyz::openbmc_project::Example;
+using namespace std::placeholders;
 
 extern const std::map<Metadata, std::function<HandlerType>> meta = {
     % for m in metadata_process:
 <%
         type = m.replace(".", "::")
 %>\
-    {"${m}", std::bind(handler<${type}>,
-                       std::placeholders::_1,
-                       std::ref(std::placeholders::_2))},
+    {"${m}", std::bind(handler<${type}>, _1, _2)},
     % endfor
 };

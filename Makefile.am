@@ -32,18 +32,21 @@ phosphor_log_manager_SOURCES = \
 	log_manager.cpp \
 	log_manager_main.cpp \
 	elog_entry.cpp \
-	org.openbmc.Associations.cpp
+	org.openbmc.Associations.cpp \
+	elog-process-metadata.cpp
 
 # Be sure to build needed files before compiling
 BUILT_SOURCES = \
 	elog-gen.hpp \
 	elog-lookup.cpp \
+	elog-process-metadata.cpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.cpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.hpp
 
 CLEANFILES = \
 	elog-gen.hpp \
 	elog-lookup.cpp \
+	elog-process-metadata.cpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.cpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.hpp
 
@@ -69,12 +72,14 @@ xyz/openbmc_project/Logging/Internal/Manager/server.hpp: xyz/openbmc_project/Log
 
 ELOG_MAKO ?= elog-gen-template.mako.hpp
 LOOKUP_MAKO ?= elog-lookup-template.mako.cpp
+META_MAKO ?= elog-process-metadata.mako.cpp
 ELOG_YAML_DIR ?= "None"
 ELOG_YAML_DIR_TEST ?= ${abs_srcdir}/tools/
 ELOG_TEMPLATE_DIR ?= ${abs_srcdir}/tools/phosphor-logging/templates/
 REQ_FILES_TO_GEN ?= ${abs_srcdir}/tools/elog-gen.py\
 	$(ELOG_YAML_DIR_TEST)/$(ELOG_YAML)\
-	${ELOG_TEMPLATE_DIR}/$(ELOG_MAKO)
+	${ELOG_TEMPLATE_DIR}/$(ELOG_MAKO)\
+	${ELOG_TEMPLATE_DIR}/$(META_MAKO)
 
 # Be sure to package up the required script, yaml, and mako template to
 # generate the header file
@@ -84,6 +89,8 @@ elog-gen.hpp: $(REQ_FILES_TO_GEN)
 	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${ELOG_YAML_DIR} -u ${ELOG_YAML_DIR_TEST} -t ${ELOG_TEMPLATE_DIR} -m $(ELOG_MAKO) -o ${abs_srcdir}/elog-gen.hpp
 elog-lookup.cpp: $(REQ_FILES_TO_GEN)
 	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${ELOG_YAML_DIR} -u ${ELOG_YAML_DIR_TEST} -t ${ELOG_TEMPLATE_DIR} -m $(LOOKUP_MAKO) -o ${abs_srcdir}/elog-lookup.cpp
+elog-process-metadata.cpp: $(REQ_FILES_TO_GEN)
+	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${ELOG_YAML_DIR} -u ${ELOG_YAML_DIR_TEST} -t ${ELOG_TEMPLATE_DIR} -m $(META_MAKO) -o ${abs_srcdir}/elog-process-metadata.cpp
 
 pkgconfiglibdir = ${libdir}/pkgconfig
 pkgconfiglib_DATA = phosphor-logging.pc
