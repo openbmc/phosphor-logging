@@ -65,7 +65,10 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
         }
 
         std::string result(data, length);
-        if (result.find(transactionIdStr) == std::string::npos)
+        // The metadata field result will be TRANSACTION_ID=1234. Remove the
+        // TRANSACTION_ID piece plus the (=) sign to obtain the id number.
+        result.erase(0, strlen(transactionIdVar) + 1);
+        if (result.compare(transactionIdStr) != 0)
         {
             // The value of the TRANSACTION_ID metadata is not the requested
             // transaction id number.
