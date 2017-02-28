@@ -24,7 +24,7 @@ using Type = void(const std::string&,
 /** @brief Build error associations specific to metadata. Specialize this
  *         template for handling a specific type of metadata.
  *  @tparam M - type of metadata
- *  @param [in] data - metadata to be handled
+ *  @param [in] match - metadata to be handled
  *  @param [in] data - metadata key=value entries
  *  @param [out] list - list of error association objects
  */
@@ -32,6 +32,16 @@ template <typename M>
 void build(const std::string& match,
            const std::vector<std::string>& data,
            AssociationList& list) = delete;
+
+// Example template specialization - we don't want to do anything
+// for this metadata.
+using namespace example::xyz::openbmc_project::Example::Elog;
+template <>
+inline void build<TestErrorTwo::DEV_ID>(const std::string& match,
+                                        const std::vector<std::string>& data,
+                                        AssociationList& list)
+{
+}
 
 } // namespace associations
 } // namespace metadata
