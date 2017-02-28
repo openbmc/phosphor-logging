@@ -31,7 +31,7 @@ namespace ${s}
 namespace _${classname}
 {
     % for b in meta[name]:
-struct ${b}
+struct ${b} final
 {
     static constexpr auto str = "${meta_data[b]['str']}";
     static constexpr auto str_short = "${meta_data[b]['str_short']}";
@@ -53,7 +53,7 @@ struct ${b}
         meta_string = meta_string + ", " + parent_meta_short
         parent = parents[parent]
 %>
-struct ${classname}
+struct ${classname} final
 {
     static constexpr auto err_code = "${name}";
     static constexpr auto err_msg = "${error_msg[name]}";

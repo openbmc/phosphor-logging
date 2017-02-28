@@ -34,8 +34,8 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     }
 
     std::string transactionIdStr = std::to_string(transactionId);
-    std::set<std::string> metalist(g_errMetaMap[errMsg].begin(),
-                                   g_errMetaMap[errMsg].end());
+    std::set<std::string> metalist(g_errMetaMap.at(errMsg).begin(),
+                                   g_errMetaMap.at(errMsg).end());
     const auto& metalistHostEvent = g_errMetaMapHostEvent[errMsg];
     std::vector<std::string> additionalData;
 
@@ -117,7 +117,7 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
             objPath,
             entryId,
             ms, // Milliseconds since 1970
-            (Entry::Level)g_errLevelMap[errMsg],
+            (Entry::Level)g_errLevelMap.at(errMsg),
             std::move(errMsg),
             std::move(additionalData))));
     return;
