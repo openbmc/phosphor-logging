@@ -30,6 +30,7 @@ phosphor_log_manager_SOURCES = \
 	xyz/openbmc_project/Logging/Internal/Manager/server.cpp \
 	log_manager.cpp \
 	log_manager_main.cpp \
+	elog-lookup.cpp \
 	elog_entry.cpp
 
 # Be sure to build needed files before compiling

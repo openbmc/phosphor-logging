@@ -4,6 +4,7 @@
 // See elog-gen.py for more details
 #include <map>
 #include <vector>
+#include <log_manager.hpp>
 #include <phosphor-logging/log.hpp>
 
 namespace phosphor
@@ -12,14 +13,14 @@ namespace phosphor
 namespace logging
 {
 
-std::map<std::string,std::vector<std::string>> g_errMetaMap = {
+const std::map<std::string,std::vector<std::string>> g_errMetaMap = {
     % for a in errors:
     <% meta_string = '\",\"'.join(meta[a]) %> \
     {"${a}",{"${meta_string}"}},
     % endfor
 };
 
-std::map<std::string,level> g_errLevelMap = {
+const std::map<std::string,level> g_errLevelMap = {
     % for a in errors:
     <% meta_string = '\",\"'.join(meta[a]) %> \
     {"${a}",level::${error_lvl[a]}},
