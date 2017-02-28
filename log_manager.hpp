@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sdbusplus/bus.hpp>
+#include <phosphor-logging/log.hpp>
 #include "elog_entry.hpp"
 #include "xyz/openbmc_project/Logging/Internal/Manager/server.hpp"
 
@@ -8,6 +9,10 @@ namespace phosphor
 {
 namespace logging
 {
+
+extern const std::map<std::string,std::vector<std::string>> g_errMetaMap;
+extern const std::map<std::string,level> g_errLevelMap;
+
 namespace details
 {
 
