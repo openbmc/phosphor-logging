@@ -26,6 +26,15 @@ template <typename M>
 void handler(const std::vector<std::string>& data,
              AssociationList& list) = delete;
 
+// Example template specialization - we don't want to do anything
+// for this metadata.
+using namespace example::xyz::openbmc_project::Example::Elog;
+template <>
+inline void handler<TestErrorTwo::DEV_ID>(const std::vector<std::string>& data,
+                                          AssociationList& list)
+{
+}
+
 } // namespace metadata
 } // namespace logging
 } // namespace phosphor
