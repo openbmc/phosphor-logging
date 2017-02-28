@@ -32,18 +32,21 @@ phosphor_log_manager_SOURCES = \
 	log_manager.cpp \
 	log_manager_main.cpp \
 	elog_entry.cpp \
-	org.openbmc.Associations.cpp
+	org.openbmc.Associations.cpp \
+	elog-process-metadata.cpp
 
 # Be sure to build needed files before compiling
 BUILT_SOURCES = \
 	phosphor-logging/elog-errors.hpp \
 	elog-lookup.cpp \
+	elog-process-metadata.cpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.cpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.hpp
 
 CLEANFILES = \
 	phosphor-logging/elog-errors.hpp \
 	elog-lookup.cpp \
+	elog-process-metadata.cpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.cpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.hpp
 
@@ -69,9 +72,11 @@ xyz/openbmc_project/Logging/Internal/Manager/server.hpp: xyz/openbmc_project/Log
 
 ELOG_MAKO ?= elog-gen-template.mako.hpp
 LOOKUP_MAKO ?= elog-lookup-template.mako.cpp
+META_MAKO ?= elog-process-metadata.mako.cpp
 ELOG_TEMPLATE_DIR ?= ${abs_srcdir}/tools/phosphor-logging/templates/
 REQ_FILES_TO_GEN ?= ${abs_srcdir}/tools/elog-gen.py\
-	${ELOG_TEMPLATE_DIR}/$(ELOG_MAKO)
+	${ELOG_TEMPLATE_DIR}/$(ELOG_MAKO)\
+	${ELOG_TEMPLATE_DIR}/$(META_MAKO)
 
 # Be sure to package up the required script, yaml, and mako template to
 # generate the header file
@@ -82,6 +87,8 @@ phosphor-logging/elog-errors.hpp: $(REQ_FILES_TO_GEN)
 	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${YAML_DIR} -u ${YAML_DIR_TEST} -t ${ELOG_TEMPLATE_DIR} -m $(ELOG_MAKO) -o $@
 elog-lookup.cpp: $(REQ_FILES_TO_GEN)
 	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${YAML_DIR} -u ${YAML_DIR_TEST} -t ${ELOG_TEMPLATE_DIR} -m $(LOOKUP_MAKO) -o $@
+elog-process-metadata.cpp: $(REQ_FILES_TO_GEN)
+	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${YAML_DIR} -u ${YAML_DIR_TEST} -t ${ELOG_TEMPLATE_DIR} -m $(META_MAKO) -o $@
 
 pkgconfiglibdir = ${libdir}/pkgconfig
 pkgconfiglib_DATA = phosphor-logging.pc
