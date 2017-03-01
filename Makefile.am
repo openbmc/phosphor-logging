@@ -4,7 +4,7 @@ nobase_include_HEADERS = \
 	phosphor-logging/elog.hpp \
 	phosphor-logging/elog-errors-HostEvent.hpp
 
-nodist_include_HEADERS = \
+nobase_nodist_include_HEADERS = \
 	phosphor-logging/elog-errors.hpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.hpp
 
