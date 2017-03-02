@@ -1,0 +1,12 @@
+/sys/devices/platform/ahb/ahb:apb/1e78a000.i2c/i2c-4/i2c-4/4-004c: /system/chassis/motherboard
+/sys/devices/platform/ahb/ahb:apb/1e78a000.i2c/i2c-5/i2c-5/5-004c: /system/chassis/motherboard
+/sys/devices/platform/ahb/ahb:apb/1e78a000.i2c/i2c-9/i2c-9/9-004a: /system/chassis/motherboard
+/sys/devices/platform/ahb/ahb:apb/1e78a000.i2c/i2c-11/i2c-11/11-0064: /system/chassis/motherboard
+/sys/devices/platform/ahb/ahb:apb/1e78a000.i2c/i2c-11/i2c-11/11-0060: /system/chassis/motherboard
+/sys/devices/platform/ahb/ahb:apb/1e78a000.i2c/i2c-11/i2c-11/11-0032: /system/chassis/motherboard/boxelder
+/sys/devices/platform/ahb/ahb:apb/1e78a000.i2c/i2c-11/i2c-11/11-0051: /system/chassis/motherboard/boxelder
+/sys/devices/platform/ahb/ahb:apb/1e78a000.i2c/i2c-3/i2c-3/3-0052: /system/chassis/motherboard
+/sys/devices/platform/ahb/ahb:apb/1e78a000.i2c/i2c-3/i2c-3/3-0077: /system/chassis/motherboard
+/sys/devices/platform/ahb/ahb:apb/1e78a000.i2c/i2c-3/i2c-3/3-0060: /system/chassis/motherboard
+/sys/devices/platform/fsi-master/slave@00:00: /system/chassis/motherboard/cpu0
+/sys/devices/hub@00/slave@01:00: /system/chassis/motherboard/cpu1
