@@ -70,6 +70,9 @@ AS_IF([test "x$YAML_DIR_TEST" == "x"], \
 AC_ARG_VAR(YAML_DIR, [The path to the yaml error files.])
 AS_IF([test "x$YAML_DIR" == "x"], \
     [YAML_DIR="None"])
+AC_ARG_VAR(CALLOUTS_YAML, [YAML filepath containing generated callouts.])
+AS_IF([test "x$CALLOUTS_YAML" == "x"], \
+    [CALLOUTS_YAML="callouts-example.yaml"])
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile test/Makefile])
