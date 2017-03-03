@@ -74,28 +74,28 @@ int main()
     const char *test_string = "/tmp/test_string/";
     try
     {
-        elog<example::xyz::openbmc_project::Example::Elog::Error::TestErrorOne>(
-                example::xyz::openbmc_project::Example::Elog::Error::
+        elog<example::xyz::openbmc_project::Example::Elog::TestErrorOne>(
+                example::xyz::openbmc_project::Example::Elog::
                     TestErrorOne::ERRNUM(number),
-                example::xyz::openbmc_project::Example::Elog::Error::
+                example::xyz::openbmc_project::Example::Elog::
                     TestErrorOne::FILE_PATH(test_string),
-                example::xyz::openbmc_project::Example::Elog::Error::
+                example::xyz::openbmc_project::Example::Elog::
                     TestErrorOne::FILE_NAME("elog_test_3.txt"),
-                example::xyz::openbmc_project::Example::Elog::Error::
+                example::xyz::openbmc_project::Example::Elog::
                     TestErrorTwo::DEV_ADDR(0xDEADDEAD),
-                example::xyz::openbmc_project::Example::Elog::Error::
+                example::xyz::openbmc_project::Example::Elog::
                     TestErrorTwo::DEV_ID(100),
-                example::xyz::openbmc_project::Example::Elog::Error::
+                example::xyz::openbmc_project::Example::Elog::
                     TestErrorTwo::DEV_NAME("test case 3"));
     }
-    catch (elogException<example::xyz::openbmc_project::Example::Elog::Error::
+    catch (elogException<example::xyz::openbmc_project::Example::Elog::
            TestErrorOne>& e)
     {
         std::cout << "elog exception caught: " << e.what() << std::endl;
     }
 
     // Reduce our error namespaces
-    using namespace example::xyz::openbmc_project::Example::Elog::Error;
+    using namespace example::xyz::openbmc_project::Example::Elog;
 
     // Now read back and verify our data made it into the journal
     std::stringstream stream;
