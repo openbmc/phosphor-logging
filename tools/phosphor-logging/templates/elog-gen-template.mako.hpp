@@ -28,8 +28,6 @@ namespace logging
 namespace ${s}
 {
     % endfor
-namespace Error
-{
 namespace _${classname}
 {
 <%
@@ -63,7 +61,7 @@ struct ${b}
         parent_name = tmpparent[-1]
         ## namespaces are all the name items except the last one
         parent_namespace = '::'.join(tmpparent[:-1])
-        parent_meta += [parent_namespace + "::Error::" + parent_name + "::" +
+        parent_meta += [parent_namespace + "::" + parent_name + "::" +
                         p for p in meta[parent]]
         parent_meta_short = ', '.join(meta[parent])
         if(meta_string):
@@ -86,7 +84,6 @@ struct ${classname}
     using metadata_types = std::tuple<${meta_string}>;
 };
 
-} // namespace Error
 % for s in reversed(namespaces):
 } // namespace ${s}
 % endfor
