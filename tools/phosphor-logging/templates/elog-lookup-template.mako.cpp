@@ -13,14 +13,23 @@ namespace logging
 {
 
 std::map<std::string,std::vector<std::string>> g_errMetaMap = {
-    % for a in errors:
+    % for name in errors:
 <%
     meta_list = []
-    if(a in meta):
-        meta_list = meta[a]
+    if(name in meta):
+        meta_list = meta[name]
+    meta_string = '\",\"'.join(meta_list)
+
+    parent = parents[name]
+    while parent:
+        tmpparent = parent.split('.')
+        ## Name is the last item
+        parent_name = tmpparent[-1]
+        parent_meta_short = '\",\"'.join(meta[parent])
+        meta_string = meta_string + "\",\"" + parent_meta_short
+        parent = parents[parent]
 %>\
-    <% meta_string = '\",\"'.join(meta_list) %> \
-    {"${a}",{"${meta_string}"}},
+    {"${name}",{"${meta_string}"}},
     % endfor
 };
 
