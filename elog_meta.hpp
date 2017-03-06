@@ -92,6 +92,18 @@ inline void handler<example::xyz::openbmc_project::
     }
 }
 
+#if defined PROCESS_META
+
+template <>
+void handler<xyz::openbmc_project::Common::
+             Callout::Device::CALLOUT_DEVICE_PATH>(
+    std::string&& match,
+    const std::vector<std::string>& data,
+    AssociationList& list);
+
+#endif // PROCESS_META
+
+
 } // namespace metadata
 } // namespace logging
 } // namespace phosphor
