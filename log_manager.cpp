@@ -67,8 +67,15 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
 
         // The metadata field result will be TRANSACTION_ID=1234. Skip the
         // TRANSACTION_ID piece and (=) sign to get the id number to compare.
-        if (strcmp((data + transactionIdVarSize + 1),
-                    transactionIdStr.c_str()) != 0)
+        // journald does not guarantee that sd_journal_get_data() returns NULL
+        // terminated strings, so create a string and c_str() will add the NULL
+        // terminator for the string compare.
+        std::string tmpId(data, length);
+        if (length > (transactionIdVarSize + 1))
+        {
+            tmpId.erase(0, transactionIdVarSize + 1);
+        }
+        if (strcmp(tmpId.c_str(), transactionIdStr.c_str()) != 0)
         {
             // The value of the TRANSACTION_ID metadata is not the requested
             // transaction id number.
