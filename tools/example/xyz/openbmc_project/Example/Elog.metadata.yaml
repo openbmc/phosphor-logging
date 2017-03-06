@@ -20,3 +20,11 @@
           process: true
         - str: DEV_NAME=%s
           type: string
+
+- name: TestCallout
+  level: ERR
+  meta:
+        - str: DEV_ADDR=0x%.8X
+          type: uint32
+  inherits:
+    - example.xyz.openbmc_project.Example.Device.Callout

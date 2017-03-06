@@ -21,8 +21,9 @@ libphosphor_logging_la_CXXFLAGS = \
 	$(SDBUSPLUS_CFLAGS)
 
 # Application test which runs in obmc env (qemu, real hardware)
-bin_PROGRAMS = logging-test
+bin_PROGRAMS = logging-test callout-test
 logging_test_SOURCES = logging_test.cpp
+callout_test_SOURCES = callouts/callout_test.cpp
 
 sbin_PROGRAMS = phosphor-log-manager
 
@@ -54,6 +55,9 @@ CLEANFILES = \
 # systemd required for journal interfaces
 logging_test_LDFLAGS = $(SYSTEMD_LIBS) $(SDBUSPLUS_LIBS)
 logging_test_CXXFLAGS = $(SYSTEMD_CFLAGS) $(SDBUSPLUS_CFLAGS)
+callout_test_LDADD = libphosphor_logging.la
+callout_test_LDFLAGS = $(SDBUSPLUS_LIBS) $(PHOSPHOR_DBUS_INTERFACES_LIBS)
+callout_test_CXXFLAGS = $(SDBUSPLUS_CFLAGS) $(PHOSPHOR_DBUS_INTERFACES_CFLAGS)
 phosphor_log_manager_LDFLAGS = \
 		$(SYSTEMD_LIBS) \
 		$(SDBUSPLUS_LIBS) \
