@@ -100,6 +100,18 @@ inline void build<example::xyz::openbmc_project::
     }
 }
 
+#if defined PROCESS_META
+
+template <>
+void build<xyz::openbmc_project::Common::
+           Callout::Device::CALLOUT_DEVICE_PATH>(
+    std::string&& match,
+    const std::vector<std::string>& data,
+    AssociationList& list);
+
+#endif // PROCESS_META
+
+
 } // namespace associations
 } // namespace metadata
 } // namespace logging
