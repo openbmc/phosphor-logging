@@ -9,7 +9,7 @@ nobase_nodist_include_HEADERS = \
 	xyz/openbmc_project/Logging/Internal/Manager/server.hpp
 
 libphosphor_logging_FILES = \
-	elog.cpp
+	elog.cpp elog_meta.cpp
 libphosphor_loggingdir = ${libdir}
 libphosphor_logging_LTLIBRARIES = libphosphor_logging.la
 libphosphor_logging_la_SOURCES = $(libphosphor_logging_FILES)
@@ -33,7 +33,8 @@ phosphor_log_manager_SOURCES = \
 	log_manager_main.cpp \
 	elog_entry.cpp \
 	org.openbmc.Associations.cpp \
-	elog-process-metadata.cpp
+	elog-process-metadata.cpp \
+	elog_meta.cpp
 
 # Be sure to build needed files before compiling
 BUILT_SOURCES = \
