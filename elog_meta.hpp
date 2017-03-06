@@ -2,8 +2,12 @@
 
 #include <vector>
 #include <string>
+#include <tuple>
+#include <algorithm>
+#include <cstring>
 #include <phosphor-logging/elog-errors.hpp>
 #include "elog_entry.hpp"
+#include "callouts-gen.hpp"
 
 namespace phosphor
 {
@@ -62,6 +66,38 @@ inline void build<TestErrorTwo::DEV_ID>(const std::string& match,
                                         const std::vector<std::string>& data,
                                         AssociationList& list)
 {
+}
+
+template <>
+inline void build<example::xyz::openbmc_project::
+                  Example::Device::Callout::CALLOUT_DEVICE_PATH_TEST>(
+    const std::string& match,
+    const std::vector<std::string>& data,
+    AssociationList& list)
+{
+    constexpr auto ROOT = "/xyz/openbmc_project/inventory";
+    std::map<std::string, std::string> metadata;
+    parse(data, metadata);
+    auto iter = metadata.find(match);
+    if(metadata.end() != iter)
+    {
+        auto comp = [](const auto& first, const auto& second)
+        {
+            return (strcmp(std::get<0>(first), second) < 0);
+        };
+        auto callout = std::lower_bound(callouts.begin(),
+                                        callouts.end(),
+                                        (iter->second).c_str(),
+                                        comp);
+        if((callouts.end() != callout) &&
+           !strcmp((iter->second).c_str(), std::get<0>(*callout)))
+        {
+            list.push_back(std::make_tuple("callout",
+                                           "fault",
+                                           std::string(ROOT) +
+                                           std::get<1>(*callout)));
+        }
+    }
 }
 
 } // namespace associations
