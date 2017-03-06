@@ -23,7 +23,7 @@ libphosphor_logging_la_CXXFLAGS = \
 # Application test which runs in obmc env (qemu, real hardware)
 bin_PROGRAMS = logging-test callout-test
 logging_test_SOURCES = logging_test.cpp
-callout_test_SOURCES = callouts/callout_test.cpp elog.cpp
+callout_test_SOURCES = callouts/callout_test.cpp elog.cpp elog_meta.cpp
 
 sbin_PROGRAMS = phosphor-log-manager
 
@@ -33,7 +33,8 @@ phosphor_log_manager_SOURCES = \
 	log_manager_main.cpp \
 	elog_entry.cpp \
 	org.openbmc.Associations.cpp \
-	elog-process-metadata.cpp
+	elog-process-metadata.cpp \
+	elog_meta.cpp
 
 # Be sure to build needed files before compiling
 BUILT_SOURCES = \
