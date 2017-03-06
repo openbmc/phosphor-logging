@@ -6,3 +6,6 @@
 
 - name: AutoTestSimple
   description: This is a simple test error.
+
+- name: TestCallout
+  description: This is test error TestCallout
