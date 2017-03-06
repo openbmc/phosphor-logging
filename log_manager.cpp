@@ -23,7 +23,10 @@ namespace logging
 void Manager::commit(uint64_t transactionId, std::string errMsg)
 {
     constexpr const auto transactionIdVar = "TRANSACTION_ID";
+    // Length of 'TRANSACTION_ID' string.
     constexpr const auto transactionIdVarSize = strlen(transactionIdVar);
+    // Length of 'TRANSACTION_ID=' string.
+    constexpr const auto transactionIdVarOffset = transactionIdVarSize + 1;
 
     sd_journal *j = nullptr;
     int rc = sd_journal_open(&j, SD_JOURNAL_LOCAL_ONLY);
@@ -65,10 +68,19 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
             continue;
         }
 
-        // The metadata field result will be TRANSACTION_ID=1234. Skip the
-        // TRANSACTION_ID piece and (=) sign to get the id number to compare.
-        if (strcmp((data + transactionIdVarSize + 1),
-                    transactionIdStr.c_str()) != 0)
+        // journald does not guarantee that sd_journal_get_data() returns NULL
+        // terminated strings, so need to specify the size to use to compare,
+        // use the returned length instead of anything that relies on NULL
+        // terminators like strlen().
+        // The data variable is in the form of 'TRANSACTION_ID=1234'. Remove
+        // the TRANSACTION_ID characters plus the (=) sign to do the comparison.
+        // 'data + transactionIdVarOffset' will be in the form of '1234'.
+        // 'length - transactionIdVarOffset' will be the length of '1234'.
+        if ((length <= (transactionIdVarOffset)) ||
+            (transactionIdStr.compare(0,
+                                      transactionIdStr.size(),
+                                      data + transactionIdVarOffset,
+                                      length - transactionIdVarOffset) != 0))
         {
             // The value of the TRANSACTION_ID metadata is not the requested
             // transaction id number.
