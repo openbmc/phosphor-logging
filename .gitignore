@@ -23,3 +23,14 @@ configure
 stamp-h1
 phosphor-logging-*.*
 xyz/openbmc_project/Logging/Internal/Manager/
+*.o
+*.la
+*.lo
+.libs/
+callout-test
+callouts-gen.hpp
+callouts/.dirstamp
+elog-lookup.cpp
+elog-process-metadata.cpp
+phosphor-log-manager
+phosphor-logging.pc
