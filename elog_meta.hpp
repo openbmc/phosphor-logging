@@ -2,8 +2,11 @@
 
 #include <vector>
 #include <string>
+#include <tuple>
+#include <algorithm>
 #include <phosphor-logging/elog-errors.hpp>
 #include "elog_entry.hpp"
+#include "callouts-gen.hpp"
 
 namespace phosphor
 {
@@ -58,6 +61,35 @@ inline void handler<TestErrorTwo::DEV_ID>(std::string&& match,
                                           const std::vector<std::string>& data,
                                           AssociationList& list)
 {
+}
+
+template <>
+inline void handler<example::xyz::openbmc_project::
+                    Example::Device::Callout::CALLOUT_DEVICE_PATH_TEST>(
+    std::string&& match,
+    const std::vector<std::string>& data,
+    AssociationList& list)
+{
+    using namespace std::string_literals;
+    constexpr auto ROOT = "/xyz/openbmc_project/inventory";
+    std::map<std::string, std::string> metadata;
+    parse(data, metadata);
+    auto iter = metadata.find(match);
+    if(metadata.end() != iter)
+    {
+        auto search = [&iter](const auto&entry)
+        {
+            return std::get<0>(entry) == iter->second;
+        };
+        auto callout = std::find_if(callouts.begin(), callouts.end(), search);
+        if(callouts.end() != callout)
+        {
+            list.push_back(std::make_tuple("callout",
+                                           "fault",
+                                           std::string(ROOT) +
+                                           std::get<1>(*callout)));
+        }
+    }
 }
 
 } // namespace metadata
