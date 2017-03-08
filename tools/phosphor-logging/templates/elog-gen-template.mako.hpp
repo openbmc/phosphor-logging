@@ -32,7 +32,13 @@ namespace Error
 {
 namespace _${classname}
 {
-    % for b in meta[name]:
+<%
+    meta_list = []
+    if(name in meta):
+        meta_list = meta[name]
+%>\
+   
+    % for b in meta_list:
 struct ${b}
 {
     static constexpr auto str = "${meta_data[b]['str']}";
@@ -45,7 +51,9 @@ struct ${b}
 
 }  // namespace _${classname}
 <%
-    meta_string = ', '.join(meta[name])
+    meta_string = ""
+    if(meta_list):
+        meta_string = ', '.join(meta_list)
     parent_meta = []
 
     parent = parents[name]
@@ -58,7 +66,10 @@ struct ${b}
         parent_meta += [parent_namespace + "::Error::" + parent_name + "::" +
                         p for p in meta[parent]]
         parent_meta_short = ', '.join(meta[parent])
-        meta_string = meta_string + ", " + parent_meta_short
+        if(meta_string):
+            meta_string = meta_string + ", " + parent_meta_short
+        else:
+            meta_string = parent_meta_short
         parent = parents[parent]
 %>
 struct ${classname}
@@ -66,7 +77,7 @@ struct ${classname}
     static constexpr auto err_code = "${name}";
     static constexpr auto err_msg = "${error_msg[name]}";
     static constexpr auto L = level::${error_lvl[name]};
-    % for b in meta[name]:
+    % for b in meta_list:
     using ${b} = _${classname}::${b};
     % endfor
     % for b in parent_meta:

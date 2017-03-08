@@ -214,14 +214,15 @@ def get_elog_data(i_elog_yaml,
             error_lvl[fullname] = "INFO"
         tmp_meta = []
         # grab all the meta data fields and info
-        for j in i['meta']:
-            str_short = j['str'].split('=')[0]
-            tmp_meta.append(str_short)
-            meta_data[str_short] = {}
-            meta_data[str_short]['str'] = j['str']
-            meta_data[str_short]['str_short'] = str_short
-            meta_data[str_short]['type'] = get_cpp_type(j['type'])
-        meta[fullname] = tmp_meta
+        if('meta' in i):
+            for j in i['meta']:
+                str_short = j['str'].split('=')[0]
+                tmp_meta.append(str_short)
+                meta_data[str_short] = {}
+                meta_data[str_short]['str'] = j['str']
+                meta_data[str_short]['str_short'] = str_short
+                meta_data[str_short]['type'] = get_cpp_type(j['type'])
+            meta[fullname] = tmp_meta
 
     # Debug
     # for i in errors:
