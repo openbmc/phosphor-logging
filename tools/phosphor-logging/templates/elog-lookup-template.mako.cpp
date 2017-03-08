@@ -14,14 +14,18 @@ namespace logging
 
 std::map<std::string,std::vector<std::string>> g_errMetaMap = {
     % for a in errors:
-    <% meta_string = '\",\"'.join(meta[a]) %> \
+<%
+    meta_list = []
+    if(a in meta):
+        meta_list = meta[a]
+%>\
+    <% meta_string = '\",\"'.join(meta_list) %> \
     {"${a}",{"${meta_string}"}},
     % endfor
 };
 
 std::map<std::string,level> g_errLevelMap = {
     % for a in errors:
-    <% meta_string = '\",\"'.join(meta[a]) %> \
     {"${a}",level::${error_lvl[a]}},
     % endfor
 };
