@@ -7,7 +7,24 @@
 #include <string>
 #include <tuple>
 #include <type_traits>
+#include <sdbusplus/exception.hpp>
+<% headers = [] %>\
+% for name in errors:
+<%
+    if("example.xyz.openbmc_project" not in name):
+        header = name.replace("sdbusplus.", "");
+        header = header.replace("Error.", "");
+        header = header.replace(".", "/");
+        pos = header.rfind("/")
+        header = header[:pos] + "/error.hpp"
+        headers.append(header)
+%>\
+% endfor
+% for header in set(headers):
+#include <${header}>
+% endfor
 #include <phosphor-logging/log.hpp>
+#include <phosphor-logging/elog.hpp>
 
 namespace phosphor
 {
@@ -69,8 +86,10 @@ struct ${b}
         else:
             meta_string = parent_meta_short
         parent = parents[parent]
+
+    error_type = classname + " : public sdbusplus::exception_t"
 %>
-struct ${classname}
+struct ${error_type}
 {
     static constexpr auto err_code = "${name}";
     static constexpr auto err_msg = "${error_msg[name]}";
@@ -82,11 +101,53 @@ struct ${classname}
     using ${b.split("::").pop()} = ${b};
     % endfor
     using metadata_types = std::tuple<${meta_string}>;
+
+    const char* name() const noexcept
+    {
+        return err_code;
+    }
+
+    const char* description() const noexcept
+    {
+        return err_msg;
+    }
+
+    const char* what() const noexcept
+    {
+        return err_code;
+    }
 };
 
 % for s in reversed(namespaces):
 } // namespace ${s}
 % endfor
+
+<%
+    sdbusplus_name = name
+    if("example.xyz.openbmc_project" not in name):
+        sdbusplus_name = "sdbusplus." + sdbusplus_name
+        pos = sdbusplus_name.rfind(".")
+        sdbusplus_name = (sdbusplus_name[:pos] + ".Error." +
+                          sdbusplus_name[pos+1:])
+    sdbusplus_type = sdbusplus_name.replace(".", "::")
+    phosphor_type = sdbusplus_type
+    if("example.xyz.openbmc_project" not in name):
+        phosphor_type = sdbusplus_type.replace("sdbusplus::", "")
+        phosphor_type = phosphor_type.replace("Error::", "")
+%>\
+
+% if sdbusplus_type != phosphor_type:
+namespace details
+{
+
+template <>
+struct map_exception_type<${sdbusplus_type}>
+{
+    using type = ${phosphor_type};
+};
+
+}
+%endif
 
     % endfor
 

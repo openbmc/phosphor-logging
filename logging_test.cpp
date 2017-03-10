@@ -3,8 +3,10 @@
 #include <iostream>
 #include <systemd/sd-journal.h>
 #include <sstream>
+#include <sdbusplus/exception.hpp>
 #include <phosphor-logging/elog.hpp>
 #include <phosphor-logging/log.hpp>
+#include <phosphor-logging/elog-errors.hpp>
 
 using namespace phosphor;
 using namespace logging;
@@ -88,8 +90,7 @@ int main()
                 example::xyz::openbmc_project::Example::Elog::
                     TestErrorTwo::DEV_NAME("test case 3"));
     }
-    catch (elogException<example::xyz::openbmc_project::Example::Elog::
-           TestErrorOne>& e)
+    catch (example::xyz::openbmc_project::Example::Elog::TestErrorOne& e)
     {
         std::cout << "elog exception caught: " << e.what() << std::endl;
     }
@@ -141,7 +142,7 @@ int main()
                            TestErrorTwo::DEV_ID(100),
                            TestErrorTwo::DEV_NAME("test case 4"));
     }
-    catch (elogExceptionBase& e)
+    catch (sdbusplus::exception_t& e)
     {
         std::cout << "elog exception caught: " << e.what() << std::endl;
     }
