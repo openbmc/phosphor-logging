@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sdbusplus/exception.hpp>
 #include <phosphor-logging/elog.hpp>
 #include <phosphor-logging/elog-errors.hpp>
 #include "elog_meta.hpp"
@@ -22,7 +23,7 @@ int main(int argc, char** argv)
             TestCallout::CALLOUT_ERRNO_TEST(0),
             TestCallout::CALLOUT_DEVICE_PATH_TEST(argv[1]));
     }
-    catch (elogException<TestCallout>& e)
+    catch (TestCallout& e)
     {
         commit(e.name());
     }

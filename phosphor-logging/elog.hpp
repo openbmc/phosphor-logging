@@ -3,7 +3,6 @@
 #include <tuple>
 #include <utility>
 #include <phosphor-logging/log.hpp>
-#include <phosphor-logging/elog-errors.hpp>
 
 namespace phosphor
 {
@@ -65,26 +64,27 @@ struct deduce_entry_type<prev_entry<T>>
 template <typename T> using deduce_entry_type_t =
         typename deduce_entry_type<T>::type;
 
-} // namespace details
-
 /**
- * @brief Error log exception base class
+ * @brief Used to map an sdbusplus error to a phosphor-logging error type
  *
- * This allows people to capture all error log exceptions if desired
+ * Users log errors via the sdbusplus error name, and the execption that's
+ * thrown is the corresponding sdbusplus exception. However, there's a need
+ * to map the sdbusplus error name to the phosphor-logging error name, in order
+ * to verify the error metadata at compile-time.
  */
-class elogExceptionBase : public std::exception {};
-
-/**
- * @brief Error log exception class
- *
- * This is for capturing specific error log exceptions
- */
-template <typename T> class elogException : public elogExceptionBase
+template <typename T>
+struct map_exception_type
 {
-    public:
-        const char* what() const noexcept override { return T::err_code; }
-        const char* name() const noexcept { return T::err_code; }
+    using type = T;
 };
+
+/**
+ * @brief Typedef for above structure usage
+ */
+template <typename T> using map_exception_type_t =
+    typename map_exception_type<T>::type;
+
+} // namespace details
 
 /** @fn commit()
  *  @brief Create an error log entry based on journal
@@ -103,17 +103,19 @@ template <typename T, typename ...Args>
 void elog(Args... i_args)
 {
     // Validate the caller passed in the required parameters
-    static_assert(std::is_same<typename T::metadata_types,
+    static_assert(std::is_same<typename details::
+                               map_exception_type_t<T>::metadata_types,
                                std::tuple<
                                details::deduce_entry_type_t<Args>...>>
                                ::value,
                   "You are not passing in required arguments for this error");
 
-    log<T::L>(T::err_msg,
-              details::deduce_entry_type<Args>{i_args}.get()...);
+    log<details::map_exception_type_t<T>::L>(
+        details::map_exception_type_t<T>::err_msg,
+        details::deduce_entry_type<Args>{i_args}.get()...);
 
     // Now throw an exception for this error
-    throw elogException<T>();
+    throw T();
 }
 
 } // namespace logging
