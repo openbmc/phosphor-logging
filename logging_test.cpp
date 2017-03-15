@@ -210,12 +210,12 @@ void commitError(const char *text)
         try
         {
             elog<example::xyz::openbmc_project::Example::Elog::
-                Error::AutoTestSimple>(
+                AutoTestSimple>(
                     example::xyz::openbmc_project::Example::Elog::
-                        Error::AutoTestSimple::STRING("FOO"));
+                        AutoTestSimple::STRING("FOO"));
         }
         catch (elogException<example::xyz::openbmc_project::Example::Elog::
-            Error::AutoTestSimple>& e)
+            AutoTestSimple>& e)
         {
             std::cout << "elog exception caught: " << e.what() << std::endl;
             commit(e.name());
