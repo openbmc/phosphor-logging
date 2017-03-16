@@ -8,9 +8,9 @@ namespace logging
 
 void commit(std::string&& e)
 {
-    constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
-    constexpr auto MAPPER_PATH = "/xyz/openbmc_project/ObjectMapper";
-    constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
+    constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.object_mapper";
+    constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
+    constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.object_mapper";
 
     constexpr auto IFACE_INTERNAL("xyz.openbmc_project.Logging.Internal.Manager");
 
