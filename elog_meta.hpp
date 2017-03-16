@@ -105,7 +105,7 @@ inline void build<example::xyz::openbmc_project::
 template <>
 void build<xyz::openbmc_project::Common::
            Callout::Device::CALLOUT_DEVICE_PATH>(
-    std::string&& match,
+    const std::string& match,
     const std::vector<std::string>& data,
     AssociationList& list);
 
