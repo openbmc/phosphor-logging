@@ -100,6 +100,10 @@ inline void build<example::xyz::openbmc_project::
     }
 }
 
+// The PROCESS_META flag is needed to get out of tree builds working. Such
+// builds will have access only to internal error interfaces, hence handlers
+// for out dbus error interfaces won't compile. This flag is not set by default,
+// the phosphor-logging recipe enabled it.
 #if defined PROCESS_META
 
 template <>
