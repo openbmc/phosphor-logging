@@ -60,6 +60,7 @@ class Entry : public EntryIfaces
             message(std::move(msgErr));
             additionalData(std::move(additionalDataErr));
             associations(std::move(objects));
+            resolved(false);
 
             // Emit deferred signal.
             this->emit_object_added();
