@@ -66,6 +66,21 @@ class Entry : public EntryIfaces
             this->emit_object_added();
         };
 
+        /** @brief Set resolution status of the error.
+         *  @param[in] value - boolean indicating resolution
+         *  status (true = resolved)
+         *  @returns value of 'Resolved' property
+         */
+        virtual bool resolved(bool value)
+        {
+            if(value)
+            {
+                associations({});
+            }
+            return sdbusplus::xyz::openbmc_project::
+                   Logging::server::Entry::resolved(value);
+        }
+
 };
 
 } // namespace logging
