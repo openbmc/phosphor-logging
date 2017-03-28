@@ -77,6 +77,12 @@ AC_ARG_VAR(CALLOUTS_YAML, [YAML filepath containing generated callouts.])
 AS_IF([test "x$CALLOUTS_YAML" == "x"], \
     [CALLOUTS_YAML="callouts-example.yaml"])
 
+# Compile error metadata handlers if we're asked to do so.
+AC_ARG_ENABLE([metadata-processing],
+    AS_HELP_STRING([--enable-metadata-processing], [Compile metadata handlers]),
+    [AX_APPEND_COMPILE_FLAGS([-DPROCESS_META], [CXXFLAGS])]
+)
+
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile test/Makefile])
 AC_CONFIG_FILES([phosphor-logging.pc])
