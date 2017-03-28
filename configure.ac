@@ -76,6 +76,9 @@ AS_IF([test "x$YAML_DIR" == "x"], \
 AC_ARG_VAR(CALLOUTS_YAML, [YAML filepath containing generated callouts.])
 AS_IF([test "x$CALLOUTS_YAML" == "x"], \
     [CALLOUTS_YAML="callouts-example.yaml"])
+AC_ARG_VAR(ENABLE_METADATA_PROCESSING, [Indicates if error metadata handlers should be compiled.])
+AS_IF([test "x$ENABLE_METADATA_PROCESSING" == "xyes"], \
+    AX_APPEND_COMPILE_FLAGS([-DPROCESS_META], [CXXFLAGS]))
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile test/Makefile])
