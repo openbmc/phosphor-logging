@@ -8,6 +8,7 @@ namespace logging
 
 void commit(std::string&& e)
 {
+    log<level::ERR>("commit method is deprecated, instead use commit_error");
     constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
     constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
     constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
@@ -49,7 +50,6 @@ void commit(std::string&& e)
     m.append(id, std::forward<std::string>(e));
     b.call_noreply(m);
 }
-
 } // namespace logging
 } // namespace phosphor
 

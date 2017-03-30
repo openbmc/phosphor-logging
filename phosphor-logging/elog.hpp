@@ -1,9 +1,10 @@
 #pragma once
-
+#include "config.h"
 #include <tuple>
 #include <utility>
 #include <phosphor-logging/log.hpp>
-
+#include <sdbusplus/exception.hpp>
+#include <sdbusplus/bus.hpp>
 namespace phosphor
 {
 
@@ -87,11 +88,68 @@ template <typename T> using map_exception_type_t =
 } // namespace details
 
 /** @fn commit()
- *  @brief Create an error log entry based on journal
+ *  \deprecated use commit_error
  *          entry with a specified MSG_ID
  *  @param[in] - Exception name
  */
 void commit(std::string&& name);
+
+/** @fn commit_error()
+ *  @brief Create an error log entry based on the
+ *          sdbus exception
+ *  @param[in] - sdbusplus exception
+ */
+template <typename T>
+void commit_error(const T& texception)
+{
+    //validate if the exception is derived from sbusplus::exception.
+    static_assert(
+        std::is_base_of<sdbusplus::exception::exception, T>::value,
+        "T must be a descendant of sbusplus exception"
+    );
+
+    constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
+    constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
+    constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
+
+    constexpr auto IFACE_INTERNAL("xyz.openbmc_project.Logging.Internal.Manager");
+
+    // Transaction id is located at the end of the string separated by a period.
+
+    auto b = sdbusplus::bus::new_default();
+    auto mapper = b.new_method_call(
+            MAPPER_BUSNAME,
+            MAPPER_PATH,
+            MAPPER_INTERFACE,
+            "GetObject");
+    mapper.append(OBJ_INTERNAL, std::vector<std::string>({IFACE_INTERNAL}));
+
+    auto mapperResponseMsg = b.call(mapper);
+    if (mapperResponseMsg.is_method_error())
+    {
+        log<level::ERR>("Error in mapper call");
+        return;
+    }
+
+    std::map<std::string, std::vector<std::string>> mapperResponse;
+    mapperResponseMsg.read(mapperResponse);
+    if (mapperResponse.empty())
+    {
+        log<level::ERR>("Error reading mapper response");
+        return;
+    }
+
+    const auto& host = mapperResponse.cbegin()->first;
+    auto m = b.new_method_call(
+            host.c_str(),
+            OBJ_INTERNAL,
+            IFACE_INTERNAL,
+            "Commit");
+    uint64_t id = sdbusplus::server::transaction::get_id();
+    m.append(id, std::forward<std::string>(texception.name()));
+    b.call_noreply(m);
+}
+
 
 /** @fn elog()
  *  @brief Create a journal log entry based on predefined
@@ -116,6 +174,30 @@ void elog(Args... i_args)
 
     // Now throw an exception for this error
     throw T();
+}
+
+/** @fn elog_commit()
+ *  @brief Create a journal log entry based on predefined
+ *          error log information
+ *  @tparam T - exception
+ *  @param[in] i_args - Metadata fields to be added to the journal entry
+ */
+template <typename T, typename ...Args>
+void elog_commit(const T& exception, Args... i_args)
+{
+    // Validate the caller passed in the required parameters
+    static_assert(std::is_same<typename details::
+                               map_exception_type_t<T>::metadata_types,
+                               std::tuple<
+                               details::deduce_entry_type_t<Args>...>>
+                               ::value,
+                  "You are not passing in required arguments for this error");
+
+    log<details::map_exception_type_t<T>::L>(
+        details::map_exception_type_t<T>::err_msg,
+        details::deduce_entry_type<Args>{i_args}.get()...);
+
+    commit_error(exception);
 }
 
 } // namespace logging

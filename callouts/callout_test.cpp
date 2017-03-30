@@ -24,7 +24,7 @@ int main(int argc, char** argv)
     }
     catch (TestCallout& e)
     {
-        commit(e.name());
+        commit_error(e);
     }
 
     return 0;

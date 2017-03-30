@@ -16,7 +16,6 @@ const char *usage = "Usage: logging-test [OPTION]          \n\n\
 Options:                                                     \n\
 [NONE]                          Default test case.           \n\
 -h, --help                      Display this usage text.     \n\
--c, --commit <string>           Commit desired error.      \n\n\
 Valid errors to commit:                                      \n\
 AutoTestSimple\n";
 
@@ -201,6 +200,52 @@ int elog_test()
     //                   TestErrorOne::FILE_PATH("test"),
     //                   TestErrorOne::FILE_NAME(1));
 
+    // TEST 5 - create and commit error log
+    number = 0x9876;
+    TestErrorOne testError;
+    elog_commit<TestErrorOne>(testError,
+                        TestErrorOne::ERRNUM(number),
+                        prev_entry<TestErrorOne::FILE_PATH>(),
+                        TestErrorOne::FILE_NAME("elog_test_5.txt"),
+                        TestErrorTwo::DEV_ADDR(0xDEADDEAD),
+                        TestErrorTwo::DEV_ID(100),
+                        TestErrorTwo::DEV_NAME("test case 5"));
+
+    // Now read back and verify our data made it into the journal
+    stream.str("");
+    stream << std::hex << number;
+    rc = validate_journal(TestErrorOne::ERRNUM::str_short,
+                          std::string(stream.str()).c_str());
+    // This should just be equal to what we put in test 5
+    rc = validate_journal(TestErrorOne::FILE_PATH::str_short,
+                          test_string);
+    if(rc)
+        return(rc);
+
+    rc = validate_journal(TestErrorOne::FILE_NAME::str_short,
+                          "elog_test_5.txt");
+    if(rc)
+        return(rc);
+
+    rc = validate_journal(TestErrorTwo::DEV_ADDR::str_short,
+                          "0xDEADDEAD");
+    if(rc)
+        return(rc);
+
+    rc = validate_journal(TestErrorTwo::DEV_ID::str_short,
+                          "100");
+    if(rc)
+        return(rc);
+
+    rc = validate_journal(TestErrorTwo::DEV_NAME::str_short,
+                          "test case 5");
+    if(rc)
+        return(rc);
+
+    commit_error(testError);
+    if(rc)
+        return(rc);
+
     return 0;
 }
 
@@ -219,7 +264,7 @@ void commitError(const char *text)
             AutoTestSimple& e)
         {
             std::cout << "elog exception caught: " << e.what() << std::endl;
-            commit(e.name());
+            commit_error(e);
         }
     }
 
@@ -236,7 +281,6 @@ int main(int argc, char *argv[])
     static struct option long_options[] =
     {
           {"help",    no_argument,       0, 'h'},
-          {"commit",  required_argument, 0, 'c'},
           {0, 0, 0, 0}
     };
     int option_index = 0;
@@ -245,10 +289,6 @@ int main(int argc, char *argv[])
     {
         switch (arg)
         {
-            case 'c':
-                commitError(optarg);
-                return 0;
-
             case 'h':
             case '?':
                 std::cerr << usage;
