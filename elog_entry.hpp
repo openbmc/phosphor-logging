@@ -60,12 +60,17 @@ class Entry : public EntryIfaces
             message(std::move(msgErr));
             additionalData(std::move(additionalDataErr));
             associations(std::move(objects));
+            // Store a copy of associations in case we need to recreate
+            assocs = associations();
             resolved(false);
 
             // Emit deferred signal.
             this->emit_object_added();
         };
 
+    private:
+        /** @brief This entry's associations */
+        AssociationList assocs = {};
 };
 
 } // namespace logging
