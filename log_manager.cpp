@@ -33,6 +33,10 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     constexpr const auto transactionIdVarOffset = transactionIdVarSize + 1;
 
     sd_journal *j = nullptr;
+
+    // Flush all the pending log messages into the journal
+    sd_journal_sync();
+
     int rc = sd_journal_open(&j, SD_JOURNAL_LOCAL_ONLY);
     if (rc < 0)
     {
