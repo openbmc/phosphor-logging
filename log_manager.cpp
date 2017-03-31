@@ -24,6 +24,8 @@ namespace phosphor
 namespace logging
 {
 
+std::map<uint32_t, std::unique_ptr<Entry>> Manager::entries;
+
 void Manager::commit(uint64_t transactionId, std::string errMsg)
 {
     constexpr const auto transactionIdVar = "TRANSACTION_ID";
@@ -175,6 +177,15 @@ void Manager::processMetadata(const std::string& errorName,
                 (iter->second)(metadata, additionalData, objects);
             }
         }
+    }
+}
+
+void Manager::erase(uint32_t entryId)
+{
+    auto entry = entries.find(entryId);
+    if(entries.end() != entry)
+    {
+        entries.erase(entry);
     }
 }
 
