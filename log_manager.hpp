@@ -61,6 +61,12 @@ class Manager : public details::ServerObject<details::ManagerIface>
         void commit(uint64_t transactionId, std::string errMsg) override;
 
 
+        /** @brief Erase specified entry d-bus object
+         *
+         * @param[in] entryId - unique identifier of the entry
+         */
+        void erase(uint32_t entryId);
+
     private:
         /** @brief Call metadata handler(s), if any. Handlers may create
          *         associations.

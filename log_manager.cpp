@@ -178,5 +178,14 @@ void Manager::processMetadata(const std::string& errorName,
     }
 }
 
+void Manager::erase(uint32_t entryId)
+{
+    auto entry = entries.find(entryId);
+    if(entries.end() != entry)
+    {
+        entries.erase(entry);
+    }
+}
+
 } // namespace logging
 } // namepsace phosphor
