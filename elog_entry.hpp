@@ -4,6 +4,7 @@
 #include <sdbusplus/server/object.hpp>
 #include "xyz/openbmc_project/Logging/Entry/server.hpp"
 #include "org/openbmc/Associations/server.hpp"
+#include "org/openbmc/Object/Delete/server.hpp"
 
 namespace phosphor
 {
@@ -12,6 +13,7 @@ namespace logging
 
 using EntryIfaces = sdbusplus::server::object::object<
     sdbusplus::xyz::openbmc_project::Logging::server::Entry,
+    sdbusplus::org::openbmc::Object::server::Delete,
     sdbusplus::org::openbmc::server::Associations>;
 
 using AssociationList =
@@ -65,6 +67,9 @@ class Entry : public EntryIfaces
             this->emit_object_added();
         };
 
+        /** @brief Delete this d-bus object.
+         */
+        void delete_() override;
 };
 
 } // namespace logging
