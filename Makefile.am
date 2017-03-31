@@ -6,7 +6,8 @@ nobase_include_HEADERS = \
 
 nobase_nodist_include_HEADERS = \
 	phosphor-logging/elog-errors.hpp \
-	xyz/openbmc_project/Logging/Internal/Manager/server.hpp
+	xyz/openbmc_project/Logging/Internal/Manager/server.hpp \
+	org/openbmc/Object/Delete/server.hpp
 
 libphosphor_logging_FILES = \
 	elog.cpp elog_meta.cpp
@@ -30,6 +31,7 @@ sbin_PROGRAMS = phosphor-log-manager
 
 phosphor_log_manager_SOURCES = \
 	xyz/openbmc_project/Logging/Internal/Manager/server.cpp \
+	org/openbmc/Object/Delete/server.cpp \
 	log_manager.cpp \
 	log_manager_main.cpp \
 	elog-lookup.cpp \
@@ -45,6 +47,8 @@ BUILT_SOURCES = \
 	elog-process-metadata.cpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.cpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.hpp \
+	org/openbmc/Object/Delete/server.hpp \
+	org/openbmc/Object/Delete/server.cpp \
 	callouts-gen.hpp
 
 CLEANFILES = \
@@ -53,6 +57,8 @@ CLEANFILES = \
 	elog-process-metadata.cpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.cpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.hpp \
+	org/openbmc/Object/Delete/server.hpp \
+	org/openbmc/Object/Delete/server.cpp \
 	callouts-gen.hpp
 
 # systemd required for journal interfaces
@@ -77,6 +83,14 @@ xyz/openbmc_project/Logging/Internal/Manager/server.cpp: xyz/openbmc_project/Log
 xyz/openbmc_project/Logging/Internal/Manager/server.hpp: xyz/openbmc_project/Logging/Internal/Manager.interface.yaml
 	@mkdir -p `dirname $@`
 	$(SDBUSPLUSPLUS) -r $(srcdir) interface server-header xyz.openbmc_project.Logging.Internal.Manager > $@
+
+org/openbmc/Object/Delete/server.cpp: org/openbmc/Object/Delete.interface.yaml org/openbmc/Object/Delete/server.hpp
+	@mkdir -p `dirname $@`
+	$(SDBUSPLUSPLUS) -r $(srcdir) interface server-cpp org.openbmc.Object.Delete > $@
+
+org/openbmc/Object/Delete/server.hpp: org/openbmc/Object/Delete.interface.yaml
+	@mkdir -p `dirname $@`
+	$(SDBUSPLUSPLUS) -r $(srcdir) interface server-header org.openbmc.Object.Delete > $@
 
 ELOG_MAKO ?= elog-gen-template.mako.hpp
 LOOKUP_MAKO ?= elog-lookup-template.mako.cpp
