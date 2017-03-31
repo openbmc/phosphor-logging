@@ -3,6 +3,7 @@
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/object.hpp>
 #include "xyz/openbmc_project/Logging/Entry/server.hpp"
+#include "xyz/openbmc_project/Object/Delete/server.hpp"
 #include "org/openbmc/Associations/server.hpp"
 
 namespace phosphor
@@ -12,6 +13,7 @@ namespace logging
 
 using EntryIfaces = sdbusplus::server::object::object<
     sdbusplus::xyz::openbmc_project::Logging::server::Entry,
+    sdbusplus::xyz::openbmc_project::Object::server::Delete,
     sdbusplus::org::openbmc::server::Associations>;
 
 using AssociationList =
@@ -87,6 +89,10 @@ class Entry : public EntryIfaces
             return sdbusplus::xyz::openbmc_project::
                    Logging::server::Entry::resolved(value);
         }
+
+        /** @brief Delete this d-bus object.
+         */
+        void delete_() override;
 
     private:
         /** @brief This entry's associations */
