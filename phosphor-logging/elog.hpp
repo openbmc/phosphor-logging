@@ -1,9 +1,8 @@
 #pragma once
-
 #include <tuple>
 #include <utility>
 #include <phosphor-logging/log.hpp>
-
+#include <sdbusplus/exception.hpp>
 namespace phosphor
 {
 
@@ -84,14 +83,38 @@ struct map_exception_type
 template <typename T> using map_exception_type_t =
     typename map_exception_type<T>::type;
 
+/** @fn commit()
+ *  @brief Create an error log entry based on journal
+ *          entry with a specified exception name
+ *  @param[in] name - name of the error exception
+ */
+void commit(std::string&& name);
+
 } // namespace details
+
+/** @fn commit()
+ *  \deprecated use commit<T>()
+ *  @brief Create an error log entry based on journal
+ *          entry with a specified MSG_ID
+ *  @param[in] name - name of the error exception
+ */
+void commit(std::string&& name);
 
 /** @fn commit()
  *  @brief Create an error log entry based on journal
  *          entry with a specified MSG_ID
- *  @param[in] - Exception name
  */
-void commit(std::string&& name);
+template <typename T>
+void commit()
+{
+    // Validate if the exception is derived from sdbusplus::exception.
+    static_assert(
+        std::is_base_of<sdbusplus::exception::exception, T>::value,
+        "T must be a descendant of sdbusplus::exception::exception"
+    );
+    details::commit(details::map_exception_type_t<T>::errName);
+}
+
 
 /** @fn elog()
  *  @brief Create a journal log entry based on predefined
@@ -102,6 +125,12 @@ void commit(std::string&& name);
 template <typename T, typename ...Args>
 void elog(Args... i_args)
 {
+    // Validate if the exception is derived from sdbusplus::exception.
+    static_assert(
+        std::is_base_of<sdbusplus::exception::exception, T>::value,
+        "T must be a descendant of sdbusplus::exception::exception"
+    );
+
     // Validate the caller passed in the required parameters
     static_assert(std::is_same<typename details::
                                map_exception_type_t<T>::metadata_types,
@@ -111,7 +140,7 @@ void elog(Args... i_args)
                   "You are not passing in required arguments for this error");
 
     log<details::map_exception_type_t<T>::L>(
-        details::map_exception_type_t<T>::err_msg,
+        T::errDesc,
         details::deduce_entry_type<Args>{i_args}.get()...);
 
     // Now throw an exception for this error
