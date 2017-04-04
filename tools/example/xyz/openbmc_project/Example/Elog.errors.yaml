@@ -9,3 +9,6 @@
 
 - name: TestCallout
   description: This is test error TestCallout
+
+- name: AutoTestCreateAndCommit
+  description: To test error creation and commit
