@@ -104,8 +104,8 @@ struct ${b}
 %>
 struct ${error_type}
 {
-    static constexpr auto err_code = "${name}";
-    static constexpr auto err_msg = "${error_msg[name]}";
+    static constexpr auto errName = "${name}";
+    static constexpr auto errDesc = "${error_msg[name]}";
     static constexpr auto L = level::${error_lvl[name]};
     % for b in meta_list:
     using ${b} = _${classname}::${b};
@@ -117,17 +117,17 @@ struct ${error_type}
 
     const char* name() const noexcept
     {
-        return err_code;
+        return errName;
     }
 
     const char* description() const noexcept
     {
-        return err_msg;
+        return errDesc;
     }
 
     const char* what() const noexcept
     {
-        return err_code;
+        return errName;
     }
 };
 
