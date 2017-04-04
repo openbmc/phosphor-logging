@@ -1,4 +1,3 @@
-#include "config.h"
 #include <phosphor-logging/elog.hpp>
 
 namespace phosphor
@@ -8,6 +7,7 @@ namespace logging
 
 void commit(std::string&& e)
 {
+    log<level::ERR>("method is deprecated, instead use commit() with exception");
     constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
     constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
     constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";

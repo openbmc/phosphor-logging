@@ -88,8 +88,8 @@ template <typename T> using map_exception_type_t =
 } // namespace details
 
 /** @fn commit()
- *  @brief Create an error log entry based on journal
- *          entry with a specified MSG_ID
+ *  \deprecated use commit()
+ *  @brief Commit the error with the specified exception name
  *  @param[in] - Exception name
  */
 void commit(std::string&& name);
