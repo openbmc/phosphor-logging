@@ -4,7 +4,6 @@
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/exception.hpp>
 #include <sdbusplus/bus.hpp>
-#include<iostream>
 namespace phosphor
 {
 
@@ -114,7 +113,6 @@ void commit()
         std::is_base_of<sdbusplus::exception::exception, T>::value,
         "T must be a descendant of sdbusplus::exception::exception"
     );
-    std::cout << "came into template method " << std::endl;
     details::commit(details::map_exception_type_t<T>::err_msg);
 }
 

@@ -18,7 +18,7 @@ Options:                                                     \n\
 -h, --help                      Display this usage text.     \n\
 -c, --commit <string>           Commit desired error.      \n\n\
 Valid errors to commit:                                      \n\
-AutoTestSimple\n";
+AutoTestSimple, AutoTestCreateAndCommit\n";
 
 // validate the journal metadata equals the input value
 int validate_journal(const char *i_entry, const char *i_value)
@@ -204,7 +204,7 @@ int elog_test()
     return 0;
 }
 
-void commitError(const char *text)
+int commitError(const char *text)
 {
     if (strcmp(text, "AutoTestSimple") == 0)
     {
@@ -222,8 +222,54 @@ void commitError(const char *text)
             commit(e.name());
         }
     }
+    else if (strcmp(text, "AutoTestCreateAndCommit") == 0)
+    {
+        int number = 0x9876;
+        // Reduce our error namespaces
+        using namespace example::xyz::openbmc_project::Example::Elog;
+        const char *test_string = "/tmp/test_string/";
+        TestErrorOne testError;
+        createAndCommit<TestErrorOne>(TestErrorOne::ERRNUM(number),
+                            prev_entry<TestErrorOne::FILE_PATH>(),
+                            TestErrorOne::FILE_NAME("commit_error.txt"),
+                            TestErrorTwo::DEV_ADDR(0xDEADDEAD),
+                            TestErrorTwo::DEV_ID(100),
+                            TestErrorTwo::DEV_NAME("commitError"));
 
-    return;
+        // Now read back and verify our data made it into the journal
+        std::stringstream stream;
+        stream.str("");
+        stream << std::hex << number;
+        int rc = validate_journal(TestErrorOne::ERRNUM::str_short,
+                              std::string(stream.str()).c_str());
+        // This should just be equal to what we put in test 5
+        rc = validate_journal(TestErrorOne::FILE_PATH::str_short,
+                              test_string);
+        if(rc)
+            return (rc);
+
+        rc = validate_journal(TestErrorOne::FILE_NAME::str_short,
+                              "commit_error.txt");
+        if(rc)
+            return(rc);
+
+        rc = validate_journal(TestErrorTwo::DEV_ADDR::str_short,
+                              "0xDEADDEAD");
+        if(rc)
+            return(rc);
+
+        rc = validate_journal(TestErrorTwo::DEV_ID::str_short,
+                              "100");
+        if(rc)
+            return(rc);
+
+        rc = validate_journal(TestErrorTwo::DEV_NAME::str_short,
+                              "commitError");
+        if(rc)
+            return(rc);
+    }
+
+    return 0;
 }
 
 int main(int argc, char *argv[])
@@ -246,8 +292,7 @@ int main(int argc, char *argv[])
         switch (arg)
         {
             case 'c':
-                commitError(optarg);
-                return 0;
+                return commitError(optarg);
 
             case 'h':
             case '?':
