@@ -46,8 +46,8 @@ struct ESEL
 
 struct Event
 {
-    static constexpr auto err_code = "org.open_power.Error.Host.Event.Event";
-    static constexpr auto err_msg = "A host system event was received";
+    static constexpr auto errName = "org.open_power.Error.Host.Event.Event";
+    static constexpr auto errDesc = "A host system event was received";
     static constexpr auto L = level::INFO;
     using ESEL = _Event::ESEL;
     using metadata_types = std::tuple<ESEL>;
