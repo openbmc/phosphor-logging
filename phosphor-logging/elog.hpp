@@ -1,9 +1,10 @@
 #pragma once
-
+#include "config.h"
 #include <tuple>
 #include <utility>
 #include <phosphor-logging/log.hpp>
-
+#include <sdbusplus/exception.hpp>
+#include <sdbusplus/bus.hpp>
 namespace phosphor
 {
 
@@ -92,6 +93,61 @@ template <typename T> using map_exception_type_t =
  *  @param[in] - Exception name
  */
 void commit(std::string&& name);
+
+/** @fn commit()
+ *  @brief Commit the error with the specified exception
+ */
+template <typename T>
+void commit()
+{
+    //validate if the exception is derived from sdbusplus::exception.
+    static_assert(
+        std::is_base_of<sdbusplus::exception::exception, T>::value,
+        "T must be a descendant of sdbusplus exception"
+    );
+
+    constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
+    constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
+    constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
+
+    constexpr auto IFACE_INTERNAL("xyz.openbmc_project.Logging.Internal.Manager");
+
+    // Transaction id is located at the end of the string separated by a period.
+
+    auto b = sdbusplus::bus::new_default();
+    auto mapper = b.new_method_call(
+            MAPPER_BUSNAME,
+            MAPPER_PATH,
+            MAPPER_INTERFACE,
+            "GetObject");
+    mapper.append(OBJ_INTERNAL, std::vector<std::string>({IFACE_INTERNAL}));
+
+    auto mapperResponseMsg = b.call(mapper);
+    if (mapperResponseMsg.is_method_error())
+    {
+        log<level::ERR>("Error in mapper call");
+        return;
+    }
+
+    std::map<std::string, std::vector<std::string>> mapperResponse;
+    mapperResponseMsg.read(mapperResponse);
+    if (mapperResponse.empty())
+    {
+        log<level::ERR>("Error reading mapper response");
+        return;
+    }
+
+    const auto& host = mapperResponse.cbegin()->first;
+    auto m = b.new_method_call(
+            host.c_str(),
+            OBJ_INTERNAL,
+            IFACE_INTERNAL,
+            "Commit");
+    uint64_t id = sdbusplus::server::transaction::get_id();
+    m.append(id, std::forward<std::string>(details::map_exception_type_t<T>::err_msg));
+    b.call_noreply(m);
+}
+
 
 /** @fn elog()
  *  @brief Create a journal log entry based on predefined
