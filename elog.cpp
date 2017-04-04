@@ -5,9 +5,11 @@ namespace phosphor
 {
 namespace logging
 {
-
-void commit(std::string&& e)
+namespace details
 {
+void commit(std::string&& name)
+{
+    using phosphor::logging::log;
     constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
     constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
     constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
@@ -46,10 +48,16 @@ void commit(std::string&& e)
             IFACE_INTERNAL,
             "Commit");
     uint64_t id = sdbusplus::server::transaction::get_id();
-    m.append(id, std::forward<std::string>(e));
+    m.append(id, std::forward<std::string>(name));
     b.call_noreply(m);
+}
+} // namespace details
+
+void commit(std::string&& name)
+{
+    log<level::ERR>("method is deprecated, instead use commit<T>()");
+    phosphor::logging::details::commit(std::forward<std::string>(name));
 }
 
 } // namespace logging
 } // namespace phosphor
-
