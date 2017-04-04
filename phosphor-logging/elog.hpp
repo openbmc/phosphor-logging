@@ -1,9 +1,10 @@
 #pragma once
-
+#include "config.h"
 #include <tuple>
 #include <utility>
 #include <phosphor-logging/log.hpp>
-
+#include <sdbusplus/exception.hpp>
+#include <sdbusplus/bus.hpp>
 namespace phosphor
 {
 
@@ -84,6 +85,13 @@ struct map_exception_type
 template <typename T> using map_exception_type_t =
     typename map_exception_type<T>::type;
 
+/** @fn commit()
+ *  @brief Create an error log entry based on journal
+ *          entry with a specified exception name
+ *  @param[in] - Exception name
+ */
+void commit(std::string&& name);
+
 } // namespace details
 
 /** @fn commit()
@@ -92,6 +100,21 @@ template <typename T> using map_exception_type_t =
  *  @param[in] - Exception name
  */
 void commit(std::string&& name);
+
+/** @fn commit()
+ *  @brief Commit the error with the specified exception
+ */
+template <typename T>
+void commit()
+{
+    //validate if the exception is derived from sdbusplus::exception.
+    static_assert(
+        std::is_base_of<sdbusplus::exception::exception, T>::value,
+        "T must be a descendant of sdbusplus exception"
+    );
+    details::commit(details::map_exception_type_t<T>::err_msg);
+}
+
 
 /** @fn elog()
  *  @brief Create a journal log entry based on predefined
