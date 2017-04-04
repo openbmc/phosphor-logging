@@ -1,5 +1,4 @@
 #pragma once
-#include "config.h"
 #include <tuple>
 #include <utility>
 #include <phosphor-logging/log.hpp>
@@ -95,8 +94,9 @@ void commit(std::string&& name);
 } // namespace details
 
 /** @fn commit()
+ *  \deprecated use commit<T>()
  *  @brief Create an error log entry based on journal
- *          entry with a specified MSG_ID
+ *          entry with a specified exception name
  *  @param[in] - Exception name
  */
 void commit(std::string&& name);
