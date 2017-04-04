@@ -18,7 +18,7 @@ Options:                                                     \n\
 -h, --help                      Display this usage text.     \n\
 -c, --commit <string>           Commit desired error.      \n\n\
 Valid errors to commit:                                      \n\
-AutoTestSimple\n";
+AutoTestSimple, AutoTestCreateAndCommit\n";
 
 // validate the journal metadata equals the input value
 int validate_journal(const char *i_entry, const char *i_value)
@@ -204,7 +204,7 @@ int elog_test()
     return 0;
 }
 
-void commitError(const char *text)
+int commitError(const char *text)
 {
     if (strcmp(text, "AutoTestSimple") == 0)
     {
@@ -222,8 +222,16 @@ void commitError(const char *text)
             commit(e.name());
         }
     }
+    else if (strcmp(text, "AutoTestCreateAndCommit") == 0)
+    {
+        using namespace example::xyz::openbmc_project::Example::Elog;
+        createAndCommit<example::xyz::openbmc_project::Example::Elog::
+            AutoTestCreateAndCommit>(
+                example::xyz::openbmc_project::Example::Elog::
+                    AutoTestCreateAndCommit::STRING("COMMIT"));
+    }
 
-    return;
+    return 0;
 }
 
 int main(int argc, char *argv[])
@@ -246,8 +254,7 @@ int main(int argc, char *argv[])
         switch (arg)
         {
             case 'c':
-                commitError(optarg);
-                return 0;
+                return commitError(optarg);
 
             case 'h':
             case '?':

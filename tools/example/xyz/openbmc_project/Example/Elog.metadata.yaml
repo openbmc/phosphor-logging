@@ -34,3 +34,9 @@
           type: uint32
   inherits:
     - example.xyz.openbmc_project.Example.Device.Callout
+
+- name: AutoTestCreateAndCommit
+  level: ERR
+  meta:
+    - str: STRING=%s
+      type: string
