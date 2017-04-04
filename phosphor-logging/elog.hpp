@@ -141,6 +141,36 @@ void elog(Args... i_args)
     // Now throw an exception for this error
     throw T();
 }
+
+/** @fn createAndCommit()
+ *  @brief Create a journal log entry based on predefined
+ *         error log information and commit the error
+ *  @tparam T - exception
+ *  @param[in] i_args - Metadata fields to be added to the journal entry
+ */
+template <typename T, typename ...Args>
+void createAndCommit(Args... i_args)
+{
+    //validate if the exception is derived from sdbusplus::exception.
+    static_assert(
+        std::is_base_of<sdbusplus::exception::exception, T>::value,
+        "T must be a descendant of sdbusplus::exception::exception"
+    );
+
+    // Validate the caller passed in the required parameters
+    static_assert(std::is_same<typename details::
+                               map_exception_type_t<T>::metadata_types,
+                               std::tuple<
+                               details::deduce_entry_type_t<Args>...>>
+                               ::value,
+                  "You are not passing in required arguments for this error");
+
+    log<details::map_exception_type_t<T>::L>(
+        T::errDesc,
+        details::deduce_entry_type<Args>{i_args}.get()...);
+
+    commit<T>();
+}
 } // namespace logging
 
 } // namespace phosphor
