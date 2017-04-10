@@ -17,6 +17,8 @@ using EntryIfaces = sdbusplus::server::object::object<
 using AssociationList =
      std::vector<std::tuple<std::string, std::string, std::string>>;
 
+class Manager;
+
 /** @class Entry
  *  @brief OpenBMC logging entry implementation.
  *  @details A concrete implementation for the
@@ -43,6 +45,7 @@ class Entry : public EntryIfaces
          *  @param[in] severityErr - The severity of the error.
          *  @param[in] msgErr - The message of the error.
          *  @param[in] additionalDataErr - The error metadata.
+         *  @param[in] parent - The error's parent.
          */
         Entry(sdbusplus::bus::bus& bus,
               const std::string& path,
@@ -51,8 +54,10 @@ class Entry : public EntryIfaces
               Level severityErr,
               std::string&& msgErr,
               std::vector<std::string>&& additionalDataErr,
-              AssociationList&& objects) :
-              EntryIfaces(bus, path.c_str(), true)
+              AssociationList&& objects,
+              Manager& parent) :
+              EntryIfaces(bus, path.c_str(), true),
+              parent(parent)
         {
             id(idErr);
             severity(severityErr);
@@ -86,6 +91,9 @@ class Entry : public EntryIfaces
     private:
         /** @brief This entry's associations */
         AssociationList assocs = {};
+
+        /** @brief This entry's parent */
+        Manager& parent;
 };
 
 } // namespace logging

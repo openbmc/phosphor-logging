@@ -153,7 +153,8 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
             static_cast<Entry::Level>(reqLevel),
             std::move(errMsg),
             std::move(additionalData),
-            std::move(objects))));
+            std::move(objects),
+            *this)));
     return;
 }
 
