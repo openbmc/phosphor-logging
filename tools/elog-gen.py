@@ -212,7 +212,7 @@ def get_elog_data(i_elog_yaml,
             # Get 0th inherited error (current support - single inheritance)
             parent = i['inherits'][0]
         parents[fullname] = parent
-        error_msg[fullname] = match['description']
+        error_msg[fullname] = match['description'].strip()
         try:
             error_lvl[fullname] = i['level']
         except:
