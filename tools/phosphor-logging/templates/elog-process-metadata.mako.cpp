@@ -15,7 +15,7 @@ using namespace std::placeholders;
 
 extern const std::map<metadata::Metadata,
                       std::function<metadata::associations::Type>> meta = {
-    % for key, value in metadata_process.iteritems():
+    % for key, value in metadata_process.items():
 <%
         type = value.replace(".", "::")
 %>\

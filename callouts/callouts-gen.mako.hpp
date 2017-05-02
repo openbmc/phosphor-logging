@@ -14,7 +14,7 @@ namespace logging
 
 constexpr auto callouts =
 {
-% for key, value in sorted(calloutsMap.iteritems()):
+% for key, value in sorted(calloutsMap.items()):
     std::make_tuple("${key}", "${value}"),
 % endfor
 };
