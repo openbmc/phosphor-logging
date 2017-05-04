@@ -127,19 +127,19 @@ def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
     for error_yaml in error_yamls:
         # Verify the error yaml file
         if (not (os.path.isfile(error_yaml))):
-            print("Can not find input yaml file " + error_yaml)
+            print("Cannot find input yaml file " + error_yaml)
             exit(1)
 
         # Verify the metadata yaml file
         meta_yaml = get_meta_yaml_file(error_yaml)
         if (not (os.path.isfile(meta_yaml))):
-            print("Can not find meta yaml file " + meta_yaml)
-            exit(1)
+            print("Ignoring, cannot find meta yaml file " + meta_yaml)
+            continue;
 
         # Verify the input mako file
         template_path = "/".join((i_template_dir, i_elog_mako))
         if (not (os.path.isfile(template_path))):
-            print("Can not find input template file " + template_path)
+            print("Cannot find input template file " + template_path)
             exit(1)
 
         get_elog_data(error_yaml,
