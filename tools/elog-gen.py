@@ -127,19 +127,16 @@ def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
     for error_yaml in error_yamls:
         # Verify the error yaml file
         if (not (os.path.isfile(error_yaml))):
-            print("Can not find input yaml file " + error_yaml)
+            print("Cannot find input yaml file " + error_yaml)
             exit(1)
 
         # Verify the metadata yaml file
         meta_yaml = get_meta_yaml_file(error_yaml)
-        if (not (os.path.isfile(meta_yaml))):
-            print("Can not find meta yaml file " + meta_yaml)
-            exit(1)
 
         # Verify the input mako file
         template_path = "/".join((i_template_dir, i_elog_mako))
         if (not (os.path.isfile(template_path))):
-            print("Can not find input template file " + template_path)
+            print("Cannot find input template file " + template_path)
             exit(1)
 
         get_elog_data(error_yaml,
@@ -175,7 +172,6 @@ def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
             metadata_process=metadata_process))
     f.close()
 
-
 def get_elog_data(i_elog_yaml,
                   i_elog_meta_yaml,
                   i_namespace,
@@ -183,6 +179,8 @@ def get_elog_data(i_elog_yaml,
     r"""
     Parse the error and metadata yaml files in order to pull out
     error metadata.
+
+    Use default values if metadata yaml file is not found.
 
     Description of arguments:
     i_elog_yaml                 error yaml file
@@ -193,42 +191,59 @@ def get_elog_data(i_elog_yaml,
     (errors, error_msg, error_lvl, meta,
      meta_data, parents, metadata_process) = o_elog_data
     ifile = yaml.safe_load(open(i_elog_yaml))
-    mfile = yaml.safe_load(open(i_elog_meta_yaml))
-    for i in mfile:
-        match = None
-        # Find the corresponding meta data for this entry
-        for j in ifile:
-            if j['name'] == i['name']:
-                match = j
-                break
-        if (match is None):
-            print("Error - Did not find meta data for " + i['name'])
+
+    #for all the errors in error yaml file
+    for i in ifile:
+        if 'name' not in i:
+            print "Error - Did not find name in" + i_elog_yaml
             exit(1)
-        # Grab the main error and it's info
         fullname = i_namespace.replace('/', '.') + ('.') + i['name']
         errors.append(fullname)
+
+        if 'description' in i:
+            error_msg[fullname] = i['description'].strip()
+
+        #set default values
+        error_lvl[fullname] = "ERR"
+        parents[fullname] = None
+
+        #check if meta data yaml file is found
+        if not os.path.isfile(i_elog_meta_yaml):
+            continue;
+        mfile = yaml.safe_load(open(i_elog_meta_yaml))
+
+        # Find the meta data entry
+        match = None
+        for m in mfile:
+            if m['name'] == i['name']:
+                match = m
+                break;
+
+        if match is None:
+            print "Error - Did not find name in" + i_elog_meta_yaml
+            exit(1)
+
+        if 'level' in m:
+            error_lvl[fullname] = m['level']
+
+        # Get 0th inherited error (current support - single inheritance)
         parent = None
-        if('inherits' in i):
-            # Get 0th inherited error (current support - single inheritance)
-            parent = i['inherits'][0]
+        if 'inherits' in m:
+            parent = m['inherits'][0]
+            print "full name " + fullname + " parent " + parent
         parents[fullname] = parent
-        error_msg[fullname] = match['description'].strip()
-        try:
-            error_lvl[fullname] = i['level']
-        except:
-            print ("No level found for: " + i['name'] + ", using INFO")
-            error_lvl[fullname] = "INFO"
-        tmp_meta = []
-        # grab all the meta data fields and info
-        if('meta' in i):
-            for j in i['meta']:
-                str_short = j['str'].split('=')[0]
+
+        if 'meta' in m:
+            tmp_meta = []
+            # grab all the meta data fields and info
+            for k in m['meta']:
+                str_short = k['str'].split('=')[0]
                 tmp_meta.append(str_short)
                 meta_data[str_short] = {}
-                meta_data[str_short]['str'] = j['str']
+                meta_data[str_short]['str'] = k['str']
                 meta_data[str_short]['str_short'] = str_short
-                meta_data[str_short]['type'] = get_cpp_type(j['type'])
-                if(('process' in j) and (True == j['process'])):
+                meta_data[str_short]['type'] = get_cpp_type(k['type'])
+                if ('process' in k) and (True == k['process']):
                     metadata_process[str_short] = fullname + "." + str_short
             meta[fullname] = tmp_meta
 
