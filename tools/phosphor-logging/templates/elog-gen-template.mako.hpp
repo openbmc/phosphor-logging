@@ -79,6 +79,11 @@ struct ${b}
 
 }  // namespace _${classname}
 <%
+    example_yaml = True
+    if("example.xyz.openbmc_project" not in name):
+        example_yaml = False
+%>\
+<%
     meta_string = ""
     if(meta_list):
         meta_string = ', '.join(meta_list)
@@ -100,13 +105,18 @@ struct ${b}
             meta_string = parent_meta_short
         parent = parents[parent]
 
-    error_type = classname + " : public sdbusplus::exception_t"
+    if example_yaml:
+        error_type = classname + " : public sdbusplus::exception_t"
+    else:
+        error_type = classname
 %>
 struct ${error_type}
 {
+    % if example_yaml:
     static constexpr auto errName = "${name}";
     static constexpr auto errDesc = "${error_msg[name]}";
     static constexpr auto L = level::${error_lvl[name]};
+    % endif
     % for b in meta_list:
     using ${b} = _${classname}::${b};
     % endfor
@@ -115,6 +125,7 @@ struct ${error_type}
     % endfor
     using metadata_types = std::tuple<${meta_string}>;
 
+    % if example_yaml:
     const char* name() const noexcept
     {
         return errName;
@@ -129,6 +140,7 @@ struct ${error_type}
     {
         return errName;
     }
+    % endif
 };
 
 % for s in reversed(namespaces):
@@ -137,14 +149,14 @@ struct ${error_type}
 
 <%
     sdbusplus_name = name
-    if("example.xyz.openbmc_project" not in name):
+    if not example_yaml :
         sdbusplus_name = "sdbusplus." + sdbusplus_name
         pos = sdbusplus_name.rfind(".")
         sdbusplus_name = (sdbusplus_name[:pos] + ".Error." +
                           sdbusplus_name[pos+1:])
     sdbusplus_type = sdbusplus_name.replace(".", "::")
     phosphor_type = sdbusplus_type
-    if("example.xyz.openbmc_project" not in name):
+    if not example_yaml :
         phosphor_type = sdbusplus_type.replace("sdbusplus::", "")
         phosphor_type = phosphor_type.replace("Error::", "")
 %>\
