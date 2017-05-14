@@ -100,13 +100,23 @@ struct ${b}
             meta_string = parent_meta_short
         parent = parents[parent]
 
-    error_type = classname + " : public sdbusplus::exception_t"
+    if("example.xyz.openbmc_project" not in name):
+        error_type = classname
+    else:
+        error_type = classname + " : public sdbusplus::exception_t"
 %>
+<%
+    example_yaml = True
+    if("example.xyz.openbmc_project" not in name):
+        example_yaml = False
+%>\
 struct ${error_type}
 {
+    % if example_yaml:
     static constexpr auto errName = "${name}";
     static constexpr auto errDesc = "${error_msg[name]}";
     static constexpr auto L = level::${error_lvl[name]};
+    % endif
     % for b in meta_list:
     using ${b} = _${classname}::${b};
     % endfor
@@ -115,6 +125,7 @@ struct ${error_type}
     % endfor
     using metadata_types = std::tuple<${meta_string}>;
 
+    % if example_yaml:
     const char* name() const noexcept
     {
         return errName;
@@ -129,6 +140,7 @@ struct ${error_type}
     {
         return errName;
     }
+    % endif
 };
 
 % for s in reversed(namespaces):
