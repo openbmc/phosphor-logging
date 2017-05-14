@@ -100,7 +100,10 @@ struct ${b}
             meta_string = parent_meta_short
         parent = parents[parent]
 
-    error_type = classname + " : public sdbusplus::exception_t"
+    if("example.xyz.openbmc_project" not in name):
+        error_type = classname
+    else:
+        error_type = classname + " : public sdbusplus::exception_t"
 %>
 struct ${error_type}
 {
