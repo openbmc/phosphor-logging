@@ -8,7 +8,6 @@
 #include <sdbusplus/vtable.hpp>
 #include <systemd/sd-bus.h>
 #include <systemd/sd-journal.h>
-#include <phosphor-logging/elog-errors-HostEvent.hpp>
 #include "config.h"
 #include "elog_entry.hpp"
 #include <phosphor-logging/log.hpp>
@@ -48,16 +47,7 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     {
         metalist.insert(metamap->second.begin(), metamap->second.end());
     }
-    const auto& metalistHostEvent = g_errMetaMapHostEvent[errMsg];
     std::vector<std::string> additionalData;
-
-    // TODO Remove once host event error header file is auto-generated.
-    // Also make metalist a const variable.
-    // Tracking with issue openbmc/phosphor-logging#4
-    for (auto& metaVarStrHostEvent : metalistHostEvent)
-    {
-        metalist.insert(metaVarStrHostEvent);
-    }
 
     // Read the journal from the end to get the most recent entry first.
     // The result from the sd_journal_get_data() is of the form VARIABLE=value.
