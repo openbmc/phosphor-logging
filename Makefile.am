@@ -1,8 +1,7 @@
 # export these headers
 nobase_include_HEADERS = \
 	phosphor-logging/log.hpp \
-	phosphor-logging/elog.hpp \
-	phosphor-logging/elog-errors-HostEvent.hpp
+	phosphor-logging/elog.hpp
 
 nobase_nodist_include_HEADERS = \
 	phosphor-logging/elog-errors.hpp \
