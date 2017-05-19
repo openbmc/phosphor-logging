@@ -60,7 +60,7 @@ def check_error_inheritance(i_errors, i_parents):
 # without the yaml extension, which will be used to set the namespaces.
 # Ex: file xyz/openbmc_project/Error/Callout/Device.errors.yaml
 # will have namespce xyz/openbmc_project/Error/Callout/Device
-def get_error_yaml_files(i_yaml_dir, i_test_dir):
+def get_error_yaml_files(i_yaml_dir, i_opyaml_dir, i_test_dir):
     yaml_files = dict()
     if i_yaml_dir != "None":
         for root, dirs, files in os.walk(i_yaml_dir):
@@ -70,6 +70,16 @@ def get_error_yaml_files(i_yaml_dir, i_test_dir):
                 if splitdir.startswith("/"):
                     splitdir = splitdir[1:]
                 yaml_files[(os.path.join(root, files))] = splitdir
+
+    if i_opyaml_dir != "None":
+        for root, dirs, files in os.walk(i_opyaml_dir):
+            for files in filter(lambda file:
+                                file.endswith('.errors.yaml'), files):
+                splitdir = root.split(i_opyaml_dir)[1] + "/" + files[:-12]
+                if splitdir.startswith("/"):
+                    splitdir = splitdir[1:]
+                yaml_files[(os.path.join(root, files))] = splitdir
+
     for root, dirs, files in os.walk(i_test_dir):
         for files in filter(lambda file: file.endswith('.errors.yaml'), files):
             splitdir = root.split(i_test_dir)[1] + "/" + files[:-12]
@@ -99,7 +109,7 @@ def get_cpp_type(i_type):
     return typeMap[i_type]
 
 
-def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
+def gen_elog_hpp(i_yaml_dir, i_opyaml_dir, i_test_dir, i_output_hpp,
                  i_template_dir, i_elog_mako):
     r"""
     Read  yaml file(s) under input yaml dir, grab the relevant data and call
@@ -122,7 +132,7 @@ def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
     parents = dict()
     metadata_process = dict()  # metadata that have the 'process' keyword set
 
-    error_yamls = get_error_yaml_files(i_yaml_dir, i_test_dir)
+    error_yamls = get_error_yaml_files(i_yaml_dir, i_opyaml_dir, i_test_dir)
 
     for error_yaml in error_yamls:
         # Verify the error yaml file
@@ -276,6 +286,10 @@ def main(i_args):
                       default="None",
                       help="Base directory of yaml files to process")
 
+    parser.add_option("-p", "--opyamldir", dest="opyamldir",
+                      default="None",
+                      help="Base directory of error yaml files to process")
+
     parser.add_option("-u", "--testdir", dest="testdir",
                       default="./tools/example/",
                       help="Unit test directory of yaml files to process")
@@ -287,6 +301,7 @@ def main(i_args):
     (options, args) = parser.parse_args(i_args)
 
     gen_elog_hpp(options.yamldir,
+                 options.opyamldir,
                  options.testdir,
                  options.output_hpp,
                  options.templatedir,
