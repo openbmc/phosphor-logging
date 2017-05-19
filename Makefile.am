@@ -95,11 +95,11 @@ EXTRA_DIST = $(REQ_FILES_TO_GEN)
 
 phosphor-logging/elog-errors.hpp: $(REQ_FILES_TO_GEN)
 	@mkdir -p `dirname $@`
-	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${YAML_DIR} -u ${YAML_DIR_TEST} -t ${ELOG_TEMPLATE_DIR} -m $(ELOG_MAKO) -o $@
+	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${YAML_DIR} -p ${OP_YAML_DIR} -u ${YAML_DIR_TEST} -t ${ELOG_TEMPLATE_DIR} -m $(ELOG_MAKO) -o $@
 elog-lookup.cpp: $(REQ_FILES_TO_GEN)
-	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${YAML_DIR} -u ${YAML_DIR_TEST} -t ${ELOG_TEMPLATE_DIR} -m $(LOOKUP_MAKO) -o $@
+	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${YAML_DIR} -p ${OP_YAML_DIR} -u ${YAML_DIR_TEST} -t ${ELOG_TEMPLATE_DIR} -m $(LOOKUP_MAKO) -o $@
 elog-process-metadata.cpp: $(REQ_FILES_TO_GEN)
-	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${YAML_DIR} -u ${YAML_DIR_TEST} -t ${ELOG_TEMPLATE_DIR} -m $(META_MAKO) -o $@
+	$(AM_V_at)$(PYTHON) ${abs_srcdir}/tools/elog-gen.py -y ${YAML_DIR} -p ${OP_YAML_DIR} -u ${YAML_DIR_TEST} -t ${ELOG_TEMPLATE_DIR} -m $(META_MAKO) -o $@
 callouts-gen.hpp: $(REQ_FILES_TO_GEN)
 	$(AM_V_at)$(PYTHON) ${abs_srcdir}/callouts/callouts.py -i ${CALLOUTS_YAML}
 
