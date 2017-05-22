@@ -100,6 +100,15 @@ class Entry : public EntryIfaces
 
         /** @brief This entry's parent */
         Manager& parent;
+
+        friend class cereal::access;
+        template <class Archive>
+        void serialize(Archive &a)
+        {
+            sdbusplus::xyz::openbmc_project::Logging::server::Entry::serialize(a);
+            sdbusplus::org::openbmc::server::Associations::serialize(a);
+        }
+
 };
 
 } // namespace logging

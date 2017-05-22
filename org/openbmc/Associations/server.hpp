@@ -2,6 +2,9 @@
 #include <tuple>
 #include <systemd/sd-bus.h>
 #include <sdbusplus/server.hpp>
+#include "cereal/types/string.hpp"
+#include "cereal/types/vector.hpp"
+#include "cereal/types/tuple.hpp"
 
 namespace sdbusplus
 {
@@ -70,6 +73,12 @@ class Associations
          *  @return - A variant containing the value of the property.
          */
         PropertiesVariant getPropertyByName(const std::string& name);
+
+        template <class Archive>
+        void serialize(Archive &a)
+        {
+            a(_associations);
+        }
 
 
     private:

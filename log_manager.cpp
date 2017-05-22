@@ -10,14 +10,13 @@
 #include <systemd/sd-journal.h>
 #include <phosphor-logging/elog-errors-HostEvent.hpp>
 #include "config.h"
-#include "elog_entry.hpp"
 #include <phosphor-logging/log.hpp>
 #include "log_manager.hpp"
 #include "elog_meta.hpp"
+#include "cereal/archives/binary.hpp"
 
-using namespace phosphor::logging;
-extern const std::map<metadata::Metadata,
-                      std::function<metadata::associations::Type>> meta;
+extern const std::map<phosphor::logging::metadata::Metadata,
+                      std::function<phosphor::logging::metadata::associations::Type>> meta;
 
 namespace phosphor
 {
@@ -145,16 +144,20 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     {
         reqLevel = levelmap->second;
     }
-    entries.insert(std::make_pair(entryId, std::make_unique<Entry>(
-            busLog,
-            objPath,
-            entryId,
-            ms, // Milliseconds since 1970
-            static_cast<Entry::Level>(reqLevel),
-            std::move(errMsg),
-            std::move(additionalData),
-            std::move(objects),
-            *this)));
+    auto e = std::make_unique<Entry>(
+                 busLog,
+                 objPath,
+                 entryId,
+                 ms, // Milliseconds since 1970
+                 static_cast<Entry::Level>(reqLevel),
+                 std::move(errMsg),
+                 std::move(additionalData),
+                 std::move(objects),
+                 *this);
+    std::ofstream os("/tmp/out.cereal", std::ios::binary);
+    cereal::BinaryOutputArchive oarchive(os);
+    oarchive(*e);
+    entries.insert(std::make_pair(entryId, std::move(e)));
     return;
 }
 
