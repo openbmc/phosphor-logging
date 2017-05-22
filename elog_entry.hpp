@@ -5,6 +5,10 @@
 #include "xyz/openbmc_project/Logging/Entry/server.hpp"
 #include "xyz/openbmc_project/Object/Delete/server.hpp"
 #include "org/openbmc/Associations/server.hpp"
+#include "cereal/archives/binary.hpp"
+#include "cereal/types/string.hpp"
+#include "cereal/types/vector.hpp"
+#include "cereal/types/tuple.hpp"
 
 namespace phosphor
 {
@@ -89,6 +93,8 @@ class Entry : public EntryIfaces
             return sdbusplus::xyz::openbmc_project::
                    Logging::server::Entry::resolved(value);
         }
+        using sdbusplus::xyz::openbmc_project::
+              Logging::server::Entry::resolved;
 
         /** @brief Delete this d-bus object.
          */
@@ -101,6 +107,49 @@ class Entry : public EntryIfaces
         /** @brief This entry's parent */
         Manager& parent;
 };
+
+template<class Archive>
+void save(Archive& a, const Entry& e)
+{
+    a(e.id(),
+      e.severity(),
+      e.timestamp(),
+      e.message(),
+      e.additionalData(),
+      e.associations(),
+      e.resolved());
+}
+
+template<class Archive>
+void load(Archive& a, Entry& e)
+{
+    using namespace sdbusplus::xyz::openbmc_project::
+                    Logging::server;
+
+    uint32_t id{};
+    Entry::Level severity;
+    uint64_t timestamp{};
+    std::string message{};
+    std::vector<std::string> additionalData{};
+    bool resolved{};
+    AssociationList associations{};
+
+    a(id,
+      severity,
+      timestamp,
+      message,
+      additionalData,
+      associations,
+      resolved);
+
+    e.id(id);
+    e.severity(severity);
+    e.timestamp(timestamp);
+    e.message(message);
+    e.additionalData(additionalData);
+    e.resolved(resolved);
+    e.associations(associations);
+}
 
 } // namespace logging
 } // namespace phosphor

@@ -145,16 +145,20 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     {
         reqLevel = levelmap->second;
     }
-    entries.insert(std::make_pair(entryId, std::make_unique<Entry>(
-            busLog,
-            objPath,
-            entryId,
-            ms, // Milliseconds since 1970
-            static_cast<Entry::Level>(reqLevel),
-            std::move(errMsg),
-            std::move(additionalData),
-            std::move(objects),
-            *this)));
+    auto e = std::make_unique<Entry>(
+                 busLog,
+                 objPath,
+                 entryId,
+                 ms, // Milliseconds since 1970
+                 static_cast<Entry::Level>(reqLevel),
+                 std::move(errMsg),
+                 std::move(additionalData),
+                 std::move(objects),
+                 *this);
+    std::ofstream os("/tmp/out.cereal", std::ios::binary);
+    cereal::BinaryOutputArchive oarchive(os);
+    oarchive(*e);
+    entries.insert(std::make_pair(entryId, std::move(e)));
     return;
 }
 

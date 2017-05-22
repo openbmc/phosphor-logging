@@ -1,1 +1,2 @@
 /sys/devices/some/device: /system/chassis/matched/item
+/sys/devices/platform/fsi-master/slave@00:00: /system/chassis/motherboard/cpu0

@@ -67,6 +67,10 @@ class Manager : public details::ServerObject<details::ManagerIface>
          */
         void erase(uint32_t entryId);
 
+        /** @brief Persistent map of Entry dbus objects and their ID */
+        std::map<uint32_t, std::unique_ptr<Entry>> entries;
+
+
     private:
         /** @brief Call metadata handler(s), if any. Handlers may create
          *         associations.
@@ -80,9 +84,6 @@ class Manager : public details::ServerObject<details::ManagerIface>
 
         /** @brief Persistent sdbusplus DBus bus connection. */
         sdbusplus::bus::bus& busLog;
-
-        /** @brief Persistent map of Entry dbus objects and their ID */
-        std::map<uint32_t, std::unique_ptr<Entry>> entries;
 
         /** @brief Id of last error log entry */
         uint32_t entryId;
