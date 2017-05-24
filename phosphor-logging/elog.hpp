@@ -112,7 +112,7 @@ void commit()
         std::is_base_of<sdbusplus::exception::exception, T>::value,
         "T must be a descendant of sdbusplus::exception::exception"
     );
-    details::commit(details::map_exception_type_t<T>::errName);
+    details::commit(T::errName);
 }
 
 
