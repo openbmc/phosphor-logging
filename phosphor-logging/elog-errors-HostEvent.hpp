@@ -21,7 +21,7 @@ std::map<std::string,std::vector<std::string>> g_errMetaMapHostEvent = {
 };
 
 std::map<std::string,level> g_errLevelMapHostEvent = {
-     {"org.open_power.Error.Host.Event.Event",level::INFO},
+     {"org.open_power.Error.Host.Event.Event",level::ERR},
 };
 
 namespace org
@@ -49,7 +49,7 @@ struct Event : public sdbusplus::exception_t
 {
     static constexpr auto errName = "org.open_power.Error.Host.Event.Event";
     static constexpr auto errDesc = "A host system event was received";
-    static constexpr auto L = level::INFO;
+    static constexpr auto L = level::ERR;
     using ESEL = _Event::ESEL;
     using metadata_types = std::tuple<ESEL>;
     const char* name() const noexcept
