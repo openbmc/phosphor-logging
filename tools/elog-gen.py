@@ -195,8 +195,8 @@ def get_elog_data(i_elog_yaml,
     #for all the errors in error yaml file
     for error in ifile:
         if 'name' not in error:
-            print "Error - Did not find name in entry %s in file %s " % (
-                str(error), i_elog_yaml)
+            print("Error - Did not find name in entry %s in file %s " % (
+                str(error), i_elog_yaml))
             exit(1)
         fullname = i_namespace.replace('/', '.') + ('.') + error['name']
         errors.append(fullname)
@@ -221,7 +221,7 @@ def get_elog_data(i_elog_yaml,
                 break
 
         if match is None:
-            print "Error - Did not find name in" + i_elog_meta_yaml
+            print("Error - Did not find name in" + i_elog_meta_yaml)
             continue
 
         error_lvl[fullname] = match.get('level', 'ERR')
