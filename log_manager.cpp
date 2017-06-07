@@ -32,6 +32,15 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     // Length of 'TRANSACTION_ID=' string.
     constexpr const auto transactionIdVarOffset = transactionIdVarSize + 1;
 
+    // Flush all the pending log messages into the journal via Synchronize
+    constexpr auto JOURNAL_BUSNAME = "org.freedesktop.journal1";
+    constexpr auto JOURNAL_PATH = "/org/freedesktop/journal1";
+    constexpr auto JOURNAL_INTERFACE = "org.freedesktop.journal1";
+    auto b = sdbusplus::bus::new_default();
+    auto m = b.new_method_call(JOURNAL_BUSNAME, JOURNAL_PATH, JOURNAL_INTERFACE,
+                               "Synchronize");
+    b.call_noreply(m);
+
     sd_journal *j = nullptr;
     int rc = sd_journal_open(&j, SD_JOURNAL_LOCAL_ONLY);
     if (rc < 0)
