@@ -70,6 +70,7 @@ def get_error_yaml_files(i_yaml_dir, i_test_dir):
                 if splitdir.startswith("/"):
                     splitdir = splitdir[1:]
                 yaml_files[(os.path.join(root, files))] = splitdir
+                print "filename " + splitdir
     for root, dirs, files in os.walk(i_test_dir):
         for files in filter(lambda file: file.endswith('.errors.yaml'), files):
             splitdir = root.split(i_test_dir)[1] + "/" + files[:-12]
@@ -112,6 +113,10 @@ def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
     i_template_dir              directory containing error mako templates
     i_elog_mako                 error mako template to render
     """
+
+    print "i_yaml_dir " + i_yaml_dir
+    print "i_yaml_dir " + i_yaml_dir
+    print "i_test_dir " + i_test_dir
 
     # Input parameters to mako template
     errors = list()  # Main error codes
