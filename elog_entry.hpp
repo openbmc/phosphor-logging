@@ -69,7 +69,8 @@ class Entry : public EntryIfaces
             associations(std::move(objects));
             // Store a copy of associations in case we need to recreate
             assocs = associations();
-            resolved(false);
+            sdbusplus::xyz::openbmc_project::
+                Logging::server::Entry::resolved(false);
 
             // Emit deferred signal.
             this->emit_object_added();
@@ -98,15 +99,8 @@ class Entry : public EntryIfaces
          *  status (true = resolved)
          *  @returns value of 'Resolved' property
          */
-        bool resolved(bool value) override
-        {
-            value ?
-                associations({}) :
-                associations(assocs);
+        bool resolved(bool value) override;
 
-            return sdbusplus::xyz::openbmc_project::
-                   Logging::server::Entry::resolved(value);
-        }
         using sdbusplus::xyz::openbmc_project::
               Logging::server::Entry::resolved;
 
