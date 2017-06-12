@@ -75,6 +75,24 @@ class Entry : public EntryIfaces
             this->emit_object_added();
         };
 
+        /** @brief Constructor that puts an "empty" error object on the bus,
+         *         with only the id property populated. Rest of the properties
+         *         to be set by the caller. Caller should emit the added signal.
+         *  @param[in] bus - Bus to attach to.
+         *  @param[in] path - Path to attach at.
+         *  @param[in] id - The error entry id.
+         *  @param[in] parent - The error's parent.
+         */
+        Entry(sdbusplus::bus::bus& bus,
+              const std::string& path,
+              uint32_t entryId,
+              Manager& parent) :
+              EntryIfaces(bus, path.c_str(), true),
+              parent(parent)
+        {
+            id(entryId);
+        };
+
         /** @brief Set resolution status of the error.
          *  @param[in] value - boolean indicating resolution
          *  status (true = resolved)
@@ -89,6 +107,8 @@ class Entry : public EntryIfaces
             return sdbusplus::xyz::openbmc_project::
                    Logging::server::Entry::resolved(value);
         }
+        using sdbusplus::xyz::openbmc_project::
+              Logging::server::Entry::resolved;
 
         /** @brief Delete this d-bus object.
          */
