@@ -36,7 +36,8 @@ phosphor_log_manager_SOURCES = \
 	elog_entry.cpp \
 	org.openbmc.Associations.cpp \
 	elog-process-metadata.cpp \
-	elog_meta.cpp
+	elog_meta.cpp \
+	elog_serialize.cpp
 
 # Be sure to build needed files before compiling
 BUILT_SOURCES = \
@@ -64,7 +65,8 @@ callout_test_CXXFLAGS = $(SDBUSPLUS_CFLAGS) $(PHOSPHOR_DBUS_INTERFACES_CFLAGS)
 phosphor_log_manager_LDFLAGS = \
 		$(SYSTEMD_LIBS) \
 		$(SDBUSPLUS_LIBS) \
-		$(PHOSPHOR_DBUS_INTERFACES_LIBS)
+		$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
+		-lstdc++fs
 phosphor_log_manager_CXXFLAGS = \
 		$(SYSTEMD_CFLAGS) \
 		$(SDBUSPLUS_CFLAGS) \
