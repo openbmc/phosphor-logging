@@ -14,6 +14,7 @@
 #include <phosphor-logging/log.hpp>
 #include "log_manager.hpp"
 #include "elog_meta.hpp"
+#include "elog_serialize.hpp"
 
 using namespace phosphor::logging;
 extern const std::map<metadata::Metadata,
@@ -145,17 +146,18 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     {
         reqLevel = levelmap->second;
     }
-    entries.insert(std::make_pair(entryId, std::make_unique<Entry>(
-            busLog,
-            objPath,
-            entryId,
-            ms, // Milliseconds since 1970
-            static_cast<Entry::Level>(reqLevel),
-            std::move(errMsg),
-            std::move(additionalData),
-            std::move(objects),
-            *this)));
-    return;
+    auto e = std::make_unique<Entry>(
+                 busLog,
+                 objPath,
+                 entryId,
+                 ms, // Milliseconds since 1970
+                 static_cast<Entry::Level>(reqLevel),
+                 std::move(errMsg),
+                 std::move(additionalData),
+                 std::move(objects),
+                 *this);
+    serialize(*e);
+    entries.insert(std::make_pair(entryId, std::move(e)));
 }
 
 void Manager::processMetadata(const std::string& errorName,
@@ -186,6 +188,36 @@ void Manager::erase(uint32_t entryId)
     {
         entries.erase(entry);
     }
+}
+
+void Manager::restore()
+{
+    std::vector<uint32_t> errorIds;
+
+    fs::path dir(ERRLOG_PERSIST_PATH);
+    if (!fs::exists(dir) || fs::is_empty(dir))
+    {
+        return;
+    }
+
+    for(auto& file: fs::directory_iterator(dir))
+    {
+        auto id = file.path().filename().c_str();
+        auto idNum = std::stol(id);
+        auto e = std::make_unique<Entry>(
+                     busLog,
+                     std::string(OBJ_ENTRY) + '/' + id,
+                     idNum,
+                     *this);
+        if (deserialize(file.path(), *e))
+        {
+            e->emit_object_added();
+            entries.insert(std::make_pair(idNum, std::move(e)));
+            errorIds.push_back(idNum);
+        }
+    }
+
+    entryId = *(std::max_element(errorIds.begin(), errorIds.end()));
 }
 
 } // namespace logging
