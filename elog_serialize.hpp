@@ -52,7 +52,8 @@ void load(Archive& a, Entry& e)
     e.timestamp(timestamp);
     e.message(message);
     e.additionalData(additionalData);
-    e.resolved(resolved);
+    e.sdbusplus::xyz::openbmc_project::
+        Logging::server::Entry::resolved(resolved);
     e.associations(associations);
 }
 
