@@ -67,6 +67,11 @@ class Manager : public details::ServerObject<details::ManagerIface>
          */
         void erase(uint32_t entryId);
 
+        /** @brief Construct error d-bus objects from their persisted
+         *         representations.
+         */
+        void restore();
+
     private:
         /** @brief Call metadata handler(s), if any. Handlers may create
          *         associations.
