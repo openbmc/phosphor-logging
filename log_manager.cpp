@@ -184,8 +184,14 @@ void Manager::processMetadata(const std::string& errorName,
 void Manager::erase(uint32_t entryId)
 {
     auto entry = entries.find(entryId);
+    auto id = entry->second->id();
     if(entries.end() != entry)
     {
+        // Delete the persistent representation of this error.
+        fs::path errorPath(ERRLOG_PERSIST_PATH);
+        errorPath /= std::to_string(id);
+        fs::remove(errorPath);
+
         entries.erase(entry);
     }
 }
