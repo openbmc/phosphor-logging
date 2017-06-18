@@ -29,6 +29,9 @@ const std::map<std::string,std::vector<std::string>> g_errMetaMap = {
         parent_meta_short = '\",\"'.join(meta[parent])
         meta_string = meta_string + "\",\"" + parent_meta_short
         parent = parents[parent]
+    if ("example.xyz.openbmc_project" not in name):
+        index = name.rfind('.')
+        name = name[:index] + ".Error" + name[index:]
 %>\
     {"${name}",{"${meta_string}"}},
     % endfor
@@ -36,7 +39,13 @@ const std::map<std::string,std::vector<std::string>> g_errMetaMap = {
 
 const std::map<std::string,level> g_errLevelMap = {
     % for a in errors:
-    {"${a}",level::${error_lvl[a]}},
+<%
+    name = a
+    if ("example.xyz.openbmc_project" not in name):
+        index = name.rfind('.')
+        name = name[:index] + ".Error" + name[index:]
+%>\
+    {"${name}",level::${error_lvl[a]}},
     % endfor
 };
 
