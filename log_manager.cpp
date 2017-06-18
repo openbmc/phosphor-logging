@@ -43,14 +43,24 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
 
     std::string transactionIdStr = std::to_string(transactionId);
     std::set<std::string> metalist;
-    auto metamap = g_errMetaMap.find(errMsg);
+    
+
+    // convert sdbus++  error name to phosphor error name to search in the
+    // error meta map
+    constexpr const auto errstr = "Error.";
+    std::string lookupStr = errMsg;
+    if(std::string::npos != lookupStr.find(errstr))
+    {
+        lookupStr.replace(lookupStr.find(errstr), strlen(errstr),"");
+    }
+    auto metamap = g_errMetaMap.find(lookupStr);
     if (metamap != g_errMetaMap.end())
     {
         metalist.insert(metamap->second.begin(), metamap->second.end());
     }
+
     const auto& metalistHostEvent = g_errMetaMapHostEvent[errMsg];
     std::vector<std::string> additionalData;
-
     // TODO Remove once host event error header file is auto-generated.
     // Also make metalist a const variable.
     // Tracking with issue openbmc/phosphor-logging#4
@@ -139,7 +149,7 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     AssociationList objects {};
     processMetadata(errMsg, additionalData, objects);
 
-    level reqLevel = level::INFO; // Default to INFO
+    level reqLevel = level::ERR; // Default to ERR
     auto levelmap = g_errLevelMap.find(errMsg);
     if (levelmap != g_errLevelMap.end())
     {
