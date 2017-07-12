@@ -140,7 +140,7 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     AssociationList objects {};
     processMetadata(errMsg, additionalData, objects);
 
-    level reqLevel = level::INFO; // Default to INFO
+    level reqLevel = level::ERR; // Default to ERR 
     auto levelmap = g_errLevelMap.find(errMsg);
     if (levelmap != g_errLevelMap.end())
     {
