@@ -113,6 +113,13 @@ void build<xyz::openbmc_project::Common::
     const std::vector<std::string>& data,
     AssociationList& list);
 
+template <>
+void build<xyz::openbmc_project::Common::
+           Callout::Inventory::CALLOUT_INVENTORY_PATH>(
+    const std::string& match,
+    const std::vector<std::string>& data,
+    AssociationList& list);
+
 #endif // PROCESS_META
 
 

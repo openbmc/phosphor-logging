@@ -43,6 +43,24 @@ void build<xyz::openbmc_project::Common::
     }
 }
 
+template <>
+void build<xyz::openbmc_project::Common::
+           Callout::Inventory::CALLOUT_INVENTORY_PATH>(
+    const std::string& match,
+    const std::vector<std::string>& data,
+    AssociationList& list)
+{
+    std::map<std::string, std::string> metadata;
+    parse(data, metadata);
+    auto iter = metadata.find(match);
+    if(metadata.end() != iter)
+    {
+        list.emplace_back(std::make_tuple(CALLOUT_FWD_ASSOCIATION,
+                                          CALLOUT_REV_ASSOCIATION,
+                                          std::string(iter->second.c_str())));
+    }
+}
+
 #endif
 
 } // namespace associations
