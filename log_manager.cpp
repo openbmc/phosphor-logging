@@ -14,6 +14,7 @@
 #include "log_manager.hpp"
 #include "elog_meta.hpp"
 #include "elog_serialize.hpp"
+#include <iostream>
 
 using namespace phosphor::logging;
 extern const std::map<metadata::Metadata,
@@ -137,6 +138,7 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     {
         reqLevel = levelmap->second;
     }
+
     auto e = std::make_unique<Entry>(
                  busLog,
                  objPath,
@@ -149,6 +151,9 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
                  *this);
     serialize(*e);
     entries.insert(std::make_pair(entryId, std::move(e)));
+
+    //Check Entry Cap value and erase old entries
+    checkEntryCapAndEraseEntries();
 }
 
 void Manager::processMetadata(const std::string& errorName,
@@ -215,6 +220,87 @@ void Manager::restore()
     }
 
     entryId = *(std::max_element(errorIds.begin(), errorIds.end()));
+}
+
+void Manager::checkEntryCapAndEraseEntries()
+{
+
+    constexpr auto ENTRY_CAP_PATH    = "/xyz/openbmc_project/control/host0/entry_cap";
+    constexpr auto ENTRY_CAP_INTERFACE = "xyz.openbmc_project.Control.Entry.Cap";
+    constexpr auto PROP_INTF = "org.freedesktop.DBus.Properties";
+    constexpr auto ENTRY_CAP_PROP = "EntryCap";
+    try
+    {
+        auto service = getService(ENTRY_CAP_PATH, ENTRY_CAP_INTERFACE);
+        std::cout << "checkEntryCapAndEraseEntries service " << service << std::endl;
+        auto method = busLog.new_method_call(service.c_str(),
+                                                ENTRY_CAP_PATH,
+                                                PROP_INTF,
+                                                "Get");
+
+        method.append(ENTRY_CAP_INTERFACE, ENTRY_CAP_PROP);
+        auto reply = busLog.call(method);
+        if (reply.is_method_error())
+        {
+            log<level::ERR>("Error in getting EntryCap property");
+            return;
+        }
+        sdbusplus::message::variant<uint32_t> pcap;
+        reply.read(pcap);
+        auto entryCap = pcap.get<uint32_t>();
+
+
+        //If EntryCap value is reached clear the first entry
+        std::cout << "DEVENDER Logging entries size is set to " << entries.size() << std::endl;
+        std::cout << "DEVENDER Logging entries cap size is set to " << entryCap << std::endl;
+        if (static_cast<uint32_t>(entries.size()) > entryCap)
+        {
+            uint32_t count = static_cast<uint32_t>(entries.size()) - entryCap;
+            for (uint32_t i = 0; i < count; ++i)
+            {
+                std::cout << "DEVENDER DELETING ENTRY WITH ID " << entries.begin()->first << std::endl;
+                log<level::INFO>("Entry cap set, deleting oldest entry",
+                    entry("ENTRY_CAP=%d", entryCap),
+                    entry("ENTRY_DELETED=%d", entries.begin()->first));
+                erase(entries.begin()->first);
+           }
+        }
+    }
+    catch(std::runtime_error& ex)
+    {
+        log<level::ERR>("Failed to read EntryCap property and clear old entries");
+    }
+}
+
+void Manager::entryCapChanged(sdbusplus::message::message& msg)
+{
+    checkEntryCapAndEraseEntries();
+}
+
+std::string Manager::getService(std::string path, std::string intf)
+{
+    // Mapper dbus constructs
+    auto mapperCall = busLog.new_method_call("xyz.openbmc_project.ObjectMapper",
+                                          "/xyz/openbmc_project/object_mapper",
+                                          "xyz.openbmc_project.ObjectMapper",
+                                          "GetObject");
+    mapperCall.append(path);
+    mapperCall.append(std::vector<std::string>({intf}));
+
+    auto mapperResponseMsg = busLog.call(mapperCall);
+    if (mapperResponseMsg.is_method_error())
+    {
+        throw std::runtime_error("ERROR in mapper call");
+    }
+
+    std::map<std::string, std::vector<std::string>> mapperResponse;
+    mapperResponseMsg.read(mapperResponse);
+    if (mapperResponse.begin() == mapperResponse.end())
+    {
+        throw std::runtime_error("ERROR in reading the mapper response");
+    }
+
+    return mapperResponse.begin()->first;
 }
 
 } // namespace logging
