@@ -23,9 +23,16 @@ namespace phosphor
 {
 namespace logging
 {
-
 void Manager::commit(uint64_t transactionId, std::string errMsg)
 {
+    if(static_cast<uint32_t>(entries.size()) >= errorCap)
+    {
+        log<level::ERR>("Reached error cap, Ignoring error",
+            entry("errMsg=%s", errMsg),
+            entry("Size=%d", static_cast<uint32_t>(entries.size())),
+            entry("ErrorCap=%d", errorCap));
+        return;
+    }
     constexpr const auto transactionIdVar = "TRANSACTION_ID";
     // Length of 'TRANSACTION_ID' string.
     constexpr const auto transactionIdVarSize = strlen(transactionIdVar);
@@ -215,6 +222,21 @@ void Manager::restore()
     }
 
     entryId = *(std::max_element(errorIds.begin(), errorIds.end()));
+}
+
+void Manager::errorCapChanged(sdbusplus::message::message& msg)
+{
+    constexpr auto ERROR_CAP_PROP = "ErrorCap";
+    std::string msgCap;
+    std::map<std::string, sdbusplus::message::variant<uint32_t>> msgData;
+    msg.read(msgCap, msgData);
+
+    // Retrieve which property changed via the msg and read the other one
+    auto iter = msgData.find(ERROR_CAP_PROP);
+    if (iter != msgData.end())
+    {
+        errorCap = sdbusplus::message::variant_ns::get<uint32_t>(iter->second);
+    }
 }
 
 } // namespace logging
