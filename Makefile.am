@@ -6,6 +6,7 @@ nobase_include_HEADERS = \
 nobase_nodist_include_HEADERS = \
 	phosphor-logging/elog-errors.hpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.hpp
+	xyz/openbmc_project/Logging/Internal/ErrorCap/server.hpp
 
 libphosphor_logging_FILES = \
 	elog.cpp elog_meta.cpp
@@ -29,6 +30,7 @@ sbin_PROGRAMS = phosphor-log-manager
 
 phosphor_log_manager_SOURCES = \
 	xyz/openbmc_project/Logging/Internal/Manager/server.cpp \
+	xyz/openbmc_project/Logging/Internal/ErrorCap/server.cpp \
 	log_manager.cpp \
 	log_manager_main.cpp \
 	elog-lookup.cpp \
@@ -45,6 +47,8 @@ BUILT_SOURCES = \
 	elog-process-metadata.cpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.cpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.hpp \
+	xyz/openbmc_project/Logging/Internal/ErrorCap/server.cpp \
+	xyz/openbmc_project/Logging/Internal/ErrorCap/server.hpp \
 	callouts-gen.hpp
 
 CLEANFILES = \
@@ -53,6 +57,8 @@ CLEANFILES = \
 	elog-process-metadata.cpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.cpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.hpp \
+	xyz/openbmc_project/Logging/Internal/ErrorCap/server.cpp \
+	xyz/openbmc_project/Logging/Internal/ErrorCap/server.hpp \
 	callouts-gen.hpp
 
 # systemd required for journal interfaces
@@ -78,6 +84,14 @@ xyz/openbmc_project/Logging/Internal/Manager/server.cpp: xyz/openbmc_project/Log
 xyz/openbmc_project/Logging/Internal/Manager/server.hpp: xyz/openbmc_project/Logging/Internal/Manager.interface.yaml
 	@mkdir -p `dirname $@`
 	$(SDBUSPLUSPLUS) -r $(srcdir) interface server-header xyz.openbmc_project.Logging.Internal.Manager > $@
+
+xyz/openbmc_project/Logging/Internal/ErrorCap/server.cpp: xyz/openbmc_project/Logging/Internal/ErrorCap.interface.yaml xyz/openbmc_project/Logging/Internal/ErrorCap/server.hpp
+	@mkdir -p `dirname $@`
+	$(SDBUSPLUSPLUS) -r $(srcdir) interface server-cpp xyz.openbmc_project.Logging.Internal.ErrorCap > $@
+
+xyz/openbmc_project/Logging/Internal/ErrorCap/server.hpp: xyz/openbmc_project/Logging/Internal/ErrorCap.interface.yaml
+	@mkdir -p `dirname $@`
+	$(SDBUSPLUSPLUS) -r $(srcdir) interface server-header xyz.openbmc_project.Logging.Internal.ErrorCap > $@
 
 ELOG_MAKO ?= elog-gen-template.mako.hpp
 LOOKUP_MAKO ?= elog-lookup-template.mako.cpp
