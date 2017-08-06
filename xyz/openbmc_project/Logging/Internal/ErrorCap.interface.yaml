@@ -1,0 +1,10 @@
+description: >
+    Implement to specify a cap on maximum error log entries.
+
+properties:
+    - name: ErrorCap
+      type: uint32
+      description: >
+          Logging error cap value. This is to limit the number of error
+          log entries committed.
+      default: 100
