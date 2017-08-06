@@ -4,23 +4,26 @@
 #include <phosphor-logging/log.hpp>
 #include "elog_entry.hpp"
 #include "xyz/openbmc_project/Logging/Internal/Manager/server.hpp"
+#include "xyz/openbmc_project/Logging/Internal/ErrorCap/server.hpp"
 
 namespace phosphor
 {
 namespace logging
 {
-
 extern const std::map<std::string,std::vector<std::string>> g_errMetaMap;
 extern const std::map<std::string,level> g_errLevelMap;
 
 namespace details
 {
 
-template <typename T>
-using ServerObject = typename sdbusplus::server::object::object<T>;
+template <typename T1, typename T2>
+using ServerObject = typename sdbusplus::server::object::object<T1, T2>;
 
 using ManagerIface =
     sdbusplus::xyz::openbmc_project::Logging::Internal::server::Manager;
+
+using ErrorCapIface =
+    sdbusplus::xyz::openbmc_project::Logging::Internal::server::ErrorCap;
 
 } // namespace details
 
@@ -29,7 +32,8 @@ using ManagerIface =
  *  @details A concrete implementation for the
  *  xyz.openbmc_project.Logging.Internal.Manager DBus API.
  */
-class Manager : public details::ServerObject<details::ManagerIface>
+class Manager : public details::ServerObject<details::ManagerIface,
+                                             details::ErrorCapIface>
 {
     public:
         Manager() = delete;
@@ -44,9 +48,11 @@ class Manager : public details::ServerObject<details::ManagerIface>
          *  @param[in] path - Path to attach at.
          */
         Manager(sdbusplus::bus::bus& bus, const char* objPath) :
-                details::ServerObject<details::ManagerIface>(bus, objPath),
+                details::ServerObject<details::ManagerIface,
+                    details::ErrorCapIface>(bus, objPath),
                 busLog(bus),
-                entryId(0) {};
+                entryId(0),
+                capped(false) {};
 
         /*
          * @fn commit()
@@ -72,6 +78,13 @@ class Manager : public details::ServerObject<details::ManagerIface>
          */
         void restore();
 
+        /** @brief Set error cap value
+         *  @param[in] value - error cap value
+         */
+        uint32_t errorCap(uint32_t value) override;
+
+        using ErrorCap::errorCap;
+
     private:
         /** @brief Call metadata handler(s), if any. Handlers may create
          *         associations.
@@ -91,7 +104,9 @@ class Manager : public details::ServerObject<details::ManagerIface>
 
         /** @brief Id of last error log entry */
         uint32_t entryId;
-};
 
+        /** @brief Flag to log error only once */
+        bool capped;
+};
 } // namespace logging
 } // namespace phosphor
