@@ -12,7 +12,7 @@ namespace logging
 
 extern const std::map<std::string,std::vector<std::string>> g_errMetaMap;
 extern const std::map<std::string,level> g_errLevelMap;
-
+namespace sdbusRule = sdbusplus::bus::match::rules;
 namespace details
 {
 
@@ -46,7 +46,17 @@ class Manager : public details::ServerObject<details::ManagerIface>
         Manager(sdbusplus::bus::bus& bus, const char* objPath) :
                 details::ServerObject<details::ManagerIface>(bus, objPath),
                 busLog(bus),
-                entryId(0) {};
+                entryId(0),
+                entryCapMatch(
+                    bus,
+                    sdbusRule::member("PropertiesChanged") +
+                    sdbusRule::path(
+                        "/xyz/openbmc_project/control/host0/entry_cap") +
+                    sdbusRule::argN(0, "xyz.openbmc_project.Control.Entry.Cap") +
+                    sdbusRule::interface("org.freedesktop.DBus.Properties"),
+                    std::bind(std::mem_fn(&Manager::entryCapChanged),
+                              this, std::placeholders::_1))
+                {};
 
         /*
          * @fn commit()
@@ -86,11 +96,33 @@ class Manager : public details::ServerObject<details::ManagerIface>
         /** @brief Persistent sdbusplus DBus bus connection. */
         sdbusplus::bus::bus& busLog;
 
+        /** @brief Callback for EntryCap setting change
+         *
+         * @param[in] msg - Data associated with pcap change signal
+         */
+        void entryCapChanged(sdbusplus::message::message& msg);
+
+        /**@brief Erase entries if entry cap is reached
+         */
+        void checkEntryCapAndEraseEntries();
+
+        /** @brief Look up DBUS service for input path/interface
+         *
+         * @param[in] path - DBUS path
+         * @param[in] intf - DBUS interface
+         *
+         * @return Distinct service name for input path/interface
+         */
+        std::string getService(std::string path, std::string intf);
+
         /** @brief Persistent map of Entry dbus objects and their ID */
         std::map<uint32_t, std::unique_ptr<Entry>> entries;
 
         /** @brief Id of last error log entry */
         uint32_t entryId;
+
+        /** @brief Used to subscribe to dbus EntryCap propety changes **/
+        sdbusplus::bus::match_t entryCapMatch;
 };
 
 } // namespace logging

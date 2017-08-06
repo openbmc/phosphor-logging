@@ -149,6 +149,9 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
                  *this);
     serialize(*e);
     entries.insert(std::make_pair(entryId, std::move(e)));
+
+    //Check Entry Cap value and erase old entries
+    checkEntryCapAndEraseEntries();
 }
 
 void Manager::processMetadata(const std::string& errorName,
@@ -215,6 +218,82 @@ void Manager::restore()
     }
 
     entryId = *(std::max_element(errorIds.begin(), errorIds.end()));
+}
+
+void Manager::checkEntryCapAndEraseEntries()
+{
+    constexpr auto ENTRY_CAP_PATH    = "/xyz/openbmc_project/control/host0/entry_cap";
+    constexpr auto ENTRY_CAP_INTERFACE = "xyz.openbmc_project.Control.Entry.Cap";
+    constexpr auto PROP_INTF = "org.freedesktop.DBus.Properties";
+    constexpr auto ENTRY_CAP_PROP = "EntryCap";
+    try
+    {
+        auto service = getService(ENTRY_CAP_PATH, ENTRY_CAP_INTERFACE);
+        auto method = busLog.new_method_call(service.c_str(),
+                                                ENTRY_CAP_PATH,
+                                                PROP_INTF,
+                                                "Get");
+
+        method.append(ENTRY_CAP_INTERFACE, ENTRY_CAP_PROP);
+        auto reply = busLog.call(method);
+        if (reply.is_method_error())
+        {
+            log<level::ERR>("Error in getting EntryCap property");
+            return;
+        }
+        sdbusplus::message::variant<uint32_t> pcap;
+        reply.read(pcap);
+        auto entryCap = pcap.get<uint32_t>();
+
+        //If EntryCap value is reached clear the first entry
+        if (static_cast<uint32_t>(entries.size()) > entryCap)
+        {
+            uint32_t count = static_cast<uint32_t>(entries.size()) - entryCap;
+            for (uint32_t i = 0; i < count; ++i)
+            {
+                log<level::INFO>("Entry cap reached. Deleting oldest entry",
+                    entry("ENTRY_CAP=%d", entryCap),
+                    entry("ENTRY_DELETED=%d", entries.begin()->first));
+                erase(entries.begin()->first);
+           }
+        }
+    }
+    catch(std::runtime_error& ex)
+    {
+        log<level::ERR>(ex.what());
+    }
+}
+
+void Manager::entryCapChanged(sdbusplus::message::message& msg)
+{
+    log<level::INFO>("Callback entryCapChanged for change in EntryCap");
+    checkEntryCapAndEraseEntries();
+}
+
+std::string Manager::getService(std::string path, std::string intf)
+{
+    // Mapper dbus constructs
+    auto mapperCall = busLog.new_method_call("xyz.openbmc_project.ObjectMapper",
+                                          "/xyz/openbmc_project/object_mapper",
+                                          "xyz.openbmc_project.ObjectMapper",
+                                          "GetObject");
+    mapperCall.append(path);
+    mapperCall.append(std::vector<std::string>({intf}));
+
+    auto mapperResponseMsg = busLog.call(mapperCall);
+    if (mapperResponseMsg.is_method_error())
+    {
+        throw std::runtime_error("ERROR in mapper call");
+    }
+
+    std::map<std::string, std::vector<std::string>> mapperResponse;
+    mapperResponseMsg.read(mapperResponse);
+    if (mapperResponse.begin() == mapperResponse.end())
+    {
+        throw std::runtime_error("ERROR in reading the mapper response");
+    }
+
+    return mapperResponse.begin()->first;
 }
 
 } // namespace logging
