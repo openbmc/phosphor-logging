@@ -46,7 +46,8 @@ class Manager : public details::ServerObject<details::ManagerIface>
         Manager(sdbusplus::bus::bus& bus, const char* objPath) :
                 details::ServerObject<details::ManagerIface>(bus, objPath),
                 busLog(bus),
-                entryId(0) {};
+                entryId(0),
+                capped(false) {};
 
         /*
          * @fn commit()
@@ -91,6 +92,9 @@ class Manager : public details::ServerObject<details::ManagerIface>
 
         /** @brief Id of last error log entry */
         uint32_t entryId;
+
+        /** @brief Flag to log error only once */
+        bool capped;
 };
 
 } // namespace logging
