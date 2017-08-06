@@ -4,6 +4,7 @@
 #include <phosphor-logging/log.hpp>
 #include "elog_entry.hpp"
 #include "xyz/openbmc_project/Logging/Internal/Manager/server.hpp"
+#include "xyz/openbmc_project/Logging/Internal/ErrorCap/server.hpp"
 
 namespace phosphor
 {
@@ -16,11 +17,14 @@ extern const std::map<std::string,level> g_errLevelMap;
 namespace details
 {
 
-template <typename T>
-using ServerObject = typename sdbusplus::server::object::object<T>;
+template <typename T1, typename T2>
+using ServerObject = typename sdbusplus::server::object::object<T1, T2>;
 
 using ManagerIface =
     sdbusplus::xyz::openbmc_project::Logging::Internal::server::Manager;
+
+using ErrorCapIface =
+    sdbusplus::xyz::openbmc_project::Logging::Internal::server::ErrorCap;
 
 } // namespace details
 
@@ -29,7 +33,8 @@ using ManagerIface =
  *  @details A concrete implementation for the
  *  xyz.openbmc_project.Logging.Internal.Manager DBus API.
  */
-class Manager : public details::ServerObject<details::ManagerIface>
+class Manager : public details::ServerObject<details::ManagerIface,
+                                             details::ErrorCapIface>
 {
     public:
         Manager() = delete;
@@ -44,7 +49,8 @@ class Manager : public details::ServerObject<details::ManagerIface>
          *  @param[in] path - Path to attach at.
          */
         Manager(sdbusplus::bus::bus& bus, const char* objPath) :
-                details::ServerObject<details::ManagerIface>(bus, objPath),
+                details::ServerObject<details::ManagerIface,
+                    details::ErrorCapIface>(bus, objPath),
                 busLog(bus),
                 entryId(0) {};
 
@@ -83,6 +89,12 @@ class Manager : public details::ServerObject<details::ManagerIface>
                              const std::vector<std::string>& additionalData,
                              AssociationList& objects) const;
 
+        /** @brief Return configured error cap value
+         *
+         * @return error cap value configured in settings.
+         */
+        uint32_t getErrorCap();
+
         /** @brief Persistent sdbusplus DBus bus connection. */
         sdbusplus::bus::bus& busLog;
 
@@ -92,6 +104,36 @@ class Manager : public details::ServerObject<details::ManagerIface>
         /** @brief Id of last error log entry */
         uint32_t entryId;
 };
+namespace utils
+{
+    /** @brief Get specified DBUS property
+     *
+     * @param[in] bus - DBUS
+     * @param[in] service - service name
+     * @param[in] objPath - DBUS path
+     * @param[in] intf - DBUS interface
+     * @param[in] property - DBUS property name
+     *
+     * @return Return property value
+     */
+    template <typename T>
+    T getDbusProperty(sdbusplus::bus::bus& bus,
+                      const std::string& service,
+                      const std::string& objPath,
+                      const std::string& intf,
+                      const std::string& property);
 
+    /** @brief Look up DBUS service for input path/interface
+     *
+     * @param[in] bus - DBUS
+     * @param[in] path - DBUS path
+     * @param[in] intf - DBUS interface
+     *
+     * @return Distinct service name for input path/interface
+     */
+     std::string getService(sdbusplus::bus::bus& bus,
+                            const std::string& path,
+                            const std::string& intf);
+} //utils
 } // namespace logging
 } // namespace phosphor

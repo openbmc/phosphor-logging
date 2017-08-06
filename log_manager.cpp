@@ -23,9 +23,29 @@ namespace phosphor
 {
 namespace logging
 {
+constexpr auto PROP_INTF = "org.freedesktop.DBus.Properties";
+constexpr auto METHOD_GET = "Get";
+constexpr auto ERROR_CAP_PATH = "/xyz/openbmc_project/logging/internal/manager";
+constexpr auto ERROR_CAP_INTERFACE ="xyz.openbmc_project.Logging.Internal.ErrorCap";
+constexpr auto ERROR_CAP_PROP = "ErrorCap";
 
 void Manager::commit(uint64_t transactionId, std::string errMsg)
 {
+    try
+    {
+        if(static_cast<uint32_t>(entries.size()) >= getErrorCap())
+        {
+            log<level::ERR>("Reached error cap, Ignoring error",
+                entry("errMsg=%s", errMsg),
+                entry("Size=%d", static_cast<uint32_t>(entries.size())),
+                entry("ErrorCap=%d", getErrorCap()));
+            return;
+        }
+    }
+    catch(std::runtime_error& e)
+    {
+        log<level::ERR>(e.what());
+    }
     constexpr const auto transactionIdVar = "TRANSACTION_ID";
     // Length of 'TRANSACTION_ID' string.
     constexpr const auto transactionIdVarSize = strlen(transactionIdVar);
@@ -217,5 +237,87 @@ void Manager::restore()
     entryId = *(std::max_element(errorIds.begin(), errorIds.end()));
 }
 
+uint32_t Manager::getErrorCap()
+{
+    auto service =
+        utils::getService(busLog, ERROR_CAP_PATH, ERROR_CAP_INTERFACE);
+
+    return utils::getDbusProperty<uint32_t>(
+            busLog, service, ERROR_CAP_PATH, ERROR_CAP_INTERFACE, ERROR_CAP_PROP);
+}
+
+namespace utils
+{
+/** @brief Gets the value associated with the given object
+ *         and the interface.
+ *  @param[in] service   - D-Bus service name.
+ *  @param[in] objPath   - D-Bus object path.
+ *  @param[in] intf      - D-Bus interface.
+ *  @param[in] property  - Name of the property.
+ *  @return On success returns the value of the property.
+ */
+template <typename T>
+T getDbusProperty(sdbusplus::bus::bus& bus,
+                  const std::string& service,
+                  const std::string& objPath,
+                  const std::string& intf,
+                  const std::string& property)
+{
+    auto method = bus.new_method_call(
+                      service.c_str(),
+                      objPath.c_str(),
+                      PROP_INTF,
+                      METHOD_GET);
+    method.append(intf, property);
+    auto reply = bus.call(method);
+    if (reply.is_method_error())
+    {
+         log<level::ERR>("Failed to get property",
+                        entry("PROPERTY=%s", property.c_str()),
+                        entry("PATH=%s", objPath.c_str()),
+                        entry("INTERFACE=%s", intf.c_str()));
+        throw std::runtime_error("Failed to get property");;
+    }
+
+    sdbusplus::message::variant<T> value;
+    reply.read(value);
+    return sdbusplus::message::variant_ns::get<T>(value);
+}
+
+std::string getService(sdbusplus::bus::bus& bus,
+                       const std::string& path,
+                       const std::string& intf)
+{
+    auto mapperCall = bus.new_method_call("xyz.openbmc_project.ObjectMapper",
+                                          "/xyz/openbmc_project/object_mapper",
+                                          "xyz.openbmc_project.ObjectMapper",
+                                          "GetObject");
+
+    mapperCall.append(path);
+    mapperCall.append(std::vector<std::string>({intf}));
+
+    auto mapperResponseMsg = bus.call(mapperCall);
+    if (mapperResponseMsg.is_method_error())
+    {
+
+        log<level::ERR>("ERROR in mapper call",
+                entry("PATH=%s",path.c_str()),
+                entry("INTERFACE=%s",intf.c_str()));
+        throw std::runtime_error("ERROR in mapper call");
+    }
+
+    std::map<std::string, std::vector<std::string>> mapperResponse;
+    mapperResponseMsg.read(mapperResponse);
+
+    if (mapperResponse.begin() == mapperResponse.end())
+    {
+        log<level::ERR>("ERROR reading mapper response",
+                entry("PATH=%s",path.c_str()),
+                entry("INTERFACE=%s",intf.c_str()));
+        throw std::runtime_error("ERROR in reading the mapper response");
+    }
+    return mapperResponse.begin()->first;
+}
+} //utils
 } // namespace logging
 } // namepsace phosphor
