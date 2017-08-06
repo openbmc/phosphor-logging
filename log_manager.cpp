@@ -24,8 +24,23 @@ namespace phosphor
 namespace logging
 {
 
+constexpr auto errorCap = 100;
+
 void Manager::commit(uint64_t transactionId, std::string errMsg)
 {
+    if (capped)
+    {
+        return;
+    }
+    if (entries.size() >= errorCap)
+    {
+        log<level::ERR>("Reached error cap, Ignoring error",
+                entry("Size=%d", entries.size()),
+                entry("ErrorCap=%d", errorCap));
+        capped = true;
+        return;
+    }
+
     constexpr const auto transactionIdVar = "TRANSACTION_ID";
     // Length of 'TRANSACTION_ID' string.
     constexpr const auto transactionIdVarSize = strlen(transactionIdVar);
@@ -184,6 +199,11 @@ void Manager::erase(uint32_t entryId)
         fs::remove(errorPath);
 
         entries.erase(entry);
+    }
+
+    if (entries.size() <  errorCap)
+    {
+        capped = false;
     }
 }
 
