@@ -26,6 +26,19 @@ namespace logging
 
 void Manager::commit(uint64_t transactionId, std::string errMsg)
 {
+    if (capped)
+    {
+        return;
+    }
+    if (entries.size() >= ERROR_CAP)
+    {
+        log<level::ERR>("Reached error cap, Ignoring error",
+                entry("SIZE=%d", entries.size()),
+                entry("ERROR_CAP=%d", ERROR_CAP));
+        capped = true;
+        return;
+    }
+
     constexpr const auto transactionIdVar = "TRANSACTION_ID";
     // Length of 'TRANSACTION_ID' string.
     constexpr const auto transactionIdVarSize = strlen(transactionIdVar);
@@ -193,6 +206,11 @@ void Manager::erase(uint32_t entryId)
         fs::remove(errorPath);
 
         entries.erase(entry);
+    }
+
+    if (entries.size() <  ERROR_CAP)
+    {
+        capped = false;
     }
 }
 
