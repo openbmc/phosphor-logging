@@ -30,6 +30,7 @@ test_ldadd = \
 	$(top_builddir)/log_manager.o \
 	$(top_builddir)/org.openbmc.Associations.o \
 	$(top_builddir)/xyz/openbmc_project/Logging/Internal/Manager/server.o \
+	$(top_builddir)/xyz/openbmc_project/Logging/Internal/ErrorCap/server.o \
 	$(top_builddir)/elog_meta.o \
 	$(top_builddir)/elog-lookup.o \
 	$(top_builddir)/elog-process-metadata.o
