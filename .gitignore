@@ -34,3 +34,4 @@ elog-lookup.cpp
 elog-process-metadata.cpp
 phosphor-log-manager
 phosphor-logging.pc
+xyz/openbmc_project/Logging/Internal/ErrorCap/
