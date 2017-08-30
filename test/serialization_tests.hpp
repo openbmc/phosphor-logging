@@ -16,7 +16,7 @@ namespace fs = std::experimental::filesystem;
 
 char tmplt[] = "/tmp/logging_test.XXXXXX";
 auto bus = sdbusplus::bus::new_default();
-phosphor::logging::Manager manager(bus, OBJ_INTERNAL);
+phosphor::logging::internel::Manager manager(bus, OBJ_INTERNAL);
 
 class TestSerialization : public testing::Test
 {

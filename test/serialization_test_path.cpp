@@ -11,6 +11,7 @@ namespace test
 
 TEST_F(TestSerialization, testPath)
 {
+    using  Entry = internel::Entry;
     auto id = 99;
     auto e = std::make_unique<Entry>(
                  bus,

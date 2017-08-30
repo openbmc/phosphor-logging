@@ -9,6 +9,8 @@ namespace phosphor
 {
 namespace logging
 {
+namespace internel
+{
 
 /** @brief Function required by Cereal to perform serialization.
  *  @tparam Archive - Cereal archive type (binary in our case).
@@ -75,5 +77,6 @@ bool deserialize(const fs::path& path, Entry& e)
     return false;
 }
 
+} // namespace internel
 } // namespace logging
 } // namespace phosphor

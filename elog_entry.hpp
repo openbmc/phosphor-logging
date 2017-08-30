@@ -18,7 +18,8 @@ using EntryIfaces = sdbusplus::server::object::object<
 
 using AssociationList =
      std::vector<std::tuple<std::string, std::string, std::string>>;
-
+namespace internel
+{
 class Manager;
 
 /** @class Entry
@@ -116,5 +117,6 @@ class Entry : public EntryIfaces
         Manager& parent;
 };
 
+} // namespace internel
 } // namespace logging
 } // namespace phosphor
