@@ -13,6 +13,8 @@ int main(int argc, char *argv[])
 
     phosphor::logging::Manager manager(bus, OBJ_INTERNAL);
 
+    phosphor::logging::DeleteAll deleteAll(bus, OBJ_LOGGING, manager);
+
     // Create a directory to persist errors.
     std::experimental::filesystem::create_directories(ERRLOG_PERSIST_PATH);
 
