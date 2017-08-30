@@ -4,6 +4,7 @@
 #include <phosphor-logging/log.hpp>
 #include "elog_entry.hpp"
 #include "xyz/openbmc_project/Logging/Internal/Manager/server.hpp"
+#include "xyz/openbmc_project/Collection/DeleteAll/server.hpp"
 
 namespace phosphor
 {
@@ -12,6 +13,9 @@ namespace logging
 
 extern const std::map<std::string,std::vector<std::string>> g_errMetaMap;
 extern const std::map<std::string,level> g_errLevelMap;
+
+using DeleteAllIface = sdbusplus::server::object::object <
+                       sdbusplus::xyz::openbmc_project::Collection::server::DeleteAll >;
 
 namespace details
 {
@@ -23,6 +27,9 @@ using ManagerIface =
     sdbusplus::xyz::openbmc_project::Logging::Internal::server::Manager;
 
 } // namespace details
+
+namespace internal
+{
 
 /** @class Manager
  *  @brief OpenBMC logging manager implementation.
@@ -73,6 +80,17 @@ class Manager : public details::ServerObject<details::ManagerIface>
          */
         void restore();
 
+        /** @brief  Erase all error log entries
+         *
+         */
+        void eraseAll()
+        {
+            for (const auto& entry : entries)
+            {
+                erase(entry.first);
+            }
+        }
+
     private:
         /** @brief Call metadata handler(s), if any. Handlers may create
          *         associations.
@@ -102,6 +120,45 @@ class Manager : public details::ServerObject<details::ManagerIface>
          *      value.
          */
         bool capped;
+};
+
+}
+
+/** @class Manager
+ *  @brief Implementation for delete all error log entries.
+ *  @details A concrete implementation for the
+ *  xyz.openbmc_project.Collection.DeleteAll
+ */
+class Manager : public DeleteAllIface
+{
+    public:
+        Manager() = delete;
+        Manager(const Manager&) = delete;
+        Manager& operator=(const Manager&) = delete;
+        Manager(Manager&&) = delete;
+        Manager& operator=(Manager&&) = delete;
+        virtual ~Manager() = default;
+
+        /** @brief Constructor to put object onto bus at a dbus path.
+         *         Defer signal registration (pass true for deferSignal to the
+         *         base class) until after the properties are set.
+         *  @param[in] bus - Bus to attach to.
+         *  @param[in] path - Path to attach at.
+         *  @param[in] manager - Reference to internal manager object.
+         */
+        Manager(sdbusplus::bus::bus& bus,
+                   const std::string& path,
+                   internal::Manager& manager) :
+            DeleteAllIface(bus, path.c_str(), true),
+            manager(manager) {};
+
+        /** @brief Delete all d-bus objects.
+         */
+        void deleteAll() override;
+
+    private:
+        /** @brief This is a reference to manager object */
+        internal::Manager& manager;
 };
 
 } // namespace logging

@@ -5,7 +5,6 @@
 #include "xyz/openbmc_project/Logging/Entry/server.hpp"
 #include "xyz/openbmc_project/Object/Delete/server.hpp"
 #include "org/openbmc/Associations/server.hpp"
-
 namespace phosphor
 {
 namespace logging
@@ -18,9 +17,10 @@ using EntryIfaces = sdbusplus::server::object::object<
 
 using AssociationList =
      std::vector<std::tuple<std::string, std::string, std::string>>;
-
+namespace internal
+{
 class Manager;
-
+}
 /** @class Entry
  *  @brief OpenBMC logging entry implementation.
  *  @details A concrete implementation for the
@@ -57,7 +57,7 @@ class Entry : public EntryIfaces
               std::string&& msgErr,
               std::vector<std::string>&& additionalDataErr,
               AssociationList&& objects,
-              Manager& parent) :
+              internal::Manager& parent) :
               EntryIfaces(bus, path.c_str(), true),
               parent(parent)
         {
@@ -87,7 +87,7 @@ class Entry : public EntryIfaces
         Entry(sdbusplus::bus::bus& bus,
               const std::string& path,
               uint32_t entryId,
-              Manager& parent) :
+              internal::Manager& parent) :
               EntryIfaces(bus, path.c_str(), true),
               parent(parent)
         {
@@ -113,7 +113,7 @@ class Entry : public EntryIfaces
         AssociationList assocs = {};
 
         /** @brief This entry's parent */
-        Manager& parent;
+        internal::Manager& parent;
 };
 
 } // namespace logging
