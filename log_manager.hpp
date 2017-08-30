@@ -4,7 +4,7 @@
 #include <phosphor-logging/log.hpp>
 #include "elog_entry.hpp"
 #include "xyz/openbmc_project/Logging/Internal/Manager/server.hpp"
-
+#include "xyz/openbmc_project/Logging/Delete/server.hpp"
 namespace phosphor
 {
 namespace logging
@@ -16,11 +16,14 @@ extern const std::map<std::string,level> g_errLevelMap;
 namespace details
 {
 
-template <typename T>
-using ServerObject = typename sdbusplus::server::object::object<T>;
+template <typename T1, typename T2>
+using ServerObject = typename sdbusplus::server::object::object<T1, T2>;
 
 using ManagerIface =
     sdbusplus::xyz::openbmc_project::Logging::Internal::server::Manager;
+
+using DeleteIface =
+    sdbusplus::xyz::openbmc_project::Logging::server::Delete;
 
 } // namespace details
 
@@ -29,7 +32,8 @@ using ManagerIface =
  *  @details A concrete implementation for the
  *  xyz.openbmc_project.Logging.Internal.Manager DBus API.
  */
-class Manager : public details::ServerObject<details::ManagerIface>
+class Manager : public details::ServerObject<details::ManagerIface,
+					details::DeleteIface>
 {
     public:
         Manager() = delete;
@@ -44,7 +48,8 @@ class Manager : public details::ServerObject<details::ManagerIface>
          *  @param[in] path - Path to attach at.
          */
         Manager(sdbusplus::bus::bus& bus, const char* objPath) :
-                details::ServerObject<details::ManagerIface>(bus, objPath),
+                details::ServerObject<details::ManagerIface,
+                details::DeleteIface>(bus, objPath),
                 busLog(bus),
                 entryId(0),
                 capped(false) {};
@@ -72,6 +77,11 @@ class Manager : public details::ServerObject<details::ManagerIface>
          *         representations.
          */
         void restore();
+
+        /** @brief  Delete all error log entries
+         *
+         */
+        void deleteAll();
 
     private:
         /** @brief Call metadata handler(s), if any. Handlers may create

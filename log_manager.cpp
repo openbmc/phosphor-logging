@@ -244,5 +244,15 @@ void Manager::restore()
     entryId = *(std::max_element(errorIds.begin(), errorIds.end()));
 }
 
+void Manager::deleteAll()
+{
+    // do delete action;
+    //for (std::map<uint32_t,std::unique_ptr<Entry>>::iterator it=entries.begin(); it!=entries.end(); ++it)
+    for (auto it = entries.begin(); it != entries.end(); ++it)
+    {
+     erase(it->first);
+    }
+}
+
 } // namespace logging
 } // namepsace phosphor
