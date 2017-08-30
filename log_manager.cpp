@@ -244,5 +244,10 @@ void Manager::restore()
     entryId = *(std::max_element(errorIds.begin(), errorIds.end()));
 }
 
+void Collection::delete_()
+{
+    manager.eraseAll();
+}
+
 } // namespace logging
 } // namepsace phosphor

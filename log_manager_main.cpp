@@ -3,8 +3,9 @@
 #include <experimental/filesystem>
 #include "config.h"
 #include "log_manager.hpp"
+//#include "log_collection.hpp"
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     auto bus = sdbusplus::bus::new_default();
 
@@ -12,6 +13,8 @@ int main(int argc, char *argv[])
     sdbusplus::server::manager::manager objManager(bus, OBJ_LOGGING);
 
     phosphor::logging::Manager manager(bus, OBJ_INTERNAL);
+
+    phosphor::logging::Collection collection(bus, OBJ_COLLECTION, manager);
 
     // Create a directory to persist errors.
     std::experimental::filesystem::create_directories(ERRLOG_PERSIST_PATH);
@@ -21,7 +24,7 @@ int main(int argc, char *argv[])
 
     bus.request_name(BUSNAME_LOGGING);
 
-    while(true)
+    while (true)
     {
         bus.process_discard();
         bus.wait();
