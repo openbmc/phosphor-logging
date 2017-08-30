@@ -10,8 +10,8 @@ namespace phosphor
 namespace logging
 {
 
-extern const std::map<std::string,std::vector<std::string>> g_errMetaMap;
-extern const std::map<std::string,level> g_errLevelMap;
+extern const std::map<std::string, std::vector<std::string>> g_errMetaMap;
+extern const std::map<std::string, level> g_errLevelMap;
 
 namespace details
 {
@@ -44,10 +44,10 @@ class Manager : public details::ServerObject<details::ManagerIface>
          *  @param[in] path - Path to attach at.
          */
         Manager(sdbusplus::bus::bus& bus, const char* objPath) :
-                details::ServerObject<details::ManagerIface>(bus, objPath),
-                busLog(bus),
-                entryId(0),
-                capped(false) {};
+            details::ServerObject<details::ManagerIface>(bus, objPath),
+            busLog(bus),
+            entryId(0),
+            capped(false) {};
 
         /*
          * @fn commit()
@@ -72,6 +72,18 @@ class Manager : public details::ServerObject<details::ManagerIface>
          *         representations.
          */
         void restore();
+
+        /** @brief  Erase all error log entries
+         *
+         */
+        inline void eraseAll()
+        {
+            for (const auto& entry : entries)
+            {
+                erase(entry.first);
+            }
+        }
+
 
     private:
         /** @brief Call metadata handler(s), if any. Handlers may create
