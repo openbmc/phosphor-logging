@@ -61,6 +61,7 @@ AS_IF([test "x$enable_oe_sdk" == "xyes"],
 
 AC_DEFINE(BUSNAME_LOGGING, "xyz.openbmc_project.Logging", [The log manager DBus busname to own.])
 AC_DEFINE(OBJ_LOGGING, "/xyz/openbmc_project/logging", [The log manager DBus object path.])
+AC_DEFINE(OBJ_COLLECTION, "/xyz/openbmc_project/collection", [The log collection DBus object path.])
 AC_DEFINE(OBJ_INTERNAL, "/xyz/openbmc_project/logging/internal/manager", [The private log manager DBus object path.])
 AC_DEFINE(OBJ_ENTRY, "/xyz/openbmc_project/logging/entry", [The log entry DBus object path.])
 AC_DEFINE(INVENTORY_ROOT, "/xyz/openbmc_project/inventory", [The inventory root.])
