@@ -11,6 +11,7 @@ namespace test
 
 TEST_F(TestSerialization, testProperties)
 {
+    using  Entry = internal::Entry;
     auto id = 99;
     phosphor::logging::AssociationList assocations{};
     std::vector<std::string> testData{"additional", "data"};

@@ -10,6 +10,8 @@ namespace phosphor
 {
 namespace logging
 {
+namespace internal
+{
 
 namespace fs = std::experimental::filesystem;
 
@@ -30,5 +32,6 @@ fs::path serialize(const Entry& e,
  */
 bool deserialize(const fs::path& path, Entry& e);
 
+} // namespace instenel
 } // namespace logging
 } // namespace phosphor

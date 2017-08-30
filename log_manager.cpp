@@ -23,7 +23,8 @@ namespace phosphor
 {
 namespace logging
 {
-
+namespace internal
+{
 void Manager::commit(uint64_t transactionId, std::string errMsg)
 {
     if (capped)
@@ -242,6 +243,13 @@ void Manager::restore()
     }
 
     entryId = *(std::max_element(errorIds.begin(), errorIds.end()));
+}
+
+} // namespace internal
+
+void Manager::deleteAll()
+{
+    manager.eraseAll();
 }
 
 } // namespace logging

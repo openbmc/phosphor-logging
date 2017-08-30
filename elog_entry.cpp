@@ -6,7 +6,8 @@ namespace phosphor
 {
 namespace logging
 {
-
+namespace internal
+{
 // TODO Add interfaces to handle the error log id numbering
 
 void Entry::delete_()
@@ -31,5 +32,6 @@ bool Entry::resolved(bool value)
     return current;
 }
 
+} // namespace internal
 } // namespace logging
 } // namepsace phosphor
