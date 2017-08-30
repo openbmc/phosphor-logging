@@ -1,0 +1,6 @@
+description: >
+    Implement to provide  deletion of all commited errors.
+methods:
+    - name: DeleteAll
+      description: >
+         Delete all committed errors
