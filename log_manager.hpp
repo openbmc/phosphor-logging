@@ -4,6 +4,7 @@
 #include <phosphor-logging/log.hpp>
 #include "elog_entry.hpp"
 #include "xyz/openbmc_project/Logging/Internal/Manager/server.hpp"
+#include "xyz/openbmc_project/Collection/server.hpp"
 
 namespace phosphor
 {
@@ -12,6 +13,9 @@ namespace logging
 
 extern const std::map<std::string,std::vector<std::string>> g_errMetaMap;
 extern const std::map<std::string,level> g_errLevelMap;
+
+using CollectionIfaces = sdbusplus::server::object::object <
+                         sdbusplus::xyz::openbmc_project::server::Collection >;
 
 namespace details
 {
@@ -73,6 +77,18 @@ class Manager : public details::ServerObject<details::ManagerIface>
          */
         void restore();
 
+        /** @brief  Erase all error log entries
+         *
+         */
+        void eraseAll()
+        {
+            for (const auto& entry : entries)
+            {
+                erase(entry.first);
+            }
+        }
+
+
     private:
         /** @brief Call metadata handler(s), if any. Handlers may create
          *         associations.
@@ -102,6 +118,43 @@ class Manager : public details::ServerObject<details::ManagerIface>
          *      value.
          */
         bool capped;
+};
+
+/** @class Collection
+ *  @brief OpenBMC collection implementation.
+ *  @details A concrete implementation for the
+ *  xyz.openbmc_project.Collection.
+ */
+class Collection : public CollectionIfaces
+{
+    public:
+        Collection() = delete;
+        Collection(const Collection&) = delete;
+        Collection& operator=(const Collection&) = delete;
+        Collection(Collection&&) = delete;
+        Collection& operator=(Collection&&) = delete;
+        virtual ~Collection() = default;
+
+        /** @brief Constructor to put object onto bus at a dbus path.
+         *         Defer signal registration (pass true for deferSignal to the
+         *         base class) until after the properties are set.
+         *  @param[in] bus - Bus to attach to.
+         *  @param[in] path - Path to attach at.
+         *  @param[in] manager - Reference to manager object.
+         */
+        Collection(sdbusplus::bus::bus& bus,
+                   const std::string& path,
+                   Manager& manager) :
+            CollectionIfaces(bus, path.c_str(), true),
+            manager(manager) {};
+
+        /** @brief Delete all d-bus objects.
+         */
+        void delete_() override;
+
+    private:
+        /** @brief This is a reference to manager object */
+        Manager& manager;
 };
 
 } // namespace logging
