@@ -17,7 +17,7 @@
 
 using namespace phosphor::logging;
 extern const std::map<metadata::Metadata,
-                      std::function<metadata::associations::Type>> meta;
+       std::function<metadata::associations::Type>> meta;
 
 namespace phosphor
 {
@@ -33,8 +33,8 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     if (entries.size() >= ERROR_CAP)
     {
         log<level::ERR>("Reached error cap, Ignoring error",
-                entry("SIZE=%d", entries.size()),
-                entry("ERROR_CAP=%d", ERROR_CAP));
+                        entry("SIZE=%d", entries.size()),
+                        entry("ERROR_CAP=%d", ERROR_CAP));
         capped = true;
         return;
     }
@@ -54,12 +54,12 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
                                       JOURNAL_INTERFACE, "Synchronize");
     bus.call_noreply(method);
 
-    sd_journal *j = nullptr;
+    sd_journal* j = nullptr;
     int rc = sd_journal_open(&j, SD_JOURNAL_LOCAL_ONLY);
     if (rc < 0)
     {
         logging::log<logging::level::ERR>("Failed to open journal",
-                           logging::entry("DESCRIPTION=%s", strerror(-rc)));
+                                          logging::entry("DESCRIPTION=%s", strerror(-rc)));
         return;
     }
 
@@ -77,12 +77,12 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     // The result from the sd_journal_get_data() is of the form VARIABLE=value.
     SD_JOURNAL_FOREACH_BACKWARDS(j)
     {
-        const char *data = nullptr;
+        const char* data = nullptr;
         size_t length = 0;
 
         // Look for the transaction id metadata variable
-        rc = sd_journal_get_data(j, transactionIdVar, (const void **)&data,
-                                &length);
+        rc = sd_journal_get_data(j, transactionIdVar, (const void**)&data,
+                                 &length);
         if (rc < 0)
         {
             // This journal entry does not have the TRANSACTION_ID
@@ -113,7 +113,7 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
         for (auto i = metalist.cbegin(); i != metalist.cend();)
         {
             rc = sd_journal_get_data(j, (*i).c_str(),
-                                    (const void **)&data, &length);
+                                     (const void**)&data, &length);
             if (rc < 0)
             {
                 // Metadata variable not found, check next metadata variable.
@@ -137,7 +137,7 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
         for (auto& metaVarStr : metalist)
         {
             logging::log<logging::level::INFO>("Failed to find metadata",
-                    logging::entry("META_FIELD=%s", metaVarStr.c_str()));
+                                               logging::entry("META_FIELD=%s", metaVarStr.c_str()));
         }
     }
 
@@ -146,9 +146,9 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     // Create error Entry dbus object
     entryId++;
     auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(
-                std::chrono::system_clock::now().time_since_epoch()).count();
+                  std::chrono::system_clock::now().time_since_epoch()).count();
     auto objPath =  std::string(OBJ_ENTRY) + '/' +
-            std::to_string(entryId);
+                    std::to_string(entryId);
 
     AssociationList objects {};
     processMetadata(errMsg, additionalData, objects);
@@ -179,14 +179,14 @@ void Manager::processMetadata(const std::string& errorName,
 {
     // additionalData is a list of "metadata=value"
     constexpr auto separator = '=';
-    for(const auto& entry: additionalData)
+    for (const auto& entry : additionalData)
     {
         auto found = entry.find(separator);
-        if(std::string::npos != found)
+        if (std::string::npos != found)
         {
             auto metadata = entry.substr(0, found);
             auto iter = meta.find(metadata);
-            if(meta.end() != iter)
+            if (meta.end() != iter)
             {
                 (iter->second)(metadata, additionalData, objects);
             }
@@ -198,7 +198,7 @@ void Manager::erase(uint32_t entryId)
 {
     auto entry = entries.find(entryId);
     auto id = entry->second->id();
-    if(entries.end() != entry)
+    if (entries.end() != entry)
     {
         // Delete the persistent representation of this error.
         fs::path errorPath(ERRLOG_PERSIST_PATH);
@@ -224,7 +224,7 @@ void Manager::restore()
         return;
     }
 
-    for(auto& file: fs::directory_iterator(dir))
+    for (auto& file : fs::directory_iterator(dir))
     {
         auto id = file.path().filename().c_str();
         auto idNum = std::stol(id);
