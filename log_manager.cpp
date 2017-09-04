@@ -71,6 +71,15 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
         metalist.insert(metamap->second.begin(), metamap->second.end());
     }
 
+    //InternalFailure type error, add _PID field information in AdditionalData.
+    constexpr auto INTERNAL_FAILURE =
+          "xyz.openbmc_project.Common.Error.InternalFailure";
+
+    if (!strcmp(INTERNAL_FAILURE, errMsg.c_str()))
+    {
+        metalist.insert("_PID");
+    }
+
     std::vector<std::string> additionalData;
 
     // Read the journal from the end to get the most recent entry first.
@@ -131,6 +140,7 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
             break;
         }
     }
+
     if (!metalist.empty())
     {
         // Not all the metadata variables were found in the journal.
