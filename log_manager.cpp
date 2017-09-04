@@ -71,6 +71,9 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
         metalist.insert(metamap->second.begin(), metamap->second.end());
     }
 
+    //Add _PID field information in AdditionalData.
+    metalist.insert("_PID");
+
     std::vector<std::string> additionalData;
 
     // Read the journal from the end to get the most recent entry first.
