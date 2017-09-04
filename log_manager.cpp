@@ -131,6 +131,23 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
             break;
         }
     }
+
+    //InternalFailure type error, add _PID field information in AdditionalData.
+    constexpr auto INTERNAL_FAILURE =
+          "xyz.openbmc_project.Common.Error.InternalFailure";
+
+    if ( !strcmp(INTERNAL_FAILURE, errMsg.c_str()))
+    {
+        const char *data = nullptr;
+        size_t length = 0;
+        rc = sd_journal_get_data(j, "_PID",
+                            reinterpret_cast<const void **>(&data), &length);
+        if (!rc)
+        {
+            additionalData.emplace_back(data, length);
+        }
+    }
+
     if (!metalist.empty())
     {
         // Not all the metadata variables were found in the journal.
