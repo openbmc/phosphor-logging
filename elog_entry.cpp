@@ -31,5 +31,22 @@ bool Entry::resolved(bool value)
     return current;
 }
 
+AssociationList Entry::associations(AssociationList value)
+{
+
+    auto _associations =
+        sdbusplus::org::openbmc::server::Associations::associations();
+
+    if (_associations != value)
+    {
+        assocs = value;
+        _associations =
+           sdbusplus::org::openbmc::server::Associations::associations(value);
+        serialize(*this);
+    }
+
+    return _associations;
+}
+
 } // namespace logging
 } // namepsace phosphor

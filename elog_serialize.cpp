@@ -19,7 +19,9 @@ template<class Archive>
 void save(Archive& a, const Entry& e)
 {
     a(e.id(), e.severity(), e.timestamp(),
-      e.message(), e.additionalData(), e.associations(), e.resolved());
+      e.message(), e.additionalData(),
+      e.sdbusplus::org::openbmc::server::Associations::associations(),
+      e.resolved());
 }
 
 /** @brief Function required by Cereal to perform deserialization.

@@ -68,7 +68,8 @@ class Entry : public EntryIfaces
             additionalData(std::move(additionalDataErr));
             associations(std::move(objects));
             // Store a copy of associations in case we need to recreate
-            assocs = associations();
+            assocs =
+                sdbusplus::org::openbmc::server::Associations::associations();
             sdbusplus::xyz::openbmc_project::
                 Logging::server::Entry::resolved(false);
 
@@ -107,6 +108,11 @@ class Entry : public EntryIfaces
         /** @brief Delete this d-bus object.
          */
         void delete_() override;
+
+        /** @brief Set value of associations
+         * @param[in] assocs - Association list
+         */
+        AssociationList associations(AssociationList assocs) override;
 
     private:
         /** @brief This entry's associations */
