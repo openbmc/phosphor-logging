@@ -1,3 +1,4 @@
+if WANT_PHOSPHOR_LOGGING
 # export these headers
 nobase_include_HEADERS = \
 	phosphor-logging/log.hpp \
@@ -108,3 +109,5 @@ pkgconfiglibdir = ${libdir}/pkgconfig
 pkgconfiglib_DATA = phosphor-logging.pc
 
 SUBDIRS = test
+endif
+dist_bin_SCRIPTS =  ${abs_srcdir}/tools/elog-gen.py ${abs_srcdir}/tools/phosphor-logging/templates/elog-gen-template.mako.hpp

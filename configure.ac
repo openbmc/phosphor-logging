@@ -23,19 +23,23 @@ AM_PATH_PYTHON([2.7], [AC_SUBST([PYTHON], [echo "$PYTHON"])], [AC_MSG_ERROR(
 # Surpress the --with-libtool-sysroot error
 LT_INIT
 
-# Checks for libraries.
-AX_PKG_CHECK_MODULES([SYSTEMD], [], [libsystemd >= 221], [], [AC_MSG_ERROR(["systemd required and not found."])])
+AC_ARG_ENABLE([phosphor-logging], AS_HELP_STRING([--disable-phosphor-logging], [Disable phosphor-logging]))
+AM_CONDITIONAL([WANT_PHOSPHOR_LOGGING], [test "x$enable_phosphor-logging" != "xno"])
+AS_IF([test "x$enable_phosphor-logging" != "xno"], [
 
-# sdbusplus is non-private because we have no library to link.
-# If we ever have a library, move this to private.
-AX_PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus], [], [], [AC_MSG_ERROR(["sdbusplus required and not found."])])
-AX_PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [], [phosphor-dbus-interfaces], [], [AC_MSG_ERROR(["phosphor-dbus-interfaces required and not found."])])
+    # Checks for libraries.
+    AX_PKG_CHECK_MODULES([SYSTEMD], [], [libsystemd >= 221], [], [AC_MSG_ERROR(["systemd required and not found."])])
 
-# Check for sdbus++
-AC_PATH_PROG([SDBUSPLUSPLUS], [sdbus++])
-AS_IF([test "x$SDBUSPLUSPLUS" == "x"],
-    AC_MSG_ERROR(["Requires sdbus++"]))
+    # sdbusplus is non-private because we have no library to link.
+    # If we ever have a library, move this to private.
+    AX_PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus], [], [], [AC_MSG_ERROR(["sdbusplus required and not found."])])
+    AX_PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [], [phosphor-dbus-interfaces], [], [AC_MSG_ERROR(["phosphor-dbus-interfaces required and not found."])])
 
+    # Check for sdbus++
+    AC_PATH_PROG([SDBUSPLUSPLUS], [sdbus++])
+    AS_IF([test "x$SDBUSPLUSPLUS" == "x"],
+        AC_MSG_ERROR(["Requires sdbus++"]))
+])
 # Check/set gtest specific functions.
 AX_PTHREAD([GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=1"],[GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=0"])
 AC_SUBST(GTEST_CPPFLAGS)
