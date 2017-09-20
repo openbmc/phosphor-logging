@@ -5,10 +5,6 @@ AC_LANG([C++])
 AM_INIT_AUTOMAKE([subdir-objects -Wall -Werror foreign dist-xz])
 AM_SILENT_RULES([yes])
 
-# Checks for typedefs, structures, and compiler characteristics.
-AX_CXX_COMPILE_STDCXX_14([noext])
-AX_APPEND_COMPILE_FLAGS([-fpic -Wall -Werror], [CXXFLAGS])
-
 # Checks for programs
 AC_PROG_CXX
 AM_PROG_AR
@@ -16,30 +12,39 @@ AC_PROG_INSTALL #Checks/sets the install variable to be used
 AC_PROG_MAKE_SET
 AC_PROG_MKDIR_P
 AC_CHECK_PROG([DIRNAME], dirname, dirname)
-# Python
-AM_PATH_PYTHON([2.7], [AC_SUBST([PYTHON], [echo "$PYTHON"])], [AC_MSG_ERROR(
-    [Could not find python-2.7 installed...python-2.7 is required])])
 
-# Surpress the --with-libtool-sysroot error
-LT_INIT
+AC_ARG_ENABLE([phosphor_logging],
+    AS_HELP_STRING([--disable-phosphor_logging], [Disable phosphor_logging]))
+AM_CONDITIONAL([WANT_PHOSPHOR_LOGGING], [test "x$enable_phosphor_logging" != "xno"])
+AS_IF([test "x$enable_phosphor_logging" != "xno"], [
+    # Checks for typedefs, structures, and compiler characteristics.
+    AX_CXX_COMPILE_STDCXX_14([noext])
+    AX_APPEND_COMPILE_FLAGS([-fpic -Wall -Werror], [CXXFLAGS])
 
-# Checks for libraries.
-AX_PKG_CHECK_MODULES([SYSTEMD], [], [libsystemd >= 221], [], [AC_MSG_ERROR(["systemd required and not found."])])
+    # Python
+    AM_PATH_PYTHON([2.7], [AC_SUBST([PYTHON], [echo "$PYTHON"])], [AC_MSG_ERROR(
+        [Could not find python-2.7 installed...python-2.7 is required])])
 
-# sdbusplus is non-private because we have no library to link.
-# If we ever have a library, move this to private.
-AX_PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus], [], [], [AC_MSG_ERROR(["sdbusplus required and not found."])])
-AX_PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [], [phosphor-dbus-interfaces], [], [AC_MSG_ERROR(["phosphor-dbus-interfaces required and not found."])])
+    # Surpress the --with-libtool-sysroot error
+    LT_INIT
 
-# Check for sdbus++
-AC_PATH_PROG([SDBUSPLUSPLUS], [sdbus++])
-AS_IF([test "x$SDBUSPLUSPLUS" == "x"],
-    AC_MSG_ERROR(["Requires sdbus++"]))
+    # Checks for libraries.
+    AX_PKG_CHECK_MODULES([SYSTEMD], [], [libsystemd >= 221], [], [AC_MSG_ERROR(["systemd required and not found."])])
 
-# Check/set gtest specific functions.
-AX_PTHREAD([GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=1"],[GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=0"])
-AC_SUBST(GTEST_CPPFLAGS)
+    # sdbusplus is non-private because we have no library to link.
+    # If we ever have a library, move this to private.
+    AX_PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus], [], [], [AC_MSG_ERROR(["sdbusplus required and not found."])])
+    AX_PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [], [phosphor-dbus-interfaces], [], [AC_MSG_ERROR(["phosphor-dbus-interfaces required and not found."])])
 
+    # Check for sdbus++
+    AC_PATH_PROG([SDBUSPLUSPLUS], [sdbus++])
+    AS_IF([test "x$SDBUSPLUSPLUS" == "x"],
+        AC_MSG_ERROR(["Requires sdbus++"]))
+
+    # Check/set gtest specific functions.
+    AX_PTHREAD([GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=1"],[GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=0"])
+    AC_SUBST(GTEST_CPPFLAGS)
+])
 # Test cases require SDK so only build if we're told to (and SDK is available)
 AC_ARG_ENABLE([oe-sdk],
     AS_HELP_STRING([--enable-oe-sdk], [Link testcases absolutely against OE SDK so they can be ran within it.])
