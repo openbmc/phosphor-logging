@@ -1,3 +1,5 @@
+# For target build
+if !INSTALL_ERROR
 # export these headers
 nobase_include_HEADERS = \
 	phosphor-logging/log.hpp \
@@ -108,3 +110,11 @@ pkgconfiglibdir = ${libdir}/pkgconfig
 pkgconfiglib_DATA = phosphor-logging.pc
 
 SUBDIRS = test
+else
+# For native build
+# export parser and maki script
+elogdir = ${datadir}/phosphor-logging/elog
+nobase_elog_DATA =  \
+	tools/elog-gen.py \
+	tools/phosphor-logging/templates/elog-gen-template.mako.hpp
+endif
