@@ -3,7 +3,9 @@
 #include <cereal/types/tuple.hpp>
 #include <cereal/archives/binary.hpp>
 #include <fstream>
+
 #include "elog_serialize.hpp"
+#include <phosphor-logging/log.hpp>
 
 namespace phosphor
 {
@@ -65,14 +67,23 @@ fs::path serialize(const Entry& e, const fs::path& dir)
 
 bool deserialize(const fs::path& path, Entry& e)
 {
-    if (fs::exists(path))
+    try
     {
-        std::ifstream is(path.c_str(), std::ios::in | std::ios::binary);
-        cereal::BinaryInputArchive iarchive(is);
-        iarchive(e);
-        return true;
+        if (fs::exists(path))
+        {
+            std::ifstream is(path.c_str(), std::ios::in | std::ios::binary);
+            cereal::BinaryInputArchive iarchive(is);
+            iarchive(e);
+            return true;
+        }
+        return false;
     }
-    return false;
+    catch(cereal::Exception& e)
+    {
+        log<level::ERR>(e.what());
+        fs::remove(path);
+        return false;
+    }
 }
 
 } // namespace logging
