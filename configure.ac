@@ -5,10 +5,6 @@ AC_LANG([C++])
 AM_INIT_AUTOMAKE([subdir-objects -Wall -Werror foreign dist-xz])
 AM_SILENT_RULES([yes])
 
-# Checks for typedefs, structures, and compiler characteristics.
-AX_CXX_COMPILE_STDCXX_14([noext])
-AX_APPEND_COMPILE_FLAGS([-fpic -Wall -Werror], [CXXFLAGS])
-
 # Checks for programs
 AC_PROG_CXX
 AM_PROG_AR
@@ -16,25 +12,42 @@ AC_PROG_INSTALL #Checks/sets the install variable to be used
 AC_PROG_MAKE_SET
 AC_PROG_MKDIR_P
 AC_CHECK_PROG([DIRNAME], dirname, dirname)
-# Python
-AM_PATH_PYTHON([2.7], [AC_SUBST([PYTHON], [echo "$PYTHON"])], [AC_MSG_ERROR(
-    [Could not find python-2.7 installed...python-2.7 is required])])
 
-# Surpress the --with-libtool-sysroot error
-LT_INIT
+AC_ARG_ENABLE([install_error],
+    AS_HELP_STRING([--enable-install_error],
+        [Enable installing parser and mako script]),
+    [], [install_errror=yes])
+AM_CONDITIONAL([INSTALL_ERROR], [test "x$enable_install_error" != "xno"])
+# Perform checks for packages only during target build.
+# For native build do not perform the checks as the packages
+# are not present in the host machine.
+# For native recipe enable the install_error configure flag
+# in the recipe to copy error yaml files
+AS_IF([test "x$enable_install_error" != "xyes"], [
+    # Checks for typedefs, structures, and compiler characteristics.
+    AX_CXX_COMPILE_STDCXX_14([noext])
+    AX_APPEND_COMPILE_FLAGS([-fpic -Wall -Werror], [CXXFLAGS])
 
-# Checks for libraries.
-AX_PKG_CHECK_MODULES([SYSTEMD], [], [libsystemd >= 221], [], [AC_MSG_ERROR(["systemd required and not found."])])
+    # Python
+    AM_PATH_PYTHON([2.7], [AC_SUBST([PYTHON], [echo "$PYTHON"])], [AC_MSG_ERROR(
+        [Could not find python-2.7 installed...python-2.7 is required])])
 
-# sdbusplus is non-private because we have no library to link.
-# If we ever have a library, move this to private.
-AX_PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus], [], [], [AC_MSG_ERROR(["sdbusplus required and not found."])])
-AX_PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [], [phosphor-dbus-interfaces], [], [AC_MSG_ERROR(["phosphor-dbus-interfaces required and not found."])])
+    # Surpress the --with-libtool-sysroot error
+    LT_INIT
 
-# Check for sdbus++
-AC_PATH_PROG([SDBUSPLUSPLUS], [sdbus++])
-AS_IF([test "x$SDBUSPLUSPLUS" == "x"],
-    AC_MSG_ERROR(["Requires sdbus++"]))
+    # Checks for libraries.
+    AX_PKG_CHECK_MODULES([SYSTEMD], [], [libsystemd >= 221], [], [AC_MSG_ERROR(["systemd required and not found."])])
+
+    # sdbusplus is non-private because we have no library to link.
+    # If we ever have a library, move this to private.
+    AX_PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus], [], [], [AC_MSG_ERROR(["sdbusplus required and not found."])])
+    AX_PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [], [phosphor-dbus-interfaces], [], [AC_MSG_ERROR(["phosphor-dbus-interfaces required and not found."])])
+
+    # Check for sdbus++
+    AC_PATH_PROG([SDBUSPLUSPLUS], [sdbus++])
+    AS_IF([test "x$SDBUSPLUSPLUS" == "x"],
+        AC_MSG_ERROR(["Requires sdbus++"]))
+])
 
 # Check/set gtest specific functions.
 AX_PTHREAD([GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=1"],[GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=0"])
