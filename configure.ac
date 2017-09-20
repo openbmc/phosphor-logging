@@ -16,6 +16,11 @@ AC_PROG_INSTALL #Checks/sets the install variable to be used
 AC_PROG_MAKE_SET
 AC_PROG_MKDIR_P
 AC_CHECK_PROG([DIRNAME], dirname, dirname)
+
+AC_ARG_ENABLE([phosphor-logging],
+    AS_HELP_STRING([--disable-phosphor-logging], [Disable phosphor-logging]))
+AM_CONDITIONAL([WANT_PHOSPHOR_LOGGING], [test "x$enable-phosphor-logging" != "xno"])
+
 # Python
 AM_PATH_PYTHON([2.7], [AC_SUBST([PYTHON], [echo "$PYTHON"])], [AC_MSG_ERROR(
     [Could not find python-2.7 installed...python-2.7 is required])])
