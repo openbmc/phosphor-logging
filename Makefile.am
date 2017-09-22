@@ -1,3 +1,4 @@
+if WANT_PHOSPHOR_LOGGING
 # export these headers
 nobase_include_HEADERS = \
 	phosphor-logging/log.hpp \
@@ -106,5 +107,5 @@ callouts-gen.hpp: $(REQ_FILES_TO_GEN)
 
 pkgconfiglibdir = ${libdir}/pkgconfig
 pkgconfiglib_DATA = phosphor-logging.pc
-
-SUBDIRS = test
+endif
+SUBDIRS = test tools
