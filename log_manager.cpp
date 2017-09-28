@@ -245,7 +245,10 @@ void Manager::restore()
         }
     }
 
-    entryId = *(std::max_element(errorIds.begin(), errorIds.end()));
+    if (errorIds.size())
+    {
+        entryId = *(std::max_element(errorIds.begin(), errorIds.end()));
+    }
 }
 
 } // namespace internal
