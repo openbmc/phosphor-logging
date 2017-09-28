@@ -93,6 +93,10 @@ AC_ARG_VAR(ERROR_CAP, [Max number of error entries allowed for commit])
 AS_IF([test "x$ERROR_CAP" == "x"], [ERROR_CAP=100])
 AC_DEFINE_UNQUOTED([ERROR_CAP], [$ERROR_CAP], [Max number of error entries allowed for commit])
 
+AC_ARG_VAR(CLASS_VERSION, [Class version to register with Cereal])
+AS_IF([test "x$CLASS_VERSION" == "x"], [CLASS_VERSION=1])
+AC_DEFINE_UNQUOTED([CLASS_VERSION], [$CLASS_VERSION], [Class version to register with Cereal])
+
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile test/Makefile])
 AC_CONFIG_FILES([phosphor-logging.pc])
