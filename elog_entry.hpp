@@ -111,12 +111,26 @@ class Entry : public EntryIfaces
          */
         void delete_() override;
 
+        /** @brief Returns the version of this class
+         */
+        static inline int getVersion()
+        {
+            return version;
+        }
+
     private:
         /** @brief This entry's associations */
         AssociationList assocs = {};
 
         /** @brief This entry's parent */
         internal::Manager& parent;
+
+        /** @brief Version of this class
+         *
+         *  Versioning is useful when the method of serializing
+         *  changes across different code levels
+         */
+        static int version;
 };
 
 } // namespace logging
