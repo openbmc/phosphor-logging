@@ -7,6 +7,9 @@ namespace phosphor
 namespace logging
 {
 
+// Initial class version 0
+int Entry::version = 0;
+
 // TODO Add interfaces to handle the error log id numbering
 
 void Entry::delete_()
