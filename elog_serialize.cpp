@@ -6,6 +6,12 @@
 
 #include "elog_serialize.hpp"
 #include <phosphor-logging/log.hpp>
+#include "config.h"
+
+// Register class version
+// From cereal documentation;
+// "This macro should be placed at global scope"
+CEREAL_CLASS_VERSION(phosphor::logging::Entry, CLASS_VERSION);
 
 namespace phosphor
 {
@@ -14,11 +20,13 @@ namespace logging
 
 /** @brief Function required by Cereal to perform serialization.
  *  @tparam Archive - Cereal archive type (binary in our case).
- *  @param[in] a - reference to Cereal archive.
- *  @param[in] e - const reference to error entry.
+ *  @param[in] a       - reference to Cereal archive.
+ *  @param[in] e       - const reference to error entry.
+ *  @param[in] version - Class version that enables handling
+ *                       a serialized data across code levels
  */
 template<class Archive>
-void save(Archive& a, const Entry& e)
+void save(Archive& a, const Entry& e, const std::uint32_t version)
 {
     a(e.id(), e.severity(), e.timestamp(),
       e.message(), e.additionalData(), e.associations(), e.resolved());
@@ -26,11 +34,13 @@ void save(Archive& a, const Entry& e)
 
 /** @brief Function required by Cereal to perform deserialization.
  *  @tparam Archive - Cereal archive type (binary in our case).
- *  @param[in] a - reference to Cereal archive.
- *  @param[in] e - reference to error entry.
+ *  @param[in] a       - reference to Cereal archive.
+ *  @param[in] e       - reference to error entry.
+ *  @param[in] version - Class version that enables handling
+ *                       a serialized data across code levels
  */
 template<class Archive>
-void load(Archive& a, Entry& e)
+void load(Archive& a, Entry& e, const std::uint32_t version)
 {
     using namespace
         sdbusplus::xyz::openbmc_project::Logging::server;
