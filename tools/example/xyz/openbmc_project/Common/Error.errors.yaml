@@ -1,0 +1,2 @@
+- name: InternalFailure
+  description: The operation failed internally.
