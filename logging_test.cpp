@@ -18,7 +18,7 @@ Options:                                                     \n\
 -h, --help                      Display this usage text.     \n\
 -c, --commit <string>           Commit desired error.      \n\n\
 Valid errors to commit:                                      \n\
-AutoTestSimple, AutoTestCreateAndCommit\n";
+AutoTestSimple, AutoTestCreateAndCommit, InternalFailure\n";
 
 // validate the journal metadata equals the input value
 int validate_journal(const char *i_entry, const char *i_value)
@@ -228,6 +228,10 @@ void commitError(const char *text)
             AutoTestSimple>(
                 example::xyz::openbmc_project::Example::Elog::
                     AutoTestSimple::STRING("FOO"));
+    }
+    else if (strcmp(text, "InternalFailure") == 0)
+    {
+        report<example::xyz::openbmc_project::Common::InternalFailure>();
     }
 
     return;
