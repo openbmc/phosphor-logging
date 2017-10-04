@@ -6,11 +6,13 @@
 #include <sstream>
 #include <sdbusplus/exception.hpp>
 #include <phosphor-logging/elog.hpp>
+#include "xyz/openbmc_project/Common/error.hpp"
 #include <phosphor-logging/log.hpp>
 #include <phosphor-logging/elog-errors.hpp>
 
 using namespace phosphor;
 using namespace logging;
+using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 
 const char *usage = "Usage: logging-test [OPTION]          \n\n\
 Options:                                                     \n\
@@ -18,7 +20,7 @@ Options:                                                     \n\
 -h, --help                      Display this usage text.     \n\
 -c, --commit <string>           Commit desired error.      \n\n\
 Valid errors to commit:                                      \n\
-AutoTestSimple, AutoTestCreateAndCommit\n";
+AutoTestSimple, AutoTestCreateAndCommit, InternalFailure\n";
 
 // validate the journal metadata equals the input value
 int validate_journal(const char *i_entry, const char *i_value)
@@ -228,6 +230,10 @@ void commitError(const char *text)
             AutoTestSimple>(
                 example::xyz::openbmc_project::Example::Elog::
                     AutoTestSimple::STRING("FOO"));
+    }
+    else if (strcmp(text, "InternalFailure") == 0)
+    {
+        report<InternalFailure>();
     }
 
     return;
