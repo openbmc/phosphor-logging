@@ -4,6 +4,8 @@
 #include <sdbusplus/server/object.hpp>
 #include "xyz/openbmc_project/Logging/Entry/server.hpp"
 #include "xyz/openbmc_project/Object/Delete/server.hpp"
+#include "xyz/openbmc_project/Logging/Entry/Severity/server.hpp"
+#include "xyz/openbmc_project/Logging/Entry/Resolution/server.hpp"
 #include "org/openbmc/Associations/server.hpp"
 
 namespace phosphor
@@ -12,6 +14,8 @@ namespace logging
 {
 
 using EntryIfaces = sdbusplus::server::object::object<
+    sdbusplus::xyz::openbmc_project::Logging::Entry::server::Resolution,
+    sdbusplus::xyz::openbmc_project::Logging::Entry::server::Severity,
     sdbusplus::xyz::openbmc_project::Logging::server::Entry,
     sdbusplus::xyz::openbmc_project::Object::server::Delete,
     sdbusplus::org::openbmc::server::Associations>;
@@ -73,7 +77,7 @@ class Entry : public EntryIfaces
             // Store a copy of associations in case we need to recreate
             assocs = associations();
             sdbusplus::xyz::openbmc_project::
-                Logging::server::Entry::resolved(false);
+                Logging::Entry::server::Resolution::resolved(false);
 
             // Emit deferred signal.
             this->emit_object_added();
@@ -105,7 +109,7 @@ class Entry : public EntryIfaces
         bool resolved(bool value) override;
 
         using sdbusplus::xyz::openbmc_project::
-              Logging::server::Entry::resolved;
+              Logging::Entry::server::Resolution::resolved;
 
         /** @brief Delete this d-bus object.
          */

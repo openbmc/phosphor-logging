@@ -17,14 +17,14 @@ void Entry::delete_()
 bool Entry::resolved(bool value)
 {
     auto current = sdbusplus::xyz::openbmc_project::
-                       Logging::server::Entry::resolved();
+                       Logging::Entry::server::Resolution::resolved();
     if (value != current)
     {
         value ?
             associations({}) :
             associations(assocs);
         current = sdbusplus::xyz::openbmc_project::
-                      Logging::server::Entry::resolved(value);
+                      Logging::Entry::server::Resolution::resolved(value);
         serialize(*this);
     }
 
