@@ -4,6 +4,7 @@
 #include <sdbusplus/server/object.hpp>
 #include "xyz/openbmc_project/Logging/Entry/server.hpp"
 #include "xyz/openbmc_project/Object/Delete/server.hpp"
+#include "xyz/openbmc_project/Event/Entry/server.hpp"
 #include "org/openbmc/Associations/server.hpp"
 
 namespace phosphor
@@ -13,6 +14,7 @@ namespace logging
 
 using EntryIfaces = sdbusplus::server::object::object<
     sdbusplus::xyz::openbmc_project::Logging::server::Entry,
+    sdbusplus::xyz::openbmc_project::Event::server::Entry,
     sdbusplus::xyz::openbmc_project::Object::server::Delete,
     sdbusplus::org::openbmc::server::Associations>;
 
