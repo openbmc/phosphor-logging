@@ -19,8 +19,8 @@ AC_CHECK_PROG([DIRNAME], dirname, dirname)
 AC_ARG_ENABLE([install_scripts],
     AS_HELP_STRING([--enable-install_scripts],
         [Enable installing parser and mako script]),
-    [], [install_scripts=yes])
-AM_CONDITIONAL([INSTALL_SCRIPTS], [test "x$enable_install_scripts" != "xno"])
+    [], [install_scripts=no])
+AM_CONDITIONAL([INSTALL_SCRIPTS], [test "x$enable_install_scripts" = "xyes"])
 AS_IF([test "x$enable_install_scripts" != "xyes"], [
     # Checks for typedefs, structures, and compiler characteristics.
     AX_CXX_COMPILE_STDCXX_14([noext])
