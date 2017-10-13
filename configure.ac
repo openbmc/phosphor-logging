@@ -19,8 +19,8 @@ AC_CHECK_PROG([DIRNAME], dirname, dirname)
 AC_ARG_ENABLE([install_scripts],
     AS_HELP_STRING([--enable-install_scripts],
         [Enable installing parser and mako script]),
-    [], [install_scripts=yes])
-AM_CONDITIONAL([INSTALL_SCRIPTS], [test "x$enable_install_scripts" != "xno"])
+    [], [install_scripts=no])
+AM_CONDITIONAL([INSTALL_SCRIPTS], [test "x$enable_install_scripts" = "xyes"])
 AS_IF([test "x$enable_install_scripts" != "xyes"], [
     # Checks for typedefs, structures, and compiler characteristics.
     AX_CXX_COMPILE_STDCXX_14([noext])
@@ -103,6 +103,11 @@ AC_ARG_ENABLE([metadata-processing],
 AC_ARG_VAR(ERROR_CAP, [Max number of error entries allowed for commit])
 AS_IF([test "x$ERROR_CAP" == "x"], [ERROR_CAP=100])
 AC_DEFINE_UNQUOTED([ERROR_CAP], [$ERROR_CAP], [Max number of error entries allowed for commit])
+
+AC_ARG_VAR(ERROR_INFO_CAP, [Max number of info and debug entries allowed for commit])
+AS_IF([test "x$ERROR_INFO_CAP" == "x"], [ERROR_INFO_CAP=10])
+AC_DEFINE_UNQUOTED([ERROR_INFO_CAP], [$ERROR_INFO_CAP], \
+    [Max number of info and debug entries allowed for commit])
 
 AC_ARG_VAR(CLASS_VERSION, [Class version to register with Cereal])
 AS_IF([test "x$CLASS_VERSION" == "x"], [CLASS_VERSION=1])

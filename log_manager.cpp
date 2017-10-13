@@ -27,17 +27,50 @@ namespace internal
 {
 void Manager::commit(uint64_t transactionId, std::string errMsg)
 {
+    level reqLevel = level::ERR; // Default to ERR
+    auto levelmap = g_errLevelMap.find(errMsg);
+    if (levelmap != g_errLevelMap.end())
+    {
+        reqLevel = levelmap->second;
+    }
     if (capped)
     {
         return;
     }
     if (entries.size() >= ERROR_CAP)
     {
-        log<level::ERR>("Reached error cap, Ignoring error",
-                entry("SIZE=%d", entries.size()),
-                entry("ERROR_CAP=%d", ERROR_CAP));
-        capped = true;
-        return;
+        uint32_t countInfoLogs = 0;
+        uint32_t firstInfoLogId = 0;
+
+        for (const auto& entry : entries)
+        {
+            if (entry.second->severity() >= Entry::Level::Informational)
+            {
+                countInfoLogs++;
+                if (countInfoLogs == 1)
+                {
+                    firstInfoLogId = entry.first;
+                }
+            }
+        }
+
+        // If ERROR_INFO_CAP size reached and newly commited error is more sever
+        // than info log, set capped to true.
+        if ((countInfoLogs <= ERROR_INFO_CAP)  &&
+            (static_cast<Entry::Level>(reqLevel) < Entry::Level::Informational))
+        {
+            log<level::ERR>("Reached error cap, Ignoring error",
+                            entry("SIZE=%d", entries.size()),
+                            entry("ERROR_CAP=%d", ERROR_CAP),
+                            entry("ERROR_INFO_CAP=%d", ERROR_INFO_CAP));
+            capped = true;
+            return;
+        }
+        // Delete first info/debug error and create entry for new info log
+        else
+        {
+            erase(firstInfoLogId);
+        }
     }
 
     constexpr const auto transactionIdVar = "TRANSACTION_ID";
@@ -157,12 +190,7 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     AssociationList objects {};
     processMetadata(errMsg, additionalData, objects);
 
-    level reqLevel = level::ERR; // Default to ERR
-    auto levelmap = g_errLevelMap.find(errMsg);
-    if (levelmap != g_errLevelMap.end())
-    {
-        reqLevel = levelmap->second;
-    }
+
     auto e = std::make_unique<Entry>(
                  busLog,
                  objPath,
