@@ -111,6 +111,13 @@ class Entry : public EntryIfaces
          */
         void delete_() override;
 
+        /** @brief Severity level to check in cap.
+         *  @details Errors with severity lesser than this will be
+         *           considered as low priority and maximum ERROR_INFO_CAP
+         *           number errors of this category will be captured.
+        */
+        static const Level errSevTocheck = Entry::Level::Informational;
+
     private:
         /** @brief This entry's associations */
         AssociationList assocs = {};
