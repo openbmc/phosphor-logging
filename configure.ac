@@ -102,6 +102,11 @@ AC_ARG_VAR(ERROR_CAP, [Max number of error entries allowed for commit])
 AS_IF([test "x$ERROR_CAP" == "x"], [ERROR_CAP=100])
 AC_DEFINE_UNQUOTED([ERROR_CAP], [$ERROR_CAP], [Max number of error entries allowed for commit])
 
+AC_ARG_VAR(ERROR_INFO_CAP, [Max number of info and debug entries allowed for commit])
+AS_IF([test "x$ERROR_INFO_CAP" == "x"], [ERROR_INFO_CAP=10])
+AC_DEFINE_UNQUOTED([ERROR_INFO_CAP], [$ERROR_INFO_CAP], \
+    [Max number of info and debug entries allowed for commit])
+
 AC_ARG_VAR(CLASS_VERSION, [Class version to register with Cereal])
 AS_IF([test "x$CLASS_VERSION" == "x"], [CLASS_VERSION=1])
 AC_DEFINE_UNQUOTED([CLASS_VERSION], [$CLASS_VERSION], [Class version to register with Cereal])
