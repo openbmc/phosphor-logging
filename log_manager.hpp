@@ -54,7 +54,9 @@ class Manager : public details::ServerObject<details::ManagerIface>
                 details::ServerObject<details::ManagerIface>(bus, objPath),
                 busLog(bus),
                 entryId(0),
-                capped(false) {};
+                capped(false),
+                lessThanEqualtoInfoErrorCount(0),
+                greaterThanInfoErrorCount(0) {};
 
         /*
          * @fn commit()
@@ -123,6 +125,13 @@ class Manager : public details::ServerObject<details::ManagerIface>
          *      value.
          */
         bool capped;
+
+        /** @brief count for severity less than or equal to Info error entries */
+        uint32_t lessThanEqualtoInfoErrorCount;
+
+        /** @brief count for severity greater than Info error entries */
+        uint32_t greaterThanInfoErrorCount;
+
 };
 
 } //namespace internal

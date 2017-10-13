@@ -27,19 +27,44 @@ namespace internal
 {
 void Manager::commit(uint64_t transactionId, std::string errMsg)
 {
-    if (capped)
+    level reqSevLevel = level::ERR; // Default to ERR
+    auto levelmap = g_errLevelMap.find(errMsg);
+
+    if (levelmap != g_errLevelMap.end())
     {
-        return;
-    }
-    if (entries.size() >= ERROR_CAP)
-    {
-        log<level::ERR>("Reached error cap, Ignoring error",
-                entry("SIZE=%d", entries.size()),
-                entry("ERROR_CAP=%d", ERROR_CAP));
-        capped = true;
-        return;
+        reqSevLevel = levelmap->second;
     }
 
+    if (static_cast<Entry::Level>(reqSevLevel) < Entry::Level::Informational)
+    {
+        if (capped)
+        {
+            return;
+        }
+        if (greaterThanInfoErrorCount >= ERROR_CAP)
+        {
+            log<level::ERR>("Reached error cap, Ignoring error",
+                            entry("SIZE=%d", entries.size()),
+                            entry("ERROR_CAP=%d", ERROR_CAP));
+            capped = true;
+            return;
+        }
+    }
+
+    if (static_cast<Entry::Level>(reqSevLevel) >= Entry::Level::Informational)
+    {
+        if (lessThanEqualtoInfoErrorCount >= ERROR_INFO_CAP)
+        {
+            for (const auto& entry : entries)
+            {
+                if (entry.second->severity() >= Entry::Level::Informational)
+                {
+                    erase(entry.first);
+                    break;
+                }
+            }
+        }
+    }
     constexpr const auto transactionIdVar = "TRANSACTION_ID";
     // Length of 'TRANSACTION_ID' string.
     constexpr const auto transactionIdVarSize = strlen(transactionIdVar);
@@ -149,6 +174,14 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
 
     // Create error Entry dbus object
     entryId++;
+    if (static_cast<Entry::Level>(reqSevLevel) < Entry::Level::Informational)
+    {
+        greaterThanInfoErrorCount++;
+    }
+    else
+    {
+        lessThanEqualtoInfoErrorCount++;
+    }
     auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(
                 std::chrono::system_clock::now().time_since_epoch()).count();
     auto objPath =  std::string(OBJ_ENTRY) + '/' +
@@ -157,18 +190,13 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     AssociationList objects {};
     processMetadata(errMsg, additionalData, objects);
 
-    level reqLevel = level::ERR; // Default to ERR
-    auto levelmap = g_errLevelMap.find(errMsg);
-    if (levelmap != g_errLevelMap.end())
-    {
-        reqLevel = levelmap->second;
-    }
+
     auto e = std::make_unique<Entry>(
                  busLog,
                  objPath,
                  entryId,
                  ms, // Milliseconds since 1970
-                 static_cast<Entry::Level>(reqLevel),
+                 static_cast<Entry::Level>(reqSevLevel),
                  std::move(errMsg),
                  std::move(additionalData),
                  std::move(objects),
@@ -208,11 +236,18 @@ void Manager::erase(uint32_t entryId)
         fs::path errorPath(ERRLOG_PERSIST_PATH);
         errorPath /= std::to_string(id);
         fs::remove(errorPath);
-
+        if (entry->second->severity() < Entry::Level::Informational)
+        {
+            greaterThanInfoErrorCount--;
+        }
+        else
+        {
+            lessThanEqualtoInfoErrorCount--;
+        }
         entries.erase(entry);
     }
 
-    if (entries.size() <  ERROR_CAP)
+    if (greaterThanInfoErrorCount <  ERROR_CAP)
     {
         capped = false;
     }
@@ -240,6 +275,14 @@ void Manager::restore()
         if (deserialize(file.path(), *e))
         {
             e->emit_object_added();
+            if (e->severity() < Entry::Level::Informational)
+            {
+                greaterThanInfoErrorCount++;
+            }
+            else
+            {
+                lessThanEqualtoInfoErrorCount++;
+            }
             entries.insert(std::make_pair(idNum, std::move(e)));
             errorIds.push_back(idNum);
         }
