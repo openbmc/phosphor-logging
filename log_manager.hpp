@@ -1,5 +1,6 @@
 #pragma once
 
+#include <list>
 #include <sdbusplus/bus.hpp>
 #include <phosphor-logging/log.hpp>
 #include "elog_entry.hpp"
@@ -111,6 +112,9 @@ class Manager : public details::ServerObject<details::ManagerIface>
         /** @brief Persistent map of Entry dbus objects and their ID */
         std::map<uint32_t, std::unique_ptr<Entry>> entries;
 
+        /** @brief Persistent list of error ids for Info(and below) severity */
+        std::list<uint32_t> infoErrIdList;
+
         /** @brief Id of last error log entry */
         uint32_t entryId;
 
@@ -123,6 +127,7 @@ class Manager : public details::ServerObject<details::ManagerIface>
          *      value.
          */
         bool capped;
+
 };
 
 } //namespace internal
