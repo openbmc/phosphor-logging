@@ -13,9 +13,7 @@ AC_PROG_MAKE_SET
 AC_PROG_MKDIR_P
 AC_CHECK_PROG([DIRNAME], dirname, dirname)
 
-# Check for compiler, packages only during target build.
-# As the packages are not available on the host do not
-# perform checks during native build.
+# Check for compiler, packages only when install_scripts flag is disabled.
 AC_ARG_ENABLE([install_scripts],
     AS_HELP_STRING([--enable-install_scripts],
         [Enable installing parser and mako script]),
