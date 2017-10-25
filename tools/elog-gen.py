@@ -30,7 +30,7 @@ def order_inherited_errors(i_errors, i_parents):
     if(has_inheritance):
         # Order the error codes list such that an error is never placed
         # before it's parent. This way generated code can ensure parent
-        # definitions preceed child error definitions.
+        # definitions precede child error definitions.
         while(len(errors) < len(i_errors)):
             for error in i_errors:
                 if(error in errors):
