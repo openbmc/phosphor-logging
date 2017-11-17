@@ -249,6 +249,10 @@ void Manager::erase(uint32_t entryId)
 
 void Manager::restore()
 {
+    auto sanity = [](const auto& id, const auto& entryId) 
+    { 
+        return id == entryId; 
+    };
     std::vector<uint32_t> errorIds;
 
     fs::path dir(ERRLOG_PERSIST_PATH);
@@ -273,8 +277,20 @@ void Manager::restore()
             {
                 infoErrors.push_back(idNum);
             }
-            entries.insert(std::make_pair(idNum, std::move(e)));
-            errorIds.push_back(idNum);
+
+            //validate the restored error entry
+            if(sanity(static_cast<uint32_t>(idNum), e->id()))
+            {
+                entries.insert(std::make_pair(idNum, std::move(e)));
+                errorIds.push_back(idNum);
+            }
+            else
+            {
+                logging::log<logging::level::ERR>("Failed in sanity check "
+                    "while restoring error entry. Ignoring error entry",
+                        logging::entry("ID_NUM=%d", idNum),
+                        logging::entry("ENTRY_ID=%d", e->id()));
+            }
         }
     }
 
