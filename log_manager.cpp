@@ -249,6 +249,10 @@ void Manager::erase(uint32_t entryId)
 
 void Manager::restore()
 {
+    auto sanity = [](const auto& id, const auto& restoredId)
+    {
+        return id == restoredId;
+    };
     std::vector<uint32_t> errorIds;
 
     fs::path dir(ERRLOG_PERSIST_PATH);
@@ -268,13 +272,26 @@ void Manager::restore()
                      *this);
         if (deserialize(file.path(), *e))
         {
-            e->emit_object_added();
-            if (e->severity() >= Entry::sevLowerLimit)
+            //validate the restored error entry id
+            if (sanity(static_cast<uint32_t>(idNum), e->id()))
             {
-                infoErrors.push_back(idNum);
+                e->emit_object_added();
+                if (e->severity() >= Entry::sevLowerLimit)
+                {
+                    infoErrors.push_back(idNum);
+                }
+
+                entries.insert(std::make_pair(idNum, std::move(e)));
+                errorIds.push_back(idNum);
             }
-            entries.insert(std::make_pair(idNum, std::move(e)));
-            errorIds.push_back(idNum);
+            else
+            {
+                logging::log<logging::level::ERR>(
+                    "Failed in sanity check while restoring error entry. "
+                    "Ignoring error entry",
+                    logging::entry("ID_NUM=%d", idNum),
+                    logging::entry("ENTRY_ID=%d", e->id()));
+            }
         }
     }
 
