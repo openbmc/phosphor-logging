@@ -7,6 +7,7 @@
 #include "elog_serialize.hpp"
 #include <phosphor-logging/log.hpp>
 #include "config.h"
+#include <iostream>
 
 // Register class version
 // From cereal documentation;
@@ -30,6 +31,7 @@ void save(Archive& a, const Entry& e, const std::uint32_t version)
 {
     a(e.id(), e.severity(), e.timestamp(),
       e.message(), e.additionalData(), e.associations(), e.resolved());
+    std::cout << "SERIALIZE ID" << e.id() << "message" << e.message() << std::endl;
 }
 
 /** @brief Function required by Cereal to perform deserialization.
@@ -64,6 +66,7 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
     e.sdbusplus::xyz::openbmc_project::
         Logging::server::Entry::resolved(resolved);
     e.associations(associations);
+    std::cout << "DESERIALIZE ID" << e.id() << "message" << e.message() << std::endl;
 }
 
 fs::path serialize(const Entry& e, const fs::path& dir)
