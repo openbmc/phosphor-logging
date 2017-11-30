@@ -54,8 +54,7 @@ class Manager : public details::ServerObject<details::ManagerIface>
         Manager(sdbusplus::bus::bus& bus, const char* objPath) :
                 details::ServerObject<details::ManagerIface>(bus, objPath),
                 busLog(bus),
-                entryId(0),
-                capped(false) {};
+                entryId(0){};
 
         /*
          * @fn commit()
@@ -112,21 +111,14 @@ class Manager : public details::ServerObject<details::ManagerIface>
         /** @brief Persistent map of Entry dbus objects and their ID */
         std::map<uint32_t, std::unique_ptr<Entry>> entries;
 
+        /** @brief List of error ids for high severity errors */
+        std::list<uint32_t> realErrors;
+
         /** @brief List of error ids for Info(and below) severity */
         std::list<uint32_t> infoErrors;
 
         /** @brief Id of last error log entry */
         uint32_t entryId;
-
-        /**
-         * @brief Flag to log error for the first time when error cap is
-         *      reached.
-         * @details Flag used to log error message for the first time when the
-         *      error cap value is reached. It is reset when user delete's error
-         *      entries and total entries existing is less than the error cap
-         *      value.
-         */
-        bool capped;
 };
 
 } //namespace internal
