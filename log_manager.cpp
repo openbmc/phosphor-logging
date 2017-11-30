@@ -28,7 +28,6 @@ namespace internal
 void Manager::commit(uint64_t transactionId, std::string errMsg)
 {
     auto reqLevel = level::ERR; // Default to ERR
-    size_t realErrCnt = entries.size() - infoErrors.size();
     auto levelmap = g_errLevelMap.find(errMsg);
 
     if (levelmap != g_errLevelMap.end())
@@ -38,17 +37,9 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
 
     if (static_cast<Entry::Level>(reqLevel) < Entry::sevLowerLimit)
     {
-        if (capped)
+        if (realErrors.size() >= ERROR_CAP)
         {
-            return;
-        }
-        if (realErrCnt >= ERROR_CAP)
-        {
-            log<level::ERR>("Reached error cap, Ignoring error",
-                            entry("SIZE=%d", realErrCnt),
-                            entry("ERROR_CAP=%d", ERROR_CAP));
-            capped = true;
-            return;
+            erase(realErrors.front());
         }
     }
     else
@@ -171,6 +162,10 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     {
         infoErrors.push_back(entryId);
     }
+    else
+    {
+        realErrors.push_back(entryId);
+    }
     auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(
                 std::chrono::system_clock::now().time_since_epoch()).count();
     auto objPath =  std::string(OBJ_ENTRY) + '/' +
@@ -223,13 +218,22 @@ void Manager::erase(uint32_t entryId)
         fs::path errorPath(ERRLOG_PERSIST_PATH);
         errorPath /= std::to_string(entryId);
         fs::remove(errorPath);
+
+        auto removeId = [](std::list<uint32_t>& list , uint32_t Id)
+        {
+            auto it = std::find(list.begin(), list.end(), Id);
+            if (it != list.end())
+            {
+                list.erase(it);
+            }
+        };
         if (entry->second->severity() >= Entry::sevLowerLimit)
         {
-            auto it = std::find(infoErrors.begin(), infoErrors.end(), entryId);
-            if (it != infoErrors.end())
-            {
-                infoErrors.erase(it);
-            }
+            removeId(infoErrors, entryId);
+        }
+        else
+        {
+            removeId(realErrors, entryId);
         }
         entries.erase(entry);
     }
@@ -237,13 +241,6 @@ void Manager::erase(uint32_t entryId)
     {
         logging::log<level::ERR>("Invalid entry ID to delete",
                 logging::entry("ID=%d", entryId));
-    }
-
-    size_t realErrCnt = entries.size() - infoErrors.size();
-
-    if (realErrCnt <  ERROR_CAP)
-    {
-        capped = false;
     }
 }
 
@@ -279,6 +276,10 @@ void Manager::restore()
                 if (e->severity() >= Entry::sevLowerLimit)
                 {
                     infoErrors.push_back(idNum);
+                }
+                else
+                {
+                    realErrors.push_back(idNum);
                 }
 
                 entries.insert(std::make_pair(idNum, std::move(e)));
