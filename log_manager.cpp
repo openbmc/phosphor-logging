@@ -38,17 +38,9 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
 
     if (static_cast<Entry::Level>(reqLevel) < Entry::sevLowerLimit)
     {
-        if (capped)
-        {
-            return;
-        }
         if (realErrCnt >= ERROR_CAP)
         {
-            log<level::ERR>("Reached error cap, Ignoring error",
-                            entry("SIZE=%d", realErrCnt),
-                            entry("ERROR_CAP=%d", ERROR_CAP));
-            capped = true;
-            return;
+            erase(realErrors.front());
         }
     }
     else
@@ -171,6 +163,10 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     {
         infoErrors.push_back(entryId);
     }
+    else
+    {
+        realErrors.push_back(entryId);
+    }
     auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(
                 std::chrono::system_clock::now().time_since_epoch()).count();
     auto objPath =  std::string(OBJ_ENTRY) + '/' +
@@ -231,19 +227,20 @@ void Manager::erase(uint32_t entryId)
                 infoErrors.erase(it);
             }
         }
+        else
+        {
+            auto it = std::find(realErrors.begin(), realErrors.end(), entryId);
+            if (it != realErrors.end())
+            {
+                realErrors.erase(it);
+            }
+        }
         entries.erase(entry);
     }
     else
     {
         logging::log<level::ERR>("Invalid entry ID to delete",
                 logging::entry("ID=%d", entryId));
-    }
-
-    size_t realErrCnt = entries.size() - infoErrors.size();
-
-    if (realErrCnt <  ERROR_CAP)
-    {
-        capped = false;
     }
 }
 
@@ -279,6 +276,10 @@ void Manager::restore()
                 if (e->severity() >= Entry::sevLowerLimit)
                 {
                     infoErrors.push_back(idNum);
+                }
+                else
+                {
+                    realErrors.push_back(idNum);
                 }
 
                 entries.insert(std::make_pair(idNum, std::move(e)));
