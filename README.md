@@ -1,4 +1,4 @@
-# phosphor-logging
+# Introduction
 phosphor logging provides mechanism for common event and logging creation based
 on information from the journal log.
 
@@ -12,21 +12,36 @@ To build this package, do the following steps:
 
 To clean the repository run `./bootstrap.sh clean`.
 ```
-## REST command to delete an error
 
+## REST commands
+### Logging in
+* Before you can do anything you need to first login:
+```
     curl -c cjar -k -X POST -H "Content-Type: application/json" \
     -d '{"data": [ "root", "<root password>" ] }' https://<BMC IP>/login
+```    
 
-    curl -c cjar -b cjar -k -H "Content-Type: application/json" -X POST \
-    -d '{"data": []}' \
-    https://<BMC IP>/xyz/openbmc_project/logging/entry/<entry num>/action/Delete
+### List logging child objects recursively
+```
+curl -b cjar -k https://<BMC IP>/xyz/openbmc_project/logging/list
+```
 
-## REST command to delete all errors
+### List logging attributes of child objects
+```
+curl -s  -b cjar -k  -H 'Content-Type: application/json' -d '{"data" : []}' -X GET \
+https://<BMC IP>///xyz/openbmc_project/logging/enumerate
+```    
 
-    curl -c cjar -k -X POST -H "Content-Type: application/json" \
-    -d '{"data": [ "root", "<root password>" ] }' https://<<BMC IP>/login
+### Delete error
+```
+curl -c cjar -b cjar -k -H "Content-Type: application/json" -X POST \
+-d '{"data": []}' \
+https://<BMC IP>/xyz/openbmc_project/logging/entry/<entry num>/action/Delete
+```    
 
-    curl -c cjar -b cjar -k -H "Content-Type: application/json" \
-    -X POST https://<<BMC IP>/xyz/openbmc_project/logging/action/deleteAll \
-    -d "{\"data\": [] }"
-
+### Delete all errors
+```
+curl -c cjar -b cjar -k -H "Content-Type: application/json" \
+-X POST https://<<BMC IP>/xyz/openbmc_project/logging/action/deleteAll \
+-d "{\"data\": [] }"
+```
