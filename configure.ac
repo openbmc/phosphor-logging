@@ -99,7 +99,7 @@ AC_ARG_ENABLE([metadata-processing],
 )
 
 AC_ARG_VAR(ERROR_CAP, [Max number of error entries allowed for commit])
-AS_IF([test "x$ERROR_CAP" == "x"], [ERROR_CAP=100])
+AS_IF([test "x$ERROR_CAP" == "x"], [ERROR_CAP=200])
 AC_DEFINE_UNQUOTED([ERROR_CAP], [$ERROR_CAP], [Max number of error entries allowed for commit])
 
 AC_ARG_VAR(ERROR_INFO_CAP, [Cap on informational (and below) severity errors])
