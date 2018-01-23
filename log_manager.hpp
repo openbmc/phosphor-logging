@@ -31,7 +31,7 @@ using ManagerIface =
 
 namespace internal
 {
-
+ class TestLogManager; // Forward Declaration
 /** @class Manager
  *  @brief OpenBMC logging manager implementation.
  *  @details A concrete implementation for the
@@ -54,7 +54,8 @@ class Manager : public details::ServerObject<details::ManagerIface>
         Manager(sdbusplus::bus::bus& bus, const char* objPath) :
                 details::ServerObject<details::ManagerIface>(bus, objPath),
                 busLog(bus),
-                entryId(0){};
+                entryId(0),
+				isUnitTest(false){};
 
         /*
          * @fn commit()
@@ -93,6 +94,11 @@ class Manager : public details::ServerObject<details::ManagerIface>
                 erase(entry);
             }
         }
+		
+		void setUnitTest(bool isUT)
+		{
+			isUnitTest = isUT;
+		}
 
     private:
         /** @brief Call metadata handler(s), if any. Handlers may create
@@ -119,6 +125,9 @@ class Manager : public details::ServerObject<details::ManagerIface>
 
         /** @brief Id of last error log entry */
         uint32_t entryId;
+		
+		bool isUnitTest;
+		friend class TestLogManager;
 };
 
 } //namespace internal
