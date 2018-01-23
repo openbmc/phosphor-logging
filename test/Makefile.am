@@ -5,7 +5,8 @@ TESTS = $(check_PROGRAMS)
 check_PROGRAMS = \
 	elog_unittest \
 	serialization_test_path \
-	serialization_test_properties
+	serialization_test_properties \
+	logmanager_test
 
 test_cppflags = \
 	-Igtest \
@@ -32,7 +33,8 @@ test_ldadd = \
 	$(top_builddir)/xyz/openbmc_project/Logging/Internal/Manager/server.o \
 	$(top_builddir)/elog_meta.o \
 	$(top_builddir)/elog-lookup.o \
-	$(top_builddir)/elog-process-metadata.o
+	$(top_builddir)/elog-process-metadata.o \
+	$(top_builddir)/libphosphor_logging.la
 
 
 elog_unittest_CPPFLAGS = $(test_cppflags)
@@ -53,5 +55,13 @@ serialization_test_properties_CXXFLAGS = $(test_cxxflags)
 serialization_test_properties_SOURCES = serialization_test_properties.cpp
 serialization_test_properties_LDADD = $(test_ldadd)
 serialization_test_properties_LDFLAGS = \
+	$(test_ldflags) \
+	-lstdc++fs
+
+logmanager_test_CPPFLAGS = $(test_cppflags)
+logmanager_test_CXXFLAGS = $(test_cxxflags)
+logmanager_test_SOURCES = test_log_manager.cpp
+logmanager_test_LDADD = $(test_ldadd)
+logmanager_test_LDFLAGS = \
 	$(test_ldflags) \
 	-lstdc++fs
