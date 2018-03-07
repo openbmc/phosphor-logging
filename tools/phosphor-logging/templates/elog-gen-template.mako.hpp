@@ -69,10 +69,14 @@ namespace _${classname}
     % for b in meta_list:
 struct ${b}
 {
-    static constexpr auto str = "${meta_data[b]['str']}";
+    /*
+     * We can't use -fsanitize=undefined if we declare a
+     * 'static constexpr auto str' member, so don't. Instead, open-code the
+     * mako template lookups.
+     */
     static constexpr auto str_short = "${meta_data[b]['str_short']}";
-    using type = std::tuple<std::decay_t<decltype(str)>,${meta_data[b]['type']}>;
-    explicit constexpr ${b}(${meta_data[b]['type']} a) : _entry(entry(str, a)) {};
+    using type = std::tuple<std::decay_t<decltype("${meta_data[b]['str']}")>,${meta_data[b]['type']}>;
+    explicit constexpr ${b}(${meta_data[b]['type']} a) : _entry(entry("${meta_data[b]['str']}", a)) {};
     type _entry;
 };
     % endfor
