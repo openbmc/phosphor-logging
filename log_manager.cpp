@@ -1,13 +1,17 @@
 #include <fstream>
+#include <future>
 #include <iostream>
 #include <chrono>
 #include <cstdio>
+#include <poll.h>
 #include <set>
 #include <string>
 #include <vector>
 #include <sdbusplus/vtable.hpp>
+#include <sys/inotify.h>
 #include <systemd/sd-bus.h>
 #include <systemd/sd-journal.h>
+#include <unistd.h>
 #include "config.h"
 #include "elog_entry.hpp"
 #include <phosphor-logging/log.hpp>
@@ -16,6 +20,7 @@
 #include "elog_serialize.hpp"
 
 using namespace phosphor::logging;
+using namespace std::chrono;
 extern const std::map<metadata::Metadata,
                       std::function<metadata::associations::Type>> meta;
 
@@ -25,7 +30,6 @@ namespace logging
 {
 namespace internal
 {
-
 inline auto getLevel(const std::string& errMsg)
 {
     auto reqLevel = Entry::Level::Error; // Default to Error
@@ -75,14 +79,8 @@ void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
     // Length of 'TRANSACTION_ID=' string.
     constexpr const auto transactionIdVarOffset = transactionIdVarSize + 1;
 
-    // Flush all the pending log messages into the journal via Synchronize
-    constexpr auto JOURNAL_BUSNAME = "org.freedesktop.journal1";
-    constexpr auto JOURNAL_PATH = "/org/freedesktop/journal1";
-    constexpr auto JOURNAL_INTERFACE = "org.freedesktop.journal1";
-    auto bus = sdbusplus::bus::new_default();
-    auto method = bus.new_method_call(JOURNAL_BUSNAME, JOURNAL_PATH,
-                                      JOURNAL_INTERFACE, "Synchronize");
-    bus.call_noreply(method);
+    // Flush all the pending log messages into the journal
+    journalSync();
 
     sd_journal *j = nullptr;
     int rc = sd_journal_open(&j, SD_JOURNAL_LOCAL_ONLY);
@@ -320,6 +318,132 @@ void Manager::restore()
     {
         entryId = *(std::max_element(errorIds.begin(), errorIds.end()));
     }
+}
+
+void Manager::journalSync()
+{
+    bool syncRequested = false;
+    auto fd = -1;
+    auto rc = -1;
+    auto wd = -1;
+    auto bus = sdbusplus::bus::new_default();
+
+    auto start =
+        duration_cast<microseconds>(steady_clock::now().time_since_epoch())
+            .count();
+
+    constexpr auto maxRetry = 2;
+    for (int i = 0; i < maxRetry; i++)
+    {
+        // Read timestamp from synced file
+        constexpr auto syncedPath = "/run/systemd/journal/synced";
+        std::ifstream syncedFile(syncedPath);
+        if (syncedFile.fail())
+        {
+            log<level::ERR>("Failed to open journal synced file",
+                            entry("FILENAME=%s", syncedPath),
+                            entry("ERRNO=%d", errno));
+            return;
+        }
+
+        // See if a sync happened by now
+        std::string timestampStr;
+        std::getline(syncedFile, timestampStr);
+        auto timestamp = stoll(timestampStr);
+        if (timestamp >= start)
+        {
+            return;
+        }
+
+        // Let's ask for a sync, but only once
+        if (!syncRequested)
+        {
+            syncRequested = true;
+
+            constexpr auto SYSTEMD_BUSNAME = "org.freedesktop.systemd1";
+            constexpr auto SYSTEMD_PATH = "/org/freedesktop/systemd1";
+            constexpr auto SYSTEMD_INTERFACE =
+                "org.freedesktop.systemd1.Manager";
+            constexpr auto JOURNAL_UNIT = "systemd-journald.service";
+            auto signal = SIGRTMIN + 1;
+
+            auto method = bus.new_method_call(SYSTEMD_BUSNAME, SYSTEMD_PATH,
+                                              SYSTEMD_INTERFACE, "KillUnit");
+            method.append(JOURNAL_UNIT, "main", signal);
+            bus.call(method);
+            if (method.is_method_error())
+            {
+                log<level::ERR>("Failed to kill journal service");
+                return;
+            }
+            continue;
+        }
+
+        // Let's install the inotify watch, if we didn't do that yet. This watch
+        // monitors the syncedFile for when journald updates it with a newer
+        // timestamp. This means the journal has been flushed.
+        if (fd < 0)
+        {
+            fd = inotify_init1(IN_NONBLOCK | IN_CLOEXEC);
+            if (fd < 0)
+            {
+                log<level::ERR>("Failed to create inotify watch",
+                                entry("ERRNO=%d", errno));
+                return;
+            }
+
+            constexpr auto JOURNAL_RUN_PATH = "/run/systemd/journal";
+            wd = inotify_add_watch(fd, JOURNAL_RUN_PATH,
+                                   IN_MOVED_TO | IN_DONT_FOLLOW | IN_ONLYDIR);
+            if (wd < 0)
+            {
+                log<level::ERR>("Failed to watch journal directory",
+                                entry("PATH=%s", JOURNAL_RUN_PATH),
+                                entry("ERRNO=%d", errno));
+                close(fd);
+                return;
+            }
+            continue;
+        }
+
+        // Let's wait until inotify reports an event
+        struct pollfd fds = {
+            .fd = fd,
+            .events = POLLIN,
+        };
+        constexpr auto pollTimeout = 5; // 5 seconds
+        rc = poll(&fds, 1, pollTimeout * 1000);
+        if (rc < 0)
+        {
+            log<level::ERR>("Failed to add event", entry("ERRNO=%d", errno),
+                            entry("ERR=%s", strerror(-rc)));
+            inotify_rm_watch(fd, wd);
+            close(fd);
+            return;
+        }
+        else if (rc == 0)
+        {
+            log<level::INFO>("Poll timeout, no new journal synced data",
+                             entry("TIMEOUT=%d", pollTimeout));
+            break;
+        }
+
+        // Read from the specified file descriptor until there is no new data,
+        // throwing away everything read since the timestamp will be read at the
+        // beginning of the loop.
+        constexpr auto maxBytes = 64;
+        uint8_t buffer[maxBytes];
+        while (read(fd, buffer, maxBytes) > 0)
+            ;
+    }
+
+    if ((fd != -1) && (wd != -1))
+    {
+        inotify_rm_watch(fd, wd);
+        close(fd);
+    }
+
+    return;
 }
 
 } // namespace internal

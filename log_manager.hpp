@@ -130,6 +130,12 @@ class Manager : public details::ServerObject<details::ManagerIface>
                              const std::vector<std::string>& additionalData,
                              AssociationList& objects) const;
 
+        /** @brief Synchronize unwritten journal messages to disk.
+         *  @details This is the same implementation as the systemd command
+         *  "journalctl --sync".
+         */
+        void journalSync();
+
         /** @brief Persistent sdbusplus DBus bus connection. */
         sdbusplus::bus::bus& busLog;
 
