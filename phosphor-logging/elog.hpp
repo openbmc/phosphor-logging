@@ -3,11 +3,15 @@
 #include <utility>
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/exception.hpp>
+#include "xyz/openbmc_project/Logging/Entry/server.hpp"
+
 namespace phosphor
 {
 
 namespace logging
 {
+
+using namespace sdbusplus::xyz::openbmc_project::Logging::server;
 
 /**
  * @brief Structure used by callers to indicate they want to use the last value
@@ -90,6 +94,10 @@ template <typename T> using map_exception_type_t =
  */
 void commit(const char* name);
 
+/** @fn commit() - override that accepts error level
+ */
+void commit(const char* name, Entry::Level level);
+
 } // namespace details
 
 /** @fn commit()
@@ -103,16 +111,17 @@ void commit(std::string&& name);
 /** @fn commit()
  *  @brief Create an error log entry based on journal
  *          entry with a specified MSG_ID
+ *  @param[in] level - level of the error
  */
 template <typename T>
-void commit()
+void commit(Entry::Level level = Entry::Level::Error)
 {
     // Validate if the exception is derived from sdbusplus::exception.
     static_assert(
         std::is_base_of<sdbusplus::exception::exception, T>::value,
         "T must be a descendant of sdbusplus::exception::exception"
     );
-    details::commit(T::errName);
+    details::commit(T::errName, level);
 }
 
 
@@ -176,6 +185,39 @@ void report(Args... i_args)
 
     commit<T>();
 }
+
+/** @fn report()
+ *  @brief Create a journal log entry based on predefined
+ *         error log information and commit the error. Accepts error
+ *         level.
+ *  @tparam T - exception
+ *  @param[in] level - level of the error
+ *  @param[in] i_args - Metadata fields to be added to the journal entry
+ */
+template <typename T, typename ...Args>
+void report(Entry::Level level, Args... i_args)
+{
+    //validate if the exception is derived from sdbusplus::exception.
+    static_assert(
+        std::is_base_of<sdbusplus::exception::exception, T>::value,
+        "T must be a descendant of sdbusplus::exception::exception"
+    );
+
+    // Validate the caller passed in the required parameters
+    static_assert(std::is_same<typename details::
+                               map_exception_type_t<T>::metadata_types,
+                               std::tuple<
+                               details::deduce_entry_type_t<Args>...>>
+                               ::value,
+                  "You are not passing in required arguments for this error");
+
+    log<details::map_exception_type_t<T>::L>(
+        T::errDesc,
+        details::deduce_entry_type<Args>{i_args}.get()...);
+
+    commit<T>(level);
+}
+
 } // namespace logging
 
 } // namespace phosphor

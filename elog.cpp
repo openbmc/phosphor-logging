@@ -1,5 +1,6 @@
 #include "config.h"
 #include <phosphor-logging/elog.hpp>
+#include "xyz/openbmc_project/Logging/Entry/server.hpp"
 
 namespace phosphor
 {
@@ -7,7 +8,14 @@ namespace logging
 {
 namespace details
 {
+using namespace sdbusplus::xyz::openbmc_project::Logging::server;
+
 void commit(const char* name)
+{
+    commit(name, Entry::Level::Error);
+}
+
+void commit(const char* name, Entry::Level level)
 {
     using phosphor::logging::log;
     constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
@@ -48,7 +56,7 @@ void commit(const char* name)
             IFACE_INTERNAL,
             "Commit");
     uint64_t id = sdbusplus::server::transaction::get_id();
-    m.append(id, name);
+    m.append(id, name, static_cast<uint32_t>(level));
     b.call_noreply(m);
 }
 } // namespace details
@@ -56,7 +64,7 @@ void commit(const char* name)
 void commit(std::string&& name)
 {
     log<level::ERR>("method is deprecated, use commit() with exception type");
-    phosphor::logging::details::commit(name.c_str());
+    phosphor::logging::details::commit(name.c_str(), Entry::Level::Error);
 }
 
 } // namespace logging
