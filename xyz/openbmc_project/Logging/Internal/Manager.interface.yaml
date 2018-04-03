@@ -17,3 +17,21 @@ methods:
           description: >
               The error exception message associated with the error
               event log to be committed.
+    - name: CommitWithLvl
+      description: >
+          Write the requested error/event entry with its associated metadata
+          fields to flash.
+      parameters:
+        - name: transactionId
+          type: uint64
+          description: >
+              The unique identifier of the journal entry(ies) to be committed.
+        - name: errMsg
+          type: string
+          description: >
+              The error exception message associated with the error
+              event log to be committed.
+        - name: errLvl
+          type: uint32
+          description: >
+              The error level/severity indicator.
