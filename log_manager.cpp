@@ -25,7 +25,8 @@ namespace logging
 {
 namespace internal
 {
-void Manager::commit(uint64_t transactionId, std::string errMsg)
+
+inline level determineLevel(const std::string& errMsg, level errLvl)
 {
     auto reqLevel = level::ERR; // Default to ERR
     auto levelmap = g_errLevelMap.find(errMsg);
@@ -34,6 +35,14 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
     {
         reqLevel = levelmap->second;
     }
+
+    return reqLevel == errLvl ? reqLevel : errLvl;
+}
+
+void Manager::commit(uint64_t transactionId, std::string errMsg,
+                     uint32_t errLvl)
+{
+    auto reqLevel = determineLevel(errMsg, static_cast<level>(errLvl));
 
     if (static_cast<Entry::Level>(reqLevel) < Entry::sevLowerLimit)
     {

@@ -17,3 +17,7 @@ methods:
           description: >
               The error exception message associated with the error
               event log to be committed.
+        - name: errLvl
+          type: uint32
+          description: >
+              The error level/severity indicator.
