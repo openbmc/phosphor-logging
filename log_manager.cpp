@@ -25,17 +25,37 @@ namespace logging
 {
 namespace internal
 {
-void Manager::commit(uint64_t transactionId, std::string errMsg)
-{
-    auto reqLevel = level::ERR; // Default to ERR
-    auto levelmap = g_errLevelMap.find(errMsg);
 
+inline auto getLevel(const std::string& errMsg)
+{
+    auto reqLevel = Entry::Level::Error; // Default to Error
+
+    auto levelmap = g_errLevelMap.find(errMsg);
     if (levelmap != g_errLevelMap.end())
     {
-        reqLevel = levelmap->second;
+        reqLevel = static_cast<Entry::Level>(levelmap->second);
     }
 
-    if (static_cast<Entry::Level>(reqLevel) < Entry::sevLowerLimit)
+    return reqLevel;
+}
+
+void Manager::commit(uint64_t transactionId, std::string errMsg)
+{
+    auto level = getLevel(errMsg);
+    _commit(transactionId, std::move(errMsg), level);
+}
+
+void Manager::commitWithLvl(uint64_t transactionId, std::string errMsg,
+                            uint32_t errLvl)
+{
+    _commit(transactionId, std::move(errMsg),
+            static_cast<Entry::Level>(errLvl));
+}
+
+void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
+                      Entry::Level errLvl)
+{
+    if (errLvl < Entry::sevLowerLimit)
     {
         if (realErrors.size() >= ERROR_CAP)
         {
@@ -158,7 +178,7 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
 
     // Create error Entry dbus object
     entryId++;
-    if (static_cast<Entry::Level>(reqLevel) >= Entry::sevLowerLimit)
+    if (errLvl >= Entry::sevLowerLimit)
     {
         infoErrors.push_back(entryId);
     }
@@ -179,7 +199,7 @@ void Manager::commit(uint64_t transactionId, std::string errMsg)
                  objPath,
                  entryId,
                  ms, // Milliseconds since 1970
-                 static_cast<Entry::Level>(reqLevel),
+                 errLvl,
                  std::move(errMsg),
                  std::move(additionalData),
                  std::move(objects),

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <optional>
 #include <sdbusplus/bus.hpp>
 #include <phosphor-logging/log.hpp>
 #include "elog_entry.hpp"
@@ -68,6 +69,19 @@ class Manager : public details::ServerObject<details::ManagerIface>
          */
         void commit(uint64_t transactionId, std::string errMsg) override;
 
+        /*
+         * @fn commit()
+         * @brief sd_bus CommitWithLvl method implementation callback.
+         * @details Create an error/event log based on transaction id and
+         *          error message.
+         * @param[in] transactionId - Unique identifier of the journal entries
+         *                            to be committed.
+         * @param[in] errMsg - The error exception message associated with the
+         *                     error log to be committed.
+         * @param[in] errLvl - level of the error
+         */
+        void commitWithLvl(uint64_t transactionId, std::string errMsg,
+                           uint32_t errLvl) override;
 
         /** @brief Erase specified entry d-bus object
          *
@@ -95,6 +109,18 @@ class Manager : public details::ServerObject<details::ManagerIface>
         }
 
     private:
+        /*
+         * @fn _commit()
+         * @brief commit() helper
+         * @param[in] transactionId - Unique identifier of the journal entries
+         *                            to be committed.
+         * @param[in] errMsg - The error exception message associated with the
+         *                     error log to be committed.
+         * @param[in] errLvl - level of the error
+         */
+        void _commit(uint64_t transactionId, std::string&& errMsg,
+                     Entry::Level errLvl);
+
         /** @brief Call metadata handler(s), if any. Handlers may create
          *         associations.
          *  @param[in] errorName - name of the error
