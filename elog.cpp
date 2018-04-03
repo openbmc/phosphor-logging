@@ -1,5 +1,6 @@
 #include "config.h"
 #include <phosphor-logging/elog.hpp>
+#include <stdexcept>
 
 namespace phosphor
 {
@@ -7,7 +8,9 @@ namespace logging
 {
 namespace details
 {
-void commit(const char* name)
+using namespace sdbusplus::xyz::openbmc_project::Logging::server;
+
+auto _prepareMsg(const char* funcName)
 {
     using phosphor::logging::log;
     constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
@@ -29,16 +32,14 @@ void commit(const char* name)
     auto mapperResponseMsg = b.call(mapper);
     if (mapperResponseMsg.is_method_error())
     {
-        log<level::ERR>("Error in mapper call");
-        return;
+        throw std::runtime_error("Error in mapper call");
     }
 
     std::map<std::string, std::vector<std::string>> mapperResponse;
     mapperResponseMsg.read(mapperResponse);
     if (mapperResponse.empty())
     {
-        log<level::ERR>("Error reading mapper response");
-        return;
+        throw std::runtime_error("Error reading mapper response");
     }
 
     const auto& host = mapperResponse.cbegin()->first;
@@ -46,10 +47,26 @@ void commit(const char* name)
             host.c_str(),
             OBJ_INTERNAL,
             IFACE_INTERNAL,
-            "Commit");
+            funcName);
+   return m;
+}
+
+void commit(const char* name)
+{
+    auto msg = _prepareMsg("Commit");
     uint64_t id = sdbusplus::server::transaction::get_id();
-    m.append(id, name);
-    b.call_noreply(m);
+    msg.append(id, name);
+    auto bus = sdbusplus::bus::new_default();
+    bus.call_noreply(msg);
+}
+
+void commit(const char* name, Entry::Level level)
+{
+    auto msg = _prepareMsg("CommitWithLvl");
+    uint64_t id = sdbusplus::server::transaction::get_id();
+    msg.append(id, name, static_cast<uint32_t>(level));
+    auto bus = sdbusplus::bus::new_default();
+    bus.call_noreply(msg);
 }
 } // namespace details
 
