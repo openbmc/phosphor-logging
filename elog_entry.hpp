@@ -4,6 +4,7 @@
 #include <sdbusplus/server/object.hpp>
 #include "xyz/openbmc_project/Logging/Entry/server.hpp"
 #include "xyz/openbmc_project/Object/Delete/server.hpp"
+#include "xyz/openbmc_project/Software/Version/server.hpp"
 #include "org/openbmc/Associations/server.hpp"
 
 namespace phosphor
@@ -14,7 +15,8 @@ namespace logging
 using EntryIfaces = sdbusplus::server::object::object<
     sdbusplus::xyz::openbmc_project::Logging::server::Entry,
     sdbusplus::xyz::openbmc_project::Object::server::Delete,
-    sdbusplus::org::openbmc::server::Associations>;
+    sdbusplus::org::openbmc::server::Associations,
+    sdbusplus::xyz::openbmc_project::Software::server::Version>;
 
 using AssociationList =
      std::vector<std::tuple<std::string, std::string, std::string>>;
@@ -50,6 +52,8 @@ class Entry : public EntryIfaces
          *  @param[in] severityErr - The severity of the error.
          *  @param[in] msgErr - The message of the error.
          *  @param[in] additionalDataErr - The error metadata.
+         *  @param[in] objects - The list of associations.
+         *  @param[in] fwVersion - The BMC code version.
          *  @param[in] parent - The error's parent.
          */
         Entry(sdbusplus::bus::bus& bus,
@@ -60,6 +64,7 @@ class Entry : public EntryIfaces
               std::string&& msgErr,
               std::vector<std::string>&& additionalDataErr,
               AssociationList&& objects,
+              const std::string& fwVersion,
               internal::Manager& parent) :
               EntryIfaces(bus, path.c_str(), true),
               parent(parent)
@@ -74,6 +79,9 @@ class Entry : public EntryIfaces
             assocs = associations();
             sdbusplus::xyz::openbmc_project::
                 Logging::server::Entry::resolved(false);
+
+            version(fwVersion);
+            purpose(VersionPurpose::BMC);
 
             // Emit deferred signal.
             this->emit_object_added();

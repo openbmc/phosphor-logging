@@ -16,6 +16,7 @@ TEST_F(TestSerialization, testProperties)
     std::vector<std::string> testData{"additional", "data"};
     uint64_t timestamp{100};
     std::string message{"test error"};
+    std::string fwLevel{"level42"};
     auto input = std::make_unique<Entry>(
                      bus,
                      std::string(OBJ_ENTRY) + '/' + std::to_string(id),
@@ -25,6 +26,7 @@ TEST_F(TestSerialization, testProperties)
                      std::move(message),
                      std::move(testData),
                      std::move(assocations),
+                     fwLevel,
                      manager);
     auto path = serialize(*input, TestSerialization::dir);
 
@@ -44,6 +46,8 @@ TEST_F(TestSerialization, testProperties)
     EXPECT_EQ(input->additionalData(), output->additionalData());
     EXPECT_EQ(input->resolved(), output->resolved());
     EXPECT_EQ(input->associations(), output->associations());
+    EXPECT_EQ(input->version(), output->version());
+    EXPECT_EQ(input->purpose(), output->purpose());
 }
 
 } // namespace test
