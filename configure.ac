@@ -75,6 +75,7 @@ AC_DEFINE(OBJ_ENTRY, "/xyz/openbmc_project/logging/entry", [The log entry DBus o
 AC_DEFINE(INVENTORY_ROOT, "/xyz/openbmc_project/inventory", [The inventory root.])
 AC_DEFINE(CALLOUT_FWD_ASSOCIATION, "callout", [The name of the callout's forward association.])
 AC_DEFINE(CALLOUT_REV_ASSOCIATION, "fault", [The name of the callout's reverse association.])
+AC_DEFINE(BMC_VERSION_FILE, "/etc/os-release", [The file that contains the BMC firmware version])
 
 AC_ARG_VAR(YAML_DIR_TEST, [The path to the test error yaml files.])
 AS_IF([test "x$YAML_DIR_TEST" == "x"], \

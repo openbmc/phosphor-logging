@@ -446,6 +446,31 @@ void Manager::journalSync()
     return;
 }
 
+std::string Manager::readFWVersion()
+{
+    std::string version;
+    std::ifstream versionFile{BMC_VERSION_FILE};
+    std::string line;
+    static constexpr auto VERSION_ID = "VERSION_ID=";
+
+    while (std::getline(versionFile, line))
+    {
+        if (line.find(VERSION_ID) != std::string::npos)
+        {
+            auto pos = line.find_first_of('"') + 1;
+            version = line.substr(pos, line.find_last_of('"') - pos);
+            break;
+        }
+    }
+
+    if (version.empty())
+    {
+        log<level::ERR>("Unable to read BMC firmware version");
+    }
+
+    return version;
+}
+
 } // namespace internal
 } // namespace logging
 } // namepsace phosphor

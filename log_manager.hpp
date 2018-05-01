@@ -54,7 +54,8 @@ class Manager : public details::ServerObject<details::ManagerIface>
         Manager(sdbusplus::bus::bus& bus, const char* objPath) :
                 details::ServerObject<details::ManagerIface>(bus, objPath),
                 busLog(bus),
-                entryId(0){};
+                entryId(0),
+                fwVersion(readFWVersion()) {};
 
         /*
          * @fn commit()
@@ -136,6 +137,12 @@ class Manager : public details::ServerObject<details::ManagerIface>
          */
         void journalSync();
 
+        /** @brief Reads the BMC code level
+         *
+         *  @return std::string - the version string
+         */
+        static std::string readFWVersion();
+
         /** @brief Persistent sdbusplus DBus bus connection. */
         sdbusplus::bus::bus& busLog;
 
@@ -150,6 +157,9 @@ class Manager : public details::ServerObject<details::ManagerIface>
 
         /** @brief Id of last error log entry */
         uint32_t entryId;
+
+        /** @brief The BMC firmware version */
+        const std::string fwVersion;
 };
 
 } //namespace internal
