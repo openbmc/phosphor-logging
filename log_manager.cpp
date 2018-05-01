@@ -201,6 +201,7 @@ void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
                  std::move(errMsg),
                  std::move(additionalData),
                  std::move(objects),
+                 fwVersion,
                  *this);
     serialize(*e);
     entries.insert(std::make_pair(entryId, std::move(e)));
