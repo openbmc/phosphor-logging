@@ -17,6 +17,7 @@
 #pragma once
 
 #include <tuple>
+#include <type_traits>
 #include <systemd/sd-journal.h>
 #include <sdbusplus/server/transaction.hpp>
 
@@ -135,11 +136,31 @@ void log(Msg msg, Entry... e)
     details::log(log_tuple);
 }
 
+template<class T>
+struct is_printf_argtype
+    : std::integral_constant<
+        bool,
+        (std::is_integral<typename std::remove_reference<T>::type>::value ||
+         std::is_enum<typename std::remove_reference<T>::type>::value ||
+         std::is_floating_point<typename std::remove_reference<T>::type>::value ||
+         std::is_pointer<typename std::decay<T>::type>::value)>
+{};
+
+template<bool...>
+struct bool_pack;
+
+template<bool... bs> 
+using all_true = std::is_same<bool_pack<bs..., true>, bool_pack<true, bs...>>;
+
 template <typename Arg, typename ...Args>
 constexpr auto entry(Arg&& arg, Args&&... args)
 {
+    static_assert(is_printf_argtype<Arg>::value,
+                  "check printf arguments: use string.c_str() if needed");
+    static_assert(all_true<is_printf_argtype<Args>::value...>::value,
+                  "check printf arguments: use string.c_str() if needed");
     const auto entry_tuple = std::make_tuple(std::forward<Arg>(arg),
-                                       std::forward<Args>(args)...);
+                                             std::forward<Args>(args)...);
     return entry_tuple;
 }
 
