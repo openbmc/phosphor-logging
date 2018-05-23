@@ -438,9 +438,12 @@ void Manager::journalSync()
             ;
     }
 
-    if ((fd != -1) && (wd != -1))
+    if (-1 != fd)
     {
-        inotify_rm_watch(fd, wd);
+        if (-1 != wd)
+        {
+            inotify_rm_watch(fd, wd);
+        }
         close(fd);
     }
 
