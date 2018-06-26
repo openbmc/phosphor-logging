@@ -89,11 +89,15 @@ AC_ARG_VAR(CALLOUTS_YAML, [YAML filepath containing generated callouts.])
 AS_IF([test "x$CALLOUTS_YAML" == "x"], \
     [CALLOUTS_YAML="callouts-example.yaml"])
 
-AC_ARG_VAR(ERRLOG_PERSIST_PATH, [Path of directory housing persisted errors.])
-AS_IF([test "x$ERRLOG_PERSIST_PATH" == "x"], \
-    [ERRLOG_PERSIST_PATH="/var/lib/phosphor-logging/errors"])
-AC_DEFINE_UNQUOTED([ERRLOG_PERSIST_PATH], ["$ERRLOG_PERSIST_PATH"], \
-    [Path of directory housing persisted errors])
+AC_ARG_VAR(ERRLOG_PERSIST_PATH, [Path of directory housing persisted errors.])\
+AS_IF([test "x$ERRLOG_PERSIST_PATH" == "x"],
+    AS_IF([test "x$enable_oe_sdk" == "xyes"], \
+        [ERRLOG_PERSIST_PATH="/tmp/errors"])
+    AS_IF([test "x$enable_oe_sdk" == "x"], \
+        [ERRLOG_PERSIST_PATH="/var/lib/phosphor-logging/errors"])
+    AC_DEFINE_UNQUOTED([ERRLOG_PERSIST_PATH], ["$ERRLOG_PERSIST_PATH"], \
+        [Path of directory housing persisted errors])
+)
 
 # Compile error metadata handlers if we're asked to do so.
 AC_ARG_ENABLE([metadata-processing],

@@ -108,6 +108,18 @@ class Manager : public details::ServerObject<details::ManagerIface>
             }
         }
 
+        /** @brief Returns the count high severity errors
+         *
+         *  @return int - count of real errors
+         */
+        int getRealErrSize();
+
+        /** @brief Returns the count of Info errors
+         *
+         *  @return int - count of info errors
+         */
+        int getInfoErrSize();
+
     private:
         /*
          * @fn _commit()
