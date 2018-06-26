@@ -3,7 +3,7 @@ AM_CPPFLAGS = -I${top_srcdir}
 TESTS = $(check_PROGRAMS)
 
 check_PROGRAMS = \
-	elog_unittest \
+	elog_errorwrap_test \
 	serialization_test_path \
 	serialization_test_properties
 
@@ -19,6 +19,7 @@ test_cxxflags = \
 
 test_ldflags = \
 	-lgtest_main -lgtest \
+	-lgmock_main -lgmock \
 	$(PTHREAD_LIBS) \
 	$(OESDK_TESTCASE_FLAGS) \
 	$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
@@ -35,10 +36,13 @@ test_ldadd = \
 	$(top_builddir)/elog-process-metadata.o
 
 
-elog_unittest_CPPFLAGS = $(test_cppflags)
-elog_unittest_CXXFLAGS = $(test_cxxflags)
-elog_unittest_LDFLAGS = $(test_ldflags)
-elog_unittest_SOURCES = elog_unittest.cpp
+elog_errorwrap_test_CPPFLAGS = $(test_cppflags)
+elog_errorwrap_test_CXXFLAGS = $(test_cxxflags)
+elog_errorwrap_test_SOURCES = elog_errorwrap_test.cpp
+elog_errorwrap_test_LDADD = $(test_ldadd)
+elog_errorwrap_test_LDFLAGS = \
+        $(test_ldflags) \
+        -lstdc++fs
 
 serialization_test_path_CPPFLAGS = $(test_cppflags)
 serialization_test_path_CXXFLAGS = $(test_cxxflags)
