@@ -43,6 +43,16 @@ inline auto getLevel(const std::string& errMsg)
     return reqLevel;
 }
 
+int Manager::getRealErrSize()
+{
+    return realErrors.size();
+}
+
+int Manager::getInfoErrSize()
+{
+    return infoErrors.size();
+}
+
 void Manager::commit(uint64_t transactionId, std::string errMsg)
 {
     auto level = getLevel(errMsg);
