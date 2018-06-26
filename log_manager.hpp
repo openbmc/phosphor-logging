@@ -107,7 +107,7 @@ class Manager : public details::ServerObject<details::ManagerIface>
                 erase(entry);
             }
         }
-
+        std::list<uint32_t> realErrors;
     private:
         /*
          * @fn _commit()
@@ -150,7 +150,7 @@ class Manager : public details::ServerObject<details::ManagerIface>
         std::map<uint32_t, std::unique_ptr<Entry>> entries;
 
         /** @brief List of error ids for high severity errors */
-        std::list<uint32_t> realErrors;
+        //std::list<uint32_t> realErrors;
 
         /** @brief List of error ids for Info(and below) severity */
         std::list<uint32_t> infoErrors;
