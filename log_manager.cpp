@@ -79,9 +79,6 @@ void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
     // Length of 'TRANSACTION_ID=' string.
     constexpr const auto transactionIdVarOffset = transactionIdVarSize + 1;
 
-    // Flush all the pending log messages into the journal
-    journalSync();
-
     sd_journal *j = nullptr;
     int rc = sd_journal_open(&j, SD_JOURNAL_LOCAL_ONLY);
     if (rc < 0)
@@ -140,6 +137,8 @@ void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
             continue;
         }
 
+        auto synced = false;
+
         // Search for all metadata variables in the current journal entry.
         for (auto i = metalist.cbegin(); i != metalist.cend();)
         {
@@ -147,7 +146,16 @@ void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
                                     (const void **)&data, &length);
             if (rc < 0)
             {
-                // Metadata variable not found, check next metadata variable.
+                // Metadata variable not found.
+                // Flush all the pending log messages into the journal and retry
+                if (!synced)
+                {
+                    journalSync();
+                    synced = true;
+                    continue;
+                }
+
+                // Check next metadata variable.
                 i++;
                 continue;
             }
