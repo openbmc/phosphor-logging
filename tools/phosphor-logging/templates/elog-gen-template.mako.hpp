@@ -103,10 +103,13 @@ struct ${b}
         parent_meta += [parent_namespace + "::" + parent_name + "::" +
                         p for p in meta[parent]]
         parent_meta_short = ', '.join(meta[parent])
-        if(meta_string):
-            meta_string = meta_string + ", " + parent_meta_short
-        else:
-            meta_string = parent_meta_short
+        # The parent may have empty meta,
+        # so only add parent meta when it exists
+        if (parent_meta_short):
+            if(meta_string):
+                meta_string = meta_string + ", " + parent_meta_short
+            else:
+                meta_string = parent_meta_short
         parent = parents[parent]
 
     if example_yaml:
