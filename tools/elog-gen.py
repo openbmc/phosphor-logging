@@ -230,8 +230,10 @@ def get_elog_data(i_elog_yaml,
         if 'inherits' in match:
             parents[fullname]  = match['inherits'][0]
 
+        # Put all errors in meta[] even the meta is empty
+        # so that child errors could inherits such error without meta
+        tmp_meta = []
         if 'meta' in match:
-            tmp_meta = []
             # grab all the meta data fields and info
             for i in match['meta']:
                 str_short = i['str'].split('=')[0]
@@ -242,7 +244,7 @@ def get_elog_data(i_elog_yaml,
                 meta_data[str_short]['type'] = get_cpp_type(i['type'])
                 if ('process' in i) and (True == i['process']):
                     metadata_process[str_short] = fullname + "." + str_short
-            meta[fullname] = tmp_meta
+        meta[fullname] = tmp_meta
 
     # Debug
     # for i in errors:
