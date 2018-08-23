@@ -371,10 +371,6 @@ void Manager::journalSync()
         {
             syncRequested = true;
 
-            constexpr auto SYSTEMD_BUSNAME = "org.freedesktop.systemd1";
-            constexpr auto SYSTEMD_PATH = "/org/freedesktop/systemd1";
-            constexpr auto SYSTEMD_INTERFACE =
-                "org.freedesktop.systemd1.Manager";
             constexpr auto JOURNAL_UNIT = "systemd-journald.service";
             auto signal = SIGRTMIN + 1;
 
