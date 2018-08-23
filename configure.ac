@@ -118,7 +118,35 @@ AC_ARG_VAR(CLASS_VERSION, [Class version to register with Cereal])
 AS_IF([test "x$CLASS_VERSION" == "x"], [CLASS_VERSION=2])
 AC_DEFINE_UNQUOTED([CLASS_VERSION], [$CLASS_VERSION], [Class version to register with Cereal])
 
+AC_ARG_VAR(RSYSLOG_SERVER_CONFIG_FILE, \
+    [Path of config file containing server address])
+AS_IF([test "x$RSYSLOG_SERVER_CONFIG_FILE" == "x"], \
+    [RSYSLOG_SERVER_CONFIG_FILE="/etc/rsyslog.d/server.conf"])
+AC_DEFINE_UNQUOTED([RSYSLOG_SERVER_CONFIG_FILE], \
+    ["$RSYSLOG_SERVER_CONFIG_FILE"], \
+    [Path of config file containing server address])
+
+AC_ARG_VAR(BUSNAME_SYSLOG_CONFIG, \
+    [D-Bus busname of syslog config service])
+AS_IF([test "x$BUSNAME_SYSLOG_CONFIG" == "x"], \
+    [BUSNAME_SYSLOG_CONFIG="xyz.openbmc_project.Syslog.Config"])
+AC_DEFINE_UNQUOTED([BUSNAME_SYSLOG_CONFIG], \
+    ["$BUSNAME_SYSLOG_CONFIG"], \
+    [D-Bus busname of syslog config service])
+
+AC_ARG_VAR(BUSPATH_REMOTE_LOGGING_CONFIG, \
+    [D-Bus path of remote logging config object])
+AS_IF([test "x$BUSPATH_REMOTE_LOGGING_CONFIG" == "x"], \
+    [BUSPATH_REMOTE_LOGGING_CONFIG="/xyz/openbmc_project/logging/config/remote"])
+AC_DEFINE_UNQUOTED([BUSPATH_REMOTE_LOGGING_CONFIG], \
+    ["$BUSPATH_REMOTE_LOGGING_CONFIG"], \
+    [D-Bus path of remote logging config object])
+
+AC_DEFINE(SYSTEMD_BUSNAME, "org.freedesktop.systemd1", [systemd busname.])
+AC_DEFINE(SYSTEMD_PATH, "/org/freedesktop/systemd1", [systemd path.])
+AC_DEFINE(SYSTEMD_INTERFACE, "org.freedesktop.systemd1.Manager", [systemd interface.])
+
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_FILES([Makefile test/Makefile])
+AC_CONFIG_FILES([Makefile test/Makefile phosphor-rsyslog-config/Makefile])
 AC_CONFIG_FILES([phosphor-logging.pc])
 AC_OUTPUT

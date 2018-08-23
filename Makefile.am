@@ -108,7 +108,7 @@ callouts-gen.hpp: $(REQ_FILES_TO_GEN)
 pkgconfiglibdir = ${libdir}/pkgconfig
 pkgconfiglib_DATA = phosphor-logging.pc
 
-SUBDIRS = test
+SUBDIRS = test phosphor-rsyslog-config
 endif
 # Export elog-gen parser and mako script
 elogdir = ${datadir}/phosphor-logging/elog
