@@ -12,38 +12,41 @@ To build this package, do the following steps:
 
 To clean the repository run `./bootstrap.sh clean`.
 ```
-# Adding application specific error YAML
+
+## Adding application specific error YAML
 * This document captures steps for adding application specific error YAML files
   and generating local elog-errors.hpp header file for application use.
 * Should cater for continuous integration (CI) build, bitbake image build, and
   local repository build.
 
-## Continuous Integration (CI) build
+#### Continuous Integration (CI) build
  * Make is called on the repository that is modified.
  * Dependent packages are pulled based on the dependency list specified in the
    configure.ac script.
 
-## Recipe build
+#### Recipe build
  * Native recipes copy error YAML files to shared location.
  * phosphor-logging builds elog-errors.hpp by parsing the error YAML files from
    the shared location.
 
-## Local repository build
+#### Local repository build
  * Copies local error YAML files to the shared location in SDK
  * Make generates elog-errors.hpp by parsing the error YAML files from the
    shared location.
 
-## Makefile changes
+#### Makefile changes
 **Reference**
  * https://github.com/openbmc/openpower-debug-collector/blob/master/Makefile.am
-### Export error YAML to shared location
+
+###### Export error YAML to shared location
 *Modify Makefile.am to export newly added error YAML to shared location*
 ```
 yamldir = ${datadir}/phosphor-dbus-yaml/yaml
 nobase_yaml_DATA = \
     org/open_power/Host.errors.yaml
 ```
-### Generate elog-errors.hpp using elog parser from SDK location
+
+###### Generate elog-errors.hpp using elog parser from SDK location
  * Add a conditional check "GEN_ERRORS"
  * Disable the check for recipe bitbake image build
  * Enable it for local repository build
@@ -67,7 +70,7 @@ nobase_yaml_DATA = \
   endif
 ```
 
-### Update BUILT_SOURCES
+###### Update BUILT_SOURCES
  * Append elog-errors.hpp to BUILT_SOURCES list and put it in conditional check
    GEN_ERRORS so that the elog-errors.hpp is generated only during local
    repository build.
@@ -80,7 +83,8 @@ nobase_yaml_DATA = \
     BUILT_SOURCES += phosphor-logging/elog-errors.hpp
     endif
 ```
-### Conditional check for native build
+
+###### Conditional check for native build
  * As the same Makefile is used both for recipe image build and native recipe
    build, add a conditional to ensure that only installation of error yaml files
    happens during native build. It is not required to build repository during
@@ -89,18 +93,19 @@ nobase_yaml_DATA = \
    if !INSTALL_ERROR_YAML
    endif
 ```
-## Autotools changes
+
+#### Autotools changes
 **Reference**
  * https://github.com/openbmc/openpower-debug-collector/blob/master/configure.ac
 
-### Add option(argument) to enable/disable installing error yaml file
+###### Add option(argument) to enable/disable installing error yaml file
  * Install error yaml option(argument) is enabled for native recipe build
    and disabled for bitbake build.
 
  * When install error yaml option is disabled do not check for target specific
    packages in autotools configure script.
 
-### Add option(argument) to install error yaml files
+###### Add option(argument) to install error yaml files
 ```
 AC_ARG_ENABLE([install_error_yaml],
     AS_HELP_STRING([--enable-install_error_yaml],
@@ -112,7 +117,8 @@ AS_IF([test "x$enable_install_error_yaml" != "xyes"], [
 ..
 ])
 ```
-### Add option(argument) to enable/disable generating elog-errors header file
+
+###### Add option(argument) to enable/disable generating elog-errors header file
 ```
 AC_ARG_ENABLE([gen_errors],
     AS_HELP_STRING([--enable-gen_errors], [Enable elog-errors.hpp generation ]),
@@ -120,50 +126,53 @@ AC_ARG_ENABLE([gen_errors],
 AM_CONDITIONAL([GEN_ERRORS], [test "x$enable_gen_errors" != "xno"])
 ```
 
-## Recipe changes
+#### Recipe changes
 **Reference**
 * https://github.com/openbmc/openbmc/blob/master/meta-openbmc-machines\
 /meta-openpower/common/recipes-phosphor/debug/openpower-debug-collector.bb
 
-### Extend recipe for native and nativesdk
+###### Extend recipe for native and nativesdk
 * Extend the recipe for native and native SDK builds
 ```
 BBCLASSEXTEND += "native nativesdk"
 ```
-### Remove dependencies for native and native SDK build
+###### Remove dependencies for native and native SDK build
 * Native recipe caters only for copying error yaml files to shared location.
 * For native and native SDK build remove dependency on packages that recipe
   build depends
 
-#### Remove dependency on phosphor-logging for native build
+###### Remove dependency on phosphor-logging for native build
 ```
 DEPENDS_remove_class-native = "phosphor-logging"
 ```
-#### Remove dependency on phosphor-logging for native SDK build
+
+###### Remove dependency on phosphor-logging for native SDK build
 ```
 DEPENDS_remove_class-nativesdk = "phosphor-logging"
 ```
-### Add install_error_yaml argument during native build
+
+###### Add install_error_yaml argument during native build
 * Add package config to enable/disable install_error_yaml feature.
+
+###### Add package config to enable/disable install_error_yaml feature
 ```
-## Add package config to enable/disable install_error_yaml feature
 PACKAGECONFIG ??= "install_error_yaml"
 PACKAGECONFIG[install_error_yaml] = " \
         --enable-install_error_yaml, \
         --disable-install_error_yaml, ,\
         "
 ```
-#### Enable install_error_yaml check for native build
+###### Enable install_error_yaml check for native build
 ```
 PACKAGECONFIG_add_class-native = "install_error_yaml"
 PACKAGECONFIG_add_class-nativesdk = "install_error_yaml"
 ```
-#### Disable install_error_yaml during target build
+###### Disable install_error_yaml during target build
 ```
 PACKAGECONFIG_remove_class-target = "install_error_yaml"
 ```
 
-### Disable generating elog-errors.hpp for bitbake build
+###### Disable generating elog-errors.hpp for bitbake build
 * Disable gen_errors argument for bitbake image build as the application uses
   the elog-errors.hpp generated by phosphor-logging
 * Argument is enabled by default for local repository build in the configure
@@ -172,7 +181,7 @@ PACKAGECONFIG_remove_class-target = "install_error_yaml"
  XTRA_OECONF += "--disable-gen_errors"
 ```
 
-## Local build
+#### Local build
 * During local build use --prefix=/usr for the configure script.
 
 **Reference**
