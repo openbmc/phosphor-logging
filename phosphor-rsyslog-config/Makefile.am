@@ -1,3 +1,5 @@
+AM_CPPFLAGS = -I$(top_srcdir)
+
 noinst_HEADERS = \
 	utils.hpp \
 	server-conf.hpp

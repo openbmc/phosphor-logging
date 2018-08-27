@@ -58,6 +58,12 @@ class Server : public Iface
          *         rsyslog config file.
          */
         void writeConfig();
+
+        /** @brief Checks if input IP address is valid (uses getaddrinfo)
+         *  @param[in] address - server address
+         *  @returns true if valid, false otherwise
+         */
+        bool addressValid(const std::string& address);
 };
 
 } // namespace rsyslog_config
