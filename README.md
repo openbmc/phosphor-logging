@@ -56,6 +56,11 @@ curl -b cjar -k -H "Content-Type: application/json" -X PUT \
     https://<BMC IP address>//xyz/openbmc_project/network/config/attr/HostName
 ```
 
+#### Disabling remote logging
+Remote logging can be disabled by writing 0 to the port, or an empty string("")
+to the IP.
+
+
 ## Adding application specific error YAML
 * This document captures steps for adding application specific error YAML files
   and generating local elog-errors.hpp header file for application use.
