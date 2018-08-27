@@ -64,6 +64,12 @@ class Server : public Iface
                  const std::string& serverAddress,
                  uint16_t serverPort,
                  const char* filePath);
+
+        /** @brief Checks if input IP address is valid (uses getaddrinfo)
+         *  @param[in] address - server address
+         *  @returns true if valid, false otherwise
+         */
+        bool addressValid(const std::string& address);
 };
 
 } // namespace rsyslog_config
