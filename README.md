@@ -62,9 +62,14 @@ curl -b cjar -k -H "Content-Type: application/json" -X PUT \
     https://<BMC IP address>//xyz/openbmc_project/network/config/attr/HostName
 ```
 
+#### Disabling remote logging
+Remote logging can be disabled by writing 0 to the port, or an empty string("")
+to the IP.
+
 #### Changing the rsyslog server
 When switching to a new server from an existing one (i.e the address, or port,
 or both change), it is recommended to disable the existing configuration first.
+
 
 ## Adding application specific error YAML
 * This document captures steps for adding application specific error YAML files

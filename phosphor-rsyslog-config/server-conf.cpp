@@ -11,6 +11,12 @@ namespace utils = phosphor::rsyslog_utils;
 
 std::string Server::address(std::string value)
 {
+    auto serverAddress = address();
+    if (serverAddress == value)
+    {
+        return serverAddress;
+    }
+
     writeConfig(value, port(), configFilePath.c_str());
     auto result = NetworkClient::address(value);
     return result;
@@ -18,6 +24,12 @@ std::string Server::address(std::string value)
 
 uint16_t Server::port(uint16_t value)
 {
+    auto serverPort = port();
+    if (serverPort == value)
+    {
+        return serverPort;
+    }
+
     writeConfig(address(), value, configFilePath.c_str());
     auto result = NetworkClient::port(value);
     return result;
@@ -28,14 +40,20 @@ void Server::writeConfig(
                  uint16_t serverPort,
                  const char* filePath)
 {
+    std::fstream stream(filePath, std::fstream::out);
+
     if (serverPort && !serverAddress.empty())
     {
-        std::fstream stream(filePath, std::fstream::out);
-        // write '*.* @@remote-host:port'
+        // write '*.* @@<remote-host>:<port>'
         stream << "*.* @@" << serverAddress << ":" << serverPort;
-
-        utils::restart();
     }
+    else // this is a disable request
+    {
+        // write '#*.* @@remote-host:port'
+        stream << "#*.* @@remote-host:port";
+    }
+
+    utils::restart();
 }
 
 } // namespace rsyslog_config
