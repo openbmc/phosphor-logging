@@ -3,6 +3,7 @@
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/object.hpp>
 #include <string>
+#include <phosphor-logging/log.hpp>
 #include "xyz/openbmc_project/Network/Client/server.hpp"
 
 namespace phosphor
@@ -10,6 +11,7 @@ namespace phosphor
 namespace rsyslog_config
 {
 
+using namespace phosphor::logging;
 using NetworkClient = sdbusplus::xyz::openbmc_project::Network::server::Client;
 using Iface = sdbusplus::server::object::object<NetworkClient>;
 
@@ -37,9 +39,19 @@ class Server : public Iface
         Server(sdbusplus::bus::bus& bus,
                const std::string& path,
                const char* filePath) :
-            Iface(bus, path.c_str()),
+            Iface(bus, path.c_str(), true),
             configFilePath(filePath)
         {
+            try
+            {
+                restore(configFilePath.c_str());
+            }
+            catch(const std::exception& e)
+            {
+                log<level::ERR>(e.what());
+            }
+
+            emit_object_added();
         }
 
         using NetworkClient::address;
@@ -74,6 +86,11 @@ class Server : public Iface
          *  @returns true if valid, false otherwise
          */
         bool addressValid(const std::string& address);
+
+        /** @brief Populate existing config into D-Bus properties
+         *  @param[in] filePath - rsyslog config file path
+         */
+        void restore(const char* filePath);
 
         std::string configFilePath{};
 };
