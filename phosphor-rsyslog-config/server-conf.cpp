@@ -1,9 +1,7 @@
-#include "config.h"
 #include "server-conf.hpp"
 #include "utils.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 #include <fstream>
-#include <phosphor-logging/log.hpp>
 #include <phosphor-logging/elog.hpp>
 #if __has_include("../../usr/include/phosphor-logging/elog-errors.hpp")
 #include "../../usr/include/phosphor-logging/elog-errors.hpp"
@@ -127,6 +125,29 @@ bool Server::addressValid(const std::string& address)
         return false;
     }
     return true;
+}
+
+void Server::restore(const char* filePath)
+{
+    std::fstream stream(filePath, std::fstream::in);
+    std::string line;
+
+    getline(stream, line);
+
+    // Ignore if line is commented
+    if ('#' != line.at(0))
+    {
+        auto pos = line.find(':');
+        if (pos != std::string::npos)
+        {
+            //"*.* @@<address>:<port>"
+            constexpr auto start = 6; // Skip "*.* @@"
+            auto serverAddress = line.substr(start, pos - start);
+            auto serverPort = line.substr(pos + 1);
+            NetworkClient::address(std::move(serverAddress));
+            NetworkClient::port(std::stoul(serverPort));
+        }
+    }
 }
 
 } // namespace rsyslog_config
