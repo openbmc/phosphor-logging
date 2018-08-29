@@ -16,10 +16,12 @@
 
 #pragma once
 
+#include <systemd/sd-journal.h>
+
+#include <phosphor-logging/sdjournal.hpp>
+#include <sdbusplus/server/transaction.hpp>
 #include <tuple>
 #include <type_traits>
-#include <systemd/sd-journal.h>
-#include <sdbusplus/server/transaction.hpp>
 
 namespace phosphor
 {
@@ -98,7 +100,7 @@ template <typename T, size_t ...I>
 void helper_log(T&& e, std::integer_sequence<size_t, I...>)
 {
     // https://www.freedesktop.org/software/systemd/man/sd_journal_print.html
-    sd_journal_send(std::get<I>(std::forward<T>(e))..., NULL);
+    sdjournal_ptr->journal_send(std::get<I>(std::forward<T>(e))..., NULL);
 }
 
 /** @fn details::log()
