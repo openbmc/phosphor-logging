@@ -10,6 +10,9 @@ phosphor_rsyslog_conf_SOURCES = \
 	main.cpp \
 	server-conf.cpp
 
+phosphor_rsyslog_conf_LDADD = \
+	$(top_builddir)/sdjournal.o
+
 phosphor_rsyslog_conf_LDFLAGS = \
 	$(SDBUSPLUS_LIBS) \
 	$(PHOSPHOR_DBUS_INTERFACES_LIBS)

@@ -36,9 +36,12 @@ test_ldadd = \
 	$(top_builddir)/xyz/openbmc_project/Logging/Internal/Manager/server.o \
 	$(top_builddir)/elog_meta.o \
 	$(top_builddir)/elog-lookup.o \
-	$(top_builddir)/elog-process-metadata.o
+	$(top_builddir)/elog-process-metadata.o \
+	$(top_builddir)/sdjournal.o
 
-remote_logging_test_ldadd = $(top_builddir)/phosphor-rsyslog-config/server-conf.o
+remote_logging_test_ldadd = \
+	$(top_builddir)/phosphor-rsyslog-config/server-conf.o \
+	$(top_builddir)/sdjournal.o
 
 elog_errorwrap_test_CPPFLAGS = $(test_cppflags)
 elog_errorwrap_test_CXXFLAGS = $(test_cxxflags)

@@ -2,14 +2,16 @@ if !INSTALL_SCRIPTS
 # export these headers
 nobase_include_HEADERS = \
 	phosphor-logging/log.hpp \
-	phosphor-logging/elog.hpp
+	phosphor-logging/elog.hpp \
+	phosphor-logging/sdjournal.hpp \
+	phosphor-logging/test/sdjournal_mock.hpp
 
 nobase_nodist_include_HEADERS = \
 	phosphor-logging/elog-errors.hpp \
 	xyz/openbmc_project/Logging/Internal/Manager/server.hpp
 
 libphosphor_logging_FILES = \
-	elog.cpp elog_meta.cpp
+	elog.cpp elog_meta.cpp sdjournal.cpp
 libphosphor_loggingdir = ${libdir}
 libphosphor_logging_LTLIBRARIES = libphosphor_logging.la
 libphosphor_logging_la_SOURCES = $(libphosphor_logging_FILES)
@@ -37,7 +39,8 @@ phosphor_log_manager_SOURCES = \
 	org.openbmc.Associations.cpp \
 	elog-process-metadata.cpp \
 	elog_meta.cpp \
-	elog_serialize.cpp
+	elog_serialize.cpp \
+	sdjournal.cpp
 
 # Be sure to build needed files before compiling
 BUILT_SOURCES = \
