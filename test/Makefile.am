@@ -7,7 +7,8 @@ check_PROGRAMS = \
 	serialization_test_path \
 	serialization_test_properties \
 	remote_logging_test_address \
-	remote_logging_test_port
+	remote_logging_test_port \
+	remote_logging_test_config
 
 test_cppflags = \
 	-Igtest \
@@ -76,5 +77,13 @@ remote_logging_test_port_CXXFLAGS = $(test_cxxflags)
 remote_logging_test_port_SOURCES = remote_logging_test_port.cpp
 remote_logging_test_port_LDADD = $(remote_logging_test_ldadd)
 remote_logging_test_port_LDFLAGS = \
+	$(test_ldflags) \
+	-lstdc++fs
+
+remote_logging_test_config_CPPFLAGS = $(test_cppflags)
+remote_logging_test_config_CXXFLAGS = $(test_cxxflags)
+remote_logging_test_config_SOURCES = remote_logging_test_config.cpp
+remote_logging_test_config_LDADD = $(remote_logging_test_ldadd)
+remote_logging_test_config_LDFLAGS = \
 	$(test_ldflags) \
 	-lstdc++fs
