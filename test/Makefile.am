@@ -5,7 +5,9 @@ TESTS = $(check_PROGRAMS)
 check_PROGRAMS = \
 	elog_errorwrap_test \
 	serialization_test_path \
-	serialization_test_properties
+	serialization_test_properties \
+	remote_logging_test_address \
+	remote_logging_test_port
 
 test_cppflags = \
 	-Igtest \
@@ -35,6 +37,7 @@ test_ldadd = \
 	$(top_builddir)/elog-lookup.o \
 	$(top_builddir)/elog-process-metadata.o
 
+remote_logging_test_ldadd = $(top_builddir)/phosphor-rsyslog-config/server-conf.o
 
 elog_errorwrap_test_CPPFLAGS = $(test_cppflags)
 elog_errorwrap_test_CXXFLAGS = $(test_cxxflags)
@@ -57,5 +60,21 @@ serialization_test_properties_CXXFLAGS = $(test_cxxflags)
 serialization_test_properties_SOURCES = serialization_test_properties.cpp
 serialization_test_properties_LDADD = $(test_ldadd)
 serialization_test_properties_LDFLAGS = \
+	$(test_ldflags) \
+	-lstdc++fs
+
+remote_logging_test_address_CPPFLAGS = $(test_cppflags)
+remote_logging_test_address_CXXFLAGS = $(test_cxxflags)
+remote_logging_test_address_SOURCES = remote_logging_test_address.cpp
+remote_logging_test_address_LDADD = $(remote_logging_test_ldadd)
+remote_logging_test_address_LDFLAGS = \
+	$(test_ldflags) \
+	-lstdc++fs
+
+remote_logging_test_port_CPPFLAGS = $(test_cppflags)
+remote_logging_test_port_CXXFLAGS = $(test_cxxflags)
+remote_logging_test_port_SOURCES = remote_logging_test_port.cpp
+remote_logging_test_port_LDADD = $(remote_logging_test_ldadd)
+remote_logging_test_port_LDFLAGS = \
 	$(test_ldflags) \
 	-lstdc++fs
