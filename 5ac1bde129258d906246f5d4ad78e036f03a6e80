@@ -1,0 +1,10 @@
+Code-Review+1: Andrew Geissler <geissonator@yahoo.com>
+Code-Review+1: Adriana Kobylak <anoo@linux.ibm.com>
+Code-Review+2: Deepak Kodihalli <dkodihal@in.ibm.com>
+Ok-To-Test+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Verified+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Submitted-by: Deepak Kodihalli <dkodihal@in.ibm.com>
+Submitted-at: Fri, 31 Aug 2018 13:03:25 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/12224
+Project: openbmc/phosphor-logging
+Branch: refs/heads/master
