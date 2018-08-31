@@ -69,6 +69,10 @@ class Server : public Iface
          */
         virtual uint16_t port(uint16_t value) override;
 
+        /** @brief Restart rsyslog's systemd unit
+         */
+        virtual void restart();
+
     private:
         /** @brief Update remote server address and port in
          *         rsyslog config file.

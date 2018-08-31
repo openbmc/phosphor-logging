@@ -105,7 +105,7 @@ void Server::writeConfig(
         stream << "#*.* @@remote-host:port";
     }
 
-    utils::restart();
+    restart();
 }
 
 bool Server::addressValid(const std::string& address)
@@ -148,6 +148,11 @@ void Server::restore(const char* filePath)
             NetworkClient::port(std::stoul(serverPort));
         }
     }
+}
+
+void Server::restart()
+{
+    utils::restart();
 }
 
 } // namespace rsyslog_config
