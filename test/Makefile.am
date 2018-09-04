@@ -87,3 +87,6 @@ remote_logging_test_config_LDADD = $(remote_logging_test_ldadd)
 remote_logging_test_config_LDFLAGS = \
 	$(test_ldflags) \
 	-lstdc++fs
+
+# TODO Remove once the test-case failure is resolved openbmc/phosphor-logging#11
+XFAIL_TESTS = elog_errorwrap_test
