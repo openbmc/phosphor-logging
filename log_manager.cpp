@@ -351,19 +351,26 @@ void Manager::journalSync()
         std::ifstream syncedFile(syncedPath);
         if (syncedFile.fail())
         {
-            log<level::ERR>("Failed to open journal synced file",
-                            entry("FILENAME=%s", syncedPath),
-                            entry("ERRNO=%d", errno));
-            return;
+            // If the synced file doesn't exist, a sync request will create it.
+            if (errno != ENOENT)
+            {
+                log<level::ERR>("Failed to open journal synced file",
+                                entry("FILENAME=%s", syncedPath),
+                                entry("ERRNO=%d", errno));
+                return;
+            }
         }
-
-        // See if a sync happened by now
-        std::string timestampStr;
-        std::getline(syncedFile, timestampStr);
-        auto timestamp = stoll(timestampStr);
-        if (timestamp >= start)
+        else
         {
-            return;
+            // Only read the synced file if it exists.
+            // See if a sync happened by now
+            std::string timestampStr;
+            std::getline(syncedFile, timestampStr);
+            auto timestamp = stoll(timestampStr);
+            if (timestamp >= start)
+            {
+                return;
+            }
         }
 
         // Let's ask for a sync, but only once
