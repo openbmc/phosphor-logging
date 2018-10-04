@@ -21,7 +21,7 @@ AC_ARG_ENABLE([install_scripts],
 AM_CONDITIONAL([INSTALL_SCRIPTS], [test "x$enable_install_scripts" = "xyes"])
 AS_IF([test "x$enable_install_scripts" != "xyes"], [
     # Checks for typedefs, structures, and compiler characteristics.
-    AX_CXX_COMPILE_STDCXX_14([noext])
+    AX_CXX_COMPILE_STDCXX_17([noext])
     AX_APPEND_COMPILE_FLAGS([-fpic -Wall -Werror], [CXXFLAGS])
 
     # Python
