@@ -14,6 +14,7 @@ namespace rsyslog_config
 using namespace phosphor::logging;
 using NetworkClient = sdbusplus::xyz::openbmc_project::Network::server::Client;
 using Iface = sdbusplus::server::object::object<NetworkClient>;
+namespace sdbusRule = sdbusplus::bus::match::rules;
 
 /** @class Server
  *  @brief Configuration for rsyslog server
@@ -40,7 +41,13 @@ class Server : public Iface
                const std::string& path,
                const char* filePath) :
             Iface(bus, path.c_str(), true),
-            configFilePath(filePath)
+            configFilePath(filePath),
+            hostnameChange(
+                bus,
+                sdbusRule::propertiesChanged(
+                    "/org/freedesktop/hostname1", "org.freedesktop.hostname1"),
+                std::bind(std::mem_fn(&Server::hostnameChanged),
+                    this, std::placeholders::_1))
         {
             try
             {
@@ -97,6 +104,16 @@ class Server : public Iface
         void restore(const char* filePath);
 
         std::string configFilePath{};
+
+        /** @brief React to hostname change
+         *  @param[in] msg - sdbusplus message
+         */
+        void hostnameChanged(sdbusplus::message::message& msg)
+        {
+            restart();
+        }
+
+        sdbusplus::bus::match_t hostnameChange;
 };
 
 } // namespace rsyslog_config
