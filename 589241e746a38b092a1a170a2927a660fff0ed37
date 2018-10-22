@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b402f4f7_08356e24",
+        "filename": "phosphor-logging/log.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2018-10-22T20:19:58Z",
+      "side": 1,
+      "message": "Maybe a comment about what these fields are, are they part of the ipmi spec or what info is expected to be stored in them.",
+      "revId": "589241e746a38b092a1a170a2927a660fff0ed37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9dccb554_90912cda",
+        "filename": "phosphor-logging/log.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2018-10-22T20:19:58Z",
+      "side": 1,
+      "message": "There\u0027s already an instance of the bus, the variable is called \"busLog\".",
+      "range": {
+        "startLine": 161,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 34
+      },
+      "revId": "589241e746a38b092a1a170a2927a660fff0ed37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "47062749_6f77894d",
+        "filename": "phosphor-logging/log.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2018-10-22T20:19:58Z",
+      "side": 1,
+      "message": "Where is the IpmiSelAdd method implemented, would it be in a new commit to phosphor-logging?",
+      "revId": "589241e746a38b092a1a170a2927a660fff0ed37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e83c2fa2_2732bcc3",
+        "filename": "phosphor-logging/log.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2018-10-22T20:19:58Z",
+      "side": 1,
+      "message": "Capture the e.what() string too?",
+      "revId": "589241e746a38b092a1a170a2927a660fff0ed37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    }
+  ]
+}
