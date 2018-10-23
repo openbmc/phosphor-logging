@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "cca728d3_2ea3d184",
+        "filename": "phosphor-logging/log.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2018-10-23T20:02:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b402f4f7_08356e24",
+      "revId": "589241e746a38b092a1a170a2927a660fff0ed37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9dccb554_90912cda",
         "filename": "phosphor-logging/log.hpp",
         "patchSetId": 1
@@ -30,6 +48,30 @@
       "writtenOn": "2018-10-22T20:19:58Z",
       "side": 1,
       "message": "There\u0027s already an instance of the bus, the variable is called \"busLog\".",
+      "range": {
+        "startLine": 161,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 34
+      },
+      "revId": "589241e746a38b092a1a170a2927a660fff0ed37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "72637734_1b05bbca",
+        "filename": "phosphor-logging/log.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2018-10-23T20:02:06Z",
+      "side": 1,
+      "message": "busLog is a private member of the Manager class that doesn\u0027t look like it\u0027s accessible from this file.  Is there a recommended way to get the busLog variable?",
+      "parentUuid": "9dccb554_90912cda",
       "range": {
         "startLine": 161,
         "startChar": 0,
@@ -59,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "5c225b69_e861cbd0",
+        "filename": "phosphor-logging/log.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2018-10-23T20:02:06Z",
+      "side": 1,
+      "message": "IpmiSelAdd will be implemented in the new phosphor-sel-logger repository.  The SEL Logger is up for review here: https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-sel-logger/+/14430.",
+      "parentUuid": "47062749_6f77894d",
+      "revId": "589241e746a38b092a1a170a2927a660fff0ed37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e83c2fa2_2732bcc3",
         "filename": "phosphor-logging/log.hpp",
         "patchSetId": 1
@@ -70,6 +130,24 @@
       "writtenOn": "2018-10-22T20:19:58Z",
       "side": 1,
       "message": "Capture the e.what() string too?",
+      "revId": "589241e746a38b092a1a170a2927a660fff0ed37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3981c240_a3954a4a",
+        "filename": "phosphor-logging/log.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2018-10-23T20:02:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e83c2fa2_2732bcc3",
       "revId": "589241e746a38b092a1a170a2927a660fff0ed37",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
