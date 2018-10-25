@@ -84,6 +84,30 @@
     },
     {
       "key": {
+        "uuid": "8e964d8d_e6c6bdfb",
+        "filename": "phosphor-logging/log.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2018-10-25T19:17:23Z",
+      "side": 1,
+      "message": "Hmm yeah, this header shouldn\u0027t depend on the manager, this is ok then.",
+      "parentUuid": "72637734_1b05bbca",
+      "range": {
+        "startLine": 161,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 34
+      },
+      "revId": "589241e746a38b092a1a170a2927a660fff0ed37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "47062749_6f77894d",
         "filename": "phosphor-logging/log.hpp",
         "patchSetId": 1
