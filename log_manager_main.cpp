@@ -1,10 +1,12 @@
-#include <sdbusplus/bus.hpp>
-#include <sdbusplus/server/manager.hpp>
-#include <experimental/filesystem>
 #include "config.h"
+
 #include "log_manager.hpp"
 
-int main(int argc, char *argv[])
+#include <experimental/filesystem>
+#include <sdbusplus/bus.hpp>
+#include <sdbusplus/server/manager.hpp>
+
+int main(int argc, char* argv[])
 {
     auto bus = sdbusplus::bus::new_default();
 
@@ -23,7 +25,7 @@ int main(int argc, char *argv[])
 
     bus.request_name(BUSNAME_LOGGING);
 
-    while(true)
+    while (true)
     {
         bus.process_discard();
         bus.wait();

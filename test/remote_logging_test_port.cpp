@@ -13,6 +13,6 @@ TEST_F(TestRemoteLogging, testGoodPort)
     EXPECT_EQ(config->port(), 100);
 }
 
-}// namespace test
-}// namespace logging
-}// namespace phosphor
+} // namespace test
+} // namespace logging
+} // namespace phosphor

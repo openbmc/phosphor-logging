@@ -1,7 +1,7 @@
 #include <algorithm>
-#include <sdbusplus/server.hpp>
-#include <sdbusplus/exception.hpp>
 #include <org/openbmc/Associations/server.hpp>
+#include <sdbusplus/exception.hpp>
+#include <sdbusplus/server.hpp>
 
 namespace sdbusplus
 {
@@ -12,15 +12,15 @@ namespace openbmc
 namespace server
 {
 
-Associations::Associations(bus::bus& bus, const char* path)
-        : _org_openbmc_Associations_interface(
-                bus, path, _interface, _vtable, this)
+Associations::Associations(bus::bus& bus, const char* path) :
+    _org_openbmc_Associations_interface(bus, path, _interface, _vtable, this)
 {
 }
 
-Associations::Associations(bus::bus& bus, const char* path,
-                           const std::map<std::string, PropertiesVariant>& vals)
-        : Associations(bus, path)
+Associations::Associations(
+    bus::bus& bus, const char* path,
+    const std::map<std::string, PropertiesVariant>& vals) :
+    Associations(bus, path)
 {
     for (const auto& v : vals)
     {
@@ -28,18 +28,17 @@ Associations::Associations(bus::bus& bus, const char* path,
     }
 }
 
-
-
-auto Associations::associations() const ->
-        std::vector<std::tuple<std::string, std::string, std::string>>
+auto Associations::associations() const
+    -> std::vector<std::tuple<std::string, std::string, std::string>>
 {
     return _associations;
 }
 
-int Associations::_callback_get_associations(
-        sd_bus* bus, const char* path, const char* interface,
-        const char* property, sd_bus_message* reply, void* context,
-        sd_bus_error* error)
+int Associations::_callback_get_associations(sd_bus* bus, const char* path,
+                                             const char* interface,
+                                             const char* property,
+                                             sd_bus_message* reply,
+                                             void* context, sd_bus_error* error)
 {
     using sdbusplus::server::binding::details::convertForMessage;
 
@@ -50,15 +49,15 @@ int Associations::_callback_get_associations(
         {
             auto tbus = m.get_bus();
             sdbusplus::server::transaction::Transaction t(tbus, m);
-            sdbusplus::server::transaction::set_id
-                (std::hash<sdbusplus::server::transaction::Transaction>{}(t));
+            sdbusplus::server::transaction::set_id(
+                std::hash<sdbusplus::server::transaction::Transaction>{}(t));
         }
 #endif
 
         auto o = static_cast<Associations*>(context);
         m.append(convertForMessage(o->associations()));
     }
-    catch(sdbusplus::internal_exception_t& e)
+    catch (sdbusplus::internal_exception_t& e)
     {
         sd_bus_error_set_const(error, e.name(), e.description());
         return -EINVAL;
@@ -67,8 +66,9 @@ int Associations::_callback_get_associations(
     return true;
 }
 
-auto Associations::associations(std::vector<std::tuple<std::string, std::string, std::string>> value) ->
-        std::vector<std::tuple<std::string, std::string, std::string>>
+auto Associations::associations(
+    std::vector<std::tuple<std::string, std::string, std::string>> value)
+    -> std::vector<std::tuple<std::string, std::string, std::string>>
 {
     if (_associations != value)
     {
@@ -79,10 +79,11 @@ auto Associations::associations(std::vector<std::tuple<std::string, std::string,
     return _associations;
 }
 
-int Associations::_callback_set_associations(
-        sd_bus* bus, const char* path, const char* interface,
-        const char* property, sd_bus_message* value, void* context,
-        sd_bus_error* error)
+int Associations::_callback_set_associations(sd_bus* bus, const char* path,
+                                             const char* interface,
+                                             const char* property,
+                                             sd_bus_message* value,
+                                             void* context, sd_bus_error* error)
 {
     try
     {
@@ -91,8 +92,8 @@ int Associations::_callback_set_associations(
         {
             auto tbus = m.get_bus();
             sdbusplus::server::transaction::Transaction t(tbus, m);
-            sdbusplus::server::transaction::set_id
-                (std::hash<sdbusplus::server::transaction::Transaction>{}(t));
+            sdbusplus::server::transaction::set_id(
+                std::hash<sdbusplus::server::transaction::Transaction>{}(t));
         }
 #endif
 
@@ -102,7 +103,7 @@ int Associations::_callback_set_associations(
         m.read(v);
         o->associations(v);
     }
-    catch(sdbusplus::internal_exception_t& e)
+    catch (sdbusplus::internal_exception_t& e)
     {
         sd_bus_error_set_const(error, e.name(), e.description());
         return -EINVAL;
@@ -115,25 +116,27 @@ namespace details
 {
 namespace Associations
 {
-static const auto _property_associations =
-    utility::tuple_to_array(message::types::type_id<
-            std::vector<std::tuple<std::string, std::string, std::string>>>());
+static const auto _property_associations = utility::tuple_to_array(
+    message::types::type_id<
+        std::vector<std::tuple<std::string, std::string, std::string>>>());
 }
-}
+} // namespace details
 
 void Associations::setPropertyByName(const std::string& name,
                                      const PropertiesVariant& val)
 {
     if (name == "associations")
     {
-        auto& v = message::variant_ns::get<std::vector<std::tuple<std::string, std::string, std::string>>>(val);
+        auto& v = message::variant_ns::get<
+            std::vector<std::tuple<std::string, std::string, std::string>>>(
+            val);
         associations(v);
         return;
     }
 }
 
-auto Associations::getPropertyByName(const std::string& name) ->
-        PropertiesVariant
+auto Associations::getPropertyByName(const std::string& name)
+    -> PropertiesVariant
 {
     if (name == "associations")
     {
@@ -143,20 +146,15 @@ auto Associations::getPropertyByName(const std::string& name) ->
     return PropertiesVariant();
 }
 
-
 const vtable::vtable_t Associations::_vtable[] = {
     vtable::start(),
     vtable::property("associations",
-                     details::Associations::_property_associations
-                        .data(),
-                     _callback_get_associations,
-                     _callback_set_associations,
+                     details::Associations::_property_associations.data(),
+                     _callback_get_associations, _callback_set_associations,
                      vtable::property_::emits_change),
-    vtable::end()
-};
+    vtable::end()};
 
 } // namespace server
 } // namespace openbmc
 } // namespace org
 } // namespace sdbusplus
-

@@ -1,28 +1,33 @@
-#include <fstream>
-#include <future>
-#include <iostream>
-#include <chrono>
-#include <cstdio>
+#include "config.h"
+
+#include "log_manager.hpp"
+
+#include "elog_entry.hpp"
+#include "elog_meta.hpp"
+#include "elog_serialize.hpp"
+
 #include <poll.h>
-#include <set>
-#include <string>
-#include <vector>
-#include <sdbusplus/vtable.hpp>
 #include <sys/inotify.h>
 #include <systemd/sd-bus.h>
 #include <systemd/sd-journal.h>
 #include <unistd.h>
-#include "config.h"
-#include "elog_entry.hpp"
+
+#include <chrono>
+#include <cstdio>
+#include <fstream>
+#include <future>
+#include <iostream>
 #include <phosphor-logging/log.hpp>
-#include "log_manager.hpp"
-#include "elog_meta.hpp"
-#include "elog_serialize.hpp"
+#include <sdbusplus/vtable.hpp>
+#include <set>
+#include <string>
+#include <vector>
 
 using namespace phosphor::logging;
 using namespace std::chrono;
 extern const std::map<metadata::Metadata,
-                      std::function<metadata::associations::Type>> meta;
+                      std::function<metadata::associations::Type>>
+    meta;
 
 namespace phosphor
 {
@@ -92,12 +97,13 @@ void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
     // Flush all the pending log messages into the journal
     journalSync();
 
-    sd_journal *j = nullptr;
+    sd_journal* j = nullptr;
     int rc = sd_journal_open(&j, SD_JOURNAL_LOCAL_ONLY);
     if (rc < 0)
     {
-        logging::log<logging::level::ERR>("Failed to open journal",
-                           logging::entry("DESCRIPTION=%s", strerror(-rc)));
+        logging::log<logging::level::ERR>(
+            "Failed to open journal",
+            logging::entry("DESCRIPTION=%s", strerror(-rc)));
         return;
     }
 
@@ -109,7 +115,7 @@ void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
         metalist.insert(metamap->second.begin(), metamap->second.end());
     }
 
-    //Add _PID field information in AdditionalData.
+    // Add _PID field information in AdditionalData.
     metalist.insert("_PID");
 
     std::vector<std::string> additionalData;
@@ -118,12 +124,12 @@ void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
     // The result from the sd_journal_get_data() is of the form VARIABLE=value.
     SD_JOURNAL_FOREACH_BACKWARDS(j)
     {
-        const char *data = nullptr;
+        const char* data = nullptr;
         size_t length = 0;
 
         // Look for the transaction id metadata variable
-        rc = sd_journal_get_data(j, transactionIdVar, (const void **)&data,
-                                &length);
+        rc = sd_journal_get_data(j, transactionIdVar, (const void**)&data,
+                                 &length);
         if (rc < 0)
         {
             // This journal entry does not have the TRANSACTION_ID
@@ -140,8 +146,7 @@ void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
         // 'data + transactionIdVarOffset' will be in the form of '1234'.
         // 'length - transactionIdVarOffset' will be the length of '1234'.
         if ((length <= (transactionIdVarOffset)) ||
-            (transactionIdStr.compare(0,
-                                      transactionIdStr.size(),
+            (transactionIdStr.compare(0, transactionIdStr.size(),
                                       data + transactionIdVarOffset,
                                       length - transactionIdVarOffset) != 0))
         {
@@ -153,8 +158,8 @@ void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
         // Search for all metadata variables in the current journal entry.
         for (auto i = metalist.cbegin(); i != metalist.cend();)
         {
-            rc = sd_journal_get_data(j, (*i).c_str(),
-                                    (const void **)&data, &length);
+            rc = sd_journal_get_data(j, (*i).c_str(), (const void**)&data,
+                                     &length);
             if (rc < 0)
             {
                 // Metadata variable not found, check next metadata variable.
@@ -177,8 +182,9 @@ void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
         // Not all the metadata variables were found in the journal.
         for (auto& metaVarStr : metalist)
         {
-            logging::log<logging::level::INFO>("Failed to find metadata",
-                    logging::entry("META_FIELD=%s", metaVarStr.c_str()));
+            logging::log<logging::level::INFO>(
+                "Failed to find metadata",
+                logging::entry("META_FIELD=%s", metaVarStr.c_str()));
         }
     }
 
@@ -195,24 +201,18 @@ void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
         realErrors.push_back(entryId);
     }
     auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(
-                std::chrono::system_clock::now().time_since_epoch()).count();
-    auto objPath =  std::string(OBJ_ENTRY) + '/' +
-            std::to_string(entryId);
+                  std::chrono::system_clock::now().time_since_epoch())
+                  .count();
+    auto objPath = std::string(OBJ_ENTRY) + '/' + std::to_string(entryId);
 
-    AssociationList objects {};
+    AssociationList objects{};
     processMetadata(errMsg, additionalData, objects);
 
-    auto e = std::make_unique<Entry>(
-                 busLog,
-                 objPath,
-                 entryId,
-                 ms, // Milliseconds since 1970
-                 errLvl,
-                 std::move(errMsg),
-                 std::move(additionalData),
-                 std::move(objects),
-                 fwVersion,
-                 *this);
+    auto e = std::make_unique<Entry>(busLog, objPath, entryId,
+                                     ms, // Milliseconds since 1970
+                                     errLvl, std::move(errMsg),
+                                     std::move(additionalData),
+                                     std::move(objects), fwVersion, *this);
     serialize(*e);
     entries.insert(std::make_pair(entryId, std::move(e)));
 }
@@ -223,14 +223,14 @@ void Manager::processMetadata(const std::string& errorName,
 {
     // additionalData is a list of "metadata=value"
     constexpr auto separator = '=';
-    for(const auto& entry: additionalData)
+    for (const auto& entry : additionalData)
     {
         auto found = entry.find(separator);
-        if(std::string::npos != found)
+        if (std::string::npos != found)
         {
             auto metadata = entry.substr(0, found);
             auto iter = meta.find(metadata);
-            if(meta.end() != iter)
+            if (meta.end() != iter)
             {
                 (iter->second)(metadata, additionalData, objects);
             }
@@ -241,15 +241,14 @@ void Manager::processMetadata(const std::string& errorName,
 void Manager::erase(uint32_t entryId)
 {
     auto entry = entries.find(entryId);
-    if(entries.end() != entry)
+    if (entries.end() != entry)
     {
         // Delete the persistent representation of this error.
         fs::path errorPath(ERRLOG_PERSIST_PATH);
         errorPath /= std::to_string(entryId);
         fs::remove(errorPath);
 
-        auto removeId = [](std::list<uint32_t>& ids , uint32_t id)
-        {
+        auto removeId = [](std::list<uint32_t>& ids, uint32_t id) {
             auto it = std::find(ids.begin(), ids.end(), id);
             if (it != ids.end())
             {
@@ -269,14 +268,13 @@ void Manager::erase(uint32_t entryId)
     else
     {
         logging::log<level::ERR>("Invalid entry ID to delete",
-                logging::entry("ID=%d", entryId));
+                                 logging::entry("ID=%d", entryId));
     }
 }
 
 void Manager::restore()
 {
-    auto sanity = [](const auto& id, const auto& restoredId)
-    {
+    auto sanity = [](const auto& id, const auto& restoredId) {
         return id == restoredId;
     };
     std::vector<uint32_t> errorIds;
@@ -287,18 +285,15 @@ void Manager::restore()
         return;
     }
 
-    for(auto& file: fs::directory_iterator(dir))
+    for (auto& file : fs::directory_iterator(dir))
     {
         auto id = file.path().filename().c_str();
         auto idNum = std::stol(id);
         auto e = std::make_unique<Entry>(
-                     busLog,
-                     std::string(OBJ_ENTRY) + '/' + id,
-                     idNum,
-                     *this);
+            busLog, std::string(OBJ_ENTRY) + '/' + id, idNum, *this);
         if (deserialize(file.path(), *e))
         {
-            //validate the restored error entry id
+            // validate the restored error entry id
             if (sanity(static_cast<uint32_t>(idNum), e->id()))
             {
                 e->emit_object_added();
@@ -490,4 +485,4 @@ std::string Manager::readFWVersion()
 
 } // namespace internal
 } // namespace logging
-} // namepsace phosphor
+} // namespace phosphor

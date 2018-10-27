@@ -1,9 +1,12 @@
-#include <gtest/gtest.h>
+#include "config.h"
+
+#include "phosphor-rsyslog-config/server-conf.hpp"
+
 #include <experimental/filesystem>
 #include <sdbusplus/bus.hpp>
-#include "config.h"
-#include "phosphor-rsyslog-config/server-conf.hpp"
+
 #include "gmock/gmock.h"
+#include <gtest/gtest.h>
 
 namespace phosphor
 {
@@ -20,45 +23,40 @@ fs::path dir(fs::path(mkdtemp(tmplt)));
 
 class MockServer : public phosphor::rsyslog_config::Server
 {
-    public:
-        MockServer(sdbusplus::bus::bus& bus,
-               const std::string& path,
+  public:
+    MockServer(sdbusplus::bus::bus& bus, const std::string& path,
                const char* filePath) :
-            phosphor::rsyslog_config::Server(bus, path, filePath)
-        {
-        }
+        phosphor::rsyslog_config::Server(bus, path, filePath)
+    {
+    }
 
-        MOCK_METHOD0(restart, void());
+    MOCK_METHOD0(restart, void());
 };
 
 class TestRemoteLogging : public testing::Test
 {
-    public:
-        TestRemoteLogging()
-        {
-            configFilePath = std::string(dir.c_str()) + "/server.conf";
-            config =
-                new MockServer(bus,
-                               BUSPATH_REMOTE_LOGGING_CONFIG,
-                               configFilePath.c_str());
-        }
+  public:
+    TestRemoteLogging()
+    {
+        configFilePath = std::string(dir.c_str()) + "/server.conf";
+        config = new MockServer(bus, BUSPATH_REMOTE_LOGGING_CONFIG,
+                                configFilePath.c_str());
+    }
 
-        ~TestRemoteLogging()
-        {
-            delete config;
-        }
+    ~TestRemoteLogging()
+    {
+        delete config;
+    }
 
-        static void TearDownTestCase()
-        {
-            fs::remove_all(dir);
-        }
+    static void TearDownTestCase()
+    {
+        fs::remove_all(dir);
+    }
 
-        MockServer* config;
-        std::string configFilePath;
+    MockServer* config;
+    std::string configFilePath;
 };
 
 } // namespace test
 } // namespace logging
 } // namespace phosphor
-
-

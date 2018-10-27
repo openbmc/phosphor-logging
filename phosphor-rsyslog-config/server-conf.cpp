@@ -1,6 +1,8 @@
 #include "server-conf.hpp"
+
 #include "utils.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
+
 #include <fstream>
 #include <phosphor-logging/elog.hpp>
 #if __has_include("../../usr/include/phosphor-logging/elog-errors.hpp")
@@ -8,8 +10,8 @@
 #else
 #include <phosphor-logging/elog-errors.hpp>
 #endif
-#include <netdb.h>
 #include <arpa/inet.h>
+#include <netdb.h>
 
 namespace phosphor
 {
@@ -23,7 +25,7 @@ using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 std::string Server::address(std::string value)
 {
     using Argument = xyz::openbmc_project::Common::InvalidArgument;
-    std::string result {};
+    std::string result{};
 
     try
     {
@@ -61,7 +63,7 @@ std::string Server::address(std::string value)
 
 uint16_t Server::port(uint16_t value)
 {
-    uint16_t result {};
+    uint16_t result{};
 
     try
     {
@@ -87,10 +89,8 @@ uint16_t Server::port(uint16_t value)
     return result;
 }
 
-void Server::writeConfig(
-                 const std::string& serverAddress,
-                 uint16_t serverPort,
-                 const char* filePath)
+void Server::writeConfig(const std::string& serverAddress, uint16_t serverPort,
+                         const char* filePath)
 {
     std::fstream stream(filePath, std::fstream::out);
 
@@ -119,8 +119,7 @@ bool Server::addressValid(const std::string& address)
     auto result = getaddrinfo(address.c_str(), nullptr, &hints, &res);
     if (result)
     {
-        log<level::ERR>("bad address",
-                        entry("ADDRESS=%s", address.c_str()),
+        log<level::ERR>("bad address", entry("ADDRESS=%s", address.c_str()),
                         entry("ERRNO=%d", result));
         return false;
     }

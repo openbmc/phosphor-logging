@@ -1,9 +1,13 @@
-#include <gtest/gtest.h>
-#include <experimental/filesystem>
-#include <stdlib.h>
-#include <sdbusplus/bus.hpp>
-#include "log_manager.hpp"
 #include "config.h"
+
+#include "log_manager.hpp"
+
+#include <stdlib.h>
+
+#include <experimental/filesystem>
+#include <sdbusplus/bus.hpp>
+
+#include <gtest/gtest.h>
 
 namespace phosphor
 {
@@ -20,22 +24,19 @@ phosphor::logging::internal::Manager manager(bus, OBJ_INTERNAL);
 
 class TestSerialization : public testing::Test
 {
-    public:
-        TestSerialization() :
-            dir(fs::path(mkdtemp(tmplt)))
-        {
-        }
+  public:
+    TestSerialization() : dir(fs::path(mkdtemp(tmplt)))
+    {
+    }
 
-        ~TestSerialization()
-        {
-            fs::remove_all(dir);
-        }
+    ~TestSerialization()
+    {
+        fs::remove_all(dir);
+    }
 
-        fs::path dir;
+    fs::path dir;
 };
 
 } // namespace test
 } // namespace logging
 } // namespace phosphor
-
-

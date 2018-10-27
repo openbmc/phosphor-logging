@@ -1,12 +1,13 @@
-#include <cereal/types/string.hpp>
-#include <cereal/types/vector.hpp>
-#include <cereal/types/tuple.hpp>
-#include <cereal/archives/binary.hpp>
-#include <fstream>
+#include "config.h"
 
 #include "elog_serialize.hpp"
+
+#include <cereal/archives/binary.hpp>
+#include <cereal/types/string.hpp>
+#include <cereal/types/tuple.hpp>
+#include <cereal/types/vector.hpp>
+#include <fstream>
 #include <phosphor-logging/log.hpp>
-#include "config.h"
 
 // Register class version
 // From cereal documentation;
@@ -25,12 +26,11 @@ namespace logging
  *  @param[in] version - Class version that enables handling
  *                       a serialized data across code levels
  */
-template<class Archive>
+template <class Archive>
 void save(Archive& a, const Entry& e, const std::uint32_t version)
 {
-    a(e.id(), e.severity(), e.timestamp(),
-      e.message(), e.additionalData(), e.associations(), e.resolved(),
-      e.version());
+    a(e.id(), e.severity(), e.timestamp(), e.message(), e.additionalData(),
+      e.associations(), e.resolved(), e.version());
 }
 
 /** @brief Function required by Cereal to perform deserialization.
@@ -40,11 +40,10 @@ void save(Archive& a, const Entry& e, const std::uint32_t version)
  *  @param[in] version - Class version that enables handling
  *                       a serialized data across code levels
  */
-template<class Archive>
+template <class Archive>
 void load(Archive& a, Entry& e, const std::uint32_t version)
 {
-    using namespace
-        sdbusplus::xyz::openbmc_project::Logging::server;
+    using namespace sdbusplus::xyz::openbmc_project::Logging::server;
 
     uint32_t id{};
     Entry::Level severity{};
@@ -57,13 +56,13 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
 
     if (version < std::stoul(FIRST_CEREAL_CLASS_VERSION_WITH_FWLEVEL))
     {
-        a(id, severity, timestamp, message,
-          additionalData, associations, resolved);
+        a(id, severity, timestamp, message, additionalData, associations,
+          resolved);
     }
     else
     {
-        a(id, severity, timestamp, message,
-          additionalData, associations, resolved, fwVersion);
+        a(id, severity, timestamp, message, additionalData, associations,
+          resolved, fwVersion);
     }
 
     e.id(id);
@@ -71,12 +70,12 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
     e.timestamp(timestamp);
     e.message(message);
     e.additionalData(additionalData);
-    e.sdbusplus::xyz::openbmc_project::
-        Logging::server::Entry::resolved(resolved);
+    e.sdbusplus::xyz::openbmc_project::Logging::server::Entry::resolved(
+        resolved);
     e.associations(associations);
     e.version(fwVersion);
-    e.purpose(sdbusplus::xyz::openbmc_project::Software::
-        server::Version::VersionPurpose::BMC);
+    e.purpose(sdbusplus::xyz::openbmc_project::Software::server::Version::
+                  VersionPurpose::BMC);
 }
 
 fs::path serialize(const Entry& e, const fs::path& dir)
@@ -101,13 +100,13 @@ bool deserialize(const fs::path& path, Entry& e)
         }
         return false;
     }
-    catch(cereal::Exception& e)
+    catch (cereal::Exception& e)
     {
         log<level::ERR>(e.what());
         fs::remove(path);
         return false;
     }
-    catch(const std::length_error& e)
+    catch (const std::length_error& e)
     {
         // Running into: USCiLab/cereal#192
         // This may be indicating some other issue in the

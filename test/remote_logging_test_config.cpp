@@ -1,4 +1,5 @@
 #include "remote_logging_tests.hpp"
+
 #include <fstream>
 
 namespace phosphor
@@ -53,6 +54,6 @@ TEST_F(TestRemoteLogging, testClearPort)
     EXPECT_EQ(getConfig(configFilePath.c_str()), "#*.* @@remote-host:port");
 }
 
-}// namespace test
-}// namespace logging
-}// namespace phosphor
+} // namespace test
+} // namespace logging
+} // namespace phosphor

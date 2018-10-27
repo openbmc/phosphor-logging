@@ -1,13 +1,14 @@
 #pragma once
 
-#include <vector>
-#include <string>
-#include <tuple>
+#include "callouts-gen.hpp"
+#include "elog_entry.hpp"
+
 #include <algorithm>
 #include <cstring>
 #include <phosphor-logging/elog-errors.hpp>
-#include "elog_entry.hpp"
-#include "callouts-gen.hpp"
+#include <string>
+#include <tuple>
+#include <vector>
 
 namespace phosphor
 {
@@ -21,8 +22,7 @@ using Metadata = std::string;
 namespace associations
 {
 
-using Type = void(const std::string&,
-                  const std::vector<std::string>&,
+using Type = void(const std::string&, const std::vector<std::string>&,
                   AssociationList& list);
 
 /** @brief Pull out metadata name and value from the string
@@ -34,10 +34,10 @@ inline void parse(const std::vector<std::string>& data,
                   std::map<std::string, std::string>& metadata)
 {
     constexpr auto separator = '=';
-    for(const auto& entry: data)
+    for (const auto& entry : data)
     {
         auto pos = entry.find(separator);
-        if(std::string::npos != pos)
+        if (std::string::npos != pos)
         {
             auto key = entry.substr(0, entry.find(separator));
             auto value = entry.substr(entry.find(separator) + 1);
@@ -54,8 +54,7 @@ inline void parse(const std::vector<std::string>& data,
  *  @param [out] list - list of error association objects
  */
 template <typename M>
-void build(const std::string& match,
-           const std::vector<std::string>& data,
+void build(const std::string& match, const std::vector<std::string>& data,
            AssociationList& list) = delete;
 
 // Example template specialization - we don't want to do anything
@@ -69,33 +68,28 @@ inline void build<TestErrorTwo::DEV_ID>(const std::string& match,
 }
 
 template <>
-inline void build<example::xyz::openbmc_project::
-                  Example::Device::Callout::CALLOUT_DEVICE_PATH_TEST>(
-    const std::string& match,
-    const std::vector<std::string>& data,
-    AssociationList& list)
+inline void
+    build<example::xyz::openbmc_project::Example::Device::Callout::
+              CALLOUT_DEVICE_PATH_TEST>(const std::string& match,
+                                        const std::vector<std::string>& data,
+                                        AssociationList& list)
 {
     constexpr auto ROOT = "/xyz/openbmc_project/inventory";
     std::map<std::string, std::string> metadata;
     parse(data, metadata);
     auto iter = metadata.find(match);
-    if(metadata.end() != iter)
+    if (metadata.end() != iter)
     {
-        auto comp = [](const auto& first, const auto& second)
-        {
+        auto comp = [](const auto& first, const auto& second) {
             return (strcmp(std::get<0>(first), second) < 0);
         };
-        auto callout = std::lower_bound(callouts.begin(),
-                                        callouts.end(),
-                                        (iter->second).c_str(),
-                                        comp);
-        if((callouts.end() != callout) &&
-           !strcmp((iter->second).c_str(), std::get<0>(*callout)))
+        auto callout = std::lower_bound(callouts.begin(), callouts.end(),
+                                        (iter->second).c_str(), comp);
+        if ((callouts.end() != callout) &&
+            !strcmp((iter->second).c_str(), std::get<0>(*callout)))
         {
-            list.push_back(std::make_tuple("callout",
-                                           "fault",
-                                           std::string(ROOT) +
-                                           std::get<1>(*callout)));
+            list.push_back(std::make_tuple(
+                "callout", "fault", std::string(ROOT) + std::get<1>(*callout)));
         }
     }
 }
@@ -107,21 +101,17 @@ inline void build<example::xyz::openbmc_project::
 #if defined PROCESS_META
 
 template <>
-void build<xyz::openbmc_project::Common::
-           Callout::Device::CALLOUT_DEVICE_PATH>(
-    const std::string& match,
-    const std::vector<std::string>& data,
+void build<xyz::openbmc_project::Common::Callout::Device::CALLOUT_DEVICE_PATH>(
+    const std::string& match, const std::vector<std::string>& data,
     AssociationList& list);
 
 template <>
-void build<xyz::openbmc_project::Common::
-           Callout::Inventory::CALLOUT_INVENTORY_PATH>(
-    const std::string& match,
-    const std::vector<std::string>& data,
+void build<
+    xyz::openbmc_project::Common::Callout::Inventory::CALLOUT_INVENTORY_PATH>(
+    const std::string& match, const std::vector<std::string>& data,
     AssociationList& list);
 
 #endif // PROCESS_META
-
 
 } // namespace associations
 } // namespace metadata

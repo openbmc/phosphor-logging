@@ -1,6 +1,6 @@
-#include "serialization_tests.hpp"
 #include "elog_entry.hpp"
 #include "elog_serialize.hpp"
+#include "serialization_tests.hpp"
 
 namespace phosphor
 {
@@ -18,25 +18,15 @@ TEST_F(TestSerialization, testProperties)
     std::string message{"test error"};
     std::string fwLevel{"level42"};
     auto input = std::make_unique<Entry>(
-                     bus,
-                     std::string(OBJ_ENTRY) + '/' + std::to_string(id),
-                     id,
-                     timestamp,
-                     Entry::Level::Informational,
-                     std::move(message),
-                     std::move(testData),
-                     std::move(assocations),
-                     fwLevel,
-                     manager);
+        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, timestamp,
+        Entry::Level::Informational, std::move(message), std::move(testData),
+        std::move(assocations), fwLevel, manager);
     auto path = serialize(*input, TestSerialization::dir);
 
     auto idStr = path.filename().c_str();
     id = std::stol(idStr);
     auto output = std::make_unique<Entry>(
-                      bus,
-                      std::string(OBJ_ENTRY) + '/' + idStr,
-                      id,
-                      manager);
+        bus, std::string(OBJ_ENTRY) + '/' + idStr, id, manager);
     deserialize(path, *output);
 
     EXPECT_EQ(input->id(), output->id());
@@ -53,5 +43,3 @@ TEST_F(TestSerialization, testProperties)
 } // namespace test
 } // namespace logging
 } // namespace phosphor
-
-

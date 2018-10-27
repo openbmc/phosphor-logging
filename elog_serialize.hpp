@@ -1,10 +1,12 @@
 #pragma once
 
+#include "config.h"
+
+#include "elog_entry.hpp"
+
+#include <experimental/filesystem>
 #include <string>
 #include <vector>
-#include <experimental/filesystem>
-#include "elog_entry.hpp"
-#include "config.h"
 
 namespace phosphor
 {

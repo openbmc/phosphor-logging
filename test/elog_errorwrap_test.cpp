@@ -16,7 +16,7 @@ TEST_F(TestLogManager, logCap)
 
     // Max num of Info( and below Sev) errors can be created is qual to
     // ERROR_INFO_CAP
-    EXPECT_EQ(ERROR_INFO_CAP , manager.getInfoErrSize());
+    EXPECT_EQ(ERROR_INFO_CAP, manager.getInfoErrSize());
 
     for (auto i = 0; i < ERROR_CAP + 20; i++)
     {
@@ -24,9 +24,8 @@ TEST_F(TestLogManager, logCap)
     }
     // Max num of high severity errors can be created is qual to ERROR_CAP
     EXPECT_EQ(ERROR_CAP, manager.getRealErrSize());
-
 }
 
-}// namespace internal
-}// namespace logging
-}// namespace phosphor
+} // namespace internal
+} // namespace logging
+} // namespace phosphor

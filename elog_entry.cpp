@@ -1,6 +1,7 @@
 #include "elog_entry.hpp"
-#include "log_manager.hpp"
+
 #include "elog_serialize.hpp"
+#include "log_manager.hpp"
 
 namespace phosphor
 {
@@ -16,15 +17,14 @@ void Entry::delete_()
 
 bool Entry::resolved(bool value)
 {
-    auto current = sdbusplus::xyz::openbmc_project::
-                       Logging::server::Entry::resolved();
+    auto current =
+        sdbusplus::xyz::openbmc_project::Logging::server::Entry::resolved();
     if (value != current)
     {
-        value ?
-            associations({}) :
-            associations(assocs);
-        current = sdbusplus::xyz::openbmc_project::
-                      Logging::server::Entry::resolved(value);
+        value ? associations({}) : associations(assocs);
+        current =
+            sdbusplus::xyz::openbmc_project::Logging::server::Entry::resolved(
+                value);
         serialize(*this);
     }
 
@@ -32,4 +32,4 @@ bool Entry::resolved(bool value)
 }
 
 } // namespace logging
-} // namepsace phosphor
+} // namespace phosphor
