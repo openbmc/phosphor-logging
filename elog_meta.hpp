@@ -74,7 +74,6 @@ inline void
                                         const std::vector<std::string>& data,
                                         AssociationList& list)
 {
-    constexpr auto ROOT = "/xyz/openbmc_project/inventory";
     std::map<std::string, std::string> metadata;
     parse(data, metadata);
     auto iter = metadata.find(match);
@@ -88,6 +87,8 @@ inline void
         if ((callouts.end() != callout) &&
             !strcmp((iter->second).c_str(), std::get<0>(*callout)))
         {
+            constexpr auto ROOT = "/xyz/openbmc_project/inventory";
+
             list.push_back(std::make_tuple(
                 "callout", "fault", std::string(ROOT) + std::get<1>(*callout)));
         }
