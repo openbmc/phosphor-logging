@@ -101,9 +101,9 @@ class Manager : public details::ServerObject<details::ManagerIface>
         auto iter = entries.begin();
         while (iter != entries.end())
         {
-            auto entry = iter->first;
+            auto e = iter->first;
             ++iter;
-            erase(entry);
+            erase(e);
         }
     }
 

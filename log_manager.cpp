@@ -223,12 +223,12 @@ void Manager::processMetadata(const std::string& errorName,
 {
     // additionalData is a list of "metadata=value"
     constexpr auto separator = '=';
-    for (const auto& entry : additionalData)
+    for (const auto& entryItem : additionalData)
     {
-        auto found = entry.find(separator);
+        auto found = entryItem.find(separator);
         if (std::string::npos != found)
         {
-            auto metadata = entry.substr(0, found);
+            auto metadata = entryItem.substr(0, found);
             auto iter = meta.find(metadata);
             if (meta.end() != iter)
             {
@@ -240,8 +240,8 @@ void Manager::processMetadata(const std::string& errorName,
 
 void Manager::erase(uint32_t entryId)
 {
-    auto entry = entries.find(entryId);
-    if (entries.end() != entry)
+    auto entryFound = entries.find(entryId);
+    if (entries.end() != entryFound)
     {
         // Delete the persistent representation of this error.
         fs::path errorPath(ERRLOG_PERSIST_PATH);
@@ -255,7 +255,7 @@ void Manager::erase(uint32_t entryId)
                 ids.erase(it);
             }
         };
-        if (entry->second->severity() >= Entry::sevLowerLimit)
+        if (entryFound->second->severity() >= Entry::sevLowerLimit)
         {
             removeId(infoErrors, entryId);
         }
@@ -263,7 +263,7 @@ void Manager::erase(uint32_t entryId)
         {
             removeId(realErrors, entryId);
         }
-        entries.erase(entry);
+        entries.erase(entryFound);
     }
     else
     {

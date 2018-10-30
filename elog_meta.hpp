@@ -34,13 +34,13 @@ inline void parse(const std::vector<std::string>& data,
                   std::map<std::string, std::string>& metadata)
 {
     constexpr auto separator = '=';
-    for (const auto& entry : data)
+    for (const auto& entryItem : data)
     {
-        auto pos = entry.find(separator);
+        auto pos = entryItem.find(separator);
         if (std::string::npos != pos)
         {
-            auto key = entry.substr(0, entry.find(separator));
-            auto value = entry.substr(entry.find(separator) + 1);
+            auto key = entryItem.substr(0, entryItem.find(separator));
+            auto value = entryItem.substr(entryItem.find(separator) + 1);
             metadata.emplace(std::move(key), std::move(value));
         }
     }
