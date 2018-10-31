@@ -27,6 +27,7 @@ xyz/openbmc_project/Logging/Internal/Manager/
 *.la
 *.lo
 .libs/
+libtool
 callout-test
 callouts-gen.hpp
 callouts/.dirstamp
@@ -34,3 +35,10 @@ elog-lookup.cpp
 elog-process-metadata.cpp
 phosphor-log-manager
 phosphor-logging.pc
+test/*_test.log
+test/*_test.trs
+test/*_test_*.log
+test/*_test_*.trs
+test/test-suite.log
+test/*_test_*
+test/*_test
