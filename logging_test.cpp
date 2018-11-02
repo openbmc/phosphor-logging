@@ -3,6 +3,7 @@
 #include <getopt.h>
 #include <systemd/sd-journal.h>
 
+#include <cstring>
 #include <iostream>
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/elog.hpp>
@@ -202,7 +203,7 @@ int elog_test()
 
 void commitError(const char* text)
 {
-    if (strcmp(text, "AutoTestSimple") == 0)
+    if (std::strcmp(text, "AutoTestSimple") == 0)
     {
         try
         {
@@ -216,7 +217,7 @@ void commitError(const char* text)
             commit(e.name());
         }
     }
-    else if (strcmp(text, "AutoTestCreateAndCommit") == 0)
+    else if (std::strcmp(text, "AutoTestCreateAndCommit") == 0)
     {
         report<example::xyz::openbmc_project::Example::Elog::AutoTestSimple>(
             example::xyz::openbmc_project::Example::Elog::AutoTestSimple::

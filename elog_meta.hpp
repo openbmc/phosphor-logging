@@ -80,12 +80,12 @@ inline void
     if (metadata.end() != iter)
     {
         auto comp = [](const auto& first, const auto& second) {
-            return (strcmp(std::get<0>(first), second) < 0);
+            return (std::strcmp(std::get<0>(first), second) < 0);
         };
         auto callout = std::lower_bound(callouts.begin(), callouts.end(),
                                         (iter->second).c_str(), comp);
         if ((callouts.end() != callout) &&
-            !strcmp((iter->second).c_str(), std::get<0>(*callout)))
+            !std::strcmp((iter->second).c_str(), std::get<0>(*callout)))
         {
             constexpr auto ROOT = "/xyz/openbmc_project/inventory";
 

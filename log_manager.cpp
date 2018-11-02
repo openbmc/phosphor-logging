@@ -14,9 +14,12 @@
 
 #include <chrono>
 #include <cstdio>
+#include <cstring>
 #include <fstream>
+#include <functional>
 #include <future>
 #include <iostream>
+#include <map>
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/vtable.hpp>
 #include <set>
@@ -90,7 +93,7 @@ void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
     }
     constexpr const auto transactionIdVar = "TRANSACTION_ID";
     // Length of 'TRANSACTION_ID' string.
-    constexpr const auto transactionIdVarSize = strlen(transactionIdVar);
+    constexpr const auto transactionIdVarSize = std::strlen(transactionIdVar);
     // Length of 'TRANSACTION_ID=' string.
     constexpr const auto transactionIdVarOffset = transactionIdVarSize + 1;
 
@@ -361,7 +364,7 @@ void Manager::journalSync()
             // See if a sync happened by now
             std::string timestampStr;
             std::getline(syncedFile, timestampStr);
-            auto timestamp = stoll(timestampStr);
+            auto timestamp = std::stoll(timestampStr);
             if (timestamp >= start)
             {
                 return;

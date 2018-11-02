@@ -13,6 +13,8 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
+#include <string>
+
 namespace phosphor
 {
 namespace rsyslog_config
@@ -131,7 +133,7 @@ void Server::restore(const char* filePath)
     std::fstream stream(filePath, std::fstream::in);
     std::string line;
 
-    getline(stream, line);
+    std::getline(stream, line);
 
     // Ignore if line is commented
     if ('#' != line.at(0))

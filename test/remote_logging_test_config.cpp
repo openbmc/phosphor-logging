@@ -1,6 +1,7 @@
 #include "remote_logging_tests.hpp"
 
 #include <fstream>
+#include <string>
 
 namespace phosphor
 {
@@ -13,7 +14,7 @@ std::string getConfig(const char* filePath)
 {
     std::fstream stream(filePath, std::fstream::in);
     std::string line;
-    getline(stream, line);
+    std::getline(stream, line);
     return line;
 }
 
