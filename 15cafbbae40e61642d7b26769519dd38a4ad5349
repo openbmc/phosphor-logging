@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6bcadad8_69c84765",
+        "filename": "phosphor-logging/log.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2018-11-10T16:18:17Z",
+      "side": 1,
+      "message": "C++17 allows you to do:\nauto [sensorPath, selData, sensorAssertion] \u003d selInfo;\nif you wanted.",
+      "range": {
+        "startLine": 169,
+        "startChar": 3,
+        "endLine": 172,
+        "endChar": 61
+      },
+      "revId": "15cafbbae40e61642d7b26769519dd38a4ad5349",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bf6d1ff3_3167321f",
+        "filename": "phosphor-logging/log.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2018-11-10T16:18:17Z",
+      "side": 1,
+      "message": "could have saved a lot of typing with \u0027auto\u0027 :)",
+      "range": {
+        "startLine": 174,
+        "startChar": 4,
+        "endLine": 174,
+        "endChar": 31
+      },
+      "revId": "15cafbbae40e61642d7b26769519dd38a4ad5349",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "00f78320_c9358460",
+        "filename": "phosphor-logging/log.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2018-11-10T16:18:17Z",
+      "side": 1,
+      "message": "would be nice to have a hint somewhere in this code on what this means... a constant or just a comment",
+      "range": {
+        "startLine": 178,
+        "startChar": 41,
+        "endLine": 178,
+        "endChar": 47
+      },
+      "revId": "15cafbbae40e61642d7b26769519dd38a4ad5349",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7c3778f7_4386a40b",
+        "filename": "phosphor-logging/log.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2018-11-10T16:18:17Z",
+      "side": 1,
+      "message": "could have autoed this too",
+      "range": {
+        "startLine": 181,
+        "startChar": 8,
+        "endLine": 181,
+        "endChar": 35
+      },
+      "revId": "15cafbbae40e61642d7b26769519dd38a4ad5349",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    }
+  ]
+}
