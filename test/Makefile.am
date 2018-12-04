@@ -22,7 +22,7 @@ test_cxxflags = \
 
 test_ldflags = \
 	-lgtest_main -lgtest \
-	-lgmock_main -lgmock \
+	-lgmock \
 	$(PTHREAD_LIBS) \
 	$(OESDK_TESTCASE_FLAGS) \
 	$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
