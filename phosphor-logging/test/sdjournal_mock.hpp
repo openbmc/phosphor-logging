@@ -21,7 +21,7 @@ class SdJournalMock : public SdJournalImpl
     {
         return journal_send_call(fmt);
     }
-}
+};
 
 } // namespace logging
 } // namespace phosphor
