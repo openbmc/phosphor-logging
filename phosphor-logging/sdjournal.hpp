@@ -66,7 +66,7 @@ extern SdJournalHandler* sdjournal_ptr;
  * @param[in] with - pointer to your sdjournal_mock object.
  * @return pointer to the previously stored sdjournal_ptr.
  */
-SdJournalHandler* SwapJouralImpl(SdJournalHandler* with);
+SdJournalHandler* SwapJouralHandler(SdJournalHandler* with);
 
 } // namespace logging
 } // namespace phosphor
