@@ -8,7 +8,8 @@ check_PROGRAMS = \
 	serialization_test_properties \
 	remote_logging_test_address \
 	remote_logging_test_port \
-	remote_logging_test_config
+	remote_logging_test_config \
+	temp_test
 
 test_cppflags = \
 	-Igtest \
@@ -90,6 +91,11 @@ remote_logging_test_config_LDADD = $(remote_logging_test_ldadd)
 remote_logging_test_config_LDFLAGS = \
 	$(test_ldflags) \
 	-lstdc++fs
+
+temp_test_CPPFLAGS = $(test_cppflags)
+temp_test_CXXFLAGS = $(test_cxxflags)
+temp_test_SOURCES = sdtest.cpp
+temp_test_LDFLAGS = $(test_ldflags)
 
 # TODO Remove once the test-case failure is resolved openbmc/phosphor-logging#11
 XFAIL_TESTS = elog_errorwrap_test
