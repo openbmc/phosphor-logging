@@ -100,7 +100,9 @@ template <typename T, size_t... I>
 void helper_log(T&& e, std::integer_sequence<size_t, I...>)
 {
     // https://www.freedesktop.org/software/systemd/man/sd_journal_print.html
-    sdjournal_ptr->journal_send(std::get<I>(std::forward<T>(e))..., NULL);
+    // TODO: Re-enable call through interface for testing (or move the code
+    // into the body of the object).
+    sd_journal_send(std::get<I>(std::forward<T>(e))..., NULL);
 }
 
 /** @fn details::log()
