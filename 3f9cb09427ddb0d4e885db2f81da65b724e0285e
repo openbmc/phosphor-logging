@@ -1,0 +1,11 @@
+Ok-To-Test+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Verified+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Code-Review+1: Matt Spinler <spinler@us.ibm.com>
+Code-Review+1: William A. Kennington III <wak@google.com>
+Code-Review+1: Yong Li <yong.b.li@intel.com>
+Code-Review+2: Deepak Kodihalli <dkodihal@in.ibm.com>
+Submitted-by: Deepak Kodihalli <dkodihal@in.ibm.com>
+Submitted-at: Fri, 04 Jan 2019 06:04:15 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/17054
+Project: openbmc/phosphor-logging
+Branch: refs/heads/master
