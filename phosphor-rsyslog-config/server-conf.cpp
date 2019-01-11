@@ -15,6 +15,18 @@
 
 #include <string>
 
+#if __has_include(<filesystem>)
+#include <filesystem>
+#elif __has_include(<experimental/filesystem>)
+#include <experimental/filesystem>
+namespace std {
+// splice experimental::filesystem into std
+namespace filesystem = std::experimental::filesystem;
+} // namespace std
+#else
+#error filesystem not available
+#endif
+
 namespace phosphor
 {
 namespace rsyslog_config
@@ -23,6 +35,7 @@ namespace rsyslog_config
 namespace utils = phosphor::rsyslog_utils;
 using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
+namespace fs = std::filesystem;
 
 std::string Server::address(std::string value)
 {
@@ -103,8 +116,7 @@ void Server::writeConfig(const std::string& serverAddress, uint16_t serverPort,
     }
     else // this is a disable request
     {
-        // write '#*.* @@remote-host:port'
-        stream << "#*.* @@remote-host:port";
+        fs::remove(filePath);
     }
 
     restart();
@@ -130,6 +142,11 @@ bool Server::addressValid(const std::string& address)
 
 void Server::restore(const char* filePath)
 {
+    if (!fs::exists(filePath))
+    {
+        return;
+    }
+
     std::fstream stream(filePath, std::fstream::in);
     std::string line;
 
