@@ -15,7 +15,8 @@ phosphor_rsyslog_conf_LDADD = \
 
 phosphor_rsyslog_conf_LDFLAGS = \
 	$(SDBUSPLUS_LIBS) \
-	$(PHOSPHOR_DBUS_INTERFACES_LIBS)
+	$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
+	-lstdc++fs
 
 phosphor_rsyslog_conf_CXXFLAGS = \
 	$(SDBUSPLUS_CFLAGS) \
