@@ -1,0 +1,10 @@
+Ok-To-Test+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Verified+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Code-Review+1: MARRI DEVENDER RAO <devenrao@in.ibm.com>
+Code-Review+1: George Keishing <gkeishin@in.ibm.com>
+Code-Review+2: Deepak Kodihalli <dkodihal@in.ibm.com>
+Submitted-by: Deepak Kodihalli <dkodihal@in.ibm.com>
+Submitted-at: Mon, 14 Jan 2019 14:31:13 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/17320
+Project: openbmc/phosphor-logging
+Branch: refs/heads/master
