@@ -108,6 +108,7 @@ uint16_t Server::port(uint16_t value)
 void Server::writeConfig(const std::string& serverAddress, uint16_t serverPort,
                          const char* filePath)
 {
+    fs::create_directory(fs::path(filePath).parent_path());
     std::fstream stream(filePath, std::fstream::out);
 
     if (serverPort && !serverAddress.empty())
