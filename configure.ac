@@ -146,6 +146,14 @@ AC_DEFINE(SYSTEMD_BUSNAME, "org.freedesktop.systemd1", [systemd busname.])
 AC_DEFINE(SYSTEMD_PATH, "/org/freedesktop/systemd1", [systemd path.])
 AC_DEFINE(SYSTEMD_INTERFACE, "org.freedesktop.systemd1.Manager", [systemd interface.])
 
+AC_ARG_VAR(RSYSLOG_CONFIG_DIR, \
+    [Path of directory containing custom rsyslog configs])
+AS_IF([test "x$RSYSLOG_CONFIG_DIR" == "x"], \
+    [RSYSLOG_CONFIG_DIR="/etc/rsyslog.d"])
+AC_DEFINE_UNQUOTED([RSYSLOG_CONFIG_DIR], \
+    ["$RSYSLOG_CONFIG_DIR"], \
+    [Path of directory containing custom rsyslog configs])
+
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile test/Makefile phosphor-rsyslog-config/Makefile])
 AC_CONFIG_FILES([phosphor-logging.pc])

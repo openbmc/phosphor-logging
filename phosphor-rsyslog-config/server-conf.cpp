@@ -28,6 +28,8 @@ namespace filesystem = std::experimental::filesystem;
 #error filesystem not available
 #endif
 
+#include "config.h"
+
 namespace phosphor
 {
 namespace rsyslog_config
@@ -108,6 +110,7 @@ uint16_t Server::port(uint16_t value)
 void Server::writeConfig(const std::string& serverAddress, uint16_t serverPort,
                          const char* filePath)
 {
+    fs::create_directory(RSYSLOG_CONFIG_DIR);
     std::fstream stream(filePath, std::fstream::out);
 
     if (serverPort && !serverAddress.empty())
