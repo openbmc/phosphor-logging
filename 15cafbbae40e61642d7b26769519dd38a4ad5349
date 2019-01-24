@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "d6d15bac_e7181b79",
+        "filename": "phosphor-logging/log.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2019-01-24T18:06:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6bcadad8_69c84765",
+      "range": {
+        "startLine": 169,
+        "startChar": 3,
+        "endLine": 172,
+        "endChar": 61
+      },
+      "revId": "15cafbbae40e61642d7b26769519dd38a4ad5349",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bf6d1ff3_3167321f",
         "filename": "phosphor-logging/log.hpp",
         "patchSetId": 4
@@ -60,6 +84,30 @@
       "side": 1,
       "message": "Saving typing isn\u0027t really the goal.  Bits/bytes in git are cheap.  Remembering what this code does 3 years from now is expensive.  The explicit type here helps a lot in comprehension later.",
       "parentUuid": "bf6d1ff3_3167321f",
+      "range": {
+        "startLine": 174,
+        "startChar": 4,
+        "endLine": 174,
+        "endChar": 31
+      },
+      "revId": "15cafbbae40e61642d7b26769519dd38a4ad5349",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f8f9047c_1c2f3991",
+        "filename": "phosphor-logging/log.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2019-01-24T18:06:29Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3cc079ef_374614cf",
       "range": {
         "startLine": 174,
         "startChar": 4,
@@ -119,6 +167,30 @@
     },
     {
       "key": {
+        "uuid": "94b0c8df_93ad3eaf",
+        "filename": "phosphor-logging/log.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2019-01-24T18:06:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c3b4d61_da4093f8",
+      "range": {
+        "startLine": 178,
+        "startChar": 41,
+        "endLine": 178,
+        "endChar": 47
+      },
+      "revId": "15cafbbae40e61642d7b26769519dd38a4ad5349",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7c3778f7_4386a40b",
         "filename": "phosphor-logging/log.hpp",
         "patchSetId": 4
@@ -166,6 +238,30 @@
     },
     {
       "key": {
+        "uuid": "da31769a_70dbb7cf",
+        "filename": "phosphor-logging/log.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2019-01-24T18:06:29Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c5d82484_ba68204c",
+      "range": {
+        "startLine": 181,
+        "startChar": 8,
+        "endLine": 181,
+        "endChar": 35
+      },
+      "revId": "15cafbbae40e61642d7b26769519dd38a4ad5349",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "74b3fe46_483e90c1",
         "filename": "phosphor-logging/log.hpp",
         "patchSetId": 4
@@ -186,6 +282,30 @@
       "revId": "15cafbbae40e61642d7b26769519dd38a4ad5349",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "adbf2a77_e6a52209",
+        "filename": "phosphor-logging/log.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2019-01-24T18:06:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "74b3fe46_483e90c1",
+      "range": {
+        "startLine": 239,
+        "startChar": 32,
+        "endLine": 239,
+        "endChar": 52
+      },
+      "revId": "15cafbbae40e61642d7b26769519dd38a4ad5349",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
