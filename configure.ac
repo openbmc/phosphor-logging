@@ -36,8 +36,8 @@ AS_IF([test "x$enable_install_scripts" != "xyes"], [
 
     # sdbusplus is non-private because we have no library to link.
     # If we ever have a library, move this to private.
-    AX_PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus], [], [], [AC_MSG_ERROR(["sdbusplus required and not found."])])
-    AX_PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [], [phosphor-dbus-interfaces], [], [AC_MSG_ERROR(["phosphor-dbus-interfaces required and not found."])])
+    AX_PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus])
+    AX_PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [phosphor-dbus-interfaces])
 
     # Check for sdbus++
     AC_PATH_PROG([SDBUSPLUSPLUS], [sdbus++])
