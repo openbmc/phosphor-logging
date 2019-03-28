@@ -4,7 +4,7 @@ noinst_HEADERS = \
 	utils.hpp \
 	server-conf.hpp
 
-sbin_PROGRAMS = phosphor-rsyslog-conf
+bin_PROGRAMS = phosphor-rsyslog-conf
 
 phosphor_rsyslog_conf_SOURCES = \
 	main.cpp \

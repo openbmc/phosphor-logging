@@ -28,7 +28,7 @@ logging_test_SOURCES = logging_test.cpp
 logging_test_LDADD = libphosphor_logging.la
 callout_test_SOURCES = callouts/callout_test.cpp
 
-sbin_PROGRAMS = phosphor-log-manager
+bin_PROGRAMS = phosphor-log-manager
 
 phosphor_log_manager_SOURCES = \
 	xyz/openbmc_project/Logging/Internal/Manager/server.cpp \
