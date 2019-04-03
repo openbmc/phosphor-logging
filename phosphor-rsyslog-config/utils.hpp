@@ -28,7 +28,7 @@ void restart()
     {
         auto method = bus.new_method_call(SYSTEMD_BUSNAME, SYSTEMD_PATH,
                                           SYSTEMD_INTERFACE, "RestartUnit");
-        method.append(service);
+        method.append(service, "replace");
         bus.call_noreply(method);
     }
 }
