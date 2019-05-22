@@ -103,8 +103,8 @@ void Server::writeConfig(const std::string& serverAddress, uint16_t serverPort,
     }
     else // this is a disable request
     {
-        // write '#*.* @@remote-host:port'
-        stream << "#*.* @@remote-host:port";
+        // write '*.* ~' - this causes rsyslog to discard all messages
+        stream << "*.* ~";
     }
 
     restart();

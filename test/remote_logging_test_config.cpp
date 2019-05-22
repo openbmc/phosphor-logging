@@ -21,13 +21,13 @@ std::string getConfig(const char* filePath)
 TEST_F(TestRemoteLogging, testOnlyAddress)
 {
     config->address("1.1.1.1");
-    EXPECT_EQ(getConfig(configFilePath.c_str()), "#*.* @@remote-host:port");
+    EXPECT_EQ(getConfig(configFilePath.c_str()), "*.* ~");
 }
 
 TEST_F(TestRemoteLogging, testOnlyPort)
 {
     config->port(100);
-    EXPECT_EQ(getConfig(configFilePath.c_str()), "#*.* @@remote-host:port");
+    EXPECT_EQ(getConfig(configFilePath.c_str()), "*.* ~");
 }
 
 TEST_F(TestRemoteLogging, testGoodConfig)
@@ -43,7 +43,7 @@ TEST_F(TestRemoteLogging, testClearAddress)
     config->port(100);
     EXPECT_EQ(getConfig(configFilePath.c_str()), "*.* @@1.1.1.1:100");
     config->address("");
-    EXPECT_EQ(getConfig(configFilePath.c_str()), "#*.* @@remote-host:port");
+    EXPECT_EQ(getConfig(configFilePath.c_str()), "*.* ~");
 }
 
 TEST_F(TestRemoteLogging, testClearPort)
@@ -52,7 +52,7 @@ TEST_F(TestRemoteLogging, testClearPort)
     config->port(100);
     EXPECT_EQ(getConfig(configFilePath.c_str()), "*.* @@1.1.1.1:100");
     config->port(0);
-    EXPECT_EQ(getConfig(configFilePath.c_str()), "#*.* @@remote-host:port");
+    EXPECT_EQ(getConfig(configFilePath.c_str()), "*.* ~");
 }
 
 } // namespace test
