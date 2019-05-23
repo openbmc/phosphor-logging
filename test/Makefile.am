@@ -9,7 +9,8 @@ check_PROGRAMS = \
 	remote_logging_test_address \
 	remote_logging_test_port \
 	remote_logging_test_config \
-	sdjournal_mock_test
+	sdjournal_mock_test \
+	extensions_test
 
 test_cppflags = \
 	-Igtest \
@@ -38,7 +39,8 @@ test_ldadd = \
 	$(top_builddir)/elog_meta.o \
 	$(top_builddir)/elog-lookup.o \
 	$(top_builddir)/elog-process-metadata.o \
-	$(top_builddir)/sdjournal.o
+	$(top_builddir)/sdjournal.o \
+	$(top_builddir)/extensions.o
 
 remote_logging_test_ldadd = \
 	$(top_builddir)/phosphor-rsyslog-config/server-conf.o \
@@ -97,6 +99,20 @@ sdjournal_mock_test_CXXFLAGS = $(test_cxxflags)
 sdjournal_mock_test_SOURCES = sdtest.cpp
 sdjournal_mock_test_LDADD = $(top_builddir)/sdjournal.o
 sdjournal_mock_test_LDFLAGS = $(test_ldflags)
+
+extensions_test_CPPFLAGS = $(test_cppflags)
+extensions_test_CXXFLAGS = $(test_cxxflags)
+extensions_test_SOURCES = extensions_test.cpp
+extensions_test_LDADD = \
+	$(top_builddir)/elog_entry.o \
+	$(top_builddir)/elog-lookup.o \
+	$(top_builddir)/elog_meta.o \
+	$(top_builddir)/elog-process-metadata.o \
+	$(top_builddir)/elog_serialize.o \
+	$(top_builddir)/log_manager.o \
+	$(top_builddir)/org.openbmc.Associations.o \
+	$(top_builddir)/xyz/openbmc_project/Logging/Internal/Manager/server.o
+extensions_test_LDFLAGS = $(test_ldflags) -lstdc++fs
 
 # TODO Remove once the test-case failure is resolved openbmc/phosphor-logging#11
 XFAIL_TESTS = elog_errorwrap_test
