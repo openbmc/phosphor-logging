@@ -5,6 +5,7 @@
 #include "elog_entry.hpp"
 #include "elog_meta.hpp"
 #include "elog_serialize.hpp"
+#include "extensions.hpp"
 
 #include <poll.h>
 #include <sys/inotify.h>
@@ -12,6 +13,7 @@
 #include <systemd/sd-journal.h>
 #include <unistd.h>
 
+#include <cassert>
 #include <chrono>
 #include <cstdio>
 #include <cstring>
@@ -77,20 +79,24 @@ void Manager::commitWithLvl(uint64_t transactionId, std::string errMsg,
 void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
                       Entry::Level errLvl)
 {
-    if (errLvl < Entry::sevLowerLimit)
+    if (!Extensions::disableDefaultLogCaps())
     {
-        if (realErrors.size() >= ERROR_CAP)
+        if (errLvl < Entry::sevLowerLimit)
         {
-            erase(realErrors.front());
+            if (realErrors.size() >= ERROR_CAP)
+            {
+                erase(realErrors.front());
+            }
+        }
+        else
+        {
+            if (infoErrors.size() >= ERROR_INFO_CAP)
+            {
+                erase(infoErrors.front());
+            }
         }
     }
-    else
-    {
-        if (infoErrors.size() >= ERROR_INFO_CAP)
-        {
-            erase(infoErrors.front());
-        }
-    }
+
     constexpr const auto transactionIdVar = "TRANSACTION_ID";
     // Length of 'TRANSACTION_ID' string.
     constexpr const auto transactionIdVarSize = std::strlen(transactionIdVar);
@@ -217,6 +223,29 @@ void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
                                      std::move(additionalData),
                                      std::move(objects), fwVersion, *this);
     serialize(*e);
+
+    // Tell the extensions about the new log, and let an extension determine
+    // if any old logs now need to be deleted.
+
+    std::vector<uint32_t> toDelete;
+    for (auto& create : Extensions::getCreateFunctions())
+    {
+        // There may be extension parameter JSON if created from the proposed
+        // D-Bus 'create' API
+        auto td = create(*e, std::string{});
+
+        if (!td.empty())
+        {
+            // Should not build systems where multiple extensions have different
+            // ideas on what old logs to purge.
+            assert(toDelete.empty());
+            toDelete = td;
+        }
+    }
+
+    std::for_each(toDelete.begin(), toDelete.end(),
+                  [this](auto id) { this->erase(id); });
+
     entries.insert(std::make_pair(entryId, std::move(e)));
 }
 
@@ -267,6 +296,11 @@ void Manager::erase(uint32_t entryId)
             removeId(realErrors, entryId);
         }
         entries.erase(entryFound);
+
+        for (auto& remove : Extensions::getDeleteFunctions())
+        {
+            remove(entryId);
+        }
     }
     else
     {
