@@ -5,6 +5,7 @@
 #include "elog_entry.hpp"
 #include "elog_meta.hpp"
 #include "elog_serialize.hpp"
+#include "extensions.hpp"
 
 #include <poll.h>
 #include <sys/inotify.h>
@@ -12,6 +13,7 @@
 #include <systemd/sd-journal.h>
 #include <unistd.h>
 
+#include <cassert>
 #include <chrono>
 #include <cstdio>
 #include <cstring>
@@ -77,20 +79,24 @@ void Manager::commitWithLvl(uint64_t transactionId, std::string errMsg,
 void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
                       Entry::Level errLvl)
 {
-    if (errLvl < Entry::sevLowerLimit)
+    if (!Extensions::disableDefaultLogCaps())
     {
-        if (realErrors.size() >= ERROR_CAP)
+        if (errLvl < Entry::sevLowerLimit)
         {
-            erase(realErrors.front());
+            if (realErrors.size() >= ERROR_CAP)
+            {
+                erase(realErrors.front());
+            }
+        }
+        else
+        {
+            if (infoErrors.size() >= ERROR_INFO_CAP)
+            {
+                erase(infoErrors.front());
+            }
         }
     }
-    else
-    {
-        if (infoErrors.size() >= ERROR_INFO_CAP)
-        {
-            erase(infoErrors.front());
-        }
-    }
+
     constexpr const auto transactionIdVar = "TRANSACTION_ID";
     // Length of 'TRANSACTION_ID' string.
     constexpr const auto transactionIdVarSize = std::strlen(transactionIdVar);
@@ -217,7 +223,18 @@ void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
                                      std::move(additionalData),
                                      std::move(objects), fwVersion, *this);
     serialize(*e);
+
     entries.insert(std::make_pair(entryId, std::move(e)));
+
+    doExtensionLogCreate(*e);
+}
+
+void Manager::doExtensionLogCreate(const Entry& entry)
+{
+    for (auto& create : Extensions::getCreateFunctions())
+    {
+        create(entry);
+    }
 }
 
 void Manager::processMetadata(const std::string& errorName,
@@ -246,6 +263,18 @@ void Manager::erase(uint32_t entryId)
     auto entryFound = entries.find(entryId);
     if (entries.end() != entryFound)
     {
+        // An extension may not allow certain event logs to be deleted.
+        auto prohibited =
+            std::any_of(Extensions::getDeleteProhibitedFunctions().begin(),
+                        Extensions::getDeleteProhibitedFunctions().end(),
+                        [entryId](auto& func) { return func(entryId); });
+        if (prohibited)
+        {
+            logging::log<level::ERR>("Removal of event log is prohibited",
+                                     logging::entry("ID=%d", entryId));
+            return;
+        }
+
         // Delete the persistent representation of this error.
         fs::path errorPath(ERRLOG_PERSIST_PATH);
         errorPath /= std::to_string(entryId);
@@ -267,6 +296,11 @@ void Manager::erase(uint32_t entryId)
             removeId(realErrors, entryId);
         }
         entries.erase(entryFound);
+
+        for (auto& remove : Extensions::getDeleteFunctions())
+        {
+            remove(entryId);
+        }
     }
     else
     {

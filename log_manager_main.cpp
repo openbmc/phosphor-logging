@@ -1,5 +1,6 @@
 #include "config.h"
 
+#include "extensions.hpp"
 #include "log_manager.hpp"
 
 #include <experimental/filesystem>
@@ -24,6 +25,11 @@ int main(int argc, char* argv[])
     iMgr.restore();
 
     bus.request_name(BUSNAME_LOGGING);
+
+    for (auto& startup : phosphor::logging::Extensions::getStartupFunctions())
+    {
+        startup(iMgr);
+    }
 
     while (true)
     {
