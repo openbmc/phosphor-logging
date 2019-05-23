@@ -242,5 +242,102 @@ PACKAGECONFIG_remove_class-target = "install_error_yaml"
 #### Local build
 * During local build use --prefix=/usr for the configure script.
 
+## Event Log Extensions
+
+The extension concept is a way to allow code that creates other formats of
+error logs besides phosphor-logging's event logs to still reside in the
+phosphor-log-manager application.
+
+The extension code lives in the `extensions/<extension>` subdirectories,
+and is enabled with a `--enable-<extension>` configure flag.  The
+extension code won't compile unless enabled with this flag.
+
+Extensions can register themselves to have functions called at the following
+points using the REGISTER_EXTENSION_FUNCTION macro.
+* On startup
+   * Function type void(internal::Manager&)
+* After an event log is created
+   * Function type void(args)
+   * The args are:
+     * const std::string& - The Message property
+     * uin32_t - The event log ID
+     * uint64_t - The event log timestamp
+     * Level - The event level
+     * const AdditionalDataArg& - the additional data
+     * const AssociationEndpointsArg& - Association endpoints (callouts)
+* Before an event log is deleted, to check if it is allowed.
+   * Function type void(std::uint32_t, bool&) that takes the event ID
+* After an event log is deleted
+   * Function type void(std::uint32_t) that takes the event ID
+
+Using these callback points, they can create their own event log for each
+OpenBMC event log that is created, and delete these logs when the corresponding
+OpenBMC event log is deleted.
+
+In addition, an extension has the option of disabling phosphor-logging's
+default error log capping policy so that it can use its own.  The macro
+DISABLE_LOG_ENTRY_CAPS() is used for that.
+
+### Motivation
+
+The reason for adding support for extensions inside the phosphor-log-manager
+daemon as opposed to just creating new daemons that listen for D-Bus signals is
+to allow interactions that would be complicated or expensive if just done over
+D-Bus, such as:
+* Allowing for custom old log retention algorithms.
+* Prohibiting manual deleting of certain logs based on an extension's
+  requirements.
+
+### Creating extensions
+
+1. Add a new flag to configure.ac to enable the extension:
+```
+AC_ARG_ENABLE([foo-extension],
+              AS_HELP_STRING([--enable-foo-extension],
+                             [Create Foo logs]))
+AM_CONDITIONAL([ENABLE_FOO_EXTENSION],
+               [test "x$enable_foo_extension" == "xyes"])
+```
+2. Add the code in `extensions/<extension>/`.
+3. Create a makefile include to add the new code to phosphor-log-manager:
+```
+phosphor_log_manager_SOURCES += \
+        extensions/foo/foo.cpp
+```
+3. In `extensions/extensions.mk`, add the makefile include:
+```
+if ENABLE_FOO_EXTENSION
+include extensions/foo/foo.mk
+endif
+```
+4. In the extension code, register the functions to call and optionally disable
+   log capping using the provided macros:
+```
+DISABLE_LOG_ENTRY_CAPS();
+
+void fooStartup(internal::Manager& manager)
+{
+    // Initialize
+}
+
+REGISTER_EXTENSION_FUNCTION(fooStartup);
+
+void fooCreate(const std::string& message, uint32_t id, uint64_t timestamp,
+               Entry::Level severity, const AdditionalDataArg& additionalData,
+               const AssociationEndpointsArg& assocs)
+{
+    // Create a different type of error log based on 'entry'.
+}
+
+REGISTER_EXTENSION_FUNCTION(fooCreate);
+
+void fooRemove(uint32_t id)
+{
+    // Delete the extension error log that corresponds to 'id'.
+}
+
+REGISTER_EXTENSION_FUNCTION(fooRemove);
+```
+
 **Reference**
 * https://github.com/openbmc/openpower-debug-collector/blob/master/README.md

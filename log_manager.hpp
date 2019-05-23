@@ -154,6 +154,14 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     static std::string readFWVersion();
 
+    /** @brief Call any create() functions provided by any extensions.
+     *  This is called right after an event log is created to allow
+     *  extensions to create their own log based on this one.
+     *
+     *  @param[in] entry - the new event log entry
+     */
+    void doExtensionLogCreate(const Entry& entry);
+
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus::bus& busLog;
 
