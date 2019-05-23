@@ -1,5 +1,6 @@
 #include "config.h"
 
+#include "extensions.hpp"
 #include "log_manager.hpp"
 
 #include <experimental/filesystem>
@@ -24,6 +25,20 @@ int main(int argc, char* argv[])
     iMgr.restore();
 
     bus.request_name(BUSNAME_LOGGING);
+
+    for (auto& startup : phosphor::logging::Extensions::getStartupFunctions())
+    {
+        try
+        {
+            startup(iMgr);
+        }
+        catch (std::exception& e)
+        {
+            phosphor::logging::log<phosphor::logging::level::ERR>(
+                "An extension's startup function threw an exception",
+                phosphor::logging::entry("ERROR=%s", e.what()));
+        }
+    }
 
     while (true)
     {
