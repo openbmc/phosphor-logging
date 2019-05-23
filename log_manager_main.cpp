@@ -1,5 +1,6 @@
 #include "config.h"
 
+#include "extensions.hpp"
 #include "log_manager.hpp"
 
 #include <experimental/filesystem>
@@ -22,6 +23,11 @@ int main(int argc, char* argv[])
 
     // Recreate error d-bus objects from persisted errors.
     iMgr.restore();
+
+    for (auto& startup : phosphor::logging::Extensions::getStartupFunctions())
+    {
+        startup(bus);
+    }
 
     bus.request_name(BUSNAME_LOGGING);
 
