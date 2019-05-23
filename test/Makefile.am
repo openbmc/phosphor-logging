@@ -38,7 +38,8 @@ test_ldadd = \
 	$(top_builddir)/elog_meta.o \
 	$(top_builddir)/elog-lookup.o \
 	$(top_builddir)/elog-process-metadata.o \
-	$(top_builddir)/sdjournal.o
+	$(top_builddir)/sdjournal.o \
+	$(top_builddir)/extensions.o
 
 remote_logging_test_ldadd = \
 	$(top_builddir)/phosphor-rsyslog-config/server-conf.o \

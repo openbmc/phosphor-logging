@@ -146,6 +146,11 @@ AC_DEFINE(SYSTEMD_BUSNAME, "org.freedesktop.systemd1", [systemd busname.])
 AC_DEFINE(SYSTEMD_PATH, "/org/freedesktop/systemd1", [systemd path.])
 AC_DEFINE(SYSTEMD_INTERFACE, "org.freedesktop.systemd1.Manager", [systemd interface.])
 
+AC_ARG_ENABLE([openpower-pel-extension],
+    AS_HELP_STRING([--enable-openpower-pel-extension], [Create PELs])
+)
+AM_CONDITIONAL([ENABLE_PEL_EXTENSION], [test "x$enable_openpower_pel_extension" == "xyes"])
+
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile test/Makefile phosphor-rsyslog-config/Makefile])
 AC_CONFIG_FILES([phosphor-logging.pc])
