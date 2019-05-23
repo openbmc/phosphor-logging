@@ -40,7 +40,8 @@ phosphor_log_manager_SOURCES = \
 	elog-process-metadata.cpp \
 	elog_meta.cpp \
 	elog_serialize.cpp \
-	sdjournal.cpp
+	sdjournal.cpp \
+	extensions.cpp
 
 # Be sure to build needed files before compiling
 BUILT_SOURCES = \
@@ -74,6 +75,10 @@ phosphor_log_manager_CXXFLAGS = \
 		$(SYSTEMD_CFLAGS) \
 		$(SDBUSPLUS_CFLAGS) \
 		$(PHOSPHOR_DBUS_INTERFACES_CFLAGS)
+
+
+include extensions/extensions.mk
+
 
 xyz/openbmc_project/Logging/Internal/Manager/server.cpp: xyz/openbmc_project/Logging/Internal/Manager.interface.yaml xyz/openbmc_project/Logging/Internal/Manager/server.hpp
 	@mkdir -p `dirname $@`
