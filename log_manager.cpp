@@ -5,6 +5,7 @@
 #include "elog_entry.hpp"
 #include "elog_meta.hpp"
 #include "elog_serialize.hpp"
+#include "extensions.hpp"
 
 #include <poll.h>
 #include <sys/inotify.h>
@@ -12,6 +13,7 @@
 #include <systemd/sd-journal.h>
 #include <unistd.h>
 
+#include <cassert>
 #include <chrono>
 #include <cstdio>
 #include <cstring>
@@ -77,20 +79,24 @@ void Manager::commitWithLvl(uint64_t transactionId, std::string errMsg,
 void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
                       Entry::Level errLvl)
 {
-    if (errLvl < Entry::sevLowerLimit)
+    if (!Extensions::disableDefaultLogCaps())
     {
-        if (realErrors.size() >= ERROR_CAP)
+        if (errLvl < Entry::sevLowerLimit)
         {
-            erase(realErrors.front());
+            if (realErrors.size() >= ERROR_CAP)
+            {
+                erase(realErrors.front());
+            }
+        }
+        else
+        {
+            if (infoErrors.size() >= ERROR_INFO_CAP)
+            {
+                erase(infoErrors.front());
+            }
         }
     }
-    else
-    {
-        if (infoErrors.size() >= ERROR_INFO_CAP)
-        {
-            erase(infoErrors.front());
-        }
-    }
+
     constexpr const auto transactionIdVar = "TRANSACTION_ID";
     // Length of 'TRANSACTION_ID' string.
     constexpr const auto transactionIdVarSize = std::strlen(transactionIdVar);
@@ -217,7 +223,37 @@ void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
                                      std::move(additionalData),
                                      std::move(objects), fwVersion, *this);
     serialize(*e);
+
+    doExtensionLogCreate(*e);
+
     entries.insert(std::make_pair(entryId, std::move(e)));
+}
+
+void Manager::doExtensionLogCreate(const Entry& entry)
+{
+    // Make the association <endpointpath>/<endpointtype> paths
+    std::vector<std::string> assocs;
+    for (const auto& [forwardType, reverseType, endpoint] :
+         entry.associations())
+    {
+        std::string e{endpoint};
+        e += '/' + reverseType;
+        assocs.push_back(e);
+    }
+
+    for (auto& create : Extensions::getCreateFunctions())
+    {
+        try
+        {
+            create(entry.message(), entry.id(), entry.timestamp(),
+                   entry.severity(), entry.additionalData(), assocs);
+        }
+        catch (std::exception& e)
+        {
+            log<level::ERR>("An extension's create function threw an exception",
+                            phosphor::logging::entry("ERROR=%s", e.what()));
+        }
+    }
 }
 
 void Manager::processMetadata(const std::string& errorName,
@@ -246,6 +282,32 @@ void Manager::erase(uint32_t entryId)
     auto entryFound = entries.find(entryId);
     if (entries.end() != entryFound)
     {
+        bool prohibited = false;
+        for (auto& func : Extensions::getDeleteProhibitedFunctions())
+        {
+            try
+            {
+                bool p = false;
+                func(entryId, p);
+                if (p)
+                {
+                    prohibited = true;
+                }
+            }
+            catch (std::exception& e)
+            {
+                log<level::ERR>(
+                    "An extension's deleteProhibited function threw "
+                    "an exception",
+                    entry("ERROR=%s", e.what()));
+            }
+        }
+
+        if (prohibited)
+        {
+            return;
+        }
+
         // Delete the persistent representation of this error.
         fs::path errorPath(ERRLOG_PERSIST_PATH);
         errorPath /= std::to_string(entryId);
@@ -267,6 +329,20 @@ void Manager::erase(uint32_t entryId)
             removeId(realErrors, entryId);
         }
         entries.erase(entryFound);
+
+        for (auto& remove : Extensions::getDeleteFunctions())
+        {
+            try
+            {
+                remove(entryId);
+            }
+            catch (std::exception& e)
+            {
+                log<level::ERR>("An extension's delete function threw an "
+                                "exception",
+                                entry("ERROR=%s", e.what()));
+            }
+        }
     }
     else
     {
