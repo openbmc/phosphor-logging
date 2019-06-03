@@ -70,10 +70,12 @@ phosphor_log_manager_LDFLAGS = \
 		$(SYSTEMD_LIBS) \
 		$(SDBUSPLUS_LIBS) \
 		$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
+		$(SDEVENTPLUS_LIBS) \
 		-lstdc++fs
 phosphor_log_manager_CXXFLAGS = \
 		$(SYSTEMD_CFLAGS) \
 		$(SDBUSPLUS_CFLAGS) \
+		$(SDEVENTPLUS_CFLAGS) \
 		$(PHOSPHOR_DBUS_INTERFACES_CFLAGS)
 
 
