@@ -119,6 +119,11 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     int getInfoErrSize();
 
+    sdbusplus::bus::bus& getBus()
+    {
+        return busLog;
+    }
+
   private:
     /*
      * @fn _commit()
