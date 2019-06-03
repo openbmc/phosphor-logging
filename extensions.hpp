@@ -6,6 +6,7 @@
 #include <iostream>
 #include <map>
 #include <sdbusplus/bus.hpp>
+#include <sdeventplus/event.hpp>
 #include <vector>
 
 namespace phosphor
@@ -13,7 +14,8 @@ namespace phosphor
 namespace logging
 {
 using DeleteList = std::vector<std::uint32_t>;
-using StartupFunction = std::function<void(sdbusplus::bus::bus&)>;
+using StartupFunction =
+    std::function<void(sdbusplus::bus::bus&, sdeventplus::Event&)>;
 using CreateFunction = std::function<DeleteList(const Entry&)>;
 using DeleteFunction = std::function<void(std::uint32_t)>;
 using DeleteProhibitedFunction = std::function<bool(std::uint32_t)>;

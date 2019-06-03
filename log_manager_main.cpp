@@ -6,10 +6,13 @@
 #include <experimental/filesystem>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/manager.hpp>
+#include <sdeventplus/event.hpp>
 
 int main(int argc, char* argv[])
 {
     auto bus = sdbusplus::bus::new_default();
+    auto event = sdeventplus::Event::get_default();
+    bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
 
     // Add sdbusplus ObjectManager for the 'root' path of the logging manager.
     sdbusplus::server::manager::manager objManager(bus, OBJ_LOGGING);
@@ -28,14 +31,8 @@ int main(int argc, char* argv[])
 
     for (auto& startup : phosphor::logging::Extensions::getStartupFunctions())
     {
-        startup(bus);
+        startup(bus, event);
     }
 
-    while (true)
-    {
-        bus.process_discard();
-        bus.wait();
-    }
-
-    return 0;
+    return event.loop();
 }

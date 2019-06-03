@@ -2,6 +2,8 @@
 #include "extensions.hpp"
 #include "sdbusplus/bus.hpp"
 
+#include <sdeventplus/event.hpp>
+
 namespace openpower
 {
 namespace pels
@@ -11,7 +13,7 @@ using namespace phosphor::logging;
 
 DISABLE_LOG_ENTRY_CAPS();
 
-void pelStartup(sdbusplus::bus::bus& bus)
+void pelStartup(sdbusplus::bus::bus& bus, sdeventplus::Event& event)
 {
 }
 
