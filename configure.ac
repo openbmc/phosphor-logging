@@ -38,6 +38,7 @@ AS_IF([test "x$enable_install_scripts" != "xyes"], [
     # If we ever have a library, move this to private.
     AX_PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus])
     AX_PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [phosphor-dbus-interfaces])
+    PKG_CHECK_MODULES([SDEVENTPLUS], [sdeventplus])
 
     # Check for sdbus++
     AC_PATH_PROG([SDBUSPLUSPLUS], [sdbus++])
