@@ -242,6 +242,9 @@ PACKAGECONFIG_remove_class-target = "install_error_yaml"
 #### Local build
 * During local build use --prefix=/usr for the configure script.
 
+**Reference**
+* https://github.com/openbmc/openpower-debug-collector/blob/master/README.md
+
 ## Event Log Extensions
 
 The extension concept is a way to allow code that creates other formats of
@@ -338,6 +341,11 @@ void fooRemove(uint32_t id)
 
 REGISTER_EXTENSION_FUNCTION(fooRemove);
 ```
+### Extension List
 
-**Reference**
-* https://github.com/openbmc/openpower-debug-collector/blob/master/README.md
+The supported extensions are:
+
+* OpenPower PELs
+    * Enabled with --enable-openpower-pel-extension
+    * Detailed information can be found
+        [here](extensions/openpower-pels/README.md)
