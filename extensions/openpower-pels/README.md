@@ -23,6 +23,24 @@ RAWPEL="/tmp/pels/pel.5"
 The code will assign its own error log ID to this PEL, and also update the
 commit timestamp field to the current time.
 
+#### _PID
+
+This keyword that contains the application's PID is added automatically by the
+phosphor-logging daemon when the `commit` or `report` APIs are used to create
+an event log, but not when the `Create` D-Bus method is used.  If a caller of
+the `Create` API wishes to have their PID captured in the PEL this should be
+used.
+
+This will be added to the PEL in a section of type User Data (UD), along with
+the application name it corresponds to.
+
+The syntax is:
+```
+_PID=<PID of application>
+e.g.
+_PID="12345"
+```
+
 ## The PEL Message Registry
 
 ## D-Bus Interfaces
