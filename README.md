@@ -1,6 +1,12 @@
 # phosphor-logging
-phosphor logging provides mechanism for common event and logging creation based
-on information from the journal log.
+The phosphor logging repository provides mechanisms for event and journal
+logging.
+
+## Table Of Contents
+[Building](#to-build)
+[Remote Logging](#remote-logging-via-rsyslog)
+[Application Specific Error YAML](#adding-application-specific-error-yaml)
+[Event Log-Extensions](#event-log-extensions)
 
 ## To Build
 ```
