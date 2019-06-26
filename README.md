@@ -5,6 +5,7 @@ logging.
 ## Table Of Contents
 * [Building](#to-build)
 * [Remote Logging](#remote-logging-via-rsyslog)
+* [Event Logs](#event-logs)
 * [Application Specific Error YAML](#adding-application-specific-error-yaml)
 * [Event Log Extensions](#event-log-extensions)
 
@@ -76,6 +77,163 @@ to the IP.
 When switching to a new server from an existing one (i.e the address, or port,
 or both change), it is recommended to disable the existing configuration first.
 
+## Event Logs
+OpenBMC event logs are a collection of D-Bus interfaces owned by
+phosphor-log-manager that reside at `/xyz/openbmc_project/logging/entry/X`,
+where X starts at 1 and is incremented for each new log.
+
+The interfaces are:
+* [xyz.openbmc_project.Logging.Entry]
+  * The main event log interface.
+* [org.openbmc.Associations]
+  * Used for specifying inventory items as the cause of the event.
+  * For more information on associations, see [here][associations-doc].
+* [xyz.openbmc_project.Object.Delete]
+  * Provides a Delete method to delete the event.
+* [xyz.openbmc_project.Software.Version]
+  * Stores the code version that the error occurred on.
+
+On platforms that make use of these event logs, the intent is that they are
+the common event log representation that other types of event logs can be
+created from.  For example, there is code to convert these into both Redfish
+and IPMI event logs, in addition to the event log extensions mentioned
+[below](#event-log-extensions).
+
+The logging daemon has the ability to add `callout` associations to an event
+log based on text in the AdditionalData property.  A callout is a link to the
+inventory item(s) that were the cause of the event log. See [here][callout-doc]
+for details.
+
+### Creating Event Logs In Code
+There are two approaches to creating event logs in OpenBMC code.  The first
+makes use of the systemd journal to store metadata needed for the log, and the
+second is a plain D-Bus method call.
+
+#### Journal Based Event Log Creation
+Event logs can be created by using phosphor-logging APIs to commit sdbusplus
+exceptions.  These APIs write to the journal, and then call a `Commit`
+D-Bus method on the logging daemon to create the event log using the information
+it put in the journal.
+
+The APIs are found in `<phosphor-logging/elog.hpp>`:
+* `elog()`: Throw an sdbusplus error.
+* `commit()`: Catch an error thrown by elog(), and commit it to create the
+  event log.
+* `report()`: Create an event log from an sdbusplus error without throwing the
+  exception first.
+
+Any errors passed into these APIs must be known to phosphor-logging, usually
+by being defined in `<phosphor-logging/elog-errors.hpp>`.  The errors must
+also be known by sdbusplus, and be defined in their corresponding error.hpp.
+See below for details on how get errors into these headers.
+
+Example:
+```
+#include <phosphor-logging/elog-errors.hpp>
+#include <phosphor-logging/elog.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
+...
+using InternalFailure =
+    sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
+...
+if (somethingBadHappened)
+{
+    phosphor::logging::report<InternalFailure>();
+}
+
+```
+Alternatively, to throw, catch, and then commit the error:
+```
+try
+{
+    phosphor::logging::elog<InternalFailure>();
+}
+catch (InternalFailure& e)
+{
+    phosphor::logging::commit<InternalFailure>();
+}
+```
+
+Metadata can be added to event logs to add debug data captured at the time of
+the event. It shows up in the AdditionalData property in the
+`xyz.openbmc_project.Logging.Entry` interface.  Metadata is passed in via the
+`elog()` or `report()` functions, which write it to the journal. The metadata
+must be predefined for the error in the [metadata YAML](#event-log-definition)
+so that the daemon knows to look for it in the journal when it creates the
+event log.
+
+Example:
+```
+#include <phosphor-logging/elog-errors.hpp>
+#include <phosphor-logging/elog.hpp>
+#include <xyz/openbmc_project/Control/Device/error.hpp>
+...
+using WriteFailure =
+    sdbusplus::xyz::openbmc_project::Control::Device::Error::WriteFailure;
+using metadata =
+    xyz::openbmc_project::Control::Device::WriteFailure;
+...
+if (somethingBadHappened)
+{
+    phosphor::logging::report<WriteFailure>(metadata::CALLOUT_ERRNO(5),
+                              metadata::CALLOUT_DEVICE_PATH("some path"));
+}
+```
+In the above example, the AdditionalData property would look like:
+```
+["CALLOUT_ERRNO=5", "CALLOUT_DEVICE_PATH=some path"]
+```
+Note that the metadata fields must be all uppercase.
+
+##### Event Log Definition
+As mentioned above, both sdbusplus and phosphor-logging must know about the
+event logs in their header files, or the code that uses them will not even
+compile.  The standard way to do this to define the event in the appropriate
+`<error-category>.errors.yaml` file, and define any metadata in the
+`<error-category>.metadata.yaml` file in the appropriate `*-dbus-interfaces`
+repository.  During the build, phosphor-logging generates the elog-errors.hpp
+file for use by the calling code.
+
+In much the same way, sdbusplus uses the event log definitions to generate an
+error.hpp file that contains the specific exception.  The path of the error.hpp
+matches the path of the YAML file.
+
+For example, if in phosphor-dbus-interfaces there is
+`xyz/openbmc_project/Control/Device.errors.yaml`, the errors that come from
+that file will be in the include:
+`xyz/openbmc_project/Control/Device/error.hpp`.
+
+In rare cases, one may want one to define their errors in the same repository
+that uses them.  To do that, one must:
+
+1. Add the error and metadata YAML files to the repository.
+2. Run the sdbus++ script within the makefile to create the error.hpp and .cpp
+   files from the local YAML, and include the error.cpp file in the application
+   that uses it.  See [openpower-occ-control] for an example.
+3. Tell phosphor-logging about the error.  This is done by either:
+   * Following the [directions](#adding-application-specific-error-yaml)
+     defined in this README, or
+   * Running the script yourself:
+    1. Run phosphor-logging\'s `elog-gen.py` script on the local yaml to
+       generate an elog-errors.hpp file that just contains the local errors,
+       and check that into the repository and include it where the errors are
+       needed.
+    2. Create a recipe that copies the local YAML files to a place that
+       phosphor-logging can find it during the build. See [here][led-link]
+       for an example.
+
+#### D-Bus Event Log Creation
+**TODO**
+
+[xyz.openbmc_project.Logging.Entry]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/Logging/Entry.interface.yaml
+[org.openbmc.Associations]: https://github.com/openbmc/phosphor-logging/blob/master/org/openbmc/Associations.interface.yaml
+[associations-doc]: https://github.com/openbmc/docs/blob/master/object-mapper.md#associations
+[callout-doc]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/Common/Callout/README.md
+[xyz.openbmc_project.Object.Delete]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/Object/Delete.interface.yaml
+[xyz.openbmc_project.Software.Version]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/Software/Version.errors.yaml
+[elog-errors.hpp]: https://github.com/openbmc/phosphor-logging/blob/master/phosphor-logging/elog.hpp
+[openpower-occ-control]: https://github.com/openbmc/openpower-occ-control
+[led-link]: https://github.com/openbmc/openbmc/tree/master/meta-phosphor/recipes-phosphor/leds
 
 ## Adding application specific error YAML
 * This document captures steps for adding application specific error YAML files
