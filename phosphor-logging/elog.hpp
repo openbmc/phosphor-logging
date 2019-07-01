@@ -147,7 +147,8 @@ void commit(Entry::Level level)
  *  @param[in] i_args - Metadata fields to be added to the journal entry
  */
 template <typename T, typename... Args>
-[[noreturn]] void elog(Args... i_args) {
+[[noreturn]] void elog(Args... i_args)
+{
     // Validate if the exception is derived from sdbusplus::exception.
     static_assert(std::is_base_of<sdbusplus::exception::exception, T>::value,
                   "T must be a descendant of sdbusplus::exception::exception");
