@@ -223,7 +223,48 @@ that uses them.  To do that, one must:
        for an example.
 
 #### D-Bus Event Log Creation
-**TODO**
+There is also a [D-Bus method][log-create-link] to create event logs:
+* Service: xyz.openbmc_project.Logging
+* Object Path: /xyz/openbmc_project/logging
+* Interface: xyz.openbmc_project.Logging.Create
+* Method: Create
+  * Method Arguments:
+      * Message: The `Message` string property for the
+                 `xyz.openbmc_project.Logging.Entry` interface.
+      * Severity: The `severity` property for the
+                 `xyz.openbmc_project.Logging.Entry` interface.
+                 An  `xyz.openbmc_project.Logging.Entry.Level` enum value.
+      * AdditionalData: The `AdditionalData` property for the
+                 `xyz.openbmc_project.Logging.Entry` interface, but in a map
+                 instead of in a vector of "KEY=VALUE" strings.
+
+Unlike the previous APIs where errors could also act as exceptions that could
+be thrown across D-Bus, this API does not require that the error be defined in
+the error YAML in the D-Bus interfaces repository so that sdbusplus knows about
+it.  Additionally, as this method passes in everything needed to create the
+event log, the logging daemon doesn't have to know about it ahead of time
+either.
+
+That being said, it is recommended that users of this API still follow some
+guidelines for the message field, which is normally generated from a
+combination of the path to the error YAML file and the error name itself.  For
+example, the `Timeout` error in `xyz/openbmc_project/Common.errors.yaml` will
+have a Message property of `xyz.openbmc_project.Common.Error.Timeout`.
+
+The guidelines are:
+1. When it makes sense, one can still use an existing error that has already
+   been defined in an error YAML file, and use the same severity and metadata
+   (AdditionalData) as in the corresponding metadata YAML file.
+
+2. If creating a new error, use the same naming scheme as other errors, which
+   starts with the domain, `xyz.openbmc_project`, `org.open_power`, etc,
+   followed by the capitalized category values, followed by `Error`, followed
+   by the capitalized error name itself, with everything  separated by "."s.
+   For example: `xyz.openbmc_project.Some.Category.Error.Name`.
+
+3. If creating a new error, still add it to the appropriate error and metadata
+   YAML files in the appropriate D-Bus interfaces repository so that others can
+   know about it and use it in the future.  This can be done after the fact.
 
 [xyz.openbmc_project.Logging.Entry]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/Logging/Entry.interface.yaml
 [org.openbmc.Associations]: https://github.com/openbmc/phosphor-logging/blob/master/org/openbmc/Associations.interface.yaml
@@ -234,6 +275,7 @@ that uses them.  To do that, one must:
 [elog-errors.hpp]: https://github.com/openbmc/phosphor-logging/blob/master/phosphor-logging/elog.hpp
 [openpower-occ-control]: https://github.com/openbmc/openpower-occ-control
 [led-link]: https://github.com/openbmc/openbmc/tree/master/meta-phosphor/recipes-phosphor/leds
+[log-create-link]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/Logging/Create.interface.yaml
 
 ## Adding application specific error YAML
 * This document captures steps for adding application specific error YAML files
