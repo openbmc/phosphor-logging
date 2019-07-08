@@ -1,0 +1,10 @@
+TESTS += $(check_PROGRAMS)
+
+check_PROGRAMS += \
+	additional_data_test
+
+additional_data_test_SOURCES = %reldir%/additional_data_test.cpp
+additional_data_test_CPPFLAGS = $(test_cppflags)
+additional_data_test_CXXFLAGS = $(test_cxxflags)
+additional_data_test_LDADD = $(test_ldadd)
+additional_data_test_LDFLAGS = $(test_ldflags)
