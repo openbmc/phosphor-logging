@@ -2,6 +2,7 @@ TESTS += $(check_PROGRAMS)
 
 check_PROGRAMS += \
 	additional_data_test \
+	bcd_time_test \
 	stream_test
 
 additional_data_test_SOURCES = %reldir%/additional_data_test.cpp
@@ -15,3 +16,12 @@ stream_test_CPPFLAGS = $(test_cppflags)
 stream_test_CXXFLAGS = $(test_cxxflags)
 stream_test_LDADD = $(test_ldadd)
 stream_test_LDFLAGS = $(test_ldflags)
+
+bcd_time_test_SOURCES = \
+	%reldir%/bcd_time_test.cpp
+bcd_time_test_CPPFLAGS = $(test_cppflags)
+bcd_time_test_CXXFLAGS = $(test_cxxflags)
+bcd_time_test_LDADD = \
+	$(test_ldadd) \
+	$(top_builddir)/extensions/openpower-pels/bcd_time.o
+bcd_time_test_LDFLAGS = $(test_ldflags)
