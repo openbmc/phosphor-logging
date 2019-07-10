@@ -10,7 +10,8 @@
 enum class TestPelType
 {
     pelSimple,
-    privateHeaderSimple
+    privateHeaderSimple,
+    userHeaderSimple
 };
 
 /**
