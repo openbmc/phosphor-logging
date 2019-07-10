@@ -3,6 +3,7 @@ TESTS += $(check_PROGRAMS)
 check_PROGRAMS += \
 	additional_data_test \
 	bcd_time_test \
+	log_id_test \
 	private_header_test \
 	section_header_test \
 	stream_test \
@@ -58,3 +59,12 @@ user_header_test_LDADD = \
 	$(test_ldadd) \
 	$(pel_objects)
 user_header_test_LDFLAGS = $(test_ldflags)
+
+log_id_test_SOURCES = \
+	%reldir%/log_id_test.cpp %reldir%/paths.cpp
+log_id_test_CPPFLAGS = $(test_cppflags)
+log_id_test_CXXFLAGS = $(test_cxxflags)
+log_id_test_LDADD = \
+	$(test_ldadd) \
+	$(top_builddir)/extensions/openpower-pels/log_id.o
+log_id_test_LDFLAGS = $(test_ldflags)
