@@ -150,6 +150,13 @@ AC_DEFINE(SYSTEMD_INTERFACE, "org.freedesktop.systemd1.Manager", [systemd interf
 AC_ARG_ENABLE([openpower-pel-extension],
     AS_HELP_STRING([--enable-openpower-pel-extension], [Create PELs])
 )
+
+AC_ARG_VAR(EXTENSION_PERSIST_DIR, [Base directory for extension persistent data])
+AS_IF([test "x$EXTENSION_PERSIST_DIR" == "x"], \
+    [EXTENSION_PERSIST_DIR="/var/lib/phosphor-logging/extensions"])
+AC_DEFINE_UNQUOTED([EXTENSION_PERSIST_DIR], ["$EXTENSION_PERSIST_DIR"], \
+    [Base directory for extension persistent data])
+
 AM_CONDITIONAL([ENABLE_PEL_EXTENSION], [test "x$enable_openpower_pel_extension" == "xyes"])
 
 AC_CONFIG_HEADERS([config.h])
