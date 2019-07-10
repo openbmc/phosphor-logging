@@ -5,11 +5,13 @@ check_PROGRAMS += \
 	bcd_time_test \
 	private_header_test \
 	section_header_test \
-	stream_test
+	stream_test \
+	user_header_test
 
 pel_objects = \
 	$(top_builddir)/extensions/openpower-pels/bcd_time.o \
-	$(top_builddir)/extensions/openpower-pels/private_header.o
+	$(top_builddir)/extensions/openpower-pels/private_header.o \
+	$(top_builddir)/extensions/openpower-pels/user_header.o
 
 additional_data_test_SOURCES = %reldir%/additional_data_test.cpp
 additional_data_test_CPPFLAGS = $(test_cppflags)
@@ -47,3 +49,12 @@ private_header_test_LDADD = \
 	$(test_ldadd) \
 	$(pel_objects)
 private_header_test_LDFLAGS = $(test_ldflags)
+
+user_header_test_SOURCES = \
+	%reldir%/user_header_test.cpp %reldir%/pel_utils.cpp
+user_header_test_CPPFLAGS = $(test_cppflags)
+user_header_test_CXXFLAGS = $(test_cxxflags)
+user_header_test_LDADD = \
+	$(test_ldadd) \
+	$(pel_objects)
+user_header_test_LDFLAGS = $(test_ldflags)
