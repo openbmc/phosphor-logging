@@ -60,19 +60,6 @@ enum class level
 template <level L, typename Msg, typename... Entry>
 void log(Msg msg, Entry... entry);
 
-/** @fn entry()
- *  @brief Pack each format string entry as a tuple to be able to validate
- *    the string and parameters when multiple entries are passed to be logged.
- *  @tparam Arg - Types of first argument
- *  @tparam Args - Types of remaining arguments
- *  @param[in] arg - First metadata string of form VAR=value where
- *    VAR is the variable name in uppercase and
- *    value is of any size and format
- *  @param[in] args - Remaining metadata strings
- */
-template <typename Arg, typename... Args>
-constexpr auto entry(Arg&& arg, Args&&... args);
-
 namespace details
 {
 
@@ -120,6 +107,55 @@ void log(T&& e)
 
 } // namespace details
 
+template <class T>
+struct is_char_ptr_argtype
+    : std::integral_constant<
+          bool,
+          (std::is_pointer<typename std::decay<T>::type>::value &&
+           std::is_same<typename std::remove_cv<typename std::remove_pointer<
+                            typename std::decay<T>::type>::type>::type,
+                        char>::value)>
+{
+};
+
+template <class T>
+struct is_printf_argtype
+    : std::integral_constant<
+          bool,
+          (std::is_integral<typename std::remove_reference<T>::type>::value ||
+           std::is_enum<typename std::remove_reference<T>::type>::value ||
+           std::is_floating_point<
+               typename std::remove_reference<T>::type>::value ||
+           std::is_pointer<typename std::decay<T>::type>::value)>
+{
+};
+
+template <bool...>
+struct bool_pack;
+
+template <bool... bs>
+using all_true = std::is_same<bool_pack<bs..., true>, bool_pack<true, bs...>>;
+
+/** @fn entry()
+ *  @brief Pack each format string entry as a tuple to be able to validate
+ *    the string and parameters when multiple entries are passed to be logged.
+ *  @tparam Arg - Types of first argument
+ *  @tparam Args - Types of remaining arguments
+ *  @param[in] arg - First metadata string of form VAR=value where
+ *    VAR is the variable name in uppercase and
+ *    value is of any size and format
+ *  @param[in] args - Remaining metadata strings
+ */
+template <typename Arg, typename... Args>
+constexpr auto entry(Arg&& arg, Args&&... args)
+{
+    static_assert(is_char_ptr_argtype<Arg>::value,
+                  "bad argument type: use char*");
+    static_assert(all_true<is_printf_argtype<Args>::value...>::value,
+                  "bad argument type: use string.c_str() if needed");
+    return std::make_tuple(std::forward<Arg>(arg), std::forward<Args>(args)...);
+}
+
 template <level L, typename Msg, typename... Entry>
 void log(Msg msg, Entry... e)
 {
@@ -137,47 +173,6 @@ void log(Msg msg, Entry... e)
                                     entry(transactionStr, transactionId),
                                     std::forward<Entry>(e)...);
     details::log(log_tuple);
-}
-
-template <class T>
-struct is_printf_argtype
-    : std::integral_constant<
-          bool,
-          (std::is_integral<typename std::remove_reference<T>::type>::value ||
-           std::is_enum<typename std::remove_reference<T>::type>::value ||
-           std::is_floating_point<
-               typename std::remove_reference<T>::type>::value ||
-           std::is_pointer<typename std::decay<T>::type>::value)>
-{
-};
-
-template <class T>
-struct is_char_ptr_argtype
-    : std::integral_constant<
-          bool,
-          (std::is_pointer<typename std::decay<T>::type>::value &&
-           std::is_same<typename std::remove_cv<typename std::remove_pointer<
-                            typename std::decay<T>::type>::type>::type,
-                        char>::value)>
-{
-};
-
-template <bool...>
-struct bool_pack;
-
-template <bool... bs>
-using all_true = std::is_same<bool_pack<bs..., true>, bool_pack<true, bs...>>;
-
-template <typename Arg, typename... Args>
-constexpr auto entry(Arg&& arg, Args&&... args)
-{
-    static_assert(is_char_ptr_argtype<Arg>::value,
-                  "bad argument type: use char*");
-    static_assert(all_true<is_printf_argtype<Args>::value...>::value,
-                  "bad argument type: use string.c_str() if needed");
-    const auto entry_tuple =
-        std::make_tuple(std::forward<Arg>(arg), std::forward<Args>(args)...);
-    return entry_tuple;
 }
 
 } // namespace logging
