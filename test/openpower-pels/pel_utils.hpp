@@ -1,8 +1,30 @@
+#include "extensions/openpower-pels/paths.hpp"
+
 #include <filesystem>
 #include <memory>
 #include <vector>
 
 #include <gtest/gtest.h>
+
+/**
+ * @brief Test fixture to remove the pelID file that PELs use.
+ */
+class CleanLogID : public ::testing::Test
+{
+  protected:
+    static void SetUpTestCase()
+    {
+        pelIDFile = openpower::pels::getPELIDFile();
+    }
+
+    static void TearDownTestCase()
+    {
+        std::filesystem::remove_all(
+            std::filesystem::path{pelIDFile}.parent_path());
+    }
+
+    static std::filesystem::path pelIDFile;
+};
 
 /**
  * @brief Tells the factory which PEL to create
