@@ -26,6 +26,26 @@ class CleanLogID : public ::testing::Test
     static std::filesystem::path pelIDFile;
 };
 
+class CleanPELFiles : public ::testing::Test
+{
+  protected:
+    static void SetUpTestCase()
+    {
+        pelIDFile = openpower::pels::getPELIDFile();
+        repoPath = openpower::pels::getPELRepoPath();
+    }
+
+    static void TearDownTestCase()
+    {
+        std::filesystem::remove_all(
+            std::filesystem::path{pelIDFile}.parent_path());
+        std::filesystem::remove_all(repoPath);
+    }
+
+    static std::filesystem::path pelIDFile;
+    static std::filesystem::path repoPath;
+};
+
 /**
  * @brief Tells the factory which PEL to create
  */

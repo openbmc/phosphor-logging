@@ -11,6 +11,8 @@ namespace fs = std::filesystem;
 using namespace openpower::pels;
 
 std::filesystem::path CleanLogID::pelIDFile{};
+std::filesystem::path CleanPELFiles::pelIDFile{};
+std::filesystem::path CleanPELFiles::repoPath{};
 
 constexpr uint8_t simplePEL[] = {
     // private header section header
