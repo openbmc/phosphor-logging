@@ -2,6 +2,8 @@
 
 #include "elog_entry.hpp"
 #include "log_manager.hpp"
+#include "paths.hpp"
+#include "repository.hpp"
 
 namespace openpower
 {
@@ -28,7 +30,8 @@ class Manager
      *
      * @param[in] logManager - internal::Manager object
      */
-    explicit Manager(internal::Manager& logManager) : _logManager(logManager)
+    explicit Manager(internal::Manager& logManager) :
+        _logManager(logManager), _repo(getPELRepoPath())
     {
     }
 
@@ -96,6 +99,11 @@ class Manager
      * @brief Reference to phosphor-logging's Manager class
      */
     internal::Manager& _logManager;
+
+    /**
+     * @brief The PEL repository object
+     */
+    Repository _repo;
 };
 
 } // namespace pels
