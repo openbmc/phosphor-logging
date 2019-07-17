@@ -18,6 +18,13 @@ fs::path getPELIDFile()
     return logIDPath;
 }
 
+fs::path getPELRepoPath()
+{
+    std::filesystem::path repoPath{EXTENSION_PERSIST_DIR};
+    repoPath /= "pels";
+    return repoPath;
+}
+
 } // namespace pels
 
 } // namespace openpower
