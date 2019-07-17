@@ -11,5 +11,10 @@ namespace pels
  */
 std::filesystem::path getPELIDFile();
 
+/**
+ * @brief Returns the path to the PEL repository
+ */
+std::filesystem::path getPELRepoPath();
+
 } // namespace pels
 } // namespace openpower

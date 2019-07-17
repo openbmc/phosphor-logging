@@ -22,5 +22,18 @@ std::filesystem::path getPELIDFile()
     return idFile;
 }
 
+std::filesystem::path getPELRepoPath()
+{
+    static std::string repoPath;
+
+    if (repoPath.empty())
+    {
+        char templ[] = "/tmp/repopathtestXXXXXX";
+        std::filesystem::path dir = mkdtemp(templ);
+        repoPath = dir;
+    }
+    return repoPath;
+}
+
 } // namespace pels
 } // namespace openpower
