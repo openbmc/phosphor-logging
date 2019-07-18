@@ -94,6 +94,9 @@ void Manager::addRawPEL(const std::string& rawPelPath, uint32_t obmcLogID)
 
 void Manager::erase(uint32_t obmcLogID)
 {
+    Repository::LogID id{Repository::LogID::Obmc(obmcLogID)};
+
+    _repo.remove(id);
 }
 
 bool Manager::isDeleteProhibited(uint32_t obmcLogID)

@@ -71,3 +71,70 @@ TEST_F(RepositoryTest, AddTest)
     auto pelData = pel->data();
     EXPECT_EQ(*newData, pelData);
 }
+
+TEST_F(RepositoryTest, RestoreTest)
+{
+    using pelID = Repository::LogID::Pel;
+    using obmcID = Repository::LogID::Obmc;
+
+    std::vector<Repository::LogID> ids;
+
+    {
+        Repository repo{repoPath};
+
+        // Add some PELs to the repository
+        {
+            auto data = pelDataFactory(TestPelType::pelSimple);
+            auto pel = std::make_unique<PEL>(*data, 1);
+            pel->assignID();
+            repo.add(pel);
+            ids.emplace_back(pelID(pel->id()), obmcID(1));
+        }
+        {
+            auto data = pelDataFactory(TestPelType::pelSimple);
+            auto pel = std::make_unique<PEL>(*data, 2);
+            pel->assignID();
+            repo.add(pel);
+            ids.emplace_back(pelID(pel->id()), obmcID(2));
+        }
+
+        // Check they're there
+        EXPECT_TRUE(repo.hasPEL(ids[0]));
+        EXPECT_TRUE(repo.hasPEL(ids[1]));
+
+        // Do some other search tests while we're here.
+
+        // Search based on PEL ID
+        Repository::LogID id(pelID(ids[0].pelID));
+        EXPECT_TRUE(repo.hasPEL(id));
+
+        // Search based on OBMC log ID
+        id.pelID.id = 0;
+        id.obmcID = ids[0].obmcID;
+        EXPECT_TRUE(repo.hasPEL(id));
+
+        // ... based on the other PEL ID
+        id.pelID = ids[1].pelID;
+        id.obmcID.id = 0;
+        EXPECT_TRUE(repo.hasPEL(id));
+
+        // Not found
+        id.pelID.id = 99;
+        id.obmcID.id = 100;
+        EXPECT_FALSE(repo.hasPEL(id));
+    }
+
+    {
+        // Restore and check they're still there, then
+        // remove them.
+        Repository repo{repoPath};
+        EXPECT_TRUE(repo.hasPEL(ids[0]));
+        EXPECT_TRUE(repo.hasPEL(ids[1]));
+
+        repo.remove(ids[0]);
+        EXPECT_FALSE(repo.hasPEL(ids[0]));
+
+        repo.remove(ids[1]);
+        EXPECT_FALSE(repo.hasPEL(ids[1]));
+    }
+}
