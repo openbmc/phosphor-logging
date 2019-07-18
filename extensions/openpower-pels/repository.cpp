@@ -20,6 +20,50 @@ Repository::Repository(const std::filesystem::path& basePath) :
     {
         fs::create_directories(_logPath);
     }
+
+    restore();
+}
+
+void Repository::restore()
+{
+    for (auto& dirEntry : fs::directory_iterator(_logPath))
+    {
+        try
+        {
+            if (!fs::is_regular_file(dirEntry.path()))
+            {
+                continue;
+            }
+
+            std::ifstream file{dirEntry.path()};
+            std::vector<uint8_t> data{std::istreambuf_iterator<char>(file),
+                                      std::istreambuf_iterator<char>()};
+            file.close();
+
+            PEL pel(std::move(data));
+            if (pel.valid())
+            {
+                using pelID = LogID::Pel;
+                using obmcID = LogID::Obmc;
+                _idsToPELs.emplace(
+                    LogID(pelID(pel.id()), obmcID(pel.obmcLogID())),
+                    dirEntry.path());
+            }
+            else
+            {
+                log<level::ERR>(
+                    "Found invalid PEL file while restoring.  Removing.",
+                    entry("FILENAME=%s", dirEntry.path().c_str()));
+                fs::remove(dirEntry.path());
+            }
+        }
+        catch (std::exception& e)
+        {
+            log<level::ERR>("Hit exception while restoring PEL File",
+                            entry("FILENAME=%s", dirEntry.path().c_str()),
+                            entry("ERROR=%s", e.what()));
+        }
+    }
 }
 
 std::string Repository::getPELFilename(uint32_t pelID, const BCDTime& time)
@@ -64,6 +108,26 @@ void Repository::add(std::unique_ptr<PEL>& pel)
         log<level::ERR>("Unable to write PEL file", entry("ERRNO=%d", e),
                         entry("PATH=%s", path.c_str()));
         throw file_error::Write();
+    }
+
+    using pelID = LogID::Pel;
+    using obmcID = LogID::Obmc;
+    _idsToPELs.emplace(LogID(pelID(pel->id()), obmcID(pel->obmcLogID())), path);
+}
+
+void Repository::remove(const LogID& id)
+{
+    auto pel = findPEL(id);
+    if (pel != _idsToPELs.end())
+    {
+        fs::remove(pel->second);
+        _idsToPELs.erase(pel);
+    }
+    else
+    {
+        log<level::INFO>("Could not find PEL to remove it",
+                         entry("PEL_ID=0x%X", id.pelID.id),
+                         entry("OBMC_ID=0x%X", id.obmcID.id));
     }
 }
 
