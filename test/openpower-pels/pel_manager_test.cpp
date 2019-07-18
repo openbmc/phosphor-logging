@@ -62,5 +62,21 @@ TEST_F(ManagerTest, TestCreateWithPEL)
 
     EXPECT_TRUE(found);
 
+    // Now remove it based on its OpenBMC event log ID
+    manager.erase(42);
+
+    found = false;
+
+    for (auto& f : fs::directory_iterator(getPELRepoPath() / "logs"))
+    {
+        if (std::regex_search(f.path().string(), expr))
+        {
+            found = true;
+            break;
+        }
+    }
+
+    EXPECT_FALSE(found);
+
     fs::remove_all(pelFilename.parent_path());
 }
