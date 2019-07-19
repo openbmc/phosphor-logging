@@ -138,3 +138,26 @@ TEST_F(RepositoryTest, RestoreTest)
         EXPECT_FALSE(repo.hasPEL(ids[1]));
     }
 }
+
+TEST_F(RepositoryTest, TestGetPELData)
+{
+    using ID = Repository::LogID;
+    Repository repo{repoPath};
+
+    ID badID{ID::Pel(42)};
+    auto noData = repo.getPELData(badID);
+    EXPECT_FALSE(noData);
+
+    // Add a PEL to the repo, and get the data back with getPELData.
+    auto data = pelDataFactory(TestPelType::pelSimple);
+    auto dataCopy = *data;
+    auto pel = std::make_unique<PEL>(*data);
+    auto pelID = pel->id();
+    repo.add(pel);
+
+    ID id{ID::Pel(pelID)};
+    auto pelData = repo.getPELData(id);
+
+    ASSERT_TRUE(pelData);
+    EXPECT_EQ(dataCopy, *pelData);
+}

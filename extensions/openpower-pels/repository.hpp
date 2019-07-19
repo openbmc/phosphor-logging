@@ -136,6 +136,18 @@ class Repository
         return findPEL(id) != _idsToPELs.end();
     }
 
+    /**
+     * @brief Returns the PEL data based on its ID.
+     *
+     * If the data can't be found for that ID, then the optional object
+     * will be empty.
+     *
+     * @param[in] id - the LogID to get the PEL for, which can be either a
+     *                 PEL ID or OpenBMC log ID.
+     * @return std::optional<std::vector<uint8_t>> - the PEL data
+     */
+    std::optional<std::vector<uint8_t>> getPELData(const LogID& id);
+
   private:
     /**
      * @brief Finds an entry in the _idsToPELs map.
