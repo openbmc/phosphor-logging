@@ -125,5 +125,27 @@ void Repository::remove(const LogID& id)
     }
 }
 
+std::optional<std::vector<uint8_t>> Repository::getPELData(const LogID& id)
+{
+    auto pel = findPEL(id);
+    if (pel != _idsToPELs.end())
+    {
+        std::ifstream file{pel->second.c_str()};
+        if (!file.good())
+        {
+            auto e = errno;
+            log<level::ERR>("Unable to open PEL file", entry("ERRNO=%d", e),
+                            entry("PATH=%s", pel->second.c_str()));
+            throw file_error::Open();
+        }
+
+        std::vector<uint8_t> data{std::istreambuf_iterator<char>(file),
+                                  std::istreambuf_iterator<char>()};
+        return data;
+    }
+
+    return std::nullopt;
+}
+
 } // namespace pels
 } // namespace openpower
