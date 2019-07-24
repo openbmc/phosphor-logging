@@ -79,24 +79,6 @@ void Manager::commitWithLvl(uint64_t transactionId, std::string errMsg,
 void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
                       Entry::Level errLvl)
 {
-    if (!Extensions::disableDefaultLogCaps())
-    {
-        if (errLvl < Entry::sevLowerLimit)
-        {
-            if (realErrors.size() >= ERROR_CAP)
-            {
-                erase(realErrors.front());
-            }
-        }
-        else
-        {
-            if (infoErrors.size() >= ERROR_INFO_CAP)
-            {
-                erase(infoErrors.front());
-            }
-        }
-    }
-
     constexpr const auto transactionIdVar = "TRANSACTION_ID";
     // Length of 'TRANSACTION_ID' string.
     constexpr const auto transactionIdVarSize = std::strlen(transactionIdVar);
@@ -199,7 +181,30 @@ void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
 
     sd_journal_close(j);
 
-    // Create error Entry dbus object
+    createEntry(errMsg, errLvl, additionalData);
+}
+
+void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
+                          std::vector<std::string> additionalData)
+{
+    if (!Extensions::disableDefaultLogCaps())
+    {
+        if (errLvl < Entry::sevLowerLimit)
+        {
+            if (realErrors.size() >= ERROR_CAP)
+            {
+                erase(realErrors.front());
+            }
+        }
+        else
+        {
+            if (infoErrors.size() >= ERROR_INFO_CAP)
+            {
+                erase(infoErrors.front());
+            }
+        }
+    }
+
     entryId++;
     if (errLvl >= Entry::sevLowerLimit)
     {

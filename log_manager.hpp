@@ -167,6 +167,16 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     void doExtensionLogCreate(const Entry& entry);
 
+    /** @brief Common wrapper for creating an Entry object
+     *
+     * @param[in] errMsg - The error exception message associated with the
+     *                     error log to be committed.
+     * @param[in] errLvl - level of the error
+     * @param[in] additionalData - The AdditionalData property for the error
+     */
+    void createEntry(std::string errMsg, Entry::Level errLvl,
+                     std::vector<std::string> additionalData);
+
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus::bus& busLog;
 
