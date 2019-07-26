@@ -46,6 +46,23 @@ inline void parse(const std::vector<std::string>& data,
     }
 };
 
+/** @brief Combine the metadata keys and values from the map
+ *         into a vector of strings that look like:
+ *            "<metadata name>=<metadata value>"
+ *  @param [in] data - metadata key:value map
+ *  @param [out] metadata - vector of "key=value" strings
+ */
+inline void combine(const std::map<std::string, std::string>& data,
+                    std::vector<std::string>& metadata)
+{
+    for (const auto& [key, value] : data)
+    {
+        std::string line{key};
+        line += "=" + value;
+        metadata.push_back(std::move(line));
+    }
+}
+
 /** @brief Build error associations specific to metadata. Specialize this
  *         template for handling a specific type of metadata.
  *  @tparam M - type of metadata
