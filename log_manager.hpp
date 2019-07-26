@@ -2,6 +2,8 @@
 
 #include "elog_entry.hpp"
 #include "xyz/openbmc_project/Collection/DeleteAll/server.hpp"
+#include "xyz/openbmc_project/Logging/Create/server.hpp"
+#include "xyz/openbmc_project/Logging/Entry/server.hpp"
 #include "xyz/openbmc_project/Logging/Internal/Manager/server.hpp"
 
 #include <list>
@@ -16,14 +18,14 @@ namespace logging
 extern const std::map<std::string, std::vector<std::string>> g_errMetaMap;
 extern const std::map<std::string, level> g_errLevelMap;
 
-using DeleteAllIface = sdbusplus::server::object::object<
-    sdbusplus::xyz::openbmc_project::Collection::server::DeleteAll>;
+using CreateIface = sdbusplus::xyz::openbmc_project::Logging::server::Create;
+using DeleteAllIface =
+    sdbusplus::xyz::openbmc_project::Collection::server::DeleteAll;
 
 namespace details
 {
-
-template <typename T>
-using ServerObject = typename sdbusplus::server::object::object<T>;
+template <typename... T>
+using ServerObject = typename sdbusplus::server::object::object<T...>;
 
 using ManagerIface =
     sdbusplus::xyz::openbmc_project::Logging::Internal::server::Manager;
@@ -124,6 +126,21 @@ class Manager : public details::ServerObject<details::ManagerIface>
         return busLog;
     }
 
+    /** @brief Creates an event log
+     *
+     *  This is an alternative to the _commit() API.  It doesn't use
+     *  the journal to look up event log metadata like _commit does.
+     *
+     * @param[in] errMsg - The error exception message associated with the
+     *                     error log to be committed.
+     * @param[in] severity - level of the error
+     * @param[in] additionalData - The AdditionalData property for the error
+     */
+    void create(
+        const std::string& message,
+        sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level severity,
+        const std::map<std::string, std::string>& additionalData);
+
   private:
     /*
      * @fn _commit()
@@ -199,11 +216,13 @@ class Manager : public details::ServerObject<details::ManagerIface>
 } // namespace internal
 
 /** @class Manager
- *  @brief Implementation for delete all error log entries.
+ *  @brief Implementation for deleting all error log entries and
+ *         creating new logs.
  *  @details A concrete implementation for the
- *  xyz.openbmc_project.Collection.DeleteAll
+ *           xyz.openbmc_project.Collection.DeleteAll and
+ *           xyz.openbmc_project.Logging.Create interfaces.
  */
-class Manager : public DeleteAllIface
+class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
 {
   public:
     Manager() = delete;
@@ -222,7 +241,8 @@ class Manager : public DeleteAllIface
      */
     Manager(sdbusplus::bus::bus& bus, const std::string& path,
             internal::Manager& manager) :
-        DeleteAllIface(bus, path.c_str(), true),
+        details::ServerObject<DeleteAllIface, CreateIface>(bus, path.c_str(),
+                                                           true),
         manager(manager){};
 
     /** @brief Delete all d-bus objects.
@@ -230,6 +250,21 @@ class Manager : public DeleteAllIface
     void deleteAll()
     {
         manager.eraseAll();
+    }
+
+    /** @brief D-Bus method call implementation to create an event log.
+     *
+     * @param[in] errMsg - The error exception message associated with the
+     *                     error log to be committed.
+     * @param[in] severity - Level of the error
+     * @param[in] additionalData - The AdditionalData property for the error
+     */
+    void create(
+        std::string message,
+        sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level severity,
+        std::map<std::string, std::string> additionalData) override
+    {
+        manager.create(message, severity, additionalData);
     }
 
   private:
