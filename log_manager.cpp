@@ -562,6 +562,16 @@ std::string Manager::readFWVersion()
     return version;
 }
 
+void Manager::create(const std::string& message, Entry::Level severity,
+                     const std::map<std::string, std::string>& additionalData)
+{
+    // Convert the map into a vector of "key=value" strings
+    std::vector<std::string> ad;
+    metadata::associations::combine(additionalData, ad);
+
+    createEntry(message, severity, ad);
+}
+
 } // namespace internal
 } // namespace logging
 } // namespace phosphor
