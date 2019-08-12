@@ -97,6 +97,7 @@ CALLOUTS_MAKO ?= callouts-gen.mako.hpp
 ELOG_TEMPLATE_DIR ?= ${abs_srcdir}/tools/phosphor-logging/templates/
 REQ_FILES_TO_GEN ?= ${abs_srcdir}/tools/elog-gen.py\
 	${ELOG_TEMPLATE_DIR}/$(ELOG_MAKO)\
+	${ELOG_TEMPLATE_DIR}/$(LOOKUP_MAKO)\
 	${ELOG_TEMPLATE_DIR}/$(META_MAKO)\
 	${abs_srcdir}/callouts/callouts.py\
 	${abs_srcdir}/callouts/$(CALLOUTS_MAKO)
