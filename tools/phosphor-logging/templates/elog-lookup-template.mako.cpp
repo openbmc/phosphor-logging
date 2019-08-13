@@ -35,7 +35,11 @@ const std::map<std::string,std::vector<std::string>> g_errMetaMap = {
         index = name.rfind('.')
         name = name[:index] + ".Error" + name[index:]
 %>\
+    %if (meta_string):
     {"${name}",{"${meta_string}"}},
+    %else:
+    {"${name}",{}},
+    %endif
     % endfor
 };
 
