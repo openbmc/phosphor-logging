@@ -32,6 +32,12 @@ class UserHeader : public Section
     UserHeader& operator=(const UserHeader&) = default;
     UserHeader(UserHeader&&) = default;
     UserHeader& operator=(UserHeader&&) = default;
+    /**
+     * @brief Returns the section header in json format with values in hex.
+     *
+     * @return  char * - json string with values in hex
+     */
+    const char* toJson() override;
 
     /**
      * @brief Constructor
@@ -140,12 +146,6 @@ class UserHeader : public Section
      * @param[in] stream - The stream to read from
      */
     void unflatten(Stream& stream);
-
-    /**
-     * @brief Validates the section contents
-     *
-     * Updates _valid (in Section) with the results.
-     */
     void validate() override;
 
     /**
