@@ -1,5 +1,9 @@
 #pragma once
+
+#include "pel_values.hpp"
 #include "section_header.hpp"
+
+#include <nlohmann/json.hpp>
 
 namespace openpower
 {
@@ -55,6 +59,21 @@ class Section
      */
     virtual void validate() = 0;
 
+    /**
+     * @brief Used to convert a secontion to Json Format.
+     * Values are kept in hex format for these json arrays.
+     * PelParser converts them further using lookup tabled.
+     * Implemented by derived classes.
+     */
+    virtual const char* toJson() = 0;
+
+    /**
+     * @brief Used to get the hex dump of a part of a section.
+     * Implemented by derived classes.
+     */
+    template <typename byte_type = std::uint8_t>
+    std::string hexdump(const byte_type* buffer, std::size_t size,
+                        const std::string& title = "HEXDUMP");
     /**
      * @brief The section header structure.
      *
