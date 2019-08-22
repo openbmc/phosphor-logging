@@ -131,6 +131,13 @@ class UserHeader : public Section
 
   private:
     /**
+     * @brief Returns the section header in json format with values in hex.
+     *
+     * @return  char * - json string with values in hex
+     */
+    const char* toJson() override;
+
+    /**
      * @brief Validates the section contents
      *
      * Updates _valid (in Section) with the results.

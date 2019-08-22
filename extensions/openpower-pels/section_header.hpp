@@ -3,6 +3,8 @@
 #include "stream.hpp"
 
 #include <cstdint>
+#include <iomanip>
+#include <sstream>
 
 namespace openpower
 {
@@ -77,6 +79,7 @@ struct SectionHeader
         return sizeof(id) + sizeof(size) + sizeof(version) + sizeof(subType) +
                sizeof(componentID);
     }
+
 };
 
 /**
