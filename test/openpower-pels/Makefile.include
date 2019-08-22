@@ -10,16 +10,17 @@ check_PROGRAMS += \
 	repository_test \
 	section_header_test \
 	stream_test \
-	user_header_test
+	user_header_test \
+        peltool_test
 
 pel_objects = \
 	$(top_builddir)/extensions/openpower-pels/bcd_time.o \
 	$(top_builddir)/extensions/openpower-pels/log_id.o \
 	$(top_builddir)/extensions/openpower-pels/pel.o \
 	$(top_builddir)/extensions/openpower-pels/private_header.o \
-	$(top_builddir)/extensions/openpower-pels/user_header.o
+	$(top_builddir)/extensions/openpower-pels/user_header.o 
 
-additional_data_test_SOURCES = %reldir%/additional_data_test.cpp
+additional_data_test_SOURCES = %reldir%/additional_data_test.cpp 
 additional_data_test_CPPFLAGS = $(test_cppflags)
 additional_data_test_CXXFLAGS = $(test_cxxflags)
 additional_data_test_LDADD = $(test_ldadd)
@@ -30,6 +31,15 @@ stream_test_CPPFLAGS = $(test_cppflags)
 stream_test_CXXFLAGS = $(test_cxxflags)
 stream_test_LDADD = $(test_ldadd)
 stream_test_LDFLAGS = $(test_ldflags)
+
+peltool_test_SOURCES = \
+         %reldir%/peltool_test.cpp %reldir%/pel_utils.cpp %reldir%/paths.cpp $(top_builddir)/extensions/openpower-pels/tools/peltool_utility.cpp  $(top_builddir)/extensions/openpower-pels/tools/peltool.cpp
+peltool_test_CPPFLAGS = $(test_cppflags)
+peltool_test_CXXFLAGS = $(test_cxxflags)
+peltool_test_LDADD = \
+        $(test_ldadd) \
+        $(pel_objects)
+peltool_test_LDFLAGS = $(test_ldflags)
 
 bcd_time_test_SOURCES = \
 	%reldir%/bcd_time_test.cpp
@@ -57,12 +67,12 @@ private_header_test_LDADD = \
 private_header_test_LDFLAGS = $(test_ldflags)
 
 user_header_test_SOURCES = \
-	%reldir%/user_header_test.cpp %reldir%/pel_utils.cpp %reldir%/paths.cpp
+	%reldir%/user_header_test.cpp %reldir%/pel_utils.cpp %reldir%/paths.cpp 
 user_header_test_CPPFLAGS = $(test_cppflags)
 user_header_test_CXXFLAGS = $(test_cxxflags)
 user_header_test_LDADD = \
 	$(test_ldadd) \
-	$(pel_objects)
+	$(pel_objects) 
 user_header_test_LDFLAGS = $(test_ldflags)
 
 log_id_test_SOURCES = \
