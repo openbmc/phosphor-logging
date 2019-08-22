@@ -3,6 +3,8 @@
 #include "stream.hpp"
 
 #include <cstdint>
+#include <iomanip>
+#include <sstream>
 
 namespace openpower
 {
