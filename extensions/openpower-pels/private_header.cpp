@@ -9,6 +9,27 @@ namespace pels
 
 using namespace phosphor::logging;
 
+/**
+ * @brief Returns the section header in json format with values in hex.
+ *
+ * @return  char * - json string with values in hex
+ */
+const char* PrivateHeader::toJson()
+{
+    std::stringstream ss;
+    ss << "TODO";
+    // ss << this->id;
+    // ss << "0x" << std::uppercase << std::setfill('0') << std::setw(4)
+    // << std::hex << id;/* << "0x" << std::uppercase << std::setfill('0')
+    /*<< std::setw(4) << std::hex << size << "0x" << std::uppercase
+    << std::setfill('0') << std::setw(4) << std::hex << version << "0x"
+    << std::uppercase << std::setfill('0') << std::setw(4) << std::hex
+    << subType << "0x" << std::uppercase << std::setfill('0')
+    << std::setw(4) << std::hex << componentID;*/
+    const char* c = &*ss.str().begin();
+    return c;
+}
+
 PrivateHeader::PrivateHeader(Stream& pel)
 {
     try
