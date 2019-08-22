@@ -44,6 +44,13 @@ AS_IF([test "x$enable_install_scripts" != "xyes"], [
     AC_PATH_PROG([SDBUSPLUSPLUS], [sdbus++])
     AS_IF([test "x$SDBUSPLUSPLUS" == "x"],
         AC_MSG_ERROR(["Requires sdbus++"]))
+    # We need the header only CLI library
+    AC_CHECK_HEADERS(
+        [CLI/CLI.hpp],
+        [],
+        [AC_MSG_ERROR([Could not find CLI11 CLI/CLI.hpp])]
+    )
+
 ])
 
 # Check/set gtest specific functions.
