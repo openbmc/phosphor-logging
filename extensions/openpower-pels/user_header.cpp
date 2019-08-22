@@ -8,6 +8,7 @@ namespace pels
 {
 
 using namespace phosphor::logging;
+using json = nlohmann::json;
 
 void UserHeader::unflatten(Stream& stream)
 {
@@ -58,6 +59,27 @@ void UserHeader::validate()
     }
 
     _valid = (failed) ? false : true;
+}
+
+/**
+ * @brief Returns the section header in json format with values in hex.
+ *
+ * @return  char * - json string with values in hex
+ */
+const char* UserHeader::toJson()
+{
+    std::stringstream ss;
+    ss << "TODO";
+    // ss << this->id;
+    // ss << "0x" << std::uppercase << std::setfill('0') << std::setw(4)
+    // << std::hex << id;/* << "0x" << std::uppercase << std::setfill('0')
+    /*<< std::setw(4) << std::hex << size << "0x" << std::uppercase
+    << std::setfill('0') << std::setw(4) << std::hex << version << "0x"
+    << std::uppercase << std::setfill('0') << std::setw(4) << std::hex
+    << subType << "0x" << std::uppercase << std::setfill('0')
+    << std::setw(4) << std::hex << componentID;*/
+    const char* c = &*ss.str().begin();
+    return c;
 }
 
 } // namespace pels
