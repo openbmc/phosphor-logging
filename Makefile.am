@@ -43,6 +43,21 @@ phosphor_log_manager_SOURCES = \
 	sdjournal.cpp \
 	extensions.cpp
 
+bin_PROGRAMS += peltool
+
+peltool_SOURCES = \
+        xyz/openbmc_project/Logging/Internal/Manager/server.cpp \
+        log_manager.cpp \
+        log_manager_main.cpp \
+        elog-lookup.cpp \
+        elog_entry.cpp \
+        org.openbmc.Associations.cpp \
+        elog-process-metadata.cpp \
+        elog_meta.cpp \
+        elog_serialize.cpp \
+        sdjournal.cpp \
+        extensions.cpp
+
 # Be sure to build needed files before compiling
 BUILT_SOURCES = \
 	phosphor-logging/elog-errors.hpp \
@@ -77,8 +92,18 @@ phosphor_log_manager_CXXFLAGS = \
 		$(SDBUSPLUS_CFLAGS) \
 		$(SDEVENTPLUS_CFLAGS) \
 		$(PHOSPHOR_DBUS_INTERFACES_CFLAGS)
-
-
+peltool_LDFLAGS = \
+                $(SYSTEMD_LIBS) \
+                $(SDBUSPLUS_LIBS) \
+                $(PHOSPHOR_DBUS_INTERFACES_LIBS) \
+                $(SDEVENTPLUS_LIBS) \
+                -lstdc++fs
+peltool_CXXFLAGS = \
+                $(SYSTEMD_CFLAGS) \
+                $(SDBUSPLUS_CFLAGS) \
+                $(SDEVENTPLUS_CFLAGS) \
+                $(PHOSPHOR_DBUS_INTERFACES_CFLAGS)
+  
 include extensions/extensions.mk
 
 
