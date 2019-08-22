@@ -137,6 +137,16 @@ class Repository
     }
 
     /**
+     * @brief helper function for getting all ids of all PEls in the repo.
+     *
+     * @return const  std::map<LogID, std::filesystem::path>&
+     */
+    const std::map<LogID, std::filesystem::path>& getPELMap()
+    {
+        return this->_idsToPELs;
+    }
+
+    /**
      * @brief Returns the PEL data based on its ID.
      *
      * If the data can't be found for that ID, then the optional object
