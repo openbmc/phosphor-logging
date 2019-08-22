@@ -107,6 +107,13 @@ class PrivateHeader : public Section
     }
 
     /**
+     * @brief Returns the section header in json format with values in hex.
+     *
+     * @return  char * - json string with values in hex
+     */
+    const char* toJson() override;
+
+    /**
      * @brief Returns the OpenBMC log ID field
      *
      * This is the ID the OpenBMC event log that corresponds

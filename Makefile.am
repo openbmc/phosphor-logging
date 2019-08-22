@@ -76,8 +76,7 @@ phosphor_log_manager_CXXFLAGS = \
 		$(SDBUSPLUS_CFLAGS) \
 		$(SDEVENTPLUS_CFLAGS) \
 		$(PHOSPHOR_DBUS_INTERFACES_CFLAGS)
-
-
+  
 include extensions/extensions.mk
 
 
