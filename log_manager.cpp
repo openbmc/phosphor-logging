@@ -417,7 +417,18 @@ void Manager::journalSync()
         duration_cast<microseconds>(steady_clock::now().time_since_epoch())
             .count();
 
-    constexpr auto maxRetry = 2;
+    // Each time an error log is committed, a request to sync the journal
+    // must occur and block that error log commit until it completes. A 5sec
+    // block is done to allow sufficient time for the journal to be synced.
+    //
+    // Number of loop iterations = 3 for the following reasons:
+    // Iteration #1: Requests a journal sync by killing the journald service.
+    // Iteration #2: Setup an inotify watch to monitor the synced file that
+    //               journald updates with the timestamp the last time the
+    //               journal was flushed.
+    // Iteration #3: Poll to wait until inotify reports an event which blocks
+    //               the error log from being commited until the sync completes.
+    constexpr auto maxRetry = 3;
     for (int i = 0; i < maxRetry; i++)
     {
         // Read timestamp from synced file
