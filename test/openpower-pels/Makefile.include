@@ -5,6 +5,7 @@ check_PROGRAMS += \
 	bcd_time_test \
 	log_id_test \
 	pel_test \
+	pel_values_test \
 	pel_manager_test \
 	private_header_test \
 	repository_test \
@@ -103,3 +104,12 @@ pel_manager_test_LDADD = \
 	$(top_builddir)/extensions/openpower-pels/manager.o \
 	$(top_builddir)/extensions/openpower-pels/repository.o
 pel_manager_test_LDFLAGS = $(test_ldflags)
+
+pel_values_test_SOURCES = %reldir%/pel_values_test.cpp
+pel_values_test_CPPFLAGS = $(test_cppflags)
+pel_values_test_CXXFLAGS = $(test_cxxflags)
+pel_values_test_LDADD = \
+	$(test_ldflags) \
+	$(top_builddir)/extensions/openpower-pels/pel_values.o
+pel_values_test_LDFLAGS = $(test_ldflags)
+
