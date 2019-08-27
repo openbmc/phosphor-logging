@@ -417,7 +417,7 @@ void Manager::journalSync()
         duration_cast<microseconds>(steady_clock::now().time_since_epoch())
             .count();
 
-    constexpr auto maxRetry = 2;
+    constexpr auto maxRetry = 3;
     for (int i = 0; i < maxRetry; i++)
     {
         // Read timestamp from synced file
