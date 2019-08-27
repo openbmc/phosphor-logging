@@ -78,3 +78,13 @@ TEST(BCDTimeTest, ConvertTest)
     EXPECT_EQ(timeInBCD.seconds, 0x42);
     EXPECT_EQ(timeInBCD.hundredths, 0x00);
 }
+
+TEST(BCDTimeTest, ConvertFromMSTest)
+{
+    auto now = std::chrono::system_clock::now();
+    uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                      now.time_since_epoch())
+                      .count();
+
+    ASSERT_EQ(getBCDTime(now), getBCDTime(ms));
+}

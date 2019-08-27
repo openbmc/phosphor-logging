@@ -43,6 +43,14 @@ BCDTime getBCDTime(std::chrono::time_point<std::chrono::system_clock>& time)
     return bcd;
 }
 
+BCDTime getBCDTime(uint64_t epochMS)
+{
+    std::chrono::milliseconds ms{epochMS};
+    std::chrono::time_point<std::chrono::system_clock> time{ms};
+
+    return getBCDTime(time);
+}
+
 Stream& operator>>(Stream& s, BCDTime& time)
 {
     s >> time.yearMSB >> time.yearLSB >> time.month >> time.day >> time.hour;
