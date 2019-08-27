@@ -36,6 +36,14 @@ struct BCDTime
 BCDTime getBCDTime(std::chrono::time_point<std::chrono::system_clock>& time);
 
 /**
+ * @brief Converts the number of milliseconds since the epoch into BCD time
+ *
+ * @param[in] milliseconds - Number of milliseconds since the epoch
+ * @return BCDTime - the BCD time
+ */
+BCDTime getBCDTime(uint64_t milliseconds);
+
+/**
  * @brief Converts a number to a BCD.
  *
  * For example 32 -> 0x32.
