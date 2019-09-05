@@ -40,6 +40,14 @@ class Section
     }
 
   protected:
+
+    /**
+     * @brief Flatten the section into the stream
+     *
+     * @param[in] stream - The stream to write to
+     */
+    virtual void flatten(Stream& stream) = 0;
+
     /**
      * @brief Returns the flattened size of the section header
      */
