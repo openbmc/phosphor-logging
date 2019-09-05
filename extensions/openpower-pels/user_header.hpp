@@ -43,6 +43,13 @@ class UserHeader : public Section
     explicit UserHeader(Stream& pel);
 
     /**
+     * @brief Flatten the section into the stream
+     *
+     * @param[in] stream - The stream to write to
+     */
+    void flatten(Stream& stream) override;
+
+    /**
      * @brief Returns the subsystem field.
      *
      * @return uint8_t& - the subsystem
@@ -126,10 +133,14 @@ class UserHeader : public Section
                sizeof(_actionFlags) + sizeof(_reserved4Byte2);
     }
 
-    friend Stream& operator>>(Stream& s, UserHeader& ph);
-    friend Stream& operator<<(Stream& s, UserHeader& ph);
-
   private:
+    /**
+     * @brief Fills in the object from the stream data
+     *
+     * @param[in] stream - The stream to read from
+     */
+    void unflatten(Stream& stream);
+
     /**
      * @brief Validates the section contents
      *
@@ -182,22 +193,6 @@ class UserHeader : public Section
      */
     uint32_t _reserved4Byte2;
 };
-
-/**
- * @brief Stream extraction operator for the UserHeader
- *
- * @param[in] s - the stream
- * @param[out] uh - the UserHeader object
- */
-Stream& operator>>(Stream& s, UserHeader& uh);
-
-/**
- * @brief Stream insertion operator for the UserHeader
- *
- * @param[out] s - the stream
- * @param[in] uh - the UserHeader object
- */
-Stream& operator<<(Stream& s, UserHeader& uh);
 
 } // namespace pels
 } // namespace openpower
