@@ -13,7 +13,7 @@ PrivateHeader::PrivateHeader(Stream& pel)
 {
     try
     {
-        pel >> *this;
+        unflatten(pel);
         validate();
     }
     catch (const std::exception& e)
@@ -52,20 +52,18 @@ void PrivateHeader::validate()
     _valid = (failed) ? false : true;
 }
 
-Stream& operator>>(Stream& s, PrivateHeader& ph)
+void PrivateHeader::unflatten(Stream& stream)
 {
-    s >> ph._header >> ph._createTimestamp >> ph._commitTimestamp >>
-        ph._creatorID >> ph._logType >> ph._reservedByte >> ph._sectionCount >>
-        ph._obmcLogID >> ph._creatorVersion >> ph._plid >> ph._id;
-    return s;
+    stream >> _header >> _createTimestamp >> _commitTimestamp >> _creatorID >>
+        _logType >> _reservedByte >> _sectionCount >> _obmcLogID >>
+        _creatorVersion >> _plid >> _id;
 }
 
-Stream& operator<<(Stream& s, PrivateHeader& ph)
+void PrivateHeader::flatten(Stream& stream)
 {
-    s << ph._header << ph._createTimestamp << ph._commitTimestamp
-      << ph._creatorID << ph._logType << ph._reservedByte << ph._sectionCount
-      << ph._obmcLogID << ph._creatorVersion << ph._plid << ph._id;
-    return s;
+    stream << _header << _createTimestamp << _commitTimestamp << _creatorID
+           << _logType << _reservedByte << _sectionCount << _obmcLogID
+           << _creatorVersion << _plid << _id;
 }
 
 Stream& operator>>(Stream& s, CreatorVersion& cv)

@@ -58,7 +58,7 @@ void PEL::flatten(std::vector<uint8_t>& pelBuffer)
     Stream pelData{pelBuffer};
     if (_ph->valid())
     {
-        pelData << *_ph;
+        _ph->flatten(pelData);
     }
     else
     {
@@ -67,7 +67,7 @@ void PEL::flatten(std::vector<uint8_t>& pelBuffer)
 
     if (_uh->valid())
     {
-        pelData << *_uh;
+        _uh->flatten(pelData);
     }
 }
 

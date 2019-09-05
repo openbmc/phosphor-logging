@@ -51,6 +51,13 @@ class PrivateHeader : public Section
     explicit PrivateHeader(Stream& pel);
 
     /**
+     * @brief Flatten the section into the stream
+     *
+     * @param[in] stream - The stream to write to
+     */
+    void flatten(Stream& stream) override;
+
+    /**
      * @brief Returns the creation timestamp
      *
      * @return BCDTime& - the timestamp
@@ -157,10 +164,14 @@ class PrivateHeader : public Section
                sizeof(_creatorVersion) + sizeof(_plid) + sizeof(_id);
     }
 
-    friend Stream& operator>>(Stream& s, PrivateHeader& ph);
-    friend Stream& operator<<(Stream& s, PrivateHeader& ph);
-
   private:
+    /**
+     * @brief Fills in the object from the stream data
+     *
+     * @param[in] stream - The stream to read from
+     */
+    void unflatten(Stream& stream);
+
     /**
      * @brief Validates the section contents
      *
@@ -219,22 +230,6 @@ class PrivateHeader : public Section
      */
     uint32_t _id;
 };
-
-/**
- * @brief Stream extraction operator for the PrivateHeader
- *
- * @param[in] s - the stream
- * @param[out] ph - the PrivateHeader object
- */
-Stream& operator>>(Stream& s, PrivateHeader& ph);
-
-/**
- * @brief Stream insertion operator for the PrivateHeader
- *
- * @param[out] s - the stream
- * @param[in] ph - the PrivateHeader object
- */
-Stream& operator<<(Stream& s, PrivateHeader& ph);
 
 /**
  * @brief Stream extraction operator for the CreatorVersion
