@@ -9,28 +9,25 @@ namespace pels
 
 using namespace phosphor::logging;
 
-Stream& operator>>(Stream& s, UserHeader& uh)
+void UserHeader::unflatten(Stream& stream)
 {
-    s >> uh._header >> uh._eventSubsystem >> uh._eventScope >>
-        uh._eventSeverity >> uh._eventType >> uh._reserved4Byte1 >>
-        uh._problemDomain >> uh._problemVector >> uh._actionFlags >>
-        uh._reserved4Byte2;
-    return s;
+    stream >> _header >> _eventSubsystem >> _eventScope >> _eventSeverity >>
+        _eventType >> _reserved4Byte1 >> _problemDomain >> _problemVector >>
+        _actionFlags >> _reserved4Byte2;
 }
 
-Stream& operator<<(Stream& s, UserHeader& uh)
+void UserHeader::flatten(Stream& stream)
 {
-    s << uh._header << uh._eventSubsystem << uh._eventScope << uh._eventSeverity
-      << uh._eventType << uh._reserved4Byte1 << uh._problemDomain
-      << uh._problemVector << uh._actionFlags << uh._reserved4Byte2;
-    return s;
+    stream << _header << _eventSubsystem << _eventScope << _eventSeverity
+           << _eventType << _reserved4Byte1 << _problemDomain << _problemVector
+           << _actionFlags << _reserved4Byte2;
 }
 
 UserHeader::UserHeader(Stream& pel)
 {
     try
     {
-        pel >> *this;
+        unflatten(pel);
         validate();
     }
     catch (const std::exception& e)

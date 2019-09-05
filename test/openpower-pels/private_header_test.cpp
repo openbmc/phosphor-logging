@@ -60,7 +60,7 @@ TEST(PrivateHeaderTest, UnflattenFlattenTest)
     std::vector<uint8_t> newData;
     Stream newStream(newData);
 
-    newStream << ph;
+    ph.flatten(newStream);
     EXPECT_EQ(*data, newData);
 
     // Change a field, then flatten and unflatten again
@@ -68,7 +68,7 @@ TEST(PrivateHeaderTest, UnflattenFlattenTest)
 
     newStream.offset(0);
     newData.clear();
-    newStream << ph;
+    ph.flatten(newStream);
     EXPECT_NE(*data, newData);
 
     newStream.offset(0);
