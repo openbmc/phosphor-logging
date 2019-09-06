@@ -17,6 +17,7 @@ check_PROGRAMS += \
 	section_header_test \
 	severity_test \
 	stream_test \
+	user_data_test \
 	user_header_test
 
 pel_objects = \
@@ -31,6 +32,7 @@ pel_objects = \
 	$(top_builddir)/extensions/openpower-pels/registry.o \
 	$(top_builddir)/extensions/openpower-pels/section_factory.o \
 	$(top_builddir)/extensions/openpower-pels/severity.o \
+	$(top_builddir)/extensions/openpower-pels/user_data.o \
 	$(top_builddir)/extensions/openpower-pels/user_header.o
 
 additional_data_test_SOURCES = %reldir%/additional_data_test.cpp
@@ -179,3 +181,12 @@ generic_section_test_LDADD = \
 	$(test_ldadd) \
 	$(top_builddir)/extensions/openpower-pels/generic.o
 generic_section_test_LDFLAGS = $(test_ldflags)
+
+user_data_test_SOURCES = \
+	%reldir%/user_data_test.cpp %reldir%/pel_utils.cpp
+user_data_test_CPPFLAGS = $(test_cppflags)
+user_data_test_CXXFLAGS = $(test_cxxflags)
+user_data_test_LDADD = \
+	$(test_ldadd) \
+	$(top_builddir)/extensions/openpower-pels/user_data.o
+user_data_test_LDFLAGS = $(test_ldflags)
