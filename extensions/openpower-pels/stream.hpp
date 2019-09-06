@@ -206,6 +206,28 @@ class Stream
     }
 
     /**
+     * @brief Stream extraction operator for vector<uint8_t>
+     *
+     * @param[in] s - the stream
+     * @param[out] v - the vector of user data
+     */
+    Stream& operator>>(Stream& s, vector<uint8_t>& v)
+    {
+        read(value.data(), value.size()) return s;
+    }
+
+    /**
+     * @brief Stream insertion operator for vector<uint8_t>
+     *
+     * @param[in] s - the stream
+     * @param[out] v - the vector of user data
+     */
+    Stream& operator<<(Stream& s, vector<uint8_t>& v)
+    {
+        write(value.data(), value.size()) return s;
+    }
+
+    /**
      * @brief Sets the offset of the stream
      *
      * @param[in] newOffset - the new offset
