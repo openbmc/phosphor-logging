@@ -4,6 +4,7 @@
 #include "generic.hpp"
 #include "pel_types.hpp"
 #include "private_header.hpp"
+#include "user_data.hpp"
 #include "user_header.hpp"
 
 namespace openpower
@@ -31,6 +32,9 @@ std::unique_ptr<Section> create(Stream& pelData)
     {
         case static_cast<uint16_t>(SectionID::privateHeader):
             section = std::make_unique<PrivateHeader>(pelData);
+            break;
+        case static_cast<uint16_t>(SectionID::userData):
+            section = std::make_unique<UserData>(pelData);
             break;
         case static_cast<uint16_t>(SectionID::userHeader):
             section = std::make_unique<UserHeader>(pelData);
