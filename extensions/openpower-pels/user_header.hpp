@@ -8,8 +8,7 @@ namespace openpower
 namespace pels
 {
 
-static constexpr uint16_t userHeaderSectionID = 0x5548; // 'UH'
-static constexpr uint16_t userHeaderVersion = 0x01;
+static constexpr uint8_t userHeaderVersion = 0x01;
 
 /**
  * @class UserHeader
