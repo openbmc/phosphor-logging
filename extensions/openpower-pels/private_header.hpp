@@ -14,8 +14,7 @@ struct CreatorVersion
     uint8_t version[8];
 };
 
-static constexpr uint16_t privateHeaderSectionID = 0x5048; // 'PH'
-static constexpr uint16_t privateHeaderVersion = 0x01;
+static constexpr uint8_t privateHeaderVersion = 0x01;
 static constexpr uint8_t minSectionCount = 2;
 
 /**
