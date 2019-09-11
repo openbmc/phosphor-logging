@@ -85,7 +85,7 @@ where X starts at 1 and is incremented for each new log.
 The interfaces are:
 * [xyz.openbmc_project.Logging.Entry]
   * The main event log interface.
-* [org.openbmc.Associations]
+* [xyz.openbmc_project.Association.Definitions]
   * Used for specifying inventory items as the cause of the event.
   * For more information on associations, see [here][associations-doc].
 * [xyz.openbmc_project.Object.Delete]
@@ -226,7 +226,7 @@ that uses them.  To do that, one must:
 **TODO**
 
 [xyz.openbmc_project.Logging.Entry]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/Logging/Entry.interface.yaml
-[org.openbmc.Associations]: https://github.com/openbmc/phosphor-logging/blob/master/org/openbmc/Associations.interface.yaml
+[xyz.openbmc_project.Association.Definitions]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/Association/Definitions.interface.yaml
 [associations-doc]: https://github.com/openbmc/docs/blob/master/object-mapper.md#associations
 [callout-doc]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/Common/Callout/README.md
 [xyz.openbmc_project.Object.Delete]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/Object/Delete.interface.yaml
