@@ -34,7 +34,6 @@ test_ldadd = \
 	$(top_builddir)/elog_serialize.o \
 	$(top_builddir)/elog_entry.o \
 	$(top_builddir)/log_manager.o \
-	$(top_builddir)/org.openbmc.Associations.o \
 	$(top_builddir)/xyz/openbmc_project/Logging/Internal/Manager/server.o \
 	$(top_builddir)/elog_meta.o \
 	$(top_builddir)/elog-lookup.o \
@@ -104,7 +103,6 @@ extensions_test_LDADD = \
 	$(top_builddir)/elog-process-metadata.o \
 	$(top_builddir)/elog_serialize.o \
 	$(top_builddir)/log_manager.o \
-	$(top_builddir)/org.openbmc.Associations.o \
 	$(top_builddir)/xyz/openbmc_project/Logging/Internal/Manager/server.o
 extensions_test_LDFLAGS = $(test_ldflags)
 
