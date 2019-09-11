@@ -1,6 +1,6 @@
 #pragma once
 
-#include "elog_entry.hpp"
+#include "data_interface.hpp"
 #include "log_manager.hpp"
 #include "paths.hpp"
 #include "repository.hpp"
@@ -30,8 +30,10 @@ class Manager
      *
      * @param[in] logManager - internal::Manager object
      */
-    explicit Manager(internal::Manager& logManager) :
-        _logManager(logManager), _repo(getPELRepoPath())
+    explicit Manager(phosphor::logging::internal::Manager& logManager,
+                     std::unique_ptr<DataInterfaceBase>&& dataIface) :
+        _logManager(logManager),
+        _repo(getPELRepoPath()), _dataIface(std::move(dataIface))
     {
     }
 
@@ -104,6 +106,8 @@ class Manager
      * @brief The PEL repository object
      */
     Repository _repo;
+
+    std::unique_ptr<DataInterfaceBase> _dataIface;
 };
 
 } // namespace pels
