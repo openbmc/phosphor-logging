@@ -1,5 +1,7 @@
 #include "user_header.hpp"
 
+#include "pel_types.hpp"
+
 #include <phosphor-logging/log.hpp>
 
 namespace openpower
@@ -41,7 +43,7 @@ UserHeader::UserHeader(Stream& pel)
 void UserHeader::validate()
 {
     bool failed = false;
-    if (header().id != userHeaderSectionID)
+    if (header().id != static_cast<uint16_t>(SectionID::userHeader))
     {
         log<level::ERR>("Invalid user header section ID",
                         entry("ID=0x%X", header().id));
