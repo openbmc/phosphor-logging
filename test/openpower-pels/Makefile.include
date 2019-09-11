@@ -3,6 +3,7 @@ TESTS += $(check_PROGRAMS)
 check_PROGRAMS += \
 	additional_data_test \
 	bcd_time_test \
+	failing_mtms_test \
 	log_id_test \
 	mtms_test \
 	pel_test \
@@ -122,3 +123,12 @@ mtms_test_LDADD = \
 	$(test_ldadd) \
 	$(top_builddir)/extensions/openpower-pels/mtms.o
 mtms_test_LDFLAGS = $(test_ldflags)
+
+failing_mtms_test_SOURCES = %reldir%/failing_mtms_test.cpp
+failing_mtms_test_CPPFLAGS = $(test_cppflags)
+failing_mtms_test_CXXFLAGS = $(test_cxxflags)
+failing_mtms_test_LDADD = \
+	$(test_ldadd) \
+	$(top_builddir)/extensions/openpower-pels/failing_mtms.o \
+	$(top_builddir)/extensions/openpower-pels/mtms.o
+failing_mtms_test_LDFLAGS = $(test_ldflags)
