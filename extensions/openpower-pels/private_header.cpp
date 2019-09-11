@@ -1,5 +1,7 @@
 #include "private_header.hpp"
 
+#include "pel_types.hpp"
+
 #include <phosphor-logging/log.hpp>
 
 namespace openpower
@@ -28,7 +30,7 @@ void PrivateHeader::validate()
 {
     bool failed = false;
 
-    if (header().id != privateHeaderSectionID)
+    if (header().id != static_cast<uint16_t>(SectionID::privateHeader))
     {
         log<level::ERR>("Invalid private header section ID",
                         entry("ID=0x%X", header().id));
