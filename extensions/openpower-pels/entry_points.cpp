@@ -1,3 +1,4 @@
+#include "data_interface.hpp"
 #include "elog_entry.hpp"
 #include "extensions.hpp"
 #include "manager.hpp"
@@ -15,7 +16,10 @@ DISABLE_LOG_ENTRY_CAPS();
 
 void pelStartup(internal::Manager& logManager)
 {
-    manager = std::make_unique<Manager>(logManager);
+    std::unique_ptr<DataInterfaceBase> dataIface =
+        std::make_unique<DataInterface>(logManager.getBus());
+
+    manager = std::make_unique<Manager>(logManager, std::move(dataIface));
 }
 
 REGISTER_EXTENSION_FUNCTION(pelStartup);
