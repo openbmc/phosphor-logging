@@ -1,12 +1,12 @@
 #pragma once
 
-#include "org/openbmc/Associations/server.hpp"
 #include "xyz/openbmc_project/Logging/Entry/server.hpp"
 #include "xyz/openbmc_project/Object/Delete/server.hpp"
 #include "xyz/openbmc_project/Software/Version/server.hpp"
 
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/object.hpp>
+#include <xyz/openbmc_project/Association/Definitions/server.hpp>
 
 namespace phosphor
 {
@@ -16,7 +16,7 @@ namespace logging
 using EntryIfaces = sdbusplus::server::object::object<
     sdbusplus::xyz::openbmc_project::Logging::server::Entry,
     sdbusplus::xyz::openbmc_project::Object::server::Delete,
-    sdbusplus::org::openbmc::server::Associations,
+    sdbusplus::xyz::openbmc_project::Association::server::Definitions,
     sdbusplus::xyz::openbmc_project::Software::server::Version>;
 
 using AssociationList =
@@ -31,7 +31,7 @@ class Manager;
  *  @brief OpenBMC logging entry implementation.
  *  @details A concrete implementation for the
  *  xyz.openbmc_project.Logging.Entry and
- *  org.openbmc.Associations DBus APIs.
+ *  xyz.openbmc_project.Associations.Definitions DBus APIs.
  */
 class Entry : public EntryIfaces
 {

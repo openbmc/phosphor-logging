@@ -36,7 +36,6 @@ phosphor_log_manager_SOURCES = \
 	log_manager_main.cpp \
 	elog-lookup.cpp \
 	elog_entry.cpp \
-	org.openbmc.Associations.cpp \
 	elog-process-metadata.cpp \
 	elog_meta.cpp \
 	elog_serialize.cpp \
