@@ -5,6 +5,11 @@ namespace openpower
 namespace pels
 {
 
+enum class ComponentID
+{
+    phosphorLogging = 0x2000
+};
+
 /**
  * @brief PEL section IDs
  */
