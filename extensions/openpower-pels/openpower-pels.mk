@@ -2,6 +2,7 @@ phosphor_log_manager_SOURCES += \
 	extensions/openpower-pels/bcd_time.cpp \
 	extensions/openpower-pels/data_interface.cpp \
 	extensions/openpower-pels/entry_points.cpp \
+	extensions/openpower-pels/failing_mtms.cpp \
 	extensions/openpower-pels/log_id.cpp \
 	extensions/openpower-pels/manager.cpp \
 	extensions/openpower-pels/mtms.cpp \
