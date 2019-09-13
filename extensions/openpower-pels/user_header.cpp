@@ -46,7 +46,6 @@ void UserHeader::validate()
         log<level::ERR>("Invalid user header section ID",
                         entry("ID=0x%X", header().id));
         failed = true;
-        return;
     }
 
     if (header().version != userHeaderVersion)
@@ -54,7 +53,6 @@ void UserHeader::validate()
         log<level::ERR>("Invalid user header version",
                         entry("VERSION=0x%X", header().version));
         failed = true;
-        return;
     }
 
     _valid = (failed) ? false : true;
