@@ -1,0 +1,8 @@
+Code-Review+1: MARRI DEVENDER RAO <devenrao@in.ibm.com>
+Code-Review+2: Matt Spinler <spinler@us.ibm.com>
+Verified+1: Matt Spinler <spinler@us.ibm.com>
+Submitted-by: Matt Spinler <spinler@us.ibm.com>
+Submitted-at: Wed, 18 Sep 2019 14:47:30 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-logging/+/25191
+Project: openbmc/phosphor-logging
+Branch: refs/heads/master
