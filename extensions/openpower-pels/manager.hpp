@@ -3,14 +3,13 @@
 #include "data_interface.hpp"
 #include "log_manager.hpp"
 #include "paths.hpp"
+#include "registry.hpp"
 #include "repository.hpp"
 
 namespace openpower
 {
 namespace pels
 {
-
-using namespace phosphor::logging;
 
 /**
  * @brief PEL manager object
@@ -33,7 +32,9 @@ class Manager
     explicit Manager(phosphor::logging::internal::Manager& logManager,
                      std::unique_ptr<DataInterfaceBase>&& dataIface) :
         _logManager(logManager),
-        _repo(getPELRepoPath()), _dataIface(std::move(dataIface))
+        _repo(getPELRepoPath()),
+        _registry(getMessageRegistryPath() / message::registryFileName),
+        _dataIface(std::move(dataIface))
     {
     }
 
@@ -50,7 +51,7 @@ class Manager
      * @param[in] associations - the Associations property
      */
     void create(const std::string& message, uint32_t obmcLogID,
-                uint64_t timestamp, Entry::Level severity,
+                uint64_t timestamp, phosphor::logging::Entry::Level severity,
                 const std::vector<std::string>& additionalData,
                 const std::vector<std::string>& associations);
 
@@ -93,20 +94,28 @@ class Manager
      * @param[in] associations - The associations property
      */
     void createPEL(const std::string& message, uint32_t obmcLogID,
-                   uint64_t timestamp, Entry::Level severity,
+                   uint64_t timestamp, phosphor::logging::Entry::Level severity,
                    const std::vector<std::string>& additionalData,
                    const std::vector<std::string>& associations);
 
     /**
      * @brief Reference to phosphor-logging's Manager class
      */
-    internal::Manager& _logManager;
+    phosphor::logging::internal::Manager& _logManager;
 
     /**
      * @brief The PEL repository object
      */
     Repository _repo;
 
+    /**
+     * @brief The PEL message registry object
+     */
+    message::Registry _registry;
+
+    /**
+     * @brief The API the PEL sections use to gather data
+     */
     std::unique_ptr<DataInterfaceBase> _dataIface;
 };
 
