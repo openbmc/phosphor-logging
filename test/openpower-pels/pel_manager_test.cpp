@@ -45,7 +45,8 @@ TEST_F(ManagerTest, TestCreateWithPEL)
     std::vector<std::string> additionalData{adItem};
     std::vector<std::string> associations;
 
-    manager.create("error message", 42, 0, Entry::Level::Error, additionalData,
+    manager.create("error message", 42, 0,
+                   phosphor::logging::Entry::Level::Error, additionalData,
                    associations);
 
     // We don't know the exact name, but a file should have been added to the

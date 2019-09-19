@@ -110,6 +110,7 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
                         const std::vector<std::string>& additionalData,
                         const std::vector<std::string>& associations)
 {
+    // TODO: look up the error in _registry and create a PEL
 }
 
 } // namespace pels
