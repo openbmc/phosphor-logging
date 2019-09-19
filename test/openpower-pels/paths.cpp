@@ -35,5 +35,18 @@ std::filesystem::path getPELRepoPath()
     return repoPath;
 }
 
+std::filesystem::path getMessageRegistryPath()
+{
+    static std::string registryPath;
+
+    if (registryPath.empty())
+    {
+        char templ[] = "/tmp/msgregtestXXXXXX";
+        registryPath = mkdtemp(templ);
+    }
+
+    return registryPath;
+}
+
 } // namespace pels
 } // namespace openpower
