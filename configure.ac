@@ -159,6 +159,13 @@ AC_DEFINE_UNQUOTED([EXTENSION_PERSIST_DIR], ["$EXTENSION_PERSIST_DIR"], \
 
 AM_CONDITIONAL([ENABLE_PEL_EXTENSION], [test "x$enable_openpower_pel_extension" == "xyes"])
 
+AS_IF([test "x$enable_openpower_pel_extension" == "xyes"],
+       [AC_CHECK_HEADER(
+            nlohmann/json.hpp,
+            [],
+            [AC_MSG_ERROR([Could not find nlohmann/json.hpp])]])
+)
+
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile test/Makefile phosphor-rsyslog-config/Makefile])
 AC_CONFIG_FILES([phosphor-logging.pc])
