@@ -13,6 +13,7 @@ using namespace openpower::pels;
 std::filesystem::path CleanLogID::pelIDFile{};
 std::filesystem::path CleanPELFiles::pelIDFile{};
 std::filesystem::path CleanPELFiles::repoPath{};
+std::filesystem::path CleanPELFiles::registryPath{};
 
 constexpr uint8_t simplePEL[] = {
     // private header section header

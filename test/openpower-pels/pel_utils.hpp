@@ -33,6 +33,7 @@ class CleanPELFiles : public ::testing::Test
     {
         pelIDFile = openpower::pels::getPELIDFile();
         repoPath = openpower::pels::getPELRepoPath();
+        registryPath = openpower::pels::getMessageRegistryPath();
     }
 
     static void TearDownTestCase()
@@ -40,10 +41,12 @@ class CleanPELFiles : public ::testing::Test
         std::filesystem::remove_all(
             std::filesystem::path{pelIDFile}.parent_path());
         std::filesystem::remove_all(repoPath);
+        std::filesystem::remove_all(registryPath);
     }
 
     static std::filesystem::path pelIDFile;
     static std::filesystem::path repoPath;
+    static std::filesystem::path registryPath;
 };
 
 /**
