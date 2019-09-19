@@ -25,6 +25,10 @@ fs::path getPELRepoPath()
     return repoPath;
 }
 
-} // namespace pels
+fs::path getMessageRegistryPath()
+{
+    return std::filesystem::path{"/usr/share/phosphor-logging/pels"};
+}
 
+} // namespace pels
 } // namespace openpower
