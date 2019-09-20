@@ -35,5 +35,11 @@ enum class SectionID
     extUserData = 0x4544         // 'ED'
 };
 
+enum class SRCType
+{
+    bmcError = 0xBD,
+    powerError = 0x11
+};
+
 } // namespace pels
 } // namespace openpower
