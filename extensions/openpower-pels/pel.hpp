@@ -1,6 +1,8 @@
 #pragma once
 
+#include "additional_data.hpp"
 #include "private_header.hpp"
+#include "registry.hpp"
 #include "user_header.hpp"
 
 #include <memory>
@@ -33,6 +35,12 @@ namespace pels
  * - PEL(const std::vector<uint8_t>& data) - build this object out of a fully
  *   formed flattened PEL.
  *
+ * - PEL(const openpower::pels::message::Entry& entry,
+ *       uint32_t obmcLogID,
+ *       uint64_t timestamp,
+ *       phosphor::logging::Entry::Level severity)
+ *      - build this object from an OpenBMC event log.
+ *
  * The data() method allows one to retrieve the PEL as a vector<uint8_t>.  This
  * is the format in which it is stored and transmitted.
  */
@@ -64,6 +72,20 @@ class PEL
      * @param[in] obmcLogID - the corresponding OpenBMC event log ID
      */
     PEL(const std::vector<uint8_t>& data, uint32_t obmcLogID);
+
+    /**
+     * @brief Constructor
+     *
+     * Creates a PEL from an OpenBMC event log and its message
+     * registry entry.
+     *
+     * @param[in] entry - The message registry entry for this error
+     * @param[in] obmcLogID - ID of corresponding OpenBMC event log
+     * @param[in] timestamp - Timestamp from the event log
+     * @param[in] severity - Severity from the event log
+     */
+    PEL(const openpower::pels::message::Entry& entry, uint32_t obmcLogID,
+        uint64_t timestamp, phosphor::logging::Entry::Level severity);
 
     /**
      * @brief Convenience function to return the log ID field from the
@@ -198,6 +220,11 @@ class PEL
      * then there will be no need to keep around the data anymore.
      */
     std::vector<uint8_t> _rawPEL;
+
+    /**
+     * @brief If the PEL came from a flattened data stream.
+     */
+    bool _fromStream = false;
 };
 
 } // namespace pels
