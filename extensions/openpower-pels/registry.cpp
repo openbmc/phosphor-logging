@@ -105,6 +105,149 @@ uint8_t getEventScope(const std::string& eventScopeName)
     return std::get<pv::fieldValuePos>(*s);
 }
 
+uint16_t getSRCReasonCode(const nlohmann::json& src, const std::string& name)
+{
+    std::string rc = src["ReasonCode"];
+    uint16_t reasonCode = strtoul(rc.c_str(), nullptr, 16);
+    if (reasonCode == 0)
+    {
+        log<phosphor::logging::level::ERR>(
+            "Invalid reason code in message registry",
+            entry("ERROR_NAME=%s", name.c_str()),
+            entry("REASON_CODE=%s", rc.c_str()));
+
+        throw std::runtime_error("Invalid reason code in message registry");
+    }
+    return reasonCode;
+}
+
+uint8_t getSRCType(const nlohmann::json& src, const std::string& name)
+{
+    // Looks like: "22"
+    std::string srcType = src["Type"];
+    size_t type = strtoul(srcType.c_str(), nullptr, 16);
+    if ((type == 0) || (srcType.size() != 2)) // 1 hex byte
+    {
+        log<phosphor::logging::level::ERR>(
+            "Invalid SRC Type in message registry",
+            entry("ERROR_NAME=%s", name.c_str()),
+            entry("SRC_TYPE=%s", srcType.c_str()));
+
+        throw std::runtime_error("Invalid SRC Type in message registry");
+    }
+
+    return type;
+}
+
+std::optional<std::map<SRC::WordNum, SRC::AdditionalDataField>>
+    getSRCHexwordFields(const nlohmann::json& src, const std::string& name)
+{
+    std::map<SRC::WordNum, SRC::AdditionalDataField> hexwordFields;
+
+    // Build the map of which AdditionalData fields to use for which SRC words
+
+    // Like:
+    // {
+    //   "8":
+    //   {
+    //     "AdditionalDataPropSource": "TEST"
+    //   }
+    //
+    // }
+
+    for (const auto& word : src["Words6To9"].items())
+    {
+        std::string num = word.key();
+        size_t wordNum = std::strtoul(num.c_str(), nullptr, 10);
+
+        if (wordNum == 0)
+        {
+            log<phosphor::logging::level::ERR>(
+                "Invalid SRC word number in message registry",
+                entry("ERROR_NAME=%s", name.c_str()),
+                entry("SRC_WORD_NUM=%s", num.c_str()));
+
+            throw std::runtime_error("Invalid SRC word in message registry");
+        }
+
+        auto attributes = word.value();
+        std::string adPropName = attributes["AdditionalDataPropSource"];
+        hexwordFields[wordNum] = std::move(adPropName);
+    }
+
+    if (!hexwordFields.empty())
+    {
+        return hexwordFields;
+    }
+
+    return {};
+}
+std::optional<std::vector<SRC::WordNum>>
+    getSRCSymptomIDFields(const nlohmann::json& src, const std::string& name)
+{
+    std::vector<SRC::WordNum> symptomIDFields;
+
+    // Looks like:
+    // "SymptomIDFields": ["SRCWord3", "SRCWord6"],
+
+    for (const std::string& field : src["SymptomIDFields"])
+    {
+        // Just need the last digit off the end, e.g. SRCWord6.
+        // The schema enforces the format of these.
+        auto srcWordNum = field.substr(field.size() - 1);
+        size_t num = std::strtoul(srcWordNum.c_str(), nullptr, 10);
+        if (num == 0)
+        {
+            log<phosphor::logging::level::ERR>(
+                "Invalid symptom ID field in message registry",
+                entry("ERROR_NAME=%s", name.c_str()),
+                entry("FIELD_NAME=%s", srcWordNum.c_str()));
+
+            throw std::runtime_error("Invalid symptom ID in message registry");
+        }
+        symptomIDFields.push_back(num);
+    }
+    if (!symptomIDFields.empty())
+    {
+        return symptomIDFields;
+    }
+
+    return {};
+}
+
+uint16_t getComponentID(uint8_t srcType, uint16_t reasonCode,
+                        const nlohmann::json& pelEntry, const std::string& name)
+{
+    uint16_t id = 0;
+
+    // If the ComponentID field is there, use that.  Otherwise, if it's a
+    // 0xBD BMC error SRC, use the reasoncode.
+    if (pelEntry.find("ComponentID") != pelEntry.end())
+    {
+        std::string componentID = pelEntry["ComponentID"];
+        id = strtoul(componentID.c_str(), nullptr, 16);
+    }
+    else
+    {
+        // On BMC error SRCs (BD), can just get the component ID from
+        // the first byte of the reason code.
+        if (srcType == static_cast<uint8_t>(SRCType::bmcError))
+        {
+            id = reasonCode & 0xFF00;
+        }
+        else
+        {
+            log<level::ERR>("Missing component ID field in message registry",
+                            entry("ERROR_NAME=%s", name.c_str()));
+
+            throw std::runtime_error(
+                "Missing component ID field in message registry");
+        }
+    }
+
+    return id;
+}
+
 } // namespace helper
 
 std::optional<Entry> Registry::lookup(const std::string& name)
@@ -177,7 +320,38 @@ std::optional<Entry> Registry::lookup(const std::string& name)
                 entry.eventScope = helper::getEventScope((*e)["EventScope"]);
             }
 
-            // TODO: SRC fields
+            auto& src = (*e)["SRC"];
+            entry.src.reasonCode = helper::getSRCReasonCode(src, name);
+
+            if (src.find("Type") != src.end())
+            {
+                entry.src.type = helper::getSRCType(src, name);
+            }
+            else
+            {
+                entry.src.type = static_cast<uint8_t>(SRCType::bmcError);
+            }
+
+            // Now that we know the SRC type and reason code,
+            // we can get the component ID.
+            entry.componentID = helper::getComponentID(
+                entry.src.type, entry.src.reasonCode, *e, name);
+
+            if (src.find("Words6To9") != src.end())
+            {
+                entry.src.hexwordADFields =
+                    helper::getSRCHexwordFields(src, name);
+            }
+
+            if (src.find("SymptomIDFields") != src.end())
+            {
+                entry.src.symptomID = helper::getSRCSymptomIDFields(src, name);
+            }
+
+            if (src.find("PowerFault") != src.end())
+            {
+                entry.src.powerFault = src["PowerFault"];
+            }
 
             return entry;
         }
