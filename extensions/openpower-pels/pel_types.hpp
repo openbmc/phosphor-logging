@@ -5,6 +5,9 @@ namespace openpower
 namespace pels
 {
 
+/**
+ * @brief Useful component IDs
+ */
 enum class ComponentID
 {
     phosphorLogging = 0x2000
@@ -35,10 +38,32 @@ enum class SectionID
     extUserData = 0x4544         // 'ED'
 };
 
+/**
+ * @brief Useful SRC types
+ */
 enum class SRCType
 {
     bmcError = 0xBD,
     powerError = 0x11
+};
+
+/**
+ * @brief Creator IDs
+ */
+enum class CreatorID
+{
+    fsp = 'E',
+    hmc = 'C',
+    hostboot = 'B',
+    ioDrawer = 'M',
+    occ = 'T',
+    openBMC = 'O',
+    partFW = 'L',
+    phyp = 'H',
+    powerControl = 'W',
+    powerNV = 'P',
+    sapphire = 'K',
+    slic = 'S',
 };
 
 } // namespace pels
