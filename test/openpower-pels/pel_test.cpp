@@ -1,3 +1,4 @@
+#include "elog_entry.hpp"
 #include "extensions/openpower-pels/pel.hpp"
 #include "pel_utils.hpp"
 
@@ -86,10 +87,6 @@ TEST_F(PELTest, InvalidPELTest)
     EXPECT_FALSE(pel->userHeader()->valid());
     EXPECT_FALSE(pel->valid());
 
-    // Ensure we can still flatten bad data
-    auto newData = pel->data();
-    EXPECT_EQ(*data, newData);
-
     // Now corrupt the private header
     data = pelDataFactory(TestPelType::pelSimple);
     data->at(0) = 0;
@@ -108,4 +105,22 @@ TEST_F(PELTest, EmptyDataTest)
     EXPECT_FALSE(pel->privateHeader()->valid());
     EXPECT_FALSE(pel->userHeader()->valid());
     EXPECT_FALSE(pel->valid());
+}
+
+TEST_F(PELTest, CreateFromRegistryTest)
+{
+    message::Entry regEntry;
+    uint64_t timestamp = 5;
+
+    regEntry.name = "test";
+    regEntry.subsystem = 5;
+    regEntry.actionFlags = 0xC000;
+
+    PEL pel{regEntry, 42, timestamp, phosphor::logging::Entry::Level::Error};
+
+    EXPECT_TRUE(pel.valid());
+    EXPECT_EQ(pel.privateHeader()->obmcLogID(), 42);
+    EXPECT_EQ(pel.userHeader()->severity(), 0x40);
+
+    // Add more checks as more sections are added
 }
