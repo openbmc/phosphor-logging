@@ -15,6 +15,55 @@ namespace message
 constexpr auto registryFileName = "message_registry.json";
 
 /**
+ * @brief Represents the SRC related fields in the message registry.
+ *        It is part of the 'Entry' structure that will be filled in when
+ *        an error is looked up in the registry.
+ *
+ * If a field is wrapped by std::optional, it means the field is
+ * optional in the JSON and higher level code knows how to handle it.
+ */
+struct SRC
+{
+    /**
+     * @brief SRC type - The first byte of the ASCII string
+     */
+    uint8_t type;
+
+    /**
+     * @brief The SRC reason code (2nd half of 4B 'ASCII string' word)
+     */
+    uint16_t reasonCode;
+
+    /**
+     * @brief Specifies if the SRC represents a power fault.  Optional.
+     */
+    std::optional<bool> powerFault;
+
+    /**
+     * @brief An optional vector of SRC hexword numbers that should be used
+     *        along with the SRC ASCII string to build the Symptom ID, which
+     *        is a field in the Extended Header section.
+     */
+    using WordNum = size_t;
+    std::optional<std::vector<WordNum>> symptomID;
+
+    /**
+     * @brief Which AdditionalData fields to use to fill in the user defined
+     *        SRC hexwords.
+     *
+     * For example, if the AdditionalData event log property contained
+     * "CHIPNUM=42" and this map contained {6, CHIPNUM}, then the code
+     * would put 42 into SRC hexword 6.
+     */
+    using AdditionalDataField = std::string;
+    std::optional<std::map<WordNum, AdditionalDataField>> hexwordADFields;
+
+    SRC() : reasonCode(0)
+    {
+    }
+};
+
+/**
  * @brief Represents a message registry entry, which is used for creating a
  *        PEL from an OpenBMC event log.
  */
@@ -24,6 +73,11 @@ struct Entry
      * @brief The error name, like "xyz.openbmc_project.Error.Foo".
      */
     std::string name;
+
+    /**
+     * @brief The component ID of the PEL creator.
+     */
+    uint16_t componentID;
 
     /**
      * @brief The PEL subsystem field.
@@ -65,7 +119,10 @@ struct Entry
      */
     std::optional<uint8_t> eventScope;
 
-    // TODO: SRC related fields
+    /**
+     * The SRC related fields.
+     */
+    SRC src;
 };
 
 /**
@@ -170,6 +227,72 @@ uint8_t getEventType(const std::string& eventTypeName);
  * @return uint8_t The PEL event scope value
  */
 uint8_t getEventScope(const std::string& eventScopeName);
+
+/**
+ * @brief Reads the "ReasonCode" field out of JSON and converts the string value
+ *        such as "0x5555" to a uint16 like 0x5555.
+ *
+ * @param[in] src - The message registry SRC dictionary to read from
+ * @param[in] name - The error name, to use in a trace if things go awry.
+ *
+ * @return uint16_t - The reason code
+ */
+uint16_t getSRCReasonCode(const nlohmann::json& src, const std::string& name);
+
+/**
+ * @brief Reads the "Type" field out of JSON and converts it to the SRC::Type
+ *        value.
+ *
+ * @param[in] src - The message registry SRC dictionary to read from
+ * @param[in] name - The error name, to use in a trace if things go awry.
+ *
+ * @return uint8_t - The SRC type value, like 0x11
+ */
+uint8_t getSRCType(const nlohmann::json& src, const std::string& name);
+
+/**
+ * @brief Reads the "Words6To9" field out of JSON and converts it to a map
+ *        of the SRC word number to the AdditionalData property field used
+ *        to fill it in with.
+ *
+ * @param[in] src - The message registry SRC dictionary to read from
+ * @param[in] name - The error name, to use in a trace if things go awry.
+ *
+ * @return std::optional<std::map<SRC::WordNum, SRC::AdditionalDataField>>
+ */
+std::optional<std::map<SRC::WordNum, SRC::AdditionalDataField>>
+    getSRCHexwordFields(const nlohmann::json& src, const std::string& name);
+
+/**
+ * @brief Reads the "SymptomIDFields" field out of JSON and converts it to
+ *        a vector of SRC word numbers.
+ *
+ * @param[in] src - The message registry SRC dictionary to read from
+ * @param[in] name - The error name, to use in a trace if things go awry.
+ *
+ * @return std::optional<std::vector<SRC::WordNum>>
+ */
+std::optional<std::vector<SRC::WordNum>>
+    getSRCSymptomIDFields(const nlohmann::json& src, const std::string& name);
+
+/**
+ * @brief Reads the "ComponentID" field out of JSON and converts it to a
+ *        uint16_t like 0xFF00.
+ *
+ * The ComponentID JSON field is only required if the SRC type isn't a BD
+ * BMC SRC, because for those SRCs it can be inferred from the upper byte
+ * of the SRC reasoncode.
+ *
+ * @param[in] srcType - The SRC type
+ * @param[in] reasonCode - The SRC reason code
+ * @param[in] pelEntry - The PEL entry JSON
+ * @param[in] name - The error name, to use in a trace if things go awry.
+ *
+ * @return uin16_t - The component ID, like 0xFF00
+ */
+uint16_t getComponentID(uint8_t srcType, uint16_t reasonCode,
+                        const nlohmann::json& pelEntry,
+                        const std::string& name);
 
 } // namespace helper
 
