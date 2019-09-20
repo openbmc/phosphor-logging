@@ -107,10 +107,32 @@ TEST_F(RegistryTest, TestFindEntry)
     EXPECT_EQ(*(entry->mfgSeverity), 0x00);
     EXPECT_EQ(entry->actionFlags, 0xA800);
     EXPECT_EQ(*(entry->mfgActionFlags), 0x4000);
+    EXPECT_EQ(entry->componentID, 0x2300);
     EXPECT_FALSE(entry->eventType);
     EXPECT_FALSE(entry->eventScope);
 
-    // TODO: compare SRC fields
+    EXPECT_EQ(entry->src.type, 0xBD);
+    EXPECT_EQ(entry->src.reasonCode, 0x2333);
+    EXPECT_EQ(*(entry->src.powerFault), true);
+
+    auto& hexwords = entry->src.hexwordADFields;
+    EXPECT_TRUE(hexwords);
+    EXPECT_EQ((*hexwords).size(), 2);
+
+    auto word = (*hexwords).find(6);
+    EXPECT_NE(word, (*hexwords).end());
+    EXPECT_EQ(word->second, "PS_NUM");
+
+    word = (*hexwords).find(7);
+    EXPECT_NE(word, (*hexwords).end());
+    EXPECT_EQ(word->second, "VOLTAGE");
+
+    auto& sid = entry->src.symptomID;
+    EXPECT_TRUE(sid);
+    EXPECT_EQ((*sid).size(), 3);
+    EXPECT_NE(std::find((*sid).begin(), (*sid).end(), 5), (*sid).end());
+    EXPECT_NE(std::find((*sid).begin(), (*sid).end(), 6), (*sid).end());
+    EXPECT_NE(std::find((*sid).begin(), (*sid).end(), 7), (*sid).end());
 }
 
 // Check the entry that mostly uses defaults
@@ -127,8 +149,15 @@ TEST_F(RegistryTest, TestFindEntryMinimal)
     EXPECT_FALSE(entry->mfgSeverity);
     EXPECT_FALSE(entry->mfgActionFlags);
     EXPECT_EQ(entry->actionFlags, 0xA000);
+    EXPECT_EQ(entry->componentID, 0x2000);
     EXPECT_FALSE(entry->eventType);
     EXPECT_FALSE(entry->eventScope);
+
+    EXPECT_EQ(entry->src.reasonCode, 0x2030);
+    EXPECT_EQ(entry->src.type, 0xBD);
+    EXPECT_FALSE(entry->src.powerFault);
+    EXPECT_FALSE(entry->src.hexwordADFields);
+    EXPECT_FALSE(entry->src.symptomID);
 }
 
 TEST_F(RegistryTest, TestBadJSON)
@@ -163,4 +192,98 @@ TEST_F(RegistryTest, TestHelperFunctions)
     flags.clear();
     flags.push_back("foo");
     EXPECT_THROW(getActionFlags(flags), std::runtime_error);
+}
+
+TEST_F(RegistryTest, TestGetSRCReasonCode)
+{
+    using namespace openpower::pels::message::helper;
+    EXPECT_EQ(getSRCReasonCode(R"({"ReasonCode": "0x5555"})"_json, "foo"),
+              0x5555);
+
+    EXPECT_THROW(getSRCReasonCode(R"({"ReasonCode": "ZZZZ"})"_json, "foo"),
+                 std::runtime_error);
+}
+
+TEST_F(RegistryTest, TestGetSRCType)
+{
+    using namespace openpower::pels::message::helper;
+    EXPECT_EQ(getSRCType(R"({"Type": "11"})"_json, "foo"), 0x11);
+    EXPECT_EQ(getSRCType(R"({"Type": "BF"})"_json, "foo"), 0xBF);
+
+    EXPECT_THROW(getSRCType(R"({"Type": "1"})"_json, "foo"),
+                 std::runtime_error);
+
+    EXPECT_THROW(getSRCType(R"({"Type": "111"})"_json, "foo"),
+                 std::runtime_error);
+}
+
+TEST_F(RegistryTest, TestGetSRCHexwordFields)
+{
+    using namespace openpower::pels::message::helper;
+    const auto hexwords = R"(
+    {"Words6To9":
+      {
+        "8":
+        {
+            "AdditionalDataPropSource": "TEST"
+        }
+      }
+    })"_json;
+
+    auto fields = getSRCHexwordFields(hexwords, "foo");
+    EXPECT_TRUE(fields);
+    auto word = fields->find(8);
+    EXPECT_NE(word, fields->end());
+
+    const auto theInvalidRWord = R"(
+    {"Words6To9":
+      {
+        "R":
+        {
+            "AdditionalDataPropSource": "TEST"
+        }
+      }
+    })"_json;
+
+    EXPECT_THROW(getSRCHexwordFields(theInvalidRWord, "foo"),
+                 std::runtime_error);
+}
+
+TEST_F(RegistryTest, TestGetSRCSymptomIDFields)
+{
+    using namespace openpower::pels::message::helper;
+    const auto sID = R"(
+    {
+        "SymptomIDFields": ["SRCWord3", "SRCWord4", "SRCWord5"]
+    })"_json;
+
+    auto fields = getSRCSymptomIDFields(sID, "foo");
+    EXPECT_NE(std::find(fields->begin(), fields->end(), 3), fields->end());
+    EXPECT_NE(std::find(fields->begin(), fields->end(), 4), fields->end());
+    EXPECT_NE(std::find(fields->begin(), fields->end(), 5), fields->end());
+
+    const auto badField = R"(
+    {
+        "SymptomIDFields": ["SRCWord3", "SRCWord4", "SRCWord"]
+    })"_json;
+
+    EXPECT_THROW(getSRCSymptomIDFields(badField, "foo"), std::runtime_error);
+}
+
+TEST_F(RegistryTest, TestGetComponentID)
+{
+    using namespace openpower::pels::message::helper;
+
+    // Get it from the JSON
+    auto id =
+        getComponentID(0xBD, 0x4200, R"({"ComponentID":"0x4200"})"_json, "foo");
+    EXPECT_EQ(id, 0x4200);
+
+    // Get it from the reason code on a 0xBD SRC
+    id = getComponentID(0xBD, 0x6700, R"({})"_json, "foo");
+    EXPECT_EQ(id, 0x6700);
+
+    // Not present on a 0x11 SRC
+    EXPECT_THROW(getComponentID(0x11, 0x8800, R"({})"_json, "foo"),
+                 std::runtime_error);
 }
