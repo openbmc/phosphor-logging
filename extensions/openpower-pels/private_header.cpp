@@ -1,5 +1,6 @@
 #include "private_header.hpp"
 
+#include "log_id.hpp"
 #include "pel_types.hpp"
 
 #include <phosphor-logging/log.hpp>
@@ -10,6 +11,42 @@ namespace pels
 {
 
 using namespace phosphor::logging;
+
+PrivateHeader::PrivateHeader(uint16_t componentID, uint32_t obmcLogID,
+                             uint64_t timestamp)
+{
+    _header.id = static_cast<uint16_t>(SectionID::privateHeader);
+    _header.size = PrivateHeader::flattenedSize();
+    _header.version = privateHeaderVersion;
+    _header.subType = 0;
+    _header.componentID = componentID;
+
+    _createTimestamp = getBCDTime(timestamp);
+
+    auto now = std::chrono::system_clock::now();
+    _commitTimestamp = getBCDTime(now);
+
+    _creatorID = static_cast<uint8_t>(CreatorID::openBMC);
+
+    // Add support for reminder and telemetry log types here if
+    // ever necessary.
+    _logType = 0;
+
+    _reservedByte = 0;
+
+    // the final section count will be updated later
+    _sectionCount = 1;
+
+    _obmcLogID = obmcLogID;
+
+    _id = generatePELID();
+
+    _plid = _id;
+
+    // Leave _creatorVersion at 0
+
+    _valid = true;
+}
 
 PrivateHeader::PrivateHeader(Stream& pel)
 {
