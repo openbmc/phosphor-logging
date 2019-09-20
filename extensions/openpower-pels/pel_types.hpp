@@ -66,5 +66,21 @@ enum class CreatorID
     slic = 'S',
 };
 
+/**
+ * @brief Useful event scope values
+ */
+enum class EventScope
+{
+    entirePlatform = 0x03
+};
+
+/**
+ * @brief Useful event type values
+ */
+enum class EventType
+{
+    notApplicable = 0x00
+};
+
 } // namespace pels
 } // namespace openpower
