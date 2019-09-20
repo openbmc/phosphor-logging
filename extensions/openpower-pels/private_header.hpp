@@ -12,6 +12,11 @@ namespace pels
 struct CreatorVersion
 {
     uint8_t version[8];
+
+    CreatorVersion()
+    {
+        memset(version, '\0', sizeof(version));
+    }
 };
 
 static constexpr uint8_t privateHeaderVersion = 0x01;
@@ -38,6 +43,17 @@ class PrivateHeader : public Section
     PrivateHeader& operator=(const PrivateHeader&) = default;
     PrivateHeader(PrivateHeader&&) = default;
     PrivateHeader& operator=(PrivateHeader&&) = default;
+
+    /**
+     * @brief Constructor
+     *
+     * Creates a valid PrivateHeader with the passed in data
+     *
+     * @param[in] componentID - the creator's component ID
+     * @param[in] obmcLogID - the corresponding OpenBMC event log ID
+     * @param[in] timestamp - the creation timestamp, in epoch milliseconds
+     */
+    PrivateHeader(uint16_t componentID, uint32_t obmcLogID, uint64_t timestamp);
 
     /**
      * @brief Constructor
