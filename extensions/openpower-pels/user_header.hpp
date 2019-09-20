@@ -1,5 +1,7 @@
 #pragma once
 
+#include "elog_entry.hpp"
+#include "registry.hpp"
 #include "section.hpp"
 #include "stream.hpp"
 
@@ -31,6 +33,17 @@ class UserHeader : public Section
     UserHeader& operator=(const UserHeader&) = default;
     UserHeader(UserHeader&&) = default;
     UserHeader& operator=(UserHeader&&) = default;
+
+    /**
+     * @brief Constructor
+     *
+     * Creates a valid UserHeader with the passed in data.
+     *
+     * @param[in] entry - The message registry entry for this error
+     * @param[in] severity - The OpenBMC event log severity for this error
+     */
+    UserHeader(const message::Entry& entry,
+               phosphor::logging::Entry::Level severity);
 
     /**
      * @brief Constructor
