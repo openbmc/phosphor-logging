@@ -1,3 +1,5 @@
+#include "elog_entry.hpp"
+#include "extensions/openpower-pels/pel_types.hpp"
 #include "extensions/openpower-pels/private_header.hpp"
 #include "extensions/openpower-pels/user_header.hpp"
 #include "pel_utils.hpp"
@@ -90,4 +92,90 @@ TEST(UserHeaderTest, CorruptDataTest2)
     UserHeader uh(stream);
 
     EXPECT_EQ(uh.valid(), false);
+}
+
+// Construct the User Header from the message registry
+TEST(UserHeaderTest, ConstructionTest)
+{
+    using namespace openpower::pels::message;
+    Entry regEntry;
+
+    regEntry.name = "test";
+    regEntry.subsystem = 5;
+    regEntry.severity = 0x40;
+    regEntry.actionFlags = 0xC000;
+    regEntry.eventType = 1;
+    regEntry.eventScope = 2;
+
+    UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error);
+
+    ASSERT_TRUE(uh.valid());
+    EXPECT_EQ(uh.header().id, 0x5548);
+    EXPECT_EQ(uh.header().size, UserHeader::flattenedSize());
+    EXPECT_EQ(uh.header().version, 0x01);
+    EXPECT_EQ(uh.header().subType, 0x00);
+    EXPECT_EQ(uh.header().componentID,
+              static_cast<uint16_t>(ComponentID::phosphorLogging));
+
+    ASSERT_EQ(uh.subsystem(), 5);
+    ASSERT_EQ(uh.severity(), 0x40);
+    ASSERT_EQ(uh.eventType(), 1);
+    ASSERT_EQ(uh.scope(), 2);
+    ASSERT_EQ(uh.problemDomain(), 0);
+    ASSERT_EQ(uh.problemVector(), 0);
+    ASSERT_EQ(uh.actionFlags(), 0xC000);
+}
+
+// Test that the severity comes from the event log if not
+// in the message registry
+TEST(UserHeaderTest, UseEventLogSevTest)
+{
+    using namespace openpower::pels::message;
+    Entry regEntry;
+
+    regEntry.name = "test";
+    regEntry.subsystem = 5;
+    regEntry.actionFlags = 0xC000;
+    regEntry.eventType = 1;
+    regEntry.eventScope = 2;
+    // Leave off severity
+
+    UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error);
+    ASSERT_EQ(uh.severity(), 0x40);
+}
+
+// Test that the severity comes from the event log if the event log
+// severity differs from the message registry severity
+TEST(UserHeaderTest, SevOverrideTest)
+{
+    using namespace openpower::pels::message;
+    Entry regEntry;
+
+    regEntry.name = "test";
+    regEntry.subsystem = 5;
+    regEntry.actionFlags = 0xC000;
+    regEntry.eventType = 1;
+    regEntry.eventScope = 2;
+    regEntry.severity = 0x00; // Informational
+
+    // Warning maps to Predictive
+    UserHeader uh(regEntry, phosphor::logging::Entry::Level::Warning);
+    ASSERT_EQ(uh.severity(), 0x20);
+}
+
+// Test that the optional event type & scope fields work
+TEST(UserHeaderTest, DefaultEventTypeScopeTest)
+{
+    using namespace openpower::pels::message;
+    Entry regEntry;
+
+    regEntry.name = "test";
+    regEntry.subsystem = 5;
+    regEntry.severity = 0x40;
+    regEntry.actionFlags = 0xC000;
+
+    UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error);
+
+    ASSERT_EQ(uh.eventType(), 0);
+    ASSERT_EQ(uh.scope(), 0x03);
 }
