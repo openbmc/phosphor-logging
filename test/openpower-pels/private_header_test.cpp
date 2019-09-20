@@ -5,12 +5,16 @@
 
 using namespace openpower::pels;
 
-TEST(PrivateHeaderTest, SizeTest)
+class PrivateHeaderTest : public CleanLogID
+{
+};
+
+TEST_F(PrivateHeaderTest, SizeTest)
 {
     EXPECT_EQ(PrivateHeader::flattenedSize(), 48);
 }
 
-TEST(PrivateHeaderTest, UnflattenFlattenTest)
+TEST_F(PrivateHeaderTest, UnflattenFlattenTest)
 {
     auto data = pelDataFactory(TestPelType::privateHeaderSimple);
 
@@ -29,7 +33,7 @@ TEST(PrivateHeaderTest, UnflattenFlattenTest)
     EXPECT_EQ(ct.yearLSB, 0x30);
     EXPECT_EQ(ct.month, 0x05);
     EXPECT_EQ(ct.day, 0x09);
-    EXPECT_EQ(ct.hour, 0x011);
+    EXPECT_EQ(ct.hour, 0x11);
     EXPECT_EQ(ct.minutes, 0x1E);
     EXPECT_EQ(ct.seconds, 0x01);
     EXPECT_EQ(ct.hundredths, 0x63);
@@ -78,7 +82,7 @@ TEST(PrivateHeaderTest, UnflattenFlattenTest)
     EXPECT_EQ(newPH.creatorID(), 0x55);
 }
 
-TEST(PrivateHeaderTest, ShortDataTest)
+TEST_F(PrivateHeaderTest, ShortDataTest)
 {
     auto data = pelDataFactory(TestPelType::privateHeaderSimple);
     data->resize(PrivateHeader::flattenedSize() - 1);
@@ -89,7 +93,7 @@ TEST(PrivateHeaderTest, ShortDataTest)
     EXPECT_EQ(ph.valid(), false);
 }
 
-TEST(PrivateHeaderTest, CorruptDataTest1)
+TEST_F(PrivateHeaderTest, CorruptDataTest1)
 {
     auto data = pelDataFactory(TestPelType::privateHeaderSimple);
     Stream stream(*data);
@@ -101,7 +105,7 @@ TEST(PrivateHeaderTest, CorruptDataTest1)
     EXPECT_EQ(ph.valid(), false);
 }
 
-TEST(PrivateHeaderTest, CorruptDataTest2)
+TEST_F(PrivateHeaderTest, CorruptDataTest2)
 {
     auto data = pelDataFactory(TestPelType::privateHeaderSimple);
     Stream stream(*data);
@@ -113,7 +117,7 @@ TEST(PrivateHeaderTest, CorruptDataTest2)
     EXPECT_EQ(ph.valid(), false);
 }
 
-TEST(PrivateHeaderTest, CorruptDataTest3)
+TEST_F(PrivateHeaderTest, CorruptDataTest3)
 {
     auto data = pelDataFactory(TestPelType::privateHeaderSimple);
     Stream stream(*data);
@@ -123,4 +127,53 @@ TEST(PrivateHeaderTest, CorruptDataTest3)
     PrivateHeader ph(stream);
 
     EXPECT_EQ(ph.valid(), false);
+}
+
+// Construct a PrivateHeader from scratch
+TEST_F(PrivateHeaderTest, ConstructionTest)
+{
+    tm time_tm;
+    time_tm.tm_year = 125;
+    time_tm.tm_mon = 11;
+    time_tm.tm_mday = 31;
+    time_tm.tm_hour = 15;
+    time_tm.tm_min = 23;
+    time_tm.tm_sec = 42;
+    time_tm.tm_isdst = 0;
+
+    // Convert the above time into a uint64_t in ms since the epoch time
+    auto timepoint = std::chrono::system_clock::from_time_t(mktime(&time_tm));
+    auto timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(
+                         timepoint.time_since_epoch())
+                         .count();
+
+    PrivateHeader ph(0x3300, 42, timestamp);
+
+    EXPECT_TRUE(ph.valid());
+    EXPECT_EQ(ph.header().id, 0x5048);
+    EXPECT_EQ(ph.header().size, PrivateHeader::flattenedSize());
+    EXPECT_EQ(ph.header().version, 0x01);
+    EXPECT_EQ(ph.header().subType, 0x00);
+    EXPECT_EQ(ph.header().componentID, 0x3300);
+
+    auto& ct = ph.createTimestamp();
+    EXPECT_EQ(ct.yearMSB, 0x20);
+    EXPECT_EQ(ct.yearLSB, 0x25);
+    EXPECT_EQ(ct.month, 0x12);
+    EXPECT_EQ(ct.day, 0x31);
+    EXPECT_EQ(ct.hour, 0x15);
+    EXPECT_EQ(ct.minutes, 0x23);
+    EXPECT_EQ(ct.seconds, 0x42);
+    EXPECT_EQ(ct.hundredths, 0x00);
+
+    EXPECT_EQ(ph.creatorID(), 'O');
+    EXPECT_EQ(ph.logType(), 0x00);
+    EXPECT_EQ(ph.sectionCount(), 0x01);
+    EXPECT_EQ(ph.obmcLogID(), 42);
+
+    char expected[] = {0, 0, 0, 0, 0, 0, 0, 0};
+    EXPECT_TRUE(memcmp(ph.creatorVersion().version, expected, 8) == 0);
+
+    EXPECT_EQ(ph.id(), 0x50000001);
+    EXPECT_EQ(ph.id(), ph.plid());
 }
