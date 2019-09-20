@@ -13,6 +13,7 @@ check_PROGRAMS += \
 	registry_test \
 	repository_test \
 	section_header_test \
+	severity_test \
 	stream_test \
 	user_header_test
 
@@ -23,6 +24,7 @@ pel_objects = \
 	$(top_builddir)/extensions/openpower-pels/pel_values.o \
 	$(top_builddir)/extensions/openpower-pels/private_header.o \
 	$(top_builddir)/extensions/openpower-pels/registry.o \
+	$(top_builddir)/extensions/openpower-pels/severity.o \
 	$(top_builddir)/extensions/openpower-pels/user_header.o
 
 additional_data_test_SOURCES = %reldir%/additional_data_test.cpp
@@ -120,6 +122,14 @@ registry_test_LDADD = \
 	$(top_builddir)/extensions/openpower-pels/registry.o \
 	$(top_builddir)/extensions/openpower-pels/pel_values.o
 registry_test_LDFLAGS = $(test_ldflags)
+
+severity_test_SOURCES = %reldir%/severity_test.cpp
+severity_test_CPPFLAGS = $(test_cppflags)
+severity_test_CXXFLAGS = $(test_cxxflags)
+severity_test_LDADD = \
+	$(test_ldflags) \
+	$(top_builddir)/extensions/openpower-pels/severity.o
+severity_test_LDFLAGS = $(test_ldflags)
 
 mtms_test_SOURCES = %reldir%/mtms_test.cpp
 mtms_test_CPPFLAGS = $(test_cppflags)
