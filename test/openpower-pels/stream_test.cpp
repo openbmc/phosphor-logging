@@ -158,3 +158,25 @@ TEST(StreamTest, TestOffsets)
 
     EXPECT_THROW(stream.offset(100), std::out_of_range);
 }
+
+TEST(StreamTest, TestVectorInsertExtract)
+{
+    std::vector<uint8_t> toInsert{0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77};
+    std::vector<uint8_t> data;
+
+    // Insert
+    Stream stream{data};
+    stream << toInsert;
+    EXPECT_EQ(data, toInsert);
+
+    // Extract
+    std::vector<uint8_t> toExtract;
+    toExtract.resize(toInsert.size());
+    stream.offset(0);
+    stream >> toExtract;
+
+    EXPECT_EQ(data, toExtract);
+
+    // Go off the end
+    EXPECT_THROW(stream >> toExtract, std::out_of_range);
+}
