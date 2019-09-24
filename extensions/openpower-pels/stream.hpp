@@ -143,6 +143,23 @@ class Stream
     }
 
     /**
+     * @brief Extraction operator for a std::vector<uint8_t>
+     *
+     * The vector's size is the amount extracted.
+     *
+     * @param[out] value - filled in with the value
+     * @return Stream&
+     */
+    Stream& operator>>(std::vector<uint8_t>& value)
+    {
+        if (!value.empty())
+        {
+            read(value.data(), value.size());
+        }
+        return *this;
+    }
+
+    /**
      * @brief Insert operator for a uint8_t
      *
      * @param[in] value - the value to write to the stream
@@ -206,6 +223,23 @@ class Stream
     }
 
     /**
+     * @brief Insert operator for a std::vector<uint8_t>
+     *
+     * The full vector is written to the stream.
+     *
+     * @param[in] value - the value to write to the stream
+     * @return Stream&
+     */
+    Stream& operator<<(const std::vector<uint8_t>& value)
+    {
+        if (!value.empty())
+        {
+            write(value.data(), value.size());
+        }
+        return *this;
+    }
+
+    /**
      * @brief Sets the offset of the stream
      *
      * @param[in] newOffset - the new offset
@@ -261,7 +295,7 @@ class Stream
      * @param[in] in - the data to write
      * @param[in] size - the size to write
      */
-    void write(void* in, std::size_t size)
+    void write(const void* in, std::size_t size)
     {
         size_t newSize = _offset + size;
         if (newSize > _data.size())
