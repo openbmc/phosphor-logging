@@ -2,6 +2,7 @@
 
 #include "bcd_time.hpp"
 #include "log_id.hpp"
+#include "section_factory.hpp"
 #include "stream.hpp"
 
 namespace openpower
@@ -42,6 +43,13 @@ void PEL::populateFromRawData(uint32_t obmcLogID)
     }
 
     _uh = std::make_unique<UserHeader>(pelData);
+
+    // Use the section factory to create the rest of the objects
+    for (size_t i = 2; i < _ph->sectionCount(); i++)
+    {
+        auto section = section_factory::create(pelData);
+        _optionalSections.push_back(std::move(section));
+    }
 }
 
 bool PEL::valid() const
@@ -51,6 +59,15 @@ bool PEL::valid() const
     if (valid)
     {
         valid = _uh->valid();
+    }
+
+    if (valid)
+    {
+        if (!std::all_of(_optionalSections.begin(), _optionalSections.end(),
+                         [](const auto& section) { return section->valid(); }))
+        {
+            valid = false;
+        }
     }
 
     return valid;
