@@ -13,5 +13,6 @@ phosphor_log_manager_SOURCES += \
 	extensions/openpower-pels/private_header.cpp \
 	extensions/openpower-pels/registry.cpp \
 	extensions/openpower-pels/repository.cpp \
+	extensions/openpower-pels/section_factory.cpp \
 	extensions/openpower-pels/severity.cpp \
 	extensions/openpower-pels/user_header.cpp
