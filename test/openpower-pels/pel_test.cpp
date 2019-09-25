@@ -1,4 +1,5 @@
 #include "elog_entry.hpp"
+#include "extensions/openpower-pels/generic.hpp"
 #include "extensions/openpower-pels/pel.hpp"
 #include "pel_utils.hpp"
 
@@ -123,4 +124,95 @@ TEST_F(PELTest, CreateFromRegistryTest)
     EXPECT_EQ(pel.userHeader()->severity(), 0x40);
 
     // Add more checks as more sections are added
+}
+
+// Test that we'll create Generic optional sections for sections that
+// there aren't explicit classes for.
+TEST_F(PELTest, GenericSectionTest)
+{
+    auto data = pelDataFactory(TestPelType::pelSimple);
+
+    std::vector<uint8_t> section1{0x58, 0x58, // ID 'XX'
+                                  0x00, 0x18, // Size
+                                  0x01, 0x02, // version, subtype
+                                  0x03, 0x04, // comp ID
+
+                                  // some data
+                                  0x20, 0x30, 0x05, 0x09, 0x11, 0x1E, 0x1, 0x63,
+                                  0x20, 0x31, 0x06, 0x0F, 0x09, 0x22, 0x3A,
+                                  0x00};
+
+    std::vector<uint8_t> section2{
+        0x59, 0x59, // ID 'YY'
+        0x00, 0x20, // Size
+        0x01, 0x02, // version, subtype
+        0x03, 0x04, // comp ID
+
+        // some data
+        0x20, 0x30, 0x05, 0x09, 0x11, 0x1E, 0x1, 0x63, 0x20, 0x31, 0x06, 0x0F,
+        0x09, 0x22, 0x3A, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
+
+    // Add the new sections at the end
+    data->insert(data->end(), section1.begin(), section1.end());
+    data->insert(data->end(), section2.begin(), section2.end());
+
+    // Increment the section count
+    data->at(27) += 2;
+
+    PEL pel{*data};
+
+    const auto& sections = pel.optionalSections();
+
+    bool foundXX = false;
+    bool foundYY = false;
+
+    // Check that we can find these 2 Generic sections
+    for (const auto& section : sections)
+    {
+        if (section->header().id == 0x5858)
+        {
+            foundXX = true;
+            EXPECT_NE(dynamic_cast<Generic*>(section.get()), nullptr);
+        }
+        else if (section->header().id == 0x5959)
+        {
+            foundYY = true;
+            EXPECT_NE(dynamic_cast<Generic*>(section.get()), nullptr);
+        }
+    }
+
+    EXPECT_TRUE(foundXX);
+    EXPECT_TRUE(foundYY);
+}
+
+// Test that an invalid section will still get a Generic object
+TEST_F(PELTest, InvalidGenericTest)
+{
+    auto data = pelDataFactory(TestPelType::pelSimple);
+
+    // Not a valid section
+    std::vector<uint8_t> section1{0x01, 0x02, 0x03};
+
+    data->insert(data->end(), section1.begin(), section1.end());
+
+    // Increment the section count
+    data->at(27) += 1;
+
+    PEL pel{*data};
+    EXPECT_FALSE(pel.valid());
+
+    const auto& sections = pel.optionalSections();
+
+    bool foundGeneric = false;
+    for (const auto& section : sections)
+    {
+        if (dynamic_cast<Generic*>(section.get()) != nullptr)
+        {
+            foundGeneric = true;
+            EXPECT_EQ(section->valid(), false);
+            break;
+        }
+    }
+
+    EXPECT_TRUE(foundGeneric);
 }
