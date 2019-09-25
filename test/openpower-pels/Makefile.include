@@ -20,11 +20,13 @@ check_PROGRAMS += \
 
 pel_objects = \
 	$(top_builddir)/extensions/openpower-pels/bcd_time.o \
+	$(top_builddir)/extensions/openpower-pels/generic.o \
 	$(top_builddir)/extensions/openpower-pels/log_id.o \
 	$(top_builddir)/extensions/openpower-pels/pel.o \
 	$(top_builddir)/extensions/openpower-pels/pel_values.o \
 	$(top_builddir)/extensions/openpower-pels/private_header.o \
 	$(top_builddir)/extensions/openpower-pels/registry.o \
+	$(top_builddir)/extensions/openpower-pels/section_factory.o \
 	$(top_builddir)/extensions/openpower-pels/severity.o \
 	$(top_builddir)/extensions/openpower-pels/user_header.o
 

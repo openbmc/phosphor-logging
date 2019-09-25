@@ -157,6 +157,17 @@ class PEL
     }
 
     /**
+     * @brief Returns the optional sections, which is everything but
+     *        the Private and User Headers.
+     *
+     * @return const std::vector<std::unique_ptr<Section>>&
+     */
+    const std::vector<std::unique_ptr<Section>>& optionalSections() const
+    {
+        return _optionalSections;
+    }
+
+    /**
      * @brief Returns the PEL data.
      *
      * @return std::vector<uint8_t> - the raw PEL data
@@ -219,6 +230,11 @@ class PEL
      * @brief If the PEL came from a flattened data stream.
      */
     bool _fromStream = false;
+
+    /**
+     * @brief Holds all sections by the PH and UH.
+     */
+    std::vector<std::unique_ptr<Section>> _optionalSections;
 };
 
 } // namespace pels
