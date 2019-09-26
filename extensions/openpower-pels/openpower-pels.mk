@@ -24,3 +24,6 @@ phosphor_log_manager_SOURCES += \
 	extensions/openpower-pels/severity.cpp \
 	extensions/openpower-pels/user_data.cpp \
 	extensions/openpower-pels/user_header.cpp
+
+registrydir = $(datadir)/phosphor-logging/pels/
+registry_DATA = extensions/openpower-pels/registry/message_registry.json
