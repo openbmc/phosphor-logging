@@ -40,7 +40,7 @@ void Repository::restore()
                                       std::istreambuf_iterator<char>()};
             file.close();
 
-            PEL pel(std::move(data));
+            PEL pel{data};
             if (pel.valid())
             {
                 using pelID = LogID::Pel;

@@ -11,6 +11,7 @@ check_PROGRAMS += \
 	pel_values_test \
 	pel_manager_test \
 	private_header_test \
+	real_pel_test \
 	registry_test \
 	repository_test \
 	section_header_test \
@@ -95,6 +96,15 @@ pel_test_LDADD = \
 	$(test_ldadd) \
 	$(pel_objects)
 pel_test_LDFLAGS = $(test_ldflags)
+
+real_pel_test_SOURCES = \
+	%reldir%/real_pel_test.cpp %reldir%/paths.cpp %reldir%/pel_utils.cpp
+real_pel_test_CPPFLAGS = $(test_cppflags)
+real_pel_test_CXXFLAGS = $(test_cxxflags)
+real_pel_test_LDADD = \
+	$(test_ldadd) \
+	$(pel_objects)
+real_pel_test_LDFLAGS = $(test_ldflags)
 
 repository_test_SOURCES = \
 	%reldir%/repository_test.cpp %reldir%/paths.cpp %reldir%/pel_utils.cpp
