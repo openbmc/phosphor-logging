@@ -5,6 +5,8 @@
 #include "section_factory.hpp"
 #include "stream.hpp"
 
+#include <phosphor-logging/log.hpp>
+
 namespace openpower
 {
 namespace pels
@@ -23,19 +25,18 @@ PEL::PEL(const message::Entry& entry, uint32_t obmcLogID, uint64_t timestamp,
     _ph->sectionCount() = 2;
 }
 
-PEL::PEL(const std::vector<uint8_t>& data) : PEL(data, 0)
+PEL::PEL(std::vector<uint8_t>& data) : PEL(data, 0)
 {
 }
 
-PEL::PEL(const std::vector<uint8_t>& data, uint32_t obmcLogID) : _rawPEL(data)
+PEL::PEL(std::vector<uint8_t>& data, uint32_t obmcLogID)
 {
-    _fromStream = true;
-    populateFromRawData(obmcLogID);
+    populateFromRawData(data, obmcLogID);
 }
 
-void PEL::populateFromRawData(uint32_t obmcLogID)
+void PEL::populateFromRawData(std::vector<uint8_t>& data, uint32_t obmcLogID)
 {
-    Stream pelData{_rawPEL};
+    Stream pelData{data};
     _ph = std::make_unique<PrivateHeader>(pelData);
     if (obmcLogID != 0)
     {
@@ -88,28 +89,26 @@ void PEL::flatten(std::vector<uint8_t>& pelBuffer)
 {
     Stream pelData{pelBuffer};
 
-    _ph->flatten(pelData);
-
-    // If constructed from a PEL stream originally, don't flatten the
-    // rest of the objects until we support every PEL section type.
-    // Still need the PrivateHeader, as we updated fields in it.
-    if (_fromStream)
+    if (!valid())
     {
-        return;
+        using namespace phosphor::logging;
+        log<level::WARNING>("Unflattening an invalid PEL");
     }
 
+    _ph->flatten(pelData);
     _uh->flatten(pelData);
+
+    for (auto& section : _optionalSections)
+    {
+        section->flatten(pelData);
+    }
 }
 
 std::vector<uint8_t> PEL::data()
 {
-    // Until we can recreate a complete PEL from objects, need to just flatten
-    // on top of the original PEL data which we need to keep around for this
-    // reason.  If creating a PEL from scratch, _rawPEL will get filled in with
-    // what we do have.
-
-    flatten(_rawPEL);
-    return _rawPEL;
+    std::vector<uint8_t> pelData;
+    flatten(pelData);
+    return pelData;
 }
 
 } // namespace pels
