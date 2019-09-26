@@ -18,6 +18,7 @@ class PELTest : public CleanLogID
 TEST_F(PELTest, FlattenTest)
 {
     auto data = pelDataFactory(TestPelType::pelSimple);
+    auto origData = *data;
     auto pel = std::make_unique<PEL>(*data);
 
     // Check a few fields
@@ -29,7 +30,7 @@ TEST_F(PELTest, FlattenTest)
 
     // Test that data in == data out
     auto flattenedData = pel->data();
-    ASSERT_EQ(*data, flattenedData);
+    ASSERT_EQ(origData, flattenedData);
 }
 
 TEST_F(PELTest, CommitTimeTest)
@@ -158,6 +159,7 @@ TEST_F(PELTest, GenericSectionTest)
 
     // Increment the section count
     data->at(27) += 2;
+    auto origData = *data;
 
     PEL pel{*data};
 
@@ -183,6 +185,11 @@ TEST_F(PELTest, GenericSectionTest)
 
     EXPECT_TRUE(foundXX);
     EXPECT_TRUE(foundYY);
+
+    // Now flatten and check
+    auto newData = pel.data();
+
+    EXPECT_EQ(origData, newData);
 }
 
 // Test that an invalid section will still get a Generic object
