@@ -32,7 +32,7 @@ namespace pels
  * This class represents all sections with objects.
  *
  * The available constructors are:
- * - PEL(const std::vector<uint8_t>& data) - build this object out of a fully
+ * - PEL(std::vector<uint8_t>& data) - build this object out of a fully
  *   formed flattened PEL.
  *
  * - PEL(const openpower::pels::message::Entry& entry,
@@ -59,9 +59,14 @@ class PEL
      *
      * Build a PEL from raw data.
      *
+     * Note: Neither this nor the following constructor can take a const vector&
+     * because the Stream class that is used to read from the vector cannot take
+     * a const.  The alternative is to make a copy of the data, but as PELs can
+     * be up to 16KB that is undesireable.
+     *
      * @param[in] data - The PEL data
      */
-    PEL(const std::vector<uint8_t>& data);
+    PEL(std::vector<uint8_t>& data);
 
     /**
      * @brief Constructor
@@ -71,7 +76,7 @@ class PEL
      * @param[in] data - the PEL data
      * @param[in] obmcLogID - the corresponding OpenBMC event log ID
      */
-    PEL(const std::vector<uint8_t>& data, uint32_t obmcLogID);
+    PEL(std::vector<uint8_t>& data, uint32_t obmcLogID);
 
     /**
      * @brief Constructor
@@ -201,10 +206,14 @@ class PEL
     /**
      * @brief Builds the section objects from a PEL data buffer
      *
+     * Note: The data parameter cannot be const for the same reasons
+     * as listed in the constructor.
+     *
+     * @param[in] data - The PEL data
      * @param[in] obmcLogID - The OpenBMC event log ID to use for that
      *                        field in the Private Header.
      */
-    void populateFromRawData(uint32_t obmcLogID);
+    void populateFromRawData(std::vector<uint8_t>& data, uint32_t obmcLogID);
 
     /**
      * @brief Flattens the PEL objects into the buffer
@@ -222,20 +231,6 @@ class PEL
      * @brief The PEL User Header section
      */
     std::unique_ptr<UserHeader> _uh;
-
-    /**
-     * @brief The PEL itself.
-     *
-     * This should be able to be removed when this class is able to
-     * serialize/deserialize a complete PEL from its objects, as
-     * then there will be no need to keep around the data anymore.
-     */
-    std::vector<uint8_t> _rawPEL;
-
-    /**
-     * @brief If the PEL came from a flattened data stream.
-     */
-    bool _fromStream = false;
 
     /**
      * @brief Holds all sections by the PH and UH.
