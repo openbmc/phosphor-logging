@@ -8,3 +8,6 @@ phosphor_log_manager_SOURCES += \
 	extensions/openpower-pels/private_header.cpp \
 	extensions/openpower-pels/repository.cpp \
 	extensions/openpower-pels/user_header.cpp
+
+registrydir = $(datadir)/phosphor-logging/pels/
+registry_DATA = extensions/openpower-pels/registry/message_registry.json
