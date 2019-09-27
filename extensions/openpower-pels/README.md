@@ -43,4 +43,7 @@ _PID="12345"
 
 ## The PEL Message Registry
 
+The PEL message registry is used to create PELs from OpenBMC event logs.
+Documentation can be found [here](registry/README.md).
+
 ## D-Bus Interfaces
