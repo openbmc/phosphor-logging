@@ -1,0 +1,10 @@
+Code-Review+1: Vishwanatha Subbanna <vishwa@linux.vnet.ibm.com>
+Code-Review+1: Andrew Geissler <geissonator@yahoo.com>
+Code-Review+1: Lei YU <mine260309@gmail.com>
+Code-Review+2: Matt Spinler <spinler@us.ibm.com>
+Verified+1: Matt Spinler <spinler@us.ibm.com>
+Submitted-by: Matt Spinler <spinler@us.ibm.com>
+Submitted-at: Fri, 27 Sep 2019 14:15:24 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-logging/+/23273
+Project: openbmc/phosphor-logging
+Branch: refs/heads/master
