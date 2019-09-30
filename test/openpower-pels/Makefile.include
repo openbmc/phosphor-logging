@@ -2,6 +2,7 @@ TESTS += $(check_PROGRAMS)
 
 check_PROGRAMS += \
 	additional_data_test \
+	ascii_string_test \
 	bcd_time_test \
 	failing_mtms_test \
 	generic_section_test \
@@ -190,3 +191,11 @@ user_data_test_LDADD = \
 	$(test_ldadd) \
 	$(top_builddir)/extensions/openpower-pels/user_data.o
 user_data_test_LDFLAGS = $(test_ldflags)
+
+ascii_string_test_SOURCES = %reldir%/ascii_string_test.cpp
+ascii_string_test_CPPFLAGS = $(test_cppflags)
+ascii_string_test_CXXFLAGS = $(test_cxxflags)
+ascii_string_test_LDADD = \
+	$(test_ldadd) \
+	$(top_builddir)/extensions/openpower-pels/ascii_string.o
+ascii_string_test_LDFLAGS = $(test_ldflags)

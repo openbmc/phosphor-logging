@@ -1,4 +1,5 @@
 phosphor_log_manager_SOURCES += \
+	extensions/openpower-pels/ascii_string.cpp \
 	extensions/openpower-pels/bcd_time.cpp \
 	extensions/openpower-pels/data_interface.cpp \
 	extensions/openpower-pels/entry_points.cpp \
