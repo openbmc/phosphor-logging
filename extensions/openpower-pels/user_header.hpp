@@ -145,6 +145,12 @@ class UserHeader : public Section
                sizeof(_actionFlags) + sizeof(_reserved4Byte2);
     }
 
+    /**
+     * @brief Check if user section can be converted to JSON
+     *
+     */
+    std::optional<std::string> getJSON() const override;
+
   private:
     /**
      * @brief Fills in the object from the stream data
