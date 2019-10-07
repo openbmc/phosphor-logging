@@ -1,11 +1,13 @@
 #pragma once
+
 #include "section_header.hpp"
+
+#include <optional>
 
 namespace openpower
 {
 namespace pels
 {
-
 /**
  * @class Section
  *
@@ -45,6 +47,15 @@ class Section
      * @param[in] stream - The stream to write to
      */
     virtual void flatten(Stream& stream) = 0;
+
+    /**
+     * @brief Get section in JSON
+     *
+     */
+    virtual std::optional<std::string> getJSON() const
+    {
+        return std::nullopt;
+    }
 
   protected:
     /**
