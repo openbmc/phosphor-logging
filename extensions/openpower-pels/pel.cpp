@@ -193,6 +193,13 @@ std::unique_ptr<UserData> makeADUserDataSection(const AdditionalData& ad)
 void PEL::printSectionInJSON(Section& section, std::string& buf) const
 {
     char tmpB[5];
+    uint8_t id[] = {static_cast<uint8_t>(section.header().id >> 8),
+                    static_cast<uint8_t>(section.header().id)};
+    sprintf(tmpB, "%c%c", id[0], id[1]);
+    std::string sectionID(tmpB);
+    std::string sectionName = pv::sectionTitles.count(sectionID)
+                                  ? pv::sectionTitles.at(sectionID)
+                                  : "Unknown Section";
     if (section.valid())
     {
         uint8_t id[] = {static_cast<uint8_t>(section.header().id >> 8),
@@ -202,12 +209,20 @@ void PEL::printSectionInJSON(Section& section, std::string& buf) const
         std::string sectionName = pv::sectionTitles.count(sectionID)
                                       ? pv::sectionTitles.at(sectionID)
                                       : "Unknown Section";
-        buf += "\n\"" + sectionName + "\":[\n ";
-        std::vector<uint8_t> data;
-        Stream s{data};
-        section.flatten(s);
-        std::string dstr = dumpHex(std::data(data), data.size());
-        buf += dstr + "\n],\n";
+        if (section.toJSONChk())
+        {
+            buf += "\n\"" + sectionName + "\":{\n ";
+            buf += section.getJSON() + "\n},\n";
+        }
+        else
+        {
+            buf += "\n\"" + sectionName + "\":[\n ";
+            std::vector<uint8_t> data;
+            Stream s{data};
+            section.flatten(s);
+            std::string dstr = dumpHex(std::data(data), data.size());
+            buf += dstr + "],\n";
+        }
     }
     else
     {

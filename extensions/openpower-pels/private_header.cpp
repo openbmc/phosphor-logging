@@ -108,6 +108,12 @@ void PrivateHeader::validate()
     _valid = (failed) ? false : true;
 }
 
+/*bool PrivateHeader::toJSON() const
+{
+
+    return false;
+}
+*/
 void PrivateHeader::unflatten(Stream& stream)
 {
     stream >> _header >> _createTimestamp >> _commitTimestamp >> _creatorID >>

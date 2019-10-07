@@ -5,7 +5,6 @@ namespace openpower
 {
 namespace pels
 {
-
 /**
  * @class Section
  *
@@ -45,6 +44,23 @@ class Section
      * @param[in] stream - The stream to write to
      */
     virtual void flatten(Stream& stream) = 0;
+    /**
+     * @brief Used to convert a section to Json Format.
+     * Implemented by derived classes.
+     */
+    virtual bool toJSONChk() const
+    {
+        printf("toJSONChk in Section Class.\n");
+        return false;
+    }
+    /**
+     * @brief Get section in JSON
+     *
+     */
+    virtual std::string getJSON() const
+    {
+        return "";
+    }
 
   protected:
     /**

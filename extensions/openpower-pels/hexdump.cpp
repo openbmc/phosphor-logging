@@ -123,6 +123,10 @@ char* dumpHex(const void* data, size_t size)
                 {
                     strcat(buffer, "   ");
                 }
+                std::string asciiString2(ascii);
+                asciiString2 = escapeJSON(asciiString2);
+                asciiToPrint = asciiString2.c_str();
+
                 snprintf(symbol, symbolSize, "|  %s\" \n ", asciiToPrint);
                 strcat(buffer, symbol);
                 memset(symbol, 0, strlen(symbol));

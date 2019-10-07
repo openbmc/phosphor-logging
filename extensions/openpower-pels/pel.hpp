@@ -260,6 +260,14 @@ class PEL
      * @param[in] std::string - PEL string
      */
     void printSectionInJSON(Section& section, std::string& buf) const;
+
+    /**
+     * @brief helper function for printing PELs.
+     * @param[in] Section& - section object reference
+     * @param[in] std::string - PEL string
+     */
+    void printSectionInHumanReadableJSON(Section& section,
+                                         std::string& buf) const;
 };
 
 namespace util

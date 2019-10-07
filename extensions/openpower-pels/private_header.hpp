@@ -66,6 +66,12 @@ class PrivateHeader : public Section
     explicit PrivateHeader(Stream& pel);
 
     /**
+     * @brief private header to JSON
+     *
+     */
+    // bool toJSON() const override;
+
+    /**
      * @brief Flatten the section into the stream
      *
      * @param[in] stream - The stream to write to
