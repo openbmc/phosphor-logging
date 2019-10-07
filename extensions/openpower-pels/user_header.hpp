@@ -145,6 +145,12 @@ class UserHeader : public Section
                sizeof(_actionFlags) + sizeof(_reserved4Byte2);
     }
 
+    /**
+     * @brief Check if user section can be converted to JSON
+     *
+     */
+    std::optional<std::string> getJSON() const override;
+
   private:
     /**
      * @brief Fills in the object from the stream data
@@ -204,6 +210,16 @@ class UserHeader : public Section
      * @brief The second reserved word placeholder.
      */
     uint32_t _reserved4Byte2;
+
+    /**
+     * @brief Helper function to get values from lookup tables.
+     * @return std::string - the action flags
+     * @param[in] uint8_t - field to get value for
+     * @param[in] PELValues - lookup table
+     */
+    using PELFieldValue = std::tuple<uint32_t, const char*, const char*>;
+    using PELValues = std::vector<PELFieldValue>;
+    std::string getValue(const uint8_t field, const PELValues values) const;
 };
 
 } // namespace pels
