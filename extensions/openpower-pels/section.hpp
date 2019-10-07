@@ -5,6 +5,7 @@
 #include "stream.hpp"
 
 #include <array>
+#include <fifo_map/src/fifo_map.hpp>
 #include <iterator>
 #include <nlohmann/json.hpp>
 #include <vector>
@@ -13,6 +14,12 @@ namespace openpower
 {
 namespace pels
 {
+using namespace nlohmann;
+// A workaround to give to use fifo_map as map, we are just ignoring the 'less'
+// compare
+template <class K, class V, class dummy_compare, class A>
+using my_workaround_fifo_map = fifo_map<K, V, fifo_map_compare<K>, A>;
+using fifoMap = basic_json<my_workaround_fifo_map>;
 
 /**
  * @class Section
@@ -74,7 +81,7 @@ class Section
      * @brief Used to convert a section to Json Format.
      * Implemented by derived classes.
      */
-    virtual const char* toJson() = 0;
+    virtual fifoMap toJson() = 0;
 
     /**
      * @brief Used to get the hex dump of a part of a section.

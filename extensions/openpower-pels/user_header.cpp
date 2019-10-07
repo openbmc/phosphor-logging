@@ -2,6 +2,8 @@
 
 #include "pel_types.hpp"
 
+#include <fifo_map/src/fifo_map.hpp>
+#include <iostream>
 #include <phosphor-logging/log.hpp>
 
 namespace openpower
@@ -10,6 +12,7 @@ namespace pels
 {
 
 using namespace phosphor::logging;
+using namespace nlohmann;
 using json = nlohmann::json;
 
 void UserHeader::unflatten(Stream& stream)
@@ -69,30 +72,26 @@ void UserHeader::validate()
 /**
  * @brief Returns the section header in json format.
  *
- * @return  char *
+ * @return fifoMap
  */
-const char* UserHeader::toJson()
+fifoMap UserHeader::toJson()
 {
-    auto tmp = pel_values::findByValue(this->_eventSeverity,
-                                       pel_values::severityValues);
-    const char* severity = std::get<pel_values::registryNamePos>(*tmp);
-    // TODO FOR ALL OTHER FIELDS
-    auto uh = R"(
-    {
-        "Section Version": "",
-        "Sub-section type": "",
-        "Log Committed by": "",
-        "Subsystem": "",
-        "Event Scope": "",
-        "Event Severity":""
-    }
-    )"_json;
-    // any Hex dumps would be added here too
-    uh["Event Severity"] = severity;
-    std::stringstream ss;
-    ss << "TODO" << uh.dump();
-    const char* c = &*ss.str().begin();
-    return c;
+    auto sevCode = pel_values::findByValue(this->_eventSeverity,
+                                           pel_values::severityValues);
+    const char* severity = std::get<pel_values::registryNamePos>(*sevCode);
+    // TODO FOR ALL FIELDS.
+    fifoMap uh = {{"Section Version", 1},
+                  {"Sub-section type", 0},
+                  {"Log Committed by", "occc"},
+                  {"Subsystem", "Miscellaneous"},
+                  {"Event Scope", "Single Platform"},
+                  {"Event Severity", severity},
+                  {"Event Type", "Miscellaneous, Informational Only"},
+                  {"Return Code", "0x00002A01"}
+
+    };
+
+    return uh;
 }
 
 } // namespace pels
