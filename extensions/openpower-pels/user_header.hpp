@@ -1,6 +1,7 @@
 #pragma once
 
 #include "elog_entry.hpp"
+#include "pel_values.hpp"
 #include "registry.hpp"
 #include "section.hpp"
 #include "stream.hpp"
@@ -145,6 +146,13 @@ class UserHeader : public Section
                sizeof(_actionFlags) + sizeof(_reserved4Byte2);
     }
 
+    /**
+     * @brief Get section in JSON.
+     * @return std::optional<std::string> - If a sections comes with a JSON
+     * repressentation, this would return the string for it.
+     */
+    std::optional<std::string> getJSON() const override;
+
   private:
     /**
      * @brief Fills in the object from the stream data
@@ -204,6 +212,15 @@ class UserHeader : public Section
      * @brief The second reserved word placeholder.
      */
     uint32_t _reserved4Byte2;
+
+    /**
+     * @brief Helper function to get values from lookup tables.
+     * @return std::string - the value
+     * @param[in] uint8_t - field to get value for
+     * @param[in] PELValues - lookup table
+     */
+    std::string getValue(const uint8_t field,
+                         const pel_values::PELValues& values) const;
 };
 
 } // namespace pels
