@@ -16,8 +16,11 @@
 #include "user_header.hpp"
 
 #include "pel_types.hpp"
+#include "pel_values.hpp"
 #include "severity.hpp"
 
+#include <fifo_map/src/fifo_map.hpp>
+#include <iostream>
 #include <phosphor-logging/log.hpp>
 
 namespace openpower
@@ -113,5 +116,39 @@ void UserHeader::validate()
     _valid = (failed) ? false : true;
 }
 
+bool UserHeader::toJSONChk() const
+{
+    return true;
+}
+std::string UserHeader::getJSON() const
+{
+    auto sevCode = pel_values::findByValue(this->_eventSeverity,
+                                           pel_values::severityValues);
+    std::string severity = std::get<pel_values::registryNamePos>(*sevCode);
+    auto eventSubsystemCode = pel_values::findByValue(
+        this->_eventSubsystem, pel_values::subsystemValues);
+    std::string subsystem =
+        std::get<pel_values::registryNamePos>(*eventSubsystemCode);
+    auto eventScopeCode = pel_values::findByValue(this->_eventScope,
+                                                  pel_values::eventScopeValues);
+    std::string eventScope =
+        std::get<pel_values::registryNamePos>(*eventScopeCode);
+    auto eventTypeCode =
+        pel_values::findByValue(this->_eventType, pel_values::eventTypeValues);
+    std::string eventType =
+        std::get<pel_values::registryNamePos>(*eventTypeCode);
+    std::string uh =
+        "{\"Section Version:\", \"1\"}, \n {\"Sub-section type:\", \"0\"}, \n "
+        "{\"Log "
+        "Committed by:\", \"occc\"}, \n {\"Subsystem:\", \"" +
+        subsystem +
+        "\"},\n "
+        "{\"Event Scope:\", \"" +
+        eventScope + "\"}, \n {\"Event Severity:\",\"" + severity +
+        "\"},\n {\"Event Type:\", \"" + eventType +
+        "\"},\n "
+        "{\"Return Code:\", \"0x00002A01\"}";
+    return uh;
+}
 } // namespace pels
 } // namespace openpower
