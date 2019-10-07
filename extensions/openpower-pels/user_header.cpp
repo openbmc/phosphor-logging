@@ -16,8 +16,10 @@
 #include "user_header.hpp"
 
 #include "pel_types.hpp"
+#include "pel_values.hpp"
 #include "severity.hpp"
 
+#include <iostream>
 #include <phosphor-logging/log.hpp>
 
 namespace openpower
@@ -113,5 +115,48 @@ void UserHeader::validate()
     _valid = (failed) ? false : true;
 }
 
+std::string UserHeader::getValue(const uint8_t field,
+                                 const PELValues values) const
+{
+
+    auto tmp = pel_values::findByValue(field, values);
+    if (tmp != values.end())
+    {
+        return std::get<pel_values::registryNamePos>(*tmp);
+    }
+    else
+    {
+        return "invalid";
+    }
+}
+std::optional<std::string> UserHeader::getJSON() const
+{
+    std::string severity;
+    std::string subsystem;
+    std::string eventScope;
+    std::string eventType;
+    severity = getValue(_eventSeverity, pel_values::severityValues);
+    subsystem = getValue(_eventSubsystem, pel_values::subsystemValues);
+    eventScope = getValue(_eventScope, pel_values::eventScopeValues);
+    eventType = getValue(_eventType, pel_values::eventTypeValues);
+    char tmpUhVal[8];
+    sprintf(tmpUhVal, "%d", userHeaderVersion);
+    std::string uhVerStr(tmpUhVal);
+    sprintf(tmpUhVal, "0x%X", _header.componentID);
+    std::string uhCbStr(tmpUhVal);
+    sprintf(tmpUhVal, "%d", _header.subType);
+    std::string uhStStr(tmpUhVal);
+
+    std::string uh = "{\"Section Version\": \"" + uhVerStr +
+                     "\"}, \n {\"Sub-section type\": \"" + uhStStr +
+                     "\"}, \n "
+                     "{\"Log Committed by\": \"" +
+                     uhCbStr + "\"}, \n {\"Subsystem\": \"" + subsystem +
+                     "\"},\n "
+                     "{\"Event Scope\": \"" +
+                     eventScope + "\"}, \n {\"Event Severity\":\"" + severity +
+                     "\"},\n {\"Event Type\": \"" + eventType + "\"}";
+    return uh;
+}
 } // namespace pels
 } // namespace openpower
