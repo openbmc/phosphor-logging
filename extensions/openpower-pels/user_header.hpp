@@ -32,11 +32,11 @@ class UserHeader : public Section
     UserHeader(UserHeader&&) = default;
     UserHeader& operator=(UserHeader&&) = default;
     /**
-     * @brief Returns the section header in json format with values in hex.
+     * @brief Returns the section header in json format.
      *
-     * @return  char * - json string with values in hex
+     * @return fifoMap
      */
-    const char* toJson() override;
+    fifoMap toJson() override;
 
     /**
      * @brief Constructor

@@ -111,7 +111,7 @@ class PrivateHeader : public Section
      *
      * @return  char * - json string with values in hex
      */
-    const char* toJson() override;
+    fifoMap toJson() override;
 
     /**
      * @brief Returns the OpenBMC log ID field

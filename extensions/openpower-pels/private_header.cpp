@@ -2,6 +2,7 @@
 
 #include "pel_types.hpp"
 
+#include <fifo_map/src/fifo_map.hpp>
 #include <phosphor-logging/log.hpp>
 
 namespace openpower
@@ -10,6 +11,8 @@ namespace pels
 {
 
 using namespace phosphor::logging;
+using namespace nlohmann;
+using json = nlohmann::json;
 
 PrivateHeader::PrivateHeader(Stream& pel)
 {
@@ -29,22 +32,22 @@ PrivateHeader::PrivateHeader(Stream& pel)
 /**
  * @brief Returns the section header in json format.
  *
- * @return  char *
+ * @return fifoMap
  */
-const char* PrivateHeader::toJson()
+fifoMap PrivateHeader::toJson()
 {
-    std::stringstream ss;
-    ss << "TODO";
-    // ss << this->id;
-    // ss << "0x" << std::uppercase << std::setfill('0') << std::setw(4)
-    // << std::hex << id;/* << "0x" << std::uppercase << std::setfill('0')
-    /*<< std::setw(4) << std::hex << size << "0x" << std::uppercase
-    << std::setfill('0') << std::setw(4) << std::hex << version << "0x"
-    << std::uppercase << std::setfill('0') << std::setw(4) << std::hex
-    << subType << "0x" << std::uppercase << std::setfill('0')
-    << std::setw(4) << std::hex << componentID;*/
-    const char* c = &*ss.str().begin();
-    return c;
+    fifoMap ph = {{"Section Version", 1},
+                  {"Sub-section type", 0},
+                  {"Created by", "occc"},
+                  {"Created at", "09/11/2019 10:58:25"},
+                  {"Committed at", "09/11/2019 10:58:26"},
+                  {"Creator Subsystem", "FipS Error Logger"},
+                  {"CSSVER"},
+                  {"Platform Log Id", "0x500DEA2C"},
+                  {"Entry Id", "0x500DEA2C"},
+                  {"Total Log Size", 5212}};
+
+    return ph;
 }
 
 void PrivateHeader::validate()
