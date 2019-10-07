@@ -1,5 +1,6 @@
 #include "section.hpp"
 
+#include <iostream> 
 #include <phosphor-logging/log.hpp>
 
 namespace openpower
@@ -61,14 +62,17 @@ std::string Section::hexdump(const byte_type* buffer, std::size_t size,
     }
     return ost.str();
 }
+/*
 const char* Section::toJson()
 {
     std::vector<uint8_t> data;
     Stream s(data);
     flatten(s);
     uint8_t* a = &data[0];
-    const char* c = &*(hexdump(a, sizeof(*a), "hexdump")).begin();
+    std::cout << hexdump(a, sizeof(a), "hexdump");
+    const char* c = &*(hexdump(a, sizeof(data), "hexdump")).begin();
     return c;
 }
+*/
 } // namespace pels
 } // namespace openpower
