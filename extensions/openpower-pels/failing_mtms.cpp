@@ -58,31 +58,6 @@ void FailingMTMS::validate()
     _valid = (failed) ? false : true;
 }
 
-std::string FailingMTMS::getMachineTypeModel()
-{
-    std::string mtmString;
-    const auto& mtm = _mtms.machineTypeAndModel();
-
-    for (size_t i = 0; (i < MTMS::mtmSize) && (mtm[i] != 0); i++)
-    {
-        mtmString.push_back(mtm[i]);
-    }
-    return mtmString;
-}
-
-std::string FailingMTMS::getMachineSerialNumber()
-{
-    std::string snString;
-    const auto& sn = _mtms.machineSerialNumber();
-
-    // Get everything up to the 0s.
-    for (size_t i = 0; (i < MTMS::snSize) && (sn[i] != 0); i++)
-    {
-        snString.push_back(sn[i]);
-    }
-    return snString;
-}
-
 void FailingMTMS::flatten(Stream& stream)
 {
     stream << _header << _mtms;

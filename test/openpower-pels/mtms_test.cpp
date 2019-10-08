@@ -18,11 +18,13 @@ TEST(MTMSTest, ConstructorTest)
         MTMS mtms{tm, sn};
 
         std::array<uint8_t, 8> t{'T', 'T', 'T', 'T', '-', 'M', 'M', 'M'};
-        EXPECT_EQ(t, mtms.machineTypeAndModel());
+        EXPECT_EQ(t, mtms.machineTypeAndModelRaw());
+        EXPECT_EQ("TTTT-MMM", mtms.machineTypeAndModel());
 
         std::array<uint8_t, 12> s{'1', '2', '3', '4', '5', '6',
                                   '7', '8', '9', 'A', 'B', 'C'};
-        EXPECT_EQ(s, mtms.machineSerialNumber());
+        EXPECT_EQ(s, mtms.machineSerialNumberRaw());
+        EXPECT_EQ("123456789ABC", mtms.machineSerialNumber());
     }
 
     {
@@ -33,11 +35,11 @@ TEST(MTMSTest, ConstructorTest)
         MTMS mtms{tm, sn};
 
         std::array<uint8_t, 8> t{'T', 'T', 'T', 'T', '-', 'M', 'M', 'M'};
-        EXPECT_EQ(t, mtms.machineTypeAndModel());
+        EXPECT_EQ(t, mtms.machineTypeAndModelRaw());
 
         std::array<uint8_t, 12> s{'1', '2', '3', '4', '5', '6',
                                   '7', '8', '9', 'A', 'B', 'C'};
-        EXPECT_EQ(s, mtms.machineSerialNumber());
+        EXPECT_EQ(s, mtms.machineSerialNumberRaw());
     }
 
     {
@@ -48,10 +50,12 @@ TEST(MTMSTest, ConstructorTest)
         MTMS mtms{tm, sn};
 
         std::array<uint8_t, 8> t{'T', 'T', 'T', 'T', 0, 0, 0, 0};
-        EXPECT_EQ(t, mtms.machineTypeAndModel());
+        EXPECT_EQ(t, mtms.machineTypeAndModelRaw());
+        EXPECT_EQ("TTTT", mtms.machineTypeAndModel());
 
         std::array<uint8_t, 12> s{'1', '2', '3', '4', 0, 0, 0, 0, 0, 0, 0, 0};
-        EXPECT_EQ(s, mtms.machineSerialNumber());
+        EXPECT_EQ(s, mtms.machineSerialNumberRaw());
+        EXPECT_EQ("1234", mtms.machineSerialNumber());
     }
 
     {
@@ -63,12 +67,9 @@ TEST(MTMSTest, ConstructorTest)
 
         MTMS mtms{stream};
 
-        std::array<uint8_t, 8> t{'T', 'T', 'T', 'T', '-', 'M', 'M', 'M'};
-        EXPECT_EQ(t, mtms.machineTypeAndModel());
+        EXPECT_EQ("TTTT-MMM", mtms.machineTypeAndModel());
 
-        std::array<uint8_t, 12> s{'1', '2', '3', '4', '5', '6',
-                                  '7', '8', '9', 'A', 'B', 'C'};
-        EXPECT_EQ(s, mtms.machineSerialNumber());
+        EXPECT_EQ("123456789ABC", mtms.machineSerialNumber());
     }
 }
 
@@ -100,10 +101,7 @@ TEST(MTMSTest, OperatorInsertTest)
     MTMS mtms;
     stream >> mtms;
 
-    std::array<uint8_t, 8> t{'T', 'T', 'T', 'T', '-', 'M', 'M', 'M'};
-    EXPECT_EQ(t, mtms.machineTypeAndModel());
+    EXPECT_EQ("TTTT-MMM", mtms.machineTypeAndModel());
 
-    std::array<uint8_t, 12> s{'1', '2', '3', '4', '5', '6',
-                              '7', '8', '9', 'A', 'B', 'C'};
-    EXPECT_EQ(s, mtms.machineSerialNumber());
+    EXPECT_EQ("123456789ABC", mtms.machineSerialNumber());
 }
