@@ -160,6 +160,23 @@ class Stream
     }
 
     /**
+     * @brief Extraction operator for a std::vector<char>
+     *
+     * The vector's size is the amount extracted.
+     *
+     * @param[out] value - filled in with the value
+     * @return Stream&
+     */
+    Stream& operator>>(std::vector<char>& value)
+    {
+        if (!value.empty())
+        {
+            read(value.data(), value.size());
+        }
+        return *this;
+    }
+
+    /**
      * @brief Insert operator for a uint8_t
      *
      * @param[in] value - the value to write to the stream
@@ -231,6 +248,23 @@ class Stream
      * @return Stream&
      */
     Stream& operator<<(const std::vector<uint8_t>& value)
+    {
+        if (!value.empty())
+        {
+            write(value.data(), value.size());
+        }
+        return *this;
+    }
+
+    /**
+     * @brief Insert operator for a std::vector<char>
+     *
+     * The full vector is written to the stream.
+     *
+     * @param[in] value - the value to write to the stream
+     * @return Stream&
+     */
+    Stream& operator<<(const std::vector<char>& value)
     {
         if (!value.empty())
         {
