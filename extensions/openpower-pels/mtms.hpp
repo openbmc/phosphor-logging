@@ -59,23 +59,55 @@ class MTMS
     explicit MTMS(Stream& stream);
 
     /**
-     * @brief Returns the machine type/model value
+     * @brief Returns the raw machine type/model value
      *
      * @return std::array<uint8_t, mtmSize>&  - The TM value
      */
-    std::array<uint8_t, mtmSize>& machineTypeAndModel()
+    std::array<uint8_t, mtmSize>& machineTypeAndModelRaw()
     {
         return _machineTypeAndModel;
     }
 
     /**
-     * @brief Returns the machine serial number value
+     * @brief Returns the machine type/model value
+     *
+     * @return std::string - The TM value
+     */
+    std::string machineTypeAndModel() const
+    {
+        std::string mtm;
+
+        for (size_t i = 0; (i < mtmSize) && (_machineTypeAndModel[i] != 0); i++)
+        {
+            mtm.push_back(_machineTypeAndModel[i]);
+        }
+
+        return mtm;
+    }
+
+    /**
+     * @brief Returns the raw machine serial number value
      *
      * @return std::array<uint8_t, snSize>& - The SN value
      */
-    std::array<uint8_t, snSize>& machineSerialNumber()
+    std::array<uint8_t, snSize>& machineSerialNumberRaw()
     {
         return _serialNumber;
+    }
+
+    /**
+     * @brief Returns the machine serial number value
+     *
+     * @return std::string - The SN value
+     */
+    std::string machineSerialNumber() const
+    {
+        std::string sn;
+        for (size_t i = 0; (i < snSize) && (_serialNumber[i] != 0); i++)
+        {
+            sn.push_back(_serialNumber[i]);
+        }
+        return sn;
     }
 
     /**

@@ -51,12 +51,12 @@ Stream& operator<<(Stream& s, MTMS& mtms)
 {
     for (size_t i = 0; i < MTMS::mtmSize; i++)
     {
-        s << mtms.machineTypeAndModel()[i];
+        s << mtms.machineTypeAndModelRaw()[i];
     }
 
     for (size_t i = 0; i < MTMS::snSize; i++)
     {
-        s << mtms.machineSerialNumber()[i];
+        s << mtms.machineSerialNumberRaw()[i];
     }
 
     return s;
@@ -66,12 +66,12 @@ Stream& operator>>(Stream& s, MTMS& mtms)
 {
     for (size_t i = 0; i < MTMS::mtmSize; i++)
     {
-        s >> mtms.machineTypeAndModel()[i];
+        s >> mtms.machineTypeAndModelRaw()[i];
     }
 
     for (size_t i = 0; i < MTMS::snSize; i++)
     {
-        s >> mtms.machineSerialNumber()[i];
+        s >> mtms.machineSerialNumberRaw()[i];
     }
 
     return s;
