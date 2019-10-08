@@ -66,14 +66,20 @@ class FailingMTMS : public Section
      *
      * @return std::string the MTM
      */
-    std::string getMachineTypeModel();
+    std::string getMachineTypeModel() const
+    {
+        return _mtms.machineTypeAndModel();
+    }
 
     /**
      * @brief Returns the machine serial number as a string
      *
      * @return std::string the serial number
      */
-    std::string getMachineSerialNumber();
+    std::string getMachineSerialNumber() const
+    {
+        return _mtms.machineSerialNumber();
+    }
 
   private:
     /**
