@@ -5,6 +5,7 @@ check_PROGRAMS += \
 	ascii_string_test \
 	bcd_time_test \
 	failing_mtms_test \
+	fru_identity_test \
 	generic_section_test \
 	log_id_test \
 	mtms_test \
@@ -199,3 +200,11 @@ ascii_string_test_LDADD = \
 	$(test_ldadd) \
 	$(top_builddir)/extensions/openpower-pels/ascii_string.o
 ascii_string_test_LDFLAGS = $(test_ldflags)
+
+fru_identity_test_SOURCES = %reldir%/fru_identity_test.cpp
+fru_identity_test_CPPFLAGS = $(test_cppflags)
+fru_identity_test_CXXFLAGS = $(test_cxxflags)
+fru_identity_test_LDADD = \
+	$(test_ldadd) \
+	$(top_builddir)/extensions/openpower-pels/fru_identity.o
+fru_identity_test_LDFLAGS = $(test_ldflags)
