@@ -60,6 +60,16 @@ enum class TestPelType
 };
 
 /**
+ * @brief Tells the SRC factory which data to create
+ */
+enum class TestSRCType
+{
+    fruIdentityStructure,
+    pceIdentityStructure,
+    mruStructure,
+};
+
+/**
  * @brief PEL data factory, for testing
  *
  * @param[in] type - the type of data to create
@@ -67,6 +77,17 @@ enum class TestPelType
  * @return std::unique_ptr<std::vector<uint8_t>> - the PEL data
  */
 std::unique_ptr<std::vector<uint8_t>> pelDataFactory(TestPelType type);
+
+/**
+ * @brief SRC data factory, for testing
+ *
+ * Provides pieces of the SRC PEL section, such as a callout.
+ *
+ * @param[in] type - the type of data to create
+ *
+ * @return std::vector<uint8_t> - The SRC data
+ */
+std::vector<uint8_t> srcDataFactory(TestSRCType type);
 
 /**
  * @brief Helper function to read raw PEL data from a file
