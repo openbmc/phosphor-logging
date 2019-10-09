@@ -51,6 +51,33 @@ constexpr uint8_t simplePEL[] = {
     // Add more as the code supports more
 };
 
+std::vector<uint8_t> srcFRUIdentityCallout{
+    'I', 'D', 0x1C, 0x1D,                     // type, size, flags
+    '1', '2', '3',  '4',                      // PN
+    '5', '6', '7',  0x00, 'A', 'A', 'A', 'A', // CCIN
+    '1', '2', '3',  '4',  '5', '6', '7', '8', // SN
+    '9', 'A', 'B',  'C'};
+
+std::vector<uint8_t> srcPCEIdentityCallout{
+    'P', 'E', 0x24, 0x00,                      // type, size, flags
+    'T', 'T', 'T',  'T',  '-', 'M', 'M',  'M', // MTM
+    '1', '2', '3',  '4',  '5', '6', '7',       // SN
+    '8', '9', 'A',  'B',  'C', 'P', 'C',  'E', // Name + null padded
+    'N', 'A', 'M',  'E',  '1', '2', 0x00, 0x00, 0x00};
+
+std::vector<uint8_t> srcMRUCallout{
+    'M',  'R',  0x28, 0x04, // ID, size, flags
+    0x00, 0x00, 0x00, 0x00, // Reserved
+    0x00, 0x00, 0x00, 'H',  // priority 0
+    0x01, 0x01, 0x01, 0x01, // MRU ID 0
+    0x00, 0x00, 0x00, 'M',  // priority 1
+    0x02, 0x02, 0x02, 0x02, // MRU ID 1
+    0x00, 0x00, 0x00, 'L',  // priority 2
+    0x03, 0x03, 0x03, 0x03, // MRU ID 2
+    0x00, 0x00, 0x00, 'H',  // priority 3
+    0x04, 0x04, 0x04, 0x04, // MRU ID 3
+};
+
 std::unique_ptr<std::vector<uint8_t>> pelDataFactory(TestPelType type)
 {
     std::unique_ptr<std::vector<uint8_t>> data;
@@ -72,6 +99,22 @@ std::unique_ptr<std::vector<uint8_t>> pelDataFactory(TestPelType type)
             break;
     }
     return data;
+}
+
+std::vector<uint8_t> srcDataFactory(TestSRCType type)
+{
+    switch (type)
+    {
+        case TestSRCType::fruIdentityStructure:
+            return srcFRUIdentityCallout;
+
+        case TestSRCType::pceIdentityStructure:
+            return srcPCEIdentityCallout;
+
+        case TestSRCType::mruStructure:
+            return srcMRUCallout;
+    }
+    return {};
 }
 
 std::unique_ptr<std::vector<uint8_t>> readPELFile(const fs::path& path)
