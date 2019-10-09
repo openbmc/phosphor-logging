@@ -8,6 +8,7 @@ phosphor_log_manager_SOURCES += \
 	extensions/openpower-pels/generic.cpp \
 	extensions/openpower-pels/log_id.cpp \
 	extensions/openpower-pels/manager.cpp \
+	extensions/openpower-pels/mru.cpp \
 	extensions/openpower-pels/mtms.cpp \
 	extensions/openpower-pels/paths.cpp \
 	extensions/openpower-pels/pce_identity.cpp \
