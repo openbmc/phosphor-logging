@@ -20,6 +20,7 @@ check_PROGRAMS += \
 	repository_test \
 	section_header_test \
 	severity_test \
+	src_test \
 	src_callout_test \
 	src_callouts_test \
 	stream_test \
@@ -27,17 +28,24 @@ check_PROGRAMS += \
 	user_header_test
 
 pel_objects = \
+	$(top_builddir)/extensions/openpower-pels/ascii_string.o \
 	$(top_builddir)/extensions/openpower-pels/bcd_time.o \
+	$(top_builddir)/extensions/openpower-pels/callout.o \
+	$(top_builddir)/extensions/openpower-pels/callouts.o \
 	$(top_builddir)/extensions/openpower-pels/failing_mtms.o \
+	$(top_builddir)/extensions/openpower-pels/fru_identity.o \
 	$(top_builddir)/extensions/openpower-pels/generic.o \
 	$(top_builddir)/extensions/openpower-pels/log_id.o \
 	$(top_builddir)/extensions/openpower-pels/mtms.o \
+	$(top_builddir)/extensions/openpower-pels/mru.o \
+	$(top_builddir)/extensions/openpower-pels/pce_identity.o \
 	$(top_builddir)/extensions/openpower-pels/pel.o \
 	$(top_builddir)/extensions/openpower-pels/pel_values.o \
 	$(top_builddir)/extensions/openpower-pels/private_header.o \
 	$(top_builddir)/extensions/openpower-pels/registry.o \
 	$(top_builddir)/extensions/openpower-pels/section_factory.o \
 	$(top_builddir)/extensions/openpower-pels/severity.o \
+	$(top_builddir)/extensions/openpower-pels/src.o \
 	$(top_builddir)/extensions/openpower-pels/user_data.o \
 	$(top_builddir)/extensions/openpower-pels/user_header.o
 
@@ -258,3 +266,20 @@ src_callouts_test_LDADD = \
 	$(top_builddir)/extensions/openpower-pels/mtms.o \
 	$(top_builddir)/extensions/openpower-pels/pce_identity.o
 src_callouts_test_LDFLAGS = $(test_ldflags)
+
+src_test_SOURCES = \
+	%reldir%/src_test.cpp \
+	%reldir%/pel_utils.cpp
+src_test_CPPFLAGS = $(test_cppflags)
+src_test_CXXFLAGS = $(test_cxxflags)
+src_test_LDADD = \
+	$(test_ldadd) \
+	$(top_builddir)/extensions/openpower-pels/ascii_string.o \
+	$(top_builddir)/extensions/openpower-pels/callout.o \
+	$(top_builddir)/extensions/openpower-pels/callouts.o \
+	$(top_builddir)/extensions/openpower-pels/fru_identity.o \
+	$(top_builddir)/extensions/openpower-pels/mru.o \
+	$(top_builddir)/extensions/openpower-pels/mtms.o \
+	$(top_builddir)/extensions/openpower-pels/pce_identity.o \
+	$(top_builddir)/extensions/openpower-pels/src.o
+src_test_LDFLAGS = $(test_ldflags)
