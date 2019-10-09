@@ -113,6 +113,40 @@ std::vector<uint8_t> srcDataFactory(TestSRCType type)
 
         case TestSRCType::mruStructure:
             return srcMRUCallout;
+
+        case TestSRCType::calloutStructureA:
+        {
+            // Add just the FRU identity substructure to the base structure
+            std::vector<uint8_t> data{
+                0xFF, 0x28, 'H', 4,   // size, flags, priority, LC length
+                'U',  '4',  '2', 0x00 // LC
+            };
+
+            data.insert(data.end(), srcFRUIdentityCallout.begin(),
+                        srcFRUIdentityCallout.end());
+
+            // The final size
+            data[0] = data.size();
+            return data;
+        }
+        case TestSRCType::calloutStructureB:
+        {
+            // Add all 3 substructures to the base structure
+
+            std::vector<uint8_t> data{
+                0xFF, 0x2F, 'L', 8, // size, flags, priority, LC length
+                'U',  '1',  '2', '-', 'P', '1', 0x00, 0x00 // LC
+            };
+            data.insert(data.end(), srcFRUIdentityCallout.begin(),
+                        srcFRUIdentityCallout.end());
+            data.insert(data.end(), srcPCEIdentityCallout.begin(),
+                        srcPCEIdentityCallout.end());
+            data.insert(data.end(), srcMRUCallout.begin(), srcMRUCallout.end());
+
+            // The final size
+            data[0] = data.size();
+            return data;
+        }
     }
     return {};
 }
