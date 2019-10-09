@@ -78,6 +78,25 @@ std::vector<uint8_t> srcMRUCallout{
     0x04, 0x04, 0x04, 0x04, // MRU ID 3
 };
 
+std::vector<uint8_t> srcSectionNoCallouts{
+
+    // Header
+    'P', 'S', 0x00, 0x80, 0x01, 0x01, 0x02, 0x02,
+
+    // SRC
+    0x02, 0x00, 0x00, // version, flags, reserved
+    0x09, 0x00, 0x00, // hex word count, reserved2B
+    0x00, 0x48,       // SRC structure size
+
+    // Hex words 2 - 9
+    0x02, 0x02, 0x02, 0x02, 0x03, 0x03, 0x03, 0x03, 0x04, 0x04, 0x04, 0x04,
+    0x05, 0x05, 0x05, 0x05, 0x06, 0x06, 0x06, 0x06, 0x07, 0x07, 0x07, 0x07,
+    0x08, 0x08, 0x08, 0x08, 0x09, 0x09, 0x09, 0x09,
+    // ASCII string
+    'B', 'D', '8', 'D', '5', '6', '7', '8', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+    ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+    ' ', ' '};
+
 std::unique_ptr<std::vector<uint8_t>> pelDataFactory(TestPelType type)
 {
     std::unique_ptr<std::vector<uint8_t>> data;
@@ -146,6 +165,59 @@ std::vector<uint8_t> srcDataFactory(TestSRCType type)
             // The final size
             data[0] = data.size();
             return data;
+        }
+        case TestSRCType::calloutSection2Callouts:
+        {
+            std::vector<uint8_t> data{0xC0, 0x00, 0x00,
+                                      0x00}; // ID, flags, length in words
+
+            // Add 2 callouts
+            auto callout = srcDataFactory(TestSRCType::calloutStructureA);
+            data.insert(data.end(), callout.begin(), callout.end());
+
+            callout = srcDataFactory(TestSRCType::calloutStructureB);
+            data.insert(data.end(), callout.begin(), callout.end());
+
+            // Set the actual word length value at offset 2
+            Stream stream{data};
+            uint16_t wordLength = data.size() / 4;
+            stream.offset(2);
+            stream << wordLength;
+            stream.offset(0);
+
+            return data;
+        }
+        case TestSRCType::primarySRCNoCallouts:
+        {
+            return srcSectionNoCallouts;
+        }
+        case TestSRCType::primarySRC2Callouts:
+        {
+            // Start with the no-callouts SRC, and add the callouts section
+            // from above.
+            auto src = srcSectionNoCallouts;
+            auto callouts =
+                srcDataFactory(TestSRCType::calloutSection2Callouts);
+
+            src.insert(src.end(), callouts.begin(), callouts.end());
+
+            // Set the flag that says there are callouts
+            // One byte after the 8B header
+            src[8 + 1] |= 0x01;
+
+            // Set the new sizes
+            uint16_t size = src.size();
+            Stream stream{src};
+
+            stream.offset(2); // In the header
+            stream << size;
+
+            // In the SRC - the size field doesn't include the header
+            size -= 8;
+            stream.offset(8 + 6);
+            stream << size;
+
+            return src;
         }
     }
     return {};

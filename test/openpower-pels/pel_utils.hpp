@@ -68,7 +68,10 @@ enum class TestSRCType
     pceIdentityStructure,
     mruStructure,
     calloutStructureA,
-    calloutStructureB
+    calloutStructureB,
+    calloutSection2Callouts,
+    primarySRCNoCallouts,
+    primarySRC2Callouts
 };
 
 /**

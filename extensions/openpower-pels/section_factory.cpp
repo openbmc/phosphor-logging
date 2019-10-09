@@ -4,6 +4,7 @@
 #include "generic.hpp"
 #include "pel_types.hpp"
 #include "private_header.hpp"
+#include "src.hpp"
 #include "user_data.hpp"
 #include "user_header.hpp"
 
@@ -41,6 +42,10 @@ std::unique_ptr<Section> create(Stream& pelData)
             break;
         case static_cast<uint16_t>(SectionID::failingMTMS):
             section = std::make_unique<FailingMTMS>(pelData);
+            break;
+        case static_cast<uint16_t>(SectionID::primarySRC):
+        case static_cast<uint16_t>(SectionID::secondarySRC):
+            section = std::make_unique<SRC>(pelData);
             break;
         default:
             // A generic object, but at least an object.
