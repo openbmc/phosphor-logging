@@ -48,7 +48,9 @@ PrivateHeader::PrivateHeader(uint16_t componentID, uint32_t obmcLogID,
     _valid = true;
 }
 
-PrivateHeader::PrivateHeader(Stream& pel)
+PrivateHeader::PrivateHeader(Stream& pel) :
+    _creatorID(0), _logType(0), _reservedByte(0), _sectionCount(0),
+    _obmcLogID(0), _plid(0), _id(0)
 {
     try
     {
