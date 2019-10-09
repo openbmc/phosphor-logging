@@ -67,6 +67,8 @@ enum class TestSRCType
     fruIdentityStructure,
     pceIdentityStructure,
     mruStructure,
+    calloutStructureA,
+    calloutStructureB
 };
 
 /**
