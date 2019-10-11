@@ -16,9 +16,9 @@ TEST_F(PrivateHeaderTest, SizeTest)
 
 TEST_F(PrivateHeaderTest, UnflattenFlattenTest)
 {
-    auto data = pelDataFactory(TestPelType::privateHeaderSimple);
+    auto data = pelDataFactory(TestPELType::privateHeaderSection);
 
-    Stream stream(*data);
+    Stream stream(data);
     PrivateHeader ph(stream);
     EXPECT_EQ(ph.valid(), true);
 
@@ -65,7 +65,7 @@ TEST_F(PrivateHeaderTest, UnflattenFlattenTest)
     Stream newStream(newData);
 
     ph.flatten(newStream);
-    EXPECT_EQ(*data, newData);
+    EXPECT_EQ(data, newData);
 
     // Change a field, then flatten and unflatten again
     ph.creatorID() = 0x55;
@@ -73,7 +73,7 @@ TEST_F(PrivateHeaderTest, UnflattenFlattenTest)
     newStream.offset(0);
     newData.clear();
     ph.flatten(newStream);
-    EXPECT_NE(*data, newData);
+    EXPECT_NE(data, newData);
 
     newStream.offset(0);
     PrivateHeader newPH(newStream);
@@ -84,9 +84,9 @@ TEST_F(PrivateHeaderTest, UnflattenFlattenTest)
 
 TEST_F(PrivateHeaderTest, ShortDataTest)
 {
-    auto data = pelDataFactory(TestPelType::privateHeaderSimple);
-    data->resize(PrivateHeader::flattenedSize() - 1);
-    Stream stream(*data);
+    auto data = pelDataFactory(TestPELType::privateHeaderSection);
+    data.resize(PrivateHeader::flattenedSize() - 1);
+    Stream stream(data);
 
     PrivateHeader ph(stream);
 
@@ -95,10 +95,10 @@ TEST_F(PrivateHeaderTest, ShortDataTest)
 
 TEST_F(PrivateHeaderTest, CorruptDataTest1)
 {
-    auto data = pelDataFactory(TestPelType::privateHeaderSimple);
-    Stream stream(*data);
+    auto data = pelDataFactory(TestPELType::privateHeaderSection);
+    Stream stream(data);
 
-    data->at(0) = 0; // corrupt the section ID
+    data.at(0) = 0; // corrupt the section ID
 
     PrivateHeader ph(stream);
 
@@ -107,10 +107,10 @@ TEST_F(PrivateHeaderTest, CorruptDataTest1)
 
 TEST_F(PrivateHeaderTest, CorruptDataTest2)
 {
-    auto data = pelDataFactory(TestPelType::privateHeaderSimple);
-    Stream stream(*data);
+    auto data = pelDataFactory(TestPELType::privateHeaderSection);
+    Stream stream(data);
 
-    data->at(4) = 0x22; // corrupt the version
+    data.at(4) = 0x22; // corrupt the version
 
     PrivateHeader ph(stream);
 
@@ -119,10 +119,10 @@ TEST_F(PrivateHeaderTest, CorruptDataTest2)
 
 TEST_F(PrivateHeaderTest, CorruptDataTest3)
 {
-    auto data = pelDataFactory(TestPelType::privateHeaderSimple);
-    Stream stream(*data);
+    auto data = pelDataFactory(TestPELType::privateHeaderSection);
+    Stream stream(data);
 
-    data->at(27) = 1; // corrupt the section count
+    data.at(27) = 1; // corrupt the section count
 
     PrivateHeader ph(stream);
 

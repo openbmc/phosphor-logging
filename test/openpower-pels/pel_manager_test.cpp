@@ -34,11 +34,11 @@ TEST_F(ManagerTest, TestCreateWithPEL)
 
     // Create a PEL, write it to a file, and pass that filename into
     // the create function.
-    auto data = pelDataFactory(TestPelType::pelSimple);
+    auto data = pelDataFactory(TestPELType::pelSimple);
 
     fs::path pelFilename = makeTempDir() / "rawpel";
     std::ofstream pelFile{pelFilename};
-    pelFile.write(reinterpret_cast<const char*>(data->data()), data->size());
+    pelFile.write(reinterpret_cast<const char*>(data.data()), data.size());
     pelFile.close();
 
     std::string adItem = "RAWPEL=" + pelFilename.string();
