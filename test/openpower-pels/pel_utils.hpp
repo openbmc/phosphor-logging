@@ -58,7 +58,8 @@ enum class TestPELType
     privateHeaderSection,
     userHeaderSection,
     primarySRCSection,
-    primarySRCSection2Callouts
+    primarySRCSection2Callouts,
+    failingMTMSSection
 };
 
 /**
