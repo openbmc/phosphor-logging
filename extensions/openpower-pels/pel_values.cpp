@@ -62,7 +62,7 @@ const PELValues subsystemValues = {{0x10, "processor", "TODO"},
                                    {0x60, "power", "TODO"},
                                    {0x61, "power_supply", "TODO"},
                                    {0x62, "power_control_hw", "TODO"},
-                                   {63, "power_fans", "TODO"},
+                                   {0x63, "power_fans", "TODO"},
                                    {0x64, "power_sequencer", "TODO"},
 
                                    {0x70, "others", "TODO"},
