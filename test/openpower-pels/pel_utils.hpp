@@ -52,11 +52,13 @@ class CleanPELFiles : public ::testing::Test
 /**
  * @brief Tells the factory which PEL to create
  */
-enum class TestPelType
+enum class TestPELType
 {
     pelSimple,
-    privateHeaderSimple,
-    userHeaderSimple
+    privateHeaderSection,
+    userHeaderSection,
+    primarySRCSection,
+    primarySRCSection2Callouts
 };
 
 /**
@@ -69,9 +71,7 @@ enum class TestSRCType
     mruStructure,
     calloutStructureA,
     calloutStructureB,
-    calloutSection2Callouts,
-    primarySRCNoCallouts,
-    primarySRC2Callouts
+    calloutSection2Callouts
 };
 
 /**
@@ -79,9 +79,9 @@ enum class TestSRCType
  *
  * @param[in] type - the type of data to create
  *
- * @return std::unique_ptr<std::vector<uint8_t>> - the PEL data
+ * @return std::vector<uint8_t> - the PEL data
  */
-std::unique_ptr<std::vector<uint8_t>> pelDataFactory(TestPelType type);
+std::vector<uint8_t> pelDataFactory(TestPELType type);
 
 /**
  * @brief SRC data factory, for testing

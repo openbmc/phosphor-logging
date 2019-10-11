@@ -17,9 +17,9 @@ class PELTest : public CleanLogID
 
 TEST_F(PELTest, FlattenTest)
 {
-    auto data = pelDataFactory(TestPelType::pelSimple);
-    auto origData = *data;
-    auto pel = std::make_unique<PEL>(*data);
+    auto data = pelDataFactory(TestPELType::pelSimple);
+    auto origData = data;
+    auto pel = std::make_unique<PEL>(data);
 
     // Check a few fields
     EXPECT_TRUE(pel->valid());
@@ -35,8 +35,8 @@ TEST_F(PELTest, FlattenTest)
 
 TEST_F(PELTest, CommitTimeTest)
 {
-    auto data = pelDataFactory(TestPelType::pelSimple);
-    auto pel = std::make_unique<PEL>(*data);
+    auto data = pelDataFactory(TestPELType::pelSimple);
+    auto pel = std::make_unique<PEL>(data);
 
     auto origTime = pel->commitTime();
     pel->setCommitTime();
@@ -52,8 +52,8 @@ TEST_F(PELTest, CommitTimeTest)
 
 TEST_F(PELTest, AssignIDTest)
 {
-    auto data = pelDataFactory(TestPelType::pelSimple);
-    auto pel = std::make_unique<PEL>(*data);
+    auto data = pelDataFactory(TestPELType::pelSimple);
+    auto pel = std::make_unique<PEL>(data);
 
     auto origID = pel->id();
     pel->assignID();
@@ -69,8 +69,8 @@ TEST_F(PELTest, AssignIDTest)
 
 TEST_F(PELTest, WithLogIDTest)
 {
-    auto data = pelDataFactory(TestPelType::pelSimple);
-    auto pel = std::make_unique<PEL>(*data, 0x42);
+    auto data = pelDataFactory(TestPELType::pelSimple);
+    auto pel = std::make_unique<PEL>(data, 0x42);
 
     EXPECT_TRUE(pel->valid());
     EXPECT_EQ(pel->obmcLogID(), 0x42);
@@ -78,21 +78,21 @@ TEST_F(PELTest, WithLogIDTest)
 
 TEST_F(PELTest, InvalidPELTest)
 {
-    auto data = pelDataFactory(TestPelType::pelSimple);
+    auto data = pelDataFactory(TestPELType::pelSimple);
 
     // Too small
-    data->resize(PrivateHeader::flattenedSize());
+    data.resize(PrivateHeader::flattenedSize());
 
-    auto pel = std::make_unique<PEL>(*data);
+    auto pel = std::make_unique<PEL>(data);
 
     EXPECT_TRUE(pel->privateHeader()->valid());
     EXPECT_FALSE(pel->userHeader()->valid());
     EXPECT_FALSE(pel->valid());
 
     // Now corrupt the private header
-    data = pelDataFactory(TestPelType::pelSimple);
-    data->at(0) = 0;
-    pel = std::make_unique<PEL>(*data);
+    data = pelDataFactory(TestPELType::pelSimple);
+    data.at(0) = 0;
+    pel = std::make_unique<PEL>(data);
 
     EXPECT_FALSE(pel->privateHeader()->valid());
     EXPECT_TRUE(pel->userHeader()->valid());
@@ -131,7 +131,7 @@ TEST_F(PELTest, CreateFromRegistryTest)
 // there aren't explicit classes for.
 TEST_F(PELTest, GenericSectionTest)
 {
-    auto data = pelDataFactory(TestPelType::pelSimple);
+    auto data = pelDataFactory(TestPELType::pelSimple);
 
     std::vector<uint8_t> section1{0x58, 0x58, // ID 'XX'
                                   0x00, 0x18, // Size
@@ -154,14 +154,14 @@ TEST_F(PELTest, GenericSectionTest)
         0x09, 0x22, 0x3A, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
 
     // Add the new sections at the end
-    data->insert(data->end(), section1.begin(), section1.end());
-    data->insert(data->end(), section2.begin(), section2.end());
+    data.insert(data.end(), section1.begin(), section1.end());
+    data.insert(data.end(), section2.begin(), section2.end());
 
     // Increment the section count
-    data->at(27) += 2;
-    auto origData = *data;
+    data.at(27) += 2;
+    auto origData = data;
 
-    PEL pel{*data};
+    PEL pel{data};
 
     const auto& sections = pel.optionalSections();
 
@@ -195,17 +195,17 @@ TEST_F(PELTest, GenericSectionTest)
 // Test that an invalid section will still get a Generic object
 TEST_F(PELTest, InvalidGenericTest)
 {
-    auto data = pelDataFactory(TestPelType::pelSimple);
+    auto data = pelDataFactory(TestPELType::pelSimple);
 
     // Not a valid section
     std::vector<uint8_t> section1{0x01, 0x02, 0x03};
 
-    data->insert(data->end(), section1.begin(), section1.end());
+    data.insert(data.end(), section1.begin(), section1.end());
 
     // Increment the section count
-    data->at(27) += 1;
+    data.at(27) += 1;
 
-    PEL pel{*data};
+    PEL pel{data};
     EXPECT_FALSE(pel.valid());
 
     const auto& sections = pel.optionalSections();
