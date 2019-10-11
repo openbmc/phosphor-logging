@@ -54,8 +54,8 @@ TEST_F(RepositoryTest, FilenameTest)
 TEST_F(RepositoryTest, AddTest)
 {
     Repository repo{repoPath};
-    auto data = pelDataFactory(TestPelType::pelSimple);
-    auto pel = std::make_unique<PEL>(*data);
+    auto data = pelDataFactory(TestPELType::pelSimple);
+    auto pel = std::make_unique<PEL>(data);
 
     repo.add(pel);
 
@@ -84,15 +84,15 @@ TEST_F(RepositoryTest, RestoreTest)
 
         // Add some PELs to the repository
         {
-            auto data = pelDataFactory(TestPelType::pelSimple);
-            auto pel = std::make_unique<PEL>(*data, 1);
+            auto data = pelDataFactory(TestPELType::pelSimple);
+            auto pel = std::make_unique<PEL>(data, 1);
             pel->assignID();
             repo.add(pel);
             ids.emplace_back(pelID(pel->id()), obmcID(1));
         }
         {
-            auto data = pelDataFactory(TestPelType::pelSimple);
-            auto pel = std::make_unique<PEL>(*data, 2);
+            auto data = pelDataFactory(TestPELType::pelSimple);
+            auto pel = std::make_unique<PEL>(data, 2);
             pel->assignID();
             repo.add(pel);
             ids.emplace_back(pelID(pel->id()), obmcID(2));
@@ -149,9 +149,9 @@ TEST_F(RepositoryTest, TestGetPELData)
     EXPECT_FALSE(noData);
 
     // Add a PEL to the repo, and get the data back with getPELData.
-    auto data = pelDataFactory(TestPelType::pelSimple);
-    auto dataCopy = *data;
-    auto pel = std::make_unique<PEL>(*data);
+    auto data = pelDataFactory(TestPELType::pelSimple);
+    auto dataCopy = data;
+    auto pel = std::make_unique<PEL>(data);
     auto pelID = pel->id();
     repo.add(pel);
 

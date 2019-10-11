@@ -15,9 +15,9 @@ TEST(UserHeaderTest, SizeTest)
 
 TEST(UserHeaderTest, UnflattenFlattenTest)
 {
-    auto data = pelDataFactory(TestPelType::userHeaderSimple);
+    auto data = pelDataFactory(TestPELType::userHeaderSection);
 
-    Stream stream(*data);
+    Stream stream(data);
     UserHeader uh(stream);
     EXPECT_EQ(uh.valid(), true);
 
@@ -41,7 +41,7 @@ TEST(UserHeaderTest, UnflattenFlattenTest)
     Stream newStream(newData);
 
     uh.flatten(newStream);
-    EXPECT_EQ(*data, newData);
+    EXPECT_EQ(data, newData);
 
     // Change a field, then flatten and unflatten again
     uh.subsystem() = 0x44;
@@ -49,7 +49,7 @@ TEST(UserHeaderTest, UnflattenFlattenTest)
     newStream.offset(0);
     newData.clear();
     uh.flatten(newStream);
-    EXPECT_NE(*data, newData);
+    EXPECT_NE(data, newData);
 
     newStream.offset(0);
     UserHeader newUH(newStream);
@@ -60,10 +60,10 @@ TEST(UserHeaderTest, UnflattenFlattenTest)
 
 TEST(UserHeaderTest, ShortDataTest)
 {
-    auto data = pelDataFactory(TestPelType::userHeaderSimple);
-    data->resize(data->size() - 1);
+    auto data = pelDataFactory(TestPELType::userHeaderSection);
+    data.resize(data.size() - 1);
 
-    Stream stream(*data);
+    Stream stream(data);
     UserHeader uh(stream);
 
     EXPECT_EQ(uh.valid(), false);
@@ -71,12 +71,12 @@ TEST(UserHeaderTest, ShortDataTest)
 
 TEST(UserHeaderTest, CorruptDataTest1)
 {
-    auto data = pelDataFactory(TestPelType::userHeaderSimple);
-    data->resize(data->size() - 1);
+    auto data = pelDataFactory(TestPELType::userHeaderSection);
+    data.resize(data.size() - 1);
 
-    data->at(0) = 0; // corrupt the section ID
+    data.at(0) = 0; // corrupt the section ID
 
-    Stream stream(*data);
+    Stream stream(data);
     UserHeader uh(stream);
 
     EXPECT_EQ(uh.valid(), false);
@@ -84,11 +84,11 @@ TEST(UserHeaderTest, CorruptDataTest1)
 
 TEST(UserHeaderTest, CorruptDataTest2)
 {
-    auto data = pelDataFactory(TestPelType::userHeaderSimple);
+    auto data = pelDataFactory(TestPELType::userHeaderSection);
 
-    data->at(4) = 0x22; // corrupt the version
+    data.at(4) = 0x22; // corrupt the version
 
-    Stream stream(*data);
+    Stream stream(data);
     UserHeader uh(stream);
 
     EXPECT_EQ(uh.valid(), false);

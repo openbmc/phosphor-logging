@@ -7,7 +7,7 @@ using namespace openpower::pels;
 
 TEST(SRCTest, UnflattenFlattenTestNoCallouts)
 {
-    auto data = srcDataFactory(TestSRCType::primarySRCNoCallouts);
+    auto data = pelDataFactory(TestPELType::primarySRCSection);
 
     Stream stream{data};
     SRC src{stream};
@@ -48,7 +48,7 @@ TEST(SRCTest, UnflattenFlattenTestNoCallouts)
 
 TEST(SRCTest, UnflattenFlattenTest2Callouts)
 {
-    auto data = srcDataFactory(TestSRCType::primarySRC2Callouts);
+    auto data = pelDataFactory(TestPELType::primarySRCSection2Callouts);
 
     Stream stream{data};
     SRC src{stream};
