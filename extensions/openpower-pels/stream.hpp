@@ -182,7 +182,7 @@ class Stream
      * @param[in] value - the value to write to the stream
      * @return Stream&
      */
-    Stream& operator<<(uint8_t& value)
+    Stream& operator<<(uint8_t value)
     {
         write(&value, 1);
         return *this;
@@ -194,7 +194,7 @@ class Stream
      * @param[in] value - the value to write to the stream
      * @return Stream&
      */
-    Stream& operator<<(char& value)
+    Stream& operator<<(char value)
     {
         write(&value, 1);
         return *this;
@@ -206,7 +206,7 @@ class Stream
      * @param[in] value - the value to write to the stream
      * @return Stream&
      */
-    Stream& operator<<(uint16_t& value)
+    Stream& operator<<(uint16_t value)
     {
         uint16_t data = ntohs(value);
         write(&data, 2);
@@ -219,7 +219,7 @@ class Stream
      * @param[in] value - the value to write to the stream
      * @return Stream&
      */
-    Stream& operator<<(uint32_t& value)
+    Stream& operator<<(uint32_t value)
     {
         uint32_t data = ntohl(value);
         write(&data, 4);
@@ -232,7 +232,7 @@ class Stream
      * @param[in] value - the value to write to the stream
      * @return Stream&
      */
-    Stream& operator<<(uint64_t& value)
+    Stream& operator<<(uint64_t value)
     {
         uint64_t data = detail::ntohll(value);
         write(&data, 8);
