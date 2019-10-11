@@ -539,12 +539,16 @@ TEST_F(PELTest, RealPELTest)
     const auto& sections = pel.optionalSections();
     EXPECT_EQ(pel.privateHeader()->sectionCount(), sections.size() + 2);
 
+    auto src = pel.primarySRC();
+    EXPECT_EQ(src.value()->asciiString(), "B181A80E                        ");
+
     // Check that the last section (a 'UD' section) is indeed the last
-    // section object by checking the first and last bytes.
+    // section object by checking the ID and the last byte.
     auto& last = pel.optionalSections().back();
+    EXPECT_EQ(last->header().id, 0x5544); // "UD"
+
     std::vector<uint8_t> lastSectionData;
     Stream stream{lastSectionData};
     last->flatten(stream);
-    EXPECT_EQ(lastSectionData.front(), 'U');
     EXPECT_EQ(lastSectionData.back(), 0xA4);
 }
