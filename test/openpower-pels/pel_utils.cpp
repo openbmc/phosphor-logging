@@ -66,6 +66,19 @@ const std::vector<uint8_t> srcSectionNoCallouts{
     ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
     ' ', ' '};
 
+std::vector<uint8_t> failingMTMSSection{
+    // Header
+    0x4D, 0x54, 0x00, 0x1C, 0x01, 0x00, 0x20, 0x00,
+
+    'T',  'T',  'T',  'T',  '-',  'M',  'M',  'M',  '1', '2',
+    '3',  '4',  '5',  '6',  '7',  '8',  '9',  'A',  'B', 'C'};
+
+std::vector<uint8_t> UserDataSection{
+    // Header
+    0x55, 0x44, 0x00, 0x10, 0x00, 0x00, 0x20, 0x00,
+
+    0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
+
 const std::vector<uint8_t> srcFRUIdentityCallout{
     'I', 'D', 0x1C, 0x1D,                     // type, size, flags
     '1', '2', '3',  '4',                      // PN
@@ -106,7 +119,13 @@ std::vector<uint8_t> pelDataFactory(TestPELType type)
                         privateHeaderSection.end());
             data.insert(data.end(), userHeaderSection.begin(),
                         userHeaderSection.end());
-            data.at(sectionCountOffset) = 2;
+            data.insert(data.end(), srcSectionNoCallouts.begin(),
+                        srcSectionNoCallouts.end());
+            data.insert(data.end(), failingMTMSSection.begin(),
+                        failingMTMSSection.end());
+            data.insert(data.end(), UserDataSection.begin(),
+                        UserDataSection.end());
+            data.at(sectionCountOffset) = 5;
             break;
         case TestPELType::privateHeaderSection:
             data.insert(data.end(), privateHeaderSection.begin(),
@@ -149,6 +168,9 @@ std::vector<uint8_t> pelDataFactory(TestPELType type)
             data.insert(data.end(), src.begin(), src.end());
             break;
         }
+        case TestPELType::failingMTMSSection:
+            data.insert(data.end(), failingMTMSSection.begin(),
+                        failingMTMSSection.end());
     }
     return data;
 }
