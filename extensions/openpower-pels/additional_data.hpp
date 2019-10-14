@@ -23,7 +23,7 @@ namespace pels
 class AdditionalData
 {
   public:
-    AdditionalData() = delete;
+    AdditionalData() = default;
     ~AdditionalData() = default;
     AdditionalData(const AdditionalData&) = default;
     AdditionalData& operator=(const AdditionalData&) = default;
@@ -57,7 +57,7 @@ class AdditionalData
      *
      * @return optional<string> - the value, if found
      */
-    std::optional<std::string> getValue(const std::string& key)
+    std::optional<std::string> getValue(const std::string& key) const
     {
         auto entry = _data.find(key);
         if (entry != _data.end())
