@@ -117,12 +117,20 @@ TEST_F(PELTest, CreateFromRegistryTest)
     regEntry.name = "test";
     regEntry.subsystem = 5;
     regEntry.actionFlags = 0xC000;
+    regEntry.src.type = 0xBD;
+    regEntry.src.reasonCode = 0x1234;
 
-    PEL pel{regEntry, 42, timestamp, phosphor::logging::Entry::Level::Error};
+    AdditionalData ad;
+
+    PEL pel{regEntry, 42, timestamp, phosphor::logging::Entry::Level::Error,
+            ad};
 
     EXPECT_TRUE(pel.valid());
     EXPECT_EQ(pel.privateHeader()->obmcLogID(), 42);
     EXPECT_EQ(pel.userHeader()->severity(), 0x40);
+
+    EXPECT_EQ(pel.primarySRC().value()->asciiString(),
+              "BD051234                        ");
 
     // Add more checks as more sections are added
 }
