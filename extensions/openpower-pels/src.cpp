@@ -60,6 +60,86 @@ SRC::SRC(Stream& pel)
     }
 }
 
+SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData)
+{
+    _header.id = static_cast<uint16_t>(SectionID::primarySRC);
+    _header.version = srcSectionVersion;
+    _header.subType = srcSectionSubtype;
+    _header.componentID = regEntry.componentID;
+
+    _version = srcVersion;
+
+    _flags = 0;
+    if (regEntry.src.powerFault.value_or(false))
+    {
+        _flags |= powerFaultEvent;
+    }
+
+    _reserved1B = 0;
+
+    _wordCount = numSRCHexDataWords + 1;
+
+    _reserved2B = 0;
+
+    // There are multiple fields encoded in the hex data words.
+    std::for_each(_hexData.begin(), _hexData.end(),
+                  [](auto& word) { word = 0; });
+    setBMCFormat();
+    setBMCPosition();
+    // Partition dump status and partition boot type always 0 for BMC errors.
+    //
+    // TODO: Fill in other fields that aren't available yet.
+
+    // Fill in the last 4 words from the AdditionalData property contents.
+    setUserDefinedHexWords(regEntry, additionalData);
+
+    _asciiString = std::make_unique<src::AsciiString>(regEntry);
+
+    // TODO: add callouts using the Callouts object
+
+    _size = baseSRCSize;
+    _size += _callouts ? _callouts->flattenedSize() : 0;
+    _header.size = Section::flattenedSize() + _size;
+
+    _valid = true;
+}
+
+void SRC::setUserDefinedHexWords(const message::Entry& regEntry,
+                                 const AdditionalData& ad)
+{
+    if (!regEntry.src.hexwordADFields)
+    {
+        return;
+    }
+
+    // Save the AdditionalData value corresponding to the
+    // adName key in _hexData[wordNum].
+    for (const auto& [wordNum, adName] : *regEntry.src.hexwordADFields)
+    {
+        // Can only set words 6 - 9
+        if (!isUserDefinedWord(wordNum))
+        {
+            log<level::WARNING>("SRC user data word out of range",
+                                entry("WORD_NUM=%d", wordNum),
+                                entry("ERROR_NAME=%s", regEntry.name.c_str()));
+            continue;
+        }
+
+        auto value = ad.getValue(adName);
+        if (value)
+        {
+            _hexData[getWordIndexFromWordNum(wordNum)] =
+                std::strtoul(value.value().c_str(), nullptr, 0);
+        }
+        else
+        {
+            log<level::WARNING>("Source for user data SRC word not found",
+                                entry("ADDITIONALDATA_KEY=%s", adName.c_str()),
+                                entry("ERROR_NAME=%s", regEntry.name.c_str()));
+        }
+    }
+}
+
 void SRC::validate()
 {
     bool failed = false;
@@ -73,10 +153,9 @@ void SRC::validate()
     }
 
     // Check the version in the SRC, not in the header
-    if (_version != srcSectionVersion)
+    if (_version != srcVersion)
     {
-        log<level::ERR>("Invalid SRC section version",
-                        entry("VERSION=0x%X", _version));
+        log<level::ERR>("Invalid SRC version", entry("VERSION=0x%X", _version));
         failed = true;
     }
 

@@ -3,6 +3,7 @@
 #include "bcd_time.hpp"
 #include "log_id.hpp"
 #include "section_factory.hpp"
+#include "src.hpp"
 #include "stream.hpp"
 
 #include <phosphor-logging/log.hpp>
@@ -14,15 +15,19 @@ namespace pels
 namespace message = openpower::pels::message;
 
 PEL::PEL(const message::Entry& entry, uint32_t obmcLogID, uint64_t timestamp,
-         phosphor::logging::Entry::Level severity)
+         phosphor::logging::Entry::Level severity,
+         const AdditionalData& additionalData)
 {
     _ph = std::make_unique<PrivateHeader>(entry.componentID, obmcLogID,
                                           timestamp);
     _uh = std::make_unique<UserHeader>(entry, severity);
 
-    // Add future sections here and update the count
+    auto src = std::make_unique<SRC>(entry, additionalData);
+    _optionalSections.push_back(std::move(src));
 
-    _ph->sectionCount() = 2;
+    // Add future sections here
+
+    _ph->sectionCount() = 2 + _optionalSections.size();
 }
 
 PEL::PEL(std::vector<uint8_t>& data) : PEL(data, 0)
@@ -109,6 +114,21 @@ std::vector<uint8_t> PEL::data()
     std::vector<uint8_t> pelData;
     flatten(pelData);
     return pelData;
+}
+
+std::optional<SRC*> PEL::primarySRC() const
+{
+    auto src = std::find_if(
+        _optionalSections.begin(), _optionalSections.end(), [](auto& section) {
+            return section->header().id ==
+                   static_cast<uint16_t>(SectionID::primarySRC);
+        });
+    if (src != _optionalSections.end())
+    {
+        return static_cast<SRC*>(src->get());
+    }
+
+    return std::nullopt;
 }
 
 } // namespace pels
