@@ -3,6 +3,7 @@
 #include "additional_data.hpp"
 #include "private_header.hpp"
 #include "registry.hpp"
+#include "src.hpp"
 #include "user_header.hpp"
 
 #include <memory>
@@ -31,15 +32,10 @@ namespace pels
  *
  * This class represents all sections with objects.
  *
- * The available constructors are:
- * - PEL(std::vector<uint8_t>& data) - build this object out of a fully
- *   formed flattened PEL.
- *
- * - PEL(const openpower::pels::message::Entry& entry,
- *       uint32_t obmcLogID,
- *       uint64_t timestamp,
- *       phosphor::logging::Entry::Level severity)
- *      - build this object from an OpenBMC event log.
+ * The class can be constructed:
+ * - From a full formed flattened PEL.
+ * - From scratch based on an OpenBMC event and its corresponding PEL message
+ *   registry entry.
  *
  * The data() method allows one to retrieve the PEL as a vector<uint8_t>.  This
  * is the format in which it is stored and transmitted.
@@ -88,9 +84,11 @@ class PEL
      * @param[in] obmcLogID - ID of corresponding OpenBMC event log
      * @param[in] timestamp - Timestamp from the event log
      * @param[in] severity - Severity from the event log
+     * @param[in] additionalData - The AdditionalData contents
      */
     PEL(const openpower::pels::message::Entry& entry, uint32_t obmcLogID,
-        uint64_t timestamp, phosphor::logging::Entry::Level severity);
+        uint64_t timestamp, phosphor::logging::Entry::Level severity,
+        const AdditionalData& additionalData);
 
     /**
      * @brief Convenience function to return the log ID field from the
@@ -166,6 +164,16 @@ class PEL
     {
         return _uh;
     }
+
+    /**
+     * @brief Gives access to the primary SRC's section class
+     *
+     * This is technically an optional section, so the return
+     * value is an std::optional<SRC*>.
+     *
+     * @return std::optional<SRC*> - the SRC section object
+     */
+    std::optional<SRC*> primarySRC();
 
     /**
      * @brief Returns the optional sections, which is everything but
