@@ -275,7 +275,7 @@ The guidelines are:
 
 [xyz.openbmc_project.Logging.Entry]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/Logging/Entry.interface.yaml
 [xyz.openbmc_project.Association.Definitions]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/Association/Definitions.interface.yaml
-[associations-doc]: https://github.com/openbmc/docs/blob/master/object-mapper.md#associations
+[associations-doc]: https://github.com/openbmc/docs/blob/master/architecture/object-mapper.md#associations
 [callout-doc]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/Common/Callout/README.md
 [xyz.openbmc_project.Object.Delete]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/Object/Delete.interface.yaml
 [xyz.openbmc_project.Software.Version]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/Software/Version.errors.yaml
