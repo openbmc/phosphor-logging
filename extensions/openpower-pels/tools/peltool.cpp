@@ -22,13 +22,18 @@ static void exitWithError(const std::string& help, const char* err)
     exit(-1);
 }
 
+/*PEL PELTool::getPEL()
+{
+    return _pel;
+}
+*/
+
 int main(int argc, char** argv)
 {
     std::string pelRawFile;
-    /*    std::unique_ptr<PEL> _pel;
-        _pel = std::make_unique<PEL>(realPELData);
-        PELTool pt(*_pel);
-    */
+    std::unique_ptr<PEL> _pel;
+    //_pel = std::make_unique<PEL>(realPELData);
+    PELTool pt(realPELData);
     CLI::App app{"OpenBMC PEL Tool"};
     bool flagList;
     bool flagHexDump;
@@ -40,6 +45,7 @@ int main(int argc, char** argv)
 
     if (flagHexDump)
     {
+        hexDump(std::data(pt._pel.data()), pt._pel.data().size());
     }
     if (!flagList && !flagHexDump)
     {
