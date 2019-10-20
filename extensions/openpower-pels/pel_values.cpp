@@ -190,7 +190,31 @@ PELValues::const_iterator findByName(const std::string& name,
                         });
 }
 
-} // namespace pel_values
+/**
+ * @brief Map for section IDs
+ */
+const std::map<std::string, std::string> sectionTitles = {
 
+    {"PH", "Private Header"},
+    {"UH", "User Header"},
+    {"PS", "Primary SRC"},
+    {"SS", "Secondary SRC"},
+    {"EH", "Extended User Header"},
+    {"MT", "Failing MTMS"},
+    {"DH", "Dump Location"},
+    {"SW", "Firmware Error"},
+    {"LP", "Impacted Part"},
+    {"LR", "Logical Resource"},
+    {"HM", "HMC ID"},
+    {"EP", "EPOW"},
+    {"IE", "IO Event"},
+    {"MI", "MFG Info"},
+    {"CH", "Call Home"},
+    {"UD", "User Data"},
+    {"EI", "Env Info"},
+    {"ED", "Extended User Data"},
+};
+
+} // namespace pel_values
 } // namespace pels
 } // namespace openpower
