@@ -4,8 +4,11 @@
 #include "log_id.hpp"
 #include "section_factory.hpp"
 #include "stream.hpp"
+#include "tools/peltoolutils.hpp"
 
+#include <iostream>
 #include <phosphor-logging/log.hpp>
+#include <vector>
 
 namespace openpower
 {
@@ -111,5 +114,62 @@ std::vector<uint8_t> PEL::data()
     return pelData;
 }
 
+void PEL::toJson()
+{
+    char tmpB[5];
+    std::string buf = "{";
+    std::unique_ptr<PrivateHeader>& ph = this->privateHeader();
+    if (ph->valid())
+    {
+        uint8_t hi_lo[] = {(uint8_t)(ph->header().id >> 8),
+                           (uint8_t)ph->header().id}; // { 0xAA, 0xFF }
+        sprintf(tmpB, "%c%c", hi_lo[0], hi_lo[1]);
+        std::string tmpSr(tmpB);
+        std::string sr2 = sectionTitles[tmpSr];
+        buf += "\n\"" + sr2 + "\":[\n ";
+        std::vector<uint8_t> _data;
+        Stream s{_data};
+        ph->flatten(s);
+        std::string dstr = dumpHex2(std::data(_data), _data.size());
+        buf += dstr + "\n],\n";
+    }
+    std::unique_ptr<UserHeader>& uh = this->userHeader();
+    if (uh->valid())
+    {
+        uint8_t hi_lo[] = {(uint8_t)(uh->header().id >> 8),
+                           (uint8_t)uh->header().id}; // { 0xAA, 0xFF }
+        sprintf(tmpB, "%c%c", hi_lo[0], hi_lo[1]);
+        std::string tmpSr(tmpB);
+        std::string sr2 = sectionTitles[tmpSr];
+        buf += "\n\"" + sr2 + "\":[\n ";
+        std::vector<uint8_t> _data;
+        Stream s{_data};
+        uh->flatten(s);
+        std::string dstr = dumpHex2(std::data(_data), _data.size());
+        buf += dstr + "\n],\n";
+    }
+    for (auto& section : this->optionalSections())
+    {
+        if (section->valid())
+        {
+            uint8_t hi_lo[] = {(uint8_t)(section->header().id >> 8),
+                               (uint8_t)section->header().id}; // { 0xAA, 0xFF }
+            sprintf(tmpB, "%c%c", hi_lo[0], hi_lo[1]);
+            std::string tmpSr(tmpB);
+            std::string sr2 = sectionTitles[tmpSr];
+            buf += "\n\"" + sr2 + "\":[\n ";
+            std::vector<uint8_t> _data;
+            Stream s{_data};
+            section->flatten(s);
+            std::string dstr = dumpHex2(std::data(_data), _data.size());
+            buf += dstr + "\n],\n";
+        }
+    }
+    buf += "}";
+    std::size_t found = buf.rfind(",");
+    if (found != std::string::npos)
+        buf.replace(found, 1, "");
+    std::cout << buf << std::endl;
+}
 } // namespace pels
 } // namespace openpower

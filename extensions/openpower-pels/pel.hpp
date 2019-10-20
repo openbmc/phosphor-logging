@@ -202,6 +202,36 @@ class PEL
      */
     void assignID();
 
+    /**
+     * @brief Hex dump for enitre PEL in JSON.
+     */
+    void toJson();
+
+    /**
+     * @brief Map for section IDs
+     */
+    std::map<std::string, std::string> sectionTitles = {
+
+        {"PH", "Private Header"},
+        {"UH", "User Header"},
+        {"PS", "Primary SRC"},
+        {"SS", "Secondary SRC"},
+        {"EH", "Extended User Header"},
+        {"MT", "Failing MTMS"},
+        {"DH", "Dump Location"},
+        {"SW", "Firmware Error"},
+        {"LP", "Impacted Part"},
+        {"LR", "Logical Resource"},
+        {"HM", "hmc ID"},
+        {"EP", "epow"},
+        {"IE", "io Event"},
+        {"MI", "mfg Info"},
+        {"CH", "Call Home"},
+        {"UD", "User Data"},
+        {"EI", "Env Info"},
+        {"ED", "Extended User"},
+    };
+
   private:
     /**
      * @brief Builds the section objects from a PEL data buffer
