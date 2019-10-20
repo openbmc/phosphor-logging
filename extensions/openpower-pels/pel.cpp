@@ -4,14 +4,20 @@
 #include "log_id.hpp"
 #include "section_factory.hpp"
 #include "stream.hpp"
+#include "tools/peltoolutils.hpp"
 
+#include <nlohmann/json.hpp>
 #include <phosphor-logging/log.hpp>
+#include <vector>
 
 namespace openpower
 {
 namespace pels
 {
 namespace message = openpower::pels::message;
+
+using namespace nlohmann;
+using json = nlohmann::json;
 
 PEL::PEL(const message::Entry& entry, uint32_t obmcLogID, uint64_t timestamp,
          phosphor::logging::Entry::Level severity)
@@ -111,5 +117,26 @@ std::vector<uint8_t> PEL::data()
     return pelData;
 }
 
+void PEL::toJson()
+{
+    json j;
+    for (auto& section : this->optionalSections())
+    {
+        if (section->valid())
+        {
+            std::string sr = std::to_string(section->header().id);
+            char const* pchar = sr.c_str();
+            std::vector<uint8_t> _data;
+            Stream s{_data};
+            section->flatten(s);
+            j.push_back(json::object_t::value_type(
+                pchar, dumpHex2(std::data(_data), _data.size())));
+        }
+    }
+    std::string fs = j.dump(10);
+    std::cout << fs;
+    const char* cstr = fs.c_str();
+    printf("|%s|\n", cstr);
+}
 } // namespace pels
 } // namespace openpower
