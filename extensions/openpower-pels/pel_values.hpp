@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -75,6 +76,11 @@ extern const PELValues actionFlagsValues;
  * @brief The values for callout priorities in the SRC section
  */
 extern const PELValues calloutPriorityValues;
+
+/**
+ * @brief Map for section IDs
+ */
+extern const std::map<std::string, std::string> sectionTitles;
 
 } // namespace pel_values
 } // namespace pels

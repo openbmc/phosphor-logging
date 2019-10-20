@@ -202,6 +202,18 @@ class PEL
      */
     void assignID();
 
+    /**
+     * @brief Output a PEL in JSON.
+     */
+    void toJSON();
+
+    /**
+     * @brief helper function for printing PELs.
+     * @param[in] Section& - section object reference
+     * @param[in] std::string - PEL string
+     */
+    void printSectionInJSON(Section& section,std::string& buf) const;
+
   private:
     /**
      * @brief Builds the section objects from a PEL data buffer
