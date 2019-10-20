@@ -2,16 +2,21 @@
 
 #include "bcd_time.hpp"
 #include "log_id.hpp"
+#include "pel_values.hpp"
 #include "section_factory.hpp"
 #include "stream.hpp"
+#include "tools/peltoolutils.hpp"
 
+#include <iostream>
 #include <phosphor-logging/log.hpp>
+#include <typeinfo>
 
 namespace openpower
 {
 namespace pels
 {
 namespace message = openpower::pels::message;
+namespace pv = openpower::pels::pel_values;
 
 PEL::PEL(const message::Entry& entry, uint32_t obmcLogID, uint64_t timestamp,
          phosphor::logging::Entry::Level severity)
@@ -111,5 +116,42 @@ std::vector<uint8_t> PEL::data()
     return pelData;
 }
 
+std::string PEL::printPEL(Section& section, std::string& buf)
+{
+    char tmpB[5];
+    if (section.valid())
+    {
+        uint8_t id[] = {static_cast<uint8_t>(section.header().id >> 8),
+                        static_cast<uint8_t>(section.header().id)};
+        sprintf(tmpB, "%c%c", id[0], id[1]);
+        std::string sectionID(tmpB);
+        std::string sectionName = pv::sectionTitles[sectionID];
+        buf += "\n\"" + sectionName + "\":[\n ";
+        std::vector<uint8_t> data;
+        Stream s{data};
+        section.flatten(s);
+        std::string dstr = dumpHex(std::data(data), data.size());
+        buf += dstr + "\n],\n";
+    }
+    else
+        buf += "\n\"Invalid Section  \":[\n invalid \n],\n";
+    return buf;
+}
+
+void PEL::toJSON()
+{
+    std::string buf = "{";
+    printPEL(*(_ph.get()), buf);
+    printPEL(*(_uh.get()), buf);
+    for (auto& section : this->optionalSections())
+    {
+        printPEL(*(section.get()), buf);
+    }
+    buf += "}";
+    std::size_t found = buf.rfind(",");
+    if (found != std::string::npos)
+        buf.replace(found, 1, "");
+    std::cout << buf << std::endl;
+}
 } // namespace pels
 } // namespace openpower

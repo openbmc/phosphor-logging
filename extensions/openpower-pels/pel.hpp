@@ -202,6 +202,19 @@ class PEL
      */
     void assignID();
 
+    /**
+     * @brief Hex dump for enitre PEL in JSON.
+     */
+    void toJSON();
+
+    /**
+     * @brief helper function for printing PELs.
+     * @param[in] Section& - section object reference
+     * @param[in] std::string - PEL string
+     * @return std::string - formed PEL string
+     */
+    std::string printPEL(Section& section, std::string& buf);
+
   private:
     /**
      * @brief Builds the section objects from a PEL data buffer
