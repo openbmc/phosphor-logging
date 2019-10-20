@@ -22,24 +22,30 @@ static void exitWithError(const std::string& help, const char* err)
     exit(-1);
 }
 
+/*PEL PELTool::getPEL()
+{
+    return _pel;
+}
+*/
+
 int main(int argc, char** argv)
 {
     std::string pelRawFile;
-    /*    std::unique_ptr<PEL> _pel;
-        _pel = std::make_unique<PEL>(realPELData);
-        PELTool pt(*_pel);
-    */
+    std::unique_ptr<PEL> _pel;
+    //_pel = std::make_unique<PEL>(realPELData);
+    PELTool pt(realPELData);
     CLI::App app{"OpenBMC PEL Tool"};
     bool flagList;
     bool flagHexDump;
-    app.add_flag("--list,-l", flagList, "list all PELs in Repo");
-    app.add_flag("--hexdump, -h", flagHexDump, "Hex dump for entire PEL");
+    app.add_flag("--list", flagList, "list all PELs in Repo");
+    app.add_flag("--hexdump", flagHexDump, "Hex dump for entire PEL");
     app.add_option(" -r, --rawpel", pelRawFile,
                    "file for reading raw pel from");
     CLI11_PARSE(app, argc, argv);
 
     if (flagHexDump)
     {
+        hexDump(std::data(pt._pel.data()), pt._pel.data().size());
     }
     if (!flagList && !flagHexDump)
     {

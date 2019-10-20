@@ -44,12 +44,15 @@ class PELTool
      *
      * @param[in] pel - the PEL data stream
      */
-    explicit PELTool(const PEL&)
+    explicit PELTool(std::vector<uint8_t>& data) : _pel(data)
 
     {
     }
+    PEL _pel;
 
   private:
+    // PEL copy constructor is deleted
+    // PEL _pel;
 };
 
 } // namespace pels
