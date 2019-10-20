@@ -202,6 +202,11 @@ class PEL
      */
     void assignID();
 
+    /**
+     * @brief Hex dump for enitre PEL in JSON.
+     */
+    void toJson();
+
   private:
     /**
      * @brief Builds the section objects from a PEL data buffer
