@@ -4,14 +4,21 @@
 #include "log_id.hpp"
 #include "section_factory.hpp"
 #include "stream.hpp"
+#include "tools/peltoolutils.hpp"
 
+#include <iostream>
+#include <nlohmann/json.hpp>
 #include <phosphor-logging/log.hpp>
+#include <vector>
 
 namespace openpower
 {
 namespace pels
 {
 namespace message = openpower::pels::message;
+
+using namespace nlohmann;
+using json = nlohmann::json;
 
 PEL::PEL(const message::Entry& entry, uint32_t obmcLogID, uint64_t timestamp,
          phosphor::logging::Entry::Level severity)
@@ -111,5 +118,32 @@ std::vector<uint8_t> PEL::data()
     return pelData;
 }
 
+void PEL::toJson()
+{
+    char tmpB[5];
+    std::string buf = "{";
+    for (auto& section : this->optionalSections())
+    {
+        if (section->valid())
+        {
+            uint8_t hi_lo[] = {(uint8_t)(section->header().id >> 8),
+                               (uint8_t)section->header().id}; // { 0xAA, 0xFF }
+            sprintf(tmpB, "%c%c", hi_lo[0], hi_lo[1]);
+            std::string tmpSr(tmpB);
+            std::string sr2 = sectionTitles[tmpSr];
+            buf += "\n\"" + sr2 + "\":[\n";
+            std::vector<uint8_t> _data;
+            Stream s{_data};
+            section->flatten(s);
+            std::string dstr = dumpHex2(std::data(_data), _data.size());
+            buf += "\"" + dstr + "\"\n],\n";
+        }
+    }
+    buf += "}";
+    std::size_t found = buf.rfind(",");
+    if (found != std::string::npos)
+        buf.replace(found, 1, "");
+    std::cout << buf << std::endl;
+}
 } // namespace pels
 } // namespace openpower
