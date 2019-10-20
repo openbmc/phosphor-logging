@@ -201,6 +201,11 @@ class PEL
      * @brief Sets the error log ID field to a unique ID.
      */
     void assignID();
+    
+    /**
+     * @brief Hex dump for enitre PEL in JSON.
+     */
+    void toJson();
 
   private:
     /**
