@@ -35,6 +35,7 @@ pel_objects = \
 	$(top_builddir)/extensions/openpower-pels/failing_mtms.o \
 	$(top_builddir)/extensions/openpower-pels/fru_identity.o \
 	$(top_builddir)/extensions/openpower-pels/generic.o \
+        $(top_builddir)/extensions/openpower-pels/hexdump.o \
 	$(top_builddir)/extensions/openpower-pels/log_id.o \
 	$(top_builddir)/extensions/openpower-pels/mtms.o \
 	$(top_builddir)/extensions/openpower-pels/mru.o \
