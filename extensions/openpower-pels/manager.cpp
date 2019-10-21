@@ -110,7 +110,20 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
                         const std::vector<std::string>& additionalData,
                         const std::vector<std::string>& associations)
 {
-    // TODO: look up the error in _registry and create a PEL
+    auto entry = _registry.lookup(message);
+
+    if (entry)
+    {
+        AdditionalData ad{additionalData};
+
+        auto pel =
+            std::make_unique<PEL>(*entry, obmcLogID, timestamp, severity, ad);
+
+        _repo.add(pel);
+    }
+
+    // TODO ibm-openbmc/dev/1151: When the message registry is actually filled
+    // in, handle the case where an error isn't in it.
 }
 
 } // namespace pels

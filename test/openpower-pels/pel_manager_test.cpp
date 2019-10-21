@@ -21,6 +21,21 @@ fs::path makeTempDir()
     return dir;
 }
 
+std::optional<fs::path> findAnyPELInRepo()
+{
+    // PELs are named <timestamp>_<ID>
+    std::regex expr{"\\d+_\\d+"};
+
+    for (auto& f : fs::directory_iterator(getPELRepoPath() / "logs"))
+    {
+        if (std::regex_search(f.path().string(), expr))
+        {
+            return f.path();
+        }
+    }
+    return std::nullopt;
+}
+
 // Test that using the RAWPEL=<file> with the Manager::create() call gets
 // a PEL saved in the repository.
 TEST_F(ManagerTest, TestCreateWithPEL)
@@ -49,37 +64,87 @@ TEST_F(ManagerTest, TestCreateWithPEL)
                    phosphor::logging::Entry::Level::Error, additionalData,
                    associations);
 
-    // We don't know the exact name, but a file should have been added to the
-    // repo of the form <timestamp>_<ID>
-    std::regex expr{"\\d+_\\d+"};
+    // Find the file in the PEL repository directory
+    auto pelPathInRepo = findAnyPELInRepo();
 
-    bool found = false;
-    for (auto& f : fs::directory_iterator(getPELRepoPath() / "logs"))
-    {
-        if (std::regex_search(f.path().string(), expr))
-        {
-            found = true;
-            break;
-        }
-    }
-
-    EXPECT_TRUE(found);
+    EXPECT_TRUE(pelPathInRepo);
 
     // Now remove it based on its OpenBMC event log ID
     manager.erase(42);
 
-    found = false;
+    pelPathInRepo = findAnyPELInRepo();
 
-    for (auto& f : fs::directory_iterator(getPELRepoPath() / "logs"))
-    {
-        if (std::regex_search(f.path().string(), expr))
-        {
-            found = true;
-            break;
-        }
-    }
-
-    EXPECT_FALSE(found);
+    EXPECT_FALSE(pelPathInRepo);
 
     fs::remove_all(pelFilename.parent_path());
+}
+
+// Test that the message registry can be used to build a PEL.
+TEST_F(ManagerTest, TestCreateWithMessageRegistry)
+{
+    const auto registry = R"(
+{
+    "PELs":
+    [
+        {
+            "Name": "xyz.openbmc_project.Error.Test",
+            "Subsystem": "power_supply",
+            "ActionFlags": ["service_action", "report"],
+            "SRC":
+            {
+                "ReasonCode": "0x2030"
+            }
+        }
+    ]
+}
+)";
+
+    fs::path path = getMessageRegistryPath() / "message_registry.json";
+    std::ofstream registryFile{path};
+    registryFile << registry;
+    registryFile.close();
+
+    auto bus = sdbusplus::bus::new_default();
+    phosphor::logging::internal::Manager logManager(bus, "logging_path");
+
+    std::unique_ptr<DataInterfaceBase> dataIface =
+        std::make_unique<DataInterface>(logManager.getBus());
+
+    openpower::pels::Manager manager{logManager, std::move(dataIface)};
+
+    std::vector<std::string> additionalData;
+    std::vector<std::string> associations;
+
+    // Create the event log to create the PEL from.
+    manager.create("xyz.openbmc_project.Error.Test", 33, 0,
+                   phosphor::logging::Entry::Level::Error, additionalData,
+                   associations);
+
+    // Ensure a PEL was created in the repository
+    auto pelFile = findAnyPELInRepo();
+    ASSERT_TRUE(pelFile);
+
+    auto data = readPELFile(*pelFile);
+    PEL pel(*data);
+
+    // Spot check it.  Other testcases cover the details.
+    EXPECT_TRUE(pel.valid());
+    EXPECT_EQ(pel.obmcLogID(), 33);
+    EXPECT_EQ(pel.primarySRC().value()->asciiString(),
+              "BD612030                        ");
+
+    // Remove it
+    manager.erase(33);
+    pelFile = findAnyPELInRepo();
+    EXPECT_FALSE(pelFile);
+
+    // Create an event log that can't be found in the registry.
+    manager.create("xyz.openbmc_project.Error.Foo", 33, 0,
+                   phosphor::logging::Entry::Level::Error, additionalData,
+                   associations);
+
+    // Currently, no PEL should be created.  Eventually, a 'missing registry
+    // entry' PEL will be there.
+    pelFile = findAnyPELInRepo();
+    EXPECT_FALSE(pelFile);
 }
