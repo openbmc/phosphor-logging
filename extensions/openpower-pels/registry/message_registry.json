@@ -1,6 +1,137 @@
 {
     "PELs":
     [
+        {
+            "Name": "xyz.openbmc_project.Common.Error.Timeout",
+            "Subsystem": "bmc_firmware",
 
+            "SRC":
+            {
+                "ReasonCode": "0x1001",
+                "Words6To9":
+                {
+                    "6":
+                    {
+                        "Description": "Timeout in ms",
+                        "AdditionalDataPropSource": "TIMEOUT_IN_MSEC"
+                    }
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "This is a generic timeout error",
+                "Message": "An operation timed out",
+                "Notes": [
+                    "The journal should contain more information"
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Common.Error.InternalFailure",
+            "Subsystem": "bmc_firmware",
+
+            "SRC":
+            {
+                "ReasonCode": "0x1002",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "BMC code had a generic internal failure",
+                "Message": "An application had an internal failure",
+                "Notes": [
+                    "The journal should contain more information"
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Common.Error.InvalidArgument",
+            "Subsystem": "user_error",
+
+            "SRC":
+            {
+                "ReasonCode": "0x1003",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "BMC code was given an invalid argument",
+                "Message": "Code was given an invalid argument",
+                "Notes": [
+                    "The journal should contain more information"
+                ]
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.Common.Error.InsufficientPermission",
+            "Subsystem": "user_error",
+
+            "SRC":
+            {
+                "ReasonCode": "0x1004",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "An operation failed due to insufficient permission",
+                "Message": "An operation failed due to unsufficient permission",
+                "Notes": [
+                    "The journal should contain more information"
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Common.Error.NotAllowed",
+            "Subsystem": "user_error",
+
+            "SRC":
+            {
+                "ReasonCode": "0x1005",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "An operation failed because it isn't allowed",
+                "Message": "An operation failed becuase it isn't allowed",
+                "Notes": [
+                    "The journal should contain more information"
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Common.Error.NoCACertificate",
+            "Subsystem": "user_error",
+
+            "SRC":
+            {
+                "ReasonCode": "0x1006",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "The server's CA certificate has not been provided",
+                "Message": "The server's CA certificate has not been provided"
+            }
+        }
     ]
 }
