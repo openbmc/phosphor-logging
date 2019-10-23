@@ -1,6 +1,7 @@
 #include "elog_entry.hpp"
 #include "extensions/openpower-pels/generic.hpp"
 #include "extensions/openpower-pels/pel.hpp"
+#include "mocks.hpp"
 #include "pel_utils.hpp"
 
 #include <filesystem>
@@ -121,9 +122,10 @@ TEST_F(PELTest, CreateFromRegistryTest)
     regEntry.src.reasonCode = 0x1234;
 
     AdditionalData ad;
+    MockDataInterface dataIface;
 
-    PEL pel{regEntry, 42, timestamp, phosphor::logging::Entry::Level::Error,
-            ad};
+    PEL pel{regEntry, 42, timestamp, phosphor::logging::Entry::Level::Error, ad,
+            dataIface};
 
     EXPECT_TRUE(pel.valid());
     EXPECT_EQ(pel.privateHeader()->obmcLogID(), 42);
@@ -131,8 +133,6 @@ TEST_F(PELTest, CreateFromRegistryTest)
 
     EXPECT_EQ(pel.primarySRC().value()->asciiString(),
               "BD051234                        ");
-
-    // Add more checks as more sections are added
 }
 
 // Test that we'll create Generic optional sections for sections that

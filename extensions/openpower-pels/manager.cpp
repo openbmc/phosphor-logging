@@ -116,8 +116,8 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
     {
         AdditionalData ad{additionalData};
 
-        auto pel =
-            std::make_unique<PEL>(*entry, obmcLogID, timestamp, severity, ad);
+        auto pel = std::make_unique<PEL>(*entry, obmcLogID, timestamp, severity,
+                                         ad, *_dataIface);
 
         _repo.add(pel);
     }
