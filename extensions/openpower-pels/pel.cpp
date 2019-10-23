@@ -1,6 +1,7 @@
 #include "pel.hpp"
 
 #include "bcd_time.hpp"
+#include "failing_mtms.hpp"
 #include "log_id.hpp"
 #include "section_factory.hpp"
 #include "src.hpp"
@@ -16,7 +17,8 @@ namespace message = openpower::pels::message;
 
 PEL::PEL(const message::Entry& entry, uint32_t obmcLogID, uint64_t timestamp,
          phosphor::logging::Entry::Level severity,
-         const AdditionalData& additionalData)
+         const AdditionalData& additionalData,
+         const DataInterfaceBase& dataIface)
 {
     _ph = std::make_unique<PrivateHeader>(entry.componentID, obmcLogID,
                                           timestamp);
@@ -25,7 +27,8 @@ PEL::PEL(const message::Entry& entry, uint32_t obmcLogID, uint64_t timestamp,
     auto src = std::make_unique<SRC>(entry, additionalData);
     _optionalSections.push_back(std::move(src));
 
-    // Add future sections here
+    auto mtms = std::make_unique<FailingMTMS>(dataIface);
+    _optionalSections.push_back(std::move(mtms));
 
     _ph->sectionCount() = 2 + _optionalSections.size();
 }

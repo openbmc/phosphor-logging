@@ -1,6 +1,7 @@
 #pragma once
 
 #include "additional_data.hpp"
+#include "data_interface.hpp"
 #include "private_header.hpp"
 #include "registry.hpp"
 #include "src.hpp"
@@ -85,10 +86,12 @@ class PEL
      * @param[in] timestamp - Timestamp from the event log
      * @param[in] severity - Severity from the event log
      * @param[in] additionalData - The AdditionalData contents
+     * @param[in] dataIface - The data interface object
      */
     PEL(const openpower::pels::message::Entry& entry, uint32_t obmcLogID,
         uint64_t timestamp, phosphor::logging::Entry::Level severity,
-        const AdditionalData& additionalData);
+        const AdditionalData& additionalData,
+        const DataInterfaceBase& dataIface);
 
     /**
      * @brief Convenience function to return the log ID field from the
