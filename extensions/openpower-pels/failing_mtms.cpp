@@ -20,6 +20,8 @@ FailingMTMS::FailingMTMS(const DataInterfaceBase& dataIface) :
     _header.version = failingMTMSVersion;
     _header.subType = 0;
     _header.componentID = static_cast<uint16_t>(ComponentID::phosphorLogging);
+
+    _valid = true;
 }
 
 FailingMTMS::FailingMTMS(Stream& pel)
