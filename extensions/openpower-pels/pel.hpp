@@ -5,6 +5,7 @@
 #include "private_header.hpp"
 #include "registry.hpp"
 #include "src.hpp"
+#include "user_data.hpp"
 #include "user_header.hpp"
 
 #include <memory>
@@ -248,6 +249,21 @@ class PEL
      */
     std::vector<std::unique_ptr<Section>> _optionalSections;
 };
+
+namespace util
+{
+
+/**
+ * @brief Create a UserData section containing the AdditionalData
+ *        contents as a JSON string.
+ *
+ * @param[in] ad - The AdditionalData contents
+ *
+ * @return std::unique_ptr<UserData> - The section
+ */
+std::unique_ptr<UserData> makeADUserDataSection(const AdditionalData& ad);
+
+} // namespace util
 
 } // namespace pels
 } // namespace openpower
