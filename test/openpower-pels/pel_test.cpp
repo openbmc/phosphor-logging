@@ -231,3 +231,32 @@ TEST_F(PELTest, InvalidGenericTest)
 
     EXPECT_TRUE(foundGeneric);
 }
+
+// Create a UserData section out of AdditionalData
+TEST_F(PELTest, MakeUDSectionTest)
+{
+    std::vector<std::string> ad{"KEY1=VALUE1", "KEY2=VALUE2", "KEY3=VALUE3",
+                                "ESEL=TEST"};
+    AdditionalData additionalData{ad};
+
+    auto ud = util::makeADUserDataSection(additionalData);
+
+    EXPECT_TRUE(ud->valid());
+    EXPECT_EQ(ud->header().id, 0x5544);
+    EXPECT_EQ(ud->header().version, 0x01);
+    EXPECT_EQ(ud->header().subType, 0x01);
+    EXPECT_EQ(ud->header().componentID, 0x2000);
+
+    const auto& d = ud->data();
+
+    std::string jsonString{d.begin(), d.end()};
+    std::string expected =
+        R"({"KEY1":"VALUE1","KEY2":"VALUE2","KEY3":"VALUE3"})";
+    EXPECT_EQ(jsonString, expected);
+
+    // Ensure we can read this as JSON
+    auto newJSON = nlohmann::json::parse(jsonString);
+    EXPECT_EQ(newJSON["KEY1"], "VALUE1");
+    EXPECT_EQ(newJSON["KEY2"], "VALUE2");
+    EXPECT_EQ(newJSON["KEY3"], "VALUE3");
+}
