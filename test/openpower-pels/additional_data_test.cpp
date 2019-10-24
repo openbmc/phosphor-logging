@@ -24,4 +24,11 @@ TEST(AdditionalDataTest, GetKeywords)
 
     EXPECT_FALSE(ad.getValue("HELLOWORLD"));
     EXPECT_FALSE(ad.getValue("VALUE5"));
+
+    auto json = ad.toJSON();
+    std::string expected = R"({"KEY1":"VALUE1","KEY2":"VALUE2","KEY3":""})";
+    EXPECT_EQ(json.dump(), expected);
+
+    ad.remove("KEY1");
+    EXPECT_FALSE(ad.getValue("KEY1"));
 }
