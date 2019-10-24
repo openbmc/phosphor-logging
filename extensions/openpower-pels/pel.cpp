@@ -6,6 +6,7 @@
 #include "section_factory.hpp"
 #include "src.hpp"
 #include "stream.hpp"
+#include "user_data_formats.hpp"
 
 #include <phosphor-logging/log.hpp>
 
@@ -29,6 +30,12 @@ PEL::PEL(const message::Entry& entry, uint32_t obmcLogID, uint64_t timestamp,
 
     auto mtms = std::make_unique<FailingMTMS>(dataIface);
     _optionalSections.push_back(std::move(mtms));
+
+    if (!additionalData.empty())
+    {
+        auto ud = util::makeADUserDataSection(additionalData);
+        _optionalSections.push_back(std::move(ud));
+    }
 
     _ph->sectionCount() = 2 + _optionalSections.size();
 }
@@ -134,5 +141,35 @@ std::optional<SRC*> PEL::primarySRC()
     return std::nullopt;
 }
 
+namespace util
+{
+
+std::unique_ptr<UserData> makeADUserDataSection(const AdditionalData& ad)
+{
+    assert(!ad.empty());
+    nlohmann::json json;
+
+    // Remove the 'ESEL' entry, as it contains a full PEL in the value.
+    if (ad.getValue("ESEL"))
+    {
+        auto newAD = ad;
+        newAD.remove("ESEL");
+        json = newAD.toJSON();
+    }
+    else
+    {
+        json = ad.toJSON();
+    }
+
+    auto jsonString = json.dump();
+    std::vector<uint8_t> jsonData(jsonString.begin(), jsonString.end());
+
+    return std::make_unique<UserData>(
+        static_cast<uint16_t>(ComponentID::phosphorLogging),
+        static_cast<uint8_t>(UserDataFormat::json),
+        static_cast<uint8_t>(UserDataFormatVersion::json), jsonData);
+}
+
+} // namespace util
 } // namespace pels
 } // namespace openpower

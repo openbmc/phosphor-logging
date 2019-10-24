@@ -1,5 +1,6 @@
 #pragma once
 #include <map>
+#include <nlohmann/json.hpp>
 #include <optional>
 #include <string>
 #include <vector>
@@ -65,6 +66,40 @@ class AdditionalData
             return entry->second;
         }
         return std::nullopt;
+    }
+
+    /**
+     * @brief Remove a key/value pair from the contained data
+     *
+     * @param[in] key - The key of the entry to remove
+     */
+    void remove(const std::string& key)
+    {
+        _data.erase(key);
+    }
+
+    /**
+     * @brief Says if the object has no data
+     *
+     * @return bool true if the object is empty
+     */
+    inline bool empty() const
+    {
+        return _data.empty();
+    }
+
+    /**
+     * @brief Returns the contained data as a JSON object
+     *
+     * Looks like: {"key1":"value1","key2":"value2"}
+     *
+     * @return json - The JSON object
+     */
+    nlohmann::json toJSON() const
+    {
+        assert(!empty());
+        nlohmann::json j = _data;
+        return j;
     }
 
   private:
