@@ -28,6 +28,23 @@ def check_duplicate_names(registry_json):
             names[entry['Name']] = {}
 
 
+def check_duplicate_reason_codes(registry_json):
+    r"""
+    Check that there aren't any message registry entries with the same
+    'ReasonCode' field.
+
+    registry_json: The message registry JSON
+    """
+
+    reasonCodes = {}
+    for entry in registry_json['PELs']:
+        if entry['SRC']['ReasonCode'] in reasonCodes.keys():
+            sys.exit("Found duplicate SRC reason code {}".format(
+                entry['SRC']['ReasonCode']))
+        else:
+            reasonCodes[entry['SRC']['ReasonCode']] = {}
+
+
 def check_component_id(registry_json):
     r"""
     Check that the upper byte of the ComponentID field matches the upper byte
@@ -107,6 +124,8 @@ def validate_schema(registry, schema):
                     sys.exit("Schema validation failed")
 
         check_duplicate_names(registry_json)
+
+        check_duplicate_reason_codes(registry_json)
 
         check_component_id(registry_json)
 
