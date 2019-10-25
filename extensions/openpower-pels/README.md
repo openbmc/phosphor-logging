@@ -41,6 +41,15 @@ e.g.
 _PID="12345"
 ```
 
+## Default UserData sections for BMC created PELs
+
+The extension code that creates PELs will add these UserData sections to every
+PEL:
+
+- The AdditionalData property contents
+  - If the AdditionalData property in the OpenBMC event log has anything in it,
+    it will be saved in a UserData section as a JSON string.
+
 ## The PEL Message Registry
 
 The PEL message registry is used to create PELs from OpenBMC event logs.
