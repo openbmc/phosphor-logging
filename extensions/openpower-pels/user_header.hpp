@@ -64,9 +64,9 @@ class UserHeader : public Section
     /**
      * @brief Returns the subsystem field.
      *
-     * @return uint8_t& - the subsystem
+     * @return uint8_t - the subsystem
      */
-    uint8_t& subsystem()
+    uint8_t subsystem() const
     {
         return _eventSubsystem;
     }
@@ -74,9 +74,9 @@ class UserHeader : public Section
     /**
      * @brief Returns the event scope field.
      *
-     * @return uint8_t& - the event scope
+     * @return uint8_t - the event scope
      */
-    uint8_t& scope()
+    uint8_t scope() const
     {
         return _eventScope;
     }
@@ -84,9 +84,9 @@ class UserHeader : public Section
     /**
      * @brief Returns the severity field.
      *
-     * @return uint8_t& - the severity
+     * @return uint8_t - the severity
      */
-    uint8_t& severity()
+    uint8_t severity() const
     {
         return _eventSeverity;
     }
@@ -94,9 +94,9 @@ class UserHeader : public Section
     /**
      * @brief Returns the event type field.
      *
-     * @return uint8_t& - the event type
+     * @return uint8_t - the event type
      */
-    uint8_t& eventType()
+    uint8_t eventType() const
     {
         return _eventType;
     }
@@ -104,9 +104,9 @@ class UserHeader : public Section
     /**
      * @brief Returns the problem domain field.
      *
-     * @return uint8_t& - the problem domain
+     * @return uint8_t - the problem domain
      */
-    uint8_t& problemDomain()
+    uint8_t problemDomain() const
     {
         return _problemDomain;
     }
@@ -114,9 +114,9 @@ class UserHeader : public Section
     /**
      * @brief Returns the problem vector field.
      *
-     * @return uint8_t& - the problem vector
+     * @return uint8_t - the problem vector
      */
-    uint8_t& problemVector()
+    uint8_t problemVector() const
     {
         return _problemVector;
     }
@@ -124,9 +124,9 @@ class UserHeader : public Section
     /**
      * @brief Returns the action flags field.
      *
-     * @return uint16_t& - the action flags
+     * @return uint16_t - the action flags
      */
-    uint16_t& actionFlags()
+    uint16_t actionFlags() const
     {
         return _actionFlags;
     }

@@ -152,21 +152,21 @@ class PEL
     /**
      * @brief Gives access to the Private Header section class
      *
-     * @return std::unique_ptr<PrivateHeader>& the private header
+     * @return const PrivateHeader& - the private header
      */
-    std::unique_ptr<PrivateHeader>& privateHeader()
+    const PrivateHeader& privateHeader() const
     {
-        return _ph;
+        return *_ph;
     }
 
     /**
      * @brief Gives access to the User Header section class
      *
-     * @return std::unique_ptr<UserHeader>& the user header
+     * @return const UserHeader& - the user header
      */
-    std::unique_ptr<UserHeader>& userHeader()
+    const UserHeader& userHeader() const
     {
-        return _uh;
+        return *_uh;
     }
 
     /**
