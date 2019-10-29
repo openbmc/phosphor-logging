@@ -75,9 +75,9 @@ class PrivateHeader : public Section
     /**
      * @brief Returns the creation timestamp
      *
-     * @return BCDTime& - the timestamp
+     * @return BCDTime - the timestamp
      */
-    BCDTime& createTimestamp()
+    const BCDTime createTimestamp() const
     {
         return _createTimestamp;
     }
@@ -85,19 +85,29 @@ class PrivateHeader : public Section
     /**
      * @brief Returns the commit time timestamp
      *
-     * @return BCDTime& - the timestamp
+     * @return BCDTime - the timestamp
      */
-    BCDTime& commitTimestamp()
+    BCDTime commitTimestamp() const
     {
         return _commitTimestamp;
     }
 
     /**
+     * @brief Sets the commit timestamp
+     *
+     * @param[in] time - the new timestamp
+     */
+    void setCommitTimestamp(const BCDTime& time)
+    {
+        _commitTimestamp = time;
+    }
+
+    /**
      * @brief Returns the creator ID field
      *
-     * @return uint8_t& - the creator ID
+     * @return uint8_t - the creator ID
      */
-    uint8_t& creatorID()
+    uint8_t creatorID() const
     {
         return _creatorID;
     }
@@ -105,9 +115,9 @@ class PrivateHeader : public Section
     /**
      * @brief Returns the log type field
      *
-     * @return uint8_t& - the log type
+     * @return uint8_t - the log type
      */
-    uint8_t& logType()
+    uint8_t logType() const
     {
         return _logType;
     }
@@ -115,11 +125,21 @@ class PrivateHeader : public Section
     /**
      * @brief Returns the section count field
      *
-     * @return uint8_t& - the section count
+     * @return uint8_t - the section count
      */
-    uint8_t& sectionCount()
+    uint8_t sectionCount() const
     {
         return _sectionCount;
+    }
+
+    /**
+     * @brief Sets the section count field
+     *
+     * @param[in] count - the new section count
+     */
+    void setSectionCount(uint8_t count)
+    {
+        _sectionCount = count;
     }
 
     /**
@@ -128,11 +148,21 @@ class PrivateHeader : public Section
      * This is the ID the OpenBMC event log that corresponds
      * to this PEL.
      *
-     * @return uint32_t& - the OpenBMC event log ID
+     * @return uint32_t - the OpenBMC event log ID
      */
-    uint32_t& obmcLogID()
+    uint32_t obmcLogID() const
     {
         return _obmcLogID;
+    }
+
+    /**
+     * @brief Sets the OpenBMC log ID field
+     *
+     * @param[in] id - the new ID
+     */
+    void setOBMCLogID(uint32_t id)
+    {
+        _obmcLogID = id;
     }
 
     /**
@@ -148,19 +178,29 @@ class PrivateHeader : public Section
     /**
      * @brief Returns the error log ID field
      *
-     * @return uint32_t& - the error log ID
+     * @return uint32_t - the error log ID
      */
-    uint32_t& id()
+    uint32_t id() const
     {
         return _id;
     }
 
     /**
+     * @brief Sets the ID field
+     *
+     * @param[in] id - the new ID
+     */
+    void setID(uint32_t id)
+    {
+        _id = id;
+    }
+
+    /**
      * @brief Returns the platform log ID field
      *
-     * @return uint32_t& - the platform log ID
+     * @return uint32_t - the platform log ID
      */
-    uint32_t& plid()
+    uint32_t plid() const
     {
         return _plid;
     }

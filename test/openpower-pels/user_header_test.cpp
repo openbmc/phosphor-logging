@@ -42,20 +42,6 @@ TEST(UserHeaderTest, UnflattenFlattenTest)
 
     uh.flatten(newStream);
     EXPECT_EQ(data, newData);
-
-    // Change a field, then flatten and unflatten again
-    uh.subsystem() = 0x44;
-
-    newStream.offset(0);
-    newData.clear();
-    uh.flatten(newStream);
-    EXPECT_NE(data, newData);
-
-    newStream.offset(0);
-    UserHeader newUH(newStream);
-
-    EXPECT_TRUE(newUH.valid());
-    EXPECT_EQ(newUH.subsystem(), 0x44);
 }
 
 TEST(UserHeaderTest, ShortDataTest)

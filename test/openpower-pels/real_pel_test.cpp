@@ -537,7 +537,7 @@ TEST_F(PELTest, RealPELTest)
     // Check that the code can extract an object for every section.
     //(The PrivateHeader and UserHeader account for the + 2 below.)
     const auto& sections = pel.optionalSections();
-    EXPECT_EQ(pel.privateHeader()->sectionCount(), sections.size() + 2);
+    EXPECT_EQ(pel.privateHeader().sectionCount(), sections.size() + 2);
 
     auto src = pel.primarySRC();
     EXPECT_EQ(src.value()->asciiString(), "B181A80E                        ");
