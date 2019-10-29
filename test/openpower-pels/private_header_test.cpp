@@ -28,7 +28,7 @@ TEST_F(PrivateHeaderTest, UnflattenFlattenTest)
     EXPECT_EQ(ph.header().subType, 0x02);
     EXPECT_EQ(ph.header().componentID, 0x0304);
 
-    auto& ct = ph.createTimestamp();
+    auto ct = ph.createTimestamp();
     EXPECT_EQ(ct.yearMSB, 0x20);
     EXPECT_EQ(ct.yearLSB, 0x30);
     EXPECT_EQ(ct.month, 0x05);
@@ -38,7 +38,7 @@ TEST_F(PrivateHeaderTest, UnflattenFlattenTest)
     EXPECT_EQ(ct.seconds, 0x01);
     EXPECT_EQ(ct.hundredths, 0x63);
 
-    auto& mt = ph.commitTimestamp();
+    auto mt = ph.commitTimestamp();
     EXPECT_EQ(mt.yearMSB, 0x20);
     EXPECT_EQ(mt.yearLSB, 0x31);
     EXPECT_EQ(mt.month, 0x06);
@@ -68,7 +68,7 @@ TEST_F(PrivateHeaderTest, UnflattenFlattenTest)
     EXPECT_EQ(data, newData);
 
     // Change a field, then flatten and unflatten again
-    ph.creatorID() = 0x55;
+    ph.setID(0x55);
 
     newStream.offset(0);
     newData.clear();
@@ -79,7 +79,7 @@ TEST_F(PrivateHeaderTest, UnflattenFlattenTest)
     PrivateHeader newPH(newStream);
 
     EXPECT_TRUE(newPH.valid());
-    EXPECT_EQ(newPH.creatorID(), 0x55);
+    EXPECT_EQ(newPH.id(), 0x55);
 }
 
 TEST_F(PrivateHeaderTest, ShortDataTest)

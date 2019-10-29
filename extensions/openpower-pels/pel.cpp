@@ -37,7 +37,7 @@ PEL::PEL(const message::Entry& entry, uint32_t obmcLogID, uint64_t timestamp,
         _optionalSections.push_back(std::move(ud));
     }
 
-    _ph->sectionCount() = 2 + _optionalSections.size();
+    _ph->setSectionCount(2 + _optionalSections.size());
 }
 
 PEL::PEL(std::vector<uint8_t>& data) : PEL(data, 0)
@@ -55,7 +55,7 @@ void PEL::populateFromRawData(std::vector<uint8_t>& data, uint32_t obmcLogID)
     _ph = std::make_unique<PrivateHeader>(pelData);
     if (obmcLogID != 0)
     {
-        _ph->obmcLogID() = obmcLogID;
+        _ph->setOBMCLogID(obmcLogID);
     }
 
     _uh = std::make_unique<UserHeader>(pelData);
@@ -92,12 +92,12 @@ bool PEL::valid() const
 void PEL::setCommitTime()
 {
     auto now = std::chrono::system_clock::now();
-    _ph->commitTimestamp() = getBCDTime(now);
+    _ph->setCommitTimestamp(getBCDTime(now));
 }
 
 void PEL::assignID()
 {
-    _ph->id() = generatePELID();
+    _ph->setID(generatePELID());
 }
 
 void PEL::flatten(std::vector<uint8_t>& pelBuffer)
