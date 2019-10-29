@@ -26,8 +26,8 @@ TEST_F(PELTest, FlattenTest)
     EXPECT_TRUE(pel->valid());
     EXPECT_EQ(pel->id(), 0x80818283);
     EXPECT_EQ(pel->plid(), 0x50515253);
-    EXPECT_EQ(pel->userHeader()->subsystem(), 0x10);
-    EXPECT_EQ(pel->userHeader()->actionFlags(), 0x80C0);
+    EXPECT_EQ(pel->userHeader().subsystem(), 0x10);
+    EXPECT_EQ(pel->userHeader().actionFlags(), 0x80C0);
 
     // Test that data in == data out
     auto flattenedData = pel->data();
@@ -86,8 +86,8 @@ TEST_F(PELTest, InvalidPELTest)
 
     auto pel = std::make_unique<PEL>(data);
 
-    EXPECT_TRUE(pel->privateHeader()->valid());
-    EXPECT_FALSE(pel->userHeader()->valid());
+    EXPECT_TRUE(pel->privateHeader().valid());
+    EXPECT_FALSE(pel->userHeader().valid());
     EXPECT_FALSE(pel->valid());
 
     // Now corrupt the private header
@@ -95,8 +95,8 @@ TEST_F(PELTest, InvalidPELTest)
     data.at(0) = 0;
     pel = std::make_unique<PEL>(data);
 
-    EXPECT_FALSE(pel->privateHeader()->valid());
-    EXPECT_TRUE(pel->userHeader()->valid());
+    EXPECT_FALSE(pel->privateHeader().valid());
+    EXPECT_TRUE(pel->userHeader().valid());
     EXPECT_FALSE(pel->valid());
 }
 
@@ -105,8 +105,8 @@ TEST_F(PELTest, EmptyDataTest)
     std::vector<uint8_t> data;
     auto pel = std::make_unique<PEL>(data);
 
-    EXPECT_FALSE(pel->privateHeader()->valid());
-    EXPECT_FALSE(pel->userHeader()->valid());
+    EXPECT_FALSE(pel->privateHeader().valid());
+    EXPECT_FALSE(pel->userHeader().valid());
     EXPECT_FALSE(pel->valid());
 }
 
@@ -128,8 +128,8 @@ TEST_F(PELTest, CreateFromRegistryTest)
             dataIface};
 
     EXPECT_TRUE(pel.valid());
-    EXPECT_EQ(pel.privateHeader()->obmcLogID(), 42);
-    EXPECT_EQ(pel.userHeader()->severity(), 0x40);
+    EXPECT_EQ(pel.privateHeader().obmcLogID(), 42);
+    EXPECT_EQ(pel.userHeader().severity(), 0x40);
 
     EXPECT_EQ(pel.primarySRC().value()->asciiString(),
               "BD051234                        ");
