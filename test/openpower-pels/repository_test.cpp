@@ -61,7 +61,7 @@ TEST_F(RepositoryTest, AddTest)
 
     // Check that the PEL was stored where it was supposed to be,
     // and that it wrote the PEL data.
-    const auto& ts = pel->privateHeader()->commitTimestamp();
+    const auto ts = pel->privateHeader().commitTimestamp();
     auto name = Repository::getPELFilename(pel->id(), ts);
 
     fs::path file = repoPath / "logs" / name;
