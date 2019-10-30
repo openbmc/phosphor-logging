@@ -52,8 +52,7 @@
                     "ComponentID": {"$ref": "#/definitions/componentID" }
                 },
 
-                "required": ["Name", "SRC", "Subsystem", "Documentation",
-                             "ActionFlags"],
+                "required": ["Name", "SRC", "Subsystem", "Documentation"],
                 "additionalProperties": false
             }
         },

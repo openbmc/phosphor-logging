@@ -80,7 +80,8 @@ the event scope, as defined by the PEL spec.  It is optional and defaults to
 ### Event Type
 This field is part of the PEL User Header section, and is used to specify
 the event type, as defined by the PEL spec.  It is optional and defaults to
-"not applicable".
+"not applicable" for non-informational logs, and "misc_information_only" for
+informational ones.
 
 ```
 "EventType": "na"
@@ -89,6 +90,13 @@ the event type, as defined by the PEL spec.  It is optional and defaults to
 ### Action Flags
 This field is part of the PEL User Header section, and is used to specify the
 PEL action flags, as defined by the PEL spec.  It is an array of enumerations.
+
+The action flags can usually be deduced from other PEL fields, such as the
+severity or if there are any callouts.  As such, this is an optional field and
+if not supplied the code will fill them in based on those fields.
+
+In fact, even if supplied here, the code may still modify them to ensure they
+are correct.
 
 ```
 "ActionFlags": ["service_action", "report", "call_home"]
