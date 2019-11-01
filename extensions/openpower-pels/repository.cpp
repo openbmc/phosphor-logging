@@ -147,5 +147,41 @@ std::optional<std::vector<uint8_t>> Repository::getPELData(const LogID& id)
     return std::nullopt;
 }
 
+void Repository::for_each(ForEachFunc func) const
+{
+    for (const auto& [id, path] : _idsToPELs)
+    {
+        std::ifstream file{path};
+
+        if (!file.good())
+        {
+            auto e = errno;
+            log<level::ERR>("Repository::for_each: Unable to open PEL file",
+                            entry("ERRNO=%d", e),
+                            entry("PATH=%s", path.c_str()));
+            continue;
+        }
+
+        file.close();
+
+        std::vector<uint8_t> data{std::istreambuf_iterator<char>(file),
+                                  std::istreambuf_iterator<char>()};
+        PEL pel(data);
+
+        try
+        {
+            if (func(pel))
+            {
+                break;
+            }
+        }
+        catch (std::exception& e)
+        {
+            log<level::ERR>("Repository::for_each function exception",
+                            entry("ERROR=%s", e.what()));
+        }
+    }
+}
+
 } // namespace pels
 } // namespace openpower
