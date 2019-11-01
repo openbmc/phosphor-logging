@@ -15,6 +15,7 @@ phosphor_log_manager_SOURCES += \
 	extensions/openpower-pels/paths.cpp \
 	extensions/openpower-pels/pce_identity.cpp \
 	extensions/openpower-pels/pel.cpp \
+	extensions/openpower-pels/pel_rules.cpp \
 	extensions/openpower-pels/pel_values.cpp \
 	extensions/openpower-pels/private_header.cpp \
 	extensions/openpower-pels/registry.cpp \
