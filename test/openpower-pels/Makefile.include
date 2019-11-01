@@ -11,9 +11,10 @@ check_PROGRAMS += \
 	mru_test \
 	mtms_test \
 	pce_identity_test \
+	pel_manager_test \
+	pel_rules_test \
 	pel_test \
 	pel_values_test \
-	pel_manager_test \
 	private_header_test \
 	real_pel_test \
 	registry_test \
@@ -40,6 +41,7 @@ pel_objects = \
 	$(top_builddir)/extensions/openpower-pels/mru.o \
 	$(top_builddir)/extensions/openpower-pels/pce_identity.o \
 	$(top_builddir)/extensions/openpower-pels/pel.o \
+	$(top_builddir)/extensions/openpower-pels/pel_rules.o \
 	$(top_builddir)/extensions/openpower-pels/pel_values.o \
 	$(top_builddir)/extensions/openpower-pels/private_header.o \
 	$(top_builddir)/extensions/openpower-pels/registry.o \
@@ -283,3 +285,11 @@ src_test_LDADD = \
 	$(top_builddir)/extensions/openpower-pels/pce_identity.o \
 	$(top_builddir)/extensions/openpower-pels/src.o
 src_test_LDFLAGS = $(test_ldflags)
+
+pel_rules_test_SOURCES = %reldir%/pel_rules_test.cpp
+pel_rules_test_CPPFLAGS = $(test_cppflags)
+pel_rules_test_CXXFLAGS = $(test_cxxflags)
+pel_rules_test_LDADD = \
+	$(test_ldflags) \
+	$(top_builddir)/extensions/openpower-pels/pel_rules.o
+pel_rules_test_LDFLAGS = $(test_ldflags)

@@ -3,6 +3,7 @@
 #include "bcd_time.hpp"
 #include "failing_mtms.hpp"
 #include "log_id.hpp"
+#include "pel_rules.hpp"
 #include "section_factory.hpp"
 #include "src.hpp"
 #include "stream.hpp"
@@ -38,6 +39,8 @@ PEL::PEL(const message::Entry& entry, uint32_t obmcLogID, uint64_t timestamp,
     }
 
     _ph->setSectionCount(2 + _optionalSections.size());
+
+    checkRules();
 }
 
 PEL::PEL(std::vector<uint8_t>& data) : PEL(data, 0)
@@ -139,6 +142,22 @@ std::optional<SRC*> PEL::primarySRC()
     }
 
     return std::nullopt;
+}
+
+void PEL::checkRules()
+{
+    auto [actionFlags, eventType] =
+        pel_rules::check(_uh->actionFlags(), _uh->eventType(), _uh->severity());
+
+    if (actionFlags != _uh->actionFlags())
+    {
+        _uh->setActionFlags(actionFlags);
+    }
+
+    if (eventType != _uh->eventType())
+    {
+        _uh->setEventType(eventType);
+    }
 }
 
 namespace util
