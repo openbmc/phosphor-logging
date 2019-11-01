@@ -148,6 +148,26 @@ class Repository
      */
     std::optional<std::vector<uint8_t>> getPELData(const LogID& id);
 
+    using ForEachFunc = std::function<bool(const PEL&)>;
+
+    /**
+     * @brief Run a user defined function on every PEL in the repository.
+     *
+     * ForEachFunc takes a const PEL reference, and should return
+     * true to stop iterating and return out of for_each.
+     *
+     * For example, to save up to 100 IDs in the repo into a vector:
+     *
+     *     std::vector<uint32_t> ids;
+     *     ForEachFunc f = [&ids](const PEL& pel) {
+     *         ids.push_back(pel.id());
+     *         return ids.size() == 100 ? true : false;
+     *     };
+     *
+     * @param[in] func - The function to run.
+     */
+    void for_each(ForEachFunc func) const;
+
   private:
     /**
      * @brief Finds an entry in the _idsToPELs map.
