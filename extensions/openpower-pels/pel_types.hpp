@@ -82,5 +82,20 @@ enum class EventType
     notApplicable = 0x00
 };
 
+/**
+ * @brief The major types of severity values, based on the
+ *        the left nibble of the severity value.
+ */
+enum class SeverityType
+{
+    nonError = 0x00,
+    recovered = 0x10,
+    predictive = 0x20,
+    unrecoverable = 0x40,
+    critical = 0x50,
+    diagnostic = 0x60,
+    symptom = 0x70
+};
+
 } // namespace pels
 } // namespace openpower
