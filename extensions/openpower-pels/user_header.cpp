@@ -62,8 +62,20 @@ UserHeader::UserHeader(const message::Entry& entry,
 
     // TODO: ibm-dev/dev/#1144 Handle manufacturing sev & action flags
 
-    _eventType = entry.eventType.value_or(
-        static_cast<uint8_t>(EventType::notApplicable));
+    if (entry.eventType)
+    {
+        _eventType = *entry.eventType;
+    }
+    else
+    {
+        // There are different default event types for info errors
+        // vs non info ones.
+        auto sevType = static_cast<SeverityType>(_eventSeverity & 0xF0);
+
+        _eventType = (sevType == SeverityType::nonError)
+                         ? static_cast<uint8_t>(EventType::miscInformational)
+                         : static_cast<uint8_t>(EventType::notApplicable);
+    }
 
     _reserved4Byte1 = 0;
 
@@ -71,6 +83,7 @@ UserHeader::UserHeader(const message::Entry& entry,
     _problemDomain = 0;
     _problemVector = 0;
 
+    // These will be cleaned up later in pel_rules::check()
     _actionFlags = entry.actionFlags.value_or(0);
 
     _reserved4Byte2 = 0;

@@ -102,6 +102,16 @@ class UserHeader : public Section
     }
 
     /**
+     * @brief Set the event type field
+     *
+     * @param[in] type - the new event type
+     */
+    void setEventType(uint8_t type)
+    {
+        _eventType = type;
+    }
+
+    /**
      * @brief Returns the problem domain field.
      *
      * @return uint8_t - the problem domain
@@ -129,6 +139,16 @@ class UserHeader : public Section
     uint16_t actionFlags() const
     {
         return _actionFlags;
+    }
+
+    /**
+     * @brief Sets the action flags field
+     *
+     * @param[in] flags - the new action flags
+     */
+    void setActionFlags(uint16_t flags)
+    {
+        _actionFlags = flags;
     }
 
     /**

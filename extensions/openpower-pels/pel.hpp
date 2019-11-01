@@ -240,6 +240,12 @@ class PEL
     void flatten(std::vector<uint8_t>& pelBuffer);
 
     /**
+     * @brief Check that the PEL fields that need to be in agreement
+     *        with each other are, and fix them up if necessary.
+     */
+    void checkRulesAndFix();
+
+    /**
      * @brief The PEL Private Header section
      */
     std::unique_ptr<PrivateHeader> _ph;
