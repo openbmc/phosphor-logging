@@ -99,7 +99,7 @@ struct Entry
     /**
      * @brief The PEL action flags field.
      */
-    uint16_t actionFlags;
+    std::optional<uint16_t> actionFlags;
 
     /**
      * @brief  The optional action flags to use instead when in manufacturing

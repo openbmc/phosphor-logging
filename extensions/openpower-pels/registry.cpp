@@ -291,7 +291,11 @@ std::optional<Entry> Registry::lookup(const std::string& name)
             Entry entry;
             entry.name = (*e)["Name"];
             entry.subsystem = helper::getSubsystem((*e)["Subsystem"]);
-            entry.actionFlags = helper::getActionFlags((*e)["ActionFlags"]);
+
+            if (e->find("ActionFlags") != e->end())
+            {
+                entry.actionFlags = helper::getActionFlags((*e)["ActionFlags"]);
+            }
 
             if (e->find("MfgActionFlags") != e->end())
             {
