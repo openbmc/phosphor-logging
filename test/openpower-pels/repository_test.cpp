@@ -176,3 +176,39 @@ TEST_F(RepositoryTest, TestGetPELData)
     ASSERT_TRUE(pelData);
     EXPECT_EQ(dataCopy, *pelData);
 }
+
+TEST_F(RepositoryTest, TestForEach)
+{
+    Repository repo{repoPath};
+
+    // Add 2 PELs
+    auto data = pelDataFactory(TestPELType::pelSimple);
+    auto pel = std::make_unique<PEL>(data);
+    repo.add(pel);
+
+    pel = std::make_unique<PEL>(data);
+    pel->assignID();
+    pel->setCommitTime();
+    repo.add(pel);
+
+    // Make a function that saves the IDs
+    std::vector<uint32_t> ids;
+    Repository::ForEachFunc f1 = [&ids](const PEL& pel) {
+        ids.push_back(pel.id());
+        return false;
+    };
+
+    repo.for_each(f1);
+
+    EXPECT_EQ(ids.size(), 2);
+
+    // Stop after the first time in.
+    Repository::ForEachFunc f2 = [&ids](const PEL& pel) {
+        ids.push_back(pel.id());
+        return true;
+    };
+
+    ids.clear();
+    repo.for_each(f2);
+    EXPECT_EQ(ids.size(), 1);
+}
