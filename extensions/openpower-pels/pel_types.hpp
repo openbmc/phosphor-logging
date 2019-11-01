@@ -79,7 +79,9 @@ enum class EventScope
  */
 enum class EventType
 {
-    notApplicable = 0x00
+    notApplicable = 0x00,
+    miscInformational = 0x01,
+    tracing = 0x02
 };
 
 /**
@@ -95,6 +97,26 @@ enum class SeverityType
     critical = 0x50,
     diagnostic = 0x60,
     symptom = 0x70
+};
+
+/**
+ * @brief The Action Flags values with the bit
+ *        numbering needed by std::bitset.
+ *
+ * Not an enum class so that casting isn't needed
+ * by the bitset operations.
+ */
+enum ActionFlagsBits
+{
+    serviceActionFlagBit = 15,       // 0x8000
+    hiddenFlagBit = 14,              // 0x4000
+    reportFlagBit = 13,              // 0x2000
+    dontReportToHostFlagBit = 12,    // 0x1000
+    callHomeFlagBit = 11,            // 0x0800
+    isolationIncompleteFlagBit = 10, // 0x0400
+    spCallHomeFlagBit = 8,           // 0x0100
+    osSWErrorBit = 7,                // 0x0080
+    osHWErrorBit = 6                 // 0x0040
 };
 
 } // namespace pels

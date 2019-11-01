@@ -4,6 +4,7 @@
 #include "failing_mtms.hpp"
 #include "hexdump.hpp"
 #include "log_id.hpp"
+#include "pel_rules.hpp"
 #include "pel_values.hpp"
 #include "section_factory.hpp"
 #include "src.hpp"
@@ -42,6 +43,8 @@ PEL::PEL(const message::Entry& entry, uint32_t obmcLogID, uint64_t timestamp,
     }
 
     _ph->setSectionCount(2 + _optionalSections.size());
+
+    checkRulesAndFix();
 }
 
 PEL::PEL(std::vector<uint8_t>& data) : PEL(data, 0)
@@ -143,6 +146,15 @@ std::optional<SRC*> PEL::primarySRC() const
     }
 
     return std::nullopt;
+}
+
+void PEL::checkRulesAndFix()
+{
+    auto [actionFlags, eventType] =
+        pel_rules::check(_uh->actionFlags(), _uh->eventType(), _uh->severity());
+
+    _uh->setActionFlags(actionFlags);
+    _uh->setEventType(eventType);
 }
 
 namespace util

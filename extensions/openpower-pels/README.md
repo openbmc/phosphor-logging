@@ -55,4 +55,32 @@ PEL:
 The PEL message registry is used to create PELs from OpenBMC event logs.
 Documentation can be found [here](registry/README.md).
 
+## `Action Flags` and `Event Type` Rules
+
+The `Action Flags` and `Event Type` PEL fields are optional in the message
+registry, and if not present the code will set them based on certain rules
+layed out in the PEL spec.  In fact, even if they were specified, the checks
+are still done to ensure consistency across all the logs.
+
+These rules are:
+1. Always set the `Report` flag, unless the `Do Not Report` flag is already on.
+2. Always clear the `SP Call Home` flag, as that feature isn't supported.
+3. If the severity is `Non-error Event`:
+    - Clear the `Service Action` flag.
+    - Clear the `Call Home` flag.
+    - If the `Event Type` field is `Not Applicable`, change it to `Information
+      Only`.
+    - If the `Event Type` field is `Information Only` or `Tracing`, set the
+      `Hidden` flag.
+4. If the severity is `Recovered`:
+    - Set the `Hidden` flag.
+    - Clear the `Service Action` flag.
+    - Clear the `Call Home` flag.
+5. For all other severities:
+    - Clear the `Hidden` flag.
+    - Set the `Service Action` flag.
+    - Set the `Call Home` flag.
+
+Additional rules may be added in the future if necessary.
+
 ## D-Bus Interfaces

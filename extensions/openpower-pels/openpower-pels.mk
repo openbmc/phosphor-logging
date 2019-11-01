@@ -16,6 +16,7 @@ phosphor_log_manager_SOURCES += \
 	extensions/openpower-pels/paths.cpp \
 	extensions/openpower-pels/pce_identity.cpp \
 	extensions/openpower-pels/pel.cpp \
+	extensions/openpower-pels/pel_rules.cpp \
 	extensions/openpower-pels/pel_values.cpp \
 	extensions/openpower-pels/private_header.cpp \
 	extensions/openpower-pels/registry.cpp \
@@ -48,6 +49,7 @@ peltool_LDADD = \
         extensions/openpower-pels/paths.o \
         extensions/openpower-pels/pce_identity.o \
         extensions/openpower-pels/pel.o \
+        extensions/openpower-pels/pel_rules.o \
         extensions/openpower-pels/pel_values.o \
         extensions/openpower-pels/private_header.o \
         extensions/openpower-pels/registry.o \
