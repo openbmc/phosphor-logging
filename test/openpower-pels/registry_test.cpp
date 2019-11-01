@@ -16,7 +16,6 @@ const auto registryData = R"(
         {
             "Name": "xyz.openbmc_project.Power.Fault",
             "Subsystem": "power_supply",
-            "ActionFlags": ["service_action", "report"],
 
             "SRC":
             {
@@ -105,7 +104,7 @@ TEST_F(RegistryTest, TestFindEntry)
     EXPECT_EQ(entry->subsystem, 0x62);
     EXPECT_EQ(*(entry->severity), 0x40);
     EXPECT_EQ(*(entry->mfgSeverity), 0x00);
-    EXPECT_EQ(entry->actionFlags, 0xA800);
+    EXPECT_EQ(*(entry->actionFlags), 0xA800);
     EXPECT_EQ(*(entry->mfgActionFlags), 0x4000);
     EXPECT_EQ(entry->componentID, 0x2300);
     EXPECT_FALSE(entry->eventType);
@@ -148,7 +147,7 @@ TEST_F(RegistryTest, TestFindEntryMinimal)
     EXPECT_FALSE(entry->severity);
     EXPECT_FALSE(entry->mfgSeverity);
     EXPECT_FALSE(entry->mfgActionFlags);
-    EXPECT_EQ(entry->actionFlags, 0xA000);
+    EXPECT_FALSE(entry->actionFlags);
     EXPECT_EQ(entry->componentID, 0x2000);
     EXPECT_FALSE(entry->eventType);
     EXPECT_FALSE(entry->eventScope);

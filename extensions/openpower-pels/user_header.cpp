@@ -56,7 +56,7 @@ UserHeader::UserHeader(const message::Entry& entry,
     _problemDomain = 0;
     _problemVector = 0;
 
-    _actionFlags = entry.actionFlags;
+    _actionFlags = entry.actionFlags.value_or(0);
 
     _reserved4Byte2 = 0;
 
