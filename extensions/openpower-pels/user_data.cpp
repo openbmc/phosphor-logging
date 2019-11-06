@@ -42,7 +42,7 @@ void UserData::unflatten(Stream& stream)
     stream >> _data;
 }
 
-void UserData::flatten(Stream& stream)
+void UserData::flatten(Stream& stream) const
 {
     stream << _header << _data;
 }

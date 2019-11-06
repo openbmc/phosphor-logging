@@ -115,7 +115,7 @@ void PrivateHeader::unflatten(Stream& stream)
         _creatorVersion >> _plid >> _id;
 }
 
-void PrivateHeader::flatten(Stream& stream)
+void PrivateHeader::flatten(Stream& stream) const
 {
     stream << _header << _createTimestamp << _commitTimestamp << _creatorID
            << _logType << _reservedByte << _sectionCount << _obmcLogID
@@ -131,7 +131,7 @@ Stream& operator>>(Stream& s, CreatorVersion& cv)
     return s;
 }
 
-Stream& operator<<(Stream& s, CreatorVersion& cv)
+Stream& operator<<(Stream& s, const CreatorVersion& cv)
 {
     for (size_t i = 0; i < sizeof(CreatorVersion); i++)
     {

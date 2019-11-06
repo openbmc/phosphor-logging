@@ -26,7 +26,7 @@ class Section
     /**
      * @brief Returns a reference to the SectionHeader
      */
-    SectionHeader& header()
+    const SectionHeader& header() const
     {
         return _header;
     }
@@ -44,7 +44,7 @@ class Section
      *
      * @param[in] stream - The stream to write to
      */
-    virtual void flatten(Stream& stream) = 0;
+    virtual void flatten(Stream& stream) const = 0;
 
   protected:
     /**

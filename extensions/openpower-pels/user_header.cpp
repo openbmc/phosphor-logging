@@ -34,7 +34,7 @@ void UserHeader::unflatten(Stream& stream)
         _actionFlags >> _reserved4Byte2;
 }
 
-void UserHeader::flatten(Stream& stream)
+void UserHeader::flatten(Stream& stream) const
 {
     stream << _header << _eventSubsystem << _eventScope << _eventSeverity
            << _eventType << _reserved4Byte1 << _problemDomain << _problemVector

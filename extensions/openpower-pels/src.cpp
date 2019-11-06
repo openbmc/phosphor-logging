@@ -43,7 +43,7 @@ void SRC::unflatten(Stream& stream)
     }
 }
 
-void SRC::flatten(Stream& stream)
+void SRC::flatten(Stream& stream) const
 {
     stream << _header << _version << _flags << _reserved1B << _wordCount
            << _reserved2B << _size;
