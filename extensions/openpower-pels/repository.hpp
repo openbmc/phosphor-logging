@@ -3,6 +3,7 @@
 #include "pel.hpp"
 
 #include <algorithm>
+#include <bitset>
 #include <filesystem>
 #include <map>
 
@@ -19,6 +20,22 @@ namespace pels
 class Repository
 {
   public:
+    /**
+     * @brief Structure of commonly used PEL attributes.
+     */
+    struct PELAttributes
+    {
+        std::filesystem::path path;
+        std::bitset<16> actionFlags;
+
+        PELAttributes() = delete;
+
+        PELAttributes(const std::filesystem::path& path, uint16_t flags) :
+            path(path), actionFlags(flags)
+        {
+        }
+    };
+
     /**
      * @brief A structure that holds both the PEL and corresponding
      *        OpenBMC IDs.
@@ -133,7 +150,7 @@ class Repository
      */
     inline bool hasPEL(const LogID& id)
     {
-        return findPEL(id) != _idsToPELs.end();
+        return findPEL(id) != _pelAttributes.end();
     }
 
     /**
@@ -230,18 +247,29 @@ class Repository
         _deleteSubscriptions.erase(name);
     }
 
+    /**
+     * @brief Get the PEL attributes for a PEL
+     *
+     * @param[in] id - The ID to find the attributes for
+     *
+     * @return The attributes or an empty optional if not found
+     */
+    std::optional<std::reference_wrapper<const PELAttributes>>
+        getPELAttributes(const LogID& id) const;
+
   private:
     /**
-     * @brief Finds an entry in the _idsToPELs map.
+     * @brief Finds an entry in the _pelAttributes map.
      *
      * @param[in] id - the ID (either the pel ID, OBMC ID, or both)
      *
      * @return an iterator to the entry
      */
-    std::map<LogID, std::filesystem::path>::iterator findPEL(const LogID& id)
+    std::map<LogID, PELAttributes>::const_iterator
+        findPEL(const LogID& id) const
     {
-        return std::find_if(_idsToPELs.begin(), _idsToPELs.end(),
-                            [&id](const auto& i) { return i.first == id; });
+        return std::find_if(_pelAttributes.begin(), _pelAttributes.end(),
+                            [&id](const auto& a) { return a.first == id; });
     }
 
     /**
@@ -259,7 +287,7 @@ class Repository
     void processDeleteCallbacks(uint32_t id) const;
 
     /**
-     * @brief Restores the _idsToPELs map on startup based on the existing
+     * @brief Restores the _pelAttributes map on startup based on the existing
      *        PEL data files.
      */
     void restore();
@@ -270,9 +298,9 @@ class Repository
     const std::filesystem::path _logPath;
 
     /**
-     * @brief A map of the PEL/OBMC IDs to the PEL data files.
+     * @brief A map of the PEL/OBMC IDs to PEL attributes.
      */
-    std::map<LogID, std::filesystem::path> _idsToPELs;
+    std::map<LogID, PELAttributes> _pelAttributes;
 
     /**
      * @brief Subcriptions for new PELs.

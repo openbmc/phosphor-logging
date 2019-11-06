@@ -58,11 +58,14 @@ void Repository::restore()
             PEL pel{data};
             if (pel.valid())
             {
+                PELAttributes attributes{dirEntry.path(),
+                                         pel.userHeader().actionFlags()};
+
                 using pelID = LogID::Pel;
                 using obmcID = LogID::Obmc;
-                _idsToPELs.emplace(
+                _pelAttributes.emplace(
                     LogID(pelID(pel.id()), obmcID(pel.obmcLogID())),
-                    dirEntry.path());
+                    attributes);
             }
             else
             {
@@ -100,8 +103,6 @@ void Repository::add(std::unique_ptr<PEL>& pel)
         // If this fails, the filesystem is probably full so it isn't like
         // we could successfully create yet another error log here.
         auto e = errno;
-        log<level::ERR>("Failed creating PEL file",
-                        entry("FILE=%s", path.c_str()));
         fs::remove(path);
         log<level::ERR>("Unable to open PEL file for writing",
                         entry("ERRNO=%d", e), entry("PATH=%s", path.c_str()));
@@ -116,8 +117,6 @@ void Repository::add(std::unique_ptr<PEL>& pel)
         // Same note as above about not being able to create an error log
         // for this case even if we wanted.
         auto e = errno;
-        log<level::ERR>("Failed writing PEL file",
-                        entry("FILE=%s", path.c_str()));
         file.close();
         fs::remove(path);
         log<level::ERR>("Unable to write PEL file", entry("ERRNO=%d", e),
@@ -125,9 +124,14 @@ void Repository::add(std::unique_ptr<PEL>& pel)
         throw file_error::Write();
     }
 
+    file.close();
+
+    PELAttributes attributes{path, pel->userHeader().actionFlags()};
+
     using pelID = LogID::Pel;
     using obmcID = LogID::Obmc;
-    _idsToPELs.emplace(LogID(pelID(pel->id()), obmcID(pel->obmcLogID())), path);
+    _pelAttributes.emplace(LogID(pelID(pel->id()), obmcID(pel->obmcLogID())),
+                           attributes);
 
     processAddCallbacks(*pel);
 }
@@ -135,10 +139,10 @@ void Repository::add(std::unique_ptr<PEL>& pel)
 void Repository::remove(const LogID& id)
 {
     auto pel = findPEL(id);
-    if (pel != _idsToPELs.end())
+    if (pel != _pelAttributes.end())
     {
-        fs::remove(pel->second);
-        _idsToPELs.erase(pel);
+        fs::remove(pel->second.path);
+        _pelAttributes.erase(pel);
 
         processDeleteCallbacks(id.pelID.id);
     }
@@ -147,14 +151,14 @@ void Repository::remove(const LogID& id)
 std::optional<std::vector<uint8_t>> Repository::getPELData(const LogID& id)
 {
     auto pel = findPEL(id);
-    if (pel != _idsToPELs.end())
+    if (pel != _pelAttributes.end())
     {
-        std::ifstream file{pel->second.c_str()};
+        std::ifstream file{pel->second.path.c_str()};
         if (!file.good())
         {
             auto e = errno;
             log<level::ERR>("Unable to open PEL file", entry("ERRNO=%d", e),
-                            entry("PATH=%s", pel->second.c_str()));
+                            entry("PATH=%s", pel->second.path.c_str()));
             throw file_error::Open();
         }
 
@@ -168,16 +172,16 @@ std::optional<std::vector<uint8_t>> Repository::getPELData(const LogID& id)
 
 void Repository::for_each(ForEachFunc func) const
 {
-    for (const auto& [id, path] : _idsToPELs)
+    for (const auto& [id, attributes] : _pelAttributes)
     {
-        std::ifstream file{path};
+        std::ifstream file{attributes.path};
 
         if (!file.good())
         {
             auto e = errno;
             log<level::ERR>("Repository::for_each: Unable to open PEL file",
                             entry("ERRNO=%d", e),
-                            entry("PATH=%s", path.c_str()));
+                            entry("PATH=%s", attributes.path.c_str()));
             continue;
         }
 
@@ -234,6 +238,18 @@ void Repository::processDeleteCallbacks(uint32_t id) const
                             entry("ERROR=%s", e.what()));
         }
     }
+}
+
+std::optional<std::reference_wrapper<const Repository::PELAttributes>>
+    Repository::getPELAttributes(const LogID& id) const
+{
+    auto pel = findPEL(id);
+    if (pel != _pelAttributes.end())
+    {
+        return pel->second;
+    }
+
+    return std::nullopt;
 }
 
 } // namespace pels
