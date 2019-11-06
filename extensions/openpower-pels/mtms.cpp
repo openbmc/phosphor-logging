@@ -62,7 +62,7 @@ MTMS::MTMS(Stream& stream)
     }
 }
 
-Stream& operator<<(Stream& s, MTMS& mtms)
+Stream& operator<<(Stream& s, const MTMS& mtms)
 {
     for (size_t i = 0; i < MTMS::mtmSize; i++)
     {
@@ -79,15 +79,22 @@ Stream& operator<<(Stream& s, MTMS& mtms)
 
 Stream& operator>>(Stream& s, MTMS& mtms)
 {
+    std::array<uint8_t, MTMS::mtmSize> mtm;
+
     for (size_t i = 0; i < MTMS::mtmSize; i++)
     {
-        s >> mtms.machineTypeAndModelRaw()[i];
+        s >> mtm[i];
     }
 
+    mtms.setMachineTypeAndModel(mtm);
+
+    std::array<uint8_t, MTMS::snSize> sn;
     for (size_t i = 0; i < MTMS::snSize; i++)
     {
-        s >> mtms.machineSerialNumberRaw()[i];
+        s >> sn[i];
     }
+
+    mtms.setMachineSerialNumber(sn);
 
     return s;
 }

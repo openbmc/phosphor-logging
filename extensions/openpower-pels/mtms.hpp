@@ -63,9 +63,19 @@ class MTMS
      *
      * @return std::array<uint8_t, mtmSize>&  - The TM value
      */
-    std::array<uint8_t, mtmSize>& machineTypeAndModelRaw()
+    const std::array<uint8_t, mtmSize>& machineTypeAndModelRaw() const
     {
         return _machineTypeAndModel;
+    }
+
+    /**
+     * @brief Sets the machine type and model field
+     *
+     * @param[in] mtm - The new value
+     */
+    void setMachineTypeAndModel(const std::array<uint8_t, mtmSize>& mtm)
+    {
+        _machineTypeAndModel = mtm;
     }
 
     /**
@@ -91,9 +101,19 @@ class MTMS
      *
      * @return std::array<uint8_t, snSize>& - The SN value
      */
-    std::array<uint8_t, snSize>& machineSerialNumberRaw()
+    const std::array<uint8_t, snSize>& machineSerialNumberRaw() const
     {
         return _serialNumber;
+    }
+
+    /**
+     * @brief Sets the machine serial number field
+     *
+     * @param[in] sn - The new value
+     */
+    void setMachineSerialNumber(const std::array<uint8_t, snSize>& sn)
+    {
+        _serialNumber = sn;
     }
 
     /**
@@ -157,7 +177,7 @@ Stream& operator>>(Stream& s, MTMS& mtms);
  *
  * @return Stream&
  */
-Stream& operator<<(Stream& s, MTMS& mtms);
+Stream& operator<<(Stream& s, const MTMS& mtms);
 
 } // namespace pels
 } // namespace openpower
