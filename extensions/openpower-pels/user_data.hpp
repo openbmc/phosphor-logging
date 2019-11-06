@@ -58,7 +58,7 @@ class UserData : public Section
      *
      * @param[in] stream - The stream to write to
      */
-    void flatten(Stream& stream) override;
+    void flatten(Stream& stream) const override;
 
     /**
      * @brief Returns the size of this section when flattened into a PEL

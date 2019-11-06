@@ -82,7 +82,7 @@ class SRC : public Section
      *
      * @param[in] stream - The stream to write to
      */
-    void flatten(Stream& stream) override;
+    void flatten(Stream& stream) const override;
 
     /**
      * @brief Returns the SRC version, which is a different field

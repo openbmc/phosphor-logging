@@ -237,7 +237,7 @@ class PEL
      *
      * @param[out] pelBuffer - What the data will be written to
      */
-    void flatten(std::vector<uint8_t>& pelBuffer);
+    void flatten(std::vector<uint8_t>& pelBuffer) const;
 
     /**
      * @brief The PEL Private Header section
@@ -259,7 +259,7 @@ class PEL
      * @param[in] Section& - section object reference
      * @param[in] std::string - PEL string
      */
-    void printSectionInJSON(Section& section, std::string& buf) const;
+    void printSectionInJSON(const Section& section, std::string& buf) const;
 };
 
 namespace util

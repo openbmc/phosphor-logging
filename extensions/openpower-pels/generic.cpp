@@ -40,7 +40,7 @@ void Generic::unflatten(Stream& stream)
     stream >> _data;
 }
 
-void Generic::flatten(Stream& stream)
+void Generic::flatten(Stream& stream) const
 {
     stream << _header << _data;
 }

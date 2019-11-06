@@ -75,7 +75,7 @@ void FailingMTMS::validate()
     _valid = (failed) ? false : true;
 }
 
-void FailingMTMS::flatten(Stream& stream)
+void FailingMTMS::flatten(Stream& stream) const
 {
     stream << _header << _mtms;
 }

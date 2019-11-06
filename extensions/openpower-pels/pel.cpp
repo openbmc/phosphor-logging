@@ -119,7 +119,7 @@ void PEL::assignID()
     _ph->setID(generatePELID());
 }
 
-void PEL::flatten(std::vector<uint8_t>& pelBuffer)
+void PEL::flatten(std::vector<uint8_t>& pelBuffer) const
 {
     Stream pelData{pelBuffer};
 
@@ -190,7 +190,8 @@ std::unique_ptr<UserData> makeADUserDataSection(const AdditionalData& ad)
 }
 
 } // namespace util
-void PEL::printSectionInJSON(Section& section, std::string& buf) const
+
+void PEL::printSectionInJSON(const Section& section, std::string& buf) const
 {
     char tmpB[5];
     if (section.valid())

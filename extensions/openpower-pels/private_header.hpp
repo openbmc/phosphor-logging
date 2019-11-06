@@ -70,7 +70,7 @@ class PrivateHeader : public Section
      *
      * @param[in] stream - The stream to write to
      */
-    void flatten(Stream& stream) override;
+    void flatten(Stream& stream) const override;
 
     /**
      * @brief Returns the creation timestamp
@@ -300,7 +300,7 @@ Stream& operator>>(Stream& s, CreatorVersion& cv);
  * @param[out] s - the stream
  * @param[in] cv - the CreatorVersion object
  */
-Stream& operator<<(Stream& s, CreatorVersion& cv);
+Stream& operator<<(Stream& s, const CreatorVersion& cv);
 
 } // namespace pels
 } // namespace openpower

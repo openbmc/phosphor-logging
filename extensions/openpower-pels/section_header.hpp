@@ -98,7 +98,7 @@ inline Stream& operator>>(Stream& s, SectionHeader& header)
  * @param[out] s - the stream
  * @param[in] header - the SectionHeader object
  */
-inline Stream& operator<<(Stream& s, SectionHeader& header)
+inline Stream& operator<<(Stream& s, const SectionHeader& header)
 {
     s << header.id << header.size << header.version << header.subType
       << header.componentID;
