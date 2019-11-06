@@ -59,7 +59,7 @@ class UserHeader : public Section
      *
      * @param[in] stream - The stream to write to
      */
-    void flatten(Stream& stream) override;
+    void flatten(Stream& stream) const override;
 
     /**
      * @brief Returns the subsystem field.

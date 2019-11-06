@@ -195,7 +195,7 @@ class PEL
      *
      * @return std::vector<uint8_t> - the raw PEL data
      */
-    std::vector<uint8_t> data();
+    std::vector<uint8_t> data() const;
 
     /**
      * @brief Says if the PEL is valid (the sections are all valid)
@@ -217,7 +217,7 @@ class PEL
     /**
      * @brief Output a PEL in JSON.
      */
-    void toJSON();
+    void toJSON() const;
 
   private:
     /**
@@ -237,7 +237,7 @@ class PEL
      *
      * @param[out] pelBuffer - What the data will be written to
      */
-    void flatten(std::vector<uint8_t>& pelBuffer);
+    void flatten(std::vector<uint8_t>& pelBuffer) const;
 
     /**
      * @brief The PEL Private Header section
@@ -259,7 +259,7 @@ class PEL
      * @param[in] Section& - section object reference
      * @param[in] std::string - PEL string
      */
-    void printSectionInJSON(Section& section, std::string& buf) const;
+    void printSectionInJSON(const Section& section, std::string& buf) const;
 };
 
 namespace util
