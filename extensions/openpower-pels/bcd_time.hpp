@@ -90,7 +90,7 @@ Stream& operator>>(Stream& s, BCDTime& time);
  *
  * @return Stream&
  */
-Stream& operator<<(Stream& s, BCDTime& time);
+Stream& operator<<(Stream& s, const BCDTime& time);
 
 } // namespace pels
 } // namespace openpower

@@ -73,7 +73,7 @@ Stream& operator>>(Stream& s, BCDTime& time)
     return s;
 }
 
-Stream& operator<<(Stream& s, BCDTime& time)
+Stream& operator<<(Stream& s, const BCDTime& time)
 {
     s << time.yearMSB << time.yearLSB << time.month << time.day << time.hour;
     s << time.minutes << time.seconds << time.hundredths;
