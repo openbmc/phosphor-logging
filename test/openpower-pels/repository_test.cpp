@@ -212,3 +212,46 @@ TEST_F(RepositoryTest, TestForEach)
     repo.for_each(f2);
     EXPECT_EQ(ids.size(), 1);
 }
+
+TEST_F(RepositoryTest, TestSubscriptions)
+{
+    std::vector<uint32_t> added;
+    std::vector<uint32_t> removed;
+
+    Repository::AddCallback ac = [&added](const PEL& pel) {
+        added.push_back(pel.id());
+    };
+
+    Repository::DeleteCallback dc = [&removed](uint32_t id) {
+        removed.push_back(id);
+    };
+
+    Repository repo{repoPath};
+    repo.subscribeToAdds("test", ac);
+    repo.subscribeToDeletes("test", dc);
+
+    auto data = pelDataFactory(TestPELType::pelSimple);
+    auto pel = std::make_unique<PEL>(data);
+    auto pelID = pel->id();
+    repo.add(pel);
+
+    EXPECT_EQ(added.size(), 1);
+
+    using ID = Repository::LogID;
+    ID id{ID::Pel(pelID)};
+    repo.remove(id);
+
+    EXPECT_EQ(removed.size(), 1);
+
+    repo.unsubscribeFromAdds("test");
+    repo.unsubscribeFromDeletes("test");
+
+    added.clear();
+    removed.clear();
+
+    repo.add(pel);
+    EXPECT_EQ(added.size(), 0);
+
+    repo.remove(id);
+    EXPECT_EQ(removed.size(), 0);
+}
