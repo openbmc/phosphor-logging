@@ -128,6 +128,8 @@ void Repository::add(std::unique_ptr<PEL>& pel)
     using pelID = LogID::Pel;
     using obmcID = LogID::Obmc;
     _idsToPELs.emplace(LogID(pelID(pel->id()), obmcID(pel->obmcLogID())), path);
+
+    processAddCallbacks(*pel);
 }
 
 void Repository::remove(const LogID& id)
@@ -137,6 +139,8 @@ void Repository::remove(const LogID& id)
     {
         fs::remove(pel->second);
         _idsToPELs.erase(pel);
+
+        processDeleteCallbacks(id.pelID.id);
     }
 }
 
@@ -193,6 +197,40 @@ void Repository::for_each(ForEachFunc func) const
         catch (std::exception& e)
         {
             log<level::ERR>("Repository::for_each function exception",
+                            entry("ERROR=%s", e.what()));
+        }
+    }
+}
+
+void Repository::processAddCallbacks(const PEL& pel) const
+{
+    for (auto& [name, func] : _addSubscriptions)
+    {
+        try
+        {
+            func(pel);
+        }
+        catch (std::exception& e)
+        {
+            log<level::ERR>("PEL Repository add callback exception",
+                            entry("NAME=%s", name.c_str()),
+                            entry("ERROR=%s", e.what()));
+        }
+    }
+}
+
+void Repository::processDeleteCallbacks(uint32_t id) const
+{
+    for (auto& [name, func] : _deleteSubscriptions)
+    {
+        try
+        {
+            func(id);
+        }
+        catch (std::exception& e)
+        {
+            log<level::ERR>("PEL Repository delete callback exception",
+                            entry("NAME=%s", name.c_str()),
                             entry("ERROR=%s", e.what()));
         }
     }
