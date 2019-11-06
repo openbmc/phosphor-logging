@@ -88,7 +88,7 @@ size_t Callout::flattenedSize()
     return size;
 }
 
-void Callout::flatten(Stream& pel)
+void Callout::flatten(Stream& pel) const
 {
     pel << _size << _flags << _priority << _locationCodeSize;
 

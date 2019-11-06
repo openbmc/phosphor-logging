@@ -53,7 +53,7 @@ MRU::MRU(Stream& pel)
     }
 }
 
-void MRU::flatten(Stream& pel)
+void MRU::flatten(Stream& pel) const
 {
     pel << _type << _size << _flags << _reserved4B;
 

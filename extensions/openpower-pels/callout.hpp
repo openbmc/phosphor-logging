@@ -62,7 +62,7 @@ class Callout
      *
      * @param[in] stream - The stream to write to
      */
-    void flatten(Stream& pel);
+    void flatten(Stream& pel) const;
 
     /**
      * @brief Returns the priority field of a callout

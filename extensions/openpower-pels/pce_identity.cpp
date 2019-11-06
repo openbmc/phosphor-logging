@@ -38,7 +38,7 @@ PCEIdentity::PCEIdentity(Stream& pel)
     pel >> _pceName;
 }
 
-void PCEIdentity::flatten(Stream& pel)
+void PCEIdentity::flatten(Stream& pel) const
 {
     pel << _type << _size << _flags << _mtms << _pceName;
 }

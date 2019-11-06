@@ -56,7 +56,7 @@ class AsciiString
      *
      * @param[in] stream - The stream to write to
      */
-    void flatten(Stream& stream);
+    void flatten(Stream& stream) const;
 
     /**
      * @brief Fills in the object from the stream data
