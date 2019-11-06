@@ -168,6 +168,68 @@ class Repository
      */
     void for_each(ForEachFunc func) const;
 
+    using AddCallback = std::function<void(const PEL&)>;
+
+    /**
+     * @brief Subscribe to PELs being added to the repository.
+     *
+     * Every time a PEL is added to the repository, the provided
+     * function will be called with the new PEL as the argument.
+     *
+     * The function must be of type void(const PEL&).
+     *
+     * @param[in] name - The subscription name
+     * @param[in] func - The callback function
+     */
+    void subscribeToAdds(const std::string& name, AddCallback func)
+    {
+        if (_addSubscriptions.find(name) == _addSubscriptions.end())
+        {
+            _addSubscriptions.emplace(name, func);
+        }
+    }
+
+    /**
+     * @brief Unsubscribe from new PELs.
+     *
+     * @param[in] name - The subscription name
+     */
+    void unsubscribeFromAdds(const std::string& name)
+    {
+        _addSubscriptions.erase(name);
+    }
+
+    using DeleteCallback = std::function<void(uint32_t)>;
+
+    /**
+     * @brief Subscribe to PELs being deleted from the repository.
+     *
+     * Every time a PEL is deleted from the repository, the provided
+     * function will be called with the PEL ID as the argument.
+     *
+     * The function must be of type void(const uint32_t).
+     *
+     * @param[in] name - The subscription name
+     * @param[in] func - The callback function
+     */
+    void subscribeToDeletes(const std::string& name, DeleteCallback func)
+    {
+        if (_deleteSubscriptions.find(name) == _deleteSubscriptions.end())
+        {
+            _deleteSubscriptions.emplace(name, func);
+        }
+    }
+
+    /**
+     * @brief Unsubscribe from deleted PELs.
+     *
+     * @param[in] name - The subscription name
+     */
+    void unsubscribeFromDeletes(const std::string& name)
+    {
+        _deleteSubscriptions.erase(name);
+    }
+
   private:
     /**
      * @brief Finds an entry in the _idsToPELs map.
@@ -181,6 +243,20 @@ class Repository
         return std::find_if(_idsToPELs.begin(), _idsToPELs.end(),
                             [&id](const auto& i) { return i.first == id; });
     }
+
+    /**
+     * @brief Call any subscribed functions for new PELs
+     *
+     * @param[in] pel - The new PEL
+     */
+    void processAddCallbacks(const PEL& pel) const;
+
+    /**
+     * @brief Call any subscribed functions for deleted PELs
+     *
+     * @param[in] id - The ID of the deleted PEL
+     */
+    void processDeleteCallbacks(uint32_t id) const;
 
     /**
      * @brief Restores the _idsToPELs map on startup based on the existing
@@ -197,6 +273,16 @@ class Repository
      * @brief A map of the PEL/OBMC IDs to the PEL data files.
      */
     std::map<LogID, std::filesystem::path> _idsToPELs;
+
+    /**
+     * @brief Subcriptions for new PELs.
+     */
+    std::map<std::string, AddCallback> _addSubscriptions;
+
+    /**
+     * @brief Subscriptions for deleted PELs.
+     */
+    std::map<std::string, DeleteCallback> _deleteSubscriptions;
 };
 
 } // namespace pels
