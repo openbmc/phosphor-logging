@@ -19,8 +19,8 @@ using DBusPropertyMap = std::map<DBusProperty, DBusValue>;
 /**
  * @class DataInterface
  *
- * An abstract interface class for gathering data about the system
- * for use in PELs. Implemented this way to facilitate mocking.
+ * A base class for gathering data about the system for use
+ * in PELs. Implemented this way to facilitate mocking.
  */
 class DataInterfaceBase
 {
@@ -33,18 +33,35 @@ class DataInterfaceBase
     DataInterfaceBase& operator=(DataInterfaceBase&&) = default;
 
     /**
-     * @brief Pure virtual for returning the MTM
+     * @brief Returns the machine Type/Model
      *
      * @return string - The machine Type/Model string
      */
-    virtual std::string getMachineTypeModel() const = 0;
+    virtual std::string getMachineTypeModel() const
+    {
+        return _machineTypeModel;
+    }
 
     /**
-     * @brief Pure virtual for returning the machine SN
+     * @brief Returns the machine serial number
      *
      * @return string - The machine serial number
      */
-    virtual std::string getMachineSerialNumber() const = 0;
+    virtual std::string getMachineSerialNumber() const
+    {
+        return _machineSerialNumber;
+    }
+
+  protected:
+    /**
+     * @brief The machine type-model.  Always kept up to date
+     */
+    std::string _machineTypeModel;
+
+    /**
+     * @brief The machine serial number.  Always kept up to date
+     */
+    std::string _machineSerialNumber;
 };
 
 /**
@@ -68,26 +85,6 @@ class DataInterface : public DataInterfaceBase
      * @param[in] bus - The sdbusplus bus object
      */
     explicit DataInterface(sdbusplus::bus::bus& bus);
-
-    /**
-     * @brief Returns the machine type/model value
-     *
-     * @return string - The machine Type/Model string
-     */
-    std::string getMachineTypeModel() const override
-    {
-        return _machineTypeModel;
-    }
-
-    /**
-     * @brief Returns the machine SN
-     *
-     * @return string - The machine serial number
-     */
-    std::string getMachineSerialNumber() const override
-    {
-        return _machineSerialNumber;
-    }
 
   private:
     /**
@@ -129,16 +126,6 @@ class DataInterface : public DataInterfaceBase
      * @param[in] msg - The sdbusplus message of the signal
      */
     void sysAssetPropChanged(sdbusplus::message::message& msg);
-
-    /**
-     * @brief The machine type-model.  Always kept up to date
-     */
-    std::string _machineTypeModel;
-
-    /**
-     * @brief The machine serial number.  Always kept up to date
-     */
-    std::string _machineSerialNumber;
 
     /**
      * @brief The match object for the system path's properties
