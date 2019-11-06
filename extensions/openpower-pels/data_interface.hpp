@@ -1,5 +1,6 @@
 #pragma once
 
+#include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
 
@@ -52,7 +53,71 @@ class DataInterfaceBase
         return _machineSerialNumber;
     }
 
+    /**
+     * @brief Says if the host is up and running
+     *
+     * @return bool - If the host is running
+     */
+    virtual bool isHostUp() const
+    {
+        return _hostUp;
+    }
+
+    using HostStateChangeFunc = std::function<void(bool)>;
+
+    /**
+     * @brief Register a callback function that will get
+     *        called on all host on/off transitions.
+     *
+     * The void(bool) function will get passed the new
+     * value of the host state.
+     *
+     * @param[in] name - The subscription name
+     * @param[in] func - The function to run
+     */
+    void subscribeToHostStateChange(const std::string& name,
+                                    HostStateChangeFunc func)
+    {
+        _hostChangeCallbacks[name] = func;
+    }
+
+    /**
+     * @brief Unsubscribe from host state changes.
+     *
+     * @param[in] name - The subscription name
+     */
+    void unsubscribeFromHostStateChange(const std::string& name)
+    {
+        _hostChangeCallbacks.erase(name);
+    }
+
   protected:
+    /**
+     * @brief Sets the host on/off state and runs any
+     *        callback functions (if there was a change).
+     */
+    void setHostState(bool newState)
+    {
+        if (_hostUp != newState)
+        {
+            _hostUp = newState;
+
+            for (auto& [name, func] : _hostChangeCallbacks)
+            {
+                try
+                {
+                    func(_hostUp);
+                }
+                catch (std::exception& e)
+                {
+                    using namespace phosphor::logging;
+                    log<level::ERR>("A host state change callback threw "
+                                    "an exception");
+                }
+            }
+        }
+    }
+
     /**
      * @brief The machine type-model.  Always kept up to date
      */
@@ -62,6 +127,17 @@ class DataInterfaceBase
      * @brief The machine serial number.  Always kept up to date
      */
     std::string _machineSerialNumber;
+
+    /**
+     * @brief The host up status.  Always kept up to date.
+     */
+    bool _hostUp = false;
+
+    /**
+     * @brief The map of host state change subscriber
+     *        names to callback functions.
+     */
+    std::map<std::string, HostStateChangeFunc> _hostChangeCallbacks;
 };
 
 /**
@@ -98,6 +174,19 @@ class DataInterface : public DataInterfaceBase
     void readMTMS();
 
     /**
+     * @brief Reads the host state from D-Bus.
+     *
+     * For host on, looks for the values of 'BootComplete' or 'Standby'
+     * in the OperatingSystemState property on the
+     * 'xyz.openbmc_project.State.OperatingSystem.Status' interface
+     * on the '/xyz/openbmc_project/state/host0' path.
+     *
+     * Also adds a properties changed watch on it so the code can be
+     * kept up to date on changes.
+     */
+    void readHostState();
+
+    /**
      * @brief Finds the D-Bus service name that hosts the
      *        passed in path and interface.
      *
@@ -120,6 +209,19 @@ class DataInterface : public DataInterfaceBase
                                      const std::string& interface);
 
     /**
+     * @brief Wrapper for the 'Get' properties method call
+     *
+     * @param[in] service - The D-Bus service to call it on
+     * @param[in] objectPath - The D-Bus object path
+     * @param[in] interface - The interface to get the property on
+     * @param[in] property - The property name
+     * @param[out] value - Filled in with the property value.
+     */
+    void getProperty(const std::string& service, const std::string& objectPath,
+                     const std::string& interface, const std::string& property,
+                     DBusValue& value);
+
+    /**
      * @brief The properties changed callback for the Asset iface
      *        on the system inventory object.
      *
@@ -128,9 +230,22 @@ class DataInterface : public DataInterfaceBase
     void sysAssetPropChanged(sdbusplus::message::message& msg);
 
     /**
+     * @brief The properties changed callback for the OperatingSystemStatus
+     *        interface on the host state object.
+     *
+     * @param[in] msg - The sdbusplus message of the signal
+     */
+    void osStatePropChanged(sdbusplus::message::message& msg);
+
+    /**
      * @brief The match object for the system path's properties
      */
     std::unique_ptr<sdbusplus::bus::match_t> _sysInventoryPropMatch;
+
+    /**
+     * @brief The match object for the operating system status.
+     */
+    std::unique_ptr<sdbusplus::bus::match_t> _osStateMatch;
 
     /**
      * @brief The sdbusplus bus object for making D-Bus calls.

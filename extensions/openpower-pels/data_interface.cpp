@@ -15,6 +15,8 @@
  */
 #include "data_interface.hpp"
 
+#include <xyz/openbmc_project/State/OperatingSystem/Status/server.hpp>
+
 namespace openpower
 {
 namespace pels
@@ -29,6 +31,7 @@ namespace object_path
 {
 constexpr auto objectMapper = "/xyz/openbmc_project/object_mapper";
 constexpr auto systemInv = "/xyz/openbmc_project/inventory/system";
+constexpr auto hostState = "/xyz/openbmc_project/state/host0";
 } // namespace object_path
 
 namespace interface
@@ -36,11 +39,15 @@ namespace interface
 constexpr auto dbusProperty = "org.freedesktop.DBus.Properties";
 constexpr auto objectMapper = "xyz.openbmc_project.ObjectMapper";
 constexpr auto invAsset = "xyz.openbmc_project.Inventory.Decorator.Asset";
+constexpr auto osStatus = "xyz.openbmc_project.State.OperatingSystem.Status";
 } // namespace interface
+
+using namespace sdbusplus::xyz::openbmc_project::State::OperatingSystem::server;
 
 DataInterface::DataInterface(sdbusplus::bus::bus& bus) : _bus(bus)
 {
     readMTMS();
+    readHostState();
 }
 
 void DataInterface::readMTMS()
@@ -113,6 +120,20 @@ DBusPropertyMap DataInterface::getAllProperties(const std::string& service,
     return properties;
 }
 
+void DataInterface::getProperty(const std::string& service,
+                                const std::string& objectPath,
+                                const std::string& interface,
+                                const std::string& property, DBusValue& value)
+{
+
+    auto method = _bus.new_method_call(service.c_str(), objectPath.c_str(),
+                                       interface::dbusProperty, "Get");
+    method.append(interface, property);
+    auto reply = _bus.call(method);
+
+    reply.read(value);
+}
+
 DBusService DataInterface::getService(const std::string& objectPath,
                                       const std::string& interface)
 {
@@ -134,5 +155,67 @@ DBusService DataInterface::getService(const std::string& objectPath,
 
     return std::string{};
 }
+
+void DataInterface::readHostState()
+{
+    _hostUp = false;
+
+    try
+    {
+        auto service = getService(object_path::hostState, interface::osStatus);
+        if (!service.empty())
+        {
+            DBusValue value;
+            getProperty(service, object_path::hostState, interface::osStatus,
+                        "OperatingSystemState", value);
+
+            auto status =
+                Status::convertOSStatusFromString(std::get<std::string>(value));
+
+            if ((status == Status::OSStatus::BootComplete) ||
+                (status == Status::OSStatus::Standby))
+            {
+                _hostUp = true;
+            }
+        }
+    }
+    catch (std::exception& e)
+    {
+        // Not available yet.
+    }
+
+    // Keep up to date by watching for the propertiesChanged signal.
+    _osStateMatch = std::make_unique<sdbusplus::bus::match_t>(
+        _bus,
+        sdbusplus::bus::match::rules::propertiesChanged(object_path::hostState,
+                                                        interface::osStatus),
+        std::bind(std::mem_fn(&DataInterface::osStatePropChanged), this,
+                  std::placeholders::_1));
+}
+
+void DataInterface::osStatePropChanged(sdbusplus::message::message& msg)
+{
+    DBusInterface interface;
+    DBusPropertyMap properties;
+
+    msg.read(interface, properties);
+
+    auto state = properties.find("OperatingSystemState");
+    if (state != properties.end())
+    {
+        auto status = Status::convertOSStatusFromString(
+            std::get<std::string>(state->second));
+
+        bool newHostState = false;
+        if ((status == Status::OSStatus::BootComplete) ||
+            (status == Status::OSStatus::Standby))
+        {
+            newHostState = true;
+        }
+
+        setHostState(newHostState);
+    }
+}
+
 } // namespace pels
 } // namespace openpower
