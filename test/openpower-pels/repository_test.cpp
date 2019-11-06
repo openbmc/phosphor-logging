@@ -255,3 +255,48 @@ TEST_F(RepositoryTest, TestSubscriptions)
     repo.remove(id);
     EXPECT_EQ(removed.size(), 0);
 }
+
+TEST_F(RepositoryTest, TestGetAttributes)
+{
+    uint32_t pelID = 0;
+    std::bitset<16> actionFlags;
+
+    {
+        Repository repo{repoPath};
+
+        // Add a PEL to the repo
+        auto data = pelDataFactory(TestPELType::pelSimple);
+        auto pel = std::make_unique<PEL>(data);
+        repo.add(pel);
+
+        pelID = pel->id();
+        actionFlags = pel->userHeader().actionFlags();
+
+        using ID = Repository::LogID;
+        ID id{ID::Pel(pelID)};
+
+        auto a = repo.getPELAttributes(id);
+        EXPECT_TRUE(a);
+        EXPECT_EQ((*a).get().actionFlags, actionFlags);
+
+        id.pelID.id = 0;
+        a = repo.getPELAttributes(id);
+        EXPECT_FALSE(a);
+    }
+
+    {
+        // Restore the repository and check again
+        Repository repo{repoPath};
+
+        using ID = Repository::LogID;
+        ID id{ID::Pel(pelID)};
+
+        auto a = repo.getPELAttributes(id);
+        EXPECT_TRUE(a);
+        EXPECT_EQ((*a).get().actionFlags, actionFlags);
+
+        id.pelID.id = 0;
+        a = repo.getPELAttributes(id);
+        EXPECT_FALSE(a);
+    }
+}
