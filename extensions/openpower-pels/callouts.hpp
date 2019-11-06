@@ -44,7 +44,7 @@ class Callouts
      *
      * @param[in] stream - The stream to write to
      */
-    void flatten(Stream& pel);
+    void flatten(Stream& pel) const;
 
     /**
      * @brief Returns the size of this object when flattened into a PEL

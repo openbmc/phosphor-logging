@@ -65,7 +65,7 @@ AsciiString::AsciiString(const message::Entry& entry)
     }
 }
 
-void AsciiString::flatten(Stream& stream)
+void AsciiString::flatten(Stream& stream) const
 {
     stream.write(_string.data(), _string.size());
 }

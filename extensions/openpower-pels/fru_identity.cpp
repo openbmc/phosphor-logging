@@ -88,7 +88,7 @@ std::optional<std::string> FRUIdentity::getSN() const
     return std::nullopt;
 }
 
-void FRUIdentity::flatten(Stream& pel)
+void FRUIdentity::flatten(Stream& pel) const
 {
     pel << _type << _size << _flags;
 

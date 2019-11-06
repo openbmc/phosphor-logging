@@ -75,7 +75,7 @@ class FRUIdentity
      *
      * @param[in] stream - The stream to write to
      */
-    void flatten(Stream& pel);
+    void flatten(Stream& pel) const;
 
     /**
      * @brief Returns the size of this structure when flattened into a PEL

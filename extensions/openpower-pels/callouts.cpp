@@ -36,7 +36,7 @@ Callouts::Callouts(Stream& pel)
     }
 }
 
-void Callouts::flatten(Stream& pel)
+void Callouts::flatten(Stream& pel) const
 {
     pel << _subsectionID << _subsectionFlags << _subsectionWordLength;
 
