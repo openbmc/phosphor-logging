@@ -34,14 +34,14 @@ void UserHeader::unflatten(Stream& stream)
 {
     stream >> _header >> _eventSubsystem >> _eventScope >> _eventSeverity >>
         _eventType >> _reserved4Byte1 >> _problemDomain >> _problemVector >>
-        _actionFlags >> _reserved4Byte2;
+        _actionFlags >> _states;
 }
 
 void UserHeader::flatten(Stream& stream) const
 {
     stream << _header << _eventSubsystem << _eventScope << _eventSeverity
            << _eventType << _reserved4Byte1 << _problemDomain << _problemVector
-           << _actionFlags << _reserved4Byte2;
+           << _actionFlags << _states;
 }
 
 UserHeader::UserHeader(const message::Entry& entry,
@@ -89,7 +89,7 @@ UserHeader::UserHeader(const message::Entry& entry,
     // These will be cleaned up later in pel_rules::check()
     _actionFlags = entry.actionFlags.value_or(0);
 
-    _reserved4Byte2 = 0;
+    _states = 0;
 
     _valid = true;
 }
