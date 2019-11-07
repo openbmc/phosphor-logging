@@ -293,6 +293,16 @@ class Repository
     void restore();
 
     /**
+     * @brief Stores a PEL object in the filesystem.
+     *
+     * @param[in] pel - The PEL to write
+     * @param[in] path - The file to write to
+     *
+     * Throws exceptions on failures.
+     */
+    void write(const PEL& pel, const std::filesystem::path& path);
+
+    /**
      * @brief The filesystem path to the PEL logs.
      */
     const std::filesystem::path _logPath;
