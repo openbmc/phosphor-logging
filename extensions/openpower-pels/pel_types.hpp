@@ -119,5 +119,16 @@ enum ActionFlagsBits
     osHWErrorBit = 6                 // 0x0040
 };
 
+/**
+ * @brief The PEL transmission states
+ */
+enum class TransmissionState
+{
+    newPEL = 0,
+    badPEL = 1,
+    sent = 2,
+    acked = 3
+};
+
 } // namespace pels
 } // namespace openpower

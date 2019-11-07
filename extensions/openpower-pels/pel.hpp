@@ -219,6 +219,46 @@ class PEL
      */
     void toJSON() const;
 
+    /**
+     * @brief Sets the host transmission state in the User Header
+     *
+     * @param[in] state - The state value
+     */
+    void setHostTransmissionState(TransmissionState state)
+    {
+        _uh->setHostTransmissionState(static_cast<uint8_t>(state));
+    }
+
+    /**
+     * @brief Returns the host transmission state
+     *
+     * @return HostTransmissionState - The state
+     */
+    TransmissionState hostTransmissionState() const
+    {
+        return static_cast<TransmissionState>(_uh->hostTransmissionState());
+    }
+
+    /**
+     * @brief Sets the HMC transmission state in the User Header
+     *
+     * @param[in] state - The state value
+     */
+    void setHMCTransmissionState(TransmissionState state)
+    {
+        _uh->setHMCTransmissionState(static_cast<uint8_t>(state));
+    }
+
+    /**
+     * @brief Returns the HMC transmission state
+     *
+     * @return HMCTransmissionState - The state
+     */
+    TransmissionState hmcTransmissionState() const
+    {
+        return static_cast<TransmissionState>(_uh->hmcTransmissionState());
+    }
+
   private:
     /**
      * @brief Builds the section objects from a PEL data buffer
