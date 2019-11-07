@@ -96,6 +96,21 @@ std::string Repository::getPELFilename(uint32_t pelID, const BCDTime& time)
 void Repository::add(std::unique_ptr<PEL>& pel)
 {
     auto path = _logPath / getPELFilename(pel->id(), pel->commitTime());
+
+    write(*(pel.get()), path);
+
+    PELAttributes attributes{path, pel->userHeader().actionFlags()};
+
+    using pelID = LogID::Pel;
+    using obmcID = LogID::Obmc;
+    _pelAttributes.emplace(LogID(pelID(pel->id()), obmcID(pel->obmcLogID())),
+                           attributes);
+
+    processAddCallbacks(*pel);
+}
+
+void Repository::write(const PEL& pel, const fs::path& path)
+{
     std::ofstream file{path, std::ios::binary};
 
     if (!file.good())
@@ -109,7 +124,7 @@ void Repository::add(std::unique_ptr<PEL>& pel)
         throw file_error::Open();
     }
 
-    auto data = pel->data();
+    auto data = pel.data();
     file.write(reinterpret_cast<const char*>(data.data()), data.size());
 
     if (file.fail())
@@ -123,17 +138,6 @@ void Repository::add(std::unique_ptr<PEL>& pel)
                         entry("PATH=%s", path.c_str()));
         throw file_error::Write();
     }
-
-    file.close();
-
-    PELAttributes attributes{path, pel->userHeader().actionFlags()};
-
-    using pelID = LogID::Pel;
-    using obmcID = LogID::Obmc;
-    _pelAttributes.emplace(LogID(pelID(pel->id()), obmcID(pel->obmcLogID())),
-                           attributes);
-
-    processAddCallbacks(*pel);
 }
 
 void Repository::remove(const LogID& id)
