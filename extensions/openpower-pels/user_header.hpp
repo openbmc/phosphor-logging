@@ -153,6 +153,51 @@ class UserHeader : public Section
     }
 
     /**
+     * @brief Returns the host transmission state
+     *
+     * @return uint8_t - the host transmission state
+     */
+    uint8_t hostTransmissionState() const
+    {
+        return _states & 0xFF;
+    }
+
+    /**
+     * @brief Sets the host transmission state
+     *
+     * @param[in] state - the new state
+     */
+    void setHostTransmissionState(uint8_t state)
+    {
+        _states &= 0xFFFFFF00;
+        _states |= state;
+    }
+
+    /**
+     * @brief Returns the HMC transmission state
+     *
+     * (HMC = Hardware Management Console)
+     *
+     * @return uint8_t - the HMC transmission state
+     */
+    uint8_t hmcTransmissionState() const
+    {
+        return (_states & 0x0000FF00) >> 8;
+    }
+
+    /**
+     * @brief Sets the HMC transmission state
+     *
+     * @param[in] state - the new state
+     */
+    void setHMCTransmissionState(uint8_t state)
+    {
+        uint32_t newState = state << 8;
+        _states &= 0xFFFF00FF;
+        _states |= newState;
+    }
+
+    /**
      * @brief Returns the size of this section when flattened into a PEL
      *
      * @return size_t - the size of the section
@@ -163,7 +208,7 @@ class UserHeader : public Section
                sizeof(_eventScope) + sizeof(_eventSeverity) +
                sizeof(_eventType) + sizeof(_reserved4Byte1) +
                sizeof(_problemDomain) + sizeof(_problemVector) +
-               sizeof(_actionFlags) + sizeof(_reserved4Byte2);
+               sizeof(_actionFlags) + sizeof(_states);
     }
 
     /**
@@ -187,6 +232,15 @@ class UserHeader : public Section
      * Updates _valid (in Section) with the results.
      */
     void validate() override;
+
+    /**
+     * @brief Helper function to get values from lookup tables.
+     * @return std::string - the value
+     * @param[in] uint8_t - field to get value for
+     * @param[in] PELValues - lookup table
+     */
+    std::string getValue(const uint8_t field,
+                         const pel_values::PELValues& values) const;
 
     /**
      * @brief The subsystem associated with the event.
@@ -229,18 +283,15 @@ class UserHeader : public Section
     uint16_t _actionFlags;
 
     /**
-     * @brief The second reserved word placeholder.
+     * @brief The second reserved word that we are
+     *        using for storing state information.
+     *
+     * 0x0000AABB
+     *   Where:
+     *      0xAA = HMC transmission state
+     *      0xBB = Host transmission state
      */
-    uint32_t _reserved4Byte2;
-
-    /**
-     * @brief Helper function to get values from lookup tables.
-     * @return std::string - the value
-     * @param[in] uint8_t - field to get value for
-     * @param[in] PELValues - lookup table
-     */
-    std::string getValue(const uint8_t field,
-                         const pel_values::PELValues& values) const;
+    uint32_t _states;
 };
 
 } // namespace pels
