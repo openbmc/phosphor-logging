@@ -195,6 +195,12 @@ std::unique_ptr<UserData> makeADUserDataSection(const AdditionalData& ad)
     auto jsonString = json.dump();
     std::vector<uint8_t> jsonData(jsonString.begin(), jsonString.end());
 
+    // Pad to a 4 byte boundary
+    while ((jsonData.size() % 4) != 0)
+    {
+        jsonData.push_back(0);
+    }
+
     return std::make_unique<UserData>(
         static_cast<uint16_t>(ComponentID::phosphorLogging),
         static_cast<uint8_t>(UserDataFormat::json),
