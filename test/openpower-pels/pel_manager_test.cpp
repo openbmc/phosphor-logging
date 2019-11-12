@@ -114,7 +114,10 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
 }
 )";
 
-    fs::path path = getMessageRegistryPath() / "message_registry.json";
+    auto path = getMessageRegistryPath();
+    fs::create_directories(path);
+    path /= "message_registry.json";
+
     std::ofstream registryFile{path};
     registryFile << registry;
     registryFile.close();
