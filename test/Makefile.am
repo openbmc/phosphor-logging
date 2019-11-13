@@ -109,6 +109,4 @@ extensions_test_LDFLAGS = $(test_ldflags)
 # TODO Remove once the test-case failure is resolved openbmc/phosphor-logging#11
 XFAIL_TESTS = elog_errorwrap_test
 
-if ENABLE_PEL_EXTENSION
 include openpower-pels/Makefile.include
-endif
