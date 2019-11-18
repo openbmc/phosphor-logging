@@ -265,9 +265,16 @@ TEST_F(PELTest, MakeUDSectionTest)
     const auto& d = ud->data();
 
     std::string jsonString{d.begin(), d.end()};
-    std::string expected =
+
+    std::string expectedJSON =
         R"({"KEY1":"VALUE1","KEY2":"VALUE2","KEY3":"VALUE3"})";
-    EXPECT_EQ(jsonString, expected);
+
+    // The actual data is null padding to a 4B boundary.
+    std::vector<uint8_t> expectedData;
+    expectedData.resize(52, '\0');
+    memcpy(expectedData.data(), expectedJSON.data(), expectedJSON.size());
+
+    EXPECT_EQ(d, expectedData);
 
     // Ensure we can read this as JSON
     auto newJSON = nlohmann::json::parse(jsonString);

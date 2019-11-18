@@ -89,13 +89,13 @@ TEST(UserDataTest, BadSizeFieldTest)
 
 TEST(UserDataTest, ConstructorTest)
 {
-    std::vector<uint8_t> data{0x11, 0x22, 0x33, 0x44, 0x55, 0x66};
+    std::vector<uint8_t> data{0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88};
 
     UserData ud(0x1112, 0x42, 0x01, data);
     EXPECT_TRUE(ud.valid());
 
     EXPECT_EQ(ud.header().id, 0x5544);
-    EXPECT_EQ(ud.header().size, 14);
+    EXPECT_EQ(ud.header().size, 16);
     EXPECT_EQ(ud.header().version, 0x01);
     EXPECT_EQ(ud.header().subType, 0x42);
     EXPECT_EQ(ud.header().componentID, 0x1112);
