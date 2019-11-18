@@ -17,6 +17,7 @@
 
 #include "log_id.hpp"
 #include "pel_types.hpp"
+#include "pel_values.hpp"
 
 #include <phosphor-logging/log.hpp>
 
@@ -25,6 +26,7 @@ namespace openpower
 namespace pels
 {
 
+namespace pv = openpower::pels::pel_values;
 using namespace phosphor::logging;
 
 PrivateHeader::PrivateHeader(uint16_t componentID, uint32_t obmcLogID,
@@ -79,7 +81,52 @@ PrivateHeader::PrivateHeader(Stream& pel) :
         _valid = false;
     }
 }
+std::optional<std::string> PrivateHeader::getJSON() const
+{
+    char tmpPhVal[50];
+    sprintf(tmpPhVal, "%02X/%02X/%02X%02X  %02X:%02X:%02X",
+            _createTimestamp.month, _createTimestamp.day,
+            _createTimestamp.yearMSB, _createTimestamp.yearLSB,
+            _createTimestamp.hour, _createTimestamp.minutes,
+            _createTimestamp.seconds);
+    std::string phCreateTStr(tmpPhVal);
+    sprintf(tmpPhVal, "%02X/%02X/%02X%02X  %02X:%02X:%02X",
+            _commitTimestamp.month, _commitTimestamp.day,
+            _createTimestamp.yearMSB, _commitTimestamp.yearLSB,
+            _commitTimestamp.hour, _commitTimestamp.minutes,
+            _commitTimestamp.seconds);
+    std::string phCommitTStr(tmpPhVal);
+    sprintf(tmpPhVal, "%c", _creatorID);
+    std::string creator(tmpPhVal);
+    creator = pv::creatorIDs.count(creator) ? pv::creatorIDs.at(creator)
+                                            : "Unknown CreatorID";
+    std::string phCreatorVersionStr =
+        std::string(reinterpret_cast<const char*>(_creatorVersion.version));
 
+    sprintf(tmpPhVal, "0x%X", _header.componentID);
+    std::string phCbStr(tmpPhVal);
+    sprintf(tmpPhVal, "%d", _header.subType);
+    std::string phStStr(tmpPhVal);
+    sprintf(tmpPhVal, "%d", privateHeaderVersion);
+    std::string phVerStr(tmpPhVal);
+    sprintf(tmpPhVal, "0x%X", _plid);
+    std::string phPlatformIDStr(tmpPhVal);
+    sprintf(tmpPhVal, "0x%X", _id);
+    std::string phLogEntryIDStr(tmpPhVal);
+    std::string ph = "{\"Section Version\": \"" + phVerStr +
+                     "\"}, \n {\"Sub-section type\": \"" + phStStr +
+                     "\"}, \n "
+                     "{\"Log Committed by\": \"" +
+                     phCbStr + "\"}, \n {\"Entry Creation\": \"" +
+                     phCreateTStr + "\"}, \n {\"Entry Commit\": \"" +
+                     phCommitTStr + "\"}, \n {\"Creator ID\": \"" + creator +
+                     "\"}, \n {\"Creator Implementation\": \"" +
+                     phCreatorVersionStr + "\"},\n {\"Platform Log ID\": \"" +
+                     phPlatformIDStr + "\"},\n {\"Log Entry ID\": \"" +
+                     phLogEntryIDStr + "\"}";
+
+    return ph;
+}
 void PrivateHeader::validate()
 {
     bool failed = false;
