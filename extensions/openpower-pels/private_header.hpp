@@ -219,6 +219,12 @@ class PrivateHeader : public Section
                sizeof(_creatorVersion) + sizeof(_plid) + sizeof(_id);
     }
 
+    /**
+     * @brief Get section in JSON.
+     * @return std::optional<std::string> - Private header section's JSON
+     */
+    std::optional<std::string> getJSON() const override;
+
   private:
     /**
      * @brief Fills in the object from the stream data
