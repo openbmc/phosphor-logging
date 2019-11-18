@@ -82,6 +82,11 @@ extern const PELValues calloutPriorityValues;
  */
 extern const std::map<std::string, std::string> sectionTitles;
 
+/**
+ * @brief Map for creator IDs
+ */
+extern const std::map<std::string, std::string> creatorIDs;
+
 } // namespace pel_values
 } // namespace pels
 } // namespace openpower
