@@ -19,19 +19,26 @@
 #include "failing_mtms.hpp"
 #include "hexdump.hpp"
 #include "log_id.hpp"
+#include "paths.hpp"
 #include "pel_values.hpp"
 #include "section_factory.hpp"
 #include "src.hpp"
 #include "stream.hpp"
 #include "user_data_formats.hpp"
 
+#include <filesystem>
 #include <iostream>
 #include <phosphor-logging/log.hpp>
+#include <xyz/openbmc_project/Common/File/error.hpp>
 
 namespace openpower
 {
 namespace pels
 {
+namespace fs = std::filesystem;
+using namespace phosphor::logging;
+namespace file_error = sdbusplus::xyz::openbmc_project::Common::File::Error;
+
 namespace message = openpower::pels::message;
 namespace pv = openpower::pels::pel_values;
 
@@ -239,5 +246,6 @@ void PEL::toJSON()
         buf.replace(found, 1, "");
     std::cout << buf << std::endl;
 }
+
 } // namespace pels
 } // namespace openpower
