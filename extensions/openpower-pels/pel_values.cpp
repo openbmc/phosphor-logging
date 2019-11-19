@@ -230,6 +230,15 @@ const std::map<std::string, std::string> sectionTitles = {
     {"ED", "Extended User Data"},
 };
 
+/**
+ * @brief Map for creator IDs
+ */
+const std::map<std::string, std::string> creatorIDs = {
+
+    {"O", "BMC"},      {"C", "HMC"},      {"H", "PHYP"}, {"L", "Partition FW"},
+    {"S", "SLIC"},     {"B", "Hostboot"}, {"T", "OCC"},  {"M", "I/O Drawer"},
+    {"K", "Sapphire"}, {"P", "PowerNV"}};
+
 } // namespace pel_values
 } // namespace pels
 } // namespace openpower
