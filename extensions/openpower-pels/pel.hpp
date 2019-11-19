@@ -219,6 +219,11 @@ class PEL
      */
     void toJSON();
 
+    /**
+     * @brief Print a list of PELs
+     */
+    static void printList();
+
   private:
     /**
      * @brief Builds the section objects from a PEL data buffer

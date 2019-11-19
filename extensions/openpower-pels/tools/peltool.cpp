@@ -53,7 +53,9 @@ int main(int argc, char** argv)
 {
     CLI::App app{"OpenBMC PEL Tool"};
     std::string fileName;
+    bool listPEL;
     app.add_option("-f,--file", fileName, "Raw PEL File");
+    app.add_flag("-l", listPEL, "List PELS");
     CLI11_PARSE(app, argc, argv);
 
     if (!fileName.empty())
@@ -69,6 +71,10 @@ int main(int argc, char** argv)
             exitWithError(app.help("", CLI::AppFormatMode::All),
                           "Raw PEL file can't be read.");
         }
+    }
+    else if (listPEL)
+    {
+        PEL::printList();
     }
     else
     {
