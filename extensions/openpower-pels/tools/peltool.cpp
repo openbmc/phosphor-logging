@@ -14,14 +14,162 @@
  * limitations under the License.
  */
 #include "../pel.hpp"
+#include "../pel_values.hpp"
 
 #include <CLI/CLI.hpp>
 #include <iostream>
+#include <phosphor-logging/log.hpp>
+#include <regex>
 #include <string>
+#include <xyz/openbmc_project/Common/File/error.hpp>
 
+namespace fs = std::filesystem;
 using namespace phosphor::logging;
 using namespace openpower::pels;
+namespace file_error = sdbusplus::xyz::openbmc_project::Common::File::Error;
+namespace message = openpower::pels::message;
+namespace pv = openpower::pels::pel_values;
 
+std::string ltrim(const std::string& s)
+{
+    return std::regex_replace(s, std::regex("^\\s+"), std::string(""));
+}
+
+std::string rtrim(const std::string& s)
+{
+    return std::regex_replace(s, std::regex("\\s+$"), std::string(""));
+}
+
+std::string trim(const std::string& s)
+{
+    return ltrim(rtrim(s));
+}
+
+/**
+ * @brief Print a list of PELs
+ */
+void printList()
+{
+    using PEL_t = std::unique_ptr<PEL>;
+    std::string listStr;
+    std::vector<PEL_t> vec;
+    // std::vector<auto> sortedPELs;
+    listStr = "{\n";
+    for (auto it = fs::directory_iterator(
+             "/var/lib/phosphor-logging/extensions/pels/logs");
+         it != fs::directory_iterator(); ++it)
+    {
+
+        if (!fs::is_regular_file((*it).path()))
+        {
+            continue;
+        }
+        try
+        {
+            std::ifstream stream((*it).path(), std::ios::in | std::ios::binary);
+            std::vector<uint8_t> data((std::istreambuf_iterator<char>(stream)),
+                                      std::istreambuf_iterator<char>());
+            stream.close();
+            PEL pel{data};
+            if (pel.valid())
+            {
+
+                auto pelPtr = std::make_unique<PEL>(data);
+                vec.push_back(std::move(pelPtr));
+            }
+            else
+            {
+                log<level::ERR>(
+                    "Found invalid PEL file while restoring.  Removing.",
+                    entry("FILENAME=%s", (*it).path().c_str()));
+                fs::remove((*it).path());
+            }
+        }
+        catch (std::exception& e)
+        {
+            log<level::ERR>("Hit exception while restoring PEL File",
+                            entry("FILENAME=%s", (*it).path().c_str()),
+                            entry("ERROR=%s", e.what()));
+        }
+    }
+    std::sort(std::begin(vec), std::end(vec),
+              [](const PEL_t& a, const PEL_t& b) {
+                  return a->privateHeader().id() < b->privateHeader().id();
+              });
+
+    std::string val;
+    char tmpValStr[50];
+    for (std::vector<PEL_t>::iterator it = vec.begin(); it != vec.end(); ++it)
+    {
+
+        // id
+        sprintf(tmpValStr, "%X", (*it)->privateHeader().id());
+        val = std::string(tmpValStr);
+        listStr += "\t\t\"" + val + "\": {\n";
+
+        // ASCII
+        sprintf(tmpValStr, "%s",
+                (*it)->primarySRC().value()->asciiString().c_str());
+        val = std::string(tmpValStr);
+
+        listStr += "\t\t\t\"SRC\": \"" + trim(val) + "\",\n";
+
+        // id
+        sprintf(tmpValStr, "%X", (*it)->privateHeader().id());
+        val = std::string(tmpValStr);
+        listStr += "\t\t\t\"PLID\": \"" + val + "\"},\n ";
+
+        // platformid
+        sprintf(tmpValStr, "%X", (*it)->privateHeader().plid());
+        val = std::string(tmpValStr);
+        listStr += "\t\t\t\"PID\": \"" + val + "\",\n";
+
+        // subsytem
+        std::string subsystem = (*it)->userHeader().getValue(
+            (*it)->userHeader().subsystem(), pel_values::subsystemValues);
+        sprintf(tmpValStr, "%s", subsystem.c_str());
+        val = std::string(tmpValStr);
+        listStr += "\t\t\t\"CompID\": \"" + val + "\",\n";
+        // commit time
+        sprintf(tmpValStr, " %02X/%02X/%02X%02X  %02X:%02X:%02X",
+                (*it)->privateHeader().commitTimestamp().month,
+                (*it)->privateHeader().commitTimestamp().day,
+                (*it)->privateHeader().commitTimestamp().yearMSB,
+                (*it)->privateHeader().commitTimestamp().yearLSB,
+                (*it)->privateHeader().commitTimestamp().hour,
+                (*it)->privateHeader().commitTimestamp().minutes,
+                (*it)->privateHeader().commitTimestamp().seconds);
+        val = std::string(tmpValStr);
+
+        listStr += "\t\t\t\"Commit Time\": \"" + val + "\",\n";
+
+        // severity
+        std::string severity = (*it)->userHeader().getValue(
+            (*it)->userHeader().severity(), pel_values::severityValues);
+        sprintf(tmpValStr, "%s", severity.c_str());
+        val = std::string(tmpValStr);
+
+        listStr += "\t\t\t\"SEV\": \"" + val + "\",\n ";
+
+        std::size_t found = listStr.rfind(",");
+        if (found != std::string::npos)
+        {
+
+            listStr.replace(found, 1, "");
+        }
+
+        listStr += "\t\t}, \n";
+    }
+
+    std::size_t found = listStr.rfind(",");
+    if (found != std::string::npos)
+    {
+
+        listStr.replace(found, 1, "");
+    }
+    listStr += "\n}\n";
+    printf("%s", listStr.c_str());
+}
 /**
  * @brief get data form raw PEL file.
  * @param[in] std::string Name of file with raw PEL
@@ -53,7 +201,9 @@ int main(int argc, char** argv)
 {
     CLI::App app{"OpenBMC PEL Tool"};
     std::string fileName;
+    bool listPEL;
     app.add_option("-f,--file", fileName, "Raw PEL File");
+    app.add_flag("-l", listPEL, "List PELS");
     CLI11_PARSE(app, argc, argv);
 
     if (!fileName.empty())
@@ -69,6 +219,10 @@ int main(int argc, char** argv)
             exitWithError(app.help("", CLI::AppFormatMode::All),
                           "Raw PEL file can't be read.");
         }
+    }
+    else if (listPEL)
+    {
+        printList();
     }
     else
     {
