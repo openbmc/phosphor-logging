@@ -19,19 +19,26 @@
 #include "failing_mtms.hpp"
 #include "hexdump.hpp"
 #include "log_id.hpp"
+#include "paths.hpp"
 #include "pel_values.hpp"
 #include "section_factory.hpp"
 #include "src.hpp"
 #include "stream.hpp"
 #include "user_data_formats.hpp"
 
+#include <filesystem>
 #include <iostream>
 #include <phosphor-logging/log.hpp>
+#include <xyz/openbmc_project/Common/File/error.hpp>
 
 namespace openpower
 {
 namespace pels
 {
+namespace fs = std::filesystem;
+using namespace phosphor::logging;
+namespace file_error = sdbusplus::xyz::openbmc_project::Common::File::Error;
+
 namespace message = openpower::pels::message;
 namespace pv = openpower::pels::pel_values;
 
@@ -238,6 +245,102 @@ void PEL::toJSON()
     if (found != std::string::npos)
         buf.replace(found, 1, "");
     std::cout << buf << std::endl;
+}
+
+void PEL::printList()
+{
+    std::string listStr = "|---------------------------------------------------"
+                          "---------------------------|\n";
+    listStr += "| Entry Id      Commit Time      SubSystem                     "
+               "   Committed by |\n";
+    listStr += "| Platform Id   State            Event Severity                "
+               "      Ascii Str |\n";
+    listStr += "|--------------------------------------------------------------"
+               "----------------|\n";
+    for (auto it = fs::directory_iterator(
+             "/var/lib/phosphor-logging/extensions/pels/logs");
+         it != fs::directory_iterator(); ++it)
+    {
+
+        if (!fs::is_regular_file((*it).path()))
+        {
+            continue;
+        }
+        try
+        {
+            std::ifstream stream((*it).path(), std::ios::in | std::ios::binary);
+            std::vector<uint8_t> data((std::istreambuf_iterator<char>(stream)),
+                                      std::istreambuf_iterator<char>());
+            stream.close();
+            PEL pel{data};
+            if (pel.valid())
+
+            {
+                listStr += "|--------------------------------------------------"
+                           "------------"
+                           "----------------|\n";
+
+                // id
+                char tmpValStr[50];
+                sprintf(tmpValStr, "|%-10X", pel._ph->id());
+                listStr += tmpValStr;
+                // commit time
+                sprintf(tmpValStr, "     %02X/%02X/%02X%02X  %02X:%02X:%02X",
+                        pel._ph->commitTimestamp().month,
+                        pel._ph->commitTimestamp().day,
+                        pel._ph->commitTimestamp().yearMSB,
+                        pel._ph->commitTimestamp().yearLSB,
+                        pel._ph->commitTimestamp().hour,
+                        pel._ph->commitTimestamp().minutes,
+                        pel._ph->commitTimestamp().seconds);
+                listStr += tmpValStr;
+                std::string subsystem = pel._uh->getValue(
+                    pel._uh->subsystem(), pel_values::subsystemValues);
+                // subsystem
+                sprintf(tmpValStr, "%20s", subsystem.c_str());
+                listStr += tmpValStr;
+                // committedby
+                std::string committedBy = pel._uh->getValue(
+                    pel._uh->eventType(), pel_values::eventTypeValues);
+                sprintf(tmpValStr, "%25s|", committedBy.c_str());
+                listStr += tmpValStr;
+                listStr += "\n";
+                // platformid
+                sprintf(tmpValStr, "|%-15X", pel._ph->plid());
+                listStr += tmpValStr;
+                // state
+                sprintf(tmpValStr, "%-15s", "TODO");
+                listStr += tmpValStr;
+                // severity
+                std::string severity = pel._uh->getValue(
+                    pel._uh->severity(), pel_values::severityValues);
+                sprintf(tmpValStr, "%-15s", severity.c_str());
+                listStr += tmpValStr;
+                // ASCII
+                sprintf(tmpValStr, "%-15s|",
+                        pel.primarySRC().value()->asciiString().c_str());
+                listStr += tmpValStr;
+                listStr +=
+                    "\n|--------------------------------------------------"
+                    "------------"
+                    "----------------|\n";
+            }
+            else
+            {
+                log<level::ERR>(
+                    "Found invalid PEL file while restoring.  Removing.",
+                    entry("FILENAME=%s", (*it).path().c_str()));
+                fs::remove((*it).path());
+            }
+        }
+        catch (std::exception& e)
+        {
+            log<level::ERR>("Hit exception while restoring PEL File",
+                            entry("FILENAME=%s", (*it).path().c_str()),
+                            entry("ERROR=%s", e.what()));
+        }
+    }
+    printf("%s", listStr.c_str());
 }
 } // namespace pels
 } // namespace openpower
