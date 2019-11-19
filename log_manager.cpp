@@ -454,7 +454,7 @@ void Manager::journalSync()
             auto timestamp = std::stoll(timestampStr);
             if (timestamp >= start)
             {
-                return;
+                break;
             }
         }
 
@@ -473,7 +473,7 @@ void Manager::journalSync()
             if (method.is_method_error())
             {
                 log<level::ERR>("Failed to kill journal service");
-                return;
+                break;
             }
             continue;
         }
