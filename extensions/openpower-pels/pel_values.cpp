@@ -239,6 +239,19 @@ const std::map<std::string, std::string> creatorIDs = {
     {"S", "SLIC"},     {"B", "Hostboot"}, {"T", "OCC"},  {"M", "I/O Drawer"},
     {"K", "Sapphire"}, {"P", "PowerNV"}};
 
+std::string getValue(const uint8_t field, const pel_values::PELValues& values)
+{
+
+    auto tmp = pel_values::findByValue(field, values);
+    if (tmp != values.end())
+    {
+        return std::get<pel_values::registryNamePos>(*tmp);
+    }
+    else
+    {
+        return "invalid";
+    }
+}
 } // namespace pel_values
 } // namespace pels
 } // namespace openpower

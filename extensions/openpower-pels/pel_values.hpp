@@ -25,6 +25,14 @@ using PELFieldValue = std::tuple<uint32_t, const char*, const char*>;
 using PELValues = std::vector<PELFieldValue>;
 
 /**
+ * @brief Helper function to get values from lookup tables.
+ * @return std::string - the value
+ * @param[in] uint8_t - field to get value for
+ * @param[in] PELValues - lookup table
+ */
+std::string getValue(const uint8_t field, const pel_values::PELValues& values);
+
+/**
  * @brief Find the desired entry in a PELValues table based on the
  *        field value.
  *
