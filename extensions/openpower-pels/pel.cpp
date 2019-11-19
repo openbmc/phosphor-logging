@@ -32,6 +32,7 @@ namespace openpower
 {
 namespace pels
 {
+
 namespace message = openpower::pels::message;
 namespace pv = openpower::pels::pel_values;
 
@@ -239,5 +240,6 @@ void PEL::toJSON()
         buf.replace(found, 1, "");
     std::cout << buf << std::endl;
 }
+
 } // namespace pels
 } // namespace openpower
