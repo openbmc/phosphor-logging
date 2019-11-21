@@ -27,11 +27,15 @@ class Repository
     {
         std::filesystem::path path;
         std::bitset<16> actionFlags;
+        TransmissionState hostState;
+        TransmissionState hmcState;
 
         PELAttributes() = delete;
 
-        PELAttributes(const std::filesystem::path& path, uint16_t flags) :
-            path(path), actionFlags(flags)
+        PELAttributes(const std::filesystem::path& p, uint16_t flags,
+                      TransmissionState hostState, TransmissionState hmcState) :
+            path(p),
+            actionFlags(flags), hostState(hostState), hmcState(hmcState)
         {
         }
     };
