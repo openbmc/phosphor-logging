@@ -58,8 +58,9 @@ void Repository::restore()
             PEL pel{data};
             if (pel.valid())
             {
-                PELAttributes attributes{dirEntry.path(),
-                                         pel.userHeader().actionFlags()};
+                PELAttributes attributes{
+                    dirEntry.path(), pel.userHeader().actionFlags(),
+                    pel.hostTransmissionState(), pel.hmcTransmissionState()};
 
                 using pelID = LogID::Pel;
                 using obmcID = LogID::Obmc;
@@ -99,7 +100,9 @@ void Repository::add(std::unique_ptr<PEL>& pel)
 
     write(*(pel.get()), path);
 
-    PELAttributes attributes{path, pel->userHeader().actionFlags()};
+    PELAttributes attributes{path, pel->userHeader().actionFlags(),
+                             pel->hostTransmissionState(),
+                             pel->hmcTransmissionState()};
 
     using pelID = LogID::Pel;
     using obmcID = LogID::Obmc;
