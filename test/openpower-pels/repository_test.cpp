@@ -300,3 +300,89 @@ TEST_F(RepositoryTest, TestGetAttributes)
         EXPECT_FALSE(a);
     }
 }
+
+TEST_F(RepositoryTest, TestSetHostState)
+{
+    // Add a PEL to the repo
+    auto data = pelDataFactory(TestPELType::pelSimple);
+    auto pel = std::make_unique<PEL>(data);
+    using ID = Repository::LogID;
+    ID id{ID::Pel(pel->id())};
+
+    {
+        Repository repo{repoPath};
+
+        repo.add(pel);
+
+        auto a = repo.getPELAttributes(id);
+        EXPECT_EQ((*a).get().hostState, TransmissionState::newPEL);
+
+        repo.setPELHostTransState(pel->id(), TransmissionState::acked);
+
+        // First, check the attributes
+        a = repo.getPELAttributes(id);
+        EXPECT_EQ((*a).get().hostState, TransmissionState::acked);
+
+        // Next, check the PEL data itself
+        auto pelData = repo.getPELData(id);
+        PEL newPEL{*pelData};
+        EXPECT_EQ(newPEL.hostTransmissionState(), TransmissionState::acked);
+    }
+
+    {
+        // Now restore, and check again
+        Repository repo{repoPath};
+
+        // First, check the attributes
+        auto a = repo.getPELAttributes(id);
+        EXPECT_EQ((*a).get().hostState, TransmissionState::acked);
+
+        // Next, check the PEL data itself
+        auto pelData = repo.getPELData(id);
+        PEL newPEL{*pelData};
+        EXPECT_EQ(newPEL.hostTransmissionState(), TransmissionState::acked);
+    }
+}
+
+TEST_F(RepositoryTest, TestSetHMCState)
+{
+    // Add a PEL to the repo
+    auto data = pelDataFactory(TestPELType::pelSimple);
+    auto pel = std::make_unique<PEL>(data);
+    using ID = Repository::LogID;
+    ID id{ID::Pel(pel->id())};
+
+    {
+        Repository repo{repoPath};
+
+        repo.add(pel);
+
+        auto a = repo.getPELAttributes(id);
+        EXPECT_EQ((*a).get().hmcState, TransmissionState::newPEL);
+
+        repo.setPELHMCTransState(pel->id(), TransmissionState::acked);
+
+        // First, check the attributes
+        a = repo.getPELAttributes(id);
+        EXPECT_EQ((*a).get().hmcState, TransmissionState::acked);
+
+        // Next, check the PEL data itself
+        auto pelData = repo.getPELData(id);
+        PEL newPEL{*pelData};
+        EXPECT_EQ(newPEL.hmcTransmissionState(), TransmissionState::acked);
+    }
+
+    {
+        // Now restore, and check again
+        Repository repo{repoPath};
+
+        // First, check the attributes
+        auto a = repo.getPELAttributes(id);
+        EXPECT_EQ((*a).get().hmcState, TransmissionState::acked);
+
+        // Next, check the PEL data itself
+        auto pelData = repo.getPELData(id);
+        PEL newPEL{*pelData};
+        EXPECT_EQ(newPEL.hmcTransmissionState(), TransmissionState::acked);
+    }
+}
