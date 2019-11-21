@@ -261,7 +261,42 @@ class Repository
     std::optional<std::reference_wrapper<const PELAttributes>>
         getPELAttributes(const LogID& id) const;
 
+    /**
+     * @brief Sets the host transmission state on a PEL file
+     *
+     * Writes the host transmission state field in the User Header
+     * section in the PEL data specified by the ID.
+     *
+     * @param[in] pelID - The PEL ID
+     * @param[in] state - The state to write
+     */
+    void setPELHostTransState(uint32_t pelID, TransmissionState state);
+
+    /**
+     * @brief Sets the HMC transmission state on a PEL file
+     *
+     * Writes the HMC transmission state field in the User Header
+     * section in the PEL data specified by the ID.
+     *
+     * @param[in] pelID - The PEL ID
+     * @param[in] state - The state to write
+     */
+    void setPELHMCTransState(uint32_t pelID, TransmissionState state);
+
   private:
+    using PELUpdateFunc = std::function<void(PEL&)>;
+
+    /**
+     * @brief Lets a function modify a PEL and saves the results
+     *
+     * Runs updateFunc (a void(PEL&) function) on the PEL data
+     * on the file specified, and writes the results back to the file.
+     *
+     * @param[in] path - The file path to use
+     * @param[in] updateFunc - The function to run to update the PEL.
+     */
+    void updatePEL(const std::filesystem::path& path, PELUpdateFunc updateFunc);
+
     /**
      * @brief Finds an entry in the _pelAttributes map.
      *
