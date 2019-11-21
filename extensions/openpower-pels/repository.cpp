@@ -279,5 +279,81 @@ std::optional<std::reference_wrapper<const Repository::PELAttributes>>
     return std::nullopt;
 }
 
+void Repository::setPELHostTransState(uint32_t pelID, TransmissionState state)
+{
+    LogID id{LogID::Pel{pelID}};
+    auto attr = std::find_if(_pelAttributes.begin(), _pelAttributes.end(),
+                             [&id](const auto& a) { return a.first == id; });
+
+    if ((attr != _pelAttributes.end()) && (attr->second.hostState != state))
+    {
+        PELUpdateFunc func = [state](PEL& pel) {
+            pel.setHostTransmissionState(state);
+        };
+
+        try
+        {
+            updatePEL(attr->second.path, func);
+
+            attr->second.hostState = state;
+        }
+        catch (std::exception& e)
+        {
+            log<level::ERR>("Unable to update PEL host transmission state",
+                            entry("PATH=%s", attr->second.path.c_str()),
+                            entry("ERROR=%s", e.what()));
+        }
+    }
+}
+
+void Repository::setPELHMCTransState(uint32_t pelID, TransmissionState state)
+{
+    LogID id{LogID::Pel{pelID}};
+    auto attr = std::find_if(_pelAttributes.begin(), _pelAttributes.end(),
+                             [&id](const auto& a) { return a.first == id; });
+
+    if ((attr != _pelAttributes.end()) && (attr->second.hmcState != state))
+    {
+        PELUpdateFunc func = [state](PEL& pel) {
+            pel.setHMCTransmissionState(state);
+        };
+
+        try
+        {
+            updatePEL(attr->second.path, func);
+
+            attr->second.hmcState = state;
+        }
+        catch (std::exception& e)
+        {
+            log<level::ERR>("Unable to update PEL HMC transmission state",
+                            entry("PATH=%s", attr->second.path.c_str()),
+                            entry("ERROR=%s", e.what()));
+        }
+    }
+}
+
+void Repository::updatePEL(const fs::path& path, PELUpdateFunc updateFunc)
+{
+    std::ifstream file{path};
+    std::vector<uint8_t> data{std::istreambuf_iterator<char>(file),
+                              std::istreambuf_iterator<char>()};
+    file.close();
+
+    PEL pel{data};
+
+    if (pel.valid())
+    {
+        updateFunc(pel);
+
+        write(pel, path);
+    }
+    else
+    {
+        throw std::runtime_error(
+            "Unable to read a valid PEL when trying to update it");
+    }
+}
+
 } // namespace pels
 } // namespace openpower
