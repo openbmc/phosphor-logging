@@ -58,6 +58,23 @@ void Repository::restore()
             PEL pel{data};
             if (pel.valid())
             {
+                // If the host hasn't acked it, reset the host state so
+                // it will get sent up again.
+                if (pel.hostTransmissionState() == TransmissionState::sent)
+                {
+                    pel.setHostTransmissionState(TransmissionState::newPEL);
+                    try
+                    {
+                        write(pel, dirEntry.path());
+                    }
+                    catch (std::exception& e)
+                    {
+                        log<level::ERR>(
+                            "Failed to save PEL after updating host state",
+                            entry("PELID=0x%X", pel.id()));
+                    }
+                }
+
                 PELAttributes attributes{
                     dirEntry.path(), pel.userHeader().actionFlags(),
                     pel.hostTransmissionState(), pel.hmcTransmissionState()};
