@@ -96,6 +96,9 @@ std::string Repository::getPELFilename(uint32_t pelID, const BCDTime& time)
 
 void Repository::add(std::unique_ptr<PEL>& pel)
 {
+    pel->setHostTransmissionState(TransmissionState::newPEL);
+    pel->setHMCTransmissionState(TransmissionState::newPEL);
+
     auto path = _logPath / getPELFilename(pel->id(), pel->commitTime());
 
     write(*(pel.get()), path);
