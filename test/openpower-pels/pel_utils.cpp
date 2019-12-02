@@ -81,18 +81,42 @@ const std::vector<uint8_t> srcSectionNoCallouts{
     ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
     ' ', ' '};
 
-std::vector<uint8_t> failingMTMSSection{
+const std::vector<uint8_t> failingMTMSSection{
     // Header
     0x4D, 0x54, 0x00, 0x1C, 0x01, 0x00, 0x20, 0x00,
 
     'T',  'T',  'T',  'T',  '-',  'M',  'M',  'M',  '1', '2',
     '3',  '4',  '5',  '6',  '7',  '8',  '9',  'A',  'B', 'C'};
 
-std::vector<uint8_t> UserDataSection{
+const std::vector<uint8_t> UserDataSection{
     // Header
     0x55, 0x44, 0x00, 0x10, 0x00, 0x00, 0x20, 0x00,
 
     0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
+
+const std::vector<uint8_t> ExtUserHeaderSection{
+    // Header
+    'E', 'H', 0x00, 0x60, 0x01, 0x00, 0x03, 0x04,
+
+    // MTMS
+    'T', 'T', 'T', 'T', '-', 'M', 'M', 'M', '1', '2', '3', '4', '5', '6', '7',
+    '8', '9', 'A', 'B', 'C',
+
+    // Server FW version
+    'S', 'E', 'R', 'V', 'E', 'R', '_', 'V', 'E', 'R', 'S', 'I', 'O', 'N', '\0',
+    '\0',
+
+    // Subsystem FW Version
+    'B', 'M', 'C', '_', 'V', 'E', 'R', 'S', 'I', 'O', 'N', '\0', '\0', '\0',
+    '\0', '\0',
+
+    0x00, 0x00, 0x00, 0x00,                         // Reserved
+    0x20, 0x25, 0x10, 0x20, 0x30, 0x40, 0x50, 0x60, // Ref time
+    0x00, 0x00, 0x00,                               // Reserved
+
+    // SymptomID length and symptom ID
+    20, 'B', 'D', '8', 'D', '4', '2', '0', '0', '_', '1', '2', '3', '4', '5',
+    '6', '7', '8', '\0', '\0', '\0'};
 
 const std::vector<uint8_t> srcFRUIdentityCallout{
     'I', 'D', 0x1C, 0x1D,                     // type, size, flags
@@ -140,7 +164,9 @@ std::vector<uint8_t> pelDataFactory(TestPELType type)
                         failingMTMSSection.end());
             data.insert(data.end(), UserDataSection.begin(),
                         UserDataSection.end());
-            data.at(sectionCountOffset) = 5;
+            data.insert(data.end(), ExtUserHeaderSection.begin(),
+                        ExtUserHeaderSection.end());
+            data.at(sectionCountOffset) = 6;
             break;
         case TestPELType::privateHeaderSection:
             data.insert(data.end(), privateHeaderSection.begin(),

@@ -195,6 +195,23 @@ class SRC : public Section
         return _flags & powerFaultEvent;
     }
 
+    /**
+     * @brief Get the _hexData[] index to use based on the corresponding
+     *        SRC word number.
+     *
+     * Converts the specification nomenclature to this data structure.
+     * See the _hexData documentation below for more information.
+     *
+     * @param[in] wordNum - The SRC word number, as defined by the spec.
+     *
+     * @return size_t The corresponding index into _hexData.
+     */
+    inline size_t getWordIndexFromWordNum(size_t wordNum) const
+    {
+        assert(wordNum >= 2 && wordNum <= 9);
+        return wordNum - 2;
+    }
+
   private:
     /**
      * @brief Fills in the user defined hex words from the
@@ -220,23 +237,6 @@ class SRC : public Section
      * @param[in] stream - The stream to read from
      */
     void unflatten(Stream& stream);
-
-    /**
-     * @brief Get the _hexData[] index to use based on the corresponding
-     *        SRC word number.
-     *
-     * Converts the specification nomenclature to this data structure.
-     * See the _hexData documentation below for more information.
-     *
-     * @param[in] wordNum - The SRC word number, as defined by the spec.
-     *
-     * @return size_t The corresponding index into _hexData.
-     */
-    inline size_t getWordIndexFromWordNum(size_t wordNum) const
-    {
-        assert(wordNum >= 2 && wordNum <= 9);
-        return wordNum - 2;
-    }
 
     /**
      * @brief Says if the word number is in the range of user defined words.
