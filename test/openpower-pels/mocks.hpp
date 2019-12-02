@@ -15,6 +15,8 @@ class MockDataInterface : public DataInterfaceBase
     }
     MOCK_CONST_METHOD0(getMachineTypeModel, std::string());
     MOCK_CONST_METHOD0(getMachineSerialNumber, std::string());
+    MOCK_CONST_METHOD0(getServerFWVersion, std::string());
+    MOCK_CONST_METHOD0(getBMCFWVersion, std::string());
 };
 
 } // namespace pels
