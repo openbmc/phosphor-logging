@@ -4,6 +4,7 @@ check_PROGRAMS += \
 	additional_data_test \
 	ascii_string_test \
 	bcd_time_test \
+	extended_user_header_test \
 	failing_mtms_test \
 	fru_identity_test \
 	generic_section_test \
@@ -33,10 +34,11 @@ pel_objects = \
 	$(top_builddir)/extensions/openpower-pels/bcd_time.o \
 	$(top_builddir)/extensions/openpower-pels/callout.o \
 	$(top_builddir)/extensions/openpower-pels/callouts.o \
+	$(top_builddir)/extensions/openpower-pels/extended_user_header.o \
 	$(top_builddir)/extensions/openpower-pels/failing_mtms.o \
 	$(top_builddir)/extensions/openpower-pels/fru_identity.o \
 	$(top_builddir)/extensions/openpower-pels/generic.o \
-        $(top_builddir)/extensions/openpower-pels/hexdump.o \
+	$(top_builddir)/extensions/openpower-pels/hexdump.o \
 	$(top_builddir)/extensions/openpower-pels/log_id.o \
 	$(top_builddir)/extensions/openpower-pels/mtms.o \
 	$(top_builddir)/extensions/openpower-pels/mru.o \
@@ -286,6 +288,26 @@ src_test_LDADD = \
 	$(top_builddir)/extensions/openpower-pels/pce_identity.o \
 	$(top_builddir)/extensions/openpower-pels/src.o
 src_test_LDFLAGS = $(test_ldflags)
+
+extended_user_header_test_SOURCES = \
+	%reldir%/extended_user_header_test.cpp \
+	%reldir%/pel_utils.cpp
+extended_user_header_test_CPPFLAGS = $(test_cppflags)
+extended_user_header_test_CXXFLAGS = $(test_cxxflags)
+extended_user_header_test_LDADD = \
+	$(test_ldadd) \
+	$(top_builddir)/extensions/openpower-pels/ascii_string.o \
+	$(top_builddir)/extensions/openpower-pels/bcd_time.o \
+	$(top_builddir)/extensions/openpower-pels/callout.o \
+	$(top_builddir)/extensions/openpower-pels/callouts.o \
+	$(top_builddir)/extensions/openpower-pels/data_interface.o \
+	$(top_builddir)/extensions/openpower-pels/extended_user_header.o \
+	$(top_builddir)/extensions/openpower-pels/fru_identity.o \
+	$(top_builddir)/extensions/openpower-pels/mru.o \
+	$(top_builddir)/extensions/openpower-pels/mtms.o \
+	$(top_builddir)/extensions/openpower-pels/pce_identity.o \
+	$(top_builddir)/extensions/openpower-pels/src.o
+extended_user_header_test_LDFLAGS = $(test_ldflags)
 
 pel_rules_test_SOURCES = %reldir%/pel_rules_test.cpp
 pel_rules_test_CPPFLAGS = $(test_cppflags)
