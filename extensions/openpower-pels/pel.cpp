@@ -16,6 +16,7 @@
 #include "pel.hpp"
 
 #include "bcd_time.hpp"
+#include "extended_user_header.hpp"
 #include "failing_mtms.hpp"
 #include "hexdump.hpp"
 #include "log_id.hpp"
@@ -46,7 +47,11 @@ PEL::PEL(const message::Entry& entry, uint32_t obmcLogID, uint64_t timestamp,
     _uh = std::make_unique<UserHeader>(entry, severity);
 
     auto src = std::make_unique<SRC>(entry, additionalData);
+
+    auto euh = std::make_unique<ExtendedUserHeader>(dataIface, entry, *src);
+
     _optionalSections.push_back(std::move(src));
+    _optionalSections.push_back(std::move(euh));
 
     auto mtms = std::make_unique<FailingMTMS>(dataIface);
     _optionalSections.push_back(std::move(mtms));
