@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "config.h"
+
 #include "data_interface.hpp"
 
+#include <fstream>
 #include <xyz/openbmc_project/State/OperatingSystem/Status/server.hpp>
 
 namespace openpower
@@ -48,6 +51,8 @@ DataInterface::DataInterface(sdbusplus::bus::bus& bus) : _bus(bus)
 {
     readMTMS();
     readHostState();
+    readBMCFWVersion();
+    readServerFWVersion();
 }
 
 void DataInterface::readMTMS()
@@ -215,6 +220,28 @@ void DataInterface::osStatePropChanged(sdbusplus::message::message& msg)
 
         setHostState(newHostState);
     }
+}
+
+void DataInterface::readBMCFWVersion()
+{
+    std::ifstream versionFile{BMC_VERSION_FILE};
+    std::string line;
+    static const auto versionID = "VERSION=";
+
+    while (std::getline(versionFile, line))
+    {
+        if (line.find(versionID) != std::string::npos)
+        {
+            auto pos = line.find_first_of('"') + 1;
+            _bmcFWVersion = line.substr(pos, line.find_last_of('"') - pos);
+            break;
+        }
+    }
+}
+
+void DataInterface::readServerFWVersion()
+{
+    // Not available yet
 }
 
 } // namespace pels
