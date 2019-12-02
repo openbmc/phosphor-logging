@@ -91,6 +91,26 @@ class DataInterfaceBase
         _hostChangeCallbacks.erase(name);
     }
 
+    /**
+     * @brief Returns the BMC firmware version
+     *
+     * @return std::string - The BMC version
+     */
+    virtual std::string getBMCFWVersion() const
+    {
+        return _bmcFWVersion;
+    }
+
+    /**
+     * @brief Returns the server firmware version
+     *
+     * @return std::string - The server firmware version
+     */
+    virtual std::string getServerFWVersion() const
+    {
+        return _serverFWVersion;
+    }
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
@@ -138,6 +158,16 @@ class DataInterfaceBase
      *        names to callback functions.
      */
     std::map<std::string, HostStateChangeFunc> _hostChangeCallbacks;
+
+    /**
+     * @brief The BMC firmware version string
+     */
+    std::string _bmcFWVersion;
+
+    /**
+     * @brief The server firmware version string
+     */
+    std::string _serverFWVersion;
 };
 
 /**
@@ -185,6 +215,18 @@ class DataInterface : public DataInterfaceBase
      * kept up to date on changes.
      */
     void readHostState();
+
+    /**
+     * @brief Reads the BMC firmware version string and puts it into
+     *        _bmcFWVersion.
+     */
+    void readBMCFWVersion();
+
+    /**
+     * @brief Reads the server firmware version string and puts it into
+     *        _serverFWVersion.
+     */
+    void readServerFWVersion();
 
     /**
      * @brief Finds the D-Bus service name that hosts the
