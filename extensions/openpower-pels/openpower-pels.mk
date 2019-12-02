@@ -14,6 +14,7 @@ libpel_la_SOURCES = \
 	extensions/openpower-pels/callout.cpp \
 	extensions/openpower-pels/callouts.cpp \
 	extensions/openpower-pels/data_interface.cpp \
+	extensions/openpower-pels/extended_user_header.cpp \
 	extensions/openpower-pels/failing_mtms.cpp \
 	extensions/openpower-pels/fru_identity.cpp \
 	extensions/openpower-pels/generic.cpp \
