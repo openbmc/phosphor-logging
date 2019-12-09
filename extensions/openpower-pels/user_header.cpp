@@ -16,6 +16,7 @@
 #include "user_header.hpp"
 
 #include "pel_types.hpp"
+#include "pel_values.hpp"
 #include "severity.hpp"
 
 #include <iostream>
@@ -26,6 +27,7 @@ namespace openpower
 namespace pels
 {
 
+namespace pv = openpower::pels::pel_values;
 using namespace phosphor::logging;
 
 void UserHeader::unflatten(Stream& stream)
@@ -127,30 +129,16 @@ void UserHeader::validate()
     _valid = (failed) ? false : true;
 }
 
-std::string UserHeader::getValue(const uint8_t field,
-                                 const pel_values::PELValues& values) const
-{
-
-    auto tmp = pel_values::findByValue(field, values);
-    if (tmp != values.end())
-    {
-        return std::get<pel_values::registryNamePos>(*tmp);
-    }
-    else
-    {
-        return "invalid";
-    }
-}
 std::optional<std::string> UserHeader::getJSON() const
 {
     std::string severity;
     std::string subsystem;
     std::string eventScope;
     std::string eventType;
-    severity = getValue(_eventSeverity, pel_values::severityValues);
-    subsystem = getValue(_eventSubsystem, pel_values::subsystemValues);
-    eventScope = getValue(_eventScope, pel_values::eventScopeValues);
-    eventType = getValue(_eventType, pel_values::eventTypeValues);
+    severity = pv::getValue(_eventSeverity, pel_values::severityValues);
+    subsystem = pv::getValue(_eventSubsystem, pel_values::subsystemValues);
+    eventScope = pv::getValue(_eventScope, pel_values::eventScopeValues);
+    eventType = pv::getValue(_eventType, pel_values::eventTypeValues);
     char tmpUhVal[8];
     sprintf(tmpUhVal, "%d", userHeaderVersion);
     std::string uhVerStr(tmpUhVal);
