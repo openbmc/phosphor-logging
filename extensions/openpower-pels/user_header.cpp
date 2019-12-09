@@ -134,7 +134,7 @@ std::string UserHeader::getValue(const uint8_t field,
     auto tmp = pel_values::findByValue(field, values);
     if (tmp != values.end())
     {
-        return std::get<pel_values::registryNamePos>(*tmp);
+        return std::get<pel_values::descriptionPos>(*tmp);
     }
     else
     {
