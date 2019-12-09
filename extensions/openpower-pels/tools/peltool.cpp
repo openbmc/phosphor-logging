@@ -50,6 +50,25 @@ std::string trim(const std::string& s)
     return ltrim(rtrim(s));
 }
 
+/**
+ * @brief helper function to check string suffix
+ * @retrun bool - true with suffix matches
+ * @param[in] std::string - string to check for suffix
+ * @param[in] std::string - suffix string
+ */
+bool ends_with(const std::string& str, const std::string& end)
+{
+    size_t slen = str.size(), elen = end.size();
+    if (slen < elen)
+        return false;
+    while (elen)
+    {
+        if (str[--slen] != end[--elen])
+            return false;
+    }
+    return true;
+}
+
 template <typename T>
 std::string genPELJSON(T itr)
 {
@@ -223,12 +242,14 @@ int main(int argc, char** argv)
 {
     CLI::App app{"OpenBMC PEL Tool"};
     std::string fileName;
+    std::string idPEL;
     bool listPEL;
     bool listPELDescOrd;
     bool listPELShowHidden;
     listPELDescOrd = false;
     listPELShowHidden = false;
     app.add_option("-f,--file", fileName, "Raw PEL file");
+    app.add_option("-i, --id", idPEL, "Display a PEL based on its ID");
     app.add_flag("-l", listPEL, "List PELS");
     app.add_flag("-r", listPELDescOrd, "Reverse order of output");
     app.add_flag("-s", listPELShowHidden, "Show hidden PELs");
@@ -249,6 +270,59 @@ int main(int argc, char** argv)
         }
     }
 
+    else if (!idPEL.empty())
+    {
+        for (auto it =
+                 fs::directory_iterator(EXTENSION_PERSIST_DIR "/pels/logs");
+             it != fs::directory_iterator(); ++it)
+        {
+            if (!fs::is_regular_file((*it).path()))
+            {
+                continue;
+            }
+            try
+            {
+                for (auto& c : idPEL)
+                    c = toupper(c);
+                size_t found = idPEL.find("0X");
+                if (found == 0)
+                {
+                    idPEL.erase(0, 2);
+                }
+                if (ends_with((*it).path(), idPEL))
+                {
+                    std::ifstream stream((*it).path(),
+                                         std::ios::in | std::ios::binary);
+                    std::vector<uint8_t> data(
+                        (std::istreambuf_iterator<char>(stream)),
+                        std::istreambuf_iterator<char>());
+                    stream.close();
+                    if (!data.empty())
+                    {
+                        PEL pel{data};
+                        if (pel.valid())
+                        {
+                            pel.toJSON();
+                        }
+                        else
+                        {
+                            log<level::ERR>(
+                                "PEL File contains invalid PEL",
+                                entry("FILENAME=%s", (*it).path().c_str()),
+                                entry("ERROR=%s", "file contains invalid PEL"));
+                        }
+                    }
+                    break;
+                }
+            }
+            catch (std::exception& e)
+            {
+                log<level::ERR>("Hit exception while reading PEL File",
+                                entry("FILENAME=%s", (*it).path().c_str()),
+                                entry("ERROR=%s", e.what()));
+            }
+        }
+    }
     else if (listPEL)
     {
 
