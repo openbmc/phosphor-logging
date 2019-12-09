@@ -30,6 +30,7 @@ TEST(PELFieldsTest, TestFindFields)
     ASSERT_NE(s, subsystemValues.end());
     ASSERT_EQ(0x58, std::get<fieldValuePos>(*s));
     ASSERT_EQ("cec_clocks", std::get<registryNamePos>(*s));
+    ASSERT_EQ("CEC Hardware: Clock", std::get<descriptionPos>(*s));
 
     s = findByValue(0xFF, subsystemValues);
     ASSERT_EQ(s, subsystemValues.end());
