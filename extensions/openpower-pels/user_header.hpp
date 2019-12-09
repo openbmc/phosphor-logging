@@ -173,15 +173,6 @@ class UserHeader : public Section
      */
     std::optional<std::string> getJSON() const override;
 
-    /**
-     * @brief Helper function to get values from lookup tables.
-     * @return std::string - the value
-     * @param[in] uint8_t - field to get value for
-     * @param[in] PELValues - lookup table
-     */
-    std::string getValue(const uint8_t field,
-                         const pel_values::PELValues& values) const;
-
   private:
     /**
      * @brief Fills in the object from the stream data
