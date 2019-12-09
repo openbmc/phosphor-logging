@@ -35,6 +35,7 @@ namespace object_path
 constexpr auto objectMapper = "/xyz/openbmc_project/object_mapper";
 constexpr auto systemInv = "/xyz/openbmc_project/inventory/system";
 constexpr auto hostState = "/xyz/openbmc_project/state/host0";
+constexpr auto pldm = "/xyz/openbmc_project/pldm";
 } // namespace object_path
 
 namespace interface
@@ -43,6 +44,7 @@ constexpr auto dbusProperty = "org.freedesktop.DBus.Properties";
 constexpr auto objectMapper = "xyz.openbmc_project.ObjectMapper";
 constexpr auto invAsset = "xyz.openbmc_project.Inventory.Decorator.Asset";
 constexpr auto osStatus = "xyz.openbmc_project.State.OperatingSystem.Status";
+constexpr auto pldmRequester = "xyz.openbmc_project.PLDM.Requester";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::OperatingSystem::server;
@@ -140,7 +142,7 @@ void DataInterface::getProperty(const std::string& service,
 }
 
 DBusService DataInterface::getService(const std::string& objectPath,
-                                      const std::string& interface)
+                                      const std::string& interface) const
 {
     auto method = _bus.new_method_call(service_name::objectMapper,
                                        object_path::objectMapper,
@@ -220,6 +222,26 @@ void DataInterface::osStatePropChanged(sdbusplus::message::message& msg)
 
         setHostState(newHostState);
     }
+}
+
+uint8_t DataInterface::getPLDMInstanceID(uint8_t eid) const
+{
+    return 0;
+// Don't use until PLDM switches to async D-Bus.
+#if 0
+    auto service = getService(object_path::pldm, interface::pldmRequester);
+
+    auto method =
+        _bus.new_method_call(service.c_str(), object_path::pldm,
+                             interface::pldmRequester, "GetInstanceId");
+    method.append(eid);
+    auto reply = _bus.call(method);
+
+    uint8_t instanceID = 0;
+    reply.read(instanceID);
+
+    return instanceID;
+#endif
 }
 
 void DataInterface::readBMCFWVersion()
