@@ -386,3 +386,51 @@ TEST_F(RepositoryTest, TestSetHMCState)
         EXPECT_EQ(newPEL.hmcTransmissionState(), TransmissionState::acked);
     }
 }
+
+TEST_F(RepositoryTest, TestGetPELFD)
+{
+    Repository repo{repoPath};
+
+    auto data = pelDataFactory(TestPELType::pelSimple);
+    auto pel = std::make_unique<PEL>(data);
+    pel->setCommitTime();
+    pel->assignID();
+
+    repo.add(pel);
+
+    using ID = Repository::LogID;
+    ID id{ID::Pel(pel->id())};
+
+    auto fd = repo.getPELFD(id);
+
+    EXPECT_TRUE(fd);
+
+    // Get the size
+    struct stat s;
+    int r = fstat(*fd, &s);
+    ASSERT_EQ(r, 0);
+
+    auto size = s.st_size;
+
+    // Read the PEL data out of the FD
+    FILE* fp = fdopen(*fd, "r");
+    ASSERT_NE(fp, nullptr);
+
+    std::vector<uint8_t> newData;
+    newData.resize(size);
+    r = fread(newData.data(), 1, size, fp);
+    EXPECT_EQ(r, size);
+
+    PEL newPEL{newData};
+
+    EXPECT_TRUE(newPEL.valid());
+    EXPECT_EQ(newPEL.id(), pel->id());
+
+    fclose(fp);
+
+    // Call getPELFD again, this time with a bad ID
+    id.pelID.id = 42;
+    fd = repo.getPELFD(id);
+
+    EXPECT_FALSE(fd);
+}
