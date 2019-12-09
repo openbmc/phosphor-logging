@@ -169,6 +169,16 @@ class Repository
      */
     std::optional<std::vector<uint8_t>> getPELData(const LogID& id);
 
+    /**
+     * @brief Get a file descriptor to the PEL data
+     *
+     * @param[in] id - The ID to get the FD for
+     *
+     * @return std::optional<sdbusplus::message::unix_fd> -
+     *         The FD, or an empty optional object.
+     */
+    std::optional<sdbusplus::message::unix_fd> getPELFD(const LogID& id);
+
     using ForEachFunc = std::function<bool(const PEL&)>;
 
     /**

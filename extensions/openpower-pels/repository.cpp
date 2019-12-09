@@ -197,6 +197,29 @@ std::optional<std::vector<uint8_t>> Repository::getPELData(const LogID& id)
     return std::nullopt;
 }
 
+std::optional<sdbusplus::message::unix_fd> Repository::getPELFD(const LogID& id)
+{
+    auto pel = findPEL(id);
+    if (pel != _pelAttributes.end())
+    {
+        FILE* fp = fopen(pel->second.path.c_str(), "rb");
+
+        if (fp == nullptr)
+        {
+            auto e = errno;
+            log<level::ERR>("Unable to open PEL File", entry("ERRNO=%d", e),
+                            entry("PATH=%s", pel->second.path.c_str()));
+            throw file_error::Open();
+        }
+
+        // Must leave the file open here.  It will be closed by sdbusplus
+        // when it sends it back over D-Bus.
+
+        return fileno(fp);
+    }
+    return std::nullopt;
+}
+
 void Repository::for_each(ForEachFunc func) const
 {
     for (const auto& [id, attributes] : _pelAttributes)
