@@ -168,19 +168,9 @@ class UserHeader : public Section
 
     /**
      * @brief Get section in JSON.
-     * @return std::optional<std::string> - If a section comes with a JSON
-     * repressentation, this would return the string for it.
+     * @return std::optional<std::string> -User header section's JSON
      */
     std::optional<std::string> getJSON() const override;
-
-    /**
-     * @brief Helper function to get values from lookup tables.
-     * @return std::string - the value
-     * @param[in] uint8_t - field to get value for
-     * @param[in] PELValues - lookup table
-     */
-    std::string getValue(const uint8_t field,
-                         const pel_values::PELValues& values) const;
 
   private:
     /**
