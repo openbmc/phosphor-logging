@@ -35,21 +35,6 @@ namespace file_error = sdbusplus::xyz::openbmc_project::Common::File::Error;
 namespace message = openpower::pels::message;
 namespace pv = openpower::pels::pel_values;
 
-std::string ltrim(const std::string& s)
-{
-    return std::regex_replace(s, std::regex("^\\s+"), std::string(""));
-}
-
-std::string rtrim(const std::string& s)
-{
-    return std::regex_replace(s, std::regex("\\s+$"), std::string(""));
-}
-
-std::string trim(const std::string& s)
-{
-    return ltrim(rtrim(s));
-}
-
 /**
  * @brief helper function to get PEL commit timestamp from file name
  * @retrun BCDTime - PEL commit timestamp
@@ -180,7 +165,7 @@ bool ends_with(const std::string& str, const std::string& end)
  * @param[in] std::string Name of file with raw PEL
  * @return std::vector<uint8_t> char vector read from raw PEL file.
  */
-std::vector<uint8_t> getFileData(std::string name)
+std::vector<uint8_t> getFileData(const std::string& name)
 {
     std::ifstream file(name, std::ifstream::in);
     if (file.good())
@@ -194,6 +179,21 @@ std::vector<uint8_t> getFileData(std::string name)
         printf("Can't open raw PEL file");
         return {};
     }
+}
+
+/**
+ * @brief helper function to trim trailing whitespaces
+ * @return std::string - trimmed string
+ * @param[in] std::string - string to trim
+ */
+const char* ws = " \t\n\r\f\v";
+std::string trim(std::string s, const char* t = ws)
+{
+    if (s.find_last_not_of(t) != std::string::npos)
+    {
+        s.erase(s.find_last_not_of(t) + 1);
+    }
+    return s;
 }
 
 template <typename T>
@@ -213,10 +213,8 @@ std::string genPELJSON(T itr, bool hidden)
     try
     {
         std::vector<uint8_t> data = getFileData(fileName);
-
         if (!data.empty())
         {
-
             PEL pel{data};
             std::bitset<16> actionFlags{pel.userHeader().actionFlags()};
             if (pel.valid() && (hidden || !actionFlags.test(hiddenFlagBit)))
@@ -310,7 +308,6 @@ void printList(bool order, bool hidden)
                          fileNameToTimestamp((*it).path().filename()));
         }
     }
-    std::string val;
     auto buildJSON = [&listStr, &order, &hidden](const auto& i) {
         listStr += genPELJSON(i, hidden);
     };
@@ -352,7 +349,7 @@ int main(int argc, char** argv)
     app.add_option("-f,--file", fileName,
                    "Display a PEL using its Raw PEL file");
     app.add_option("-i, --id", idPEL, "Display a PEL based on its ID");
-    app.add_flag("-l", listPEL, "List PELS");
+    app.add_flag("-l", listPEL, "List PELs");
     app.add_flag("-r", listPELDescOrd, "Reverse order of output");
     app.add_flag("-s", listPELShowHidden, "Show hidden PELs");
     CLI11_PARSE(app, argc, argv);
