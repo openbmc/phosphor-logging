@@ -35,21 +35,6 @@ namespace file_error = sdbusplus::xyz::openbmc_project::Common::File::Error;
 namespace message = openpower::pels::message;
 namespace pv = openpower::pels::pel_values;
 
-std::string ltrim(const std::string& s)
-{
-    return std::regex_replace(s, std::regex("^\\s+"), std::string(""));
-}
-
-std::string rtrim(const std::string& s)
-{
-    return std::regex_replace(s, std::regex("\\s+$"), std::string(""));
-}
-
-std::string trim(const std::string& s)
-{
-    return ltrim(rtrim(s));
-}
-
 /**
  * @brief helper function to get PEL commit timestamp from file name
  * @retrun BCDTime - PEL commit timestamp
@@ -196,6 +181,21 @@ std::vector<uint8_t> getFileData(std::string name)
     }
 }
 
+/**
+ * @brief helper function to trim trailing whitespaces
+ * @return std::string - trimmed string
+ * @param[in] std::string - string to trim
+ */
+const char* ws = " \t\n\r\f\v";
+std::string rtrim(const std::string& s, const char* t = ws)
+{
+    if (s.find_last_not_of(t) != std::string::npos)
+    {
+        s.erase(s.find_last_not_of(t) + 1);
+    }
+    return s;
+}
+
 template <typename T>
 std::string genPELJSON(T itr, bool hidden)
 {
@@ -213,80 +213,76 @@ std::string genPELJSON(T itr, bool hidden)
     try
     {
         std::vector<uint8_t> data = getFileData(fileName);
-
         if (!data.empty())
-        {
-
             PEL pel{data};
-            std::bitset<16> actionFlags{pel.userHeader().actionFlags()};
-            if (pel.valid() && (hidden || !actionFlags.test(hiddenFlagBit)))
-            {
-                // id
-                sprintf(tmpValStr, "0x%X", pel.privateHeader().id());
-                val = std::string(tmpValStr);
-                listStr += "\t\"" + val + "\": {\n";
-                // ASCII
-                val = pel.primarySRC() ? pel.primarySRC().value()->asciiString()
-                                       : "No SRC";
-                listStr += "\t\t\"SRC\": \"" + trim(val) + "\",\n";
-                // platformid
-                sprintf(tmpValStr, "0x%X", pel.privateHeader().plid());
-                val = std::string(tmpValStr);
-                listStr += "\t\t\"PLID\": \"" + val + "\",\n";
-                // creatorid
-                sprintf(tmpValStr, "%c", pel.privateHeader().creatorID());
-                std::string creatorID(tmpValStr);
-                val = pv::creatorIDs.count(creatorID)
-                          ? pv::creatorIDs.at(creatorID)
-                          : "Unknown Creator ID";
-                listStr += "\t\t\"CreatorID\": \"" + val + "\",\n";
-                // subsytem
-                std::string subsystem = pv::getValue(
-                    pel.userHeader().subsystem(), pel_values::subsystemValues);
-                listStr += "\t\t\"Subsystem\": \"" + subsystem + "\",\n";
-                // commit time
-                sprintf(tmpValStr, "%02X/%02X/%02X%02X  %02X:%02X:%02X",
-                        pel.privateHeader().commitTimestamp().month,
-                        pel.privateHeader().commitTimestamp().day,
-                        pel.privateHeader().commitTimestamp().yearMSB,
-                        pel.privateHeader().commitTimestamp().yearLSB,
-                        pel.privateHeader().commitTimestamp().hour,
-                        pel.privateHeader().commitTimestamp().minutes,
-                        pel.privateHeader().commitTimestamp().seconds);
-                val = std::string(tmpValStr);
-                listStr += "\t\t\"Commit Time\": \"" + val + "\",\n";
-                // severity
-                std::string severity = pv::getValue(pel.userHeader().severity(),
-                                                    pel_values::severityValues);
-                listStr += "\t\t\"Sev\": \"" + severity + "\",\n ";
-                // compID
-                sprintf(tmpValStr, "0x%X",
-                        pel.privateHeader().header().componentID);
-                val = std::string(tmpValStr);
-                listStr += "\t\t\"CompID\": \"" + val + "\",\n ";
+        std::bitset<16> actionFlags{pel.userHeader().actionFlags()};
+        if (pel.valid() && (hidden || !actionFlags.test(hiddenFlagBit)))
+        {
+            // id
+            sprintf(tmpValStr, "0x%X", pel.privateHeader().id());
+            val = std::string(tmpValStr);
+            listStr += "\t\"" + val + "\": {\n";
+            // ASCII
+            val = pel.primarySRC() ? pel.primarySRC().value()->asciiString()
+                                   : "No SRC";
+            listStr += "\t\t\"SRC\": \"" + trim(val) + "\",\n";
+            // platformid
+            sprintf(tmpValStr, "0x%X", pel.privateHeader().plid());
+            val = std::string(tmpValStr);
+            listStr += "\t\t\"PLID\": \"" + val + "\",\n";
+            // creatorid
+            sprintf(tmpValStr, "%c", pel.privateHeader().creatorID());
+            std::string creatorID(tmpValStr);
+            val = pv::creatorIDs.count(creatorID) ? pv::creatorIDs.at(creatorID)
+                                                  : "Unknown Creator ID";
+            listStr += "\t\t\"CreatorID\": \"" + val + "\",\n";
+            // subsytem
+            std::string subsystem = pv::getValue(pel.userHeader().subsystem(),
+                                                 pel_values::subsystemValues);
+            listStr += "\t\t\"Subsystem\": \"" + subsystem + "\",\n";
+            // commit time
+            sprintf(tmpValStr, "%02X/%02X/%02X%02X  %02X:%02X:%02X",
+                    pel.privateHeader().commitTimestamp().month,
+                    pel.privateHeader().commitTimestamp().day,
+                    pel.privateHeader().commitTimestamp().yearMSB,
+                    pel.privateHeader().commitTimestamp().yearLSB,
+                    pel.privateHeader().commitTimestamp().hour,
+                    pel.privateHeader().commitTimestamp().minutes,
+                    pel.privateHeader().commitTimestamp().seconds);
+            val = std::string(tmpValStr);
+            listStr += "\t\t\"Commit Time\": \"" + val + "\",\n";
+            // severity
+            std::string severity = pv::getValue(pel.userHeader().severity(),
+                                                pel_values::severityValues);
+            listStr += "\t\t\"Sev\": \"" + severity + "\",\n ";
+            // compID
+            sprintf(tmpValStr, "0x%X",
+                    pel.privateHeader().header().componentID);
+            val = std::string(tmpValStr);
+            listStr += "\t\t\"CompID\": \"" + val + "\",\n ";
 
-                found = listStr.rfind(",");
-                if (found != std::string::npos)
-                {
-                    listStr.replace(found, 1, "");
-                    listStr += "\t}, \n";
-                }
+            found = listStr.rfind(",");
+            if (found != std::string::npos)
+            {
+                listStr.replace(found, 1, "");
+                listStr += "\t}, \n";
             }
         }
-        else
-        {
-            log<level::ERR>("Empty PEL file",
-                            entry("FILENAME=%s", fileName.c_str()),
-                            entry("ERROR=%s", "Empty PEL file"));
-        }
     }
-    catch (std::exception& e)
+    else
     {
-        log<level::ERR>("Hit exception while reading PEL File",
+        log<level::ERR>("Empty PEL file",
                         entry("FILENAME=%s", fileName.c_str()),
-                        entry("ERROR=%s", e.what()));
+                        entry("ERROR=%s", "Empty PEL file"));
     }
-    return listStr;
+}
+catch (std::exception& e)
+{
+    log<level::ERR>("Hit exception while reading PEL File",
+                    entry("FILENAME=%s", fileName.c_str()),
+                    entry("ERROR=%s", e.what()));
+}
+return listStr;
 }
 /**
  * @brief Print a list of PELs
@@ -310,7 +306,6 @@ void printList(bool order, bool hidden)
                          fileNameToTimestamp((*it).path().filename()));
         }
     }
-    std::string val;
     auto buildJSON = [&listStr, &order, &hidden](const auto& i) {
         listStr += genPELJSON(i, hidden);
     };
