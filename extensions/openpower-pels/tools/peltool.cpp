@@ -35,21 +35,6 @@ namespace file_error = sdbusplus::xyz::openbmc_project::Common::File::Error;
 namespace message = openpower::pels::message;
 namespace pv = openpower::pels::pel_values;
 
-std::string ltrim(const std::string& s)
-{
-    return std::regex_replace(s, std::regex("^\\s+"), std::string(""));
-}
-
-std::string rtrim(const std::string& s)
-{
-    return std::regex_replace(s, std::regex("\\s+$"), std::string(""));
-}
-
-std::string trim(const std::string& s)
-{
-    return ltrim(rtrim(s));
-}
-
 /**
  * @brief helper function to get PEL commit timestamp from file name
  * @retrun BCDTime - PEL commit timestamp
@@ -141,7 +126,8 @@ std::string genPELJSON(T itr, bool order, bool hidden)
             // ASCII
             val = pel.primarySRC() ? pel.primarySRC().value()->asciiString()
                                    : "No SRC";
-            listStr += "\t\t\"SRC\": \"" + trim(val) + "\",\n";
+            val.erase(std::remove(val.begin(), val.end(), ' '), val.end());
+            listStr += "\t\t\"SRC\": \"" + val + "\",\n";
             // platformid
             sprintf(tmpValStr, "0x%X", pel.privateHeader().plid());
             val = std::string(tmpValStr);
