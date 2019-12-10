@@ -51,6 +51,112 @@ std::string trim(const std::string& s)
 }
 
 /**
+ * @brief helper function to get PEL commit timestamp from file name
+ * @retrun BCDTime - PEL commit timestamp
+ * @param[in] std::string - file name
+ */
+BCDTime fileNameToTimestamp(const std::string& fileName)
+{
+    std::string token = fileName.substr(0, fileName.find("_"));
+    int i = 0;
+    BCDTime tmp;
+    if (token.length() >= 14)
+    {
+        try
+        {
+            tmp.yearMSB = std::stoi(token.substr(i, 2), 0, 16);
+        }
+        catch (std::exception& err)
+        {
+            std::cout << "Conversion failure: " << err.what() << std::endl;
+        }
+        i += 2;
+        try
+        {
+            tmp.yearLSB = std::stoi(token.substr(i, 2), 0, 16);
+        }
+        catch (std::exception& err)
+        {
+            std::cout << "Conversion failure: " << err.what() << std::endl;
+        }
+        i += 2;
+        try
+        {
+            tmp.month = std::stoi(token.substr(i, 2), 0, 16);
+        }
+        catch (std::exception& err)
+        {
+            std::cout << "Conversion failure: " << err.what() << std::endl;
+        }
+        i += 2;
+        try
+        {
+            tmp.day = std::stoi(token.substr(i, 2), 0, 16);
+        }
+        catch (std::exception& err)
+        {
+            std::cout << "Conversion failure: " << err.what() << std::endl;
+        }
+        i += 2;
+        try
+        {
+            tmp.hour = std::stoi(token.substr(i, 2), 0, 16);
+        }
+        catch (std::exception& err)
+        {
+            std::cout << "Conversion failure: " << err.what() << std::endl;
+        }
+        i += 2;
+        try
+        {
+            tmp.minutes = std::stoi(token.substr(i, 2), 0, 16);
+        }
+        catch (std::exception& err)
+        {
+            std::cout << "Conversion failure: " << err.what() << std::endl;
+        }
+        i += 2;
+        try
+        {
+            tmp.seconds = std::stoi(token.substr(i, 2), 0, 16);
+        }
+        catch (std::exception& err)
+        {
+            std::cout << "Conversion failure: " << err.what() << std::endl;
+        }
+        i += 2;
+        try
+        {
+            tmp.hundredths = std::stoi(token.substr(i, 2), 0, 16);
+        }
+        catch (std::exception& err)
+        {
+            std::cout << "Conversion failure: " << err.what() << std::endl;
+        }
+    }
+    return tmp;
+}
+
+/**
+ * @brief helper function to get PEL id from file name
+ * @retrun uint32_t - PEL id
+ * @param[in] std::string - file name
+ */
+uint32_t fileNameToPELId(const std::string& fileName)
+{
+    uint32_t num = 0;
+    try
+    {
+        num = std::stoi(fileName.substr(fileName.find("_") + 1), 0, 16);
+    }
+    catch (std::exception& err)
+    {
+        std::cout << "Conversion failure: " << err.what() << std::endl;
+    }
+    return num;
+}
+
+/**
  * @brief helper function to check string suffix
  * @retrun bool - true with suffix matches
  * @param[in] std::string - string to check for suffix
@@ -69,8 +175,29 @@ bool ends_with(const std::string& str, const std::string& end)
     return true;
 }
 
+/**
+ * @brief get data form raw PEL file.
+ * @param[in] std::string Name of file with raw PEL
+ * @return std::vector<uint8_t> char vector read from raw PEL file.
+ */
+std::vector<uint8_t> getFileData(std::string name)
+{
+    std::ifstream file(name, std::ifstream::in);
+    if (file.good())
+    {
+        std::vector<uint8_t> data{std::istreambuf_iterator<char>(file),
+                                  std::istreambuf_iterator<char>()};
+        return data;
+    }
+    else
+    {
+        printf("Can't open raw PEL file");
+        return {};
+    }
+}
+
 template <typename T>
-std::string genPELJSON(T itr)
+std::string genPELJSON(T itr, bool hidden)
 {
     std::size_t found;
     std::string val;
@@ -85,62 +212,72 @@ std::string genPELJSON(T itr)
     fileName = EXTENSION_PERSIST_DIR "/pels/logs/" + fileName;
     try
     {
-        std::ifstream stream(fileName, std::ios::in | std::ios::binary);
-        std::vector<uint8_t> data((std::istreambuf_iterator<char>(stream)),
-                                  std::istreambuf_iterator<char>());
-        stream.close();
-        PEL pel{data};
-        if (pel.valid())
-        {
-            // id
-            sprintf(tmpValStr, "0x%X", pel.privateHeader().id());
-            val = std::string(tmpValStr);
-            listStr += "\t\"" + val + "\": {\n";
-            // ASCII
-            val = pel.primarySRC() ? pel.primarySRC().value()->asciiString()
-                                   : "No SRC";
-            listStr += "\t\t\"SRC\": \"" + trim(val) + "\",\n";
-            // platformid
-            sprintf(tmpValStr, "0x%X", pel.privateHeader().plid());
-            val = std::string(tmpValStr);
-            listStr += "\t\t\"PLID\": \"" + val + "\",\n";
-            // creatorid
-            sprintf(tmpValStr, "%c", pel.privateHeader().creatorID());
-            std::string creatorID(tmpValStr);
-            val = pv::creatorIDs.count(creatorID) ? pv::creatorIDs.at(creatorID)
-                                                  : "Unknown Creator ID";
-            listStr += "\t\t\"CreatorID\": \"" + val + "\",\n";
-            // subsytem
-            std::string subsystem = pv::getValue(pel.userHeader().subsystem(),
-                                                 pel_values::subsystemValues);
-            listStr += "\t\t\"Subsystem\": \"" + subsystem + "\",\n";
-            // commit time
-            sprintf(tmpValStr, "%02X/%02X/%02X%02X  %02X:%02X:%02X",
-                    pel.privateHeader().commitTimestamp().month,
-                    pel.privateHeader().commitTimestamp().day,
-                    pel.privateHeader().commitTimestamp().yearMSB,
-                    pel.privateHeader().commitTimestamp().yearLSB,
-                    pel.privateHeader().commitTimestamp().hour,
-                    pel.privateHeader().commitTimestamp().minutes,
-                    pel.privateHeader().commitTimestamp().seconds);
-            val = std::string(tmpValStr);
-            listStr += "\t\t\"Commit Time\": \"" + val + "\",\n";
-            // severity
-            std::string severity = pv::getValue(pel.userHeader().severity(),
-                                                pel_values::severityValues);
-            listStr += "\t\t\"Sev\": \"" + severity + "\",\n ";
-            // compID
-            sprintf(tmpValStr, "0x%X",
-                    pel.privateHeader().header().componentID);
-            val = std::string(tmpValStr);
-            listStr += "\t\t\"CompID\": \"" + val + "\",\n ";
+        std::vector<uint8_t> data = getFileData(fileName);
 
-            found = listStr.rfind(",");
-            if (found != std::string::npos)
+        if (!data.empty())
+        {
+
+            PEL pel{data};
+            std::bitset<16> actionFlags{pel.userHeader().actionFlags()};
+            if (pel.valid() && (hidden || !actionFlags.test(hiddenFlagBit)))
             {
-                listStr.replace(found, 1, "");
-                listStr += "\t}, \n";
+                // id
+                sprintf(tmpValStr, "0x%X", pel.privateHeader().id());
+                val = std::string(tmpValStr);
+                listStr += "\t\"" + val + "\": {\n";
+                // ASCII
+                val = pel.primarySRC() ? pel.primarySRC().value()->asciiString()
+                                       : "No SRC";
+                listStr += "\t\t\"SRC\": \"" + trim(val) + "\",\n";
+                // platformid
+                sprintf(tmpValStr, "0x%X", pel.privateHeader().plid());
+                val = std::string(tmpValStr);
+                listStr += "\t\t\"PLID\": \"" + val + "\",\n";
+                // creatorid
+                sprintf(tmpValStr, "%c", pel.privateHeader().creatorID());
+                std::string creatorID(tmpValStr);
+                val = pv::creatorIDs.count(creatorID)
+                          ? pv::creatorIDs.at(creatorID)
+                          : "Unknown Creator ID";
+                listStr += "\t\t\"CreatorID\": \"" + val + "\",\n";
+                // subsytem
+                std::string subsystem = pv::getValue(
+                    pel.userHeader().subsystem(), pel_values::subsystemValues);
+                listStr += "\t\t\"Subsystem\": \"" + subsystem + "\",\n";
+                // commit time
+                sprintf(tmpValStr, "%02X/%02X/%02X%02X  %02X:%02X:%02X",
+                        pel.privateHeader().commitTimestamp().month,
+                        pel.privateHeader().commitTimestamp().day,
+                        pel.privateHeader().commitTimestamp().yearMSB,
+                        pel.privateHeader().commitTimestamp().yearLSB,
+                        pel.privateHeader().commitTimestamp().hour,
+                        pel.privateHeader().commitTimestamp().minutes,
+                        pel.privateHeader().commitTimestamp().seconds);
+                val = std::string(tmpValStr);
+                listStr += "\t\t\"Commit Time\": \"" + val + "\",\n";
+                // severity
+                std::string severity = pv::getValue(pel.userHeader().severity(),
+                                                    pel_values::severityValues);
+                listStr += "\t\t\"Sev\": \"" + severity + "\",\n ";
+                // compID
+                sprintf(tmpValStr, "0x%X",
+                        pel.privateHeader().header().componentID);
+                val = std::string(tmpValStr);
+                listStr += "\t\t\"CompID\": \"" + val + "\",\n ";
+
+                found = listStr.rfind(",");
+                if (found != std::string::npos)
+                {
+                    listStr.replace(found, 1, "");
+                    listStr += "\t}, \n";
+                }
             }
+        }
+        else
+        {
+            log<level::ERR>("Empty PEL file",
+                            entry("FILENAME=%s", fileName.c_str()),
+                            entry("ERROR=%s", "Empty PEL file"));
         }
     }
     catch (std::exception& e)
@@ -167,33 +304,16 @@ void printList(bool order, bool hidden)
         {
             continue;
         }
-        try
+        else
         {
-            std::ifstream stream((*it).path(), std::ios::in | std::ios::binary);
-            std::vector<uint8_t> data((std::istreambuf_iterator<char>(stream)),
-                                      std::istreambuf_iterator<char>());
-            stream.close();
-            PEL pel{data};
-            if (pel.valid())
-            {
-
-                std::bitset<16> actionFlags{pel.userHeader().actionFlags()};
-                if (hidden || !actionFlags.test(hiddenFlagBit))
-                {
-                    PELs.emplace(pel.id(),
-                                 pel.privateHeader().commitTimestamp());
-                }
-            }
-        }
-        catch (std::exception& e)
-        {
-            log<level::ERR>("Hit exception while reading PEL File",
-                            entry("FILENAME=%s", (*it).path().c_str()),
-                            entry("ERROR=%s", e.what()));
+            PELs.emplace(fileNameToPELId((*it).path().filename()),
+                         fileNameToTimestamp((*it).path().filename()));
         }
     }
     std::string val;
-    auto buildJSON = [&listStr](const auto& i) { listStr += genPELJSON(i); };
+    auto buildJSON = [&listStr, &hidden](const auto& i) {
+        listStr += genPELJSON(i, hidden);
+    };
     if (order)
     {
         std::for_each(PELs.rbegin(), PELs.rend(), buildJSON);
@@ -209,26 +329,6 @@ void printList(bool order, bool hidden)
         listStr.replace(found, 1, "");
         listStr += "\n}\n";
         printf("%s", listStr.c_str());
-    }
-}
-/**
- * @brief get data form raw PEL file.
- * @param[in] std::string Name of file with raw PEL
- * @return std::vector<uint8_t> char vector read from raw PEL file.
- */
-std::vector<uint8_t> getFileData(std::string name)
-{
-    std::ifstream file(name, std::ifstream::in);
-    if (file.good())
-    {
-        std::vector<uint8_t> data{std::istreambuf_iterator<char>(file),
-                                  std::istreambuf_iterator<char>()};
-        return data;
-    }
-    else
-    {
-        printf("Can't open raw PEL file");
-        return {};
     }
 }
 
