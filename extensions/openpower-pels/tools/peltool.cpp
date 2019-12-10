@@ -51,6 +51,46 @@ std::string trim(const std::string& s)
 }
 
 /**
+ * @brief helper function to get PEL commit timestamp from file name
+ * @retrun BCDTime - PEL commit timestamp
+ * @param[in] std::string - file name
+ */
+BCDTime fileNameToTimestamp(std::string fileName)
+{
+    std::string delimiter = "_";
+    std::string token = fileName.substr(0, fileName.find(delimiter));
+    int i = 0;
+    BCDTime tmp;
+    tmp.yearMSB = std::stoi(token.substr(i, i + 2), 0, 16);
+    i += 2;
+    tmp.yearLSB = std::stoi(token.substr(i, 2), 0, 16);
+    i += 2;
+    tmp.month = std::stoi(token.substr(i, 2), 0, 16);
+    i += 2;
+    tmp.day = std::stoi(token.substr(i, 2), 0, 16);
+    i += 2;
+    tmp.hour = std::stoi(token.substr(i, 2), 0, 16);
+    i += 2;
+    tmp.minutes = std::stoi(token.substr(i, 2), 0, 16);
+    i += 2;
+    tmp.seconds = std::stoi(token.substr(i, 2), 0, 16);
+    i += 2;
+    tmp.hundredths = std::stoi(token.substr(i, 2), 0, 16);
+    return tmp;
+}
+
+/**
+ * @brief helper function to PEL id from file name
+ * @retrun std::string - PEL id
+ * @param[in] std::string - file name
+ */
+uint32_t fileNameToPELId(std::string fileName)
+{
+    uint32_t num = std::stoi(fileName.substr(fileName.find("_") + 1), 0, 16);
+    return num;
+}
+
+/**
  * @brief helper function to check string suffix
  * @retrun bool - true with suffix matches
  * @param[in] std::string - string to check for suffix
@@ -70,7 +110,7 @@ bool ends_with(const std::string& str, const std::string& end)
 }
 
 template <typename T>
-std::string genPELJSON(T itr)
+std::string genPELJSON(T itr, bool order, bool hidden)
 {
     std::size_t found;
     std::string val;
@@ -90,7 +130,9 @@ std::string genPELJSON(T itr)
                                   std::istreambuf_iterator<char>());
         stream.close();
         PEL pel{data};
-        if (pel.valid())
+        std::bitset<16> actionFlags{pel.userHeader().actionFlags()};
+        if (pel.valid() && (hidden || !actionFlags.test(hiddenFlagBit)))
+
         {
             // id
             sprintf(tmpValStr, "0x%X", pel.privateHeader().id());
@@ -167,33 +209,16 @@ void printList(bool order, bool hidden)
         {
             continue;
         }
-        try
+        else
         {
-            std::ifstream stream((*it).path(), std::ios::in | std::ios::binary);
-            std::vector<uint8_t> data((std::istreambuf_iterator<char>(stream)),
-                                      std::istreambuf_iterator<char>());
-            stream.close();
-            PEL pel{data};
-            if (pel.valid())
-            {
-
-                std::bitset<16> actionFlags{pel.userHeader().actionFlags()};
-                if (hidden || !actionFlags.test(hiddenFlagBit))
-                {
-                    PELs.emplace(pel.id(),
-                                 pel.privateHeader().commitTimestamp());
-                }
-            }
-        }
-        catch (std::exception& e)
-        {
-            log<level::ERR>("Hit exception while reading PEL File",
-                            entry("FILENAME=%s", (*it).path().c_str()),
-                            entry("ERROR=%s", e.what()));
+            PELs.emplace(fileNameToPELId((*it).path().filename()),
+                         fileNameToTimestamp((*it).path().filename()));
         }
     }
     std::string val;
-    auto buildJSON = [&listStr](const auto& i) { listStr += genPELJSON(i); };
+    auto buildJSON = [&listStr, &order, &hidden](const auto& i) {
+        listStr += genPELJSON(i, order, hidden);
+    };
     if (order)
     {
         std::for_each(PELs.rbegin(), PELs.rend(), buildJSON);
