@@ -35,21 +35,6 @@ namespace file_error = sdbusplus::xyz::openbmc_project::Common::File::Error;
 namespace message = openpower::pels::message;
 namespace pv = openpower::pels::pel_values;
 
-std::string ltrim(const std::string& s)
-{
-    return std::regex_replace(s, std::regex("^\\s+"), std::string(""));
-}
-
-std::string rtrim(const std::string& s)
-{
-    return std::regex_replace(s, std::regex("\\s+$"), std::string(""));
-}
-
-std::string trim(const std::string& s)
-{
-    return ltrim(rtrim(s));
-}
-
 /**
  * @brief helper function to get PEL commit timestamp from file name
  * @retrun BCDTime - PEL commit timestamp
@@ -176,6 +161,14 @@ bool ends_with(const std::string& str, const std::string& end)
     return true;
 }
 
+const char* ws = " \t\n\r\f\v";
+
+// trim from end of string (right)
+inline std::string& rtrim(std::string& s, const char* t = ws)
+{
+    s.erase(s.find_last_not_of(t) + 1);
+    return s;
+}
 template <typename T>
 std::string genPELJSON(T itr, bool order, bool hidden)
 {
@@ -208,7 +201,8 @@ std::string genPELJSON(T itr, bool order, bool hidden)
             // ASCII
             val = pel.primarySRC() ? pel.primarySRC().value()->asciiString()
                                    : "No SRC";
-            listStr += "\t\t\"SRC\": \"" + trim(val) + "\",\n";
+            val = rtrim(val);
+            listStr += "\t\t\"SRC\": \"" + val + "\",\n";
             // platformid
             sprintf(tmpValStr, "0x%X", pel.privateHeader().plid());
             val = std::string(tmpValStr);
@@ -268,6 +262,7 @@ void printList(bool order, bool hidden)
     std::string listStr;
     std::map<uint32_t, BCDTime> PELs;
     std::size_t found;
+    const char* ws = " \t\n\r\f\v";
     listStr = "{\n";
     for (auto it = fs::directory_iterator(EXTENSION_PERSIST_DIR "/pels/logs");
          it != fs::directory_iterator(); ++it)
@@ -282,8 +277,7 @@ void printList(bool order, bool hidden)
                          fileNameToTimestamp((*it).path().filename()));
         }
     }
-    std::string val;
-    auto buildJSON = [&listStr, &order, &hidden](const auto& i) {
+    auto buildJSON = [&listStr, &order, &hidden, &ws](const auto& i) {
         listStr += genPELJSON(i, order, hidden);
     };
     if (order)
