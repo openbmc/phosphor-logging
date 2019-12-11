@@ -38,6 +38,20 @@ const size_t actionFlags1Offset = 67;
 
 class HostNotifierTest : public CleanPELFiles
 {
+  public:
+    HostNotifierTest()
+    {
+        auto r = sd_event_default(&event);
+        EXPECT_TRUE(r >= 0);
+    }
+
+    ~HostNotifierTest()
+    {
+        sd_event_unref(event);
+    }
+
+  protected:
+    sd_event* event;
 };
 
 /**
@@ -100,6 +114,112 @@ TEST_F(HostNotifierTest, TestHostStateChange)
     EXPECT_FALSE(called);
 }
 
+// Test dealing with how acked PELs are put on the
+// notification queue.
+TEST_F(HostNotifierTest, TestPolicyAckedPEL)
+{
+    Repository repo{repoPath};
+    MockDataInterface dataIface;
+
+    std::unique_ptr<HostInterface> hostIface =
+        std::make_unique<MockHostInterface>(event, dataIface);
+
+    HostNotifier notifier{repo, dataIface, std::move(hostIface)};
+
+    auto pel = makePEL();
+    repo.add(pel);
+
+    // This is required
+    EXPECT_TRUE(notifier.enqueueRequired(pel->id()));
+
+    // Not in the repo
+    EXPECT_FALSE(notifier.enqueueRequired(42));
+
+    // Now set this PEL to host acked
+    repo.setPELHostTransState(pel->id(), TransmissionState::acked);
+
+    // Since it's acked, doesn't need to be enqueued or transmitted
+    EXPECT_FALSE(notifier.enqueueRequired(pel->id()));
+}
+
+// Test the 'don't report' PEL flag
+TEST_F(HostNotifierTest, TestPolicyDontReport)
+{
+    Repository repo{repoPath};
+    MockDataInterface dataIface;
+
+    std::unique_ptr<HostInterface> hostIface =
+        std::make_unique<MockHostInterface>(event, dataIface);
+
+    HostNotifier notifier{repo, dataIface, std::move(hostIface)};
+
+    // dontReportToHostFlagBit
+    auto pel = makePEL(0x1000);
+
+    // Double check the action flag is still set
+    std::bitset<16> actionFlags = pel->userHeader().actionFlags();
+    EXPECT_TRUE(actionFlags.test(dontReportToHostFlagBit));
+
+    repo.add(pel);
+
+    // Don't need to send this to the host
+    EXPECT_FALSE(notifier.enqueueRequired(pel->id()));
+}
+
+// Test that hidden PELs need notification when there
+// is no HMC.
+TEST_F(HostNotifierTest, TestPolicyHiddenNoHMC)
+{
+    Repository repo{repoPath};
+    MockDataInterface dataIface;
+
+    std::unique_ptr<HostInterface> hostIface =
+        std::make_unique<MockHostInterface>(event, dataIface);
+
+    HostNotifier notifier{repo, dataIface, std::move(hostIface)};
+
+    // hiddenFlagBit
+    auto pel = makePEL(0x4000);
+
+    // Double check the action flag is still set
+    std::bitset<16> actionFlags = pel->userHeader().actionFlags();
+    EXPECT_TRUE(actionFlags.test(hiddenFlagBit));
+
+    repo.add(pel);
+
+    // Still need to enqueue this
+    EXPECT_TRUE(notifier.enqueueRequired(pel->id()));
+}
+
+// Don't need to enqueue a hidden log already acked by the HMC
+TEST_F(HostNotifierTest, TestPolicyHiddenWithHMCAcked)
+{
+    Repository repo{repoPath};
+    MockDataInterface dataIface;
+
+    std::unique_ptr<HostInterface> hostIface =
+        std::make_unique<MockHostInterface>(event, dataIface);
+
+    HostNotifier notifier{repo, dataIface, std::move(hostIface)};
+
+    // hiddenFlagBit
+    auto pel = makePEL(0x4000);
+
+    // Double check the action flag is still set
+    std::bitset<16> actionFlags = pel->userHeader().actionFlags();
+    EXPECT_TRUE(actionFlags.test(hiddenFlagBit));
+
+    repo.add(pel);
+
+    // No HMC yet, so required
+    EXPECT_TRUE(notifier.enqueueRequired(pel->id()));
+
+    repo.setPELHMCTransState(pel->id(), TransmissionState::acked);
+
+    // Not required anymore
+    EXPECT_FALSE(notifier.enqueueRequired(pel->id()));
+}
+
 // Test that PELs are enqueued on startup
 TEST_F(HostNotifierTest, TestStartup)
 {
@@ -112,10 +232,6 @@ TEST_F(HostNotifierTest, TestStartup)
         auto pel = makePEL();
         repo.add(pel);
     }
-
-    sd_event* event = nullptr;
-    auto r = sd_event_default(&event);
-    ASSERT_TRUE(r >= 0);
 
     std::unique_ptr<HostInterface> hostIface =
         std::make_unique<MockHostInterface>(event, dataIface);
