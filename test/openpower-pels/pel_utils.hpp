@@ -29,14 +29,14 @@ class CleanLogID : public ::testing::Test
 class CleanPELFiles : public ::testing::Test
 {
   protected:
-    static void SetUpTestCase()
+    void SetUp() override
     {
         pelIDFile = openpower::pels::getPELIDFile();
         repoPath = openpower::pels::getPELRepoPath();
         registryPath = openpower::pels::getMessageRegistryPath();
     }
 
-    static void TearDownTestCase()
+    void TearDown() override
     {
         std::filesystem::remove_all(
             std::filesystem::path{pelIDFile}.parent_path());

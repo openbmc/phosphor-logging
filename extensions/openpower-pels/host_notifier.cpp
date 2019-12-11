@@ -76,6 +76,34 @@ bool HostNotifier::addPELToQueue(const PEL& pel)
 bool HostNotifier::enqueueRequired(uint32_t id) const
 {
     bool required = true;
+    Repository::LogID i{Repository::LogID::Pel{id}};
+
+    if (auto attributes = _repo.getPELAttributes(i); attributes)
+    {
+        auto a = attributes.value().get();
+
+        if ((a.hostState == TransmissionState::acked) ||
+            (a.hostState == TransmissionState::badPEL))
+        {
+            required = false;
+        }
+        else if (a.actionFlags.test(hiddenFlagBit) &&
+                 (a.hmcState == TransmissionState::acked))
+        {
+            required = false;
+        }
+        else if (a.actionFlags.test(dontReportToHostFlagBit))
+        {
+            required = false;
+        }
+    }
+    else
+    {
+        using namespace phosphor::logging;
+        log<level::ERR>("Host Enqueue: Unable to find PEL ID in repository",
+                        entry("PEL_ID=0x%X", id));
+        required = false;
+    }
 
     return required;
 }
