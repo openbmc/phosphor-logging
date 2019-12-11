@@ -54,6 +54,11 @@ class HostNotifier
      * @brief Specifies if the PEL needs to go onto the queue to be
      *        set to the host.
      *
+     * Only returns false if:
+     *  - Already acked by the host (or they didn't like it)
+     *  - Hidden and the HMC already got it
+     *  - The 'do not report to host' bit is set
+     *
      * @param[in] id - The PEL ID
      *
      * @return bool - If enqueue is required
