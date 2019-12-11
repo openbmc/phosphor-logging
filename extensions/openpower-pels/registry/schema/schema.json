@@ -227,7 +227,7 @@
             "description": "The event scope PEL field. Optional and defaults to entire_platform",
             "type": "string",
             "enum": ["entire_platform", "single_partition", "multiple_partitions",
-                     "possibly_multiple_partitions"]
+                     "possibly_multiple_platforms"]
         },
 
         "eventType":
