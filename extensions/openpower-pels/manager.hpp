@@ -1,6 +1,7 @@
 #pragma once
 
 #include "data_interface.hpp"
+#include "host_notifier.hpp"
 #include "log_manager.hpp"
 #include "paths.hpp"
 #include "registry.hpp"
@@ -28,14 +29,31 @@ class Manager
      * @brief constructor
      *
      * @param[in] logManager - internal::Manager object
+     * @param[in] dataIface - The data interface object
      */
-    explicit Manager(phosphor::logging::internal::Manager& logManager,
-                     std::unique_ptr<DataInterfaceBase>&& dataIface) :
+    Manager(phosphor::logging::internal::Manager& logManager,
+            std::unique_ptr<DataInterfaceBase> dataIface) :
         _logManager(logManager),
         _repo(getPELRepoPath()),
         _registry(getMessageRegistryPath() / message::registryFileName),
         _dataIface(std::move(dataIface))
     {
+    }
+
+    /**
+     * @brief constructor that enables host notification
+     *
+     * @param[in] logManager - internal::Manager object
+     * @param[in] dataIface - The data interface object
+     * @param[in] hostIface - The hostInterface object
+     */
+    Manager(phosphor::logging::internal::Manager& logManager,
+            std::unique_ptr<DataInterfaceBase> dataIface,
+            std::unique_ptr<HostInterface> hostIface) :
+        Manager(logManager, std::move(dataIface))
+    {
+        _hostNotifier = std::make_unique<HostNotifier>(
+            _repo, *(_dataIface.get()), std::move(hostIface));
     }
 
     /**
@@ -117,6 +135,12 @@ class Manager
      * @brief The API the PEL sections use to gather data
      */
     std::unique_ptr<DataInterfaceBase> _dataIface;
+
+    /**
+     * @brief The HostNotifier object used for telling the
+     *        host about new PELs
+     */
+    std::unique_ptr<HostNotifier> _hostNotifier;
 };
 
 } // namespace pels
