@@ -1,5 +1,6 @@
 phosphor_log_manager_SOURCES += \
 	extensions/openpower-pels/entry_points.cpp \
+	extensions/openpower-pels/host_notifier.cpp \
 	extensions/openpower-pels/manager.cpp \
 	extensions/openpower-pels/repository.cpp \
 	extensions/openpower-pels/user_data.cpp
