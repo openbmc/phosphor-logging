@@ -27,7 +27,9 @@ using namespace phosphor::logging;
 HostNotifier::HostNotifier(Repository& repo, DataInterfaceBase& dataIface,
                            std::unique_ptr<HostInterface> hostIface) :
     _repo(repo),
-    _dataIface(dataIface), _hostIface(std::move(hostIface))
+    _dataIface(dataIface), _hostIface(std::move(hostIface)),
+    _retryTimer(_hostIface->getEvent(),
+                std::bind(std::mem_fn(&HostNotifier::retryTimerExpired), this))
 {
     // Subscribe to be told about new PELs.
     _repo.subscribeToAdds(subscriptionName,
@@ -130,6 +132,41 @@ void HostNotifier::hostStateChange(bool hostUp)
 
 void HostNotifier::commandResponse(ResponseStatus status)
 {
+    auto id = _inProgressPEL;
+    _inProgressPEL = 0;
+
+    if (status == ResponseStatus::success)
+    {
+        _retryCount = 0;
+
+        _sentPELs.push_back(id);
+
+        _repo.setPELHostTransState(id, TransmissionState::sent);
+
+        if (!_pelQueue.empty())
+        {
+            doNewLogNotify();
+        }
+    }
+    else
+    {
+        log<level::ERR>("PLDM command response failure",
+                        entry("PEL_ID=0x%X", id));
+        // Retry
+        _pelQueue.push_front(id);
+        _retryTimer.restartOnce(_hostIface->getReceiveRetryDelay());
+    }
+}
+
+void HostNotifier::retryTimerExpired()
+{
+    if (_dataIface.isHostUp())
+    {
+        log<level::INFO>("Attempting command retry",
+                         entry("PEL_ID=0x%X", _pelQueue.front()));
+        _retryCount++;
+        doNewLogNotify();
+    }
 }
 
 } // namespace openpower::pels
