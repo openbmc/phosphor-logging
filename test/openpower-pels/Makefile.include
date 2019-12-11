@@ -8,6 +8,7 @@ check_PROGRAMS += \
 	failing_mtms_test \
 	fru_identity_test \
 	generic_section_test \
+	host_notifier_test \
 	log_id_test \
 	mru_test \
 	mtms_test \
@@ -145,6 +146,7 @@ pel_manager_test_LDADD = \
 	$(test_ldadd) \
 	$(pel_objects) \
 	$(top_builddir)/extensions/openpower-pels/data_interface.o \
+	$(top_builddir)/extensions/openpower-pels/host_notifier.o \
 	$(top_builddir)/extensions/openpower-pels/manager.o \
 	$(top_builddir)/extensions/openpower-pels/repository.o
 pel_manager_test_LDFLAGS = $(test_ldflags)
@@ -316,3 +318,16 @@ pel_rules_test_LDADD = \
 	$(test_ldflags) \
 	$(top_builddir)/extensions/openpower-pels/pel_rules.o
 pel_rules_test_LDFLAGS = $(test_ldflags)
+
+host_notifier_test_SOURCES = \
+	%reldir%/host_notifier_test.cpp \
+	%reldir%/paths.cpp \
+	%reldir%/pel_utils.cpp
+host_notifier_test_CPPFLAGS = $(test_cppflags)
+host_notifier_test_CXXFLAGS = $(test_cxxflags) $(SDEVENTPLUS_CFLAGS)
+host_notifier_test_LDADD = \
+	$(test_ldflags) \
+	$(pel_objects) \
+	$(top_builddir)/extensions/openpower-pels/host_notifier.o \
+	$(top_builddir)/extensions/openpower-pels/repository.o
+host_notifier_test_LDFLAGS = $(test_ldflags) $(SDEVENTPLUS_LIBS)
