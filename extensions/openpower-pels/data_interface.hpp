@@ -54,6 +54,16 @@ class DataInterfaceBase
     }
 
     /**
+     * @brief Says if the system is managed by a hardware
+     *        management console.
+     * @return bool - If the system is HMC managed
+     */
+    virtual bool isHMCManaged() const
+    {
+        return _hmcManaged;
+    }
+
+    /**
      * @brief Says if the host is up and running
      *
      * @return bool - If the host is running
@@ -161,6 +171,12 @@ class DataInterfaceBase
      * @brief The machine serial number.  Always kept up to date
      */
     std::string _machineSerialNumber;
+
+    /**
+     * @brief The hardware management console status.  Always kept
+     *        up to date.
+     */
+    bool _hmcManaged = false;
 
     /**
      * @brief The host up status.  Always kept up to date.
