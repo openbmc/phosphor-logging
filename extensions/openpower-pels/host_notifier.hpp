@@ -96,6 +96,11 @@ class HostNotifier
     /**
      * @brief Called when the host changes state.
      *
+     * If the new state is host up and there are PELs to send, it
+     * will trigger the first command.  If the new state is off, then
+     * it will transfer any PELs that were sent but not acked yet back
+     * to the queue to be sent again.
+     *
      * @param[in] hostUp - The new host state
      */
     void hostStateChange(bool hostUp);
@@ -122,6 +127,13 @@ class HostNotifier
      * retry count.
      */
     void retryTimerExpired();
+
+    /**
+     * @brief Stops an in progress command
+     *
+     * In progress meaning after the send but before the response.
+     */
+    void stopCommand();
 
     /**
      * @brief The PEL repository object

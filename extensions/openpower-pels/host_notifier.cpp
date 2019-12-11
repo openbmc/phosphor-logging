@@ -128,6 +128,26 @@ void HostNotifier::doNewLogNotify()
 
 void HostNotifier::hostStateChange(bool hostUp)
 {
+    _retryCount = 0;
+
+    if (hostUp && !_pelQueue.empty())
+    {
+        doNewLogNotify();
+    }
+    else if (!hostUp)
+    {
+        stopCommand();
+
+        // Reset the state on any PELs that were sent but not acked back
+        // to new so they'll get sent again.
+        for (auto id : _sentPELs)
+        {
+            _pelQueue.push_back(id);
+            _repo.setPELHostTransState(id, TransmissionState::newPEL);
+        }
+
+        _sentPELs.clear();
+    }
 }
 
 void HostNotifier::commandResponse(ResponseStatus status)
@@ -166,6 +186,27 @@ void HostNotifier::retryTimerExpired()
                          entry("PEL_ID=0x%X", _pelQueue.front()));
         _retryCount++;
         doNewLogNotify();
+    }
+}
+
+void HostNotifier::stopCommand()
+{
+    _retryCount = 0;
+
+    if (_inProgressPEL != 0)
+    {
+        _pelQueue.push_front(_inProgressPEL);
+        _inProgressPEL = 0;
+    }
+
+    if (_retryTimer.isEnabled())
+    {
+        _retryTimer.setEnabled(false);
+    }
+
+    if (_hostIface->cmdInProgress())
+    {
+        _hostIface->cancelCmd();
     }
 }
 
