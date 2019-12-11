@@ -5,6 +5,8 @@
 #include "repository.hpp"
 
 #include <deque>
+#include <sdeventplus/clock.hpp>
+#include <sdeventplus/utility/timer.hpp>
 
 namespace openpower::pels
 {
@@ -102,9 +104,24 @@ class HostNotifier
      * @brief The callback function invoked after the asynchronous
      *        PLDM receive function is complete.
      *
+     * If the command was successful, the state of that PEL will
+     * be set to 'sent', and the next send will be triggered.
+     *
+     * If the command failed, a retry timer will be started so it
+     * can be sent again.
+     *
      * @param[in] status - The response status
      */
     void commandResponse(ResponseStatus status);
+
+    /**
+     * @brief The function called when the command failure retry
+     *        time is up.
+     *
+     * It will issue a send of the previous PEL and increment the
+     * retry count.
+     */
+    void retryTimerExpired();
 
     /**
      * @brief The PEL repository object
@@ -125,6 +142,30 @@ class HostNotifier
      * @brief The list of PEL IDs that need to be sent.
      */
     std::deque<uint32_t> _pelQueue;
+
+    /**
+     * @brief The list of IDs that were sent, but not acked yet.
+     *
+     * These get moved back to _pelQueue on a power off.
+     */
+    std::vector<uint32_t> _sentPELs;
+
+    /**
+     * @brief The ID the PEL where the notification has
+     *        been kicked off but the asynchronous response
+     *        hasn't been received yet.
+     */
+    uint32_t _inProgressPEL = 0;
+
+    /**
+     * @brief The command retry count
+     */
+    size_t _retryCount = 0;
+
+    /**
+     * @brief The command retry timer.
+     */
+    sdeventplus::utility::Timer<sdeventplus::ClockId::Monotonic> _retryTimer;
 };
 
 } // namespace openpower::pels
