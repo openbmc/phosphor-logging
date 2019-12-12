@@ -100,6 +100,18 @@ class MockHostInterface : public HostInterface
     }
 
     /**
+     * @brief Returns the amount of time to wait before retrying if the
+     *        host firmware's PEL storage was full and it can't store
+     *        any more logs until it is freed up somehow.
+     *
+     * @return milliseconds - The amount of time to wait
+     */
+    virtual std::chrono::milliseconds getHostFullRetryDelay() const override
+    {
+        return std::chrono::milliseconds(20);
+    }
+
+    /**
      * @brief Returns the number of commands processed
      */
     size_t numCmdsProcessed() const
