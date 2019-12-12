@@ -345,4 +345,16 @@ void HostNotifier::stopCommand()
     }
 }
 
+void HostNotifier::ackPEL(uint32_t id)
+{
+    _repo.setPELHostTransState(id, TransmissionState::acked);
+
+    // No longer just 'sent', so remove it from the sent list.
+    auto sent = std::find(_sentPELs.begin(), _sentPELs.end(), id);
+    if (sent != _sentPELs.end())
+    {
+        _sentPELs.erase(sent);
+    }
+}
+
 } // namespace openpower::pels
