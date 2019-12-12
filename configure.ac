@@ -163,7 +163,9 @@ AS_IF([test "x$enable_openpower_pel_extension" == "xyes"],
        [AC_CHECK_HEADER(
             nlohmann/json.hpp,
             [],
-            [AC_MSG_ERROR([Could not find nlohmann/json.hpp])]])
+            [AC_MSG_ERROR([Could not find nlohmann/json.hpp])])
+
+        AX_PKG_CHECK_MODULES([LIBPLDM], [libpldm])]
 )
 
 AC_CONFIG_HEADERS([config.h])
