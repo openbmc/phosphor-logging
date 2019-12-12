@@ -117,6 +117,18 @@ class HostNotifier
      */
     void setHostFull(uint32_t id);
 
+    /**
+     * @brief Called when the host receives a malformed PEL.
+     *
+     * Ideally this will never happen, as the Repository
+     * class already purges malformed PELs.
+     *
+     * The PEL should never be sent up again.
+     *
+     * @param[in] id - The PEL ID
+     */
+    void setBadPEL(uint32_t id);
+
   private:
     /**
      * @brief This function gets called by the Repository class
