@@ -87,9 +87,35 @@ class HostNotifier
      *
      * This means the PEL never needs to be sent up again.
      *
+     * If the host was previously full, it is also an indication
+     * it no longer is.
+     *
      * @param[in] id - The PEL ID
      */
     void ackPEL(uint32_t id);
+
+    /**
+     * @brief Called when the host does not have room for more
+     *        PELs at this time.
+     *
+     * This can happen when an OS isn't running yet, and the
+     * staging area to hold the PELs before sending them up
+     * to the OS is full.  This will stop future PEls from being
+     * sent up, as explained below.
+     *
+     * The PEL with this ID will need to be sent again, so its
+     * state is set back to 'new', and it is removed from the list
+     * of already sent PELs.
+     *
+     * A timer will be started, if it isn't already running, to
+     * issue another send in the hopes that space has been freed
+     * up by then (Receiving an ackPEL response is also an
+     * indication of this if there happened to have been other
+     * PELs in flight).
+     *
+     * @param[in] id - The PEL ID
+     */
+    void setHostFull(uint32_t id);
 
   private:
     /**
@@ -171,6 +197,15 @@ class HostNotifier
     void retryTimerExpired();
 
     /**
+     * @brief The function called when the 'host full' retry timer
+     *        expires.
+     *
+     * This will re-issue a command to try again with the PEL at
+     * the front of the queue.
+     */
+    void hostFullTimerExpired();
+
+    /**
      * @brief Stops an in progress command
      *
      * In progress meaning after the send but before the response.
@@ -217,9 +252,21 @@ class HostNotifier
     size_t _retryCount = 0;
 
     /**
+     * @brief Indicates if the host has said it is full and does not
+     *        currently have the space for more PELs.
+     */
+    bool _hostFull = false;
+
+    /**
      * @brief The command retry timer.
      */
     sdeventplus::utility::Timer<sdeventplus::ClockId::Monotonic> _retryTimer;
+
+    /**
+     * @brief The host full timer, used to retry sending a PEL if the host
+     *        said it is full.
+     */
+    sdeventplus::utility::Timer<sdeventplus::ClockId::Monotonic> _hostFullTimer;
 
     /**
      * @brief The object used to dispatch a new PEL send from the
