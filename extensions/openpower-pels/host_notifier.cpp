@@ -155,7 +155,41 @@ void HostNotifier::newLogCallback(const PEL& pel)
 
     _pelQueue.push_back(pel.id());
 
-    // TODO: Check if a send is needed now
+    if (!_dataIface.isHostUp())
+    {
+        return;
+    }
+
+    // Dispatch a command now if there isn't currently a command
+    // in progress and this is the first log in the queue or it
+    // previously gave up from a hard failure.
+    auto inProgress = (_inProgressPEL != 0) || _hostIface->cmdInProgress() ||
+                      _retryTimer.isEnabled();
+
+    auto firstPEL = _pelQueue.size() == 1;
+    auto gaveUp = _retryCount >= maxRetryAttempts;
+
+    if (!inProgress && (firstPEL || gaveUp))
+    {
+        _retryCount = 0;
+
+        // Send a log, but from the event loop, not from here.
+        scheduleDispatch();
+    }
+}
+
+void HostNotifier::scheduleDispatch()
+{
+    _dispatcher = std::make_unique<sdeventplus::source::Defer>(
+        _hostIface->getEvent(), std::bind(std::mem_fn(&HostNotifier::dispatch),
+                                          this, std::placeholders::_1));
+}
+
+void HostNotifier::dispatch(sdeventplus::source::EventBase& source)
+{
+    _dispatcher.reset();
+
+    doNewLogNotify();
 }
 
 void HostNotifier::doNewLogNotify()
