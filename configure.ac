@@ -172,6 +172,13 @@ AS_IF([test "x$enable_openpower_pel_extension" == "xyes"],
         AX_PKG_CHECK_MODULES([LIBPLDM], [libpldm])]
 )
 
+AC_ARG_ENABLE([dont-send-pels-to-host],
+              AS_HELP_STRING([--enable-dont-send-pels-to-host],
+                   [Do not send PELs to the host. \
+                    Only applies when PELs are enabled.]),
+    [AX_APPEND_COMPILE_FLAGS([-DDONT_SEND_PELS_TO_HOST])]
+)
+
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile test/Makefile phosphor-rsyslog-config/Makefile])
 AC_CONFIG_FILES([phosphor-logging.pc])
