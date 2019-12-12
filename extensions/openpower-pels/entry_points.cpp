@@ -17,6 +17,7 @@
 #include "elog_entry.hpp"
 #include "extensions.hpp"
 #include "manager.hpp"
+#include "pldm_interface.hpp"
 
 namespace openpower
 {
@@ -32,7 +33,15 @@ void pelStartup(internal::Manager& logManager)
     std::unique_ptr<DataInterfaceBase> dataIface =
         std::make_unique<DataInterface>(logManager.getBus());
 
+#ifndef DONT_SEND_PELS_TO_HOST
+    std::unique_ptr<HostInterface> hostIface = std::make_unique<PLDMInterface>(
+        logManager.getBus().get_event(), *(dataIface.get()));
+
+    manager = std::make_unique<Manager>(logManager, std::move(dataIface),
+                                        std::move(hostIface));
+#else
     manager = std::make_unique<Manager>(logManager, std::move(dataIface));
+#endif
 }
 
 REGISTER_EXTENSION_FUNCTION(pelStartup);
