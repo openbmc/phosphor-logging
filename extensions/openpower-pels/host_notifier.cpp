@@ -419,4 +419,17 @@ void HostNotifier::setHostFull(uint32_t id)
     }
 }
 
+void HostNotifier::setBadPEL(uint32_t id)
+{
+    log<level::ERR>("PEL rejected by the host", entry("PEL_ID=0x%X", id));
+
+    auto sent = std::find(_sentPELs.begin(), _sentPELs.end(), id);
+    if (sent != _sentPELs.end())
+    {
+        _sentPELs.erase(sent);
+    }
+
+    _repo.setPELHostTransState(id, TransmissionState::badPEL);
+}
+
 } // namespace openpower::pels

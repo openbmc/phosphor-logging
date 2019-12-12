@@ -746,3 +746,70 @@ TEST_F(HostNotifierTest, TestHostFull)
     EXPECT_EQ(mockHostIface.numCmdsProcessed(), 5);
     EXPECT_EQ(notifier.queueSize(), 0);
 }
+
+// Test when the host says it was send a malformed PEL
+TEST_F(HostNotifierTest, TestBadPEL)
+{
+    MockDataInterface dataIface;
+    sdeventplus::Event sdEvent{event};
+
+    {
+        Repository repo{repoPath};
+
+        std::unique_ptr<HostInterface> hostIface =
+            std::make_unique<MockHostInterface>(event, dataIface);
+
+        MockHostInterface& mockHostIface =
+            reinterpret_cast<MockHostInterface&>(*hostIface);
+
+        HostNotifier notifier{repo, dataIface, std::move(hostIface)};
+
+        auto send = [&mockHostIface](uint32_t id, uint32_t size) {
+            return mockHostIface.send(0);
+        };
+
+        EXPECT_CALL(mockHostIface, sendNewLogCmd(_, _))
+            .WillRepeatedly(Invoke(send));
+
+        dataIface.changeHostState(true);
+
+        // Add a PEL and dispatch and send it
+        auto pel = makePEL();
+        auto id = pel->id();
+        repo.add(pel);
+
+        runEvents(sdEvent, 2);
+        EXPECT_EQ(mockHostIface.numCmdsProcessed(), 1);
+        EXPECT_EQ(notifier.queueSize(), 0);
+
+        // The host rejected it.
+        notifier.setBadPEL(id);
+
+        // Doesn't go back on the queue
+        EXPECT_EQ(notifier.queueSize(), 0);
+
+        // Check the state was saved in the PEL itself
+        Repository::LogID i{Repository::LogID::Pel{id}};
+        auto data = repo.getPELData(i);
+        PEL pelFromRepo{*data};
+        EXPECT_EQ(pelFromRepo.hostTransmissionState(),
+                  TransmissionState::badPEL);
+
+        dataIface.changeHostState(false);
+
+        // Ensure it doesn't go back on the queue on a power cycle
+        EXPECT_EQ(notifier.queueSize(), 0);
+    }
+
+    // Now restore the repo, and make sure it doesn't come back
+    {
+        Repository repo{repoPath};
+
+        std::unique_ptr<HostInterface> hostIface =
+            std::make_unique<MockHostInterface>(event, dataIface);
+
+        HostNotifier notifier{repo, dataIface, std::move(hostIface)};
+
+        EXPECT_EQ(notifier.queueSize(), 0);
+    }
+}
