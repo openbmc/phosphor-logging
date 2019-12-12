@@ -644,3 +644,106 @@ TEST_F(HostNotifierTest, TestPowerCycleAndAcks)
 
     EXPECT_EQ(notifier.queueSize(), 0);
 }
+
+// Test the host full condition
+TEST_F(HostNotifierTest, TestHostFull)
+{
+    // The full interaction with the host is:
+    // BMC:  new PEL available
+    // Host: ReadPELFile  (not modeled here)
+    // Host: Ack(id) (if not full), or HostFull(id)
+    // BMC: if full and any new PELs come in, don't sent them
+    // Start a timer and try again
+    // Host responds with either Ack or full
+    // and repeat
+
+    Repository repo{repoPath};
+    MockDataInterface dataIface;
+
+    sdeventplus::Event sdEvent{event};
+
+    std::unique_ptr<HostInterface> hostIface =
+        std::make_unique<MockHostInterface>(event, dataIface);
+
+    MockHostInterface& mockHostIface =
+        reinterpret_cast<MockHostInterface&>(*hostIface);
+
+    HostNotifier notifier{repo, dataIface, std::move(hostIface)};
+
+    auto send = [&mockHostIface](uint32_t id, uint32_t size) {
+        return mockHostIface.send(0);
+    };
+
+    EXPECT_CALL(mockHostIface, sendNewLogCmd(_, _))
+        .WillRepeatedly(Invoke(send));
+
+    dataIface.changeHostState(true);
+
+    // Add and dispatch/send one PEL
+    auto pel = makePEL();
+    auto id = pel->id();
+    repo.add(pel);
+    runEvents(sdEvent, 2);
+
+    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 1);
+    EXPECT_EQ(notifier.queueSize(), 0);
+
+    // Host is full
+    notifier.setHostFull(id);
+
+    // It goes back on the queue
+    EXPECT_EQ(notifier.queueSize(), 1);
+
+    // The transmission state goes back to new
+    Repository::LogID i{Repository::LogID::Pel{id}};
+    auto data = repo.getPELData(i);
+    PEL pelFromRepo{*data};
+    EXPECT_EQ(pelFromRepo.hostTransmissionState(), TransmissionState::newPEL);
+
+    // Clock it, nothing should be sent still.
+    runEvents(sdEvent, 1);
+
+    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 1);
+    EXPECT_EQ(notifier.queueSize(), 1);
+
+    // Add another PEL and clock it, still nothing sent
+    pel = makePEL();
+    repo.add(pel);
+    runEvents(sdEvent, 2);
+    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 1);
+    EXPECT_EQ(notifier.queueSize(), 2);
+
+    // Let the host full timer expire to trigger a retry.
+    // Add some extra event passes just to be sure nothing new is sent.
+    runEvents(sdEvent, 5, mockHostIface.getHostFullRetryDelay());
+
+    // The timer expiration will send just the 1, not both
+    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 2);
+    EXPECT_EQ(notifier.queueSize(), 1);
+
+    // Host still full
+    notifier.setHostFull(id);
+
+    // Let the host full timer attempt again
+    runEvents(sdEvent, 2, mockHostIface.getHostFullRetryDelay());
+    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 3);
+
+    // Add yet another PEL with the retry timer expired.
+    // It shouldn't get sent out.
+    pel = makePEL();
+    repo.add(pel);
+    runEvents(sdEvent, 2);
+    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 3);
+
+    // The last 2 PELs still on the queue
+    EXPECT_EQ(notifier.queueSize(), 2);
+
+    // Host no longer full, it finally acks the first PEL
+    notifier.ackPEL(id);
+
+    // Now the remaining 2 PELs will be dispatched
+    runEvents(sdEvent, 3);
+
+    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 5);
+    EXPECT_EQ(notifier.queueSize(), 0);
+}
