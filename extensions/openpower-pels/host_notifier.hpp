@@ -6,6 +6,7 @@
 
 #include <deque>
 #include <sdeventplus/clock.hpp>
+#include <sdeventplus/source/event.hpp>
 #include <sdeventplus/utility/timer.hpp>
 
 namespace openpower::pels
@@ -86,6 +87,10 @@ class HostNotifier
      * @brief This function gets called by the Repository class
      *        when a new PEL is added to it.
      *
+     * This function puts the PEL on the queue to be sent up if it
+     * needs it, and possibly dispatch the send if the conditions call
+     * for it.
+     *
      * @param[in] pel - The new PEL
      */
     void newLogCallback(const PEL& pel);
@@ -106,6 +111,20 @@ class HostNotifier
      *        sent, and issues the send if conditions are right.
      */
     void doNewLogNotify();
+
+    /**
+     * @brief Creates the event object to handle sending the PLDM
+     *        command from the event loop.
+     */
+    void scheduleDispatch();
+
+    /**
+     * @brief Kicks off the PLDM send, but called from the event
+     *        loop.
+     *
+     * @param[in] source - The event source object
+     */
+    void dispatch(sdeventplus::source::EventBase& source);
 
     /**
      * @brief Called when the host changes state.
@@ -192,6 +211,13 @@ class HostNotifier
      * @brief The command retry timer.
      */
     sdeventplus::utility::Timer<sdeventplus::ClockId::Monotonic> _retryTimer;
+
+    /**
+     * @brief The object used to dispatch a new PEL send from the
+     *        event loop, so the calling function can be returned from
+     *        first.
+     */
+    std::unique_ptr<sdeventplus::source::Defer> _dispatcher;
 };
 
 } // namespace openpower::pels
