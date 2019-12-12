@@ -21,6 +21,7 @@ namespace openpower::pels
 {
 
 const auto subscriptionName = "PELHostNotifier";
+const size_t maxRetryAttempts = 15;
 
 using namespace phosphor::logging;
 
@@ -110,6 +111,41 @@ bool HostNotifier::enqueueRequired(uint32_t id) const
     return required;
 }
 
+bool HostNotifier::notifyRequired(uint32_t id) const
+{
+    bool notify = true;
+    Repository::LogID i{Repository::LogID::Pel{id}};
+
+    if (auto attributes = _repo.getPELAttributes(i); attributes)
+    {
+        // If already acked by the host, don't send again.
+        // (A safety check as it shouldn't get to this point.)
+        auto a = attributes.value().get();
+        if (a.hostState == TransmissionState::acked)
+        {
+            notify = false;
+        }
+        else if (a.actionFlags.test(hiddenFlagBit))
+        {
+            // If hidden and acked (or will be) acked by the HMC,
+            // also don't send it. (HMC management can come and
+            // go at any time)
+            if ((a.hmcState == TransmissionState::acked) ||
+                _dataIface.isHMCManaged())
+            {
+                notify = false;
+            }
+        }
+    }
+    else
+    {
+        // Must have been deleted since put on the queue.
+        notify = false;
+    }
+
+    return notify;
+}
+
 void HostNotifier::newLogCallback(const PEL& pel)
 {
     if (!enqueueRequired(pel.id()))
@@ -124,6 +160,71 @@ void HostNotifier::newLogCallback(const PEL& pel)
 
 void HostNotifier::doNewLogNotify()
 {
+    if (!_dataIface.isHostUp() || _retryTimer.isEnabled())
+    {
+        return;
+    }
+
+    if (_retryCount >= maxRetryAttempts)
+    {
+        // Give up until a new log comes in.
+        if (_retryCount == maxRetryAttempts)
+        {
+            // If this were to really happen, the PLDM interface
+            // would be down and isolating that shouldn't left to
+            // a logging daemon, so just trace.  Also, this will start
+            // trying again when the next new log comes in.
+            log<level::ERR>(
+                "PEL Host notifier hit max retry attempts. Giving up for now.",
+                entry("PEL_ID=0x%X", _pelQueue.front()));
+        }
+        return;
+    }
+
+    bool doNotify = false;
+    uint32_t id = 0;
+
+    // Find the PEL to send
+    while (!doNotify && !_pelQueue.empty())
+    {
+        id = _pelQueue.front();
+        _pelQueue.pop_front();
+
+        if (notifyRequired(id))
+        {
+            doNotify = true;
+        }
+    }
+
+    if (doNotify)
+    {
+        // Get the size using the repo attributes
+        Repository::LogID i{Repository::LogID::Pel{id}};
+        if (auto attributes = _repo.getPELAttributes(i); attributes)
+        {
+            auto size = static_cast<size_t>(
+                std::filesystem::file_size((*attributes).get().path));
+            auto rc = _hostIface->sendNewLogCmd(id, size);
+
+            if (rc == CmdStatus::success)
+            {
+                _inProgressPEL = id;
+            }
+            else
+            {
+                // It failed.  Retry
+                log<level::ERR>("PLDM send failed", entry("PEL_ID=0x%X", id));
+                _pelQueue.push_front(id);
+                _inProgressPEL = 0;
+                _retryTimer.restartOnce(_hostIface->getSendRetryDelay());
+            }
+        }
+        else
+        {
+            log<level::ERR>("PEL ID not in repository.  Cannot notify host",
+                            entry("PEL_ID=0x%X", id));
+        }
+    }
 }
 
 void HostNotifier::hostStateChange(bool hostUp)

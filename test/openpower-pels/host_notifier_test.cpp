@@ -131,15 +131,18 @@ TEST_F(HostNotifierTest, TestPolicyAckedPEL)
 
     // This is required
     EXPECT_TRUE(notifier.enqueueRequired(pel->id()));
+    EXPECT_TRUE(notifier.notifyRequired(pel->id()));
 
     // Not in the repo
     EXPECT_FALSE(notifier.enqueueRequired(42));
+    EXPECT_FALSE(notifier.notifyRequired(42));
 
     // Now set this PEL to host acked
     repo.setPELHostTransState(pel->id(), TransmissionState::acked);
 
     // Since it's acked, doesn't need to be enqueued or transmitted
     EXPECT_FALSE(notifier.enqueueRequired(pel->id()));
+    EXPECT_FALSE(notifier.notifyRequired(pel->id()));
 }
 
 // Test the 'don't report' PEL flag
@@ -189,6 +192,9 @@ TEST_F(HostNotifierTest, TestPolicyHiddenNoHMC)
 
     // Still need to enqueue this
     EXPECT_TRUE(notifier.enqueueRequired(pel->id()));
+
+    // Still need to send it
+    EXPECT_TRUE(notifier.notifyRequired(pel->id()));
 }
 
 // Don't need to enqueue a hidden log already acked by the HMC
@@ -218,6 +224,32 @@ TEST_F(HostNotifierTest, TestPolicyHiddenWithHMCAcked)
 
     // Not required anymore
     EXPECT_FALSE(notifier.enqueueRequired(pel->id()));
+}
+
+// Test that changing the HMC manage status affects
+// the policy with hidden log notification.
+TEST_F(HostNotifierTest, TestPolicyHiddenWithHMCManaged)
+{
+    Repository repo{repoPath};
+    MockDataInterface dataIface;
+
+    std::unique_ptr<HostInterface> hostIface =
+        std::make_unique<MockHostInterface>(event, dataIface);
+
+    HostNotifier notifier{repo, dataIface, std::move(hostIface)};
+
+    // hiddenFlagBit
+    auto pel = makePEL(0x4000);
+
+    repo.add(pel);
+
+    // The first time, the HMC managed is false
+    EXPECT_TRUE(notifier.notifyRequired(pel->id()));
+
+    dataIface.setHMCManaged(true);
+
+    // This time, HMC managed is true so no need to notify
+    EXPECT_FALSE(notifier.notifyRequired(pel->id()));
 }
 
 // Test that PELs are enqueued on startup

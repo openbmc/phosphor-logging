@@ -67,6 +67,20 @@ class HostNotifier
      */
     bool enqueueRequired(uint32_t id) const;
 
+    /**
+     * @brief If the host still needs to be notified of the PEL
+     *        at the time of the notification.
+     *
+     * Only returns false if:
+     *  - Already acked by the host
+     *  - It's hidden, and the HMC already got or will get it.
+     *
+     * @param[in] id - The PEL ID
+     *
+     * @return bool - If the notify is required
+     */
+    bool notifyRequired(uint32_t id) const;
+
   private:
     /**
      * @brief This function gets called by the Repository class
@@ -88,8 +102,8 @@ class HostNotifier
     bool addPELToQueue(const PEL& pel);
 
     /**
-     * @brief Takes the PEL off the front of the queue and issues
-     *        the PLDM send.
+     * @brief Takes the first PEL from the queue that needs to be
+     *        sent, and issues the send if conditions are right.
      */
     void doNewLogNotify();
 
