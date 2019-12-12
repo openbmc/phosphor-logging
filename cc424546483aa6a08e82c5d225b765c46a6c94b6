@@ -1,0 +1,9 @@
+Code-Review+1: Harisuddin Mohamed Isa <harisuddin@gmail.com>
+Ok-To-Test+1: Matt Spinler <spinler@us.ibm.com>
+Verified+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Code-Review+2: Matt Spinler <spinler@us.ibm.com>
+Submitted-by: Matt Spinler <spinler@us.ibm.com>
+Submitted-at: Thu, 12 Dec 2019 20:34:12 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-logging/+/27882
+Project: openbmc/phosphor-logging
+Branch: refs/heads/master
