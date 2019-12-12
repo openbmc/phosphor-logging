@@ -571,3 +571,75 @@ TEST_F(HostNotifierTest, TestCancelCmd)
     EXPECT_EQ(mockHostIface.numCmdsProcessed(), 1);
     EXPECT_EQ(notifier.queueSize(), 0);
 }
+
+// Test that acking a PEL persist across power cycles
+TEST_F(HostNotifierTest, TestPowerCycleAndAcks)
+{
+    Repository repo{repoPath};
+    MockDataInterface dataIface;
+
+    sdeventplus::Event sdEvent{event};
+
+    std::unique_ptr<HostInterface> hostIface =
+        std::make_unique<MockHostInterface>(event, dataIface);
+
+    MockHostInterface& mockHostIface =
+        reinterpret_cast<MockHostInterface&>(*hostIface);
+
+    HostNotifier notifier{repo, dataIface, std::move(hostIface)};
+
+    auto send = [&mockHostIface](uint32_t id, uint32_t size) {
+        return mockHostIface.send(0);
+    };
+
+    EXPECT_CALL(mockHostIface, sendNewLogCmd(_, _))
+        .WillRepeatedly(Invoke(send));
+
+    // Add 2 PELs with host off
+    auto pel = makePEL();
+    repo.add(pel);
+    auto id1 = pel->id();
+
+    pel = makePEL();
+    repo.add(pel);
+    auto id2 = pel->id();
+
+    dataIface.changeHostState(true);
+
+    runEvents(sdEvent, 2);
+
+    // The were both sent.
+    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 2);
+    EXPECT_EQ(notifier.queueSize(), 0);
+
+    dataIface.changeHostState(false);
+
+    // Those PELs weren't acked, so they will get sent again
+    EXPECT_EQ(notifier.queueSize(), 2);
+
+    // Power back on and send them again
+    dataIface.changeHostState(true);
+    runEvents(sdEvent, 2);
+
+    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 4);
+    EXPECT_EQ(notifier.queueSize(), 0);
+
+    // Ack them and verify the state in the PEL.
+    notifier.ackPEL(id1);
+    notifier.ackPEL(id2);
+
+    Repository::LogID id{Repository::LogID::Pel{id1}};
+    auto data = repo.getPELData(id);
+    PEL pelFromRepo1{*data};
+    EXPECT_EQ(pelFromRepo1.hostTransmissionState(), TransmissionState::acked);
+
+    id.pelID.id = id2;
+    data = repo.getPELData(id);
+    PEL pelFromRepo2{*data};
+    EXPECT_EQ(pelFromRepo2.hostTransmissionState(), TransmissionState::acked);
+
+    // Power back off, and they should't get re-added
+    dataIface.changeHostState(false);
+
+    EXPECT_EQ(notifier.queueSize(), 0);
+}

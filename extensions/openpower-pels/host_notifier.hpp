@@ -82,6 +82,15 @@ class HostNotifier
      */
     bool notifyRequired(uint32_t id) const;
 
+    /**
+     * @brief Called when the host sends the 'ack' PLDM command.
+     *
+     * This means the PEL never needs to be sent up again.
+     *
+     * @param[in] id - The PEL ID
+     */
+    void ackPEL(uint32_t id);
+
   private:
     /**
      * @brief This function gets called by the Repository class
