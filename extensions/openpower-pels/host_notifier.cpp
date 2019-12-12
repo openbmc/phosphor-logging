@@ -30,7 +30,10 @@ HostNotifier::HostNotifier(Repository& repo, DataInterfaceBase& dataIface,
     _repo(repo),
     _dataIface(dataIface), _hostIface(std::move(hostIface)),
     _retryTimer(_hostIface->getEvent(),
-                std::bind(std::mem_fn(&HostNotifier::retryTimerExpired), this))
+                std::bind(std::mem_fn(&HostNotifier::retryTimerExpired), this)),
+    _hostFullTimer(
+        _hostIface->getEvent(),
+        std::bind(std::mem_fn(&HostNotifier::hostFullTimerExpired), this))
 {
     // Subscribe to be told about new PELs.
     _repo.subscribeToAdds(subscriptionName,
@@ -155,7 +158,8 @@ void HostNotifier::newLogCallback(const PEL& pel)
 
     _pelQueue.push_back(pel.id());
 
-    if (!_dataIface.isHostUp())
+    // Notify shouldn't happen if host is down or full
+    if (!_dataIface.isHostUp() || _hostFull)
     {
         return;
     }
@@ -194,7 +198,8 @@ void HostNotifier::dispatch(sdeventplus::source::EventBase& source)
 
 void HostNotifier::doNewLogNotify()
 {
-    if (!_dataIface.isHostUp() || _retryTimer.isEnabled())
+    if (!_dataIface.isHostUp() || _retryTimer.isEnabled() ||
+        _hostFullTimer.isEnabled())
     {
         return;
     }
@@ -264,6 +269,7 @@ void HostNotifier::doNewLogNotify()
 void HostNotifier::hostStateChange(bool hostUp)
 {
     _retryCount = 0;
+    _hostFull = false;
 
     if (hostUp && !_pelQueue.empty())
     {
@@ -282,6 +288,11 @@ void HostNotifier::hostStateChange(bool hostUp)
         }
 
         _sentPELs.clear();
+
+        if (_hostFullTimer.isEnabled())
+        {
+            _hostFullTimer.setEnabled(false);
+        }
     }
 }
 
@@ -298,7 +309,8 @@ void HostNotifier::commandResponse(ResponseStatus status)
 
         _repo.setPELHostTransState(id, TransmissionState::sent);
 
-        if (!_pelQueue.empty())
+        // If the host is full, don't send off the next PEL
+        if (!_hostFull && !_pelQueue.empty())
         {
             doNewLogNotify();
         }
@@ -322,6 +334,11 @@ void HostNotifier::retryTimerExpired()
         _retryCount++;
         doNewLogNotify();
     }
+}
+
+void HostNotifier::hostFullTimerExpired()
+{
+    doNewLogNotify();
 }
 
 void HostNotifier::stopCommand()
@@ -354,6 +371,50 @@ void HostNotifier::ackPEL(uint32_t id)
     if (sent != _sentPELs.end())
     {
         _sentPELs.erase(sent);
+    }
+
+    // An ack means the host is no longer full
+    if (_hostFullTimer.isEnabled())
+    {
+        _hostFullTimer.setEnabled(false);
+    }
+
+    if (_hostFull)
+    {
+        _hostFull = false;
+
+        // Start sending PELs again, from the event loop
+        if (!_pelQueue.empty())
+        {
+            scheduleDispatch();
+        }
+    }
+}
+
+void HostNotifier::setHostFull(uint32_t id)
+{
+    log<level::INFO>("Received Host full indication", entry("PEL_ID=0x%X", id));
+
+    _hostFull = true;
+
+    // This PEL needs to get re-sent
+    auto sent = std::find(_sentPELs.begin(), _sentPELs.end(), id);
+    if (sent != _sentPELs.end())
+    {
+        _sentPELs.erase(sent);
+        _repo.setPELHostTransState(id, TransmissionState::newPEL);
+    }
+
+    if (std::find(_pelQueue.begin(), _pelQueue.end(), id) == _pelQueue.end())
+    {
+        _pelQueue.push_front(id);
+    }
+
+    // The only PELs that will be sent when the
+    // host is full is from this timer callback.
+    if (!_hostFullTimer.isEnabled())
+    {
+        _hostFullTimer.restartOnce(_hostIface->getHostFullRetryDelay());
     }
 }
 
