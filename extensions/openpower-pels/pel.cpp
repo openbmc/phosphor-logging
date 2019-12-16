@@ -224,22 +224,22 @@ void PEL::printSectionInJSON(const Section& section, std::string& buf) const
         auto json = section.getJSON();
         if (json)
         {
-            buf += "\n\"" + sectionName + "\":[\n ";
-            buf += *json + "\n],\n";
+            buf += "\n\"" + sectionName + "\":{\n ";
+            buf += *json + "\n},\n";
         }
         else
         {
-            buf += "\n\"" + sectionName + "\":[\n ";
+            buf += "\n\"" + sectionName + "\":{\n ";
             std::vector<uint8_t> data;
             Stream s{data};
             section.flatten(s);
             std::string dstr = dumpHex(std::data(data), data.size());
-            buf += dstr + "],\n";
+            buf += dstr + "},\n";
         }
     }
     else
     {
-        buf += "\n\"Invalid Section  \":[\n invalid \n],\n";
+        buf += "\n\"Invalid Section  \":{\n invalid \n},\n";
     }
 }
 
@@ -255,8 +255,11 @@ void PEL::toJSON() const
     buf += "}";
     std::size_t found = buf.rfind(",");
     if (found != std::string::npos)
+    {
         buf.replace(found, 1, "");
-    std::cout << buf << std::endl;
+    }
+    std::cout << buf;
+    std::cout << std::endl;
 }
 } // namespace pels
 } // namespace openpower
