@@ -1,5 +1,7 @@
 #pragma once
 
+#include "config.h"
+
 #include "data_interface.hpp"
 #include "host_notifier.hpp"
 #include "log_manager.hpp"
@@ -7,15 +9,21 @@
 #include "registry.hpp"
 #include "repository.hpp"
 
+#include <org/open_power/Logging/PEL/server.hpp>
+#include <sdbusplus/server.hpp>
+
 namespace openpower
 {
 namespace pels
 {
 
+using PELInterface = sdbusplus::server::object::object<
+    sdbusplus::org::open_power::Logging::server::PEL>;
+
 /**
  * @brief PEL manager object
  */
-class Manager
+class Manager : public PELInterface
 {
   public:
     Manager() = delete;
@@ -33,8 +41,8 @@ class Manager
      */
     Manager(phosphor::logging::internal::Manager& logManager,
             std::unique_ptr<DataInterfaceBase> dataIface) :
-        _logManager(logManager),
-        _repo(getPELRepoPath()),
+        PELInterface(logManager.getBus(), OBJ_LOGGING),
+        _logManager(logManager), _repo(getPELRepoPath()),
         _registry(getMessageRegistryPath() / message::registryFileName),
         _dataIface(std::move(dataIface))
     {
@@ -90,6 +98,57 @@ class Manager
      * @return bool - true if prohibited
      */
     bool isDeleteProhibited(uint32_t obmcLogID);
+
+    /**
+     * @brief Return a file descriptor to the raw PEL data
+     *
+     * Throws InvalidArgument if the PEL ID isn't found,
+     * and InternalFailure if anything else fails.
+     *
+     * @param[in] pelID - The PEL ID to get the data for
+     *
+     * @return unix_fd - File descriptor to the file that contains the PEL
+     */
+    sdbusplus::message::unix_fd getPEL(uint32_t pelID) override;
+
+    /**
+     * @brief Returns data for the PEL corresponding to an OpenBMC
+     *        event log.
+     *
+     * @param[in] obmcLogID - The OpenBMC event log ID
+     *
+     * @return vector<uint8_t> - The raw PEL data
+     */
+    std::vector<uint8_t> getPELFromOBMCID(uint32_t obmcLogID) override;
+
+    /**
+     * @brief The D-Bus method called when a host successfully processes
+     *        a PEL.
+     *
+     * This D-Bus method is called from the PLDM daemon when they get an
+     * 'Ack PEL' PLDM message from the host, which indicates the host
+     * firmware successfully sent it to the OS and this code doesn't need
+     * to send it to the host again.
+     *
+     * @param[in] pelID - The PEL ID
+     */
+    void hostAck(uint32_t pelID) override;
+
+    /**
+     * @brief D-Bus method called when the host rejects a PEL.
+     *
+     * This D-Bus method is called from the PLDM daemon when they get an
+     * 'Ack PEL' PLDM message from the host with a payload that says
+     * something when wrong.
+     *
+     * The choices are either:
+     *  * Host Full - The host's staging area is full - try again later
+     *  * Malrformed PEL - The host received an invalid PEL
+     *
+     * @param[in] pelID - The PEL ID
+     * @param[in] reason - One of the above two reasons
+     */
+    void hostReject(uint32_t pelID, RejectionReason reason) override;
 
   private:
     /**
