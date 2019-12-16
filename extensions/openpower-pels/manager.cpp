@@ -126,6 +126,7 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
                         const std::vector<std::string>& associations)
 {
     auto entry = _registry.lookup(message);
+    std::string msg;
 
     if (entry)
     {
@@ -135,10 +136,28 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
                                          ad, *_dataIface);
 
         _repo.add(pel);
-    }
 
-    // TODO ibm-openbmc/dev/1151: When the message registry is actually filled
-    // in, handle the case where an error isn't in it.
+        auto src = pel->primarySRC();
+        if (src)
+        {
+            using namespace std::literals::string_literals;
+            char id[11];
+            sprintf(id, "0x%08X", pel->id());
+            msg = "Created PEL "s + id + " with SRC "s + (*src)->asciiString();
+            while (msg.back() == ' ')
+            {
+                msg.pop_back();
+            }
+            log<level::INFO>(msg.c_str());
+        }
+    }
+    else
+    {
+        // TODO ibm-openbmc/dev/1151: Create a new PEL for this case.
+        // For now, just trace it.
+        msg = "Event not found in PEL message registry: " + message;
+        log<level::INFO>(msg.c_str());
+    }
 }
 
 } // namespace pels
