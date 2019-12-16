@@ -19,6 +19,7 @@
 
 #include <fstream>
 #include <regex>
+#include <xyz/openbmc_project/Common/error.hpp>
 
 #include <gtest/gtest.h>
 
@@ -165,4 +166,86 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
     // entry' PEL will be there.
     pelFile = findAnyPELInRepo();
     EXPECT_FALSE(pelFile);
+}
+
+TEST_F(ManagerTest, TestDBusMethods)
+{
+    auto bus = sdbusplus::bus::new_default();
+    phosphor::logging::internal::Manager logManager(bus, "logging_path");
+    std::unique_ptr<DataInterfaceBase> dataIface =
+        std::make_unique<DataInterface>(bus);
+
+    Manager manager{logManager, std::move(dataIface)};
+
+    // Create a PEL, write it to a file, and pass that filename into
+    // the create function so there's one in the repo.
+    auto data = pelDataFactory(TestPELType::pelSimple);
+
+    fs::path pelFilename = makeTempDir() / "rawpel";
+    std::ofstream pelFile{pelFilename};
+    pelFile.write(reinterpret_cast<const char*>(data.data()), data.size());
+    pelFile.close();
+
+    std::string adItem = "RAWPEL=" + pelFilename.string();
+    std::vector<std::string> additionalData{adItem};
+    std::vector<std::string> associations;
+
+    manager.create("error message", 42, 0,
+                   phosphor::logging::Entry::Level::Error, additionalData,
+                   associations);
+
+    // getPELFromOBMCID
+    auto newData = manager.getPELFromOBMCID(42);
+    EXPECT_EQ(newData.size(), data.size());
+
+    // Read the PEL to get the ID for later
+    PEL pel{newData};
+    auto id = pel.id();
+
+    EXPECT_THROW(
+        manager.getPELFromOBMCID(id + 1),
+        sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument);
+
+    // getPEL
+    auto unixfd = manager.getPEL(id);
+
+    // Get the size
+    struct stat s;
+    int r = fstat(unixfd, &s);
+    ASSERT_EQ(r, 0);
+    auto size = s.st_size;
+
+    // Open the FD and check the contents
+    FILE* fp = fdopen(unixfd, "r");
+    ASSERT_NE(fp, nullptr);
+
+    std::vector<uint8_t> fdData;
+    fdData.resize(size);
+    r = fread(fdData.data(), 1, size, fp);
+    EXPECT_EQ(r, size);
+
+    EXPECT_EQ(newData, fdData);
+
+    fclose(fp);
+
+    EXPECT_THROW(
+        manager.getPEL(id + 1),
+        sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument);
+
+    // hostAck
+    manager.hostAck(id);
+
+    EXPECT_THROW(
+        manager.hostAck(id + 1),
+        sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument);
+
+    // hostReject
+    manager.hostReject(id, Manager::RejectionReason::BadPEL);
+    manager.hostReject(id, Manager::RejectionReason::HostFull);
+
+    EXPECT_THROW(
+        manager.hostReject(id + 1, Manager::RejectionReason::BadPEL),
+        sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument);
+
+    fs::remove_all(pelFilename.parent_path());
 }
