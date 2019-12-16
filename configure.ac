@@ -165,7 +165,7 @@ AS_IF([test "x$enable_openpower_pel_extension" == "xyes"],
             [],
             [AC_MSG_ERROR([Could not find nlohmann/json.hpp])])
 
-        AX_PKG_CHECK_MODULES([LIBPLDM], [libpldm])]
+       AX_PKG_CHECK_MODULES([LIBPLDM], [libpldm])]
 )
 
 AC_ARG_ENABLE([dont-send-pels-to-host],
