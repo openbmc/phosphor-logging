@@ -224,27 +224,41 @@ void PEL::printSectionInJSON(const Section& section, std::string& buf) const
         auto json = section.getJSON();
         if (json)
         {
-            buf += "\n\"" + sectionName + "\":[\n ";
-            buf += *json + "\n],\n";
+            buf += "\n\"" + sectionName + "\":{\n ";
+            buf += *json + "\n},\n";
         }
         else
         {
-            buf += "\n\"" + sectionName + "\":[\n ";
+            buf += "\n\"" + sectionName + "\":{\n ";
             std::vector<uint8_t> data;
             Stream s{data};
             section.flatten(s);
             std::string dstr = dumpHex(std::data(data), data.size());
-            buf += dstr + "],\n";
+            buf += dstr + "},\n";
         }
     }
     else
     {
-        buf += "\n\"Invalid Section  \":[\n invalid \n],\n";
+        buf += "\n\"Invalid Section  \":{\n invalid \n},\n";
     }
 }
+std::size_t posOfNth(const std::string& str, char c, int nth,
+                     size_t startPosition = 1)
+{
+    std::size_t pos = str.find(c, startPosition);
+    if (pos >= 1 && nth > 1 && pos != std::string::npos)
+    {
+        return posOfNth(str, c, nth - 1, pos + 1);
+    }
+
+    return pos;
+}
+// extract
+// find first {
 
 void PEL::toJSON() const
 {
+    const std::string delim = ":";
     std::string buf = "{";
     printSectionInJSON(*(_ph.get()), buf);
     printSectionInJSON(*(_uh.get()), buf);
@@ -255,8 +269,39 @@ void PEL::toJSON() const
     buf += "}";
     std::size_t found = buf.rfind(",");
     if (found != std::string::npos)
+    {
         buf.replace(found, 1, "");
-    std::cout << buf << std::endl;
+    }
+    /*std::cout << buf.substr(
+        posOfNth(buf, '{', 1),
+        ((posOfNth(buf, '}', 1) - posOfNth(buf, '{', 1)) + 1));
+    std::cout << std::endl;
+    std::string dictKey = buf.substr(
+                        posOfNth(buf, '{', 1),
+                        ((posOfNth(buf, '}', 1) - posOfNth(buf, '{', 1)) + 1))
+                     .substr(1, buf.substr(posOfNth(buf, '{', 1),
+                                           ((posOfNth(buf, '}', 1) -
+                                             posOfNth(buf, '{', 1)) +
+                                            1))
+                                        .find(':') +
+                                    1);
+    if(dictKey.length()<50)dictKey+=std::string(50-dictKey.length(),'X');
+    std::cout<<dictKey;
+    std::string dictValue = buf.substr(
+                        posOfNth(buf, '{', 1),
+                        ((posOfNth(buf, '}', 1) - posOfNth(buf, '{', 1)) + 1))
+                     .substr(buf.substr(posOfNth(buf, '{', 1),
+                                           ((posOfNth(buf, '}', 1) -
+                                             posOfNth(buf, '{', 1)) +
+                                            1))
+                                        .find(':') +
+                                    1);
+    std::cout << std::endl;
+    std::cout << dictValue;
+    std::cout << std::endl;
+    */
+    std::cout << buf;
+    std::cout << std::endl;
 }
 } // namespace pels
 } // namespace openpower
