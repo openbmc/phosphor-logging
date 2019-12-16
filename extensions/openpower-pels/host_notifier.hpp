@@ -16,6 +16,34 @@ namespace openpower::pels
  * @class HostNotifier
  *
  * This class handles notifying the host firmware of new PELs.
+ *
+ * It uses the Repository class's subscription feature to be
+ * notified about new PELs.
+ *
+ * Some PELs do not need to be sent - see enqueueRequired() and
+ * notifyRequired().
+ *
+ * The high level good path flow for sending a single PEL is:
+ *
+ * 1) Send the PEL ID and PEL size of the new PEL to the host.
+ * 1b) The command response is asynchronous.
+ *
+ * 2) The host reads the raw PEL data (outside of this class).
+ *
+ * 3) The host sends the PEL to the OS, and then sends an AckPEL
+ *    PLDM command to the PLDM daemon, who makes a D-Bus method
+ *    call to this daemon, which calls HostNotifer::ackPEL().
+ *
+ *    After this, a PEL never needs to be sent again, but if the
+ *    host is rebooted before the ack comes it will.
+ *
+ * The host firmware has a finite amount of space to store PELs before
+ * sending to the OS, and it's possible it will fill up.  In this case,
+ * the AckPEL command will have a special response that will tell the
+ * PLDM daemon to call  HostReject D-Bus method on this daemon instead
+ * which will invoke HostNotifier::setHostFull(). This will stop new
+ * PELs from being sent, and the first PEL that hits this will have
+ * a timer set to retry again later.
  */
 class HostNotifier
 {
