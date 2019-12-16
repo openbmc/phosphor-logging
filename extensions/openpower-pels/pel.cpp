@@ -255,8 +255,11 @@ void PEL::toJSON() const
     buf += "}";
     std::size_t found = buf.rfind(",");
     if (found != std::string::npos)
+    {
         buf.replace(found, 1, "");
-    std::cout << buf << std::endl;
+    }
+    std::cout << buf;
+    std::cout << std::endl;
 }
 } // namespace pels
 } // namespace openpower

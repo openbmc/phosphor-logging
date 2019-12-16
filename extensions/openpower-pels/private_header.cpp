@@ -103,6 +103,15 @@ std::optional<std::string> PrivateHeader::getJSON() const
     std::string phCreatorVersionStr =
         std::string(reinterpret_cast<const char*>(_creatorVersion.version));
 
+    std::string keySectionVersion = "\"Section Version\": ";
+    std::string keySubSectionType = "\"Sub-section type\": ";
+    std::string keyLogCommittedBy = "\"Log Committed by\": ";
+    std::string keyEntryCreation = "\"Entry Creation\": ";
+    std::string keyEntryCommit = "\"Entry Commit\": ";
+    std::string keyCreatorID = "\"Creator ID\": ";
+    std::string keyCreatorImplementation = "\"Creator Implementation\": ";
+    std::string keyPlatformLogID = "\"Platform Log ID\": ";
+    std::string keyLogEntryID = "\"Log Entry ID\": ";
     sprintf(tmpPhVal, "0x%X", _header.componentID);
     std::string phCbStr(tmpPhVal);
     sprintf(tmpPhVal, "%d", _header.subType);
@@ -113,18 +122,25 @@ std::optional<std::string> PrivateHeader::getJSON() const
     std::string phPlatformIDStr(tmpPhVal);
     sprintf(tmpPhVal, "0x%X", _id);
     std::string phLogEntryIDStr(tmpPhVal);
-    std::string ph = "{\"Section Version\": \"" + phVerStr +
-                     "\"}, \n {\"Sub-section type\": \"" + phStStr +
-                     "\"}, \n "
-                     "{\"Log Committed by\": \"" +
-                     phCbStr + "\"}, \n {\"Entry Creation\": \"" +
-                     phCreateTStr + "\"}, \n {\"Entry Commit\": \"" +
-                     phCommitTStr + "\"}, \n {\"Creator ID\": \"" + creator +
-                     "\"}, \n {\"Creator Implementation\": \"" +
-                     phCreatorVersionStr + "\"},\n {\"Platform Log ID\": \"" +
-                     phPlatformIDStr + "\"},\n {\"Log Entry ID\": \"" +
-                     phLogEntryIDStr + "\"}";
-
+    std::string ph = "\t" + keySectionVersion +=
+        std::string(40 - keySectionVersion.length(), ' ') + "\"" + phVerStr +
+        "\", \n \t" + keySubSectionType +=
+        std::string(40 - keySubSectionType.length(), ' ') + "\"" + phStStr +
+        "\", \n \t" + keyLogCommittedBy +=
+        std::string(40 - keyLogCommittedBy.length(), ' ') + "\"" + phCbStr +
+        "\", \n \t" + keyEntryCreation +=
+        std::string(40 - keyEntryCreation.length(), ' ') + "\"" + phCreateTStr +
+        "\", \n \t" + keyEntryCommit +=
+        std::string(40 - keyEntryCommit.length(), ' ') + "\"" + phCommitTStr +
+        "\", \n \t" + keyCreatorID +=
+        std::string(40 - keyCreatorID.length(), ' ') + "\"" + creator +
+        "\", \n \t" + keyCreatorImplementation +=
+        std::string(40 - keyCreatorImplementation.length(), ' ') + "\"" +
+        phCreatorVersionStr + "\", \n \t" + keyPlatformLogID +=
+        std::string(40 - keyPlatformLogID.length(), ' ') + "\"" +
+        phPlatformIDStr + "\", \n \t" + keyLogEntryID +=
+        std::string(40 - keyLogEntryID.length(), ' ') + "\"" + phLogEntryIDStr +
+        "\"";
     return ph;
 }
 void PrivateHeader::validate()
