@@ -9,10 +9,12 @@ phosphor_log_manager_LDADD = \
 	libpel.la
 
 phosphor_log_manager_LDFLAGS += \
-	$(LIBPLDM_LIBS)
+	$(LIBPLDM_LIBS) \
+	$(OPENPOWER_DBUS_INTERFACES_LIBS)
 
 phosphor_log_manager_CFLAGS = \
-	$(LIBPLDM_CFLAGS)
+	$(LIBPLDM_CFLAGS) \
+	$(OPENPOWER_DBUS_INTERFACES_CFLAGS)
 
 noinst_LTLIBRARIES = libpel.la
 
