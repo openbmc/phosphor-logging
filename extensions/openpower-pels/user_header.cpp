@@ -147,15 +147,27 @@ std::optional<std::string> UserHeader::getJSON() const
     sprintf(tmpUhVal, "%d", _header.subType);
     std::string uhStStr(tmpUhVal);
 
-    std::string uh = "{\"Section Version\": \"" + uhVerStr +
-                     "\"}, \n {\"Sub-section type\": \"" + uhStStr +
-                     "\"}, \n "
-                     "{\"Log Committed by\": \"" +
-                     uhCbStr + "\"}, \n {\"Subsystem\": \"" + subsystem +
-                     "\"},\n "
-                     "{\"Event Scope\": \"" +
-                     eventScope + "\"}, \n {\"Event Severity\":\"" + severity +
-                     "\"},\n {\"Event Type\": \"" + eventType + "\"}";
+    std::string keySectionVersion = "\"Section Version\": ";
+    std::string keySubSectionType = "\"Sub-section type\": ";
+    std::string keyLogCommittedBy = "\"Log Committed by\": ";
+    std::string keySubsystem = "\"Subsystem\": ";
+    std::string keyEventScope = "\"Event Scope\": ";
+    std::string keyEventSeverity = "\"Event Severity\": ";
+    std::string keyEventType = "\"Event Type\": ";
+    std::string uh = "\t" + keySectionVersion +=
+        std::string(40 - keySectionVersion.length(), ' ') + "\"" + uhVerStr +
+        "\", \n \t" + keySubSectionType +=
+        std::string(40 - keySubSectionType.length(), ' ') + "\"" + uhStStr +
+        "\", \n \t" + keyLogCommittedBy +=
+        std::string(40 - keyLogCommittedBy.length(), ' ') + "\"" + uhCbStr +
+        "\", \n \t" + keySubsystem +=
+        std::string(40 - keySubsystem.length(), ' ') + "\"" + subsystem +
+        "\",\n \t" + keyEventScope +=
+        std::string(40 - keyEventScope.length(), ' ') + "\"" + eventScope +
+        "\", \n \t" + keyEventSeverity +=
+        std::string(40 - keyEventSeverity.length(), ' ') + "\"" + severity +
+        "\",\n \t" + keyEventType +=
+        std::string(40 - keyEventType.length(), ' ') + "\"" + eventType + "\"";
     return uh;
 }
 } // namespace pels
