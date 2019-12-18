@@ -4,6 +4,7 @@ check_PROGRAMS += \
 	additional_data_test \
 	ascii_string_test \
 	bcd_time_test \
+	event_logger_test \
 	extended_user_header_test \
 	failing_mtms_test \
 	fru_identity_test \
@@ -353,3 +354,11 @@ json_utils_test_LDADD = \
 	$(test_ldadd) \
 	$(top_builddir)/extensions/openpower-pels/json_utils.o
 json_utils_test_LDFLAGS = $(test_ldflags)
+
+event_logger_test_SOURCES = \
+	%reldir%/event_logger_test.cpp
+event_logger_test_CPPFLAGS = $(test_cppflags)
+event_logger_test_CXXFLAGS = $(test_cxxflags) $(SDEVENTPLUS_CFLAGS)
+event_logger_test_LDADD = \
+	$(test_ldadd)
+event_logger_test_LDFLAGS = $(test_ldflags) $(SDEVENTPLUS_LIBS)

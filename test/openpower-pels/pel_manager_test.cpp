@@ -67,6 +67,11 @@ std::optional<fs::path> findAnyPELInRepo()
     return std::nullopt;
 }
 
+void eventLoggerStub(const std::string&, phosphor::logging::Entry::Level,
+                     const EventLogger::ADMap&)
+{
+}
+
 // Test that using the RAWPEL=<file> with the Manager::create() call gets
 // a PEL saved in the repository.
 TEST_F(ManagerTest, TestCreateWithPEL)
@@ -74,7 +79,8 @@ TEST_F(ManagerTest, TestCreateWithPEL)
     std::unique_ptr<DataInterfaceBase> dataIface =
         std::make_unique<DataInterface>(bus);
 
-    openpower::pels::Manager manager{logManager, std::move(dataIface)};
+    openpower::pels::Manager manager{logManager, std::move(dataIface),
+                                     eventLoggerStub};
 
     // Create a PEL, write it to a file, and pass that filename into
     // the create function.
@@ -141,13 +147,11 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
     registryFile << registry;
     registryFile.close();
 
-    auto bus = sdbusplus::bus::new_default();
-    phosphor::logging::internal::Manager logManager(bus, "logging_path");
-
     std::unique_ptr<DataInterfaceBase> dataIface =
         std::make_unique<DataInterface>(logManager.getBus());
 
-    openpower::pels::Manager manager{logManager, std::move(dataIface)};
+    openpower::pels::Manager manager{logManager, std::move(dataIface),
+                                     eventLoggerStub};
 
     std::vector<std::string> additionalData;
     std::vector<std::string> associations;
@@ -191,7 +195,7 @@ TEST_F(ManagerTest, TestDBusMethods)
     std::unique_ptr<DataInterfaceBase> dataIface =
         std::make_unique<DataInterface>(bus);
 
-    Manager manager{logManager, std::move(dataIface)};
+    Manager manager{logManager, std::move(dataIface), eventLoggerStub};
 
     // Create a PEL, write it to a file, and pass that filename into
     // the create function so there's one in the repo.
