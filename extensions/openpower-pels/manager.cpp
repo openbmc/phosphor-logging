@@ -16,6 +16,7 @@
 #include "manager.hpp"
 
 #include "additional_data.hpp"
+#include "json_utils.hpp"
 #include "pel.hpp"
 
 #include <unistd.h>
@@ -99,10 +100,29 @@ void Manager::addRawPEL(const std::string& rawPelPath, uint32_t obmcLogID)
         }
         else
         {
-            log<level::ERR>("Invalid PEL found",
+            log<level::ERR>("Invalid PEL received from the host",
                             entry("PELFILE=%s", rawPelPath.c_str()),
                             entry("OBMCLOGID=%d", obmcLogID));
-            // TODO, make a whole new OpenBMC event log + PEL
+
+            AdditionalData ad;
+            char plid[11];
+            sprintf(plid, "0x%08X", pel->plid());
+            ad.add("PLID", plid);
+            ad.add("OBMC_LOG_ID", std::to_string(obmcLogID));
+            ad.add("RAW_PEL_FILENAME", rawPelPath);
+            ad.add("PEL_SIZE", std::to_string(data.size()));
+
+            std::string asciiString;
+            auto src = pel->primarySRC();
+            if (src)
+            {
+                asciiString = (*src)->asciiString();
+            }
+
+            ad.add("SRC", asciiString);
+
+            _eventLogger.log("org.open_power.Logging.Error.BadHostPEL",
+                             Entry::Level::Error, ad);
         }
     }
     else
@@ -250,16 +270,20 @@ void Manager::hostReject(uint32_t pelID, RejectionReason reason)
         throw common_error::InvalidArgument();
     }
 
-    if (_hostNotifier)
+    if (reason == RejectionReason::BadPEL)
     {
-        if (reason == RejectionReason::BadPEL)
+        AdditionalData data;
+        data.add("BAD_ID", getNumberString("0x%08X", pelID));
+        _eventLogger.log("org.open_power.Logging.Error.SentBadPELToHost",
+                         Entry::Level::Informational, data);
+        if (_hostNotifier)
         {
             _hostNotifier->setBadPEL(pelID);
         }
-        else if (reason == RejectionReason::HostFull)
-        {
-            _hostNotifier->setHostFull(pelID);
-        }
+    }
+    else if ((reason == RejectionReason::HostFull) && _hostNotifier)
+    {
+        _hostNotifier->setHostFull(pelID);
     }
 }
 
