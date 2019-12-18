@@ -3,6 +3,7 @@
 #include "config.h"
 
 #include "data_interface.hpp"
+#include "event_logger.hpp"
 #include "host_notifier.hpp"
 #include "log_manager.hpp"
 #include "paths.hpp"
@@ -40,11 +41,16 @@ class Manager : public PELInterface
      *
      * @param[in] logManager - internal::Manager object
      * @param[in] dataIface - The data interface object
+     * @param[in] creatorFunc - The function that EventLogger will
+     *                          use for creating event logs
      */
     Manager(phosphor::logging::internal::Manager& logManager,
-            std::unique_ptr<DataInterfaceBase> dataIface) :
+            std::unique_ptr<DataInterfaceBase> dataIface,
+            EventLogger::LogFunction creatorFunc) :
         PELInterface(logManager.getBus(), OBJ_LOGGING),
-        _logManager(logManager), _repo(getPELRepoPath()),
+        _logManager(logManager),
+        _eventLogger(logManager.getBus().get_event(), std::move(creatorFunc)),
+        _repo(getPELRepoPath()),
         _registry(getMessageRegistryPath() / message::registryFileName),
         _dataIface(std::move(dataIface))
     {
@@ -55,12 +61,15 @@ class Manager : public PELInterface
      *
      * @param[in] logManager - internal::Manager object
      * @param[in] dataIface - The data interface object
+     * @param[in] creatorFunc - The function that EventLogger will
+     *                          use for creating event logs
      * @param[in] hostIface - The hostInterface object
      */
     Manager(phosphor::logging::internal::Manager& logManager,
             std::unique_ptr<DataInterfaceBase> dataIface,
+            EventLogger::LogFunction creatorFunc,
             std::unique_ptr<HostInterface> hostIface) :
-        Manager(logManager, std::move(dataIface))
+        Manager(logManager, std::move(dataIface), std::move(creatorFunc))
     {
         _hostNotifier = std::make_unique<HostNotifier>(
             _repo, *(_dataIface.get()), std::move(hostIface));
@@ -202,6 +211,12 @@ class Manager : public PELInterface
      * @brief Reference to phosphor-logging's Manager class
      */
     phosphor::logging::internal::Manager& _logManager;
+
+    /**
+     * @brief Handles creating event logs/PELs from within
+     *        the PEL extension code
+     */
+    EventLogger _eventLogger;
 
     /**
      * @brief The PEL repository object
