@@ -245,10 +245,16 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
                    phosphor::logging::Entry::Level::Error, additionalData,
                    associations);
 
-    // Currently, no PEL should be created.  Eventually, a 'missing registry
-    // entry' PEL will be there.
     pelFile = findAnyPELInRepo();
     EXPECT_FALSE(pelFile);
+
+    // Run the event loop so an error gets logged
+    sdeventplus::Event e{sdEvent};
+    e.run(std::chrono::milliseconds(1));
+
+    EXPECT_EQ(logger.errName, "org.open_power.Logging.Error.NoPELDefined");
+    EXPECT_EQ(logger.ad["ERROR_NAME"], "xyz.openbmc_project.Error.Foo");
+    EXPECT_EQ(logger.ad["OBMC_LOG_ID"], "33");
 }
 
 TEST_F(ManagerTest, TestDBusMethods)
