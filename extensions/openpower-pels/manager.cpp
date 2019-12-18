@@ -16,6 +16,7 @@
 #include "manager.hpp"
 
 #include "additional_data.hpp"
+#include "json_utils.hpp"
 #include "pel.hpp"
 
 #include <unistd.h>
@@ -250,16 +251,20 @@ void Manager::hostReject(uint32_t pelID, RejectionReason reason)
         throw common_error::InvalidArgument();
     }
 
-    if (_hostNotifier)
+    if (reason == RejectionReason::BadPEL)
     {
-        if (reason == RejectionReason::BadPEL)
+        AdditionalData data;
+        data.add("BAD_ID", getNumberString("0x%08X", pelID));
+        _eventLogger.log("org.open_power.Logging.Error.SentBadPELToHost",
+                         Entry::Level::Informational, data);
+        if (_hostNotifier)
         {
             _hostNotifier->setBadPEL(pelID);
         }
-        else if (reason == RejectionReason::HostFull)
-        {
-            _hostNotifier->setHostFull(pelID);
-        }
+    }
+    else if ((reason == RejectionReason::HostFull) && _hostNotifier)
+    {
+        _hostNotifier->setHostFull(pelID);
     }
 }
 
