@@ -240,6 +240,14 @@ void Manager::hostReject(uint32_t pelID, RejectionReason reason)
         if (reason == RejectionReason::BadPEL)
         {
             _hostNotifier->setBadPEL(pelID);
+
+            // Create an error log
+            char id[11];
+            sprintf(id, "0x%08X", pelID);
+            AdditionalData data;
+            data.add("BAD_ID", id);
+            _eventLogger.log("org.open_power.Logging.Error.SentBadPELToHost",
+                             Entry::Level::Informational, data);
         }
         else if (reason == RejectionReason::HostFull)
         {
