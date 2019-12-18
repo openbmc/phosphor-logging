@@ -240,10 +240,14 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
     }
     else
     {
-        // TODO ibm-openbmc/dev/1151: Create a new PEL for this case.
-        // For now, just trace it.
         msg = "Event not found in PEL message registry: " + message;
         log<level::INFO>(msg.c_str());
+
+        AdditionalData data;
+        data.add("ERROR_NAME", message);
+        data.add("OBMC_LOG_ID", std::to_string(obmcLogID));
+        _eventLogger.log("org.open_power.Logging.Error.NoPELDefined",
+                         Entry::Level::Informational, data);
     }
 }
 
