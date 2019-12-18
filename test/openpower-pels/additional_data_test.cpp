@@ -47,3 +47,21 @@ TEST(AdditionalDataTest, GetKeywords)
     ad.remove("KEY1");
     EXPECT_FALSE(ad.getValue("KEY1"));
 }
+
+TEST(AdditionalDataTest, AddData)
+{
+    AdditionalData ad;
+
+    ad.add("KEY1", "VALUE1");
+    EXPECT_EQ(*(ad.getValue("KEY1")), "VALUE1");
+
+    ad.add("KEY2", "VALUE2");
+    EXPECT_EQ(*(ad.getValue("KEY2")), "VALUE2");
+
+    std::map<std::string, std::string> expected
+    {
+        {"KEY1", "VALUE1"}, {"KEY2", "VALUE2"}
+    };
+
+    EXPECT_EQ(expected, ad.getData());
+}
