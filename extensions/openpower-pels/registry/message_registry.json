@@ -160,6 +160,35 @@
                     "The host firmware rejected that PEL."
                 ]
             }
+        },
+
+        {
+            "Name": "org.open_power.Logging.Error.NoPELDefined",
+            "Subsystem": "bmc_firmware",
+            "Severity": "non_error",
+
+            "SRC":
+            {
+                "ReasonCode": "0x2002",
+                "Words6To9":
+                {
+                    "6":
+                    {
+                        "Description": "The corresponding OpenBMC event log ID",
+                        "AdditionalDataPropSource": "OBMC_LOG_ID"
+                    }
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "An OpenBMC event log was created that isn't in the PEL registry",
+                "Message": "An OpenBMC event log was created that isn't in the PEL registry",
+                "Notes": [
+                    "A PEL couldn't be created for that event log.",
+                    "The event log name is captured in a UserData section."
+                ]
+            }
         }
     ]
 }
