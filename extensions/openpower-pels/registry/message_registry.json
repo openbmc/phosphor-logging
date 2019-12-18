@@ -132,6 +132,34 @@
                 "Description": "The server's CA certificate has not been provided",
                 "Message": "The server's CA certificate has not been provided"
             }
+        },
+
+        {
+            "Name": "org.open_power.Logging.Error.SentBadPELToHost",
+            "Subsystem": "bmc_firmware",
+            "Severity": "non_error",
+
+            "SRC":
+            {
+                "ReasonCode": "0x2001",
+                "Words6To9":
+                {
+                    "6":
+                    {
+                        "Description": "The bad PEL ID",
+                        "AdditionalDataPropSource": "BAD_ID"
+                    }
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "The BMC sent the host a malformed PEL",
+                "Message": "The BMC sent the host a malformed PEL",
+                "Notes": [
+                    "The host firmware rejected that PEL."
+                ]
+            }
         }
     ]
 }
