@@ -253,16 +253,22 @@ void Manager::hostReject(uint32_t pelID, RejectionReason reason)
         throw common_error::InvalidArgument();
     }
 
-    if (_hostNotifier)
+    if (reason == RejectionReason::BadPEL)
     {
-        if (reason == RejectionReason::BadPEL)
+        char id[11];
+        sprintf(id, "0x%08X", pelID);
+        AdditionalData data;
+        data.add("BAD_ID", id);
+        _eventLogger.log("org.open_power.Logging.Error.SentBadPELToHost",
+                         Entry::Level::Informational, data);
+        if (_hostNotifier)
         {
             _hostNotifier->setBadPEL(pelID);
         }
-        else if (reason == RejectionReason::HostFull)
-        {
-            _hostNotifier->setHostFull(pelID);
-        }
+    }
+    else if ((reason == RejectionReason::HostFull) && _hostNotifier)
+    {
+        _hostNotifier->setHostFull(pelID);
     }
 }
 
