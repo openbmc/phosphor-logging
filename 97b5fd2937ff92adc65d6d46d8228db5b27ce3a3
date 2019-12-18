@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fd38afea_ad0bbafe",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2019-12-18T20:52:38Z",
+      "side": 1,
+      "message": "oh, can you change your name in your .gitconfig to add your last name? (for future commits is fine)",
+      "revId": "97b5fd2937ff92adc65d6d46d8228db5b27ce3a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b5641d00_39cb0d0a",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2019-12-18T20:52:38Z",
+      "side": 1,
+      "message": "it\u0027s considered fine to do those on one line how you had it.  Actually though the use of std::endl is what is frowned upon, instead just using \"\\n\";",
+      "revId": "97b5fd2937ff92adc65d6d46d8228db5b27ce3a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
