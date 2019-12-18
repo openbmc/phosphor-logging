@@ -37,7 +37,7 @@ class AdditionalData
      * @param[in] ad - the AdditionalData property vector with
      *                 entries of "KEY=VALUE"
      */
-    AdditionalData(const std::vector<std::string>& ad)
+    explicit AdditionalData(const std::vector<std::string>& ad)
     {
         for (auto& item : ad)
         {
@@ -99,6 +99,27 @@ class AdditionalData
     {
         nlohmann::json j = _data;
         return j;
+    }
+
+    /**
+     * @brief Returns the underlying map of data
+     *
+     * @return const std::map<std::string, std::string>& - The data
+     */
+    const std::map<std::string, std::string>& getData() const
+    {
+        return _data;
+    }
+
+    /**
+     * @brief Adds a key/value pair to the object
+     *
+     * @param[in] key - The key
+     * @param[in] value - The value
+     */
+    void add(const std::string& key, const std::string& value)
+    {
+        _data.emplace(key, value);
     }
 
   private:
