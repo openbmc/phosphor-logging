@@ -15,6 +15,7 @@
  */
 #include "data_interface.hpp"
 #include "elog_entry.hpp"
+#include "event_logger.hpp"
 #include "extensions.hpp"
 #include "manager.hpp"
 #include "pldm_interface.hpp"
@@ -30,6 +31,10 @@ std::unique_ptr<Manager> manager;
 
 void pelStartup(internal::Manager& logManager)
 {
+    EventLogger::LogFunction logger = std::bind(
+        std::mem_fn(&internal::Manager::create), &logManager,
+        std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+
     std::unique_ptr<DataInterfaceBase> dataIface =
         std::make_unique<DataInterface>(logManager.getBus());
 
@@ -37,10 +42,12 @@ void pelStartup(internal::Manager& logManager)
     std::unique_ptr<HostInterface> hostIface = std::make_unique<PLDMInterface>(
         logManager.getBus().get_event(), *(dataIface.get()));
 
-    manager = std::make_unique<Manager>(logManager, std::move(dataIface),
-                                        std::move(hostIface));
+    manager =
+        std::make_unique<Manager>(logManager, std::move(dataIface),
+                                  std::move(logger), std::move(hostIface));
 #else
-    manager = std::make_unique<Manager>(logManager, std::move(dataIface));
+    manager = std::make_unique<Manager>(logManager, std::move(dataIface),
+                                        std::move(logger));
 #endif
 }
 
