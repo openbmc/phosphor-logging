@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "88553b46_41d11b3e",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1000380
+      },
+      "writtenOn": "2019-12-19T03:38:24Z",
+      "side": 1,
+      "message": "buf +\u003d \"\\n\\\"\" + sectionName + \"\\\": {\\n\";\n\nI think it looks neater to have a single space before the opening brace",
+      "revId": "fb9efbbf46018a6a615e5610408623e5528f6b71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7f4a6e18_d503b7cf",
         "filename": "extensions/openpower-pels/pel.cpp",
         "patchSetId": 2
@@ -19,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "941fa4d0_a82a8b17",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000380
+      },
+      "writtenOn": "2019-12-19T03:38:24Z",
+      "side": 1,
+      "message": "buf +\u003d \"\\n\\\"\" + sectionName + \"\\\": [\\n\";\n\nSimilarly, single space before opening bracket.\n\nYes. For unparsed sections, the hexdump contents should be store in an array.",
+      "parentUuid": "7f4a6e18_d503b7cf",
+      "revId": "fb9efbbf46018a6a615e5610408623e5528f6b71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4fe19fa0_6adb14b0",
         "filename": "extensions/openpower-pels/pel.cpp",
         "patchSetId": 2
@@ -30,6 +65,24 @@
       "writtenOn": "2019-12-16T19:10:26Z",
       "side": 1,
       "message": "same comment as above",
+      "revId": "fb9efbbf46018a6a615e5610408623e5528f6b71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a5b93037_49f24944",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1000380
+      },
+      "writtenOn": "2019-12-19T03:38:24Z",
+      "side": 1,
+      "message": "buf +\u003d \"\\n\\\"Invalid Section\\\": [\\n    \\\"invalid\\\"\\n],\\n\";\n\n1) Trailing space can be removed from section name.\n2) Single space before left bracket\n3) Can we have 4 spaces indent as standard?\n4) Array string contents need to be wrapped in double quotes",
+      "parentUuid": "4fe19fa0_6adb14b0",
       "revId": "fb9efbbf46018a6a615e5610408623e5528f6b71",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
