@@ -18,7 +18,7 @@ libpel_la_SOURCES = \
 	extensions/openpower-pels/failing_mtms.cpp \
 	extensions/openpower-pels/fru_identity.cpp \
 	extensions/openpower-pels/generic.cpp \
-	extensions/openpower-pels/hexdump.cpp \
+	extensions/openpower-pels/json_utils.cpp \
 	extensions/openpower-pels/log_id.cpp \
 	extensions/openpower-pels/mru.cpp \
 	extensions/openpower-pels/mtms.cpp \

@@ -15,6 +15,7 @@
  */
 #include "user_header.hpp"
 
+#include "json_utils.hpp"
 #include "pel_types.hpp"
 #include "pel_values.hpp"
 #include "severity.hpp"
@@ -135,10 +136,13 @@ std::optional<std::string> UserHeader::getJSON() const
     std::string subsystem;
     std::string eventScope;
     std::string eventType;
+    std::vector<std::string> actionFlags;
     severity = pv::getValue(_eventSeverity, pel_values::severityValues);
     subsystem = pv::getValue(_eventSubsystem, pel_values::subsystemValues);
     eventScope = pv::getValue(_eventScope, pel_values::eventScopeValues);
     eventType = pv::getValue(_eventType, pel_values::eventTypeValues);
+    actionFlags =
+        pv::getValuesBitwise(_actionFlags, pel_values::actionFlagsValues);
     char tmpUhVal[8];
     sprintf(tmpUhVal, "%d", userHeaderVersion);
     std::string uhVerStr(tmpUhVal);
@@ -147,15 +151,16 @@ std::optional<std::string> UserHeader::getJSON() const
     sprintf(tmpUhVal, "%d", _header.subType);
     std::string uhStStr(tmpUhVal);
 
-    std::string uh = "{\"Section Version\": \"" + uhVerStr +
-                     "\"}, \n {\"Sub-section type\": \"" + uhStStr +
-                     "\"}, \n "
-                     "{\"Log Committed by\": \"" +
-                     uhCbStr + "\"}, \n {\"Subsystem\": \"" + subsystem +
-                     "\"},\n "
-                     "{\"Event Scope\": \"" +
-                     eventScope + "\"}, \n {\"Event Severity\":\"" + severity +
-                     "\"},\n {\"Event Type\": \"" + eventType + "\"}";
+    std::string uh;
+    jsonInsert(uh, "Section Version", uhVerStr, 1);
+    jsonInsert(uh, "Sub-section type", uhStStr, 1);
+    jsonInsert(uh, "Log Committed by", uhCbStr, 1);
+    jsonInsert(uh, "Subsystem", subsystem, 1);
+    jsonInsert(uh, "Event Scope", eventScope, 1);
+    jsonInsert(uh, "Event Severity", severity, 1);
+    jsonInsert(uh, "Event Type", eventType, 1);
+    jsonInsertArray(uh, "Action Flags", actionFlags, 1);
+    uh.erase(uh.size() - 2);
     return uh;
 }
 } // namespace pels
