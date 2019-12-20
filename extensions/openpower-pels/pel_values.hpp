@@ -33,6 +33,16 @@ using PELValues = std::vector<PELFieldValue>;
 std::string getValue(const uint8_t field, const pel_values::PELValues& values);
 
 /**
+ * @brief Helper function to get value vector from lookup tables.
+ *
+ * @param[in] value - the value to lookup
+ * @param[in] table - lookup table
+ *
+ * @return std::vector<std::string> - the value vector
+ */
+std::vector<std::string> getValuesBitwise(uint16_t value,
+                                          const pel_values::PELValues& table);
+/**
  * @brief Find the desired entry in a PELValues table based on the
  *        field value.
  *
