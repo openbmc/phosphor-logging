@@ -229,12 +229,12 @@ void PEL::printSectionInJSON(const Section& section, std::string& buf) const
         auto json = section.getJSON();
         if (json)
         {
-            buf += "\n\"" + sectionName + "\":[\n ";
-            buf += *json + "\n],\n";
+            buf += "\n\"" + sectionName + "\": {\n";
+            buf += *json + "\n},\n";
         }
         else
         {
-            buf += "\n\"" + sectionName + "\":[\n ";
+            buf += "\n\"" + sectionName + "\": [\n";
             std::vector<uint8_t> data;
             Stream s{data};
             section.flatten(s);
@@ -244,7 +244,7 @@ void PEL::printSectionInJSON(const Section& section, std::string& buf) const
     }
     else
     {
-        buf += "\n\"Invalid Section  \":[\n invalid \n],\n";
+        buf += "\n\"Invalid Section\": [\n    \"invalid\"\n],\n";
     }
 }
 
@@ -262,6 +262,60 @@ void PEL::toJSON() const
     if (found != std::string::npos)
         buf.replace(found, 1, "");
     std::cout << buf << std::endl;
+}
+
+void PEL::jsonInsert(std::string& jsonStr, const std::string& fieldName,
+                               std::string& fieldValue, bool lastline)
+{
+    const uint8_t padSize = 25;
+    const std::string jsonIndent(4, 0x20);
+
+    jsonStr.append(jsonIndent + "\"" + fieldName + "\":");
+    if (padSize > fieldName.length())
+    {
+        jsonStr.append(padSize - fieldName.length(), 0x20);
+    }
+    else
+    {
+        jsonStr.append(1, 0x20);
+    }
+    if (lastline)
+    {
+        jsonStr.append("\"" + fieldValue + "\"");
+    }
+    else
+    {
+        jsonStr.append("\"" + fieldValue + "\",\n");
+    }
+}
+
+void PEL::jsonInsertArray(std::string& jsonStr, const std::string& fieldName,
+                           std::vector<std::string>& values, bool lastline)
+{
+    const uint8_t padSize = 32;
+    const std::string jsonIndent(4, 0x20);
+
+    jsonStr.append(jsonIndent + "\"" + fieldName + "\": [\n");
+    for (uint8_t i = 0; i < values.size(); i++)
+    {
+        jsonStr.append(padSize, 0x20);
+        if (i == values.size() - 1)
+        {
+            jsonStr.append("\"" + values[i] + "\"\n");
+        }
+        else
+        {
+            jsonStr.append("\"" + values[i] + "\",\n");
+        }
+    }
+    if (lastline)
+    {
+        jsonStr.append(jsonIndent + "]");
+    }
+    else
+    {
+        jsonStr.append(jsonIndent + "],");
+    }
 }
 } // namespace pels
 } // namespace openpower

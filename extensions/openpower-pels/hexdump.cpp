@@ -38,24 +38,6 @@ std::string escapeJSON(const std::string& input)
             case '"':
                 output += "\\\"";
                 break;
-            case '/':
-                output += "\\/";
-                break;
-            case '\b':
-                output += "\\b";
-                break;
-            case '\f':
-                output += "\\f";
-                break;
-            case '\n':
-                output += "\\n";
-                break;
-            case '\r':
-                output += "\\r";
-                break;
-            case '\t':
-                output += "\\t";
-                break;
             case '\\':
                 output += "\\\\";
                 break;
@@ -70,6 +52,8 @@ std::string escapeJSON(const std::string& input)
 char* dumpHex(const void* data, size_t size)
 {
     const int symbolSize = 100;
+    std::string jsonIndent(4, 0x20);
+    jsonIndent.append("\"");
     char* buffer = (char*)calloc(10 * size, sizeof(char));
     char* symbol = (char*)calloc(symbolSize, sizeof(char));
     char ascii[17];
@@ -79,7 +63,7 @@ char* dumpHex(const void* data, size_t size)
     {
         if (i % 16 == 0)
         {
-            strcat(buffer, "\"");
+            strcat(buffer, jsonIndent.c_str());
         }
         snprintf(symbol, symbolSize, "%02X ", ((unsigned char*)data)[i]);
         strcat(buffer, symbol);
@@ -103,11 +87,11 @@ char* dumpHex(const void* data, size_t size)
             {
                 if (i + 1 != size)
                 {
-                    snprintf(symbol, symbolSize, "|  %s\", \n ", asciiToPrint);
+                    snprintf(symbol, symbolSize, "|  %s\",\n", asciiToPrint);
                 }
                 else
                 {
-                    snprintf(symbol, symbolSize, "|  %s\" \n ", asciiToPrint);
+                    snprintf(symbol, symbolSize, "|  %s\"\n", asciiToPrint);
                 }
                 strcat(buffer, symbol);
                 memset(symbol, 0, strlen(symbol));
@@ -126,7 +110,7 @@ char* dumpHex(const void* data, size_t size)
                 std::string asciiString2(ascii);
                 asciiString2 = escapeJSON(asciiString2);
                 asciiToPrint = asciiString2.c_str();
-                snprintf(symbol, symbolSize, "|  %s\" \n ", asciiToPrint);
+                snprintf(symbol, symbolSize, "|  %s\"\n", asciiToPrint);
                 strcat(buffer, symbol);
                 memset(symbol, 0, strlen(symbol));
             }
