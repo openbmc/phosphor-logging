@@ -220,6 +220,28 @@ class PEL
     void toJSON() const;
 
     /**
+     * @brief Inserts key-value into a JSON string
+     *
+     * @param[in] jsonStr - The JSON string
+     * @param[in] fieldName - The JSON key to insert
+     * @param[in] fieldValue - The JSON value to insert
+     * @param[in] lastline - Boolean variable for last line
+     */
+    static void jsonInsert(std::string& jsonStr, const std::string& fieldName,
+                           std::string& fieldValue, bool lastline);
+
+    /**
+     * @brief Inserts key-value array into a JSON string
+     *
+     * @param[in] jsonStr - The JSON string
+     * @param[in] fieldName - The JSON key to insert
+     * @param[in] values - The JSON array to insert
+     * @param[in] lastline - Boolean variable for last line
+     */
+    static void jsonInsertArray(std::string& jsonStr, const std::string& fieldName,
+                           std::vector<std::string>& values, bool lastline);
+
+    /**
      * @brief Sets the host transmission state in the User Header
      *
      * @param[in] state - The state value
