@@ -17,6 +17,7 @@
 
 #include "pel_types.hpp"
 #include "pel_values.hpp"
+#include "pel.hpp"
 #include "severity.hpp"
 
 #include <iostream>
@@ -135,10 +136,12 @@ std::optional<std::string> UserHeader::getJSON() const
     std::string subsystem;
     std::string eventScope;
     std::string eventType;
+    std::vector<std::string> actionFlags;
     severity = pv::getValue(_eventSeverity, pel_values::severityValues);
     subsystem = pv::getValue(_eventSubsystem, pel_values::subsystemValues);
     eventScope = pv::getValue(_eventScope, pel_values::eventScopeValues);
     eventType = pv::getValue(_eventType, pel_values::eventTypeValues);
+    actionFlags = pv::getValuesBitwise(_actionFlags, pel_values::actionFlagsValues);
     char tmpUhVal[8];
     sprintf(tmpUhVal, "%d", userHeaderVersion);
     std::string uhVerStr(tmpUhVal);
@@ -147,15 +150,16 @@ std::optional<std::string> UserHeader::getJSON() const
     sprintf(tmpUhVal, "%d", _header.subType);
     std::string uhStStr(tmpUhVal);
 
-    std::string uh = "{\"Section Version\": \"" + uhVerStr +
-                     "\"}, \n {\"Sub-section type\": \"" + uhStStr +
-                     "\"}, \n "
-                     "{\"Log Committed by\": \"" +
-                     uhCbStr + "\"}, \n {\"Subsystem\": \"" + subsystem +
-                     "\"},\n "
-                     "{\"Event Scope\": \"" +
-                     eventScope + "\"}, \n {\"Event Severity\":\"" + severity +
-                     "\"},\n {\"Event Type\": \"" + eventType + "\"}";
+    std::string uh = "";
+    PEL::jsonInsert(uh, "Section Version", uhVerStr, false);
+    PEL::jsonInsert(uh, "Sub-section type", uhStStr, false);
+    PEL::jsonInsert(uh, "Log Committed by", uhCbStr, false);
+    PEL::jsonInsert(uh, "Subsystem", subsystem, false);
+    PEL::jsonInsert(uh, "Event Scope", eventScope, false);
+    PEL::jsonInsert(uh, "Event Severity", severity, false);
+    PEL::jsonInsert(uh, "Event Type", eventType, false);
+    PEL::jsonInsertArray(uh, "Action Flags", actionFlags, true);
+
     return uh;
 }
 } // namespace pels
