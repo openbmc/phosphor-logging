@@ -196,8 +196,10 @@ const PELValues actionFlagsValues = {
     {0x8000, "service_action", "Service Action Required"},
     {0x4000, "hidden", "Event not customer viewable"},
     {0x2000, "report", "Report Externally"},
-    {0x1000, "dont_report", "Do Not Report"},
+    {0x1000, "dont_report", "Do Not Report To Hypervisor"},
     {0x0800, "call_home", "HMC Call Home"},
+    {0x0400, "isolation_incomplete",
+     "Isolation Incomplete, further analysis required"},
     {0x0100, "termination", "Service Processor Call Home Required"}};
 
 /**
@@ -275,6 +277,20 @@ std::string getValue(const uint8_t field, const pel_values::PELValues& values)
     {
         return "invalid";
     }
+}
+
+std::vector<std::string> getValuesBitwise(uint16_t value,
+                                          const pel_values::PELValues& table)
+{
+    std::vector<std::string> foundValues;
+    std::for_each(
+        table.begin(), table.end(), [&value, &foundValues](const auto& entry) {
+            if (value & std::get<fieldValuePos>(entry))
+            {
+                foundValues.push_back(std::get<descriptionPos>(entry));
+            }
+        });
+    return foundValues;
 }
 } // namespace pel_values
 } // namespace pels

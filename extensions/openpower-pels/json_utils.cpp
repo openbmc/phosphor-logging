@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "hexdump.hpp"
+#include "json_utils.hpp"
 
 #include <stdio.h>
 
@@ -70,6 +70,8 @@ std::string escapeJSON(const std::string& input)
 char* dumpHex(const void* data, size_t size)
 {
     const int symbolSize = 100;
+    std::string jsonIndent(indentLevel, 0x20);
+    jsonIndent.append("\"");
     char* buffer = (char*)calloc(10 * size, sizeof(char));
     char* symbol = (char*)calloc(symbolSize, sizeof(char));
     char ascii[17];
@@ -79,7 +81,7 @@ char* dumpHex(const void* data, size_t size)
     {
         if (i % 16 == 0)
         {
-            strcat(buffer, "\"");
+            strcat(buffer, jsonIndent.c_str());
         }
         snprintf(symbol, symbolSize, "%02X ", ((unsigned char*)data)[i]);
         strcat(buffer, symbol);
@@ -103,11 +105,11 @@ char* dumpHex(const void* data, size_t size)
             {
                 if (i + 1 != size)
                 {
-                    snprintf(symbol, symbolSize, "|  %s\", \n ", asciiToPrint);
+                    snprintf(symbol, symbolSize, "|  %s\",\n", asciiToPrint);
                 }
                 else
                 {
-                    snprintf(symbol, symbolSize, "|  %s\" \n ", asciiToPrint);
+                    snprintf(symbol, symbolSize, "|  %s\"\n", asciiToPrint);
                 }
                 strcat(buffer, symbol);
                 memset(symbol, 0, strlen(symbol));
@@ -126,7 +128,7 @@ char* dumpHex(const void* data, size_t size)
                 std::string asciiString2(ascii);
                 asciiString2 = escapeJSON(asciiString2);
                 asciiToPrint = asciiString2.c_str();
-                snprintf(symbol, symbolSize, "|  %s\" \n ", asciiToPrint);
+                snprintf(symbol, symbolSize, "|  %s\"\n", asciiToPrint);
                 strcat(buffer, symbol);
                 memset(symbol, 0, strlen(symbol));
             }
@@ -134,6 +136,62 @@ char* dumpHex(const void* data, size_t size)
     }
     free(symbol);
     return buffer;
+}
+
+void jsonInsert(std::string& jsonStr, const std::string& fieldName,
+                std::string& fieldValue, uint8_t indentCount)
+{
+    const int8_t spacesToAppend =
+        colAlign - (indentCount * indentLevel) - fieldName.length() - 3;
+    const std::string jsonIndent(indentCount * indentLevel, 0x20);
+    jsonStr.append(jsonIndent + "\"" + fieldName + "\":");
+    if (spacesToAppend > 0)
+    {
+        jsonStr.append(spacesToAppend, 0x20);
+    }
+    else
+    {
+        jsonStr.append(1, 0x20);
+    }
+    jsonStr.append("\"" + fieldValue + "\",\n");
+}
+
+void jsonInsertArray(std::string& jsonStr, const std::string& fieldName,
+                     std::vector<std::string>& values, uint8_t indentCount)
+{
+    const std::string jsonIndent(indentCount * indentLevel, 0x20);
+    if (!values.empty())
+    {
+        jsonStr.append(jsonIndent + "\"" + fieldName + "\": [\n");
+        for (size_t i = 0; i < values.size(); i++)
+        {
+            jsonStr.append(colAlign, 0x20);
+            if (i == values.size() - 1)
+            {
+                jsonStr.append("\"" + values[i] + "\"\n");
+            }
+            else
+            {
+                jsonStr.append("\"" + values[i] + "\",\n");
+            }
+        }
+        jsonStr.append(jsonIndent + "],\n");
+    }
+    else
+    {
+        const int8_t spacesToAppend =
+            colAlign - (indentCount * indentLevel) - fieldName.length() - 3;
+        jsonStr.append(jsonIndent + "\"" + fieldName + "\":");
+        if (spacesToAppend > 0)
+        {
+            jsonStr.append(spacesToAppend, 0x20);
+        }
+        else
+        {
+            jsonStr.append(1, 0x20);
+        }
+        jsonStr.append("[],\n");
+    }
 }
 } // namespace pels
 } // namespace openpower

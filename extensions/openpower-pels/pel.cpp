@@ -18,7 +18,7 @@
 #include "bcd_time.hpp"
 #include "extended_user_header.hpp"
 #include "failing_mtms.hpp"
-#include "hexdump.hpp"
+#include "json_utils.hpp"
 #include "log_id.hpp"
 #include "pel_rules.hpp"
 #include "pel_values.hpp"
@@ -229,12 +229,12 @@ void PEL::printSectionInJSON(const Section& section, std::string& buf) const
         auto json = section.getJSON();
         if (json)
         {
-            buf += "\n\"" + sectionName + "\":[\n ";
-            buf += *json + "\n],\n";
+            buf += "\n\"" + sectionName + "\": {\n";
+            buf += *json + "\n},\n";
         }
         else
         {
-            buf += "\n\"" + sectionName + "\":[\n ";
+            buf += "\n\"" + sectionName + "\": [\n";
             std::vector<uint8_t> data;
             Stream s{data};
             section.flatten(s);
@@ -244,7 +244,7 @@ void PEL::printSectionInJSON(const Section& section, std::string& buf) const
     }
     else
     {
-        buf += "\n\"Invalid Section  \":[\n invalid \n],\n";
+        buf += "\n\"Invalid Section\": [\n    \"invalid\"\n],\n";
     }
 }
 
@@ -263,5 +263,6 @@ void PEL::toJSON() const
         buf.replace(found, 1, "");
     std::cout << buf << std::endl;
 }
+
 } // namespace pels
 } // namespace openpower
