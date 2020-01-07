@@ -11,6 +11,8 @@
 
 #include <org/open_power/Logging/PEL/server.hpp>
 #include <sdbusplus/server.hpp>
+#include <sdeventplus/event.hpp>
+#include <sdeventplus/source/event.hpp>
 
 namespace openpower
 {
@@ -176,6 +178,27 @@ class Manager : public PELInterface
                    const std::vector<std::string>& associations);
 
     /**
+     * @brief Schedules a close of the file descriptor to occur from
+     *        the event loop.
+     *
+     * Uses sd_event_add_defer
+     *
+     * @param[in] fd - The file descriptor to close
+     */
+    void scheduleFDClose(int fd);
+
+    /**
+     * @brief Closes the file descriptor passed in.
+     *
+     * This is called from the event loop to close FDs returned
+     * from getPEL().
+     *
+     * @param[in] fd - The file descriptor to close
+     * @param[in] source - The event source object used
+     */
+    void closeFD(int fd, sdeventplus::source::EventBase& source);
+
+    /**
      * @brief Reference to phosphor-logging's Manager class
      */
     phosphor::logging::internal::Manager& _logManager;
@@ -200,6 +223,12 @@ class Manager : public PELInterface
      *        host about new PELs
      */
     std::unique_ptr<HostNotifier> _hostNotifier;
+
+    /**
+     * @brief The event source for closing a PEL file descriptor after
+     *        it has been returned from the getPEL D-Bus method.
+     */
+    std::unique_ptr<sdeventplus::source::Defer> _fdCloserEventSource;
 };
 
 } // namespace pels
