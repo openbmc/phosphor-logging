@@ -28,6 +28,21 @@ namespace fs = std::filesystem;
 
 class ManagerTest : public CleanPELFiles
 {
+  public:
+    ManagerTest() : logManager(bus, "logging_path")
+    {
+        sd_event_default(&sdEvent);
+        bus.attach_event(sdEvent, SD_EVENT_PRIORITY_NORMAL);
+    }
+
+    ~ManagerTest()
+    {
+        sd_event_unref(sdEvent);
+    }
+
+    sdbusplus::bus::bus bus = sdbusplus::bus::new_default();
+    phosphor::logging::internal::Manager logManager;
+    sd_event* sdEvent;
 };
 
 fs::path makeTempDir()
@@ -56,8 +71,6 @@ std::optional<fs::path> findAnyPELInRepo()
 // a PEL saved in the repository.
 TEST_F(ManagerTest, TestCreateWithPEL)
 {
-    auto bus = sdbusplus::bus::new_default();
-    phosphor::logging::internal::Manager logManager(bus, "logging_path");
     std::unique_ptr<DataInterfaceBase> dataIface =
         std::make_unique<DataInterface>(bus);
 
@@ -170,8 +183,6 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
 
 TEST_F(ManagerTest, TestDBusMethods)
 {
-    auto bus = sdbusplus::bus::new_default();
-    phosphor::logging::internal::Manager logManager(bus, "logging_path");
     std::unique_ptr<DataInterfaceBase> dataIface =
         std::make_unique<DataInterface>(bus);
 
