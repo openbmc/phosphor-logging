@@ -98,10 +98,29 @@ void Manager::addRawPEL(const std::string& rawPelPath, uint32_t obmcLogID)
         }
         else
         {
-            log<level::ERR>("Invalid PEL found",
+            log<level::ERR>("Invalid PEL received from the host",
                             entry("PELFILE=%s", rawPelPath.c_str()),
                             entry("OBMCLOGID=%d", obmcLogID));
-            // TODO, make a whole new OpenBMC event log + PEL
+
+            AdditionalData ad;
+            char plid[11];
+            sprintf(plid, "0x%08X", pel->plid());
+            ad.add("PLID", plid);
+            ad.add("OBMC_LOG_ID", std::to_string(obmcLogID));
+            ad.add("RAW_PEL_FILENAME", rawPelPath);
+            ad.add("PEL_SIZE", std::to_string(data.size()));
+
+            std::string asciiString;
+            auto src = pel->primarySRC();
+            if (src)
+            {
+                asciiString = (*src)->asciiString();
+            }
+
+            ad.add("SRC", asciiString);
+
+            _eventLogger.log("org.open_power.Logging.Error.BadHostPEL",
+                             Entry::Level::Error, ad);
         }
     }
     else
