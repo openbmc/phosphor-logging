@@ -18,6 +18,8 @@
 #include "additional_data.hpp"
 #include "pel.hpp"
 
+#include <unistd.h>
+
 #include <filesystem>
 #include <fstream>
 #include <xyz/openbmc_project/Common/error.hpp>
@@ -186,7 +188,23 @@ sdbusplus::message::unix_fd Manager::getPEL(uint32_t pelID)
         throw common_error::InvalidArgument();
     }
 
+    scheduleFDClose(*fd);
+
     return *fd;
+}
+
+void Manager::scheduleFDClose(int fd)
+{
+    _fdCloserEventSource = std::make_unique<sdeventplus::source::Defer>(
+        _logManager.getBus().get_event(),
+        std::bind(std::mem_fn(&Manager::closeFD), this, fd,
+                  std::placeholders::_1));
+}
+
+void Manager::closeFD(int fd, sdeventplus::source::EventBase& source)
+{
+    close(fd);
+    _fdCloserEventSource.reset();
 }
 
 std::vector<uint8_t> Manager::getPELFromOBMCID(uint32_t obmcLogID)
