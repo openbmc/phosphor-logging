@@ -105,9 +105,7 @@ void Manager::addRawPEL(const std::string& rawPelPath, uint32_t obmcLogID)
                             entry("OBMCLOGID=%d", obmcLogID));
 
             AdditionalData ad;
-            char plid[11];
-            sprintf(plid, "0x%08X", pel->plid());
-            ad.add("PLID", plid);
+            ad.add("PLID", getNumberString("0x%08X", pel->plid()));
             ad.add("OBMC_LOG_ID", std::to_string(obmcLogID));
             ad.add("RAW_PEL_FILENAME", rawPelPath);
             ad.add("PEL_SIZE", std::to_string(data.size()));
