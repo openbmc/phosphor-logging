@@ -160,6 +160,44 @@
                     "The host firmware rejected that PEL."
                 ]
             }
-        }
+        },
+
+        {
+            "Name": "org.open_power.Logging.Error.BadHostPEL",
+            "Subsystem": "platform_firmware",
+            "Severity": "unrecoverable",
+
+            "SRC":
+            {
+                "ReasonCode": "0x2002",
+                "Words6To9":
+                {
+                    "6":
+                    {
+                        "Description": "The PLID of the invalid PEL",
+                        "AdditionalDataPropSource": "PLID"
+                    },
+                    "7":
+                    {
+                        "Description": "The corresponding OpenBMC event log ID",
+                        "AdditionalDataPropSource": "OBMC_LOG_ID"
+                    },
+                    "8":
+                    {
+                        "Description": "The size of the invalid PEL",
+                        "AdditionalDataPropSource": "PEL_SIZE"
+                    }
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "The host sent the BMC an invalid PEL",
+                "Message": "The host sent the BMC an invalid PEL",
+                "Notes": [
+                ]
+            }
+        },
+
     ]
 }
