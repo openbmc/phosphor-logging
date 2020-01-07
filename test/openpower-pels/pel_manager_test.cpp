@@ -128,6 +128,52 @@ TEST_F(ManagerTest, TestCreateWithPEL)
     fs::remove_all(pelFilename.parent_path());
 }
 
+TEST_F(ManagerTest, TestCreateWithInvalidPEL)
+{
+    std::unique_ptr<DataInterfaceBase> dataIface =
+        std::make_unique<DataInterface>(bus);
+
+    openpower::pels::Manager manager{
+        logManager, std::move(dataIface),
+        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
+                  std::placeholders::_2, std::placeholders::_3)};
+
+    // Create a PEL, write it to a file, and pass that filename into
+    // the create function.
+    auto data = pelDataFactory(TestPELType::pelSimple);
+
+    // Truncate it to make it invalid.
+    data.resize(200);
+
+    fs::path pelFilename = makeTempDir() / "rawpel";
+    std::ofstream pelFile{pelFilename};
+    pelFile.write(reinterpret_cast<const char*>(data.data()), data.size());
+    pelFile.close();
+
+    std::string adItem = "RAWPEL=" + pelFilename.string();
+    std::vector<std::string> additionalData{adItem};
+    std::vector<std::string> associations;
+
+    manager.create("error message", 42, 0,
+                   phosphor::logging::Entry::Level::Error, additionalData,
+                   associations);
+
+    // Run the event loop to log the bad PEL event
+    sdeventplus::Event e{sdEvent};
+    e.run(std::chrono::milliseconds(1));
+
+    PEL invalidPEL{data};
+    EXPECT_EQ(logger.errName, "org.open_power.Logging.Error.BadHostPEL");
+    EXPECT_EQ(logger.errLevel, phosphor::logging::Entry::Level::Error);
+    EXPECT_EQ(std::stoi(logger.ad["PLID"], nullptr, 16), invalidPEL.plid());
+    EXPECT_EQ(logger.ad["OBMC_LOG_ID"], "42");
+    EXPECT_EQ(logger.ad["SRC"], (*invalidPEL.primarySRC())->asciiString());
+    EXPECT_EQ(logger.ad["RAW_PEL_FILENAME"], pelFilename);
+    EXPECT_EQ(logger.ad["PEL_SIZE"], std::to_string(data.size()));
+
+    fs::remove_all(pelFilename.parent_path());
+}
+
 // Test that the message registry can be used to build a PEL.
 TEST_F(ManagerTest, TestCreateWithMessageRegistry)
 {
