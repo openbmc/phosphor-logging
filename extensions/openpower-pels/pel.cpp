@@ -214,7 +214,8 @@ std::unique_ptr<UserData> makeADUserDataSection(const AdditionalData& ad)
 
 } // namespace util
 
-void PEL::printSectionInJSON(const Section& section, std::string& buf) const
+void PEL::printSectionInJSON(const Section& section, std::string& buf,
+                             std::map<uint16_t, size_t>& pluralSections) const
 {
     char tmpB[5];
     uint8_t id[] = {static_cast<uint8_t>(section.header().id >> 8),
@@ -224,6 +225,15 @@ void PEL::printSectionInJSON(const Section& section, std::string& buf) const
     std::string sectionName = pv::sectionTitles.count(sectionID)
                                   ? pv::sectionTitles.at(sectionID)
                                   : "Unknown Section";
+
+    // Add a count if there are multiple of this type of section
+    auto count = pluralSections.find(section.header().id);
+    if (count != pluralSections.end())
+    {
+        sectionName += " " + std::to_string(count->second);
+        count->second++;
+    }
+
     if (section.valid())
     {
         auto json = section.getJSON();
@@ -248,14 +258,46 @@ void PEL::printSectionInJSON(const Section& section, std::string& buf) const
     }
 }
 
+std::map<uint16_t, size_t> PEL::getPluralSections() const
+{
+    std::map<uint16_t, size_t> sectionCounts;
+
+    for (const auto& section : optionalSections())
+    {
+        if (sectionCounts.find(section->header().id) == sectionCounts.end())
+        {
+            sectionCounts[section->header().id] = 1;
+        }
+        else
+        {
+            sectionCounts[section->header().id]++;
+        }
+    }
+
+    std::map<uint16_t, size_t> sections;
+    for (const auto& [id, count] : sectionCounts)
+    {
+        if (count > 1)
+        {
+            // Start with 0 here and printSectionInJSON()
+            // will increment it as it goes.
+            sections.emplace(id, 0);
+        }
+    }
+
+    return sections;
+}
+
 void PEL::toJSON() const
 {
+    auto sections = getPluralSections();
+
     std::string buf = "{";
-    printSectionInJSON(*(_ph.get()), buf);
-    printSectionInJSON(*(_uh.get()), buf);
+    printSectionInJSON(*(_ph.get()), buf, sections);
+    printSectionInJSON(*(_uh.get()), buf, sections);
     for (auto& section : this->optionalSections())
     {
-        printSectionInJSON(*(section.get()), buf);
+        printSectionInJSON(*(section.get()), buf, sections);
     }
     buf += "}";
     std::size_t found = buf.rfind(",");

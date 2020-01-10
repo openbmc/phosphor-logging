@@ -286,6 +286,14 @@ class PEL
     void checkRulesAndFix();
 
     /**
+     * @brief Returns a map of the section IDs that appear more than once
+     *        in the PEL.  The data value for each entry will be set to 0.
+     *
+     * @return std::map<uint16_t, size_t>
+     */
+    std::map<uint16_t, size_t> getPluralSections() const;
+
+    /**
      * @brief The PEL Private Header section
      */
     std::unique_ptr<PrivateHeader> _ph;
@@ -304,8 +312,11 @@ class PEL
      * @brief helper function for printing PELs.
      * @param[in] Section& - section object reference
      * @param[in] std::string - PEL string
+     * @param[in|out] pluralSections - Map used to track sections counts for
+     *                                 when there is more than 1.
      */
-    void printSectionInJSON(const Section& section, std::string& buf) const;
+    void printSectionInJSON(const Section& section, std::string& buf,
+                            std::map<uint16_t, size_t>& pluralSections) const;
 };
 
 namespace util
