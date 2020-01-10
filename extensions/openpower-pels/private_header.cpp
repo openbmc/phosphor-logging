@@ -15,6 +15,7 @@
  */
 #include "private_header.hpp"
 
+#include "json_utils.hpp"
 #include "log_id.hpp"
 #include "pel_types.hpp"
 #include "pel_values.hpp"
@@ -113,17 +114,17 @@ std::optional<std::string> PrivateHeader::getJSON() const
     std::string phPlatformIDStr(tmpPhVal);
     sprintf(tmpPhVal, "0x%X", _id);
     std::string phLogEntryIDStr(tmpPhVal);
-    std::string ph = "{\"Section Version\": \"" + phVerStr +
-                     "\"}, \n {\"Sub-section type\": \"" + phStStr +
-                     "\"}, \n "
-                     "{\"Log Committed by\": \"" +
-                     phCbStr + "\"}, \n {\"Entry Creation\": \"" +
-                     phCreateTStr + "\"}, \n {\"Entry Commit\": \"" +
-                     phCommitTStr + "\"}, \n {\"Creator ID\": \"" + creator +
-                     "\"}, \n {\"Creator Implementation\": \"" +
-                     phCreatorVersionStr + "\"},\n {\"Platform Log ID\": \"" +
-                     phPlatformIDStr + "\"},\n {\"Log Entry ID\": \"" +
-                     phLogEntryIDStr + "\"}";
+    std::string ph;
+    jsonInsert(ph, "Section Version", phVerStr, 1);
+    jsonInsert(ph, "Sub-section type", phStStr, 1);
+    jsonInsert(ph, "Created by", phCbStr, 1);
+    jsonInsert(ph, "Created at", phCreateTStr, 1);
+    jsonInsert(ph, "Committed at", phCommitTStr, 1);
+    jsonInsert(ph, "Creator Subsystem", creator, 1);
+    jsonInsert(ph, "CSSVER", phCreatorVersionStr, 1);
+    jsonInsert(ph, "Platform Log Id", phPlatformIDStr, 1);
+    jsonInsert(ph, "Entry Id", phLogEntryIDStr, 1);
+    ph.erase(ph.size() - 2);
 
     return ph;
 }
