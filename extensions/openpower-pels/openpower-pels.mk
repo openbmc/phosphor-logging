@@ -1,7 +1,8 @@
 phosphor_log_manager_SOURCES += \
 	extensions/openpower-pels/entry_points.cpp \
 	extensions/openpower-pels/manager.cpp \
-	extensions/openpower-pels/repository.cpp
+	extensions/openpower-pels/repository.cpp \
+	extensions/openpower-pels/user_data.cpp
 
 phosphor_log_manager_LDADD = \
 	libpel.la
@@ -32,7 +33,6 @@ libpel_la_SOURCES = \
 	extensions/openpower-pels/src.cpp \
 	extensions/openpower-pels/section_factory.cpp \
 	extensions/openpower-pels/severity.cpp \
-	extensions/openpower-pels/user_data.cpp \
 	extensions/openpower-pels/user_header.cpp
 
 libpel_ldflags =  \
@@ -56,5 +56,9 @@ registry_DATA = extensions/openpower-pels/registry/message_registry.json
 
 bin_PROGRAMS += peltool
 
-peltool_SOURCES = extensions/openpower-pels/tools/peltool.cpp
+peltool_SOURCES = \
+	extensions/openpower-pels/tools/peltool.cpp \
+	extensions/openpower-pels/user_data.cpp \
+	extensions/openpower-pels/user_data_json.cpp
 peltool_LDADD = libpel.la
+peltool_CXXFLAGS = "-DPELTOOL"
