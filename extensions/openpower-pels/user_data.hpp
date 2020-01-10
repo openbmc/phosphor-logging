@@ -80,6 +80,14 @@ class UserData : public Section
         return _data;
     }
 
+    /**
+     * @brief Get the section contents in JSON
+     *
+     * @return The JSON as a string if a parser was found,
+     *         otherwise std::nullopt.
+     */
+    std::optional<std::string> getJSON() const override;
+
   private:
     /**
      * @brief Fills in the object from the stream data

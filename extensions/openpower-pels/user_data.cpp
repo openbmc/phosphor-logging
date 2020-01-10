@@ -15,7 +15,12 @@
  */
 #include "user_data.hpp"
 
+#include "json_utils.hpp"
 #include "pel_types.hpp"
+#include "user_data_formats.hpp"
+#ifdef PELTOOL
+#include "user_data_json.hpp"
+#endif
 
 #include <phosphor-logging/log.hpp>
 
@@ -88,6 +93,15 @@ void UserData::validate()
     {
         _valid = true;
     }
+}
+
+std::optional<std::string> UserData::getJSON() const
+{
+#ifdef PELTOOL
+    return user_data::getJSON(_header.componentID, _header.subType,
+                              _header.version, _data);
+#endif
+    return std::nullopt;
 }
 
 } // namespace pels
