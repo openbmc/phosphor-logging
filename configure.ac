@@ -164,6 +164,10 @@ AS_IF([test "x$enable_openpower_pel_extension" == "xyes"],
             nlohmann/json.hpp,
             [],
             [AC_MSG_ERROR([Could not find nlohmann/json.hpp])]])
+       [AC_CHECK_HEADER(
+            fifo_map.hpp,
+            [],
+            [AC_MSG_ERROR([Could not find fifo_map.hpp])]])
 )
 
 AC_CONFIG_HEADERS([config.h])
