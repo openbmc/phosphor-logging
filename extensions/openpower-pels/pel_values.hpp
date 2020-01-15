@@ -1,5 +1,7 @@
 #pragma once
 
+#include "pel_types.hpp"
+
 #include <map>
 #include <string>
 #include <tuple>
@@ -104,6 +106,11 @@ extern const std::map<std::string, std::string> sectionTitles;
  * @brief Map for creator IDs
  */
 extern const std::map<std::string, std::string> creatorIDs;
+
+/**
+ * @brief Map for transmission states
+ */
+extern const std::map<TransmissionState, std::string> transmissionStates;
 
 } // namespace pel_values
 } // namespace pels

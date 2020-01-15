@@ -43,3 +43,4 @@ test/test-suite.log
 test/*_test_*
 test/*_test
 phosphor-rsyslog-config/phosphor-rsyslog-conf
+peltool

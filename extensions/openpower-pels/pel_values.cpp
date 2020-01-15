@@ -265,6 +265,15 @@ const std::map<std::string, std::string> creatorIDs = {
     {"S", "SLIC"},     {"B", "Hostboot"}, {"T", "OCC"},  {"M", "I/O Drawer"},
     {"K", "Sapphire"}, {"P", "PowerNV"}};
 
+/**
+ * @brief Map for transmission states
+ */
+const std::map<TransmissionState, std::string> transmissionStates = {
+    {TransmissionState::newPEL, "Not Sent"},
+    {TransmissionState::badPEL, "Rejected"},
+    {TransmissionState::sent, "Sent"},
+    {TransmissionState::acked, "Acked"}};
+
 std::string getValue(const uint8_t field, const pel_values::PELValues& values)
 {
 
