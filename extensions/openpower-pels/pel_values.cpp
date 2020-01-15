@@ -206,12 +206,12 @@ const PELValues actionFlagsValues = {
  * The possible values for the Callout Priority field in the SRC.
  */
 const PELValues calloutPriorityValues = {
-    {'H', "high", "Mandatory, replace all with this type as a unit"},
-    {'M', "medium", "Medium Priority"},
-    {'A', "medium_group_a", "Medium Priority A, replace these as a group"},
-    {'B', "medium_group_b", "Medium Priority B, replace these as a group"},
-    {'C', "medium_group_c", "Medium Priority C, replace these as a group"},
-    {'L', "low", "Lowest priority replacement"}};
+    {0x48, "high", "Mandatory, replace all with this type as a unit"},
+    {0x4D, "medium", "Medium Priority"},
+    {0x41, "medium_group_a", "Medium Priority A, replace these as a group"},
+    {0x42, "medium_group_b", "Medium Priority B, replace these as a group"},
+    {0x43, "medium_group_c", "Medium Priority C, replace these as a group"},
+    {0x4C, "low", "Lowest priority replacement"}};
 
 PELValues::const_iterator findByValue(uint32_t value, const PELValues& fields)
 {
@@ -235,7 +235,6 @@ PELValues::const_iterator findByName(const std::string& name,
  * @brief Map for section IDs
  */
 const std::map<std::string, std::string> sectionTitles = {
-
     {"PH", "Private Header"},
     {"UH", "User Header"},
     {"PS", "Primary SRC"},
@@ -244,7 +243,7 @@ const std::map<std::string, std::string> sectionTitles = {
     {"MT", "Failing MTMS"},
     {"DH", "Dump Location"},
     {"SW", "Firmware Error"},
-    {"LP", "Impacted Part"},
+    {"LP", "Impacted Partition"},
     {"LR", "Logical Resource"},
     {"HM", "HMC ID"},
     {"EP", "EPOW"},
@@ -253,8 +252,32 @@ const std::map<std::string, std::string> sectionTitles = {
     {"CH", "Call Home"},
     {"UD", "User Data"},
     {"EI", "Env Info"},
-    {"ED", "Extended User Data"},
-};
+    {"ED", "Extended User Data"}};
+
+/**
+ * @brief Map for Procedure Descriptions
+ */
+const std::map<std::string, std::string> procedureDesc = {{"TODO", "TODO"}};
+
+/**
+ * @brief Map for Callout Failing Component Types
+ */
+const std::map<uint8_t, std::string> failingComponentType = {
+    {0x10, "Normal Hardware FRU"},
+    {0x20, "Code FRU"},
+    {0x30, "Configuration error, configuration procedure required"},
+    {0x40, "Maintenance Procedure Required"},
+    {0x90, "External FRU"},
+    {0xA0, "External Code FRU"},
+    {0xB0, "Tool FRU"},
+    {0xC0, "Symbolic FRU"},
+    {0xE0, "Symbolic FRU with trusted location code"}};
+
+/**
+ * @brief Map for Boolean value
+ */
+const std::map<bool, std::string> boolString = {{true, "True"},
+                                                {false, "False"}};
 
 /**
  * @brief Map for creator IDs

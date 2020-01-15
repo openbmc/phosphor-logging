@@ -264,37 +264,21 @@ uint16_t getComponentID(uint8_t srcType, uint16_t reasonCode,
 
 } // namespace helper
 
-std::optional<Entry> Registry::lookup(const std::string& name)
+std::optional<Entry> Registry::lookup(const std::string& name, LookupType type)
 {
-    // Look in /etc first in case someone put a test file there
-    fs::path debugFile{fs::path{debugFilePath} / registryFileName};
-    nlohmann::json registry;
-    std::ifstream file;
-
-    if (fs::exists(debugFile))
+    if (!_registry)
     {
-        log<level::INFO>("Using debug PEL message registry");
-        file.open(debugFile);
-    }
-    else
-    {
-        file.open(_registryFile);
-    }
-
-    try
-    {
-        registry = nlohmann::json::parse(file);
-    }
-    catch (std::exception& e)
-    {
-        log<level::ERR>("Error parsing message registry JSON",
-                        entry("JSON_ERROR=%s", e.what()));
         return std::nullopt;
     }
-
+    const auto& registry = _registry.value();
     // Find an entry with this name in the PEL array.
-    auto e = std::find_if(registry["PELs"].begin(), registry["PELs"].end(),
-                          [&name](const auto& j) { return name == j["Name"]; });
+    auto e = std::find_if(
+        registry["PELs"].begin(), registry["PELs"].end(),
+        [&name, &type](const auto& j) {
+            return ((name == j["Name"] && type == LookupType::name) ||
+                    (name == j["SRC"]["ReasonCode"] &&
+                     type == LookupType::reasonCode));
+        });
 
     if (e != registry["PELs"].end())
     {
@@ -371,6 +355,14 @@ std::optional<Entry> Registry::lookup(const std::string& name)
                 entry.src.powerFault = src["PowerFault"];
             }
 
+            auto& doc = (*e)["Documentation"];
+            entry.doc.message = doc["Message"];
+            entry.doc.description = doc["Description"];
+            if (doc.find("MessageArgSources") != doc.end())
+            {
+                entry.doc.messageArgSources = doc["MessageArgSources"];
+            }
+
             return entry;
         }
         catch (std::exception& e)
@@ -381,6 +373,37 @@ std::optional<Entry> Registry::lookup(const std::string& name)
     }
 
     return std::nullopt;
+}
+
+std::optional<nlohmann::json>
+    Registry::readRegistry(const std::filesystem::path& registryFile)
+{
+    // Look in /etc first in case someone put a test file there
+    fs::path debugFile{fs::path{debugFilePath} / registryFileName};
+    nlohmann::json registry;
+    std::ifstream file;
+
+    if (fs::exists(debugFile))
+    {
+        log<level::INFO>("Using debug PEL message registry");
+        file.open(debugFile);
+    }
+    else
+    {
+        file.open(registryFile);
+    }
+
+    try
+    {
+        registry = nlohmann::json::parse(file);
+    }
+    catch (std::exception& e)
+    {
+        log<level::ERR>("Error parsing message registry JSON",
+                        entry("JSON_ERROR=%s", e.what()));
+        return std::nullopt;
+    }
+    return registry;
 }
 
 } // namespace message

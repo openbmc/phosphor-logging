@@ -31,6 +31,7 @@ namespace pels
 
 using namespace phosphor::logging;
 namespace fs = std::filesystem;
+namespace rg = openpower::pels::message;
 
 namespace common_error = sdbusplus::xyz::openbmc_project::Common::Error;
 
@@ -130,7 +131,7 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
                         const std::vector<std::string>& additionalData,
                         const std::vector<std::string>& associations)
 {
-    auto entry = _registry.lookup(message);
+    auto entry = _registry.lookup(message, rg::LookupType::name);
     std::string msg;
 
     if (entry)
