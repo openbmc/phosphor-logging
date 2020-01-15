@@ -114,6 +114,7 @@ std::optional<std::string> PrivateHeader::getJSON() const
     std::string phPlatformIDStr(tmpPhVal);
     sprintf(tmpPhVal, "0x%X", _id);
     std::string phLogEntryIDStr(tmpPhVal);
+    std::string phObmcIDStr = std::to_string(_obmcLogID);
     std::string ph;
     jsonInsert(ph, "Section Version", phVerStr, 1);
     jsonInsert(ph, "Sub-section type", phStStr, 1);
@@ -124,6 +125,7 @@ std::optional<std::string> PrivateHeader::getJSON() const
     jsonInsert(ph, "CSSVER", phCreatorVersionStr, 1);
     jsonInsert(ph, "Platform Log Id", phPlatformIDStr, 1);
     jsonInsert(ph, "Entry Id", phLogEntryIDStr, 1);
+    jsonInsert(ph, "BMC Event Log Id", phObmcIDStr, 1);
     ph.erase(ph.size() - 2);
 
     return ph;
