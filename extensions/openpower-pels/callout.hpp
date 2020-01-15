@@ -65,6 +65,16 @@ class Callout
     void flatten(Stream& pel) const;
 
     /**
+     * @brief Returns the flags field of a callout
+     *
+     * @return uint8_t - The flags
+     */
+    uint8_t flags() const
+    {
+        return _flags;
+    }
+
+    /**
      * @brief Returns the priority field of a callout
      *
      * @return uint8_t - The priority
