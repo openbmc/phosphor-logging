@@ -21,6 +21,11 @@ constexpr uint8_t bmcSRCFormat = 0x55;
 constexpr uint8_t primaryBMCPosition = 0x10;
 constexpr size_t baseSRCSize = 72;
 
+enum class DetailLevel
+{
+    message = 0x01,
+    json = 0x02
+};
 /**
  * @class SRC
  *
@@ -45,7 +50,10 @@ class SRC : public Section
     enum HeaderFlags
     {
         additionalSections = 0x01,
-        powerFaultEvent = 0x02
+        powerFaultEvent = 0x02,
+        hypDumpInit = 0x04,
+        i5OSServiceEventBit = 0x10,
+        virtualProgressSRC = 0x80
     };
 
     SRC() = delete;
@@ -212,6 +220,19 @@ class SRC : public Section
         return wordNum - 2;
     }
 
+    /**
+     * @brief Get section in JSON.
+     * @return std::optional<std::string> - SRC section's JSON
+     */
+    std::optional<std::string> getJSON() const override;
+
+    /**
+     * @brief Get error details based on refcode and hexwords
+     * @param[in] type - detail level enum value : single message or full json
+     * @return std::optional<std::string> - Error details
+     */
+    std::optional<std::string> getErrorDetails(DetailLevel type) const;
+
   private:
     /**
      * @brief Fills in the user defined hex words from the
@@ -279,6 +300,20 @@ class SRC : public Section
      * Updates _valid (in Section) with the results.
      */
     void validate() override;
+
+    /**
+     * @brief Get error description from message registry
+     * @param[in] regEntry - The message registry entry for the error
+     * @return std::optional<std::string> - Error message
+     */
+    std::optional<std::string>
+        getErrorMessage(const message::Entry& regEntry) const;
+
+    /**
+     * @brief Get Callout info in JSON
+     * @return std::optional<std::string> - Callout details
+     */
+    std::optional<std::string> getCallouts() const;
 
     /**
      * @brief The SRC version field

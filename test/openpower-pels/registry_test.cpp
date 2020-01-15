@@ -35,6 +35,12 @@ const auto registryData = R"(
             "SRC":
             {
                 "ReasonCode": "0x2030"
+            },
+
+            "Documentation":
+            {
+                "Description": "A PGOOD Fault",
+                "Message": "PS had a PGOOD Fault"
             }
         },
 
@@ -66,6 +72,20 @@ const auto registryData = R"(
                         "AdditionalDataPropSource": "VOLTAGE"
                     }
                 }
+            },
+
+            "Documentation":
+            {
+                "Description": "A PGOOD Fault",
+                "Message": "PS %1 had a PGOOD Fault",
+                "MessageArgSources":
+                [
+                    "SRCWord6"
+                ],
+                "Notes": [
+                    "In the UserData section there is a JSON",
+                    "dump that provides debug information."
+                ]
             }
         }
     ]
@@ -104,7 +124,7 @@ TEST_F(RegistryTest, TestNoEntry)
     auto path = RegistryTest::writeData(registryData);
     Registry registry{path};
 
-    auto entry = registry.lookup("foo");
+    auto entry = registry.lookup("foo", LookupType::name);
     EXPECT_FALSE(entry);
 }
 
@@ -113,7 +133,8 @@ TEST_F(RegistryTest, TestFindEntry)
     auto path = RegistryTest::writeData(registryData);
     Registry registry{path};
 
-    auto entry = registry.lookup("xyz.openbmc_project.Power.OverVoltage");
+    auto entry = registry.lookup("xyz.openbmc_project.Power.OverVoltage",
+                                 LookupType::name);
     ASSERT_TRUE(entry);
     EXPECT_EQ(entry->name, "xyz.openbmc_project.Power.OverVoltage");
     EXPECT_EQ(entry->subsystem, 0x62);
@@ -147,6 +168,17 @@ TEST_F(RegistryTest, TestFindEntry)
     EXPECT_NE(std::find((*sid).begin(), (*sid).end(), 5), (*sid).end());
     EXPECT_NE(std::find((*sid).begin(), (*sid).end(), 6), (*sid).end());
     EXPECT_NE(std::find((*sid).begin(), (*sid).end(), 7), (*sid).end());
+
+    EXPECT_EQ(entry->doc.description, "A PGOOD Fault");
+    EXPECT_EQ(entry->doc.message, "PS %1 had a PGOOD Fault");
+    auto& hexwordSource = entry->doc.messageArgSources;
+    EXPECT_TRUE(hexwordSource);
+    EXPECT_EQ((*hexwordSource).size(), 1);
+    EXPECT_EQ((*hexwordSource).front(), "SRCWord6");
+
+    entry = registry.lookup("0x2333", LookupType::reasonCode);
+    ASSERT_TRUE(entry);
+    EXPECT_EQ(entry->name, "xyz.openbmc_project.Power.OverVoltage");
 }
 
 // Check the entry that mostly uses defaults
@@ -155,7 +187,8 @@ TEST_F(RegistryTest, TestFindEntryMinimal)
     auto path = RegistryTest::writeData(registryData);
     Registry registry{path};
 
-    auto entry = registry.lookup("xyz.openbmc_project.Power.Fault");
+    auto entry =
+        registry.lookup("xyz.openbmc_project.Power.Fault", LookupType::name);
     ASSERT_TRUE(entry);
     EXPECT_EQ(entry->name, "xyz.openbmc_project.Power.Fault");
     EXPECT_EQ(entry->subsystem, 0x61);
@@ -180,7 +213,7 @@ TEST_F(RegistryTest, TestBadJSON)
 
     Registry registry{path};
 
-    EXPECT_FALSE(registry.lookup("foo"));
+    EXPECT_FALSE(registry.lookup("foo", LookupType::name));
 }
 
 // Test the helper functions the use the pel_values data.
