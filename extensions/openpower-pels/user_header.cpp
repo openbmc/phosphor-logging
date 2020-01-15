@@ -143,6 +143,15 @@ std::optional<std::string> UserHeader::getJSON() const
     eventType = pv::getValue(_eventType, pel_values::eventTypeValues);
     actionFlags =
         pv::getValuesBitwise(_actionFlags, pel_values::actionFlagsValues);
+
+    std::string hostState{"Invalid"};
+    auto iter = pv::transmissionStates.find(
+        static_cast<TransmissionState>(hostTransmissionState()));
+    if (iter != pv::transmissionStates.end())
+    {
+        hostState = iter->second;
+    }
+
     char tmpUhVal[8];
     sprintf(tmpUhVal, "%d", userHeaderVersion);
     std::string uhVerStr(tmpUhVal);
@@ -160,6 +169,7 @@ std::optional<std::string> UserHeader::getJSON() const
     jsonInsert(uh, "Event Severity", severity, 1);
     jsonInsert(uh, "Event Type", eventType, 1);
     jsonInsertArray(uh, "Action Flags", actionFlags, 1);
+    jsonInsert(uh, "Host Transmission", hostState, 1);
     uh.erase(uh.size() - 2);
     return uh;
 }
