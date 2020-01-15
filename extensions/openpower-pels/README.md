@@ -4,6 +4,13 @@ This extension will create PELs for every OpenBMC event log. It is also
 possible to point to the raw PEL to use in the OpenBMC event, and then that
 will be used instead of creating one.
 
+## Contents
+* [Passing in data when creating PELs](#passing-pel-related-data-within-an-openbmc-event-log)
+* [Default UserData sections for BMC created PELs](#default-userdata-sections-for-bmc-created-pels)
+* [The PEL Message Registry](#the-pel-message-registry)
+* [Action Flags and Event Type Rules](#action-flags-and-event-type-rules)
+* [D-Bus Interfaces](#d-bus-interfaces)
+
 ## Passing PEL related data within an OpenBMC event log
 
 An error log creator can pass in data that is relevant to a PEL by using
@@ -40,6 +47,59 @@ _PID=<PID of application>
 e.g.
 _PID="12345"
 ```
+
+### FFDC Intended For UserData PEL sections
+
+When one needs to add FFDC into the PEL UserData sections, the
+`CreateWithFFDCFiles` D-Bus method on the `xyz.openbmc_project.Logging.Create`
+interface must be used when creating a new event log. This method takes a list
+of files to store in the PEL UserData sections.
+
+That API is the same as the 'Create' one, except it has a new parameter:
+
+```
+std::vector<std::tuple<enum[FFDCFormat],
+                       uint8_t,
+                       uint8_t,
+                       sdbusplus::message::unix_fd>>
+```
+
+Each entry in the vector contains a file descriptor for a file that will
+be stored in a unique UserData section.  The tuple's arguments are:
+
+- enum[FFDCFormat]: The data format type, the options are:
+    - 'json'
+        - The parser will use nlohmann::json\'s pretty print
+    - 'bson'
+        - The parser will use nlohmann::json\'s pretty print
+    - 'text'
+        - The parser will output ASCII text
+    - 'custom'
+        - The parser will hexdump the data, unless there is a parser registered
+          for this component ID and subtype.
+- uint8_t: subType
+  - Useful for the 'custom' type.  Not used with the other types.
+- uint8_t: version
+  - The version of the data.  Can be incremented if format changes.
+- unixfd - The file descriptor for the opened file that contains the
+    contents.  The file descriptor can be closed and the file can be deleted if
+    desired after the method call.
+
+Upon receiving this data, the PEL code will create UserData sections for each
+entry in that vector with the follow UserData fields:
+
+- Section header component ID:
+    - If the type field from the tuple is "custom", use the component ID from
+      the message registry.
+    - Otherwise, set the component ID to the phosphor-logging component ID so
+      that the parser knows to use the built in parsers (e.g. json) for the
+      type.
+- Section header subtype: The subtype field from the tuple.
+- Section header version: The version field from the tuple.
+- Section data: The data from the file.
+
+If there is a peltool parser registered for the custom type (method is TBD),
+that will be used by peltool to print the data, otherwise it will be hexdumped.
 
 ## Default UserData sections for BMC created PELs
 
@@ -84,3 +144,6 @@ These rules are:
 Additional rules may be added in the future if necessary.
 
 ## D-Bus Interfaces
+
+See the org.open_power.Logging.PEL interface definition for the most up to date
+information.
