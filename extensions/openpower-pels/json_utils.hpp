@@ -39,7 +39,7 @@ char* dumpHex(const void* data, size_t size);
  * @param[in] indentCount - Indent count for the line
  */
 void jsonInsert(std::string& jsonStr, const std::string& fieldName,
-                std::string& fieldValue, uint8_t indentCount);
+                std::string fieldValue, uint8_t indentCount);
 
 /**
  * @brief Inserts key-value array into a JSON string
@@ -51,5 +51,24 @@ void jsonInsert(std::string& jsonStr, const std::string& fieldName,
  */
 void jsonInsertArray(std::string& jsonStr, const std::string& fieldName,
                      std::vector<std::string>& values, uint8_t indentCount);
+
+template <typename T>
+std::string getNumberString(const char* format, T number)
+{
+    char* value = nullptr;
+    std::string numString;
+
+    static_assert(std::is_integral<T>::value, "Integral required.");
+
+    asprintf(&value, format, number);
+    if (value != nullptr)
+    {
+        numString = value;
+    }
+    free(value);
+
+    return numString;
+}
+
 } // namespace pels
 } // namespace openpower

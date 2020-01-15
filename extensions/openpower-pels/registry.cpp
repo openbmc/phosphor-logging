@@ -264,7 +264,7 @@ uint16_t getComponentID(uint8_t srcType, uint16_t reasonCode,
 
 } // namespace helper
 
-std::optional<Entry> Registry::lookup(const std::string& name)
+std::optional<Entry> Registry::lookup(const std::string& name, LookupType type)
 {
     // Look in /etc first in case someone put a test file there
     fs::path debugFile{fs::path{debugFilePath} / registryFileName};
@@ -293,8 +293,13 @@ std::optional<Entry> Registry::lookup(const std::string& name)
     }
 
     // Find an entry with this name in the PEL array.
-    auto e = std::find_if(registry["PELs"].begin(), registry["PELs"].end(),
-                          [&name](const auto& j) { return name == j["Name"]; });
+    auto e = std::find_if(
+        registry["PELs"].begin(), registry["PELs"].end(),
+        [&name, &type](const auto& j) {
+            return ((name == j["Name"] && type == LookupType::name) ||
+                    (name == j["SRC"]["ReasonCode"] &&
+                     type == LookupType::reasonCode));
+        });
 
     if (e != registry["PELs"].end())
     {
@@ -369,6 +374,14 @@ std::optional<Entry> Registry::lookup(const std::string& name)
             if (src.find("PowerFault") != src.end())
             {
                 entry.src.powerFault = src["PowerFault"];
+            }
+
+            auto& doc = (*e)["Documentation"];
+            entry.doc.message = doc["Message"];
+            entry.doc.description = doc["Description"];
+            if (doc.find("MessageArgSources") != doc.end())
+            {
+                entry.doc.messageArgSources = doc["MessageArgSources"];
             }
 
             return entry;
