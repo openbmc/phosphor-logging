@@ -289,9 +289,13 @@ src_test_LDADD = \
 	$(top_builddir)/extensions/openpower-pels/callout.o \
 	$(top_builddir)/extensions/openpower-pels/callouts.o \
 	$(top_builddir)/extensions/openpower-pels/fru_identity.o \
+	$(top_builddir)/extensions/openpower-pels/json_utils.o \
+	$(top_builddir)/extensions/openpower-pels/paths.o \
 	$(top_builddir)/extensions/openpower-pels/mru.o \
 	$(top_builddir)/extensions/openpower-pels/mtms.o \
 	$(top_builddir)/extensions/openpower-pels/pce_identity.o \
+	$(top_builddir)/extensions/openpower-pels/pel_values.o \
+	$(top_builddir)/extensions/openpower-pels/registry.o \
 	$(top_builddir)/extensions/openpower-pels/src.o
 src_test_LDFLAGS = $(test_ldflags)
 
@@ -309,9 +313,13 @@ extended_user_header_test_LDADD = \
 	$(top_builddir)/extensions/openpower-pels/data_interface.o \
 	$(top_builddir)/extensions/openpower-pels/extended_user_header.o \
 	$(top_builddir)/extensions/openpower-pels/fru_identity.o \
+	$(top_builddir)/extensions/openpower-pels/json_utils.o \
 	$(top_builddir)/extensions/openpower-pels/mru.o \
 	$(top_builddir)/extensions/openpower-pels/mtms.o \
+	$(top_builddir)/extensions/openpower-pels/paths.o \
+	$(top_builddir)/extensions/openpower-pels/pel_values.o \
 	$(top_builddir)/extensions/openpower-pels/pce_identity.o \
+	$(top_builddir)/extensions/openpower-pels/registry.o \
 	$(top_builddir)/extensions/openpower-pels/src.o
 extended_user_header_test_LDFLAGS = $(test_ldflags)
 

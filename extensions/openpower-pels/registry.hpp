@@ -13,6 +13,39 @@ namespace message
 {
 
 constexpr auto registryFileName = "message_registry.json";
+enum class LookupType
+{
+    name = 0,
+    reasonCode = 1
+};
+
+/**
+ * @brief Represents the Documentation related fields in the message registry.
+ *        It is part of the 'Entry' structure that will be filled in when
+ *        an error is looked up in the registry.
+ *
+ * If a field is wrapped by std::optional, it means the field is
+ * optional in the JSON and higher level code knows how to handle it.
+ */
+struct DOC
+{
+    /**
+     * @brief Description of error
+     */
+    std::string description;
+
+    /**
+     * @brief Error message field
+     */
+    std::string message;
+
+    /**
+     * @brief An optional vector of SRC word 6-9 to use as the source of the
+     *        numeric arguments that will be substituted into any placeholder
+     *        in the Message field.
+     */
+    std::optional<std::vector<std::string>> messageArgSources;
+};
 
 /**
  * @brief Represents the SRC related fields in the message registry.
@@ -123,6 +156,11 @@ struct Entry
      * The SRC related fields.
      */
     SRC src;
+
+    /**
+     * The Documentation related fields.
+     */
+    DOC doc;
 };
 
 /**
@@ -155,24 +193,42 @@ class Registry
     }
 
     /**
-     * @brief Find a registry entry based on its error name.
+     * @brief Find a registry entry based on its error name or reason code.
      *
      * This function does do some basic sanity checking on the JSON contents,
      * but there is also an external program that enforces a schema on the
      * registry JSON that should catch all of these problems ahead of time.
      *
      * @param[in] name - The error name, like xyz.openbmc_project.Error.Foo
-     *
+     *                 - OR
+     *                 - The reason code, like 0x1001
+     * @param[in] type - LookupType enum value
+     * @param[in] toCache - boolean to cache registry in memory
      * @return optional<Entry> A filled in message registry structure if
      *                         found, otherwise an empty optional object.
      */
-    std::optional<Entry> lookup(const std::string& name);
+    std::optional<Entry> lookup(const std::string& name, LookupType type,
+                                bool toCache = false);
+
+    /**
+     * @brief Parse message registry file using nlohmann::json
+     * @param[in] registryFile - The message registry JSON file
+     * @return optional<nlohmann::json> The full message registry object or an
+     *                                  empty optional object upon failure.
+     */
+    std::optional<nlohmann::json>
+        readRegistry(const std::filesystem::path& registryFile);
 
   private:
     /**
      * @brief The path to the registry JSON file.
      */
     std::filesystem::path _registryFile;
+
+    /**
+     * @brief The full message registry object.
+     */
+    std::optional<nlohmann::json> _registry;
 };
 
 namespace helper

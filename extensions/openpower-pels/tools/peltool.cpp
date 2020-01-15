@@ -16,6 +16,7 @@
 #include "config.h"
 
 #include "../bcd_time.hpp"
+#include "../paths.hpp"
 #include "../pel.hpp"
 #include "../pel_types.hpp"
 #include "../pel_values.hpp"
@@ -197,7 +198,7 @@ std::string trim(std::string s, const char* t = ws)
 }
 
 template <typename T>
-std::string genPELJSON(T itr, bool hidden)
+std::string genPELJSON(T itr, bool hidden, message::Registry& registry)
 {
     std::size_t found;
     std::string val;
@@ -224,9 +225,24 @@ std::string genPELJSON(T itr, bool hidden)
                 val = std::string(tmpValStr);
                 listStr += "\t\"" + val + "\": {\n";
                 // ASCII
-                val = pel.primarySRC() ? pel.primarySRC().value()->asciiString()
-                                       : "No SRC";
-                listStr += "\t\t\"SRC\": \"" + trim(val) + "\",\n";
+                if (pel.primarySRC())
+                {
+                    val = pel.primarySRC().value()->asciiString();
+                    listStr += "\t\t\"SRC\": \"" +
+                               val.substr(0, val.find(0x20)) + "\",\n";
+                    // Registry message
+                    auto regVal = pel.primarySRC().value()->getErrorDetails(
+                        registry, DetailLevel::message, true);
+                    if (regVal)
+                    {
+                        val = regVal.value();
+                        listStr += "\t\t\"Message\": \"" + val + "\",\n";
+                    }
+                }
+                else
+                {
+                    listStr += "\t\t\"SRC\": \"No SRC\",\n";
+                }
                 // platformid
                 sprintf(tmpValStr, "0x%X", pel.privateHeader().plid());
                 val = std::string(tmpValStr);
@@ -308,8 +324,10 @@ void printList(bool order, bool hidden)
                          fileNameToTimestamp((*it).path().filename()));
         }
     }
-    auto buildJSON = [&listStr, &hidden](const auto& i) {
-        listStr += genPELJSON(i, hidden);
+    message::Registry registry(getMessageRegistryPath() /
+                               message::registryFileName);
+    auto buildJSON = [&listStr, &hidden, &registry](const auto& i) {
+        listStr += genPELJSON(i, hidden, registry);
     };
     if (order)
     {
