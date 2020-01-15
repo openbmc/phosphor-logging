@@ -112,6 +112,21 @@ extern const std::map<std::string, std::string> creatorIDs;
  */
 extern const std::map<TransmissionState, std::string> transmissionStates;
 
+/**
+ * @brief Map for Procedure Descriptions
+ */
+extern const std::map<std::string, std::string> procedureDesc;
+
+/**
+ * @brief Map for Callout Failing Component Types
+ */
+extern const std::map<uint8_t, std::string> failingComponentType;
+
+/**
+ * @brief Map for Boolean value
+ */
+extern const std::map<bool, std::string> boolString;
+
 } // namespace pel_values
 } // namespace pels
 } // namespace openpower

@@ -139,7 +139,7 @@ char* dumpHex(const void* data, size_t size)
 }
 
 void jsonInsert(std::string& jsonStr, const std::string& fieldName,
-                std::string& fieldValue, uint8_t indentCount)
+                std::string fieldValue, uint8_t indentCount)
 {
     const int8_t spacesToAppend =
         colAlign - (indentCount * indentLevel) - fieldName.length() - 3;

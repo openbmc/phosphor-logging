@@ -122,6 +122,11 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
             "SRC":
             {
                 "ReasonCode": "0x2030"
+            },
+            "Documentation":
+            {
+                "Description": "A PGOOD Fault",
+                "Message": "PS had a PGOOD Fault"
             }
         }
     ]
