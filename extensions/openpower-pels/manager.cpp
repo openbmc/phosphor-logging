@@ -28,6 +28,7 @@ namespace pels
 
 using namespace phosphor::logging;
 namespace fs = std::filesystem;
+namespace rg = openpower::pels::message;
 
 namespace additional_data
 {
@@ -125,7 +126,7 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
                         const std::vector<std::string>& additionalData,
                         const std::vector<std::string>& associations)
 {
-    auto entry = _registry.lookup(message);
+    auto entry = _registry.lookup(message, rg::lookupType::name);
 
     if (entry)
     {

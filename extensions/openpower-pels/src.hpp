@@ -45,7 +45,10 @@ class SRC : public Section
     enum HeaderFlags
     {
         additionalSections = 0x01,
-        powerFaultEvent = 0x02
+        powerFaultEvent = 0x02,
+        hypDumpInit = 0x04,
+        i5OSServiceEventBit = 0x10,
+        virtualProgressSRC = 0x80
     };
 
     SRC() = delete;
@@ -211,6 +214,12 @@ class SRC : public Section
         assert(wordNum >= 2 && wordNum <= 9);
         return wordNum - 2;
     }
+
+    /**
+     * @brief Get section in JSON.
+     * @return std::optional<std::string> - SRC section's JSON
+     */
+    std::optional<std::string> getJSON() const override;
 
   private:
     /**
