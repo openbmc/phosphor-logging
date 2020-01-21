@@ -16,6 +16,7 @@ using DBusService = std::string;
 using DBusPath = std::string;
 using DBusInterfaceList = std::vector<DBusInterface>;
 using DBusPropertyMap = std::map<DBusProperty, DBusValue>;
+using DBusInterfaceMap = std::map<DBusInterface, DBusPropertyMap>;
 
 /**
  * @class DataInterface
@@ -311,6 +312,14 @@ class DataInterface : public DataInterfaceBase
     void sysAssetPropChanged(sdbusplus::message::message& msg);
 
     /**
+     * @brief The interfaces added callback for the Asset iface
+     *        on the system inventory object.
+     *
+     * @param[in] msg - The sdbusplus message of the signal
+     */
+    void sysAssetIfaceAdded(sdbusplus::message::message& msg);
+
+    /**
      * @brief The properties changed callback for the OperatingSystemStatus
      *        interface on the host state object.
      *
@@ -319,14 +328,18 @@ class DataInterface : public DataInterfaceBase
     void osStatePropChanged(sdbusplus::message::message& msg);
 
     /**
-     * @brief The match object for the system path's properties
+     * @brief The interfaces added callback for the OperatingSystemStatus
+     *        interface on the host state object.
+     *
+     * @param[in] msg - The sdbusplus message of the signal
      */
-    std::unique_ptr<sdbusplus::bus::match_t> _sysInventoryPropMatch;
+    void osStatusIfaceAdded(sdbusplus::message::message& msg);
 
     /**
-     * @brief The match object for the operating system status.
+     * @brief The matches for the propertiesChanged and interfacesAdded
+     *        signals.
      */
-    std::unique_ptr<sdbusplus::bus::match_t> _osStateMatch;
+    std::vector<sdbusplus::bus::match_t> _matches;
 
     /**
      * @brief The sdbusplus bus object for making D-Bus calls.
