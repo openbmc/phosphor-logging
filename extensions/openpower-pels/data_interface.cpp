@@ -36,6 +36,8 @@ constexpr auto objectMapper = "/xyz/openbmc_project/object_mapper";
 constexpr auto systemInv = "/xyz/openbmc_project/inventory/system";
 constexpr auto hostState = "/xyz/openbmc_project/state/host0";
 constexpr auto pldm = "/xyz/openbmc_project/pldm";
+constexpr auto enableHostPELs =
+    "/xyz/openbmc_project/logging/send_event_logs_to_host";
 } // namespace object_path
 
 namespace interface
@@ -45,6 +47,7 @@ constexpr auto objectMapper = "xyz.openbmc_project.ObjectMapper";
 constexpr auto invAsset = "xyz.openbmc_project.Inventory.Decorator.Asset";
 constexpr auto osStatus = "xyz.openbmc_project.State.OperatingSystem.Status";
 constexpr auto pldmRequester = "xyz.openbmc_project.PLDM.Requester";
+constexpr auto enable = "xyz.openbmc_project.Object.Enable";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::OperatingSystem::server;
@@ -57,6 +60,7 @@ DataInterface::DataInterface(sdbusplus::bus::bus& bus) : _bus(bus)
     readBMCFWVersion();
     readServerFWVersion();
     readBMCFWVersionID();
+    readHostPELEnablement();
 }
 
 void DataInterface::readMTMS()
@@ -349,6 +353,73 @@ void DataInterface::readServerFWVersion()
 void DataInterface::readBMCFWVersionID()
 {
     _bmcFWVersionID = getOSReleaseValue("VERSION_ID").value_or("");
+}
+
+void DataInterface::readHostPELEnablement()
+{
+    try
+    {
+        auto service =
+            getService(object_path::enableHostPELs, interface::enable);
+        if (!service.empty())
+        {
+            DBusValue value;
+            getProperty(service, object_path::enableHostPELs, interface::enable,
+                        "Enabled", value);
+
+            _sendPELsToHost = std::get<bool>(value);
+        }
+    }
+    catch (std::exception& e)
+    {
+        // Not available yet.
+    }
+
+    _matches.emplace_back(
+        _bus,
+        match_rules::propertiesChanged(object_path::enableHostPELs,
+                                       interface::enable),
+        std::bind(std::mem_fn(&DataInterface::hostPELPropChanged), this,
+                  std::placeholders::_1));
+
+    _matches.emplace_back(
+        _bus,
+        match_rules::interfacesAdded() +
+            match_rules::argNpath(0, object_path::enableHostPELs),
+        std::bind(std::mem_fn(&DataInterface::hostPELIfaceAdded), this,
+                  std::placeholders::_1));
+}
+
+void DataInterface::hostPELPropChanged(sdbusplus::message::message& msg)
+{
+    DBusInterface interface;
+    DBusPropertyMap properties;
+
+    msg.read(interface, properties);
+
+    auto enabled = properties.find("Enabled");
+    if (enabled != properties.end())
+    {
+        _sendPELsToHost = std::get<bool>(enabled->second);
+    }
+}
+
+void DataInterface::hostPELIfaceAdded(sdbusplus::message::message& msg)
+{
+    sdbusplus::message::object_path path;
+    DBusInterfaceMap interfaces;
+
+    msg.read(path, interfaces);
+
+    auto iface = interfaces.find(interface::enable);
+    if (iface != interfaces.end())
+    {
+        auto enabled = iface->second.find("Enabled");
+        if (enabled != iface->second.end())
+        {
+            _sendPELsToHost = std::get<bool>(enabled->second);
+        }
+    }
 }
 
 } // namespace pels

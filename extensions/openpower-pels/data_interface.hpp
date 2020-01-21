@@ -10,7 +10,7 @@ namespace openpower
 namespace pels
 {
 
-using DBusValue = sdbusplus::message::variant<std::string>;
+using DBusValue = sdbusplus::message::variant<std::string, bool>;
 using DBusProperty = std::string;
 using DBusInterface = std::string;
 using DBusService = std::string;
@@ -138,6 +138,7 @@ class DataInterfaceBase
     }
 
     /**
+<<<<<<< HEAD
      * @brief Returns the BMC FW version ID
      *
      * @return std::string - The BMC FW version ID
@@ -167,6 +168,16 @@ class DataInterfaceBase
         }
 
         return std::nullopt;
+    }
+
+    /**
+     * @brief Returns the 'send event logs to host' setting.
+     *
+     * @return std::string - If sending PELs to the host if enabled.
+     */
+    virtual bool getHostPELEnablement() const
+    {
+        return _sendPELsToHost;
     }
 
   protected:
@@ -237,6 +248,13 @@ class DataInterfaceBase
      * @brief The BMC firmware version ID string
      */
     std::string _bmcFWVersionID;
+
+    /**
+     * @brief If sending PELs is enabled.
+     *
+     * This is usually set to false in manufacturing test.
+     */
+    bool _sendPELsToHost = true;
 };
 
 /**
@@ -313,6 +331,12 @@ class DataInterface : public DataInterfaceBase
     void readBMCFWVersionID();
 
     /**
+     * @brief Reads the setting that says if sending PELs to the host is
+     *        enabled.
+     */
+    void readHostPELEnablement();
+
+    /**
      * @brief Finds the D-Bus service name that hosts the
      *        passed in path and interface.
      *
@@ -378,6 +402,22 @@ class DataInterface : public DataInterfaceBase
      * @param[in] msg - The sdbusplus message of the signal
      */
     void osStatusIfaceAdded(sdbusplus::message::message& msg);
+
+    /**
+     * @brief The properties changed callback for the Object.Enable
+     *        interface on the send_event_logs_to_host object.
+     *
+     * @param[in] msg - The sdbusplus message of the signal
+     */
+    void hostPELPropChanged(sdbusplus::message::message& msg);
+
+    /**
+     * @brief The interfaces added callback for the Object.Enable
+     *        interface on the send_event_logs_to_host object.
+     *
+     * @param[in] msg - The sdbusplus message of the signal
+     */
+    void hostPELIfaceAdded(sdbusplus::message::message& msg);
 
     /**
      * @brief The matches for the propertiesChanged and interfacesAdded
