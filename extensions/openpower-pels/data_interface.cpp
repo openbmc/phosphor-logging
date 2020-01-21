@@ -48,6 +48,7 @@ constexpr auto pldmRequester = "xyz.openbmc_project.PLDM.Requester";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::OperatingSystem::server;
+namespace match_rules = sdbusplus::bus::match::rules;
 
 DataInterface::DataInterface(sdbusplus::bus::bus& bus) : _bus(bus)
 {
@@ -83,12 +84,18 @@ void DataInterface::readMTMS()
         // Inventory must not be running at this moment.
     }
 
-    // Keep up to date by watching for the propertiesChanged signal.
-    _sysInventoryPropMatch = std::make_unique<sdbusplus::bus::match_t>(
+    _matches.emplace_back(
         _bus,
-        sdbusplus::bus::match::rules::propertiesChanged(object_path::systemInv,
-                                                        interface::invAsset),
+        match_rules::propertiesChanged(object_path::systemInv,
+                                       interface::invAsset),
         std::bind(std::mem_fn(&DataInterface::sysAssetPropChanged), this,
+                  std::placeholders::_1));
+
+    _matches.emplace_back(
+        _bus,
+        match_rules::interfacesAdded() +
+            match_rules::argNpath(0, object_path::systemInv),
+        std::bind(std::mem_fn(&DataInterface::sysAssetIfaceAdded), this,
                   std::placeholders::_1));
 }
 
@@ -109,6 +116,30 @@ void DataInterface::sysAssetPropChanged(sdbusplus::message::message& msg)
     if (sn != properties.end())
     {
         _machineSerialNumber = std::get<std::string>(sn->second);
+    }
+}
+
+void DataInterface::sysAssetIfaceAdded(sdbusplus::message::message& msg)
+{
+    sdbusplus::message::object_path path;
+    DBusInterfaceMap interfaces;
+
+    msg.read(path, interfaces);
+
+    auto iface = interfaces.find(interface::invAsset);
+    if (iface != interfaces.end())
+    {
+        auto model = iface->second.find("Model");
+        if (model != iface->second.end())
+        {
+            _machineTypeModel = std::get<std::string>(model->second);
+        }
+
+        auto sn = iface->second.find("SerialNumber");
+        if (sn != iface->second.end())
+        {
+            _machineSerialNumber = std::get<std::string>(sn->second);
+        }
     }
 }
 
@@ -192,12 +223,18 @@ void DataInterface::readHostState()
         // Not available yet.
     }
 
-    // Keep up to date by watching for the propertiesChanged signal.
-    _osStateMatch = std::make_unique<sdbusplus::bus::match_t>(
+    _matches.emplace_back(
         _bus,
-        sdbusplus::bus::match::rules::propertiesChanged(object_path::hostState,
-                                                        interface::osStatus),
+        match_rules::propertiesChanged(object_path::hostState,
+                                       interface::osStatus),
         std::bind(std::mem_fn(&DataInterface::osStatePropChanged), this,
+                  std::placeholders::_1));
+
+    _matches.emplace_back(
+        _bus,
+        match_rules::interfacesAdded() +
+            match_rules::argNpath(0, object_path::hostState),
+        std::bind(std::mem_fn(&DataInterface::osStatusIfaceAdded), this,
                   std::placeholders::_1));
 }
 
@@ -222,6 +259,34 @@ void DataInterface::osStatePropChanged(sdbusplus::message::message& msg)
         }
 
         setHostState(newHostState);
+    }
+}
+
+void DataInterface::osStatusIfaceAdded(sdbusplus::message::message& msg)
+{
+    sdbusplus::message::object_path path;
+    DBusInterfaceMap interfaces;
+
+    msg.read(path, interfaces);
+
+    auto iface = interfaces.find(interface::osStatus);
+    if (iface != interfaces.end())
+    {
+        auto state = iface->second.find("OperatingSystemState");
+        if (state != iface->second.end())
+        {
+            auto status = Status::convertOSStatusFromString(
+                std::get<std::string>(state->second));
+
+            bool newHostState = false;
+            if ((status == Status::OSStatus::BootComplete) ||
+                (status == Status::OSStatus::Standby))
+            {
+                newHostState = true;
+            }
+
+            setHostState(newHostState);
+        }
     }
 }
 
