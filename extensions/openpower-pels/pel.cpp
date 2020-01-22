@@ -153,6 +153,28 @@ std::vector<uint8_t> PEL::data() const
     return pelData;
 }
 
+size_t PEL::size() const
+{
+    size_t size = 0;
+
+    if (_ph)
+    {
+        size += _ph->header().size;
+    }
+
+    if (_uh)
+    {
+        size += _uh->header().size;
+    }
+
+    for (const auto& section : _optionalSections)
+    {
+        size += section->header().size;
+    }
+
+    return size;
+}
+
 std::optional<SRC*> PEL::primarySRC() const
 {
     auto src = std::find_if(

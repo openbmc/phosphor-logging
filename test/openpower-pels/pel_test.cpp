@@ -34,7 +34,6 @@ class PELTest : public CleanLogID
 TEST_F(PELTest, FlattenTest)
 {
     auto data = pelDataFactory(TestPELType::pelSimple);
-    auto origData = data;
     auto pel = std::make_unique<PEL>(data);
 
     // Check a few fields
@@ -46,7 +45,8 @@ TEST_F(PELTest, FlattenTest)
 
     // Test that data in == data out
     auto flattenedData = pel->data();
-    ASSERT_EQ(origData, flattenedData);
+    EXPECT_EQ(data, flattenedData);
+    EXPECT_EQ(flattenedData.size(), pel->size());
 }
 
 TEST_F(PELTest, CommitTimeTest)
@@ -58,12 +58,12 @@ TEST_F(PELTest, CommitTimeTest)
     pel->setCommitTime();
     auto newTime = pel->commitTime();
 
-    ASSERT_NE(origTime, newTime);
+    EXPECT_NE(origTime, newTime);
 
     // Make a new PEL and check new value is still there
     auto newData = pel->data();
     auto newPel = std::make_unique<PEL>(newData);
-    ASSERT_EQ(newTime, newPel->commitTime());
+    EXPECT_EQ(newTime, newPel->commitTime());
 }
 
 TEST_F(PELTest, AssignIDTest)
@@ -75,12 +75,12 @@ TEST_F(PELTest, AssignIDTest)
     pel->assignID();
     auto newID = pel->id();
 
-    ASSERT_NE(origID, newID);
+    EXPECT_NE(origID, newID);
 
     // Make a new PEL and check new value is still there
     auto newData = pel->data();
     auto newPel = std::make_unique<PEL>(newData);
-    ASSERT_EQ(newID, newPel->id());
+    EXPECT_EQ(newID, newPel->id());
 }
 
 TEST_F(PELTest, WithLogIDTest)
