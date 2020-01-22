@@ -136,7 +136,8 @@ TEST_F(PELTest, CreateFromRegistryTest)
     regEntry.src.type = 0xBD;
     regEntry.src.reasonCode = 0x1234;
 
-    AdditionalData ad;
+    std::vector<std::string> data{"KEY1=VALUE1"};
+    AdditionalData ad{data};
     MockDataInterface dataIface;
 
     PEL pel{regEntry, 42, timestamp, phosphor::logging::Entry::Level::Error, ad,
@@ -148,6 +149,34 @@ TEST_F(PELTest, CreateFromRegistryTest)
 
     EXPECT_EQ(pel.primarySRC().value()->asciiString(),
               "BD051234                        ");
+
+    // Check that certain optional sections have been created
+    size_t mtmsCount = 0;
+    size_t euhCount = 0;
+    size_t udCount = 0;
+
+    for (const auto& section : pel.optionalSections())
+    {
+        if (section->header().id ==
+            static_cast<uint16_t>(SectionID::failingMTMS))
+        {
+            mtmsCount++;
+        }
+        else if (section->header().id ==
+                 static_cast<uint16_t>(SectionID::extendedUserHeader))
+        {
+            euhCount++;
+        }
+        else if (section->header().id ==
+                 static_cast<uint16_t>(SectionID::userData))
+        {
+            udCount++;
+        }
+    }
+
+    EXPECT_EQ(mtmsCount, 1);
+    EXPECT_EQ(euhCount, 1);
+    EXPECT_EQ(udCount, 2); // AD section and sysInfo section
 }
 
 // Test that we'll create Generic optional sections for sections that
@@ -281,4 +310,31 @@ TEST_F(PELTest, MakeUDSectionTest)
     EXPECT_EQ(newJSON["KEY1"], "VALUE1");
     EXPECT_EQ(newJSON["KEY2"], "VALUE2");
     EXPECT_EQ(newJSON["KEY3"], "VALUE3");
+}
+
+// Create the UserData section that contains system info
+TEST_F(PELTest, MakeSysInfoSectionTest)
+{
+    MockDataInterface dataIface;
+
+    std::string pid = "_PID=" + std::to_string(getpid());
+    std::vector<std::string> ad{pid};
+    AdditionalData additionalData{ad};
+
+    auto ud = util::makeSysInfoUserDataSection(additionalData, dataIface);
+
+    EXPECT_TRUE(ud->valid());
+    EXPECT_EQ(ud->header().id, 0x5544);
+    EXPECT_EQ(ud->header().version, 0x01);
+    EXPECT_EQ(ud->header().subType, 0x01);
+    EXPECT_EQ(ud->header().componentID, 0x2000);
+
+    // Pull out the JSON data and check it.
+    const auto& d = ud->data();
+    std::string jsonString{d.begin(), d.end()};
+    auto json = nlohmann::json::parse(jsonString);
+
+    // Ensure the 'Process Name' entry contains 'pel_test'
+    auto name = json["Process Name"].get<std::string>();
+    EXPECT_NE(name.find("pel_test"), std::string::npos);
 }
