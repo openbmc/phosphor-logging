@@ -344,6 +344,18 @@ namespace util
  */
 std::unique_ptr<UserData> makeADUserDataSection(const AdditionalData& ad);
 
+/**
+ * @brief Create a UserData section containing various useful pieces
+ *        of system information as a JSON string.
+ *
+ * @param[in] ad - The AdditionalData contents
+ * @param[in] dataIface - The data interface object
+ *
+ * @return std::unique_ptr<UserData> - The section
+ */
+std::unique_ptr<UserData>
+    makeSysInfoUserDataSection(const AdditionalData& ad,
+                               const DataInterfaceBase& dataIface);
 } // namespace util
 
 } // namespace pels

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <filesystem>
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
@@ -133,6 +134,28 @@ class DataInterfaceBase
     virtual std::string getServerFWVersion() const
     {
         return _serverFWVersion;
+    }
+
+    /**
+     * @brief Returns the process name given its PID.
+     *
+     * @param[in] pid - The PID value as a string
+     *
+     * @return std::optional<std::string> - The name, or std::nullopt
+     */
+    std::optional<std::string> getProcessName(const std::string& pid) const
+    {
+        namespace fs = std::filesystem;
+
+        fs::path path{"/proc"};
+        path /= fs::path{pid} / "exe";
+
+        if (fs::exists(path))
+        {
+            return fs::read_symlink(path);
+        }
+
+        return std::nullopt;
     }
 
   protected:
