@@ -30,7 +30,7 @@ TEST(SRCTest, UnflattenFlattenTestNoCallouts)
     EXPECT_TRUE(src.valid());
 
     EXPECT_EQ(src.header().id, 0x5053);
-    EXPECT_EQ(src.header().size, 0x80);
+    EXPECT_EQ(src.header().size, 0x50);
     EXPECT_EQ(src.header().version, 0x01);
     EXPECT_EQ(src.header().subType, 0x01);
     EXPECT_EQ(src.header().componentID, 0x0202);
