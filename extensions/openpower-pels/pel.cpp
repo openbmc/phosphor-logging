@@ -56,9 +56,12 @@ PEL::PEL(const message::Entry& entry, uint32_t obmcLogID, uint64_t timestamp,
     auto mtms = std::make_unique<FailingMTMS>(dataIface);
     _optionalSections.push_back(std::move(mtms));
 
+    auto ud = util::makeSysInfoUserDataSection(additionalData, dataIface);
+    _optionalSections.push_back(std::move(ud));
+
     if (!additionalData.empty())
     {
-        auto ud = util::makeADUserDataSection(additionalData);
+        ud = util::makeADUserDataSection(additionalData);
 
         // To be safe, check there isn't too much data
         if (size() + ud->header().size <= _maxPELSize)
@@ -207,6 +210,24 @@ void PEL::checkRulesAndFix()
 namespace util
 {
 
+std::unique_ptr<UserData> makeJSONUserDataSection(const nlohmann::json& json)
+{
+
+    auto jsonString = json.dump();
+    std::vector<uint8_t> jsonData(jsonString.begin(), jsonString.end());
+
+    // Pad to a 4 byte boundary
+    while ((jsonData.size() % 4) != 0)
+    {
+        jsonData.push_back(0);
+    }
+
+    return std::make_unique<UserData>(
+        static_cast<uint16_t>(ComponentID::phosphorLogging),
+        static_cast<uint8_t>(UserDataFormat::json),
+        static_cast<uint8_t>(UserDataFormatVersion::json), jsonData);
+}
+
 std::unique_ptr<UserData> makeADUserDataSection(const AdditionalData& ad)
 {
     assert(!ad.empty());
@@ -224,19 +245,41 @@ std::unique_ptr<UserData> makeADUserDataSection(const AdditionalData& ad)
         json = ad.toJSON();
     }
 
-    auto jsonString = json.dump();
-    std::vector<uint8_t> jsonData(jsonString.begin(), jsonString.end());
+    return makeJSONUserDataSection(json);
+}
 
-    // Pad to a 4 byte boundary
-    while ((jsonData.size() % 4) != 0)
+void addProcessNameToJSON(nlohmann::json& json,
+                          const std::optional<std::string>& pid,
+                          const DataInterfaceBase& dataIface)
+{
+    std::string name = "Unknown";
+    try
     {
-        jsonData.push_back(0);
+        if (pid)
+        {
+            auto n = dataIface.getProcessName(*pid);
+            if (n)
+            {
+                name = *n;
+            }
+        }
+    }
+    catch (std::exception& e)
+    {
     }
 
-    return std::make_unique<UserData>(
-        static_cast<uint16_t>(ComponentID::phosphorLogging),
-        static_cast<uint8_t>(UserDataFormat::json),
-        static_cast<uint8_t>(UserDataFormatVersion::json), jsonData);
+    json["Process Name"] = std::move(name);
+}
+
+std::unique_ptr<UserData>
+    makeSysInfoUserDataSection(const AdditionalData& ad,
+                               const DataInterfaceBase& dataIface)
+{
+    nlohmann::json json;
+
+    addProcessNameToJSON(json, ad.getValue("_PID"), dataIface);
+
+    return makeJSONUserDataSection(json);
 }
 
 } // namespace util
