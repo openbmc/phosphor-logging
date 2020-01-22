@@ -59,7 +59,12 @@ PEL::PEL(const message::Entry& entry, uint32_t obmcLogID, uint64_t timestamp,
     if (!additionalData.empty())
     {
         auto ud = util::makeADUserDataSection(additionalData);
-        _optionalSections.push_back(std::move(ud));
+
+        // To be safe, check there isn't too much data
+        if (size() + ud->header().size <= _maxPELSize)
+        {
+            _optionalSections.push_back(std::move(ud));
+        }
     }
 
     _ph->setSectionCount(2 + _optionalSections.size());
