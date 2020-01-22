@@ -344,3 +344,44 @@ TEST_F(PELTest, SysInfoSectionTest)
     auto version = json["BMC Version ID"].get<std::string>();
     EXPECT_EQ(version, "ABCD1234");
 }
+
+// Test that the sections that override
+//     virtual std::optional<std::string> Section::getJSON() const
+// return valid JSON.
+TEST_F(PELTest, SectionJSONTest)
+{
+    auto data = pelDataFactory(TestPELType::pelSimple);
+    PEL pel{data};
+
+    // Check that all JSON returned from the sections is
+    // parseable by nlohmann::json, which will throw an
+    // exception and fail the test if there is a problem.
+
+    // The getJSON() response needs to be wrapped in a { } to make
+    // actual valid JSON (PEL::toJSON() usually handles that).
+
+    auto jsonString = pel.privateHeader().getJSON();
+
+    // PrivateHeader always prints JSON
+    ASSERT_TRUE(jsonString);
+    *jsonString = '{' + *jsonString + '}';
+    auto json = nlohmann::json::parse(*jsonString);
+
+    jsonString = pel.userHeader().getJSON();
+
+    // UserHeader always prints JSON
+    ASSERT_TRUE(jsonString);
+    *jsonString = '{' + *jsonString + '}';
+    json = nlohmann::json::parse(*jsonString);
+
+    for (const auto& section : pel.optionalSections())
+    {
+        // The optional sections may or may not have implemented getJSON().
+        jsonString = section->getJSON();
+        if (jsonString)
+        {
+            *jsonString = '{' + *jsonString + '}';
+            auto json = nlohmann::json::parse(*jsonString);
+        }
+    }
+}
