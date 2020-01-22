@@ -548,6 +548,7 @@ TEST_F(PELTest, RealPELTest)
     // Check that the flat data is correct
     auto flat = pel.data();
     EXPECT_EQ(realPELData, flat);
+    EXPECT_EQ(realPELData.size(), pel.size());
 
     // Check that the code can extract an object for every section.
     //(The PrivateHeader and UserHeader account for the + 2 below.)

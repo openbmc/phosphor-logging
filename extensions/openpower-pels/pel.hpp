@@ -198,6 +198,13 @@ class PEL
     std::vector<uint8_t> data() const;
 
     /**
+     * @brief Returns the size of the PEL
+     *
+     * @return size_t The PEL size in bytes
+     */
+    size_t size() const;
+
+    /**
      * @brief Says if the PEL is valid (the sections are all valid)
      *
      * @return bool - if the PEL is valid
