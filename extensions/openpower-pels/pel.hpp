@@ -324,6 +324,11 @@ class PEL
      */
     void printSectionInJSON(const Section& section, std::string& buf,
                             std::map<uint16_t, size_t>& pluralSections) const;
+
+    /**
+     * @brief The maximum size a PEL can be in bytes.
+     */
+    static constexpr size_t _maxPELSize = 16384;
 };
 
 namespace util
