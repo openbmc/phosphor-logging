@@ -204,43 +204,6 @@ void PEL::checkRulesAndFix()
     _uh->setEventType(eventType);
 }
 
-namespace util
-{
-
-std::unique_ptr<UserData> makeADUserDataSection(const AdditionalData& ad)
-{
-    assert(!ad.empty());
-    nlohmann::json json;
-
-    // Remove the 'ESEL' entry, as it contains a full PEL in the value.
-    if (ad.getValue("ESEL"))
-    {
-        auto newAD = ad;
-        newAD.remove("ESEL");
-        json = newAD.toJSON();
-    }
-    else
-    {
-        json = ad.toJSON();
-    }
-
-    auto jsonString = json.dump();
-    std::vector<uint8_t> jsonData(jsonString.begin(), jsonString.end());
-
-    // Pad to a 4 byte boundary
-    while ((jsonData.size() % 4) != 0)
-    {
-        jsonData.push_back(0);
-    }
-
-    return std::make_unique<UserData>(
-        static_cast<uint16_t>(ComponentID::phosphorLogging),
-        static_cast<uint8_t>(UserDataFormat::json),
-        static_cast<uint8_t>(UserDataFormatVersion::json), jsonData);
-}
-
-} // namespace util
-
 void PEL::printSectionInJSON(const Section& section, std::string& buf,
                              std::map<uint16_t, size_t>& pluralSections) const
 {
@@ -332,6 +295,43 @@ void PEL::toJSON() const
         buf.replace(found, 1, "");
     std::cout << buf << std::endl;
 }
+
+namespace util
+{
+
+std::unique_ptr<UserData> makeADUserDataSection(const AdditionalData& ad)
+{
+    assert(!ad.empty());
+    nlohmann::json json;
+
+    // Remove the 'ESEL' entry, as it contains a full PEL in the value.
+    if (ad.getValue("ESEL"))
+    {
+        auto newAD = ad;
+        newAD.remove("ESEL");
+        json = newAD.toJSON();
+    }
+    else
+    {
+        json = ad.toJSON();
+    }
+
+    auto jsonString = json.dump();
+    std::vector<uint8_t> jsonData(jsonString.begin(), jsonString.end());
+
+    // Pad to a 4 byte boundary
+    while ((jsonData.size() % 4) != 0)
+    {
+        jsonData.push_back(0);
+    }
+
+    return std::make_unique<UserData>(
+        static_cast<uint16_t>(ComponentID::phosphorLogging),
+        static_cast<uint8_t>(UserDataFormat::json),
+        static_cast<uint8_t>(UserDataFormatVersion::json), jsonData);
+}
+
+} // namespace util
 
 } // namespace pels
 } // namespace openpower
