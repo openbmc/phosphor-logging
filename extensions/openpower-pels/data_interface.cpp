@@ -55,6 +55,7 @@ DataInterface::DataInterface(sdbusplus::bus::bus& bus) : _bus(bus)
     readHostState();
     readBMCFWVersion();
     readServerFWVersion();
+    readBMCFWVersionID();
 }
 
 void DataInterface::readMTMS()
@@ -244,26 +245,45 @@ uint8_t DataInterface::getPLDMInstanceID(uint8_t eid) const
 #endif
 }
 
-void DataInterface::readBMCFWVersion()
+/**
+ * @brief Return a value found in the /etc/os-release file
+ *
+ * @param[in] key - The key name, like "VERSION"
+ *
+ * @return std::optional<std::string> - The value
+ */
+std::optional<std::string> getOSReleaseValue(const std::string& key)
 {
     std::ifstream versionFile{BMC_VERSION_FILE};
     std::string line;
-    static const auto versionID = "VERSION=";
+    std::string keyPattern{key + '='};
 
     while (std::getline(versionFile, line))
     {
-        if (line.find(versionID) != std::string::npos)
+        if (line.find(keyPattern) != std::string::npos)
         {
             auto pos = line.find_first_of('"') + 1;
-            _bmcFWVersion = line.substr(pos, line.find_last_of('"') - pos);
-            break;
+            auto value = line.substr(pos, line.find_last_of('"') - pos);
+            return value;
         }
     }
+
+    return std::nullopt;
+}
+
+void DataInterface::readBMCFWVersion()
+{
+    _bmcFWVersion = getOSReleaseValue("VERSION").value_or("");
 }
 
 void DataInterface::readServerFWVersion()
 {
     // Not available yet
+}
+
+void DataInterface::readBMCFWVersionID()
+{
+    _bmcFWVersionID = getOSReleaseValue("VERSION_ID").value_or("");
 }
 
 } // namespace pels

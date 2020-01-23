@@ -26,6 +26,7 @@
 
 namespace fs = std::filesystem;
 using namespace openpower::pels;
+using ::testing::Return;
 
 class PELTest : public CleanLogID
 {
@@ -313,9 +314,11 @@ TEST_F(PELTest, MakeUDSectionTest)
 }
 
 // Create the UserData section that contains system info
-TEST_F(PELTest, MakeSysInfoSectionTest)
+TEST_F(PELTest, SysInfoSectionTest)
 {
     MockDataInterface dataIface;
+
+    EXPECT_CALL(dataIface, getBMCFWVersionID()).WillOnce(Return("ABCD1234"));
 
     std::string pid = "_PID=" + std::to_string(getpid());
     std::vector<std::string> ad{pid};
@@ -337,4 +340,7 @@ TEST_F(PELTest, MakeSysInfoSectionTest)
     // Ensure the 'Process Name' entry contains 'pel_test'
     auto name = json["Process Name"].get<std::string>();
     EXPECT_NE(name.find("pel_test"), std::string::npos);
+
+    auto version = json["BMC Version ID"].get<std::string>();
+    EXPECT_EQ(version, "ABCD1234");
 }
