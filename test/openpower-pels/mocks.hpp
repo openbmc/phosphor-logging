@@ -23,6 +23,7 @@ class MockDataInterface : public DataInterfaceBase
     MOCK_METHOD(std::string, getMachineSerialNumber, (), (const override));
     MOCK_METHOD(std::string, getServerFWVersion, (), (const override));
     MOCK_METHOD(std::string, getBMCFWVersion, (), (const override));
+    MOCK_METHOD(std::string, getBMCFWVersionID, (), (const override));
 
     void changeHostState(bool newState)
     {

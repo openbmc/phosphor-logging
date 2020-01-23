@@ -137,6 +137,16 @@ class DataInterfaceBase
     }
 
     /**
+     * @brief Returns the BMC FW version ID
+     *
+     * @return std::string - The BMC FW version ID
+     */
+    virtual std::string getBMCFWVersionID() const
+    {
+        return _bmcFWVersionID;
+    }
+
+    /**
      * @brief Returns the process name given its PID.
      *
      * @param[in] pid - The PID value as a string
@@ -221,6 +231,11 @@ class DataInterfaceBase
      * @brief The server firmware version string
      */
     std::string _serverFWVersion;
+
+    /**
+     * @brief The BMC firmware version ID string
+     */
+    std::string _bmcFWVersionID;
 };
 
 /**
@@ -289,6 +304,12 @@ class DataInterface : public DataInterfaceBase
      *        _serverFWVersion.
      */
     void readServerFWVersion();
+
+    /**
+     * @brief Reads the BMC firmware version ID and puts it into
+     *        _bmcFWVersionID.
+     */
+    void readBMCFWVersionID();
 
     /**
      * @brief Finds the D-Bus service name that hosts the

@@ -37,6 +37,8 @@ namespace pels
 namespace message = openpower::pels::message;
 namespace pv = openpower::pels::pel_values;
 
+constexpr auto unknownValue = "Unknown";
+
 PEL::PEL(const message::Entry& entry, uint32_t obmcLogID, uint64_t timestamp,
          phosphor::logging::Entry::Level severity,
          const AdditionalData& additionalData,
@@ -343,7 +345,7 @@ void addProcessNameToJSON(nlohmann::json& json,
                           const std::optional<std::string>& pid,
                           const DataInterfaceBase& dataIface)
 {
-    std::string name = "Unknown";
+    std::string name{unknownValue};
 
     try
     {
@@ -363,6 +365,18 @@ void addProcessNameToJSON(nlohmann::json& json,
     json["Process Name"] = std::move(name);
 }
 
+void addBMCFWVersionIDToJSON(nlohmann::json& json,
+                             const DataInterfaceBase& dataIface)
+{
+    auto id = dataIface.getBMCFWVersionID();
+    if (id.empty())
+    {
+        id = unknownValue;
+    }
+
+    json["BMC Version ID"] = std::move(id);
+}
+
 std::unique_ptr<UserData>
     makeSysInfoUserDataSection(const AdditionalData& ad,
                                const DataInterfaceBase& dataIface)
@@ -370,6 +384,7 @@ std::unique_ptr<UserData>
     nlohmann::json json;
 
     addProcessNameToJSON(json, ad.getValue("_PID"), dataIface);
+    addBMCFWVersionIDToJSON(json, dataIface);
 
     return makeJSONUserDataSection(json);
 }
