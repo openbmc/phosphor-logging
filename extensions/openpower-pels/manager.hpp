@@ -161,6 +161,20 @@ class Manager : public PELInterface
      */
     void hostReject(uint32_t pelID, RejectionReason reason) override;
 
+    /**
+     * @brief Converts the ESEL field in an OpenBMC event log to a 
+     *        vector of uint8_ts that just contains the PEL data.
+     *
+     * That data string looks like: "50 48 00 ab ..."
+     *
+     * Throws an exception on any failures.
+     *
+     * @param[in] esel - The ESEL string
+     *
+     * @return std::vector<uint8_t> - The contained PEL data
+     */
+    static std::vector<uint8_t> eselToRawData(const std::string& esel);
+
   private:
     /**
      * @brief Adds a received raw PEL to the PEL repository
@@ -206,6 +220,23 @@ class Manager : public PELInterface
      * @param[in] source - The event source object used
      */
     void closeFD(int fd, sdeventplus::source::EventBase& source);
+
+    /**
+     * @brief Adds a PEL to the repository given its data
+     *
+     * @param[in] pelData - The PEL to add as a vector of uint8_ts
+     * @param[in] obmcLogID - the OpenBMC event log ID
+     */
+    void addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID);
+
+    /**
+     * @brief Adds the PEL stored in the ESEL field of the AdditionalData
+     *        property of an OpenBMC event log to the repository.
+     *
+     * @param[in] esel - The ESEL AdditionalData contents
+     * @param[in] obmcLogID - The OpenBMC event log ID
+     */
+    void addESELPEL(const std::string& esel, uint32_t obmcLogID);
 
     /**
      * @brief Reference to phosphor-logging's Manager class
