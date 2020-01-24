@@ -39,7 +39,8 @@ namespace common_error = sdbusplus::xyz::openbmc_project::Common::Error;
 namespace additional_data
 {
 constexpr auto rawPEL = "RAWPEL";
-}
+constexpr auto esel = "ESEL";
+} // namespace additional_data
 
 void Manager::create(const std::string& message, uint32_t obmcLogID,
                      uint64_t timestamp, Entry::Level severity,
@@ -48,7 +49,8 @@ void Manager::create(const std::string& message, uint32_t obmcLogID,
 {
     AdditionalData ad{additionalData};
 
-    // If a PEL was passed in, use that.  Otherwise, create one.
+    // If a PEL was passed in via a filename or in an ESEL,
+    // use that.  Otherwise, create one.
     auto rawPelPath = ad.getValue(additional_data::rawPEL);
     if (rawPelPath)
     {
@@ -56,8 +58,16 @@ void Manager::create(const std::string& message, uint32_t obmcLogID,
     }
     else
     {
-        createPEL(message, obmcLogID, timestamp, severity, additionalData,
-                  associations);
+        auto esel = ad.getValue(additional_data::esel);
+        if (esel)
+        {
+            addESELPEL(*esel, obmcLogID);
+        }
+        else
+        {
+            createPEL(message, obmcLogID, timestamp, severity, additionalData,
+                      associations);
+        }
     }
 }
 
@@ -80,50 +90,7 @@ void Manager::addRawPEL(const std::string& rawPelPath, uint32_t obmcLogID)
 
         file.close();
 
-        auto pel = std::make_unique<openpower::pels::PEL>(data, obmcLogID);
-        if (pel->valid())
-        {
-            // PELs created by others still need these fields set by us.
-            pel->assignID();
-            pel->setCommitTime();
-
-            try
-            {
-                _repo.add(pel);
-            }
-            catch (std::exception& e)
-            {
-                // Probably a full or r/o filesystem, not much we can do.
-                log<level::ERR>("Unable to add PEL to Repository",
-                                entry("PEL_ID=0x%X", pel->id()));
-            }
-        }
-        else
-        {
-            log<level::ERR>("Invalid PEL received from the host",
-                            entry("PELFILE=%s", rawPelPath.c_str()),
-                            entry("OBMCLOGID=%d", obmcLogID));
-
-            AdditionalData ad;
-            char plid[11];
-            sprintf(plid, "0x%08X", pel->plid());
-            ad.add("PLID", plid);
-            ad.add("OBMC_LOG_ID", std::to_string(obmcLogID));
-            ad.add("RAW_PEL_FILENAME", rawPelPath);
-            ad.add("PEL_SIZE", std::to_string(data.size()));
-
-            std::string asciiString;
-            auto src = pel->primarySRC();
-            if (src)
-            {
-                asciiString = (*src)->asciiString();
-            }
-
-            ad.add("SRC", asciiString);
-
-            _eventLogger.log("org.open_power.Logging.Error.BadHostPEL",
-                             Entry::Level::Error, ad);
-        }
+        addPEL(data, obmcLogID);
     }
     else
     {
@@ -131,6 +98,102 @@ void Manager::addRawPEL(const std::string& rawPelPath, uint32_t obmcLogID)
                         entry("PELFILE=%s", (rawPelPath).c_str()),
                         entry("OBMCLOGID=%d", obmcLogID));
     }
+}
+
+void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
+{
+
+    auto pel = std::make_unique<openpower::pels::PEL>(pelData, obmcLogID);
+    if (pel->valid())
+    {
+        // PELs created by others still need these fields set by us.
+        pel->assignID();
+        pel->setCommitTime();
+
+        try
+        {
+            _repo.add(pel);
+        }
+        catch (std::exception& e)
+        {
+            // Probably a full or r/o filesystem, not much we can do.
+            log<level::ERR>("Unable to add PEL to Repository",
+                            entry("PEL_ID=0x%X", pel->id()));
+        }
+    }
+    else
+    {
+        log<level::ERR>("Invalid PEL received from the host",
+                        entry("OBMCLOGID=%d", obmcLogID));
+
+        AdditionalData ad;
+        char plid[11];
+        sprintf(plid, "0x%08X", pel->plid());
+        ad.add("PLID", plid);
+        ad.add("OBMC_LOG_ID", std::to_string(obmcLogID));
+        ad.add("PEL_SIZE", std::to_string(pelData.size()));
+
+        std::string asciiString;
+        auto src = pel->primarySRC();
+        if (src)
+        {
+            asciiString = (*src)->asciiString();
+        }
+
+        ad.add("SRC", asciiString);
+
+        _eventLogger.log("org.open_power.Logging.Error.BadHostPEL",
+                         Entry::Level::Error, ad);
+    }
+}
+
+void Manager::addESELPEL(const std::string& esel, uint32_t obmcLogID)
+{
+    std::vector<uint8_t> data;
+
+    try
+    {
+        data = std::move(eselToRawData(esel));
+    }
+    catch (std::exception& e)
+    {
+        // Try to add it below anyway, so it follows the usual bad data path.
+        log<level::ERR>("Problems converting ESEL string to a byte vector");
+    }
+
+    addPEL(data, obmcLogID);
+}
+
+std::vector<uint8_t> Manager::eselToRawData(const std::string& esel)
+{
+    std::vector<uint8_t> data;
+    std::string byteString;
+    static constexpr size_t pelStart = 16 * 3;
+
+    if (esel.size() <= pelStart)
+    {
+        log<level::ERR>("ESEL data too short",
+                        entry("ESEL_SIZE=%d", esel.size()));
+
+        throw std::length_error("ESEL data too short");
+    }
+
+    for (size_t i = pelStart; i < esel.size(); i += 3)
+    {
+        if (i + 1 < esel.size())
+        {
+            byteString = esel.substr(i, 2);
+            data.push_back(std::stoi(byteString, nullptr, 16));
+        }
+        else
+        {
+            log<level::ERR>("ESEL data too short",
+                            entry("ESEL_SIZE=%d", esel.size()));
+            throw std::length_error("ESEL data too short");
+        }
+    }
+
+    return data;
 }
 
 void Manager::erase(uint32_t obmcLogID)
