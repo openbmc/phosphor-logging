@@ -84,6 +84,12 @@ bool HostNotifier::enqueueRequired(uint32_t id) const
     bool required = true;
     Repository::LogID i{Repository::LogID::Pel{id}};
 
+    // Manufacturing testing may turn off sending up PELs
+    if (!_dataIface.getHostPELEnablement())
+    {
+        return false;
+    }
+
     if (auto attributes = _repo.getPELAttributes(i); attributes)
     {
         auto a = attributes.value().get();
