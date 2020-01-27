@@ -29,6 +29,7 @@
 using namespace openpower::pels;
 using ::testing::_;
 using ::testing::Invoke;
+using ::testing::NiceMock;
 using ::testing::Return;
 namespace fs = std::filesystem;
 using namespace std::chrono;
@@ -39,10 +40,23 @@ const size_t actionFlags1Offset = 67;
 class HostNotifierTest : public CleanPELFiles
 {
   public:
-    HostNotifierTest()
+    HostNotifierTest() : repo(repoPath)
     {
         auto r = sd_event_default(&event);
         EXPECT_TRUE(r >= 0);
+
+        hostIface =
+            std::make_unique<NiceMock<MockHostInterface>>(event, dataIface);
+
+        mockHostIface = reinterpret_cast<MockHostInterface*>(hostIface.get());
+
+        auto send = [this](uint32_t id, uint32_t size) {
+            return this->mockHostIface->send(0);
+        };
+
+        // Unless otherwise specified, sendNewLogCmd should always pass.
+        ON_CALL(*mockHostIface, sendNewLogCmd(_, _))
+            .WillByDefault(Invoke(send));
     }
 
     ~HostNotifierTest()
@@ -52,6 +66,10 @@ class HostNotifierTest : public CleanPELFiles
 
   protected:
     sd_event* event;
+    Repository repo;
+    NiceMock<MockDataInterface> dataIface;
+    std::unique_ptr<HostInterface> hostIface;
+    MockHostInterface* mockHostIface;
 };
 
 /**
@@ -99,8 +117,6 @@ void runEvents(sdeventplus::Event& event, size_t numEvents,
 // Test that host state change callbacks work
 TEST_F(HostNotifierTest, TestHostStateChange)
 {
-    MockDataInterface dataIface;
-
     bool hostState = false;
     bool called = false;
     DataInterfaceBase::HostStateChangeFunc func = [&hostState,
@@ -139,12 +155,6 @@ TEST_F(HostNotifierTest, TestHostStateChange)
 // notification queue.
 TEST_F(HostNotifierTest, TestPolicyAckedPEL)
 {
-    Repository repo{repoPath};
-    MockDataInterface dataIface;
-
-    std::unique_ptr<HostInterface> hostIface =
-        std::make_unique<MockHostInterface>(event, dataIface);
-
     HostNotifier notifier{repo, dataIface, std::move(hostIface)};
 
     auto pel = makePEL();
@@ -169,12 +179,6 @@ TEST_F(HostNotifierTest, TestPolicyAckedPEL)
 // Test the 'don't report' PEL flag
 TEST_F(HostNotifierTest, TestPolicyDontReport)
 {
-    Repository repo{repoPath};
-    MockDataInterface dataIface;
-
-    std::unique_ptr<HostInterface> hostIface =
-        std::make_unique<MockHostInterface>(event, dataIface);
-
     HostNotifier notifier{repo, dataIface, std::move(hostIface)};
 
     // dontReportToHostFlagBit
@@ -194,12 +198,6 @@ TEST_F(HostNotifierTest, TestPolicyDontReport)
 // is no HMC.
 TEST_F(HostNotifierTest, TestPolicyHiddenNoHMC)
 {
-    Repository repo{repoPath};
-    MockDataInterface dataIface;
-
-    std::unique_ptr<HostInterface> hostIface =
-        std::make_unique<MockHostInterface>(event, dataIface);
-
     HostNotifier notifier{repo, dataIface, std::move(hostIface)};
 
     // hiddenFlagBit
@@ -221,12 +219,6 @@ TEST_F(HostNotifierTest, TestPolicyHiddenNoHMC)
 // Don't need to enqueue a hidden log already acked by the HMC
 TEST_F(HostNotifierTest, TestPolicyHiddenWithHMCAcked)
 {
-    Repository repo{repoPath};
-    MockDataInterface dataIface;
-
-    std::unique_ptr<HostInterface> hostIface =
-        std::make_unique<MockHostInterface>(event, dataIface);
-
     HostNotifier notifier{repo, dataIface, std::move(hostIface)};
 
     // hiddenFlagBit
@@ -251,12 +243,6 @@ TEST_F(HostNotifierTest, TestPolicyHiddenWithHMCAcked)
 // the policy with hidden log notification.
 TEST_F(HostNotifierTest, TestPolicyHiddenWithHMCManaged)
 {
-    Repository repo{repoPath};
-    MockDataInterface dataIface;
-
-    std::unique_ptr<HostInterface> hostIface =
-        std::make_unique<MockHostInterface>(event, dataIface);
-
     HostNotifier notifier{repo, dataIface, std::move(hostIface)};
 
     // hiddenFlagBit
@@ -276,18 +262,12 @@ TEST_F(HostNotifierTest, TestPolicyHiddenWithHMCManaged)
 // Test that PELs are enqueued on startup
 TEST_F(HostNotifierTest, TestStartup)
 {
-    Repository repo{repoPath};
-    MockDataInterface dataIface;
-
     // Give the repo 10 PELs to start with
     for (int i = 0; i < 10; i++)
     {
         auto pel = makePEL();
         repo.add(pel);
     }
-
-    std::unique_ptr<HostInterface> hostIface =
-        std::make_unique<MockHostInterface>(event, dataIface);
 
     HostNotifier notifier{repo, dataIface, std::move(hostIface)};
 
@@ -306,25 +286,9 @@ TEST_F(HostNotifierTest, TestStartup)
 // Test the simple path were PELs get sent to the host
 TEST_F(HostNotifierTest, TestSendCmd)
 {
-    Repository repo{repoPath};
-    MockDataInterface dataIface;
-
     sdeventplus::Event sdEvent{event};
 
-    std::unique_ptr<HostInterface> hostIface =
-        std::make_unique<MockHostInterface>(event, dataIface);
-
-    MockHostInterface& mockHostIface =
-        reinterpret_cast<MockHostInterface&>(*hostIface);
-
     HostNotifier notifier{repo, dataIface, std::move(hostIface)};
-
-    auto send = [&mockHostIface](uint32_t id, uint32_t size) {
-        return mockHostIface.send(0);
-    };
-
-    EXPECT_CALL(mockHostIface, sendNewLogCmd(_, _))
-        .WillRepeatedly(Invoke(send));
 
     // Add a PEL with the host off
     auto pel = makePEL();
@@ -337,7 +301,7 @@ TEST_F(HostNotifierTest, TestSendCmd)
     runEvents(sdEvent, 1);
 
     // It was sent up
-    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 1);
+    EXPECT_EQ(mockHostIface->numCmdsProcessed(), 1);
     EXPECT_EQ(notifier.queueSize(), 0);
 
     // Verify the state was written to the PEL.
@@ -353,13 +317,13 @@ TEST_F(HostNotifierTest, TestSendCmd)
     // Dispatch it by hitting the event loop (no commands sent yet)
     // Don't need to test this step discretely in the future
     runEvents(sdEvent, 1);
-    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 1);
+    EXPECT_EQ(mockHostIface->numCmdsProcessed(), 1);
     EXPECT_EQ(notifier.queueSize(), 0);
 
     // Send the command
     runEvents(sdEvent, 1);
 
-    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 2);
+    EXPECT_EQ(mockHostIface->numCmdsProcessed(), 2);
     EXPECT_EQ(notifier.queueSize(), 0);
 
     pel = makePEL();
@@ -368,7 +332,7 @@ TEST_F(HostNotifierTest, TestSendCmd)
     // dispatch and process the command
     runEvents(sdEvent, 2);
 
-    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 3);
+    EXPECT_EQ(mockHostIface->numCmdsProcessed(), 3);
     EXPECT_EQ(notifier.queueSize(), 0);
 }
 
@@ -376,9 +340,6 @@ TEST_F(HostNotifierTest, TestSendCmd)
 // it will send PELs
 TEST_F(HostNotifierTest, TestStartAfterHostUp)
 {
-    Repository repo{repoPath};
-    MockDataInterface dataIface;
-
     // Add PELs right away
     auto pel = makePEL();
     repo.add(pel);
@@ -387,19 +348,6 @@ TEST_F(HostNotifierTest, TestStartAfterHostUp)
 
     sdeventplus::Event sdEvent{event};
 
-    std::unique_ptr<HostInterface> hostIface =
-        std::make_unique<MockHostInterface>(event, dataIface);
-
-    MockHostInterface& mockHostIface =
-        reinterpret_cast<MockHostInterface&>(*hostIface);
-
-    auto send = [&mockHostIface](uint32_t id, uint32_t size) {
-        return mockHostIface.send(0);
-    };
-
-    EXPECT_CALL(mockHostIface, sendNewLogCmd(_, _))
-        .WillRepeatedly(Invoke(send));
-
     // Create the HostNotifier class with the host already up
     dataIface.changeHostState(true);
     HostNotifier notifier{repo, dataIface, std::move(hostIface)};
@@ -407,34 +355,25 @@ TEST_F(HostNotifierTest, TestStartAfterHostUp)
     // It should start sending PELs right away
     runEvents(sdEvent, 2);
 
-    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 2);
+    EXPECT_EQ(mockHostIface->numCmdsProcessed(), 2);
     EXPECT_EQ(notifier.queueSize(), 0);
 }
 
 // Test that a single failure will cause a retry
 TEST_F(HostNotifierTest, TestHostRetry)
 {
-    Repository repo{repoPath};
-    MockDataInterface dataIface;
-
     sdeventplus::Event sdEvent{event};
-
-    std::unique_ptr<HostInterface> hostIface =
-        std::make_unique<MockHostInterface>(event, dataIface);
-
-    MockHostInterface& mockHostIface =
-        reinterpret_cast<MockHostInterface&>(*hostIface);
 
     HostNotifier notifier{repo, dataIface, std::move(hostIface)};
 
-    auto sendFailure = [&mockHostIface](uint32_t id, uint32_t size) {
-        return mockHostIface.send(1);
+    auto sendFailure = [this](uint32_t id, uint32_t size) {
+        return this->mockHostIface->send(1);
     };
-    auto sendSuccess = [&mockHostIface](uint32_t id, uint32_t size) {
-        return mockHostIface.send(0);
+    auto sendSuccess = [this](uint32_t id, uint32_t size) {
+        return this->mockHostIface->send(0);
     };
 
-    EXPECT_CALL(mockHostIface, sendNewLogCmd(_, _))
+    EXPECT_CALL(*mockHostIface, sendNewLogCmd(_, _))
         .WillOnce(Invoke(sendFailure))
         .WillOnce(Invoke(sendSuccess))
         .WillOnce(Invoke(sendSuccess));
@@ -448,14 +387,14 @@ TEST_F(HostNotifierTest, TestHostRetry)
     runEvents(sdEvent, 2);
 
     // The command failed, so the queue isn't empty
-    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 1);
+    EXPECT_EQ(mockHostIface->numCmdsProcessed(), 1);
     EXPECT_EQ(notifier.queueSize(), 1);
 
     // Run the events again to let the timer expire and the
     // command to be retried, which will be successful.
-    runEvents(sdEvent, 2, mockHostIface.getReceiveRetryDelay());
+    runEvents(sdEvent, 2, mockHostIface->getReceiveRetryDelay());
 
-    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 2);
+    EXPECT_EQ(mockHostIface->numCmdsProcessed(), 2);
     EXPECT_EQ(notifier.queueSize(), 0);
 
     // This one should pass with no problems
@@ -465,32 +404,23 @@ TEST_F(HostNotifierTest, TestHostRetry)
     // Dispatch and handle the command
     runEvents(sdEvent, 2);
 
-    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 3);
+    EXPECT_EQ(mockHostIface->numCmdsProcessed(), 3);
     EXPECT_EQ(notifier.queueSize(), 0);
 }
 
 // Test that all commands fail and notifier will give up
 TEST_F(HostNotifierTest, TestHardFailure)
 {
-    Repository repo{repoPath};
-    MockDataInterface dataIface;
-
     sdeventplus::Event sdEvent{event};
-
-    std::unique_ptr<HostInterface> hostIface =
-        std::make_unique<MockHostInterface>(event, dataIface);
-
-    MockHostInterface& mockHostIface =
-        reinterpret_cast<MockHostInterface&>(*hostIface);
 
     HostNotifier notifier{repo, dataIface, std::move(hostIface)};
 
     // Every call will fail
-    auto sendFailure = [&mockHostIface](uint32_t id, uint32_t size) {
-        return mockHostIface.send(1);
+    auto sendFailure = [this](uint32_t id, uint32_t size) {
+        return this->mockHostIface->send(1);
     };
 
-    EXPECT_CALL(mockHostIface, sendNewLogCmd(_, _))
+    EXPECT_CALL(*mockHostIface, sendNewLogCmd(_, _))
         .WillRepeatedly(Invoke(sendFailure));
 
     dataIface.changeHostState(true);
@@ -499,10 +429,10 @@ TEST_F(HostNotifierTest, TestHardFailure)
     repo.add(pel);
 
     // Clock more retries than necessary
-    runEvents(sdEvent, 40, mockHostIface.getReceiveRetryDelay());
+    runEvents(sdEvent, 40, mockHostIface->getReceiveRetryDelay());
 
     // Should have stopped after the 15 Tries
-    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 15);
+    EXPECT_EQ(mockHostIface->numCmdsProcessed(), 15);
     EXPECT_EQ(notifier.queueSize(), 1);
 
     // Now add another PEL, and it should start trying again
@@ -510,35 +440,18 @@ TEST_F(HostNotifierTest, TestHardFailure)
     pel = makePEL();
     repo.add(pel);
 
-    runEvents(sdEvent, 40, mockHostIface.getReceiveRetryDelay());
+    runEvents(sdEvent, 40, mockHostIface->getReceiveRetryDelay());
 
     // Tried an additional 15 times
-    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 30);
+    EXPECT_EQ(mockHostIface->numCmdsProcessed(), 30);
     EXPECT_EQ(notifier.queueSize(), 2);
 }
 
 // Cancel an in progress command
 TEST_F(HostNotifierTest, TestCancelCmd)
 {
-    Repository repo{repoPath};
-    MockDataInterface dataIface;
-
     sdeventplus::Event sdEvent{event};
-
-    std::unique_ptr<HostInterface> hostIface =
-        std::make_unique<MockHostInterface>(event, dataIface);
-
-    MockHostInterface& mockHostIface =
-        reinterpret_cast<MockHostInterface&>(*hostIface);
-
     HostNotifier notifier{repo, dataIface, std::move(hostIface)};
-
-    auto send = [&mockHostIface](uint32_t id, uint32_t size) {
-        return mockHostIface.send(0);
-    };
-
-    EXPECT_CALL(mockHostIface, sendNewLogCmd(_, _))
-        .WillRepeatedly(Invoke(send));
 
     dataIface.changeHostState(true);
 
@@ -568,32 +481,16 @@ TEST_F(HostNotifierTest, TestCancelCmd)
 
     runEvents(sdEvent, 1);
 
-    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 1);
+    EXPECT_EQ(mockHostIface->numCmdsProcessed(), 1);
     EXPECT_EQ(notifier.queueSize(), 0);
 }
 
 // Test that acking a PEL persist across power cycles
 TEST_F(HostNotifierTest, TestPowerCycleAndAcks)
 {
-    Repository repo{repoPath};
-    MockDataInterface dataIface;
-
     sdeventplus::Event sdEvent{event};
 
-    std::unique_ptr<HostInterface> hostIface =
-        std::make_unique<MockHostInterface>(event, dataIface);
-
-    MockHostInterface& mockHostIface =
-        reinterpret_cast<MockHostInterface&>(*hostIface);
-
     HostNotifier notifier{repo, dataIface, std::move(hostIface)};
-
-    auto send = [&mockHostIface](uint32_t id, uint32_t size) {
-        return mockHostIface.send(0);
-    };
-
-    EXPECT_CALL(mockHostIface, sendNewLogCmd(_, _))
-        .WillRepeatedly(Invoke(send));
 
     // Add 2 PELs with host off
     auto pel = makePEL();
@@ -609,7 +506,7 @@ TEST_F(HostNotifierTest, TestPowerCycleAndAcks)
     runEvents(sdEvent, 2);
 
     // The were both sent.
-    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 2);
+    EXPECT_EQ(mockHostIface->numCmdsProcessed(), 2);
     EXPECT_EQ(notifier.queueSize(), 0);
 
     dataIface.changeHostState(false);
@@ -621,7 +518,7 @@ TEST_F(HostNotifierTest, TestPowerCycleAndAcks)
     dataIface.changeHostState(true);
     runEvents(sdEvent, 2);
 
-    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 4);
+    EXPECT_EQ(mockHostIface->numCmdsProcessed(), 4);
     EXPECT_EQ(notifier.queueSize(), 0);
 
     // Ack them and verify the state in the PEL.
@@ -656,25 +553,8 @@ TEST_F(HostNotifierTest, TestHostFull)
     // Host responds with either Ack or full
     // and repeat
 
-    Repository repo{repoPath};
-    MockDataInterface dataIface;
-
     sdeventplus::Event sdEvent{event};
-
-    std::unique_ptr<HostInterface> hostIface =
-        std::make_unique<MockHostInterface>(event, dataIface);
-
-    MockHostInterface& mockHostIface =
-        reinterpret_cast<MockHostInterface&>(*hostIface);
-
     HostNotifier notifier{repo, dataIface, std::move(hostIface)};
-
-    auto send = [&mockHostIface](uint32_t id, uint32_t size) {
-        return mockHostIface.send(0);
-    };
-
-    EXPECT_CALL(mockHostIface, sendNewLogCmd(_, _))
-        .WillRepeatedly(Invoke(send));
 
     dataIface.changeHostState(true);
 
@@ -684,7 +564,7 @@ TEST_F(HostNotifierTest, TestHostFull)
     repo.add(pel);
     runEvents(sdEvent, 2);
 
-    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 1);
+    EXPECT_EQ(mockHostIface->numCmdsProcessed(), 1);
     EXPECT_EQ(notifier.queueSize(), 0);
 
     // Host is full
@@ -702,37 +582,37 @@ TEST_F(HostNotifierTest, TestHostFull)
     // Clock it, nothing should be sent still.
     runEvents(sdEvent, 1);
 
-    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 1);
+    EXPECT_EQ(mockHostIface->numCmdsProcessed(), 1);
     EXPECT_EQ(notifier.queueSize(), 1);
 
     // Add another PEL and clock it, still nothing sent
     pel = makePEL();
     repo.add(pel);
     runEvents(sdEvent, 2);
-    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 1);
+    EXPECT_EQ(mockHostIface->numCmdsProcessed(), 1);
     EXPECT_EQ(notifier.queueSize(), 2);
 
     // Let the host full timer expire to trigger a retry.
     // Add some extra event passes just to be sure nothing new is sent.
-    runEvents(sdEvent, 5, mockHostIface.getHostFullRetryDelay());
+    runEvents(sdEvent, 5, mockHostIface->getHostFullRetryDelay());
 
     // The timer expiration will send just the 1, not both
-    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 2);
+    EXPECT_EQ(mockHostIface->numCmdsProcessed(), 2);
     EXPECT_EQ(notifier.queueSize(), 1);
 
     // Host still full
     notifier.setHostFull(id);
 
     // Let the host full timer attempt again
-    runEvents(sdEvent, 2, mockHostIface.getHostFullRetryDelay());
-    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 3);
+    runEvents(sdEvent, 2, mockHostIface->getHostFullRetryDelay());
+    EXPECT_EQ(mockHostIface->numCmdsProcessed(), 3);
 
     // Add yet another PEL with the retry timer expired.
     // It shouldn't get sent out.
     pel = makePEL();
     repo.add(pel);
     runEvents(sdEvent, 2);
-    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 3);
+    EXPECT_EQ(mockHostIface->numCmdsProcessed(), 3);
 
     // The last 2 PELs still on the queue
     EXPECT_EQ(notifier.queueSize(), 2);
@@ -743,43 +623,28 @@ TEST_F(HostNotifierTest, TestHostFull)
     // Now the remaining 2 PELs will be dispatched
     runEvents(sdEvent, 3);
 
-    EXPECT_EQ(mockHostIface.numCmdsProcessed(), 5);
+    EXPECT_EQ(mockHostIface->numCmdsProcessed(), 5);
     EXPECT_EQ(notifier.queueSize(), 0);
 }
 
 // Test when the host says it was send a malformed PEL
 TEST_F(HostNotifierTest, TestBadPEL)
 {
-    MockDataInterface dataIface;
     sdeventplus::Event sdEvent{event};
 
     {
-        Repository repo{repoPath};
-
-        std::unique_ptr<HostInterface> hostIface =
-            std::make_unique<MockHostInterface>(event, dataIface);
-
-        MockHostInterface& mockHostIface =
-            reinterpret_cast<MockHostInterface&>(*hostIface);
-
-        HostNotifier notifier{repo, dataIface, std::move(hostIface)};
-
-        auto send = [&mockHostIface](uint32_t id, uint32_t size) {
-            return mockHostIface.send(0);
-        };
-
-        EXPECT_CALL(mockHostIface, sendNewLogCmd(_, _))
-            .WillRepeatedly(Invoke(send));
+        Repository repo1{repoPath};
+        HostNotifier notifier{repo1, dataIface, std::move(hostIface)};
 
         dataIface.changeHostState(true);
 
         // Add a PEL and dispatch and send it
         auto pel = makePEL();
         auto id = pel->id();
-        repo.add(pel);
+        repo1.add(pel);
 
         runEvents(sdEvent, 2);
-        EXPECT_EQ(mockHostIface.numCmdsProcessed(), 1);
+        EXPECT_EQ(mockHostIface->numCmdsProcessed(), 1);
         EXPECT_EQ(notifier.queueSize(), 0);
 
         // The host rejected it.
@@ -790,7 +655,7 @@ TEST_F(HostNotifierTest, TestBadPEL)
 
         // Check the state was saved in the PEL itself
         Repository::LogID i{Repository::LogID::Pel{id}};
-        auto data = repo.getPELData(i);
+        auto data = repo1.getPELData(i);
         PEL pelFromRepo{*data};
         EXPECT_EQ(pelFromRepo.hostTransmissionState(),
                   TransmissionState::badPEL);
@@ -803,12 +668,12 @@ TEST_F(HostNotifierTest, TestBadPEL)
 
     // Now restore the repo, and make sure it doesn't come back
     {
-        Repository repo{repoPath};
+        Repository repo1{repoPath};
 
-        std::unique_ptr<HostInterface> hostIface =
+        std::unique_ptr<HostInterface> hostIface1 =
             std::make_unique<MockHostInterface>(event, dataIface);
 
-        HostNotifier notifier{repo, dataIface, std::move(hostIface)};
+        HostNotifier notifier{repo1, dataIface, std::move(hostIface1)};
 
         EXPECT_EQ(notifier.queueSize(), 0);
     }
