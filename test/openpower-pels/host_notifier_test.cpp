@@ -45,6 +45,8 @@ class HostNotifierTest : public CleanPELFiles
         auto r = sd_event_default(&event);
         EXPECT_TRUE(r >= 0);
 
+        ON_CALL(dataIface, getHostPELEnablement).WillByDefault(Return(true));
+
         hostIface =
             std::make_unique<NiceMock<MockHostInterface>>(event, dataIface);
 
@@ -670,6 +672,57 @@ TEST_F(HostNotifierTest, TestBadPEL)
     {
         Repository repo1{repoPath};
 
+        std::unique_ptr<HostInterface> hostIface1 =
+            std::make_unique<MockHostInterface>(event, dataIface);
+
+        HostNotifier notifier{repo1, dataIface, std::move(hostIface1)};
+
+        EXPECT_EQ(notifier.queueSize(), 0);
+    }
+}
+
+// Test that sending PELs can be disabled
+TEST_F(HostNotifierTest, TestDisable)
+{
+    // Turn off sending the PELs except for once in the middle
+    EXPECT_CALL(dataIface, getHostPELEnablement())
+        .WillOnce(Return(false))
+        .WillOnce(Return(false))
+        .WillOnce(Return(true))
+        .WillOnce(Return(false))
+        .WillOnce(Return(false))
+        .WillOnce(Return(false));
+
+    {
+        HostNotifier notifier{repo, dataIface, std::move(hostIface)};
+
+        // Add a PEL with the host off
+        auto pel = makePEL();
+        repo.add(pel);
+
+        // Not added to the send queue
+        EXPECT_EQ(notifier.queueSize(), 0);
+
+        dataIface.changeHostState(true);
+
+        // Try again with the host on
+        pel = makePEL();
+        repo.add(pel);
+
+        EXPECT_EQ(notifier.queueSize(), 0);
+
+        // Now getHostPELEnablement() will return true for the new PEL
+        pel = makePEL();
+        repo.add(pel);
+
+        EXPECT_EQ(notifier.queueSize(), 1);
+    }
+
+    // getHostPELEnablement is back to returning false.
+    // Create a new second instance and make sure the 3 existing PELs
+    // aren't put on the queue on startup
+    {
+        Repository repo1{repoPath};
         std::unique_ptr<HostInterface> hostIface1 =
             std::make_unique<MockHostInterface>(event, dataIface);
 
