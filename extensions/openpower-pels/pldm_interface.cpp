@@ -139,7 +139,7 @@ void PLDMInterface::readInstanceID()
 void PLDMInterface::doSend(uint32_t id, uint32_t size)
 {
     std::array<uint8_t, sizeof(pldm_msg_hdr) + sizeof(pelFileType) +
-                            sizeof(id) + sizeof(size)>
+                            sizeof(id) + sizeof(uint64_t)>
         requestMsg;
 
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
