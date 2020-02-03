@@ -377,6 +377,24 @@ void addBMCFWVersionIDToJSON(nlohmann::json& json,
     json["BMC Version ID"] = std::move(id);
 }
 
+std::string lastSegment(char separator, std::string data)
+{
+    auto pos = data.find_last_of(separator);
+    if (pos != std::string::npos)
+    {
+        data = data.substr(pos + 1);
+    }
+
+    return data;
+}
+
+void addStatesToJSON(nlohmann::json& json, const DataInterfaceBase& dataIface)
+{
+    json["BMCState"] = lastSegment('.', dataIface.getBMCState());
+    json["ChassisState"] = lastSegment('.', dataIface.getChassisState());
+    json["HostState"] = lastSegment('.', dataIface.getHostState());
+}
+
 std::unique_ptr<UserData>
     makeSysInfoUserDataSection(const AdditionalData& ad,
                                const DataInterfaceBase& dataIface)
@@ -385,6 +403,7 @@ std::unique_ptr<UserData>
 
     addProcessNameToJSON(json, ad.getValue("_PID"), dataIface);
     addBMCFWVersionIDToJSON(json, dataIface);
+    addStatesToJSON(json, dataIface);
 
     return makeJSONUserDataSection(json);
 }
