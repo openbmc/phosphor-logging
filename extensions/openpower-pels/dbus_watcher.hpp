@@ -292,8 +292,8 @@ class InterfaceWatcher : public DBusWatcher
     /**
      * @brief The propertiesChanged callback
      *
-     * Calls the user defined function with the property map.  Ony the properties
-     * that changed will be in the map.
+     * Calls the user defined function with the property map.  Ony the
+     * properties that changed will be in the map.
      *
      * @param[in] msg - The sdbusplus message object
      */
