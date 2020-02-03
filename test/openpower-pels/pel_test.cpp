@@ -319,6 +319,9 @@ TEST_F(PELTest, SysInfoSectionTest)
     MockDataInterface dataIface;
 
     EXPECT_CALL(dataIface, getBMCFWVersionID()).WillOnce(Return("ABCD1234"));
+    EXPECT_CALL(dataIface, getBMCState()).WillOnce(Return("State.Ready"));
+    EXPECT_CALL(dataIface, getChassisState()).WillOnce(Return("State.On"));
+    EXPECT_CALL(dataIface, getHostState()).WillOnce(Return("State.Off"));
 
     std::string pid = "_PID=" + std::to_string(getpid());
     std::vector<std::string> ad{pid};
@@ -343,6 +346,15 @@ TEST_F(PELTest, SysInfoSectionTest)
 
     auto version = json["BMC Version ID"].get<std::string>();
     EXPECT_EQ(version, "ABCD1234");
+
+    auto state = json["BMCState"].get<std::string>();
+    EXPECT_EQ(state, "Ready");
+
+    state = json["ChassisState"].get<std::string>();
+    EXPECT_EQ(state, "On");
+
+    state = json["HostState"].get<std::string>();
+    EXPECT_EQ(state, "Off");
 }
 
 // Test that the sections that override
