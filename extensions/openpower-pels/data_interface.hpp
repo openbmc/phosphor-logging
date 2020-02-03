@@ -163,6 +163,16 @@ class DataInterfaceBase
         return std::nullopt;
     }
 
+    /**
+     * @brief Returns the 'send event logs to host' setting.
+     *
+     * @return std::string - If sending PELs to the host if enabled.
+     */
+    virtual bool getHostPELEnablement() const
+    {
+        return _sendPELsToHost;
+    }
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
@@ -231,6 +241,13 @@ class DataInterfaceBase
      * @brief The BMC firmware version ID string
      */
     std::string _bmcFWVersionID;
+
+    /**
+     * @brief If sending PELs is enabled.
+     *
+     * This is usually set to false in manufacturing test.
+     */
+    bool _sendPELsToHost = true;
 };
 
 /**
@@ -264,30 +281,42 @@ class DataInterface : public DataInterfaceBase
      */
     uint8_t getPLDMInstanceID(uint8_t eid) const override;
 
+    /**
+     * @brief Finds the D-Bus service name that hosts the
+     *        passed in path and interface.
+     *
+     * @param[in] objectPath - The D-Bus object path
+     * @param[in] interface - The D-Bus interface
+     */
+    DBusService getService(const std::string& objectPath,
+                           const std::string& interface) const;
+
+    /**
+     * @brief Wrapper for the 'GetAll' properties method call
+     *
+     * @param[in] service - The D-Bus service to call it on
+     * @param[in] objectPath - The D-Bus object path
+     * @param[in] interface - The interface to get the props on
+     *
+     * @return DBusPropertyMap - The property results
+     */
+    DBusPropertyMap getAllProperties(const std::string& service,
+                                     const std::string& objectPath,
+                                     const std::string& interface) const;
+    /**
+     * @brief Wrapper for the 'Get' properties method call
+     *
+     * @param[in] service - The D-Bus service to call it on
+     * @param[in] objectPath - The D-Bus object path
+     * @param[in] interface - The interface to get the property on
+     * @param[in] property - The property name
+     * @param[out] value - Filled in with the property value.
+     */
+    void getProperty(const std::string& service, const std::string& objectPath,
+                     const std::string& interface, const std::string& property,
+                     DBusValue& value) const;
+
   private:
-    /**
-     * @brief Reads the machine type/model and SN from D-Bus.
-     *
-     * Looks for them on the 'system' inventory object, and also
-     * places a properties changed watch on them to obtain any changes
-     * (or read them for the first time if the inventory isn't ready
-     * when this function runs.)
-     */
-    void readMTMS();
-
-    /**
-     * @brief Reads the host state from D-Bus.
-     *
-     * For host on, looks for the values of 'BootComplete' or 'Standby'
-     * in the OperatingSystemState property on the
-     * 'xyz.openbmc_project.State.OperatingSystem.Status' interface
-     * on the '/xyz/openbmc_project/state/host0' path.
-     *
-     * Also adds a properties changed watch on it so the code can be
-     * kept up to date on changes.
-     */
-    void readHostState();
-
     /**
      * @brief Reads the BMC firmware version string and puts it into
      *        _bmcFWVersion.
@@ -307,65 +336,11 @@ class DataInterface : public DataInterfaceBase
     void readBMCFWVersionID();
 
     /**
-     * @brief Finds the D-Bus service name that hosts the
-     *        passed in path and interface.
-     *
-     * @param[in] objectPath - The D-Bus object path
-     * @param[in] interface - The D-Bus interface
+     * @brief The D-Bus property or interface watchers that have callbacks
+     *        registered that will set members in this class when
+     *        they change.
      */
-    DBusService getService(const std::string& objectPath,
-                           const std::string& interface) const;
-    /**
-     * @brief Wrapper for the 'GetAll' properties method call
-     *
-     * @param[in] service - The D-Bus service to call it on
-     * @param[in] objectPath - The D-Bus object path
-     * @param[in] interface - The interface to get the props on
-     *
-     * @return DBusPropertyMap - The property results
-     */
-    DBusPropertyMap getAllProperties(const std::string& service,
-                                     const std::string& objectPath,
-                                     const std::string& interface);
-
-    /**
-     * @brief Wrapper for the 'Get' properties method call
-     *
-     * @param[in] service - The D-Bus service to call it on
-     * @param[in] objectPath - The D-Bus object path
-     * @param[in] interface - The interface to get the property on
-     * @param[in] property - The property name
-     * @param[out] value - Filled in with the property value.
-     */
-    void getProperty(const std::string& service, const std::string& objectPath,
-                     const std::string& interface, const std::string& property,
-                     DBusValue& value);
-
-    /**
-     * @brief The properties changed callback for the Asset iface
-     *        on the system inventory object.
-     *
-     * @param[in] msg - The sdbusplus message of the signal
-     */
-    void sysAssetPropChanged(sdbusplus::message::message& msg);
-
-    /**
-     * @brief The properties changed callback for the OperatingSystemStatus
-     *        interface on the host state object.
-     *
-     * @param[in] msg - The sdbusplus message of the signal
-     */
-    void osStatePropChanged(sdbusplus::message::message& msg);
-
-    /**
-     * @brief The match object for the system path's properties
-     */
-    std::unique_ptr<sdbusplus::bus::match_t> _sysInventoryPropMatch;
-
-    /**
-     * @brief The match object for the operating system status.
-     */
-    std::unique_ptr<sdbusplus::bus::match_t> _osStateMatch;
+    std::vector<std::unique_ptr<DBusWatcher>> _properties;
 
     /**
      * @brief The sdbusplus bus object for making D-Bus calls.
