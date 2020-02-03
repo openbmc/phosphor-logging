@@ -28,7 +28,7 @@ class MockDataInterface : public DataInterfaceBase
 
     void changeHostState(bool newState)
     {
-        setHostState(newState);
+        setHostUp(newState);
     }
 
     void setHMCManaged(bool managed)
