@@ -51,70 +51,50 @@ using namespace sdbusplus::xyz::openbmc_project::State::OperatingSystem::server;
 
 DataInterface::DataInterface(sdbusplus::bus::bus& bus) : _bus(bus)
 {
-    readMTMS();
-    readHostState();
     readBMCFWVersion();
     readServerFWVersion();
     readBMCFWVersionID();
+
+    // Watch both the Model and SN properties on the system's Asset iface
+    _properties.emplace_back(std::make_unique<InterfaceWatcher<DataInterface>>(
+        bus, object_path::systemInv, interface::invAsset, *this,
+        [this](const auto& properties) {
+            auto model = properties.find("Model");
+            if (model != properties.end())
+            {
+                this->_machineTypeModel = std::get<std::string>(model->second);
+            }
+
+            auto sn = properties.find("SerialNumber");
+            if (sn != properties.end())
+            {
+                this->_machineSerialNumber = std::get<std::string>(sn->second);
+            }
+        }));
+
+    // Watch the OperatingSystemState property
+    _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
+        bus, object_path::hostState, interface::osStatus,
+        "OperatingSystemState", *this, [this](const auto& value) {
+            auto status =
+                Status::convertOSStatusFromString(std::get<std::string>(value));
+
+            if ((status == Status::OSStatus::BootComplete) ||
+                (status == Status::OSStatus::Standby))
+            {
+                setHostState(true);
+            }
+            else
+            {
+                setHostState(false);
+            }
+        }));
 }
 
-void DataInterface::readMTMS()
-{
-    // If this runs when the inventory service isn't running, it will get the
-    // value whenever it starts via the propertiesChanged callback.
-    try
-    {
-        auto inventoryService =
-            getService(object_path::systemInv, interface::invAsset);
-
-        if (!inventoryService.empty())
-        {
-            auto properties = getAllProperties(
-                inventoryService, object_path::systemInv, interface::invAsset);
-
-            _machineTypeModel = std::get<std::string>(properties["Model"]);
-
-            _machineSerialNumber =
-                std::get<std::string>(properties["SerialNumber"]);
-        }
-    }
-    catch (std::exception& e)
-    {
-        // Inventory must not be running at this moment.
-    }
-
-    // Keep up to date by watching for the propertiesChanged signal.
-    _sysInventoryPropMatch = std::make_unique<sdbusplus::bus::match_t>(
-        _bus,
-        sdbusplus::bus::match::rules::propertiesChanged(object_path::systemInv,
-                                                        interface::invAsset),
-        std::bind(std::mem_fn(&DataInterface::sysAssetPropChanged), this,
-                  std::placeholders::_1));
-}
-
-void DataInterface::sysAssetPropChanged(sdbusplus::message::message& msg)
-{
-    DBusInterface interface;
-    DBusPropertyMap properties;
-
-    msg.read(interface, properties);
-
-    auto model = properties.find("Model");
-    if (model != properties.end())
-    {
-        _machineTypeModel = std::get<std::string>(model->second);
-    }
-
-    auto sn = properties.find("SerialNumber");
-    if (sn != properties.end())
-    {
-        _machineSerialNumber = std::get<std::string>(sn->second);
-    }
-}
-
-DBusPropertyMap DataInterface::getAllProperties(const std::string& service,
-                                                const std::string& objectPath,
-                                                const std::string& interface)
+DBusPropertyMap
+    DataInterface::getAllProperties(const std::string& service,
+                                    const std::string& objectPath,
+                                    const std::string& interface) const
 {
     DBusPropertyMap properties;
 
@@ -131,7 +111,8 @@ DBusPropertyMap DataInterface::getAllProperties(const std::string& service,
 void DataInterface::getProperty(const std::string& service,
                                 const std::string& objectPath,
                                 const std::string& interface,
-                                const std::string& property, DBusValue& value)
+                                const std::string& property,
+                                DBusValue& value) const
 {
 
     auto method = _bus.new_method_call(service.c_str(), objectPath.c_str(),
@@ -162,67 +143,6 @@ DBusService DataInterface::getService(const std::string& objectPath,
     }
 
     return std::string{};
-}
-
-void DataInterface::readHostState()
-{
-    _hostUp = false;
-
-    try
-    {
-        auto service = getService(object_path::hostState, interface::osStatus);
-        if (!service.empty())
-        {
-            DBusValue value;
-            getProperty(service, object_path::hostState, interface::osStatus,
-                        "OperatingSystemState", value);
-
-            auto status =
-                Status::convertOSStatusFromString(std::get<std::string>(value));
-
-            if ((status == Status::OSStatus::BootComplete) ||
-                (status == Status::OSStatus::Standby))
-            {
-                _hostUp = true;
-            }
-        }
-    }
-    catch (std::exception& e)
-    {
-        // Not available yet.
-    }
-
-    // Keep up to date by watching for the propertiesChanged signal.
-    _osStateMatch = std::make_unique<sdbusplus::bus::match_t>(
-        _bus,
-        sdbusplus::bus::match::rules::propertiesChanged(object_path::hostState,
-                                                        interface::osStatus),
-        std::bind(std::mem_fn(&DataInterface::osStatePropChanged), this,
-                  std::placeholders::_1));
-}
-
-void DataInterface::osStatePropChanged(sdbusplus::message::message& msg)
-{
-    DBusInterface interface;
-    DBusPropertyMap properties;
-
-    msg.read(interface, properties);
-
-    auto state = properties.find("OperatingSystemState");
-    if (state != properties.end())
-    {
-        auto status = Status::convertOSStatusFromString(
-            std::get<std::string>(state->second));
-
-        bool newHostState = false;
-        if ((status == Status::OSStatus::BootComplete) ||
-            (status == Status::OSStatus::Standby))
-        {
-            newHostState = true;
-        }
-
-        setHostState(newHostState);
-    }
 }
 
 uint8_t DataInterface::getPLDMInstanceID(uint8_t eid) const

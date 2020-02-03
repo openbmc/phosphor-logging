@@ -1,5 +1,8 @@
 #pragma once
 
+#include "dbus_types.hpp"
+#include "dbus_watcher.hpp"
+
 #include <filesystem>
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
@@ -9,14 +12,6 @@ namespace openpower
 {
 namespace pels
 {
-
-using DBusValue = sdbusplus::message::variant<std::string>;
-using DBusProperty = std::string;
-using DBusInterface = std::string;
-using DBusService = std::string;
-using DBusPath = std::string;
-using DBusInterfaceList = std::vector<DBusInterface>;
-using DBusPropertyMap = std::map<DBusProperty, DBusValue>;
 
 /**
  * @class DataInterface
