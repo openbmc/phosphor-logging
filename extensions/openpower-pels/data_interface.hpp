@@ -1,5 +1,8 @@
 #pragma once
 
+#include "dbus_types.hpp"
+#include "dbus_watcher.hpp"
+
 #include <filesystem>
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
@@ -9,14 +12,6 @@ namespace openpower
 {
 namespace pels
 {
-
-using DBusValue = sdbusplus::message::variant<std::string>;
-using DBusProperty = std::string;
-using DBusInterface = std::string;
-using DBusService = std::string;
-using DBusPath = std::string;
-using DBusInterfaceList = std::vector<DBusInterface>;
-using DBusPropertyMap = std::map<DBusProperty, DBusValue>;
 
 /**
  * @class DataInterface
@@ -269,48 +264,6 @@ class DataInterface : public DataInterfaceBase
      */
     uint8_t getPLDMInstanceID(uint8_t eid) const override;
 
-  private:
-    /**
-     * @brief Reads the machine type/model and SN from D-Bus.
-     *
-     * Looks for them on the 'system' inventory object, and also
-     * places a properties changed watch on them to obtain any changes
-     * (or read them for the first time if the inventory isn't ready
-     * when this function runs.)
-     */
-    void readMTMS();
-
-    /**
-     * @brief Reads the host state from D-Bus.
-     *
-     * For host on, looks for the values of 'BootComplete' or 'Standby'
-     * in the OperatingSystemState property on the
-     * 'xyz.openbmc_project.State.OperatingSystem.Status' interface
-     * on the '/xyz/openbmc_project/state/host0' path.
-     *
-     * Also adds a properties changed watch on it so the code can be
-     * kept up to date on changes.
-     */
-    void readHostState();
-
-    /**
-     * @brief Reads the BMC firmware version string and puts it into
-     *        _bmcFWVersion.
-     */
-    void readBMCFWVersion();
-
-    /**
-     * @brief Reads the server firmware version string and puts it into
-     *        _serverFWVersion.
-     */
-    void readServerFWVersion();
-
-    /**
-     * @brief Reads the BMC firmware version ID and puts it into
-     *        _bmcFWVersionID.
-     */
-    void readBMCFWVersionID();
-
     /**
      * @brief Finds the D-Bus service name that hosts the
      *        passed in path and interface.
@@ -331,7 +284,7 @@ class DataInterface : public DataInterfaceBase
      */
     DBusPropertyMap getAllProperties(const std::string& service,
                                      const std::string& objectPath,
-                                     const std::string& interface);
+                                     const std::string& interface) const;
 
     /**
      * @brief Wrapper for the 'Get' properties method call
@@ -344,33 +297,33 @@ class DataInterface : public DataInterfaceBase
      */
     void getProperty(const std::string& service, const std::string& objectPath,
                      const std::string& interface, const std::string& property,
-                     DBusValue& value);
+                     DBusValue& value) const;
+
+  private:
+    /**
+     * @brief Reads the BMC firmware version string and puts it into
+     *        _bmcFWVersion.
+     */
+    void readBMCFWVersion();
 
     /**
-     * @brief The properties changed callback for the Asset iface
-     *        on the system inventory object.
-     *
-     * @param[in] msg - The sdbusplus message of the signal
+     * @brief Reads the server firmware version string and puts it into
+     *        _serverFWVersion.
      */
-    void sysAssetPropChanged(sdbusplus::message::message& msg);
+    void readServerFWVersion();
 
     /**
-     * @brief The properties changed callback for the OperatingSystemStatus
-     *        interface on the host state object.
-     *
-     * @param[in] msg - The sdbusplus message of the signal
+     * @brief Reads the BMC firmware version ID and puts it into
+     *        _bmcFWVersionID.
      */
-    void osStatePropChanged(sdbusplus::message::message& msg);
+    void readBMCFWVersionID();
 
     /**
-     * @brief The match object for the system path's properties
+     * @brief The D-Bus property or interface watchers that have callbacks
+     *        registered that will set members in this class when
+     *        they change.
      */
-    std::unique_ptr<sdbusplus::bus::match_t> _sysInventoryPropMatch;
-
-    /**
-     * @brief The match object for the operating system status.
-     */
-    std::unique_ptr<sdbusplus::bus::match_t> _osStateMatch;
+    std::vector<std::unique_ptr<DBusWatcher>> _properties;
 
     /**
      * @brief The sdbusplus bus object for making D-Bus calls.
