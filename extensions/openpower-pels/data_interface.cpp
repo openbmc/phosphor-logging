@@ -36,6 +36,8 @@ constexpr auto objectMapper = "/xyz/openbmc_project/object_mapper";
 constexpr auto systemInv = "/xyz/openbmc_project/inventory/system";
 constexpr auto hostState = "/xyz/openbmc_project/state/host0";
 constexpr auto pldm = "/xyz/openbmc_project/pldm";
+constexpr auto enableHostPELs =
+    "/xyz/openbmc_project/logging/send_event_logs_to_host";
 } // namespace object_path
 
 namespace interface
@@ -45,6 +47,7 @@ constexpr auto objectMapper = "xyz.openbmc_project.ObjectMapper";
 constexpr auto invAsset = "xyz.openbmc_project.Inventory.Decorator.Asset";
 constexpr auto osStatus = "xyz.openbmc_project.State.OperatingSystem.Status";
 constexpr auto pldmRequester = "xyz.openbmc_project.PLDM.Requester";
+constexpr auto enable = "xyz.openbmc_project.Object.Enable";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::OperatingSystem::server;
@@ -88,6 +91,13 @@ DataInterface::DataInterface(sdbusplus::bus::bus& bus) : _bus(bus)
             {
                 setHostState(false);
             }
+        }));
+
+    // Watch the host PEL enable property
+    _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
+        bus, object_path::enableHostPELs, interface::enable, "Enabled", *this,
+        [this](const auto& value) {
+            this->_sendPELsToHost = std::get<bool>(value);
         }));
 }
 
