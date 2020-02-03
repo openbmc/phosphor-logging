@@ -34,6 +34,8 @@ namespace object_path
 {
 constexpr auto objectMapper = "/xyz/openbmc_project/object_mapper";
 constexpr auto systemInv = "/xyz/openbmc_project/inventory/system";
+constexpr auto bmcState = "/xyz/openbmc_project/state/bmc0";
+constexpr auto chassisState = "/xyz/openbmc_project/state/chassis0";
 constexpr auto hostState = "/xyz/openbmc_project/state/host0";
 constexpr auto pldm = "/xyz/openbmc_project/pldm";
 constexpr auto enableHostPELs =
@@ -48,6 +50,9 @@ constexpr auto invAsset = "xyz.openbmc_project.Inventory.Decorator.Asset";
 constexpr auto osStatus = "xyz.openbmc_project.State.OperatingSystem.Status";
 constexpr auto pldmRequester = "xyz.openbmc_project.PLDM.Requester";
 constexpr auto enable = "xyz.openbmc_project.Object.Enable";
+constexpr auto bmcState = "xyz.openbmc_project.State.BMC";
+constexpr auto chassisState = "xyz.openbmc_project.State.Chassis";
+constexpr auto hostState = "xyz.openbmc_project.State.Host";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::OperatingSystem::server;
@@ -98,6 +103,37 @@ DataInterface::DataInterface(sdbusplus::bus::bus& bus) : _bus(bus)
         bus, object_path::enableHostPELs, interface::enable, "Enabled", *this,
         [this](const auto& value) {
             this->_sendPELsToHost = std::get<bool>(value);
+        }));
+
+    // Watch the BMCState property
+    _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
+        bus, object_path::bmcState, interface::bmcState, "CurrentBMCState",
+        *this, [this](const auto& value) {
+            this->_bmcState = std::get<std::string>(value);
+        }));
+
+    // Watch the chassis current and requested power state properties
+    _properties.emplace_back(std::make_unique<InterfaceWatcher<DataInterface>>(
+        bus, object_path::chassisState, interface::chassisState, *this,
+        [this](const auto& properties) {
+            auto state = properties.find("CurrentPowerState");
+            if (state != properties.end())
+            {
+                this->_chassisState = std::get<std::string>(state->second);
+            }
+
+            auto trans = properties.find("RequestedPowerTransition");
+            if (trans != properties.end())
+            {
+                this->_chassisTransition = std::get<std::string>(trans->second);
+            }
+        }));
+
+    // Watch the CurrentHostState property
+    _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
+        bus, object_path::hostState, interface::hostState, "CurrentHostState",
+        *this, [this](const auto& value) {
+            this->_hostState = std::get<std::string>(value);
         }));
 }
 
