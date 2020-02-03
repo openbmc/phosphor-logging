@@ -163,6 +163,16 @@ class DataInterfaceBase
         return std::nullopt;
     }
 
+    /**
+     * @brief Returns the 'send event logs to host' setting.
+     *
+     * @return std::string - If sending PELs to the host if enabled.
+     */
+    virtual bool getHostPELEnablement() const
+    {
+        return _sendPELsToHost;
+    }
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
@@ -231,6 +241,13 @@ class DataInterfaceBase
      * @brief The BMC firmware version ID string
      */
     std::string _bmcFWVersionID;
+
+    /**
+     * @brief If sending PELs is enabled.
+     *
+     * This is usually set to false in manufacturing test.
+     */
+    bool _sendPELsToHost = true;
 };
 
 /**
@@ -273,6 +290,7 @@ class DataInterface : public DataInterfaceBase
      */
     DBusService getService(const std::string& objectPath,
                            const std::string& interface) const;
+
     /**
      * @brief Wrapper for the 'GetAll' properties method call
      *
@@ -285,7 +303,6 @@ class DataInterface : public DataInterfaceBase
     DBusPropertyMap getAllProperties(const std::string& service,
                                      const std::string& objectPath,
                                      const std::string& interface) const;
-
     /**
      * @brief Wrapper for the 'Get' properties method call
      *
