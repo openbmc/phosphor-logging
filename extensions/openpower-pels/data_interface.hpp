@@ -173,16 +173,57 @@ class DataInterfaceBase
         return _sendPELsToHost;
     }
 
+    /**
+     * @brief Returns the BMC state
+     *
+     * @return std::string - The BMC state property value
+     */
+    virtual std::string getBMCState() const
+    {
+        return _bmcState;
+    }
+
+    /**
+     * @brief Returns the Chassis state
+     *
+     * @return std::string - The chassis state property value
+     */
+    virtual std::string getChassisState() const
+    {
+        return _chassisState;
+    }
+
+    /**
+     * @brief Returns the chassis requested power
+     *        transition value.
+     *
+     * @return std::string - The chassis transition property
+     */
+    virtual std::string getChassisTransition() const
+    {
+        return _chassisTransition;
+    }
+
+    /**
+     * @brief Returns the Host state
+     *
+     * @return std::string - The Host state property value
+     */
+    virtual std::string getHostState() const
+    {
+        return _hostState;
+    }
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
      *        callback functions (if there was a change).
      */
-    void setHostState(bool newState)
+    void setHostUp(bool hostUp)
     {
-        if (_hostUp != newState)
+        if (_hostUp != hostUp)
         {
-            _hostUp = newState;
+            _hostUp = hostUp;
 
             for (auto& [name, func] : _hostChangeCallbacks)
             {
@@ -248,6 +289,26 @@ class DataInterfaceBase
      * This is usually set to false in manufacturing test.
      */
     bool _sendPELsToHost = true;
+
+    /**
+     * @brief The BMC state property
+     */
+    std::string _bmcState;
+
+    /**
+     * @brief The Chassis current power state property
+     */
+    std::string _chassisState;
+
+    /**
+     * @brief The Chassis requested power transition property
+     */
+    std::string _chassisTransition;
+
+    /**
+     * @brief The host state property
+     */
+    std::string _hostState;
 };
 
 /**
