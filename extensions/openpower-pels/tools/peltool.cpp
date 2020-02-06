@@ -182,21 +182,6 @@ std::vector<uint8_t> getFileData(const std::string& name)
     }
 }
 
-/**
- * @brief helper function to trim trailing whitespaces
- * @return std::string - trimmed string
- * @param[in] std::string - string to trim
- */
-const char* ws = " \t\n\r\f\v";
-std::string trim(std::string s, const char* t = ws)
-{
-    if (s.find_last_not_of(t) != std::string::npos)
-    {
-        s.erase(s.find_last_not_of(t) + 1);
-    }
-    return s;
-}
-
 template <typename T>
 std::string genPELJSON(T itr, bool hidden, message::Registry& registry)
 {
