@@ -81,6 +81,12 @@ class FailingMTMS : public Section
         return _mtms.machineSerialNumber();
     }
 
+    /**
+     * @brief Get section in JSON.
+     * @return std::optional<std::string> - Failing MTMS section in JSON
+     */
+    std::optional<std::string> getJSON() const override;
+
   private:
     /**
      * @brief Validates the section contents

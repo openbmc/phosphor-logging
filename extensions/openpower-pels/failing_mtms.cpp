@@ -15,6 +15,7 @@
  */
 #include "failing_mtms.hpp"
 
+#include "json_utils.hpp"
 #include "pel_types.hpp"
 
 #include <phosphor-logging/log.hpp>
@@ -85,5 +86,19 @@ void FailingMTMS::unflatten(Stream& stream)
     stream >> _header >> _mtms;
 }
 
+std::optional<std::string> FailingMTMS::getJSON() const
+{
+    std::string json;
+    jsonInsert(json, "Section Version", getNumberString("%d", _header.version),
+               1);
+    jsonInsert(json, "Sub-section type", getNumberString("%d", _header.subType),
+               1);
+    jsonInsert(json, "Created by", getNumberString("0x%X", _header.componentID),
+               1);
+    jsonInsert(json, "Machine Type Model", _mtms.machineTypeAndModel(), 1);
+    jsonInsert(json, "Serial Number", _mtms.machineSerialNumber(), 1);
+    json.erase(json.size() - 2);
+    return json;
+}
 } // namespace pels
 } // namespace openpower
