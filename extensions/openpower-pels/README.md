@@ -50,6 +50,10 @@ PEL:
   - If the AdditionalData property in the OpenBMC event log has anything in it,
     it will be saved in a UserData section as a JSON string.
 
+- System information
+  - This section contains various pieces of system information, such as the
+    full code level and the BMC, chassis, and host state properties.
+
 ## The PEL Message Registry
 
 The PEL message registry is used to create PELs from OpenBMC event logs.
