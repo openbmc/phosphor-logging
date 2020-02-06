@@ -193,5 +193,15 @@ void jsonInsertArray(std::string& jsonStr, const std::string& fieldName,
         jsonStr.append("[],\n");
     }
 }
+
+std::string trimend(std::string s)
+{
+    const char* t = " \t\n\r\f\v";
+    if (s.find_last_not_of(t) != std::string::npos)
+    {
+        s.erase(s.find_last_not_of(t) + 1);
+    }
+    return s;
+}
 } // namespace pels
 } // namespace openpower

@@ -9,6 +9,7 @@ check_PROGRAMS += \
 	fru_identity_test \
 	generic_section_test \
 	host_notifier_test \
+	json_utils_test \
 	log_id_test \
 	mru_test \
 	mtms_test \
@@ -187,6 +188,7 @@ failing_mtms_test_CXXFLAGS = $(test_cxxflags)
 failing_mtms_test_LDADD = \
 	$(test_ldadd) \
 	$(top_builddir)/extensions/openpower-pels/failing_mtms.o \
+	$(top_builddir)/extensions/openpower-pels/json_utils.o \
 	$(top_builddir)/extensions/openpower-pels/mtms.o
 failing_mtms_test_LDFLAGS = $(test_ldflags)
 
@@ -343,3 +345,11 @@ host_notifier_test_LDADD = \
 	$(top_builddir)/extensions/openpower-pels/host_notifier.o \
 	$(top_builddir)/extensions/openpower-pels/repository.o
 host_notifier_test_LDFLAGS = $(test_ldflags) $(SDEVENTPLUS_LIBS)
+
+json_utils_test_SOURCES = %reldir%/json_utils_test.cpp
+json_utils_test_CPPFLAGS = $(test_cppflags)
+json_utils_test_CXXFLAGS = $(test_cxxflags)
+json_utils_test_LDADD = \
+	$(test_ldadd) \
+	$(top_builddir)/extensions/openpower-pels/json_utils.o
+json_utils_test_LDFLAGS = $(test_ldflags)
