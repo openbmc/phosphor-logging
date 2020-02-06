@@ -145,7 +145,7 @@ void jsonInsert(std::string& jsonStr, const std::string& fieldName,
         colAlign - (indentCount * indentLevel) - fieldName.length() - 3;
     const std::string jsonIndent(indentCount * indentLevel, 0x20);
     jsonStr.append(jsonIndent + "\"" + fieldName + "\":");
-    if (spacesToAppend > 0)
+    if (spacesToAppend >= 0)
     {
         jsonStr.append(spacesToAppend, 0x20);
     }

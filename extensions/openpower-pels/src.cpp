@@ -401,7 +401,14 @@ std::optional<std::string> SRC::getJSON() const
     jsonInsert(ps, "Created by", getNumberString("0x%X", _header.componentID),
                1);
     jsonInsert(ps, "SRC Version", getNumberString("0x%02X", _version), 1);
-    jsonInsert(ps, "SRC Format", getNumberString("0x%02X", _hexData[0]), 1);
+    jsonInsert(ps, "SRC Format", getNumberString("0x%02X", _hexData[0] & 0xFF),
+               1);
+    jsonInsert(ps, "Virtual Progress SRC",
+               pv::boolString.at(_flags & virtualProgressSRC), 1);
+    jsonInsert(ps, "I5/OS Service Event Bit",
+               pv::boolString.at(_flags & i5OSServiceEventBit), 1);
+    jsonInsert(ps, "Hypervisor Dump Initiated",
+               pv::boolString.at(_flags & hypDumpInit), 1);
     jsonInsert(ps, "Power Control Net Fault",
                pv::boolString.at(isPowerFaultEvent()), 1);
     rg::Registry registry(getMessageRegistryPath() / rg::registryFileName);
