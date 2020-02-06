@@ -16,11 +16,69 @@
 #include "extensions/openpower-pels/src.hpp"
 #include "pel_utils.hpp"
 
+#include <fstream>
+
 #include <gtest/gtest.h>
 
 using namespace openpower::pels;
+namespace fs = std::filesystem;
 
-TEST(SRCTest, UnflattenFlattenTestNoCallouts)
+const auto testRegistry = R"(
+{
+"PELs":
+[
+    {
+        "Name": "xyz.openbmc_project.Error.Test",
+        "Subsystem": "bmc_firmware",
+        "SRC":
+        {
+            "ReasonCode": "0xABCD",
+            "Words6To9":
+            {
+            }
+        },
+        "Documentation":
+        {
+            "Description": "A Component Fault",
+            "Message": "Comp %1 failed %2 times over %3 secs with ErrorCode %4",
+            "MessageArgSources":
+            [
+                "SRCWord6", "SRCWord7", "SRCWord8", "SRCWord9"
+            ]
+        }
+    }
+]
+}
+)";
+
+class SRCTest : public ::testing::Test
+{
+  protected:
+    static void SetUpTestCase()
+    {
+        char path[] = "/tmp/srctestXXXXXX";
+        regDir = mkdtemp(path);
+    }
+
+    static void TearDownTestCase()
+    {
+        fs::remove_all(regDir);
+    }
+
+    static std::string writeData(const char* data)
+    {
+        fs::path path = regDir / "registry.json";
+        std::ofstream stream{path};
+        stream << data;
+        return path;
+    }
+
+    static fs::path regDir;
+};
+
+fs::path SRCTest::regDir{};
+
+TEST_F(SRCTest, UnflattenFlattenTestNoCallouts)
 {
     auto data = pelDataFactory(TestPELType::primarySRCSection);
 
@@ -61,7 +119,7 @@ TEST(SRCTest, UnflattenFlattenTestNoCallouts)
     EXPECT_EQ(data, newData);
 }
 
-TEST(SRCTest, UnflattenFlattenTest2Callouts)
+TEST_F(SRCTest, UnflattenFlattenTest2Callouts)
 {
     auto data = pelDataFactory(TestPELType::primarySRCSection2Callouts);
 
@@ -98,7 +156,7 @@ TEST(SRCTest, UnflattenFlattenTest2Callouts)
 }
 
 // Create an SRC from the message registry
-TEST(SRCTest, CreateTestNoCallouts)
+TEST_F(SRCTest, CreateTestNoCallouts)
 {
     message::Entry entry;
     entry.src.type = 0xBD;
@@ -159,4 +217,37 @@ TEST(SRCTest, CreateTestNoCallouts)
     EXPECT_EQ(newSRC.isPowerFaultEvent(), src.isPowerFaultEvent());
     EXPECT_EQ(newSRC.asciiString(), src.asciiString());
     EXPECT_FALSE(newSRC.callouts());
+}
+
+// Test the getErrorDetails function
+TEST_F(SRCTest, MessageSubstitutionTest)
+{
+    auto path = SRCTest::writeData(testRegistry);
+    message::Registry registry{path};
+
+    message::Entry entry;
+    entry.subsystem = 0x42;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.src.hexwordADFields = {
+        {6, "COMPID"}, {7, "FREQUENCY"}, {8, "DURATION"}, {9, "ERRORCODE"}};
+    // Values for the SRC words pointed to above
+    std::vector<std::string> adData{"COMPID=0x1", "FREQUENCY=0x4",
+                                    "DURATION=30", "ERRORCODE=0x01ABCDEF"};
+    // Message with placeholder numbers to be substituted with SRC word 6-9
+    // values. Placeholder numbers correspond to messageArgSources's index + 1
+    entry.doc.message =
+        "Comp %1 failed %2 times over %3 secs with ErrorCode %4";
+    entry.doc.messageArgSources = {"SRCWord6", "SRCWord7", "SRCWord8",
+                                   "SRCWord9"};
+
+    AdditionalData ad{adData};
+    SRC src{entry, ad};
+    EXPECT_TRUE(src.valid());
+
+    auto errorDetails = src.getErrorDetails(registry, DetailLevel::message);
+    ASSERT_TRUE(errorDetails);
+    EXPECT_EQ(
+        errorDetails.value(),
+        "Comp 0x1 failed 0x4 times over 0x1E secs with ErrorCode 0x1ABCDEF");
 }
