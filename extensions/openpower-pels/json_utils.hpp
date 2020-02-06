@@ -76,5 +76,12 @@ std::string getNumberString(const char* format, T number)
     return numString;
 }
 
+/**
+ * @brief helper function to trim trailing whitespaces
+ * @return std::string - trimmed string
+ * @param[in] std::string - string to trim
+ */
+std::string trimEnd(std::string s);
+
 } // namespace pels
 } // namespace openpower
