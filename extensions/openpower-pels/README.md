@@ -23,6 +23,21 @@ RAWPEL="/tmp/pels/pel.5"
 The code will assign its own error log ID to this PEL, and also update the
 commit timestamp field to the current time.
 
+#### ESEL
+
+This keyword's data contains a full PEL in string format.  This is how hostboot
+sends down PELs when it is configured in IPMI communication mode.  The PEL is
+handled just like the PEL obtained using the RAWPEL keyword.
+
+The syntax is:
+
+```
+ESEL=
+"00 00 df 00 00 00 00 20 00 04 12 01 6f aa 00 00 50 48 00 30 01 00 33 00 00..."
+```
+
+Note that there are 16 bytes of IPMI SEL data before the PEL data starts.
+
 #### _PID
 
 This keyword that contains the application's PID is added automatically by the
