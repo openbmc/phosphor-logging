@@ -109,7 +109,7 @@ class MockHostInterface : public HostInterface
      */
     virtual std::chrono::milliseconds getHostFullRetryDelay() const override
     {
-        return std::chrono::milliseconds(20);
+        return std::chrono::milliseconds(400);
     }
 
     /**
