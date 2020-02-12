@@ -238,3 +238,119 @@ for easier readability of long fields.
     "There is probably a hardware failure."
 ]
 ```
+
+### Callout Fields
+The callout fields allow one to specify the PEL callouts (either a hardware
+FRU, a symbolic FRU, or a maintenance procedure) in the entry for a particular
+error.  These callouts can vary based on system type, as well as a user
+specified AdditionalData property field.   Callouts will be added to the PEL in
+the order they are listed in the JSON.  If a callout is passed into the error,
+say with CALLOUT_INVENTORY_PATH, then that callout will be added to the PEL
+before the callouts in the registry.
+
+There is room for up to 10 callouts in a PEL.
+
+#### Callouts example based on the system type
+
+```
+"Callouts":
+[
+    {
+        "System": "system1",
+        "CalloutList":
+        [
+            {
+                "Priority": "high",
+                "LocCode": "P1-C1"
+            },
+            {
+                "Priority": "low",
+                "LocCode": "P1"
+            }
+        ]
+    },
+    {
+        "CalloutList":
+        [
+            {
+                "Priority": "high",
+                "Procedure": "SVCDOCS"
+            }
+        ]
+
+    }
+]
+
+```
+
+The above example shows that on system 'system1', the FRU at location P1-C1
+will be called out with a priority of high, and the FRU at P1 with a priority
+of low.  On every other system, the maintenance procedure SVCDOCS is called
+out.
+
+#### Callouts example based on an AdditionalData field
+
+```
+"CalloutsUsingAD":
+{
+    "ADName": "PROC_NUM",
+    "CalloutsWithTheirADValues":
+    [
+        {
+            "ADValue": "0",
+            "Callouts":
+            [
+                {
+                    "CalloutList":
+                    [
+                        {
+                            "Priority": "high",
+                            "LocCode": "P1-C5"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "ADValue": "1",
+            "Callouts":
+            [
+                {
+                    "CalloutList":
+                    [
+                        {
+                            "Priority": "high",
+                            "LocCode": "P1-C6"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+
+```
+
+This example shows that the callouts were selected based on the 'PROC_NUM'
+AdditionalData field.  When PROC_NUM was 0, the FRU at P1-C5 was called out.
+When it was 1, P1-C6 was called out.  Note that the same 'Callouts' array is
+used as in the previous example, so these callouts can also depend on the
+system type.
+
+#### CalloutType
+This field can be used to modify the failing component type field in the
+callout when the default doesn\'t fit:
+
+```
+{
+
+    "Priority": "high",
+    "Procedure": "FIXIT22"
+    "CalloutType": "config_procedure"
+}
+```
+
+The defaults are:
+- Normal hardware FRU: hardware_fru
+- Symbolic FRU: symbolic_fru
+- Procedure: maint_procedure
