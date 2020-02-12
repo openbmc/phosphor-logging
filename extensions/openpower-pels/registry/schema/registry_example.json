@@ -33,6 +33,43 @@
                     "In the UserData section there is a JSON",
                     "dump that provides debug information."
                 ]
+            },
+
+            "CalloutsUsingAD":
+            {
+                "ADName": "PS_NUM",
+                "CalloutsWithTheirADValues":
+                [
+                    {
+                        "ADValue": "0",
+                        "Callouts":
+                        [
+                            {
+                                "System": "system1",
+                                "CalloutList":
+                                [
+                                    {
+                                        "Priority": "high",
+                                        "LocCode": "E1"
+                                    },
+                                    {
+                                        "Priority": "low",
+                                        "LocCode": "P1"
+                                    }
+                                ]
+                            },
+                            {
+                                "CalloutList":
+                                [
+                                    {
+                                        "Priority": "high",
+                                        "Procedure": "PSUPPLY"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             }
         }
     ]
