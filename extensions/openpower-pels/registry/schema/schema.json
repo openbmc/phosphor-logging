@@ -49,11 +49,20 @@
 
                     "Documentation": {"$ref": "#/definitions/documentation" },
 
-                    "ComponentID": {"$ref": "#/definitions/componentID" }
+                    "ComponentID": {"$ref": "#/definitions/componentID" },
+
+                    "CalloutsUsingAD": {"$ref": "#/definitions/calloutsUsingAD"},
+
+                    "Callouts": {"$ref": "#/definitions/callouts"}
                 },
 
                 "required": ["Name", "SRC", "Subsystem", "Documentation"],
-                "additionalProperties": false
+                "additionalProperties": false,
+
+                "not":
+                {
+                    "required": ["CalloutsUsingAD", "Callouts"]
+                }
             }
         },
 
@@ -348,7 +357,233 @@
                 }
             },
             "additionalProperties": false
-        }
+        },
 
+        "adName":
+        {
+            "description": "The name of the AdditionalData entry to use to index into the callout tables.",
+            "type": "string"
+        },
+
+        "adValue":
+        {
+            "description": "The value for the AdditionalData entry specified by ADName that indexes into the callout tables.",
+            "type": "string"
+        },
+
+        "locationCode":
+        {
+            "description": "A location code - the segment after the 'UTMS-' prefix. (e.g. P1-C2)",
+            "type": "string"
+        },
+
+        "priority":
+        {
+            "description": "The callout priority.  See the PEL spec for priority definitions.",
+            "type": "string",
+            "enum": ["high", "medium", "low", "medium_group_a",
+                "medium_group_b", "medium_group_c"]
+        },
+
+        "symbolicFRU":
+        {
+            "description": "The 7 character symbolic FRU callout name.",
+            "type": "string",
+            "pattern": "^[A-Z0-9]{7}$"
+        },
+
+        "procedure":
+        {
+            "description": "The 7 character procedure callout name.",
+            "type": "string",
+            "pattern": "^[A-Z0-9]{7}$"
+        },
+
+        "calloutType":
+        {
+            "description": "The failing component type from the FRU identity callout substructure.  If not specified, the values hardware_fru, symbolic_fru, or maint_procedure will be used, depending on the callout type.",
+            "type": "string",
+            "enum": ["hardware_fru", "code_fru", "config_procedure",
+                     "maint_procedure", "external_fru", "external_code_fru",
+                     "tool_fru", "symbolic_fru", "symbolic_fru_trusted_loccode"]
+        },
+
+        "calloutList":
+        {
+            "description": "The list of FRU callouts to add to a PEL.  If just LocCode is specified, it is a normal hardware FRU callout.  Otherwise, Procedure or SymbolicFRU can be used to specify those types of callouts.  With the latter 2 types, LocCode is optional.  CalloutType is also optional, and is only needed if a value other than hardware_fru, maint_procedure, or symbolic_fru is desired.",
+            "type": "array",
+            "items":
+            {
+                "type": "object",
+                "properties":
+                {
+                    "Priority": {"$ref": "#/definitions/priority" },
+                    "LocCode": {"$ref": "#/definitions/locationCode" },
+                    "SymbolicFRU": {"$ref": "#/definitions/symbolicFRU" },
+                    "Procedure": {"$ref": "#/definitions/procedure" },
+                    "CalloutType": {"$ref": "#/definitions/calloutType" }
+                },
+                "additionalProperties": false,
+                "required": ["Priority"],
+
+                "anyOf":
+                [
+                    { "required": ["LocCode"] },
+                    { "required": ["SymbolicFRU"] },
+                    { "required": ["Procedure"] }
+                ],
+
+                "not":
+                {
+                    "description": "A callout is not both a SymbolicFRU and a Procedure",
+                    "required": ["SymbolicFRU", "Procedure"]
+                }
+            },
+            "minItems": 1,
+            "maxItems": 10,
+
+            "examples":
+            [
+                {
+                    "Priority": "high",
+                    "LocCode": "P1"
+                },
+                {
+                    "Priority": "medium",
+                    "LocCode": "P2",
+                    "SymbolicFRU": "PROCFRU"
+                },
+                {
+                    "Priority": "low",
+                    "Procedure": "SVCDOCS"
+                }
+            ]
+        },
+
+        "system":
+        {
+            "description": "The system type string, as specified by entity manger.  It is used to index into different sections of the JSON.",
+            "type": "string"
+        },
+
+        "callouts":
+        {
+            "description": "This contains callouts that can vary based on system type.  Each entry contains an optional System property and a required CalloutList property.  If the System property is left out it indicates that the CalloutList callouts are valid for every system type, unless there is another Callouts entry that has a matching System property, in which case that entry is valid.",
+            "type": "array",
+            "items":
+            {
+                "type": "object",
+
+                "properties":
+                {
+                    "System": {"$ref": "#/definitions/system" },
+                    "CalloutList": {"$ref": "#/definitions/calloutList" }
+                },
+                "required": ["CalloutList"],
+                "additionalProperties": false
+            },
+            "minItems": 1,
+            "maxItems": 10,
+
+            "examples":
+            [
+                [
+                    {
+                        "System": "system1",
+                        "CalloutList": [{"Priority": "high", "LocCode": "P1"}]
+                    },
+                    {
+                        "CalloutList": [{"Priority": "high", "Procedure": "NEXTLVL"}]
+                    }
+                ]
+            ]
+        },
+
+        "calloutsWithTheirADValues":
+        {
+            "description": "This contains callouts along with the AdditionalData value used to select an entry into the callout list.  The AdditionalData entry was specified by ADName in the CalloutsUsingAD parent entry.",
+            "type": "array",
+
+            "items":
+            {
+                "type": "object",
+                "properties":
+                {
+                    "ADValue": {"$ref": "#/definitions/adValue" },
+                    "Callouts": {"$ref": "#/definitions/callouts" }
+                },
+                "additionalProperties": false,
+                "required": ["ADValue", "Callouts"]
+            },
+            "minItems": 1,
+            "maxItems": 10,
+
+            "examples":
+            [
+                [
+                    {
+                        "ADValue": "0",
+                        "Callouts":
+                        [
+                            {
+                                "CalloutList": [{"Priority": "high", "LocCode": "P1"}]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "1",
+                        "Callouts":
+                        [
+                            {
+                                "CalloutList": [{"Priority": "high", "LocCode": "P2"}]
+                            }
+                        ]
+                    }
+                ]
+            ]
+        },
+
+        "calloutsUsingAD":
+        {
+            "description": "This contains the callouts that can be specified based on a value in the AdditionalData property..",
+            "type": "object",
+
+            "properties":
+            {
+                "ADName": {"$ref": "#/definitions/adName" },
+                "CalloutsWithTheirADValues":
+                    {"$ref": "#/definitions/calloutsWithTheirADValues" }
+            },
+            "additionalProperties": false,
+            "required": ["ADName", "CalloutsWithTheirADValues"],
+
+            "examples":
+            [
+                {
+                    "ADName": "PROC_NUM",
+                    "CalloutsWithTheirADValues":
+                    [
+                        {
+                            "ADValue": "0",
+                            "Callouts":
+                            [
+                                {
+                                    "CalloutList": [{"Priority": "high", "LocCode": "P1"}]
+                                }
+                            ]
+                        },
+                        {
+                            "ADValue": "1",
+                            "Callouts":
+                            [
+                                {
+                                    "CalloutList": [{"Priority": "high", "LocCode": "P2"}]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
     }
 }
