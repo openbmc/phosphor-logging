@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include "ascii_string.hpp"
-
 #include "pel_types.hpp"
 
 #include <phosphor-logging/log.hpp>
@@ -73,6 +72,15 @@ void AsciiString::flatten(Stream& stream) const
 void AsciiString::unflatten(Stream& stream)
 {
     stream.read(_string.data(), _string.size());
+
+    // Only allow certain ASCII characters as other entities will
+    // eventually want to display this.
+    std::for_each(_string.begin(), _string.end(), [](auto& c) {
+        if (!isalnum(c) && (c != ' ') && (c != '.') && (c != ':') && (c != '/'))
+        {
+            c = ' ';
+        }
+    });
 }
 
 std::string AsciiString::get() const
