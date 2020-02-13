@@ -244,7 +244,7 @@ std::string genPELJSON(T itr, bool hidden, message::Registry& registry)
                     pel.userHeader().subsystem(), pel_values::subsystemValues);
                 listStr += "\t\t\"Subsystem\": \"" + subsystem + "\",\n";
                 // commit time
-                sprintf(tmpValStr, "%02X/%02X/%02X%02X  %02X:%02X:%02X",
+                sprintf(tmpValStr, "%02X/%02X/%02X%02X %02X:%02X:%02X",
                         pel.privateHeader().commitTimestamp().month,
                         pel.privateHeader().commitTimestamp().day,
                         pel.privateHeader().commitTimestamp().yearMSB,

@@ -15,6 +15,7 @@
  */
 #include "extended_user_header.hpp"
 
+#include "json_utils.hpp"
 #include "pel_types.hpp"
 
 #include <phosphor-logging/log.hpp>
@@ -173,6 +174,36 @@ void ExtendedUserHeader::createSymptomID(const message::Entry& regEntry,
     }
 
     _symptomIDSize = _symptomID.size();
+}
+
+std::optional<std::string> ExtendedUserHeader::getJSON() const
+{
+    std::string json;
+    jsonInsert(json, "Section Version", getNumberString("%d", _header.version),
+               1);
+    jsonInsert(json, "Sub-section type", getNumberString("%d", _header.subType),
+               1);
+    jsonInsert(json, "Created by", getNumberString("0x%X", _header.componentID),
+               1);
+    jsonInsert(json, "Reporting Machine Type", machineTypeModel(), 1);
+    jsonInsert(json, "Reporting Serial Number", trimEnd(machineSerialNumber()),
+               1);
+    jsonInsert(json, "FW Released Ver", serverFWVersion(), 1);
+    jsonInsert(json, "FW SubSys Version", subsystemFWVersion(), 1);
+    jsonInsert(json, "Common Ref Time",
+               getNumberString("%02X", _refTime.month) + '/' +
+                   getNumberString("%02X", _refTime.day) + '/' +
+                   getNumberString("%02X", _refTime.yearMSB) +
+                   getNumberString("%02X", _refTime.yearLSB) + ' ' +
+                   getNumberString("%02X", _refTime.hour) + ':' +
+                   getNumberString("%02X", _refTime.minutes) + ':' +
+                   getNumberString("%02X", _refTime.seconds),
+               1);
+    jsonInsert(json, "Symptom Id Len", getNumberString("%d", _symptomIDSize),
+               1);
+    jsonInsert(json, "Symptom Id", symptomID(), 1);
+    json.erase(json.size() - 2);
+    return json;
 }
 
 } // namespace pels
