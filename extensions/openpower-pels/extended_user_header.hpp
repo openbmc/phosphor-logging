@@ -155,6 +155,12 @@ class ExtendedUserHeader : public Section
         return symptom;
     }
 
+    /**
+     * @brief Get section in JSON.
+     * @return std::optional<std::string> - ExtendedUserHeader section's JSON
+     */
+    std::optional<std::string> getJSON() const override;
+
   private:
     /**
      * @brief Fills in the object from the stream data

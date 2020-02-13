@@ -85,13 +85,13 @@ PrivateHeader::PrivateHeader(Stream& pel) :
 std::optional<std::string> PrivateHeader::getJSON() const
 {
     char tmpPhVal[50];
-    sprintf(tmpPhVal, "%02X/%02X/%02X%02X  %02X:%02X:%02X",
+    sprintf(tmpPhVal, "%02X/%02X/%02X%02X %02X:%02X:%02X",
             _createTimestamp.month, _createTimestamp.day,
             _createTimestamp.yearMSB, _createTimestamp.yearLSB,
             _createTimestamp.hour, _createTimestamp.minutes,
             _createTimestamp.seconds);
     std::string phCreateTStr(tmpPhVal);
-    sprintf(tmpPhVal, "%02X/%02X/%02X%02X  %02X:%02X:%02X",
+    sprintf(tmpPhVal, "%02X/%02X/%02X%02X %02X:%02X:%02X",
             _commitTimestamp.month, _commitTimestamp.day,
             _createTimestamp.yearMSB, _commitTimestamp.yearLSB,
             _commitTimestamp.hour, _commitTimestamp.minutes,
