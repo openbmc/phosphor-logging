@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 #include "extensions/openpower-pels/src.hpp"
+#include "mocks.hpp"
 #include "pel_utils.hpp"
 
 #include <fstream>
@@ -21,6 +22,8 @@
 #include <gtest/gtest.h>
 
 using namespace openpower::pels;
+using ::testing::NiceMock;
+using ::testing::Return;
 namespace fs = std::filesystem;
 
 const auto testRegistry = R"(
@@ -193,7 +196,11 @@ TEST_F(SRCTest, CreateTestNoCallouts)
     std::vector<std::string> adData{"TEST1=0x12345678", "TEST2=12345678",
                                     "TEST3=0XDEF", "TEST4=Z"};
     AdditionalData ad{adData};
-    SRC src{entry, ad};
+    NiceMock<MockDataInterface> dataIface;
+
+    EXPECT_CALL(dataIface, getMotherboardCCIN).WillOnce(Return("ABCD"));
+
+    SRC src{entry, ad, dataIface};
 
     EXPECT_TRUE(src.valid());
     EXPECT_TRUE(src.isPowerFaultEvent());
@@ -208,6 +215,7 @@ TEST_F(SRCTest, CreateTestNoCallouts)
     EXPECT_EQ(hexwords[2 - 2] & 0x00F00000, 0);    // Partition boot type
     EXPECT_EQ(hexwords[2 - 2] & 0x000000FF, 0x55); // SRC format
     EXPECT_EQ(hexwords[3 - 2] & 0x000000FF, 0x10); // BMC position
+    EXPECT_EQ(hexwords[3 - 2] & 0xFFFF0000, 0xABCD0000); // Motherboard CCIN
 
     // Validate more fields here as the code starts filling them in.
 
@@ -239,6 +247,49 @@ TEST_F(SRCTest, CreateTestNoCallouts)
     EXPECT_FALSE(newSRC.callouts());
 }
 
+// Test when the CCIN string isn't a 4 character number
+TEST_F(SRCTest, BadCCINTest)
+{
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+    entry.src.powerFault = false;
+
+    std::vector<std::string> adData{};
+    AdditionalData ad{adData};
+    NiceMock<MockDataInterface> dataIface;
+
+    // First it isn't a number, then it is too long,
+    // then it is empty.
+    EXPECT_CALL(dataIface, getMotherboardCCIN)
+        .WillOnce(Return("X"))
+        .WillOnce(Return("12345"))
+        .WillOnce(Return(""));
+
+    // The CCIN in the first half should still be 0 each time.
+    {
+        SRC src{entry, ad, dataIface};
+        EXPECT_TRUE(src.valid());
+        const auto& hexwords = src.hexwordData();
+        EXPECT_EQ(hexwords[3 - 2] & 0xFFFF0000, 0x00000000);
+    }
+
+    {
+        SRC src{entry, ad, dataIface};
+        EXPECT_TRUE(src.valid());
+        const auto& hexwords = src.hexwordData();
+        EXPECT_EQ(hexwords[3 - 2] & 0xFFFF0000, 0x00000000);
+    }
+
+    {
+        SRC src{entry, ad, dataIface};
+        EXPECT_TRUE(src.valid());
+        const auto& hexwords = src.hexwordData();
+        EXPECT_EQ(hexwords[3 - 2] & 0xFFFF0000, 0x00000000);
+    }
+}
+
 // Test the getErrorDetails function
 TEST_F(SRCTest, MessageSubstitutionTest)
 {
@@ -249,8 +300,9 @@ TEST_F(SRCTest, MessageSubstitutionTest)
     std::vector<std::string> adData{"COMPID=0x1", "FREQUENCY=0x4",
                                     "DURATION=30", "ERRORCODE=0x01ABCDEF"};
     AdditionalData ad{adData};
+    NiceMock<MockDataInterface> dataIface;
 
-    SRC src{*entry, ad};
+    SRC src{*entry, ad, dataIface};
     EXPECT_TRUE(src.valid());
 
     auto errorDetails = src.getErrorDetails(registry, DetailLevel::message);

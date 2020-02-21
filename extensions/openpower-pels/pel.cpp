@@ -48,7 +48,7 @@ PEL::PEL(const message::Entry& entry, uint32_t obmcLogID, uint64_t timestamp,
                                           timestamp);
     _uh = std::make_unique<UserHeader>(entry, severity);
 
-    auto src = std::make_unique<SRC>(entry, additionalData);
+    auto src = std::make_unique<SRC>(entry, additionalData, dataIface);
 
     auto euh = std::make_unique<ExtendedUserHeader>(dataIface, entry, *src);
 
