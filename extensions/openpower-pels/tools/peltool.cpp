@@ -468,6 +468,24 @@ void deleteAllPELs()
     }
 }
 
+/**
+ * @brief Display a single PEL
+ *
+ * @param[in] pel - the PEL to display
+ */
+void displayPEL(const PEL& pel)
+{
+    if (pel.valid())
+    {
+        pel.toJSON();
+    }
+    else
+    {
+        std::cerr << "PEL was malformed\n";
+        exit(1);
+    }
+}
+
 static void exitWithError(const std::string& help, const char* err)
 {
     std::cerr << "ERROR: " << err << std::endl << help << std::endl;
@@ -513,51 +531,7 @@ int main(int argc, char** argv)
 
     else if (!idPEL.empty())
     {
-        for (auto it =
-                 fs::directory_iterator(EXTENSION_PERSIST_DIR "/pels/logs");
-             it != fs::directory_iterator(); ++it)
-        {
-            if (!fs::is_regular_file((*it).path()))
-            {
-                continue;
-            }
-            try
-            {
-                for (auto& c : idPEL)
-                    c = toupper(c);
-                size_t found = idPEL.find("0X");
-                if (found == 0)
-                {
-                    idPEL.erase(0, 2);
-                }
-                if (ends_with((*it).path(), idPEL))
-                {
-                    std::vector<uint8_t> data = getFileData((*it).path());
-                    if (!data.empty())
-                    {
-                        PEL pel{data};
-                        if (pel.valid())
-                        {
-                            pel.toJSON();
-                        }
-                        else
-                        {
-                            log<level::ERR>(
-                                "PEL File contains invalid PEL",
-                                entry("FILENAME=%s", (*it).path().c_str()),
-                                entry("ERROR=%s", "file contains invalid PEL"));
-                        }
-                    }
-                    break;
-                }
-            }
-            catch (std::exception& e)
-            {
-                log<level::ERR>("Hit exception while reading PEL File",
-                                entry("FILENAME=%s", (*it).path().c_str()),
-                                entry("ERROR=%s", e.what()));
-            }
-        }
+        callFunctionOnPEL(idPEL, displayPEL);
     }
     else if (listPEL)
     {
