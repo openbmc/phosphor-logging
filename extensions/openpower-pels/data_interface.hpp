@@ -214,6 +214,16 @@ class DataInterfaceBase
         return _hostState;
     }
 
+    /**
+     * @brief Returns the motherboard CCIN
+     *
+     * @return std::string The motherboard CCIN
+     */
+    virtual std::string getMotherboardCCIN() const
+    {
+        return _motherboardCCIN;
+    }
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
@@ -309,6 +319,11 @@ class DataInterfaceBase
      * @brief The host state property
      */
     std::string _hostState;
+
+    /**
+     * @brief The motherboard CCIN
+     */
+    std::string _motherboardCCIN;
 };
 
 /**
@@ -397,6 +412,44 @@ class DataInterface : public DataInterfaceBase
     void readBMCFWVersionID();
 
     /**
+     * @brief Reads the motherboard CCIN and puts it into _motherboardCCIN.
+     *
+     * It finds the motherboard first, possibly having to wait for it to
+     * show up.
+     */
+    void readMotherboardCCIN();
+
+    /**
+     * @brief Finds all D-Bus paths that contain any of the interfaces
+     *        passed in, by using GetSubTreePaths.
+     *
+     * @param[in] interfaces - The desired interfaces
+     *
+     * @return The D-Bus paths.
+     */
+    DBusPathList getPaths(const DBusInterfaceList& interfaces) const;
+
+    /**
+     * @brief The interfacesAdded callback used on the inventory to
+     *        find the D-Bus object that has the motherboard interface.
+     *        When the motherboard is found, it then adds a PropertyWatcher
+     *        for the motherboard CCIN.
+     */
+    void motherboardIfaceAdded(sdbusplus::message::message& msg);
+
+    /**
+     * @brief Set the motherboard CCIN from the DBus variant that
+     *        contains it.
+     *
+     * @param[in] ccin - The CCIN variant, a vector<uint8_t>.
+     */
+    void setMotherboardCCIN(const DBusValue& ccin)
+    {
+        const auto& c = std::get<std::vector<uint8_t>>(ccin);
+        _motherboardCCIN = std::string{c.begin(), c.end()};
+    }
+
+    /**
      * @brief The D-Bus property or interface watchers that have callbacks
      *        registered that will set members in this class when
      *        they change.
@@ -407,6 +460,14 @@ class DataInterface : public DataInterfaceBase
      * @brief The sdbusplus bus object for making D-Bus calls.
      */
     sdbusplus::bus::bus& _bus;
+
+    /**
+     * @brief The interfacesAdded match object used to wait for inventory
+     *        interfaces to show up, so that the object with the motherboard
+     *        interface can be found.  After it is found, this object is
+     *        deleted.
+     */
+    std::unique_ptr<sdbusplus::bus::match_t> _inventoryIfacesAddedMatch;
 };
 
 } // namespace pels
