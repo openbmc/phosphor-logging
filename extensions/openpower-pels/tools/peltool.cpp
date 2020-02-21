@@ -197,7 +197,6 @@ std::vector<uint8_t> getFileData(const std::string& name)
     }
     else
     {
-        printf("Can't open raw PEL file");
         return {};
     }
 }
