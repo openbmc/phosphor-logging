@@ -34,6 +34,7 @@ namespace object_path
 {
 constexpr auto objectMapper = "/xyz/openbmc_project/object_mapper";
 constexpr auto systemInv = "/xyz/openbmc_project/inventory/system";
+constexpr auto baseInv = "/xyz/openbmc_project/inventory";
 constexpr auto bmcState = "/xyz/openbmc_project/state/bmc0";
 constexpr auto chassisState = "/xyz/openbmc_project/state/chassis0";
 constexpr auto hostState = "/xyz/openbmc_project/state/host0";
@@ -53,15 +54,20 @@ constexpr auto enable = "xyz.openbmc_project.Object.Enable";
 constexpr auto bmcState = "xyz.openbmc_project.State.BMC";
 constexpr auto chassisState = "xyz.openbmc_project.State.Chassis";
 constexpr auto hostState = "xyz.openbmc_project.State.Host";
+constexpr auto invMotherboard =
+    "xyz.openbmc_project.Inventory.Item.Board.Motherboard";
+constexpr auto viniRecordVPD = "com.ibm.ipzvpd.VINI";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::OperatingSystem::server;
+using sdbusplus::exception::SdBusError;
 
 DataInterface::DataInterface(sdbusplus::bus::bus& bus) : _bus(bus)
 {
     readBMCFWVersion();
     readServerFWVersion();
     readBMCFWVersionID();
+    readMotherboardCCIN();
 
     // Watch both the Model and SN properties on the system's Asset iface
     _properties.emplace_back(std::make_unique<InterfaceWatcher<DataInterface>>(
@@ -169,6 +175,23 @@ void DataInterface::getProperty(const std::string& service,
     reply.read(value);
 }
 
+DBusPathList DataInterface::getPaths(const DBusInterfaceList& interfaces) const
+{
+
+    auto method = _bus.new_method_call(
+        service_name::objectMapper, object_path::objectMapper,
+        interface::objectMapper, "GetSubTreePaths");
+
+    method.append(std::string{"/"}, 0, interfaces);
+
+    auto reply = _bus.call(method);
+
+    DBusPathList paths;
+    reply.read(paths);
+
+    return paths;
+}
+
 DBusService DataInterface::getService(const std::string& objectPath,
                                       const std::string& interface) const
 {
@@ -250,6 +273,57 @@ void DataInterface::readServerFWVersion()
 void DataInterface::readBMCFWVersionID()
 {
     _bmcFWVersionID = getOSReleaseValue("VERSION_ID").value_or("");
+}
+
+void DataInterface::readMotherboardCCIN()
+{
+    try
+    {
+        // First, try to find the motherboard
+        auto motherboards = getPaths({interface::invMotherboard});
+        if (motherboards.empty())
+        {
+            throw std::runtime_error("No motherboards yet");
+        }
+
+        // Found it, so now get the CCIN
+        _properties.emplace_back(
+            std::make_unique<PropertyWatcher<DataInterface>>(
+                _bus, motherboards.front(), interface::viniRecordVPD, "CC",
+                *this,
+                [this](const auto& ccin) { this->setMotherboardCCIN(ccin); }));
+    }
+    catch (const SdBusError& e)
+    {
+        // No motherboard in the inventory yet - watch for it
+        _inventoryIfacesAddedMatch = std::make_unique<sdbusplus::bus::match_t>(
+            _bus, match_rules::interfacesAdded(object_path::baseInv),
+            std::bind(std::mem_fn(&DataInterface::motherboardIfaceAdded), this,
+                      std::placeholders::_1));
+    }
+}
+
+void DataInterface::motherboardIfaceAdded(sdbusplus::message::message& msg)
+{
+    sdbusplus::message::object_path path;
+    DBusInterfaceMap interfaces;
+
+    msg.read(path, interfaces);
+
+    // This is watching the whole inventory, so check if it's what we want
+    if (interfaces.find(interface::invMotherboard) == interfaces.end())
+    {
+        return;
+    }
+
+    // Done watching for any new inventory interfaces
+    _inventoryIfacesAddedMatch.reset();
+
+    // Watch the motherboard CCIN, using the service from this signal
+    // for the initial property read.
+    _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
+        _bus, path, interface::viniRecordVPD, "CC", msg.get_sender(), *this,
+        [this](const auto& ccin) { this->setMotherboardCCIN(ccin); }));
 }
 
 } // namespace pels
