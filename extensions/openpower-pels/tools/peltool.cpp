@@ -32,9 +32,29 @@
 namespace fs = std::filesystem;
 using namespace phosphor::logging;
 using namespace openpower::pels;
+using sdbusplus::exception::SdBusError;
 namespace file_error = sdbusplus::xyz::openbmc_project::Common::File::Error;
 namespace message = openpower::pels::message;
 namespace pv = openpower::pels::pel_values;
+
+using PELFunc = std::function<void(const PEL&)>;
+
+namespace service
+{
+constexpr auto logging = "xyz.openbmc_project.Logging";
+} // namespace service
+
+namespace interface
+{
+constexpr auto deleteObj = "xyz.openbmc_project.Object.Delete";
+constexpr auto deleteAll = "xyz.openbmc_project.Collection.DeleteAll";
+} // namespace interface
+
+namespace object_path
+{
+constexpr auto logEntry = "/xyz/openbmc_project/logging/entry/";
+constexpr auto logging = "/xyz/openbmc_project/logging";
+} // namespace object_path
 
 /**
  * @brief helper function to get PEL commit timestamp from file name
@@ -332,6 +352,122 @@ void printList(bool order, bool hidden)
     }
 }
 
+/**
+ * @brief Calls the function passed in on the PEL with the ID
+ *        passed in.
+ *
+ * @param[in] id - The string version of the PEL ID, either with or
+ *                 without the 0x prefix.
+ * @param[in] func - The std::function<void(const PEL&)> function to run.
+ */
+void callFunctionOnPEL(const std::string& id, const PELFunc& func)
+{
+    std::string pelID{id};
+    std::transform(pelID.begin(), pelID.end(), pelID.begin(), toupper);
+
+    if (pelID.find("0X") == 0)
+    {
+        pelID.erase(0, 2);
+    }
+
+    bool found = false;
+
+    for (auto it = fs::directory_iterator(EXTENSION_PERSIST_DIR "/pels/logs");
+         it != fs::directory_iterator(); ++it)
+    {
+        // The PEL ID is part of the filename, so use that to find the PEL.
+
+        if (!fs::is_regular_file((*it).path()))
+        {
+            continue;
+        }
+
+        if (ends_with((*it).path(), pelID))
+        {
+            found = true;
+
+            auto data = getFileData((*it).path());
+            if (!data.empty())
+            {
+                PEL pel{data};
+
+                try
+                {
+                    func(pel);
+                }
+                catch (std::exception& e)
+                {
+                    std::cerr
+                        << " Internal function threw an exception: " << e.what()
+                        << "\n";
+                    exit(1);
+                }
+            }
+            else
+            {
+                std::cerr << "Could not read PEL file\n";
+                exit(1);
+            }
+            break;
+        }
+    }
+
+    if (!found)
+    {
+        std::cerr << "PEL not found\n";
+        exit(1);
+    }
+}
+
+/**
+ * @brief Delete a PEL by deleting its corresponding event log.
+ *
+ * @param[in] pel - The PEL to delete
+ */
+void deletePEL(const PEL& pel)
+{
+    std::string path{object_path::logEntry};
+    path += std::to_string(pel.obmcLogID());
+
+    try
+    {
+        auto bus = sdbusplus::bus::new_default();
+        auto method = bus.new_method_call(service::logging, path.c_str(),
+                                          interface::deleteObj, "Delete");
+        auto reply = bus.call(method);
+    }
+    catch (const SdBusError& e)
+    {
+        std::cerr << "D-Bus call to delete event log " << pel.obmcLogID()
+                  << " failed: " << e.what() << "\n";
+        exit(1);
+    }
+}
+
+/**
+ * @brief Delete all PELs by deleting all event logs.
+ */
+void deleteAllPELs()
+{
+    try
+    {
+        // This may move to an audit log some day
+        log<level::INFO>("peltool deleting all event logs");
+
+        auto bus = sdbusplus::bus::new_default();
+        auto method =
+            bus.new_method_call(service::logging, object_path::logging,
+                                interface::deleteAll, "DeleteAll");
+        auto reply = bus.call(method);
+    }
+    catch (const SdBusError& e)
+    {
+        std::cerr << "D-Bus call to delete all event logs failed: " << e.what()
+                  << "\n";
+        exit(1);
+    }
+}
+
 static void exitWithError(const std::string& help, const char* err)
 {
     std::cerr << "ERROR: " << err << std::endl << help << std::endl;
@@ -343,15 +479,21 @@ int main(int argc, char** argv)
     CLI::App app{"OpenBMC PEL Tool"};
     std::string fileName;
     std::string idPEL;
+    std::string idToDelete;
     bool listPEL = false;
     bool listPELDescOrd = false;
     bool listPELShowHidden = false;
+    bool deleteAll = false;
+
     app.add_option("-f,--file", fileName,
                    "Display a PEL using its Raw PEL file");
     app.add_option("-i, --id", idPEL, "Display a PEL based on its ID");
     app.add_flag("-l", listPEL, "List PELs");
     app.add_flag("-r", listPELDescOrd, "Reverse order of output");
     app.add_flag("-s", listPELShowHidden, "Show hidden PELs");
+    app.add_option("-d, --delete", idToDelete, "Delete a PEL based on its ID");
+    app.add_flag("-D, --delete-all", deleteAll, "Delete all PELs");
+
     CLI11_PARSE(app, argc, argv);
 
     if (!fileName.empty())
@@ -421,6 +563,14 @@ int main(int argc, char** argv)
     {
 
         printList(listPELDescOrd, listPELShowHidden);
+    }
+    else if (!idToDelete.empty())
+    {
+        callFunctionOnPEL(idToDelete, deletePEL);
+    }
+    else if (deleteAll)
+    {
+        deleteAllPELs();
     }
     else
     {
