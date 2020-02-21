@@ -93,19 +93,21 @@ class PropertyWatcher : public DBusWatcher
      * @param[in] path - The D-Bus path of the property
      * @param[in] interface - The D-Bus interface that contains the property
      * @param[in] propertyName - The property name
+     * @param[in] service - The D-Bus service to use for the property read.
+     *                      Can be empty to look it up instead.
      * @param[in] dataIface - The DataInterface object
      * @param[in] func - The callback used any time the property is read
      */
     PropertyWatcher(sdbusplus::bus::bus& bus, const std::string& path,
                     const std::string& interface,
-                    const std::string& propertyName, const DataIface& dataIface,
-                    PropertySetFunc func) :
+                    const std::string& propertyName, const std::string& service,
+                    const DataIface& dataIface, PropertySetFunc func) :
         DBusWatcher(path, interface),
         _name(propertyName), _setFunc(func)
     {
         try
         {
-            read(dataIface);
+            read(dataIface, service);
         }
         catch (const SdBusError& e)
         {
@@ -125,14 +127,47 @@ class PropertyWatcher : public DBusWatcher
     }
 
     /**
+     * @brief Constructor
+     *
+     * Reads the property if it is on D-Bus, and sets up the match
+     * objects for the propertiesChanged and interfacesAdded signals.
+     *
+     * Unlike the other constructor, this contructor doesn't take the
+     * service to use for the property read so it will look it up with
+     * an ObjectMapper GetObject call.
+     *
+     * @param[in] bus - The sdbusplus bus object
+     * @param[in] path - The D-Bus path of the property
+     * @param[in] interface - The D-Bus interface that contains the property
+     * @param[in] propertyName - The property name
+     * @param[in] dataIface - The DataInterface object
+     * @param[in] func - The callback used any time the property is read
+     */
+    PropertyWatcher(sdbusplus::bus::bus& bus, const std::string& path,
+                    const std::string& interface,
+                    const std::string& propertyName, const DataIface& dataIface,
+                    PropertySetFunc func) :
+        PropertyWatcher(bus, path, interface, propertyName, "", dataIface, func)
+    {
+    }
+
+    /**
      * @brief Reads the property on D-Bus, and calls
      *        the user defined function with the value.
      *
+     * If the passed in service is empty, look up the service to use.
+     *
      * @param[in] dataIface - The DataInterface object
+     * @param[in] service - The D-Bus service to make the getProperty
+     *                      call with, if not empty
      */
-    void read(const DataIface& dataIface)
+    void read(const DataIface& dataIface, std::string service)
     {
-        auto service = dataIface.getService(_path, _interface);
+        if (service.empty())
+        {
+            service = dataIface.getService(_path, _interface);
+        }
+
         if (!service.empty())
         {
             DBusValue value;
