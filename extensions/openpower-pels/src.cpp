@@ -29,6 +29,8 @@ namespace pv = openpower::pels::pel_values;
 namespace rg = openpower::pels::message;
 using namespace phosphor::logging;
 
+constexpr size_t ccinSize = 4;
+
 void SRC::unflatten(Stream& stream)
 {
     stream >> _header >> _version >> _flags >> _reserved1B >> _wordCount >>
@@ -80,7 +82,8 @@ SRC::SRC(Stream& pel)
     }
 }
 
-SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData)
+SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
+         const DataInterfaceBase& dataIface)
 {
     _header.id = static_cast<uint16_t>(SectionID::primarySRC);
     _header.version = srcSectionVersion;
@@ -106,6 +109,8 @@ SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData)
                   [](auto& word) { word = 0; });
     setBMCFormat();
     setBMCPosition();
+    setMotherboardCCIN(dataIface);
+
     // Partition dump status and partition boot type always 0 for BMC errors.
     //
     // TODO: Fill in other fields that aren't available yet.
@@ -160,6 +165,29 @@ void SRC::setUserDefinedHexWords(const message::Entry& regEntry,
     }
 }
 
+void SRC::setMotherboardCCIN(const DataInterfaceBase& dataIface)
+{
+    uint32_t ccin = 0;
+    auto ccinString = dataIface.getMotherboardCCIN();
+
+    try
+    {
+        if (ccinString.size() == ccinSize)
+        {
+            ccin = std::stoi(ccinString, 0, 16);
+        }
+    }
+    catch (std::exception& e)
+    {
+        log<level::WARNING>("Could not convert motherboard CCIN to a number",
+                            entry("CCIN=%s", ccinString.c_str()));
+        return;
+    }
+
+    // Set the first 2 bytes
+    _hexData[1] |= ccin << 16;
+}
+
 void SRC::validate()
 {
     bool failed = false;
@@ -182,16 +210,25 @@ void SRC::validate()
     _valid = failed ? false : true;
 }
 
+bool SRC::isBMCSRC() const
+{
+    auto as = asciiString();
+    if (as.length() >= 2)
+    {
+        uint8_t errorType = strtoul(as.substr(0, 2).c_str(), nullptr, 16);
+        return (errorType == static_cast<uint8_t>(SRCType::bmcError) ||
+                errorType == static_cast<uint8_t>(SRCType::powerError));
+    }
+    return false;
+}
+
 std::optional<std::string> SRC::getErrorDetails(message::Registry& registry,
                                                 DetailLevel type,
                                                 bool toCache) const
 {
     const std::string jsonIndent(indentLevel, 0x20);
     std::string errorOut;
-    uint8_t errorType =
-        strtoul(asciiString().substr(0, 2).c_str(), nullptr, 16);
-    if (errorType == static_cast<uint8_t>(SRCType::bmcError) ||
-        errorType == static_cast<uint8_t>(SRCType::powerError))
+    if (isBMCSRC())
     {
         auto entry = registry.lookup("0x" + asciiString().substr(4, 4),
                                      rg::LookupType::reasonCode, toCache);
@@ -411,6 +448,20 @@ std::optional<std::string> SRC::getJSON() const
                pv::boolString.at(_flags & hypDumpInit), 1);
     jsonInsert(ps, "Power Control Net Fault",
                pv::boolString.at(isPowerFaultEvent()), 1);
+
+    if (isBMCSRC())
+    {
+        std::string ccinString;
+        uint32_t ccin = _hexData[1] >> 16;
+
+        if (ccin)
+        {
+            ccinString = getNumberString("%04X", ccin);
+        }
+        // The PEL spec calls it a backplane, so call it that here.
+        jsonInsert(ps, "Backplane CCIN", ccinString, 1);
+    }
+
     rg::Registry registry(getMessageRegistryPath() / rg::registryFileName);
     auto errorDetails = getErrorDetails(registry, DetailLevel::json);
     if (errorDetails)

@@ -3,6 +3,7 @@
 #include "additional_data.hpp"
 #include "ascii_string.hpp"
 #include "callouts.hpp"
+#include "data_interface.hpp"
 #include "pel_types.hpp"
 #include "registry.hpp"
 #include "section.hpp"
@@ -82,8 +83,10 @@ class SRC : public Section
      * @param[in] regEntry - The message registry entry for this event log
      * @param[in] additionalData - The AdditionalData properties in this event
      *                             log
+     * @param[in] dataIface - The DataInterface object
      */
-    SRC(const message::Entry& regEntry, const AdditionalData& additionalData);
+    SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
+        const DataInterfaceBase& dataIface);
 
     /**
      * @brief Flatten the section into the stream
@@ -237,6 +240,13 @@ class SRC : public Section
                                                DetailLevel type,
                                                bool toCache = false) const;
 
+    /**
+     * @brief Says if this SRC was created by the BMC (i.e. this code).
+     *
+     * @return bool - If created by the BMC or not
+     */
+    bool isBMCSRC() const;
+
   private:
     /**
      * @brief Fills in the user defined hex words from the
@@ -297,6 +307,13 @@ class SRC : public Section
     {
         _hexData[1] |= primaryBMCPosition;
     }
+
+    /**
+     * @brief Sets the motherboard CCIN hex word field
+     *
+     * @param[in] dataIface - The DataInterface object
+     */
+    void setMotherboardCCIN(const DataInterfaceBase& dataIface);
 
     /**
      * @brief Validates the section contents
