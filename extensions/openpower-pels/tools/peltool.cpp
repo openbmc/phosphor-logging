@@ -16,6 +16,7 @@
 #include "config.h"
 
 #include "../bcd_time.hpp"
+#include "../json_utils.hpp"
 #include "../paths.hpp"
 #include "../pel.hpp"
 #include "../pel_types.hpp"
@@ -485,6 +486,39 @@ void displayPEL(const PEL& pel)
     }
 }
 
+/**
+ * @brief Print number of PELs
+ * @param[in] hidden - Bool to include hidden logs
+ */
+void printPELCount(bool hidden)
+{
+    std::size_t count = 0;
+    for (auto it = fs::directory_iterator(EXTENSION_PERSIST_DIR "/pels/logs");
+         it != fs::directory_iterator(); ++it)
+    {
+        if (!fs::is_regular_file((*it).path()))
+        {
+            continue;
+        }
+        else
+        {
+            std::vector<uint8_t> data = getFileData((*it).path());
+            if (!data.empty())
+            {
+                PEL pel{data};
+                std::bitset<16> actionFlags{pel.userHeader().actionFlags()};
+                if (pel.valid() && (hidden || !actionFlags.test(hiddenFlagBit)))
+                {
+                    count++;
+                }
+            }
+        }
+    }
+    std::cout << "{\n"
+              << "    \"Number of PELs found\": "
+              << getNumberString("%d", count) << "\n}" << std::endl;
+}
+
 static void exitWithError(const std::string& help, const char* err)
 {
     std::cerr << "ERROR: " << err << std::endl << help << std::endl;
@@ -499,15 +533,18 @@ int main(int argc, char** argv)
     std::string idToDelete;
     bool listPEL = false;
     bool listPELDescOrd = false;
-    bool listPELShowHidden = false;
+    bool hidden = false;
     bool deleteAll = false;
+    bool showPELCount = false;
 
+    app.set_help_flag("--help", "Print this help message and exit");
     app.add_option("-f,--file", fileName,
                    "Display a PEL using its Raw PEL file");
     app.add_option("-i, --id", idPEL, "Display a PEL based on its ID");
     app.add_flag("-l", listPEL, "List PELs");
+    app.add_flag("-n", showPELCount, "Show number of PELs");
     app.add_flag("-r", listPELDescOrd, "Reverse order of output");
-    app.add_flag("-s", listPELShowHidden, "Show hidden PELs");
+    app.add_flag("-h", hidden, "Include hidden PELs");
     app.add_option("-d, --delete", idToDelete, "Delete a PEL based on its ID");
     app.add_flag("-D, --delete-all", deleteAll, "Delete all PELs");
 
@@ -534,8 +571,11 @@ int main(int argc, char** argv)
     }
     else if (listPEL)
     {
-
-        printList(listPELDescOrd, listPELShowHidden);
+        printList(listPELDescOrd, hidden);
+    }
+    else if (showPELCount)
+    {
+        printPELCount(hidden);
     }
     else if (!idToDelete.empty())
     {
