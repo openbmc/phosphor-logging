@@ -105,15 +105,6 @@ class PropertyWatcher : public DBusWatcher
         DBusWatcher(path, interface),
         _name(propertyName), _setFunc(func)
     {
-        try
-        {
-            read(dataIface, service);
-        }
-        catch (const SdBusError& e)
-        {
-            // Path doesn't exist now
-        }
-
         _matches.emplace_back(
             bus, match_rules::propertiesChanged(_path, _interface),
             std::bind(std::mem_fn(&PropertyWatcher::propChanged), this,
@@ -124,6 +115,15 @@ class PropertyWatcher : public DBusWatcher
             match_rules::interfacesAdded() + match_rules::argNpath(0, _path),
             std::bind(std::mem_fn(&PropertyWatcher::interfaceAdded), this,
                       std::placeholders::_1));
+
+        try
+        {
+            read(dataIface, service);
+        }
+        catch (const SdBusError& e)
+        {
+            // Path doesn't exist now
+        }
     }
 
     /**
@@ -285,15 +285,6 @@ class InterfaceWatcher : public DBusWatcher
         DBusWatcher(path, interface),
         _setFunc(func)
     {
-        try
-        {
-            read(dataIface);
-        }
-        catch (const SdBusError& e)
-        {
-            // Path doesn't exist now
-        }
-
         _matches.emplace_back(
             bus, match_rules::propertiesChanged(_path, _interface),
             std::bind(std::mem_fn(&InterfaceWatcher::propChanged), this,
@@ -304,6 +295,15 @@ class InterfaceWatcher : public DBusWatcher
             match_rules::interfacesAdded() + match_rules::argNpath(0, _path),
             std::bind(std::mem_fn(&InterfaceWatcher::interfaceAdded), this,
                       std::placeholders::_1));
+
+        try
+        {
+            read(dataIface);
+        }
+        catch (const SdBusError& e)
+        {
+            // Path doesn't exist now
+        }
     }
 
     /**
