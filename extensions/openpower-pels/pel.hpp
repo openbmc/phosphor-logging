@@ -223,8 +223,9 @@ class PEL
 
     /**
      * @brief Output a PEL in JSON.
+     * @param[in] registry - Registry object reference
      */
-    void toJSON() const;
+    void toJSON(message::Registry& registry) const;
 
     /**
      * @brief Sets the host transmission state in the User Header
@@ -321,9 +322,11 @@ class PEL
      * @param[in] std::string - PEL string
      * @param[in|out] pluralSections - Map used to track sections counts for
      *                                 when there is more than 1.
+     * @param[in] registry - Registry object reference
      */
     void printSectionInJSON(const Section& section, std::string& buf,
-                            std::map<uint16_t, size_t>& pluralSections) const;
+                            std::map<uint16_t, size_t>& pluralSections,
+                            message::Registry& registry) const;
 
     /**
      * @brief The maximum size a PEL can be in bytes.

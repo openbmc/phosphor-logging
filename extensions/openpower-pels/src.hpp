@@ -225,9 +225,11 @@ class SRC : public Section
 
     /**
      * @brief Get section in JSON.
+     * @param[in] registry - Registry object reference
      * @return std::optional<std::string> - SRC section's JSON
      */
-    std::optional<std::string> getJSON() const override;
+    std::optional<std::string>
+        getJSON(message::Registry& registry) const override;
 
     /**
      * @brief Get error details based on refcode and hexwords

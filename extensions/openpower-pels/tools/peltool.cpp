@@ -39,7 +39,8 @@ namespace message = openpower::pels::message;
 namespace pv = openpower::pels::pel_values;
 
 using PELFunc = std::function<void(const PEL&)>;
-
+message::Registry registry(getMessageRegistryPath() /
+                           message::registryFileName);
 namespace service
 {
 constexpr auto logging = "xyz.openbmc_project.Logging";
@@ -202,8 +203,17 @@ std::vector<uint8_t> getFileData(const std::string& name)
     }
 }
 
+/**
+ * @brief Creates JSON string of a PEL entry if fullPEL is false or prints to
+ *        stdout the full PEL in JSON if fullPEL is true
+ * @param[in] itr - std::map iterator of <uint32_t, BCDTime>
+ * @param[in] hidden - Boolean to include hidden PELs
+ * @param[in] fullPEL - Boolean to print full JSON representation of PEL
+ * @param[in] foundPEL - Boolean to check if any PEL is present
+ * @return std::string - JSON string of PEL entry (empty if fullPEL is true)
+ */
 template <typename T>
-std::string genPELJSON(T itr, bool hidden, message::Registry& registry)
+std::string genPELJSON(T itr, bool hidden, bool fullPEL, bool& foundPEL)
 {
     std::size_t found;
     std::string val;
@@ -219,11 +229,30 @@ std::string genPELJSON(T itr, bool hidden, message::Registry& registry)
     try
     {
         std::vector<uint8_t> data = getFileData(fileName);
-        if (!data.empty())
+        if (data.empty())
         {
-            PEL pel{data};
-            std::bitset<16> actionFlags{pel.userHeader().actionFlags()};
-            if (pel.valid() && (hidden || !actionFlags.test(hiddenFlagBit)))
+            log<level::ERR>("Empty PEL file",
+                            entry("FILENAME=%s", fileName.c_str()));
+            return listStr;
+        }
+        PEL pel{data};
+        std::bitset<16> actionFlags{pel.userHeader().actionFlags()};
+        if (pel.valid() && (hidden || !actionFlags.test(hiddenFlagBit)))
+        {
+            if (fullPEL)
+            {
+                if (!foundPEL)
+                {
+                    std::cout << "[" << std::endl;
+                    foundPEL = true;
+                }
+                else
+                {
+                    std::cout << ",\n" << std::endl;
+                }
+                pel.toJSON(registry);
+            }
+            else
             {
                 // id
                 sprintf(tmpValStr, "0x%X", pel.privateHeader().id());
@@ -292,12 +321,6 @@ std::string genPELJSON(T itr, bool hidden, message::Registry& registry)
                 }
             }
         }
-        else
-        {
-            log<level::ERR>("Empty PEL file",
-                            entry("FILENAME=%s", fileName.c_str()),
-                            entry("ERROR=%s", "Empty PEL file"));
-        }
     }
     catch (std::exception& e)
     {
@@ -307,14 +330,17 @@ std::string genPELJSON(T itr, bool hidden, message::Registry& registry)
     }
     return listStr;
 }
+
 /**
- * @brief Print a list of PELs
+ * @brief Print a list of PELs or a JSON array of PELs
+ * @param[in] order - Boolean to print in reverse orser
+ * @param[in] hidden - Boolean to include hidden PELs
+ * @param[in] fullPEL - Boolean to print full PEL into a JSON array
  */
-void printList(bool order, bool hidden)
+void printPELs(bool order, bool hidden, bool fullPEL)
 {
     std::string listStr;
     std::map<uint32_t, BCDTime> PELs;
-    std::size_t found;
     listStr = "{\n";
     for (auto it = fs::directory_iterator(EXTENSION_PERSIST_DIR "/pels/logs");
          it != fs::directory_iterator(); ++it)
@@ -329,10 +355,9 @@ void printList(bool order, bool hidden)
                          fileNameToTimestamp((*it).path().filename()));
         }
     }
-    message::Registry registry(getMessageRegistryPath() /
-                               message::registryFileName);
-    auto buildJSON = [&listStr, &hidden, &registry](const auto& i) {
-        listStr += genPELJSON(i, hidden, registry);
+    bool foundPEL = false;
+    auto buildJSON = [&listStr, &hidden, &fullPEL, &foundPEL](const auto& i) {
+        listStr += genPELJSON(i, hidden, fullPEL, foundPEL);
     };
     if (order)
     {
@@ -343,12 +368,20 @@ void printList(bool order, bool hidden)
         std::for_each(PELs.begin(), PELs.end(), buildJSON);
     }
 
-    found = listStr.rfind(",");
-    if (found != std::string::npos)
+    if (!fullPEL)
     {
-        listStr.replace(found, 1, "");
-        listStr += "\n}\n";
-        printf("%s", listStr.c_str());
+        std::size_t found;
+        found = listStr.rfind(",");
+        if (found != std::string::npos)
+        {
+            listStr.replace(found, 1, "");
+            listStr += "\n}\n";
+            printf("%s", listStr.c_str());
+        }
+    }
+    else if (foundPEL)
+    {
+        std::cout << "]" << std::endl;
     }
 }
 
@@ -477,7 +510,7 @@ void displayPEL(const PEL& pel)
 {
     if (pel.valid())
     {
-        pel.toJSON();
+        pel.toJSON(registry);
     }
     else
     {
@@ -536,11 +569,13 @@ int main(int argc, char** argv)
     bool hidden = false;
     bool deleteAll = false;
     bool showPELCount = false;
+    bool fullPEL = false;
 
     app.set_help_flag("--help", "Print this help message and exit");
     app.add_option("-f,--file", fileName,
                    "Display a PEL using its Raw PEL file");
     app.add_option("-i, --id", idPEL, "Display a PEL based on its ID");
+    app.add_flag("-a", fullPEL, "Display all PELs");
     app.add_flag("-l", listPEL, "List PELs");
     app.add_flag("-n", showPELCount, "Show number of PELs");
     app.add_flag("-r", listPELDescOrd, "Reverse order of output");
@@ -556,7 +591,7 @@ int main(int argc, char** argv)
         if (!data.empty())
         {
             PEL pel{data};
-            pel.toJSON();
+            pel.toJSON(registry);
         }
         else
         {
@@ -564,14 +599,13 @@ int main(int argc, char** argv)
                           "Raw PEL file can't be read.");
         }
     }
-
     else if (!idPEL.empty())
     {
         callFunctionOnPEL(idPEL, displayPEL);
     }
-    else if (listPEL)
+    else if (fullPEL || listPEL)
     {
-        printList(listPELDescOrd, hidden);
+        printPELs(listPELDescOrd, hidden, fullPEL);
     }
     else if (showPELCount)
     {
@@ -587,8 +621,7 @@ int main(int argc, char** argv)
     }
     else
     {
-        exitWithError(app.help("", CLI::AppFormatMode::All),
-                      "Raw PEL file path not specified.");
+        std::cout << app.help("", CLI::AppFormatMode::All) << std::endl;
     }
     return 0;
 }

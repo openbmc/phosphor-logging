@@ -1,5 +1,6 @@
 #pragma once
 
+#include "registry.hpp"
 #include "section_header.hpp"
 
 #include <optional>
@@ -51,9 +52,21 @@ class Section
     /**
      * @brief Get section in JSON. Derived classes to override when required to.
      * @return std::optional<std::string> - If a section comes with a JSON
-     * repressentation, this would return the string for it.
+     * representation, this would return the string for it.
      */
     virtual std::optional<std::string> getJSON() const
+    {
+        return std::nullopt;
+    }
+
+    /**
+     * @brief Get section in JSON. Derived classes to override when required to.
+     * @param[in] registry - Registry object reference
+     * @return std::optional<std::string> - If a section comes with a JSON
+     * representation, this would return the string for it.
+     */
+    virtual std::optional<std::string>
+        getJSON(message::Registry& registry) const
     {
         return std::nullopt;
     }
