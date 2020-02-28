@@ -428,7 +428,7 @@ std::optional<std::string> SRC::getCallouts() const
     return printOut;
 }
 
-std::optional<std::string> SRC::getJSON() const
+std::optional<std::string> SRC::getJSON(message::Registry& registry) const
 {
     std::string ps;
     jsonInsert(ps, "Section Version", getNumberString("%d", _header.version),
@@ -462,8 +462,7 @@ std::optional<std::string> SRC::getJSON() const
         jsonInsert(ps, "Backplane CCIN", ccinString, 1);
     }
 
-    rg::Registry registry(getMessageRegistryPath() / rg::registryFileName);
-    auto errorDetails = getErrorDetails(registry, DetailLevel::json);
+    auto errorDetails = getErrorDetails(registry, DetailLevel::json, true);
     if (errorDetails)
     {
         ps.append(errorDetails.value());
