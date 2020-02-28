@@ -391,7 +391,7 @@ std::optional<std::string> SRC::getCallouts() const
     return printOut;
 }
 
-std::optional<std::string> SRC::getJSON() const
+std::optional<std::string> SRC::getJSON(message::Registry& registry) const
 {
     std::string ps;
     jsonInsert(ps, "Section Version", getNumberString("%d", _header.version),
@@ -411,8 +411,8 @@ std::optional<std::string> SRC::getJSON() const
                pv::boolString.at(_flags & hypDumpInit), 1);
     jsonInsert(ps, "Power Control Net Fault",
                pv::boolString.at(isPowerFaultEvent()), 1);
-    rg::Registry registry(getMessageRegistryPath() / rg::registryFileName);
-    auto errorDetails = getErrorDetails(registry, DetailLevel::json);
+
+    auto errorDetails = getErrorDetails(registry, DetailLevel::json, true);
     if (errorDetails)
     {
         ps.append(errorDetails.value());
