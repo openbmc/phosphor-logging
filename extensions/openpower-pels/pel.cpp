@@ -210,7 +210,8 @@ void PEL::checkRulesAndFix()
 }
 
 void PEL::printSectionInJSON(const Section& section, std::string& buf,
-                             std::map<uint16_t, size_t>& pluralSections) const
+                             std::map<uint16_t, size_t>& pluralSections,
+                             message::Registry& registry) const
 {
     char tmpB[5];
     uint8_t id[] = {static_cast<uint8_t>(section.header().id >> 8),
@@ -231,15 +232,17 @@ void PEL::printSectionInJSON(const Section& section, std::string& buf,
 
     if (section.valid())
     {
-        auto json = section.getJSON();
+        auto json = (sectionID == "PS" || sectionID == "SS")
+                        ? section.getJSON(registry)
+                        : section.getJSON();
         if (json)
         {
-            buf += "\n\"" + sectionName + "\": {\n";
+            buf += "\"" + sectionName + "\": {\n";
             buf += *json + "\n},\n";
         }
         else
         {
-            buf += "\n\"" + sectionName + "\": [\n";
+            buf += "\"" + sectionName + "\": [\n";
             std::vector<uint8_t> data;
             Stream s{data};
             section.flatten(s);
@@ -283,16 +286,16 @@ std::map<uint16_t, size_t> PEL::getPluralSections() const
     return sections;
 }
 
-void PEL::toJSON() const
+void PEL::toJSON(message::Registry& registry) const
 {
     auto sections = getPluralSections();
 
-    std::string buf = "{";
-    printSectionInJSON(*(_ph.get()), buf, sections);
-    printSectionInJSON(*(_uh.get()), buf, sections);
+    std::string buf = "{\n";
+    printSectionInJSON(*(_ph.get()), buf, sections, registry);
+    printSectionInJSON(*(_uh.get()), buf, sections, registry);
     for (auto& section : this->optionalSections())
     {
-        printSectionInJSON(*(section.get()), buf, sections);
+        printSectionInJSON(*(section.get()), buf, sections, registry);
     }
     buf += "}";
     std::size_t found = buf.rfind(",");
