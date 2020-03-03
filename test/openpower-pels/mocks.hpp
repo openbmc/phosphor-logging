@@ -214,10 +214,7 @@ class MockHostInterface : public HostInterface
             status = ResponseStatus::failure;
         }
 
-        if (_responseFunc)
-        {
-            (*_responseFunc)(status);
-        }
+        callResponseFunc(status);
 
         // Keep account of the number of commands responses for testing.
         _cmdsProcessed++;
