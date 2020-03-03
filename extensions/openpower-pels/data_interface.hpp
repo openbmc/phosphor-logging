@@ -69,20 +69,6 @@ class DataInterfaceBase
         return _hostUp;
     }
 
-    /**
-     * @brief Returns the PLDM instance ID to use for PLDM commands
-     *
-     * The base class implementation just returns zero.
-     *
-     * @param[in] eid - The PLDM EID
-     *
-     * @return uint8_t - The instance ID
-     */
-    virtual uint8_t getPLDMInstanceID(uint8_t eid) const
-    {
-        return 0;
-    }
-
     using HostStateChangeFunc = std::function<void(bool)>;
 
     /**
@@ -347,15 +333,6 @@ class DataInterface : public DataInterfaceBase
      * @param[in] bus - The sdbusplus bus object
      */
     explicit DataInterface(sdbusplus::bus::bus& bus);
-
-    /**
-     * @brief Returns the PLDM instance ID to use for PLDM commands
-     *
-     * @param[in] eid - The PLDM EID
-     *
-     * @return uint8_t - The instance ID
-     */
-    uint8_t getPLDMInstanceID(uint8_t eid) const override;
 
     /**
      * @brief Finds the D-Bus service name that hosts the

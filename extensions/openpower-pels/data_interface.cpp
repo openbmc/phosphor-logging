@@ -214,26 +214,6 @@ DBusService DataInterface::getService(const std::string& objectPath,
     return std::string{};
 }
 
-uint8_t DataInterface::getPLDMInstanceID(uint8_t eid) const
-{
-    return 0;
-// Don't use until PLDM switches to async D-Bus.
-#if 0
-    auto service = getService(object_path::pldm, interface::pldmRequester);
-
-    auto method =
-        _bus.new_method_call(service.c_str(), object_path::pldm,
-                             interface::pldmRequester, "GetInstanceId");
-    method.append(eid);
-    auto reply = _bus.call(method);
-
-    uint8_t instanceID = 0;
-    reply.read(instanceID);
-
-    return instanceID;
-#endif
-}
-
 /**
  * @brief Return a value found in the /etc/os-release file
  *
