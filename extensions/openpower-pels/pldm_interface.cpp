@@ -225,18 +225,7 @@ void PLDMInterface::receive(IO& io, int fd, uint32_t revents)
         }
     }
 
-    if (_responseFunc)
-    {
-        try
-        {
-            (*_responseFunc)(status);
-        }
-        catch (const std::exception& e)
-        {
-            log<level::ERR>("PLDM response callback threw an exception",
-                            entry("ERROR=%s", e.what()));
-        }
-    }
+    callResponseFunc(status);
 
     if (responseMsg)
     {
@@ -249,18 +238,7 @@ void PLDMInterface::receiveTimerExpired()
     log<level::ERR>("Timed out waiting for PLDM response");
     cancelCmd();
 
-    if (_responseFunc)
-    {
-        try
-        {
-            (*_responseFunc)(ResponseStatus::failure);
-        }
-        catch (const std::exception& e)
-        {
-            log<level::ERR>("PLDM response callback threw an exception",
-                            entry("ERROR=%s", e.what()));
-        }
-    }
+    callResponseFunc(ResponseStatus::failure);
 }
 
 void PLDMInterface::cancelCmd()

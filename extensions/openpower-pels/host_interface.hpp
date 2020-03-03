@@ -6,6 +6,7 @@
 
 #include <chrono>
 #include <functional>
+#include <phosphor-logging/log.hpp>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/io.hpp>
 
@@ -121,6 +122,29 @@ class HostInterface
     void setResponseFunction(ResponseFunction func)
     {
         _responseFunc = std::move(func);
+    }
+
+    /**
+     * @brief Call the response function
+     *
+     * @param[in] status - The status given to the function
+     */
+    void callResponseFunc(ResponseStatus status)
+    {
+        if (_responseFunc)
+        {
+            try
+            {
+                (*_responseFunc)(status);
+            }
+            catch (const std::exception& e)
+            {
+                using namespace phosphor::logging;
+                log<level::ERR>(
+                    "Host iface response callback threw an exception",
+                    entry("ERROR=%s", e.what()));
+            }
+        }
     }
 
     /**
