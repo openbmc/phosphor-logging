@@ -212,11 +212,8 @@ class HostInterface
     /**
      * @brief The default amount of time to wait before retrying
      *        a failed send.
-     *
-     * It is this value for the case where all instance IDs are used
-     * and it takes this long in the PLDM daemon for them to reset.
      */
-    const std::chrono::milliseconds _defaultSendRetryDelay{6000};
+    const std::chrono::milliseconds _defaultSendRetryDelay{1000};
 
     /**
      * @brief The default amount of time to wait
