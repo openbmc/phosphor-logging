@@ -42,6 +42,8 @@ class PLDMInterface : public HostInterface
             event,
             std::bind(std::mem_fn(&PLDMInterface::receiveTimerExpired), this))
     {
+        sd_bus_default(&_bus);
+
         readEID();
     }
 
@@ -54,6 +56,9 @@ class PLDMInterface : public HostInterface
      * @brief Kicks off the send of the 'new file available' command
      *        to send up the ID and size of the new PEL.
      *
+     * It starts by issuing the async D-Bus method call to read the
+     * instance ID.
+     *
      * @param[in] id - The PEL ID
      * @param[in] size - The PEL size in bytes
      *
@@ -63,8 +68,29 @@ class PLDMInterface : public HostInterface
 
     /**
      * @brief Cancels waiting for a command response
+     *
+     * This will clear the instance ID so the next command
+     * will request a new one.
      */
     void cancelCmd() override;
+
+    /**
+     * @brief Cleans up so that a new command is ready to be sent.
+     *
+     * Does not clear the instance ID.
+     */
+    void cleanupCmd();
+
+    /**
+     * @brief Gets called on the async D-Bus method response to
+     *        getting the PLDM instance ID.
+     *
+     * It will read the instance ID out of the message and then
+     * continue on with sending the new log command to the host.
+     *
+     * @param[in] msg - The message containing the instance ID.
+     */
+    void instanceIDCallback(sd_bus_message* msg);
 
   private:
     /**
@@ -107,23 +133,27 @@ class PLDMInterface : public HostInterface
     void open();
 
     /**
-     * @brief Reads the PLDM instance ID to use for the upcoming
-     *        command.
+     * @brief Makes the async D-Bus method call to read the PLDM instance
+     *        ID needed to send PLDM commands.
      */
-    void readInstanceID();
+    void startReadInstanceID();
 
     /**
      * @brief Encodes and sends the PLDM 'new file available' cmd
-     *
-     * @param[in] id - The PEL ID
-     * @param[in] size - The PEL size in bytes
      */
-    void doSend(uint32_t id, uint32_t size);
+    void doSend();
 
     /**
      * @brief Closes the PLDM file descriptor
      */
     void closeFD();
+
+    /**
+     * @brief Kicks off the send of the 'new file available' command
+     *        to send the ID and size of a PEL after the instance ID
+     *        has been retrieved.
+     */
+    void startCommand();
 
     /**
      * @brief The MCTP endpoint ID
@@ -132,8 +162,13 @@ class PLDMInterface : public HostInterface
 
     /**
      * @brief The PLDM instance ID of the current command
+     *
+     * A new ID will be used for every command.
+     *
+     * If there are command failures, the same instance ID can be
+     * used on retries only if the host didn't respond.
      */
-    uint8_t _instanceID;
+    std::optional<uint8_t> _instanceID;
 
     /**
      * @brief The PLDM command file descriptor for the current command
@@ -155,6 +190,21 @@ class PLDMInterface : public HostInterface
      * @brief The command timeout value
      */
     const std::chrono::milliseconds _receiveTimeout{10000};
+
+    /**
+     * @brief The D-Bus connection needed for the async method call.
+     */
+    sd_bus* _bus = nullptr;
+
+    /**
+     * @brief The ID of the PEL to notify the host of.
+     */
+    uint32_t _pelID = 0;
+
+    /**
+     * @brief The size of the PEL to notify the host of.
+     */
+    uint32_t _pelSize = 0;
 };
 
 } // namespace openpower::pels
