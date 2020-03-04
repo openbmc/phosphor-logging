@@ -68,6 +68,7 @@ class Entry : public EntryIfaces
         id(idErr);
         severity(severityErr);
         timestamp(timestampErr);
+        updateTimestamp(timestampErr);
         message(std::move(msgErr));
         additionalData(std::move(additionalDataErr));
         associations(std::move(objects));

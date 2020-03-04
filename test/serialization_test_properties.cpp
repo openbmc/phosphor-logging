@@ -38,6 +38,7 @@ TEST_F(TestSerialization, testProperties)
     EXPECT_EQ(input->associations(), output->associations());
     EXPECT_EQ(input->version(), output->version());
     EXPECT_EQ(input->purpose(), output->purpose());
+    EXPECT_EQ(input->updateTimestamp(), output->updateTimestamp());
 }
 
 } // namespace test
