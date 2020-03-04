@@ -10,7 +10,8 @@ check_PROGRAMS = \
 	remote_logging_test_port \
 	remote_logging_test_config \
 	sdjournal_mock_test \
-	extensions_test
+	extensions_test \
+	elog_update_ts_test
 
 test_cppflags = \
 	-Igtest \
@@ -105,6 +106,13 @@ extensions_test_LDADD = \
 	$(top_builddir)/log_manager.o \
 	$(top_builddir)/xyz/openbmc_project/Logging/Internal/Manager/server.o
 extensions_test_LDFLAGS = $(test_ldflags)
+
+elog_update_ts_test_CPPFLAGS = $(test_cppflags)
+elog_update_ts_test_CXXFLAGS = $(test_cxxflags)
+elog_update_ts_test_SOURCES = elog_update_ts_test.cpp
+elog_update_ts_test_LDADD = $(test_ldadd)
+elog_update_ts_test_LDFLAGS = \
+	$(test_ldflags)
 
 # TODO Remove once the test-case failure is resolved openbmc/phosphor-logging#11
 XFAIL_TESTS = elog_errorwrap_test

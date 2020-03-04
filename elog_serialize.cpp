@@ -30,7 +30,7 @@ template <class Archive>
 void save(Archive& a, const Entry& e, const std::uint32_t version)
 {
     a(e.id(), e.severity(), e.timestamp(), e.message(), e.additionalData(),
-      e.associations(), e.resolved(), e.version());
+      e.associations(), e.resolved(), e.version(), e.updateTimestamp());
 }
 
 /** @brief Function required by Cereal to perform deserialization.
@@ -53,16 +53,24 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
     bool resolved{};
     AssociationList associations{};
     std::string fwVersion{};
+    uint64_t updateTimestamp{};
 
     if (version < std::stoul(FIRST_CEREAL_CLASS_VERSION_WITH_FWLEVEL))
     {
         a(id, severity, timestamp, message, additionalData, associations,
           resolved);
+        updateTimestamp = timestamp;
+    }
+    else if (version < std::stoul(FIRST_CEREAL_CLASS_VERSION_WITH_UPDATE_TS))
+    {
+        a(id, severity, timestamp, message, additionalData, associations,
+          resolved, fwVersion);
+        updateTimestamp = timestamp;
     }
     else
     {
         a(id, severity, timestamp, message, additionalData, associations,
-          resolved, fwVersion);
+          resolved, fwVersion, updateTimestamp);
     }
 
     e.id(id);
@@ -76,6 +84,7 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
     e.version(fwVersion);
     e.purpose(sdbusplus::xyz::openbmc_project::Software::server::Version::
                   VersionPurpose::BMC);
+    e.updateTimestamp(updateTimestamp);
 }
 
 fs::path serialize(const Entry& e, const fs::path& dir)
