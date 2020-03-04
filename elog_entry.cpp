@@ -25,6 +25,12 @@ bool Entry::resolved(bool value)
         current =
             sdbusplus::xyz::openbmc_project::Logging::server::Entry::resolved(
                 value);
+
+        uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                          std::chrono::system_clock::now().time_since_epoch())
+                          .count();
+        updateTimestamp(ms);
+
         serialize(*this);
     }
 
