@@ -222,6 +222,10 @@ void HostNotifier::doNewLogNotify()
             log<level::ERR>(
                 "PEL Host notifier hit max retry attempts. Giving up for now.",
                 entry("PEL_ID=0x%X", _pelQueue.front()));
+
+            // Tell the host interface object to clean itself up, especially to
+            // release the PLDM instance ID it's been using.
+            _hostIface->cancelCmd();
         }
         return;
     }
@@ -362,10 +366,8 @@ void HostNotifier::stopCommand()
         _retryTimer.setEnabled(false);
     }
 
-    if (_hostIface->cmdInProgress())
-    {
-        _hostIface->cancelCmd();
-    }
+    // Ensure the PLDM instance ID is released
+    _hostIface->cancelCmd();
 }
 
 void HostNotifier::ackPEL(uint32_t id)
