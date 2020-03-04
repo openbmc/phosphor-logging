@@ -69,6 +69,12 @@ AS_IF([test "x$enable_oe_sdk" == "xyes"],
     AC_SUBST([OESDK_TESTCASE_FLAGS], [$testcase_flags])
 )
 
+# The continuous integration tests set this.
+# Use it to know where to store logs.
+AC_ARG_ENABLE([tests],
+    AS_HELP_STRING([--enable-tests], [Specifies running in the CI environment])
+)
+
 AC_DEFINE(BUSNAME_LOGGING, "xyz.openbmc_project.Logging", [The log manager DBus busname to own.])
 AC_DEFINE(OBJ_LOGGING, "/xyz/openbmc_project/logging", [The log manager DBus object path.])
 AC_DEFINE(OBJ_INTERNAL, "/xyz/openbmc_project/logging/internal/manager", [The private log manager DBus object path.])
@@ -79,6 +85,9 @@ AC_DEFINE(CALLOUT_REV_ASSOCIATION, "fault", [The name of the callout's reverse a
 AC_DEFINE(BMC_VERSION_FILE, "/etc/os-release", [The file that contains the BMC firmware version])
 AC_DEFINE(FIRST_CEREAL_CLASS_VERSION_WITH_FWLEVEL, "2",
           [First Cereal class version with the BMC code version persisted])
+
+AC_DEFINE(FIRST_CEREAL_CLASS_VERSION_WITH_UPDATE_TS, "3",
+          [First Cereal class version with the update timestamp persisted])
 
 AC_ARG_VAR(YAML_DIR_TEST, [The path to the test error yaml files.])
 AS_IF([test "x$YAML_DIR_TEST" == "x"], \
@@ -96,6 +105,8 @@ AS_IF([test "x$ERRLOG_PERSIST_PATH" == "x"],
         [ERRLOG_PERSIST_PATH="/tmp/errors"])
     AS_IF([test "x$enable_oe_sdk" == "x"], \
         [ERRLOG_PERSIST_PATH="/var/lib/phosphor-logging/errors"])
+    AS_IF([test "x$enable_tests" == "xyes"], \
+        [ERRLOG_PERSIST_PATH="/tmp/errors"])
     AC_DEFINE_UNQUOTED([ERRLOG_PERSIST_PATH], ["$ERRLOG_PERSIST_PATH"], \
         [Path of directory housing persisted errors])
 )
@@ -116,7 +127,7 @@ AC_DEFINE_UNQUOTED([ERROR_INFO_CAP], [$ERROR_INFO_CAP], \
     [Cap on informational (and below) severity errors])
 
 AC_ARG_VAR(CLASS_VERSION, [Class version to register with Cereal])
-AS_IF([test "x$CLASS_VERSION" == "x"], [CLASS_VERSION=2])
+AS_IF([test "x$CLASS_VERSION" == "x"], [CLASS_VERSION=3])
 AC_DEFINE_UNQUOTED([CLASS_VERSION], [$CLASS_VERSION], [Class version to register with Cereal])
 
 AC_ARG_VAR(RSYSLOG_SERVER_CONFIG_FILE, \
