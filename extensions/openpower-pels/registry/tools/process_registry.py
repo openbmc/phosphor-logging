@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import argparse
 import json
@@ -20,12 +20,12 @@ def check_duplicate_names(registry_json):
     registry_json: The message registry JSON
     """
 
-    names = {}
+    names = []
     for entry in registry_json['PELs']:
-        if entry['Name'] in names.keys():
+        if entry['Name'] in names:
             sys.exit("Found multiple uses of error {}".format(entry['Name']))
         else:
-            names[entry['Name']] = {}
+            names.append(entry['Name'])
 
 
 def check_duplicate_reason_codes(registry_json):
@@ -36,13 +36,13 @@ def check_duplicate_reason_codes(registry_json):
     registry_json: The message registry JSON
     """
 
-    reasonCodes = {}
+    reasonCodes = []
     for entry in registry_json['PELs']:
-        if entry['SRC']['ReasonCode'] in reasonCodes.keys():
+        if entry['SRC']['ReasonCode'] in reasonCodes:
             sys.exit("Found duplicate SRC reason code {}".format(
                 entry['SRC']['ReasonCode']))
         else:
-            reasonCodes[entry['SRC']['ReasonCode']] = {}
+            reasonCodes.append(entry['SRC']['ReasonCode'])
 
 
 def check_component_id(registry_json):
