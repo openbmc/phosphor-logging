@@ -112,6 +112,9 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
 
         try
         {
+            log<level::DEBUG>("Adding external PEL to repo",
+                              entry("PEL_ID=0x%X", pel->id()));
+
             _repo.add(pel);
         }
         catch (std::exception& e)
@@ -148,6 +151,9 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
 void Manager::addESELPEL(const std::string& esel, uint32_t obmcLogID)
 {
     std::vector<uint8_t> data;
+
+    log<level::DEBUG>("Adding PEL from ESEL",
+                      entry("OBMC_LOG_ID=%d", obmcLogID));
 
     try
     {
@@ -256,6 +262,8 @@ sdbusplus::message::unix_fd Manager::getPEL(uint32_t pelID)
     Repository::LogID id{Repository::LogID::Pel(pelID)};
     std::optional<int> fd;
 
+    log<level::DEBUG>("getPEL", entry("PEL_ID=0x%X", pelID));
+
     try
     {
         fd = _repo.getPELFD(id);
@@ -294,6 +302,8 @@ std::vector<uint8_t> Manager::getPELFromOBMCID(uint32_t obmcLogID)
     Repository::LogID id{Repository::LogID::Obmc(obmcLogID)};
     std::optional<std::vector<uint8_t>> data;
 
+    log<level::DEBUG>("getPELFromOBMCID", entry("OBMC_LOG_ID=%d", obmcLogID));
+
     try
     {
         data = _repo.getPELData(id);
@@ -315,6 +325,8 @@ void Manager::hostAck(uint32_t pelID)
 {
     Repository::LogID id{Repository::LogID::Pel(pelID)};
 
+    log<level::DEBUG>("HostAck", entry("PEL_ID=0x%X", pelID));
+
     if (!_repo.hasPEL(id))
     {
         throw common_error::InvalidArgument();
@@ -329,6 +341,9 @@ void Manager::hostAck(uint32_t pelID)
 void Manager::hostReject(uint32_t pelID, RejectionReason reason)
 {
     Repository::LogID id{Repository::LogID::Pel(pelID)};
+
+    log<level::DEBUG>("HostReject", entry("PEL_ID=0x%X", pelID),
+                      entry("REASON=%d", static_cast<int>(reason)));
 
     if (!_repo.hasPEL(id))
     {
