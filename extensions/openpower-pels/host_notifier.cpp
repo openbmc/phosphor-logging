@@ -168,6 +168,8 @@ void HostNotifier::newLogCallback(const PEL& pel)
         return;
     }
 
+    log<level::DEBUG>("new PEL added to queue", entry("PEL_ID=0x%X", pel.id()));
+
     _pelQueue.push_back(pel.id());
 
     // Notify shouldn't happen if host is down or full
@@ -280,6 +282,10 @@ void HostNotifier::doNewLogNotify()
         {
             auto size = static_cast<size_t>(
                 std::filesystem::file_size((*attributes).get().path));
+
+            log<level::DEBUG>("sendNewLogCmd", entry("PEL_ID=0x%X", id),
+                              entry("PEL_SIZE=%d", size));
+
             auto rc = _hostIface->sendNewLogCmd(id, size);
 
             if (rc == CmdStatus::success)
@@ -310,10 +316,14 @@ void HostNotifier::hostStateChange(bool hostUp)
 
     if (hostUp && !_pelQueue.empty())
     {
+        log<level::DEBUG>("Host state change to on");
+
         doNewLogNotify();
     }
     else if (!hostUp)
     {
+        log<level::DEBUG>("Host state change to off");
+
         stopCommand();
 
         // Reset the state on any PELs that were sent but not acked back
@@ -340,6 +350,8 @@ void HostNotifier::commandResponse(ResponseStatus status)
 
     if (status == ResponseStatus::success)
     {
+        log<level::DEBUG>("HostNotifier command response success",
+                          entry("PEL_ID=0x%X", id));
         _retryCount = 0;
 
         _sentPELs.push_back(id);
@@ -375,6 +387,7 @@ void HostNotifier::retryTimerExpired()
 
 void HostNotifier::hostFullTimerExpired()
 {
+    log<level::DEBUG>("Host full timer expired, trying send again");
     doNewLogNotify();
 }
 
@@ -420,6 +433,8 @@ void HostNotifier::ackPEL(uint32_t id)
     {
         _hostFull = false;
 
+        log<level::DEBUG>("Host previously full, not anymore after this ack");
+
         // Start sending PELs again, from the event loop
         if (!_pelQueue.empty())
         {
@@ -452,6 +467,7 @@ void HostNotifier::setHostFull(uint32_t id)
     // host is full is from this timer callback.
     if (!_hostFullTimer.isEnabled())
     {
+        log<level::DEBUG>("Starting host full timer");
         _hostFullTimer.restartOnce(_hostIface->getHostFullRetryDelay());
     }
 }
