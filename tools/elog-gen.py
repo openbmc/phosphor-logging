@@ -64,14 +64,14 @@ def get_error_yaml_files(i_yaml_dir, i_test_dir):
     yaml_files = dict()
     if i_yaml_dir != "None":
         for root, dirs, files in os.walk(i_yaml_dir):
-            for files in filter(lambda file:
-                                file.endswith('.errors.yaml'), files):
+            for files in \
+                    [file for file in files if file.endswith('.errors.yaml')]:
                 splitdir = root.split(i_yaml_dir)[1] + "/" + files[:-12]
                 if splitdir.startswith("/"):
                     splitdir = splitdir[1:]
                 yaml_files[(os.path.join(root, files))] = splitdir
     for root, dirs, files in os.walk(i_test_dir):
-        for files in filter(lambda file: file.endswith('.errors.yaml'), files):
+        for files in [file for file in files if file.endswith('.errors.yaml')]:
             splitdir = root.split(i_test_dir)[1] + "/" + files[:-12]
             yaml_files[(os.path.join(root, files))] = splitdir
     return yaml_files
