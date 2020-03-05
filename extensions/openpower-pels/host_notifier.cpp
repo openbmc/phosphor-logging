@@ -40,6 +40,12 @@ HostNotifier::HostNotifier(Repository& repo, DataInterfaceBase& dataIface,
                           std::bind(std::mem_fn(&HostNotifier::newLogCallback),
                                     this, std::placeholders::_1));
 
+    // Subscribe to be told about deleted PELs.
+    _repo.subscribeToDeletes(
+        subscriptionName,
+        std::bind(std::mem_fn(&HostNotifier::deleteLogCallback), this,
+                  std::placeholders::_1));
+
     // Add any existing PELs to the queue to send them if necessary.
     _repo.for_each(std::bind(std::mem_fn(&HostNotifier::addPELToQueue), this,
                              std::placeholders::_1));
@@ -185,6 +191,31 @@ void HostNotifier::newLogCallback(const PEL& pel)
 
         // Send a log, but from the event loop, not from here.
         scheduleDispatch();
+    }
+}
+
+void HostNotifier::deleteLogCallback(uint32_t id)
+{
+    auto queueIt = std::find(_pelQueue.begin(), _pelQueue.end(), id);
+    if (queueIt != _pelQueue.end())
+    {
+        log<level::DEBUG>("Host notifier removing deleted log from queue");
+        _pelQueue.erase(queueIt);
+    }
+
+    auto sentIt = std::find(_sentPELs.begin(), _sentPELs.end(), id);
+    if (sentIt != _sentPELs.end())
+    {
+        log<level::DEBUG>("Host notifier removing deleted log from sent list");
+        _sentPELs.erase(sentIt);
+    }
+
+    // Nothing we can do about this...
+    if (id == _inProgressPEL)
+    {
+        log<level::WARNING>(
+            "A PEL was deleted while its host notification was in progress",
+            entry("PEL_ID=0x%X", id));
     }
 }
 
