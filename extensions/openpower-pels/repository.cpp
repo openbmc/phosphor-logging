@@ -168,10 +168,19 @@ void Repository::remove(const LogID& id)
     auto pel = findPEL(id);
     if (pel != _pelAttributes.end())
     {
+        log<level::DEBUG>("Removing PEL from repository",
+                          entry("PEL_ID=0x%X", pel->first.pelID.id),
+                          entry("OBMC_LOG_ID=%d", pel->first.obmcID.id));
         fs::remove(pel->second.path);
         _pelAttributes.erase(pel);
 
-        processDeleteCallbacks(id.pelID.id);
+        processDeleteCallbacks(pel->first.pelID.id);
+    }
+    else
+    {
+        log<level::DEBUG>("Could not find PEL to remove",
+                          entry("PEL_ID=0x%X", id.pelID.id),
+                          entry("OBMC_LOG_ID=0x%X", id.obmcID.id));
     }
 }
 
