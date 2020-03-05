@@ -171,6 +171,17 @@ class HostNotifier
     void newLogCallback(const PEL& pel);
 
     /**
+     * @brief This function gets called by the Repository class
+     *        when a PEL is deleted.
+     *
+     * The deleted ID will be removed from the PEL queue and the
+     * sent list.
+     *
+     * @param[in] id - The deleted PEL ID
+     */
+    void deleteLogCallback(uint32_t id);
+
+    /**
      * @brief This function runs on every existing PEL at startup
      *        and puts the PEL on the queue to send if necessary.
      *
