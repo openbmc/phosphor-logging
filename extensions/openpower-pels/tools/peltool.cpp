@@ -24,6 +24,7 @@
 
 #include <CLI/CLI.hpp>
 #include <bitset>
+#include <fstream>
 #include <iostream>
 #include <phosphor-logging/log.hpp>
 #include <regex>
@@ -210,10 +211,12 @@ std::vector<uint8_t> getFileData(const std::string& name)
  * @param[in] hidden - Boolean to include hidden PELs
  * @param[in] fullPEL - Boolean to print full JSON representation of PEL
  * @param[in] foundPEL - Boolean to check if any PEL is present
+ * @param[in] scrubRegex - SRC regex object
  * @return std::string - JSON string of PEL entry (empty if fullPEL is true)
  */
 template <typename T>
-std::string genPELJSON(T itr, bool hidden, bool fullPEL, bool& foundPEL)
+std::string genPELJSON(T itr, bool hidden, bool fullPEL, bool& foundPEL,
+                       const std::optional<std::regex>& scrubRegex)
 {
     std::size_t found;
     std::string val;
@@ -236,90 +239,102 @@ std::string genPELJSON(T itr, bool hidden, bool fullPEL, bool& foundPEL)
             return listStr;
         }
         PEL pel{data};
-        std::bitset<16> actionFlags{pel.userHeader().actionFlags()};
-        if (pel.valid() && (hidden || !actionFlags.test(hiddenFlagBit)))
+        if (!pel.valid())
         {
-            if (fullPEL)
+            return listStr;
+        }
+        std::bitset<16> actionFlags{pel.userHeader().actionFlags()};
+        if (!hidden && actionFlags.test(hiddenFlagBit))
+        {
+            return listStr;
+        }
+        if (pel.primarySRC() && scrubRegex)
+        {
+            val = pel.primarySRC().value()->asciiString();
+            if (std::regex_search(trimEnd(val), scrubRegex.value(),
+                                  std::regex_constants::match_not_null))
             {
-                if (!foundPEL)
-                {
-                    std::cout << "[" << std::endl;
-                    foundPEL = true;
-                }
-                else
-                {
-                    std::cout << ",\n" << std::endl;
-                }
-                pel.toJSON(registry);
+                return listStr;
+            }
+        }
+        if (fullPEL)
+        {
+            if (!foundPEL)
+            {
+                std::cout << "[\n";
+                foundPEL = true;
             }
             else
             {
-                // id
-                sprintf(tmpValStr, "0x%X", pel.privateHeader().id());
-                val = std::string(tmpValStr);
-                listStr += "\t\"" + val + "\": {\n";
-                // ASCII
-                if (pel.primarySRC())
+                std::cout << ",\n\n";
+            }
+            pel.toJSON(registry);
+        }
+        else
+        {
+            // id
+            listStr += "\t\"" +
+                       getNumberString("0x%X", pel.privateHeader().id()) +
+                       "\": {\n";
+            // ASCII
+            if (pel.primarySRC())
+            {
+                val = pel.primarySRC().value()->asciiString();
+                listStr += "\t\t\"SRC\": \"" + trimEnd(val) + "\",\n";
+                // Registry message
+                auto regVal = pel.primarySRC().value()->getErrorDetails(
+                    registry, DetailLevel::message, true);
+                if (regVal)
                 {
-                    val = pel.primarySRC().value()->asciiString();
-                    listStr += "\t\t\"SRC\": \"" +
-                               val.substr(0, val.find(0x20)) + "\",\n";
-                    // Registry message
-                    auto regVal = pel.primarySRC().value()->getErrorDetails(
-                        registry, DetailLevel::message, true);
-                    if (regVal)
-                    {
-                        val = regVal.value();
-                        listStr += "\t\t\"Message\": \"" + val + "\",\n";
-                    }
-                }
-                else
-                {
-                    listStr += "\t\t\"SRC\": \"No SRC\",\n";
-                }
-                // platformid
-                sprintf(tmpValStr, "0x%X", pel.privateHeader().plid());
-                val = std::string(tmpValStr);
-                listStr += "\t\t\"PLID\": \"" + val + "\",\n";
-                // creatorid
-                sprintf(tmpValStr, "%c", pel.privateHeader().creatorID());
-                std::string creatorID(tmpValStr);
-                val = pv::creatorIDs.count(creatorID)
-                          ? pv::creatorIDs.at(creatorID)
-                          : "Unknown Creator ID";
-                listStr += "\t\t\"CreatorID\": \"" + val + "\",\n";
-                // subsytem
-                std::string subsystem = pv::getValue(
-                    pel.userHeader().subsystem(), pel_values::subsystemValues);
-                listStr += "\t\t\"Subsystem\": \"" + subsystem + "\",\n";
-                // commit time
-                sprintf(tmpValStr, "%02X/%02X/%02X%02X %02X:%02X:%02X",
-                        pel.privateHeader().commitTimestamp().month,
-                        pel.privateHeader().commitTimestamp().day,
-                        pel.privateHeader().commitTimestamp().yearMSB,
-                        pel.privateHeader().commitTimestamp().yearLSB,
-                        pel.privateHeader().commitTimestamp().hour,
-                        pel.privateHeader().commitTimestamp().minutes,
-                        pel.privateHeader().commitTimestamp().seconds);
-                val = std::string(tmpValStr);
-                listStr += "\t\t\"Commit Time\": \"" + val + "\",\n";
-                // severity
-                std::string severity = pv::getValue(pel.userHeader().severity(),
-                                                    pel_values::severityValues);
-                listStr += "\t\t\"Sev\": \"" + severity + "\",\n ";
-                // compID
-                sprintf(tmpValStr, "0x%X",
-                        pel.privateHeader().header().componentID);
-                val = std::string(tmpValStr);
-                listStr += "\t\t\"CompID\": \"" + val + "\",\n ";
-
-                found = listStr.rfind(",");
-                if (found != std::string::npos)
-                {
-                    listStr.replace(found, 1, "");
-                    listStr += "\t}, \n";
+                    val = regVal.value();
+                    listStr += "\t\t\"Message\": \"" + val + "\",\n";
                 }
             }
+            else
+            {
+                listStr += "\t\t\"SRC\": \"No SRC\",\n";
+            }
+            // platformid
+            listStr += "\t\t\"PLID\": \"" +
+                       getNumberString("0x%X", pel.privateHeader().plid()) +
+                       "\",\n";
+            // creatorid
+            std::string creatorID =
+                getNumberString("%c", pel.privateHeader().creatorID());
+            val = pv::creatorIDs.count(creatorID) ? pv::creatorIDs.at(creatorID)
+                                                  : "Unknown Creator ID";
+            listStr += "\t\t\"CreatorID\": \"" + val + "\",\n";
+            // subsytem
+            std::string subsystem = pv::getValue(pel.userHeader().subsystem(),
+                                                 pel_values::subsystemValues);
+            listStr += "\t\t\"Subsystem\": \"" + subsystem + "\",\n";
+            // commit time
+            sprintf(tmpValStr, "%02X/%02X/%02X%02X %02X:%02X:%02X",
+                    pel.privateHeader().commitTimestamp().month,
+                    pel.privateHeader().commitTimestamp().day,
+                    pel.privateHeader().commitTimestamp().yearMSB,
+                    pel.privateHeader().commitTimestamp().yearLSB,
+                    pel.privateHeader().commitTimestamp().hour,
+                    pel.privateHeader().commitTimestamp().minutes,
+                    pel.privateHeader().commitTimestamp().seconds);
+            val = std::string(tmpValStr);
+            listStr += "\t\t\"Commit Time\": \"" + val + "\",\n";
+            // severity
+            std::string severity = pv::getValue(pel.userHeader().severity(),
+                                                pel_values::severityValues);
+            listStr += "\t\t\"Sev\": \"" + severity + "\",\n ";
+            // compID
+            listStr += "\t\t\"CompID\": \"" +
+                       getNumberString(
+                           "0x%X", pel.privateHeader().header().componentID) +
+                       "\",\n ";
+            found = listStr.rfind(",");
+            if (found != std::string::npos)
+            {
+                listStr.replace(found, 1, "");
+                listStr += "\t},\n";
+            }
+            foundPEL = true;
         }
     }
     catch (std::exception& e)
@@ -336,8 +351,10 @@ std::string genPELJSON(T itr, bool hidden, bool fullPEL, bool& foundPEL)
  * @param[in] order - Boolean to print in reverse orser
  * @param[in] hidden - Boolean to include hidden PELs
  * @param[in] fullPEL - Boolean to print full PEL into a JSON array
+ * @param[in] scrubRegex - SRC regex object
  */
-void printPELs(bool order, bool hidden, bool fullPEL)
+void printPELs(bool order, bool hidden, bool fullPEL,
+               const std::optional<std::regex>& scrubRegex)
 {
     std::string listStr;
     std::map<uint32_t, BCDTime> PELs;
@@ -356,8 +373,9 @@ void printPELs(bool order, bool hidden, bool fullPEL)
         }
     }
     bool foundPEL = false;
-    auto buildJSON = [&listStr, &hidden, &fullPEL, &foundPEL](const auto& i) {
-        listStr += genPELJSON(i, hidden, fullPEL, foundPEL);
+    auto buildJSON = [&listStr, &hidden, &fullPEL, &foundPEL,
+                      &scrubRegex](const auto& i) {
+        listStr += genPELJSON(i, hidden, fullPEL, foundPEL, scrubRegex);
     };
     if (order)
     {
@@ -368,20 +386,28 @@ void printPELs(bool order, bool hidden, bool fullPEL)
         std::for_each(PELs.begin(), PELs.end(), buildJSON);
     }
 
-    if (!fullPEL)
+    if (foundPEL)
     {
-        std::size_t found;
-        found = listStr.rfind(",");
-        if (found != std::string::npos)
+        if (fullPEL)
         {
-            listStr.replace(found, 1, "");
-            listStr += "\n}\n";
-            printf("%s", listStr.c_str());
+            std::cout << "]" << std::endl;
+        }
+        else
+        {
+            std::size_t found;
+            found = listStr.rfind(",");
+            if (found != std::string::npos)
+            {
+                listStr.replace(found, 1, "");
+                listStr += "}\n";
+                printf("%s", listStr.c_str());
+            }
         }
     }
-    else if (foundPEL)
+    else
     {
-        std::cout << "]" << std::endl;
+        std::string emptyJSON = fullPEL ? "[]" : "{}";
+        std::cout << emptyJSON << std::endl;
     }
 }
 
@@ -522,8 +548,9 @@ void displayPEL(const PEL& pel)
 /**
  * @brief Print number of PELs
  * @param[in] hidden - Bool to include hidden logs
+ * @param[in] scrubRegex - SRC regex object
  */
-void printPELCount(bool hidden)
+void printPELCount(bool hidden, const std::optional<std::regex>& scrubRegex)
 {
     std::size_t count = 0;
     for (auto it = fs::directory_iterator(EXTENSION_PERSIST_DIR "/pels/logs");
@@ -533,23 +560,111 @@ void printPELCount(bool hidden)
         {
             continue;
         }
-        else
+        std::vector<uint8_t> data = getFileData((*it).path());
+        if (data.empty())
         {
-            std::vector<uint8_t> data = getFileData((*it).path());
-            if (!data.empty())
+            continue;
+        }
+        PEL pel{data};
+        if (!pel.valid())
+        {
+            continue;
+        }
+        std::bitset<16> actionFlags{pel.userHeader().actionFlags()};
+        if (!hidden && actionFlags.test(hiddenFlagBit))
+        {
+            continue;
+        }
+        if (pel.primarySRC() && scrubRegex)
+        {
+            std::string val = pel.primarySRC().value()->asciiString();
+            if (std::regex_search(trimEnd(val), scrubRegex.value(),
+                                  std::regex_constants::match_not_null))
             {
-                PEL pel{data};
-                std::bitset<16> actionFlags{pel.userHeader().actionFlags()};
-                if (pel.valid() && (hidden || !actionFlags.test(hiddenFlagBit)))
-                {
-                    count++;
-                }
+                continue;
             }
         }
+        count++;
     }
     std::cout << "{\n"
               << "    \"Number of PELs found\": "
-              << getNumberString("%d", count) << "\n}" << std::endl;
+              << getNumberString("%d", count) << "\n}\n";
+}
+
+/**
+ * @brief Generate regex pattern object from file contents
+ * @param[in] scrubFile - File containing regex pattern
+ * @return std::regex - SRC regex object
+ */
+std::regex genRegex(std::string& scrubFile)
+{
+    std::string pattern;
+    std::ifstream contents(scrubFile);
+    if (contents.fail())
+    {
+        std::cerr << "Can't open \"" << scrubFile << "\"\n";
+        exit(1);
+    }
+    std::string line;
+    while (std::getline(contents, line))
+    {
+        if (!line.empty())
+        {
+            pattern.append(line + "|");
+        }
+    }
+    try
+    {
+        std::regex scrubRegex(pattern, std::regex::icase);
+        return scrubRegex;
+    }
+    catch (std::regex_error& e)
+    {
+        if (e.code() == std::regex_constants::error_collate)
+            std::cerr << "Invalid collating element request\n";
+        else if (e.code() == std::regex_constants::error_ctype)
+            std::cerr << "Invalid character class\n";
+        else if (e.code() == std::regex_constants::error_escape)
+            std::cerr << "Invalid escape character or trailing escape\n";
+        else if (e.code() == std::regex_constants::error_backref)
+            std::cerr << "Invalid back reference\n";
+        else if (e.code() == std::regex_constants::error_brack)
+            std::cerr << "Mismatched bracket ([ or ])\n";
+        else if (e.code() == std::regex_constants::error_paren)
+        {
+            // to catch return code error_badrepeat when error_paren is retured
+            // instead
+            size_t pos = pattern.find_first_of("*+?{");
+            while (pos != std::string::npos)
+            {
+                if (pos == 0 || pattern.substr(pos - 1, 1) == "|")
+                {
+                    std::cerr
+                        << "A repetition character (*, ?, +, or {) was not "
+                           "preceded by a valid regular expression\n";
+                    exit(1);
+                }
+                pos = pattern.find_first_of("*+?{", pos + 1);
+            }
+            std::cerr << "Mismatched parentheses (( or ))\n";
+        }
+        else if (e.code() == std::regex_constants::error_brace)
+            std::cerr << "Mismatched brace ({ or })\n";
+        else if (e.code() == std::regex_constants::error_badbrace)
+            std::cerr << "Invalid range inside a { }\n";
+        else if (e.code() == std::regex_constants::error_range)
+            std::cerr << "Invalid character range (e.g., [z-a])\n";
+        else if (e.code() == std::regex_constants::error_space)
+            std::cerr << "Insufficient memory to handle regular expression\n";
+        else if (e.code() == std::regex_constants::error_badrepeat)
+            std::cerr << "A repetition character (*, ?, +, or {) was not "
+                         "preceded by a valid regular expression\n";
+        else if (e.code() == std::regex_constants::error_complexity)
+            std::cerr << "The requested match is too complex\n";
+        else if (e.code() == std::regex_constants::error_stack)
+            std::cerr << "Insufficient memory to evaluate a match\n";
+        exit(1);
+    }
 }
 
 static void exitWithError(const std::string& help, const char* err)
@@ -564,6 +679,8 @@ int main(int argc, char** argv)
     std::string fileName;
     std::string idPEL;
     std::string idToDelete;
+    std::string scrubFile;
+    std::optional<std::regex> scrubRegex;
     bool listPEL = false;
     bool listPELDescOrd = false;
     bool hidden = false;
@@ -582,6 +699,8 @@ int main(int argc, char** argv)
     app.add_flag("-h", hidden, "Include hidden PELs");
     app.add_option("-d, --delete", idToDelete, "Delete a PEL based on its ID");
     app.add_flag("-D, --delete-all", deleteAll, "Delete all PELs");
+    app.add_option("-s, --scrub", scrubFile,
+                   "File containing SRC regular expressions to ignore");
 
     CLI11_PARSE(app, argc, argv);
 
@@ -605,11 +724,19 @@ int main(int argc, char** argv)
     }
     else if (fullPEL || listPEL)
     {
-        printPELs(listPELDescOrd, hidden, fullPEL);
+        if (!scrubFile.empty())
+        {
+            scrubRegex = genRegex(scrubFile);
+        }
+        printPELs(listPELDescOrd, hidden, fullPEL, scrubRegex);
     }
     else if (showPELCount)
     {
-        printPELCount(hidden);
+        if (!scrubFile.empty())
+        {
+            scrubRegex = genRegex(scrubFile);
+        }
+        printPELCount(hidden, scrubRegex);
     }
     else if (!idToDelete.empty())
     {
