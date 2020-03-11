@@ -470,8 +470,22 @@ std::optional<std::string> SRC::getJSON(message::Registry& registry) const
     jsonInsert(ps, "Valid Word Count", getNumberString("0x%02X", _wordCount),
                1);
     std::string refcode = asciiString();
-    refcode = refcode.substr(0, refcode.find(0x20));
+    std::string extRefcode;
+    size_t pos = refcode.find(0x20);
+    if (pos != std::string::npos)
+    {
+        size_t nextPos = refcode.find_first_not_of(0x20, pos);
+        if (nextPos != std::string::npos)
+        {
+            extRefcode = trimEnd(refcode.substr(nextPos));
+        }
+        refcode.erase(pos);
+    }
     jsonInsert(ps, "Reference Code", refcode, 1);
+    if (!extRefcode.empty())
+    {
+        jsonInsert(ps, "Extended Reference Code", extRefcode, 1);
+    }
     for (size_t i = 2; i <= _wordCount; i++)
     {
         jsonInsert(
