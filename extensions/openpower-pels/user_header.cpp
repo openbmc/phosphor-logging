@@ -161,8 +161,8 @@ std::optional<std::string> UserHeader::getJSON() const
     std::string uhStStr(tmpUhVal);
 
     std::string uh;
-    jsonInsert(uh, "Section Version", uhVerStr, 1);
-    jsonInsert(uh, "Sub-section type", uhStStr, 1);
+    jsonInsert(uh, pv::sectionVer, uhVerStr, 1);
+    jsonInsert(uh, pv::subSection, uhStStr, 1);
     jsonInsert(uh, "Log Committed by", uhCbStr, 1);
     jsonInsert(uh, "Subsystem", subsystem, 1);
     jsonInsert(uh, "Event Scope", eventScope, 1);

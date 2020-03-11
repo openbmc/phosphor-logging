@@ -23,6 +23,10 @@ const int registryNamePos = 1;
 // The description of the field, used by PEL parsers
 const int descriptionPos = 2;
 
+const std::string sectionVer = "Section Version";
+const std::string subSection = "Sub-section type";
+const std::string createdBy = "Created by";
+
 using PELFieldValue = std::tuple<uint32_t, const char*, const char*>;
 using PELValues = std::vector<PELFieldValue>;
 

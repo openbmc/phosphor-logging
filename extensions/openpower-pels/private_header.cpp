@@ -116,9 +116,9 @@ std::optional<std::string> PrivateHeader::getJSON() const
     std::string phLogEntryIDStr(tmpPhVal);
     std::string phObmcIDStr = std::to_string(_obmcLogID);
     std::string ph;
-    jsonInsert(ph, "Section Version", phVerStr, 1);
-    jsonInsert(ph, "Sub-section type", phStStr, 1);
-    jsonInsert(ph, "Created by", phCbStr, 1);
+    jsonInsert(ph, pv::sectionVer, phVerStr, 1);
+    jsonInsert(ph, pv::subSection, phStStr, 1);
+    jsonInsert(ph, pv::createdBy, phCbStr, 1);
     jsonInsert(ph, "Created at", phCreateTStr, 1);
     jsonInsert(ph, "Committed at", phCommitTStr, 1);
     jsonInsert(ph, "Creator Subsystem", creator, 1);

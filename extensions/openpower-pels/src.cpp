@@ -431,11 +431,9 @@ std::optional<std::string> SRC::getCallouts() const
 std::optional<std::string> SRC::getJSON(message::Registry& registry) const
 {
     std::string ps;
-    jsonInsert(ps, "Section Version", getNumberString("%d", _header.version),
-               1);
-    jsonInsert(ps, "Sub-section type", getNumberString("%d", _header.subType),
-               1);
-    jsonInsert(ps, "Created by", getNumberString("0x%X", _header.componentID),
+    jsonInsert(ps, pv::sectionVer, getNumberString("%d", _header.version), 1);
+    jsonInsert(ps, pv::subSection, getNumberString("%d", _header.subType), 1);
+    jsonInsert(ps, pv::createdBy, getNumberString("0x%X", _header.componentID),
                1);
     jsonInsert(ps, "SRC Version", getNumberString("0x%02X", _version), 1);
     jsonInsert(ps, "SRC Format", getNumberString("0x%02X", _hexData[0] & 0xFF),
@@ -470,8 +468,22 @@ std::optional<std::string> SRC::getJSON(message::Registry& registry) const
     jsonInsert(ps, "Valid Word Count", getNumberString("0x%02X", _wordCount),
                1);
     std::string refcode = asciiString();
-    refcode = refcode.substr(0, refcode.find(0x20));
+    std::string extRefcode;
+    size_t pos = refcode.find(0x20);
+    if (pos != std::string::npos)
+    {
+        size_t nextPos = refcode.find_first_not_of(0x20, pos);
+        if (nextPos != std::string::npos)
+        {
+            extRefcode = trimEnd(refcode.substr(nextPos));
+        }
+        refcode.erase(pos);
+    }
     jsonInsert(ps, "Reference Code", refcode, 1);
+    if (!extRefcode.empty())
+    {
+        jsonInsert(ps, "Extended Reference Code", extRefcode, 1);
+    }
     for (size_t i = 2; i <= _wordCount; i++)
     {
         jsonInsert(

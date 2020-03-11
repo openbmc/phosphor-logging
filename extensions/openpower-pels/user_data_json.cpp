@@ -17,6 +17,7 @@
 #include "user_data_json.hpp"
 
 #include "pel_types.hpp"
+#include "pel_values.hpp"
 #include "user_data_formats.hpp"
 
 #include <fifo_map.hpp>
@@ -28,6 +29,7 @@
 namespace openpower::pels::user_data
 {
 
+namespace pv = openpower::pels::pel_values;
 using namespace phosphor::logging;
 
 // Use fifo_map as nlohmann::json's map. We are just ignoring the 'less'
@@ -51,12 +53,12 @@ std::string prettyJSON(uint16_t componentID, uint8_t subType, uint8_t version,
                        const fifoJSON& json)
 {
     fifoJSON output;
-    output["Section Version"] = std::to_string(version);
-    output["Sub-section type"] = std::to_string(subType);
+    output[pv::sectionVer] = std::to_string(version);
+    output[pv::subSection] = std::to_string(subType);
 
     char value[10];
     sprintf(value, "0x%04X", componentID);
-    output["Created by"] = std::string{value};
+    output[pv::createdBy] = std::string{value};
 
     if (!json.is_object())
     {
