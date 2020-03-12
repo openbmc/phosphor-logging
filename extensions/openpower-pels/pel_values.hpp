@@ -26,6 +26,10 @@ const int descriptionPos = 2;
 using PELFieldValue = std::tuple<uint32_t, const char*, const char*>;
 using PELValues = std::vector<PELFieldValue>;
 
+const std::string sectionVer = "Section Version";
+const std::string subSection = "Sub-section type";
+const std::string createdBy = "Created by";
+
 /**
  * @brief Helper function to get values from lookup tables.
  * @return std::string - the value

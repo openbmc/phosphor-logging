@@ -431,11 +431,9 @@ std::optional<std::string> SRC::getCallouts() const
 std::optional<std::string> SRC::getJSON(message::Registry& registry) const
 {
     std::string ps;
-    jsonInsert(ps, "Section Version", getNumberString("%d", _header.version),
-               1);
-    jsonInsert(ps, "Sub-section type", getNumberString("%d", _header.subType),
-               1);
-    jsonInsert(ps, "Created by", getNumberString("0x%X", _header.componentID),
+    jsonInsert(ps, pv::sectionVer, getNumberString("%d", _header.version), 1);
+    jsonInsert(ps, pv::subSection, getNumberString("%d", _header.subType), 1);
+    jsonInsert(ps, pv::createdBy, getNumberString("0x%X", _header.componentID),
                1);
     jsonInsert(ps, "SRC Version", getNumberString("0x%02X", _version), 1);
     jsonInsert(ps, "SRC Format", getNumberString("0x%02X", _hexData[0] & 0xFF),
