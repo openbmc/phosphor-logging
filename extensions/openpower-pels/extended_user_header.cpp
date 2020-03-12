@@ -17,6 +17,7 @@
 
 #include "json_utils.hpp"
 #include "pel_types.hpp"
+#include "pel_values.hpp"
 
 #include <phosphor-logging/log.hpp>
 
@@ -25,6 +26,7 @@ namespace openpower
 namespace pels
 {
 
+namespace pv = openpower::pels::pel_values;
 using namespace phosphor::logging;
 const size_t defaultSymptomIDWord = 3;
 const size_t symptomIDMaxSize = 80;
@@ -179,12 +181,10 @@ void ExtendedUserHeader::createSymptomID(const message::Entry& regEntry,
 std::optional<std::string> ExtendedUserHeader::getJSON() const
 {
     std::string json;
-    jsonInsert(json, "Section Version", getNumberString("%d", _header.version),
-               1);
-    jsonInsert(json, "Sub-section type", getNumberString("%d", _header.subType),
-               1);
-    jsonInsert(json, "Created by", getNumberString("0x%X", _header.componentID),
-               1);
+    jsonInsert(json, pv::sectionVer, getNumberString("%d", _header.version), 1);
+    jsonInsert(json, pv::subSection, getNumberString("%d", _header.subType), 1);
+    jsonInsert(json, pv::createdBy,
+               getNumberString("0x%X", _header.componentID), 1);
     jsonInsert(json, "Reporting Machine Type", machineTypeModel(), 1);
     jsonInsert(json, "Reporting Serial Number", trimEnd(machineSerialNumber()),
                1);
