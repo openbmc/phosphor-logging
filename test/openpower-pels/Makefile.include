@@ -190,7 +190,8 @@ failing_mtms_test_LDADD = \
 	$(test_ldadd) \
 	$(top_builddir)/extensions/openpower-pels/failing_mtms.o \
 	$(top_builddir)/extensions/openpower-pels/json_utils.o \
-	$(top_builddir)/extensions/openpower-pels/mtms.o
+	$(top_builddir)/extensions/openpower-pels/mtms.o \
+	$(top_builddir)/extensions/openpower-pels/pel_values.o
 failing_mtms_test_LDFLAGS = $(test_ldflags)
 
 pel_values_test_SOURCES = %reldir%/pel_values_test.cpp

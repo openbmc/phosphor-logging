@@ -97,35 +97,25 @@ std::optional<std::string> PrivateHeader::getJSON() const
             _commitTimestamp.hour, _commitTimestamp.minutes,
             _commitTimestamp.seconds);
     std::string phCommitTStr(tmpPhVal);
-    sprintf(tmpPhVal, "%c", _creatorID);
-    std::string creator(tmpPhVal);
+    std::string creator = getNumberString("%c", _creatorID);
     creator = pv::creatorIDs.count(creator) ? pv::creatorIDs.at(creator)
                                             : "Unknown CreatorID";
     std::string phCreatorVersionStr =
         std::string(reinterpret_cast<const char*>(_creatorVersion.version));
 
-    sprintf(tmpPhVal, "0x%X", _header.componentID);
-    std::string phCbStr(tmpPhVal);
-    sprintf(tmpPhVal, "%d", _header.subType);
-    std::string phStStr(tmpPhVal);
-    sprintf(tmpPhVal, "%d", privateHeaderVersion);
-    std::string phVerStr(tmpPhVal);
-    sprintf(tmpPhVal, "0x%X", _plid);
-    std::string phPlatformIDStr(tmpPhVal);
-    sprintf(tmpPhVal, "0x%X", _id);
-    std::string phLogEntryIDStr(tmpPhVal);
-    std::string phObmcIDStr = std::to_string(_obmcLogID);
     std::string ph;
-    jsonInsert(ph, "Section Version", phVerStr, 1);
-    jsonInsert(ph, "Sub-section type", phStStr, 1);
-    jsonInsert(ph, "Created by", phCbStr, 1);
+    jsonInsert(ph, pv::sectionVer, getNumberString("%d", privateHeaderVersion),
+               1);
+    jsonInsert(ph, pv::subSection, getNumberString("%d", _header.subType), 1);
+    jsonInsert(ph, pv::createdBy, getNumberString("0x%X", _header.componentID),
+               1);
     jsonInsert(ph, "Created at", phCreateTStr, 1);
     jsonInsert(ph, "Committed at", phCommitTStr, 1);
     jsonInsert(ph, "Creator Subsystem", creator, 1);
     jsonInsert(ph, "CSSVER", phCreatorVersionStr, 1);
-    jsonInsert(ph, "Platform Log Id", phPlatformIDStr, 1);
-    jsonInsert(ph, "Entry Id", phLogEntryIDStr, 1);
-    jsonInsert(ph, "BMC Event Log Id", phObmcIDStr, 1);
+    jsonInsert(ph, "Platform Log Id", getNumberString("0x%X", _plid), 1);
+    jsonInsert(ph, "Entry Id", getNumberString("0x%X", _id), 1);
+    jsonInsert(ph, "BMC Event Log Id", std::to_string(_obmcLogID), 1);
     ph.erase(ph.size() - 2);
 
     return ph;
