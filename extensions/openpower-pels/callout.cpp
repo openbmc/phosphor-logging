@@ -26,6 +26,8 @@ namespace src
 
 using namespace phosphor::logging;
 
+constexpr size_t locationCodeMaxSize = 80;
+
 Callout::Callout(Stream& pel)
 {
     pel >> _size >> _flags >> _priority >> _locationCodeSize;
@@ -76,7 +78,67 @@ Callout::Callout(Stream& pel)
     }
 }
 
-size_t Callout::flattenedSize()
+Callout::Callout(CalloutPriority priority, const std::string& locationCode,
+                 const std::string& partNumber, const std::string& ccin,
+                 const std::string& serialNumber)
+{
+    _flags = calloutType | fruIdentIncluded;
+
+    _priority = static_cast<uint8_t>(priority);
+
+    setLocationCode(locationCode);
+
+    _fruIdentity =
+        std::make_unique<FRUIdentity>(partNumber, ccin, serialNumber);
+
+    _size = flattenedSize();
+}
+
+Callout::Callout(CalloutPriority priority, MaintProcedure procedure)
+{
+    _flags = calloutType | fruIdentIncluded;
+
+    _priority = static_cast<uint8_t>(priority);
+
+    _locationCodeSize = 0;
+
+    _fruIdentity = std::make_unique<FRUIdentity>(procedure);
+
+    _size = flattenedSize();
+}
+
+void Callout::setLocationCode(const std::string& locationCode)
+{
+    if (locationCode.empty())
+    {
+        _locationCodeSize = 0;
+        return;
+    }
+
+    std::copy(locationCode.begin(), locationCode.end(),
+              std::back_inserter(_locationCode));
+
+    if (_locationCode.size() < locationCodeMaxSize)
+    {
+        // Add a NULL, and then pad to a 4B boundary
+        _locationCode.push_back('\0');
+
+        while (_locationCode.size() % 4)
+        {
+            _locationCode.push_back('\0');
+        }
+    }
+    else
+    {
+        // Too big - truncate it and ensure it ends in a NULL.
+        _locationCode.resize(locationCodeMaxSize);
+        _locationCode.back() = '\0';
+    }
+
+    _locationCodeSize = _locationCode.size();
+}
+
+size_t Callout::flattenedSize() const
 {
     size_t size = sizeof(_size) + sizeof(_flags) + sizeof(_priority) +
                   sizeof(_locationCodeSize) + _locationCodeSize;
