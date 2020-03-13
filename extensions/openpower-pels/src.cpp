@@ -120,7 +120,7 @@ SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
 
     _asciiString = std::make_unique<src::AsciiString>(regEntry);
 
-    // TODO: add callouts using the Callouts object
+    addCallouts(additionalData, dataIface);
 
     _size = baseSRCSize;
     _size += _callouts ? _callouts->flattenedSize() : 0;
@@ -501,6 +501,50 @@ std::optional<std::string> SRC::getJSON(message::Registry& registry) const
     }
     return ps;
 }
+
+void SRC::addCallouts(const AdditionalData& additionalData,
+                      const DataInterfaceBase& dataIface)
+{
+    auto item = additionalData.getValue("CALLOUT_INVENTORY_PATH");
+    if (item)
+    {
+        addInventoryCallout(*item, dataIface);
+    }
+
+    // TODO: CALLOUT_DEVICE_PATH
+}
+
+void SRC::addInventoryCallout(const std::string& inventoryPath,
+                              const DataInterfaceBase& dataIface)
+{
+    std::string locCode;
+    std::string fn;
+    std::string ccin;
+    std::string sn;
+    std::unique_ptr<src::Callout> callout;
+
+    createCalloutsObject();
+
+    try
+    {
+        dataIface.getHWCalloutFields(inventoryPath, locCode, fn, ccin, sn);
+
+        callout = std::make_unique<src::Callout>(CalloutPriority::high, locCode,
+                                                 fn, ccin, sn);
+    }
+    catch (const SdBusError& e)
+    {
+        log<level::INFO>("No VPD found for FRU callout",
+                         entry("PATH=%s", inventoryPath.c_str()));
+
+        // Use the 'NoVPDforFRU' maintenance procedure instead
+        callout = std::make_unique<src::Callout>(CalloutPriority::high,
+                                                 MaintProcedure::noVPDforFRU);
+    }
+
+    _callouts->addCallout(std::move(callout));
+
+} // namespace pels
 
 } // namespace pels
 } // namespace openpower
