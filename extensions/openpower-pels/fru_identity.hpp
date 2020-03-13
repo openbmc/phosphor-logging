@@ -82,10 +82,7 @@ class FRUIdentity
      *
      * @return size_t - The size of the section
      */
-    size_t flattenedSize() const
-    {
-        return _size;
-    }
+    size_t flattenedSize() const;
 
     /**
      * @brief The failing component type for this FRU callout.
