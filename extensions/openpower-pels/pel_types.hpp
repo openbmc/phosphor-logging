@@ -131,6 +131,19 @@ enum class TransmissionState
 };
 
 /**
+ * @brief Callout priority values
+ */
+enum class CalloutPriority
+{
+    high = 'H',
+    medium = 'M',
+    mediumGroupA = 'A',
+    mediumGroupB = 'B',
+    mediumGroupC = 'C',
+    low = 'L'
+};
+
+/**
  * @brief Maintenance procedure enums
  */
 enum class MaintProcedure
