@@ -10,6 +10,9 @@ namespace pels
 namespace src
 {
 
+constexpr uint8_t calloutsSubsectionID = 0xC0;
+constexpr size_t maxNumberOfCallouts = 10;
+
 /**
  * @class Callouts
  *
@@ -23,12 +26,22 @@ namespace src
 class Callouts
 {
   public:
-    Callouts() = default;
     ~Callouts() = default;
     Callouts(const Callouts&) = delete;
     Callouts& operator=(const Callouts&) = delete;
     Callouts(Callouts&&) = delete;
     Callouts& operator=(Callouts&&) = delete;
+
+    /**
+     * @brief Constructor
+     *
+     * Creates the object with no callouts.
+     */
+    Callouts() :
+        _subsectionID(calloutsSubsectionID), _subsectionFlags(0),
+        _subsectionWordLength(1)
+    {
+    }
 
     /**
      * @brief Constructor
@@ -65,6 +78,13 @@ class Callouts
     {
         return _callouts;
     }
+
+    /**
+     * @brief Adds a callout
+     *
+     * @param[in] callout - The callout to add
+     */
+    void addCallout(std::unique_ptr<Callout> callout);
 
   private:
     /**
