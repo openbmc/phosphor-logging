@@ -210,6 +210,22 @@ class DataInterfaceBase
         return _motherboardCCIN;
     }
 
+    /**
+     * @brief Get the fields from the inventory necessary for doing
+     *        a callout on an inventory path.
+     *
+     * @param[in] inventoryPath - The item to get the data for
+     * @param[out] locationCode - Filled in with the  location code
+     * @param[out] fruPartNumber - Filled in with the VINI/FN keyword 
+     * @param[out] ccin - Filled in with the VINI/CC keyword
+     * @param[out] serialNumber - Filled in with the VINI/SN keyword
+     */
+    virtual void getHWCalloutFields(const std::string& inventoryPath,
+                                    std::string& locationCode,
+                                    std::string& fruPartNumber,
+                                    std::string& ccin,
+                                    std::string& serialNumber) const = 0;
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
@@ -368,6 +384,21 @@ class DataInterface : public DataInterfaceBase
     void getProperty(const std::string& service, const std::string& objectPath,
                      const std::string& interface, const std::string& property,
                      DBusValue& value) const;
+
+    /**
+     * @brief Get the fields from the inventory necessary for doing
+     *        a callout on an inventory path.
+     *
+     * @param[in] inventoryPath - The item to get the data for
+     * @param[out] locationCode - Filled in with the  location code
+     * @param[out] fruPartNumber - Filled in with the VINI/FN keyword 
+     * @param[out] ccin - Filled in with the VINI/CC keyword
+     * @param[out] serialNumber - Filled in with the VINI/SN keyword
+     */
+    void getHWCalloutFields(const std::string& inventoryPath,
+                            std::string& locationCode,
+                            std::string& fruPartNumber, std::string& ccin,
+                            std::string& serialNumber) const override;
 
   private:
     /**
