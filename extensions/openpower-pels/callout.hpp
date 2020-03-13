@@ -3,6 +3,7 @@
 #include "fru_identity.hpp"
 #include "mru.hpp"
 #include "pce_identity.hpp"
+#include "pel_types.hpp"
 #include "stream.hpp"
 
 namespace openpower
@@ -34,6 +35,19 @@ namespace src
 class Callout
 {
   public:
+    /**
+     * @brief Which callout substructures are included.
+     */
+    enum calloutFlags
+    {
+        calloutType = 0b0010'0000,
+        fruIdentIncluded = 0b0000'1000,
+        mruIncluded = 0b0000'0100
+
+        // Leaving out the various PCE identity ones since
+        // we don't use them.
+    };
+
     Callout() = delete;
     ~Callout() = default;
     Callout(const Callout&) = delete;
@@ -51,11 +65,38 @@ class Callout
     explicit Callout(Stream& pel);
 
     /**
+     * @brief Constructor
+     *
+     * Creates the objects with a FRUIdentity substructure that calls
+     * out a normal hardware FRU.
+     *
+     * @param[in] priority - The priority of the callout
+     * @param[in] locationCode - The location code of the callout
+     * @param[in] partNumber - The part number of the callout
+     * @param[in] ccin - The CCIN of the callout
+     * @param[in] serialNumber - The serial number of the callout
+     */
+    Callout(CalloutPriority priority, const std::string& locationCode,
+            const std::string& partNumber, const std::string& ccin,
+            const std::string& serialNumber);
+
+    /**
+     * @brief Constructor
+     *
+     * Creates the objects with a FRUIdentity substructure that calls
+     * out maintenance procedure.
+     *
+     * @param[in] priority - The priority of the callout
+     * @param[in] procedure - The maintenance procedure
+     */
+    Callout(CalloutPriority priority, MaintProcedure procedure);
+
+    /**
      * @brief Returns the size of this object when flattened into a PEL
      *
      * @return size_t - The size of the section
      */
-    size_t flattenedSize();
+    size_t flattenedSize() const;
 
     /**
      * @brief Flatten the object into the stream
@@ -101,6 +142,16 @@ class Callout
     }
 
     /**
+     * @brief Returns the location code size
+     *
+     * @return size_t - The size, including the terminating null.
+     */
+    size_t locationCodeSize() const
+    {
+        return _locationCodeSize;
+    }
+
+    /**
      * @brief Returns the FRU identity substructure
      *
      * @return const std::unique_ptr<FRUIdentity>&
@@ -123,7 +174,7 @@ class Callout
     /**
      * @brief Returns the MRU identity substructure
      *
-     * @return const std::unique_ptr<FRUIdentity>&
+     * @return const std::unique_ptr<MRU>&
      */
     const std::unique_ptr<MRU>& mru() const
     {
@@ -131,6 +182,13 @@ class Callout
     }
 
   private:
+    /**
+     * @brief Sets the location code field
+     *
+     * @param[in] locationCode - The location code string
+     */
+    void setLocationCode(const std::string& locationCode);
+
     /**
      * @brief The size of this structure in the PEL
      */
@@ -152,7 +210,7 @@ class Callout
      * Includes the NULL termination, and must be a
      * multiple of 4 (padded with zeros)
      */
-    uint8_t _locationCodeSize;
+    uint8_t _locationCodeSize = 0;
 
     /**
      * @brief NULL terminated location code
