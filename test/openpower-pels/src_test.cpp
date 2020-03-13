@@ -22,8 +22,11 @@
 #include <gtest/gtest.h>
 
 using namespace openpower::pels;
+using ::testing::_;
+using ::testing::InvokeWithoutArgs;
 using ::testing::NiceMock;
 using ::testing::Return;
+using ::testing::SetArgReferee;
 namespace fs = std::filesystem;
 
 const auto testRegistry = R"(
@@ -310,4 +313,101 @@ TEST_F(SRCTest, MessageSubstitutionTest)
     EXPECT_EQ(
         errorDetails.value(),
         "Comp 0x1 failed 0x4 times over 0x1E secs with ErrorCode 0x1ABCDEF");
+}
+
+// Test that an inventory path callout string is
+// converted into the appropriate FRU callout.
+TEST_F(SRCTest, InventoryCalloutTest)
+{
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+    entry.src.powerFault = false;
+
+    std::vector<std::string> adData{"CALLOUT_INVENTORY_PATH=motherboard"};
+    AdditionalData ad{adData};
+    NiceMock<MockDataInterface> dataIface;
+
+    EXPECT_CALL(dataIface, getHWCalloutFields("motherboard", _, _, _, _))
+        .Times(1)
+        .WillOnce(DoAll(SetArgReferee<1>("UTMS-P1"),
+                        SetArgReferee<2>("1234567"), SetArgReferee<3>("CCCC"),
+                        SetArgReferee<4>("123456789ABC")));
+
+    SRC src{entry, ad, dataIface};
+    EXPECT_TRUE(src.valid());
+
+    ASSERT_TRUE(src.callouts());
+
+    EXPECT_EQ(src.callouts()->callouts().size(), 1);
+
+    auto& callout = src.callouts()->callouts().front();
+
+    EXPECT_EQ(callout->locationCode(), "UTMS-P1");
+
+    auto& fru = callout->fruIdentity();
+
+    EXPECT_EQ(fru->getPN().value(), "1234567");
+    EXPECT_EQ(fru->getCCIN().value(), "CCCC");
+    EXPECT_EQ(fru->getSN().value(), "123456789ABC");
+
+    // flatten and unflatten
+    std::vector<uint8_t> data;
+    Stream stream{data};
+    src.flatten(stream);
+
+    stream.offset(0);
+    SRC newSRC{stream};
+    EXPECT_TRUE(newSRC.valid());
+    ASSERT_TRUE(src.callouts());
+    EXPECT_EQ(src.callouts()->callouts().size(), 1);
+}
+
+// Test that when the FRU fields can't be obtained that
+// a procedure callout is used.
+TEST_F(SRCTest, InventoryCalloutNoVPDTest)
+{
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+    entry.src.powerFault = false;
+
+    std::vector<std::string> adData{"CALLOUT_INVENTORY_PATH=motherboard"};
+    AdditionalData ad{adData};
+    NiceMock<MockDataInterface> dataIface;
+
+    auto func = []() { throw sdbusplus::exception::SdBusError(5, "Error"); };
+
+    EXPECT_CALL(dataIface, getHWCalloutFields("motherboard", _, _, _, _))
+        .Times(1)
+        .WillOnce(InvokeWithoutArgs(func));
+
+    SRC src{entry, ad, dataIface};
+    EXPECT_TRUE(src.valid());
+
+    ASSERT_TRUE(src.callouts());
+
+    EXPECT_EQ(src.callouts()->callouts().size(), 1);
+
+    auto& callout = src.callouts()->callouts().front();
+
+    auto& fru = callout->fruIdentity();
+
+    EXPECT_EQ(fru->getMaintProc().value(), "BMCSP01");
+    EXPECT_FALSE(fru->getPN());
+    EXPECT_FALSE(fru->getSN());
+    EXPECT_FALSE(fru->getCCIN());
+    //
+    // flatten and unflatten
+    std::vector<uint8_t> data;
+    Stream stream{data};
+    src.flatten(stream);
+
+    stream.offset(0);
+    SRC newSRC{stream};
+    EXPECT_TRUE(newSRC.valid());
+    ASSERT_TRUE(src.callouts());
+    EXPECT_EQ(src.callouts()->callouts().size(), 1);
 }
