@@ -42,6 +42,28 @@ FRUIdentity::FRUIdentity(Stream& pel)
     }
 }
 
+size_t FRUIdentity::flattenedSize() const
+{
+    size_t size = sizeof(_type) + sizeof(_size) + sizeof(_flags);
+
+    if (hasPN() || hasMP())
+    {
+        size += _pnOrProcedureID.size();
+    }
+
+    if (hasCCIN())
+    {
+        size += _ccin.size();
+    }
+
+    if (hasSN())
+    {
+        size += _sn.size();
+    }
+
+    return size;
+}
+
 std::optional<std::string> FRUIdentity::getPN() const
 {
     if (hasPN())
