@@ -159,3 +159,162 @@ TEST(CalloutTest, TestNoLocationCode)
 
     EXPECT_TRUE(callout.locationCode().empty());
 }
+
+// Create a callout object by passing in the hardware fields to add
+TEST(CalloutTest, TestHardwareCallout)
+{
+    constexpr size_t fruIdentitySize = 28;
+
+    {
+        Callout callout{CalloutPriority::high, "U99-42.5-P1-C2-E1", "1234567",
+                        "ABCD", "123456789ABC"};
+
+        // size/flags/pri/locsize fields +
+        // rounded up location code length +
+        // FRUIdentity size
+        size_t size = 4 + 20 + fruIdentitySize;
+
+        EXPECT_EQ(callout.flags(),
+                  Callout::calloutType | Callout::fruIdentIncluded);
+
+        EXPECT_EQ(callout.flattenedSize(), size);
+        EXPECT_EQ(callout.priority(), 'H');
+        EXPECT_EQ(callout.locationCode(), "U99-42.5-P1-C2-E1");
+        EXPECT_EQ(callout.locationCodeSize(), 20);
+
+        auto& fru = callout.fruIdentity();
+        EXPECT_EQ(fru->getPN().value(), "1234567");
+        EXPECT_EQ(fru->getCCIN().value(), "ABCD");
+        EXPECT_EQ(fru->getSN().value(), "123456789ABC");
+    }
+
+    {
+        // A 3B location code, plus null = 4
+        Callout callout{CalloutPriority::high, "123", "1234567", "ABCD",
+                        "123456789ABC"};
+
+        size_t size = 4 + 4 + fruIdentitySize;
+        EXPECT_EQ(callout.locationCodeSize(), 4);
+        EXPECT_EQ(callout.flattenedSize(), size);
+        EXPECT_EQ(callout.locationCode(), "123");
+    }
+
+    {
+        // A 4B location code, plus null = 5, then pad to 8
+        Callout callout{CalloutPriority::high, "1234", "1234567", "ABCD",
+                        "123456789ABC"};
+
+        size_t size = 4 + 8 + fruIdentitySize;
+        EXPECT_EQ(callout.locationCodeSize(), 8);
+        EXPECT_EQ(callout.flattenedSize(), size);
+        EXPECT_EQ(callout.locationCode(), "1234");
+    }
+
+    {
+        // A truncated location code (80 is max size, including null)
+        std::string locCode(81, 'L');
+        Callout callout{CalloutPriority::high, locCode, "1234567", "ABCD",
+                        "123456789ABC"};
+
+        size_t size = 4 + 80 + fruIdentitySize;
+        EXPECT_EQ(callout.locationCodeSize(), 80);
+        EXPECT_EQ(callout.flattenedSize(), size);
+
+        // take off 1 to get to 80, and another for the null
+        locCode = locCode.substr(0, locCode.size() - 2);
+        EXPECT_EQ(callout.locationCode(), locCode);
+    }
+
+    {
+        // A truncated location code by 1 because of the null
+        std::string locCode(80, 'L');
+        Callout callout{CalloutPriority::high, locCode, "1234567", "ABCD",
+                        "123456789ABC"};
+
+        size_t size = 4 + 80 + fruIdentitySize;
+        EXPECT_EQ(callout.locationCodeSize(), 80);
+        EXPECT_EQ(callout.flattenedSize(), size);
+
+        locCode.pop_back();
+        EXPECT_EQ(callout.locationCode(), locCode);
+    }
+
+    {
+        // Max size location code
+        std::string locCode(79, 'L');
+        Callout callout{CalloutPriority::low, locCode, "1234567", "ABCD",
+                        "123456789ABC"};
+
+        size_t size = 4 + 80 + fruIdentitySize;
+        EXPECT_EQ(callout.locationCodeSize(), 80);
+        EXPECT_EQ(callout.flattenedSize(), size);
+
+        EXPECT_EQ(callout.locationCode(), locCode);
+
+        // How about we flatten/unflatten this last one
+        std::vector<uint8_t> data;
+        Stream stream{data};
+
+        callout.flatten(stream);
+
+        {
+            Stream newStream{data};
+            Callout newCallout{newStream};
+
+            EXPECT_EQ(newCallout.flags(),
+                      Callout::calloutType | Callout::fruIdentIncluded);
+
+            EXPECT_EQ(newCallout.flattenedSize(), callout.flattenedSize());
+            EXPECT_EQ(newCallout.priority(), callout.priority());
+            EXPECT_EQ(newCallout.locationCode(), callout.locationCode());
+            EXPECT_EQ(newCallout.locationCodeSize(),
+                      callout.locationCodeSize());
+
+            auto& fru = newCallout.fruIdentity();
+            EXPECT_EQ(fru->getPN().value(), "1234567");
+            EXPECT_EQ(fru->getCCIN().value(), "ABCD");
+            EXPECT_EQ(fru->getSN().value(), "123456789ABC");
+        }
+    }
+}
+
+// Create a callout object by passing in the maintenance procedure to add.
+TEST(CalloutTest, TestProcedureCallout)
+{
+    Callout callout{CalloutPriority::medium, MaintProcedure::noVPDForFRU};
+
+    // size/flags/pri/locsize fields + FRUIdentity size
+    // No location code.
+    size_t size = 4 + 12;
+
+    EXPECT_EQ(callout.flags(),
+              Callout::calloutType | Callout::fruIdentIncluded);
+
+    EXPECT_EQ(callout.flattenedSize(), size);
+    EXPECT_EQ(callout.priority(), 'M');
+    EXPECT_EQ(callout.locationCode(), "");
+    EXPECT_EQ(callout.locationCodeSize(), 0);
+
+    auto& fru = callout.fruIdentity();
+    EXPECT_EQ(fru->getMaintProc().value(), "BMCSP01");
+
+    // flatten/unflatten
+    std::vector<uint8_t> data;
+    Stream stream{data};
+
+    callout.flatten(stream);
+
+    Stream newStream{data};
+    Callout newCallout{newStream};
+
+    EXPECT_EQ(newCallout.flags(),
+              Callout::calloutType | Callout::fruIdentIncluded);
+
+    EXPECT_EQ(newCallout.flattenedSize(), callout.flattenedSize());
+    EXPECT_EQ(newCallout.priority(), callout.priority());
+    EXPECT_EQ(newCallout.locationCode(), callout.locationCode());
+    EXPECT_EQ(newCallout.locationCodeSize(), callout.locationCodeSize());
+
+    auto& newFRU = newCallout.fruIdentity();
+    EXPECT_EQ(newFRU->getMaintProc().value(), fru->getMaintProc().value());
+}
