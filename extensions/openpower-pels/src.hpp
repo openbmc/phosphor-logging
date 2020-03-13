@@ -339,6 +339,41 @@ class SRC : public Section
     std::optional<std::string> getCallouts() const;
 
     /**
+     * @brief Checks the AdditionalData property and the message registry
+     *        JSON and adds any necessary callouts.
+     *
+     * The callout sources are the AdditionalData event log property
+     * and the message registry JSON.
+     * 
+     * @param[in] additionalData - the AdditionalData values
+     * @param[in] dataIface - The DataInterface object
+     */
+    void addCallouts(const AdditionalData& additionalData,
+                     const DataInterfaceBase& dataIface);
+
+    /**
+     * @brief Adds a FRU callout based on an inventory path
+     *
+     * @param[in] inventoryPath - The inventory item to call out
+     * @param[in] dataIface - The DataInterface object
+     */
+    void addInventoryCallout(const std::string& inventoryPath,
+                             const DataInterfaceBase& dataIface);
+
+    /**
+     * @brief Creates the Callouts object _callouts
+     *        so that callouts can be added to it.
+     */
+    void createCalloutsObject()
+    {
+        if (!_callouts)
+        {
+            _callouts = std::make_unique<src::Callouts>();
+            _flags |= additionalSections;
+        }
+    }
+
+    /**
      * @brief The SRC version field
      */
     uint8_t _version;
