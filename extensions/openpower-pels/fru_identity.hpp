@@ -1,5 +1,6 @@
 #pragma once
 
+#include "pel_types.hpp"
 #include "stream.hpp"
 
 #include <optional>
@@ -71,6 +72,28 @@ class FRUIdentity
     explicit FRUIdentity(Stream& pel);
 
     /**
+     * Constructor
+     *
+     * Creates the object as a hardware callout with the part number,
+     * CCIN, and serial number fields supplied.
+     *
+     * @param[in] partNumber - The part number of the FRU
+     * @param[in] ccin - The CCIN of the FRU
+     * @param[in] serialNumber - The serial number of the FRU
+     */
+    FRUIdentity(const std::string& partNumber, const std::string& ccin,
+                const std::string& serialNumber);
+
+    /**
+     * @brief Constructor
+     *
+     * Creates the object with a maintenance procedure callout.
+     *
+     * @param[in] procedure - The procedure to use
+     */
+    FRUIdentity(MaintProcedure procedure);
+
+    /**
      * @brief Flatten the object into the stream
      *
      * @param[in] stream - The stream to write to
@@ -84,6 +107,15 @@ class FRUIdentity
      */
     size_t flattenedSize() const;
 
+    /**
+     * @brief Returns the type field
+     *
+     * @return uint16_t - The type, always 0x4944 "ID".
+     */
+    uint16_t type() const
+    {
+        return _type;
+    }
     /**
      * @brief The failing component type for this FRU callout.
      *
@@ -171,6 +203,35 @@ class FRUIdentity
     {
         return _flags & snSupplied;
     }
+
+    /**
+     * @brief Sets the 8 character null terminated part
+     *        number field to the string passed in.
+     *
+     * @param[in] partNumber - The part number string.
+     */
+    void setPartNumber(const std::string& partNumber);
+
+    /**
+     * @brief Sets the 4 character CCIN field.
+     *
+     * @param[in] ccin - The CCIN string
+     */
+    void setCCIN(const std::string& ccin);
+
+    /**
+     * @brief Sets the 12 character serial number field.
+     *
+     * @param[in] serialNumber - The serial number string
+     */
+    void setSerialNumber(const std::string& serialNumber);
+
+    /**
+     * @brief Sets the 8 character null terminated procedure
+     *        field.  This is in the same field as the part
+     *        number since they are mutually exclusive.
+     */
+    void setMaintenanceProcedure(MaintProcedure procedure);
 
     /**
      * @brief The callout substructure type field. Will be "ID".
