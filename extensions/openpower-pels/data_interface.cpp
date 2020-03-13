@@ -57,6 +57,7 @@ constexpr auto hostState = "xyz.openbmc_project.State.Host";
 constexpr auto invMotherboard =
     "xyz.openbmc_project.Inventory.Item.Board.Motherboard";
 constexpr auto viniRecordVPD = "com.ibm.ipzvpd.VINI";
+constexpr auto locCode = "com.ibm.ipzvpd.Location";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::OperatingSystem::server;
@@ -304,6 +305,40 @@ void DataInterface::motherboardIfaceAdded(sdbusplus::message::message& msg)
     _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
         _bus, path, interface::viniRecordVPD, "CC", msg.get_sender(), *this,
         [this](const auto& ccin) { this->setMotherboardCCIN(ccin); }));
+}
+
+void DataInterface::getHWCalloutFields(const std::string& inventoryPath,
+                                       std::string& locationCode,
+                                       std::string& fruPartNumber,
+                                       std::string& ccin,
+                                       std::string& serialNumber) const
+{
+    // For now, attempt to get all of the properties directly on the path
+    // passed in.  In the future, may need to make use of an algorithm
+    // to figure out which inventory objects actually hold these
+    // interfaces in the case of non FRUs, or possibly another service
+    // will provide this info.  Any missing interfaces will result
+    // in exceptions being thrown.
+
+    auto service = getService(inventoryPath, interface::locCode);
+
+    DBusValue locCode;
+    getProperty(service, inventoryPath, interface::locCode, "LocationCode",
+                locCode);
+
+    locationCode = std::get<std::string>(locCode);
+
+    auto properties =
+        getAllProperties(service, inventoryPath, interface::viniRecordVPD);
+
+    auto value = std::get<std::vector<uint8_t>>(properties["FN"]);
+    fruPartNumber = std::string{value.begin(), value.end()};
+
+    value = std::get<std::vector<uint8_t>>(properties["CC"]);
+    ccin = std::string{value.begin(), value.end()};
+
+    value = std::get<std::vector<uint8_t>>(properties["SN"]);
+    serialNumber = std::string{value.begin(), value.end()};
 }
 
 } // namespace pels
