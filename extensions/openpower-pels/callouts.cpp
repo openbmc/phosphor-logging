@@ -15,6 +15,8 @@
  */
 #include "callouts.hpp"
 
+#include <phosphor-logging/log.hpp>
+
 namespace openpower
 {
 namespace pels
@@ -46,6 +48,20 @@ void Callouts::flatten(Stream& pel) const
     }
 }
 
+void Callouts::addCallout(std::unique_ptr<Callout> callout)
+{
+    if (_callouts.size() < maxNumberOfCallouts)
+    {
+        _callouts.push_back(std::move(callout));
+
+        _subsectionWordLength += _callouts.back()->flattenedSize() / 4;
+    }
+    else
+    {
+        using namespace phosphor::logging;
+        log<level::INFO>("Dropping PEL callout because at max");
+    }
+}
 } // namespace src
 } // namespace pels
 } // namespace openpower
