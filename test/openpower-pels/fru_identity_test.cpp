@@ -36,6 +36,7 @@ TEST(FRUIdentityTest, TestHardwareFRU)
 
     EXPECT_EQ(fru.failingComponentType(), FRUIdentity::hardwareFRU);
     EXPECT_EQ(fru.flattenedSize(), data.size());
+    EXPECT_EQ(fru.type(), 0x4944);
 
     EXPECT_EQ(fru.getPN().value(), "1234567");
     EXPECT_EQ(fru.getCCIN().value(), "AAAA");
@@ -86,4 +87,103 @@ TEST(FRUIdentityTest, BadDataTest)
     Stream stream{data};
 
     EXPECT_THROW(FRUIdentity fru{stream}, std::out_of_range);
+}
+
+void testHWCallout(const std::string& pn, const std::string ccin,
+                   const std::string& sn, const std::string& expectedPN,
+                   const std::string& expectedCCIN,
+                   const std::string& expectedSN)
+{
+    FRUIdentity fru{pn, ccin, sn};
+
+    EXPECT_EQ(fru.flattenedSize(), 28);
+    EXPECT_EQ(fru.type(), 0x4944);
+    EXPECT_EQ(fru.failingComponentType(), FRUIdentity::hardwareFRU);
+    EXPECT_EQ(fru.getPN().value(), expectedPN);
+    EXPECT_EQ(fru.getCCIN().value(), expectedCCIN);
+    EXPECT_EQ(fru.getSN().value(), expectedSN);
+    EXPECT_FALSE(fru.getMaintProc());
+
+    // Flatten and unflatten, then compare again
+    std::vector<uint8_t> data;
+    Stream stream{data};
+    fru.flatten(stream);
+
+    EXPECT_EQ(data.size(), fru.flattenedSize());
+
+    stream.offset(0);
+    FRUIdentity newFRU{stream};
+
+    EXPECT_EQ(newFRU.flattenedSize(), fru.flattenedSize());
+    EXPECT_EQ(newFRU.type(), fru.type());
+    EXPECT_EQ(newFRU.failingComponentType(), fru.failingComponentType());
+    EXPECT_EQ(newFRU.getPN().value(), fru.getPN().value());
+    EXPECT_EQ(newFRU.getCCIN().value(), fru.getCCIN().value());
+    EXPECT_EQ(newFRU.getSN().value(), fru.getSN().value());
+    EXPECT_FALSE(newFRU.getMaintProc());
+}
+
+// Test the constructor that takes in a PN/SN/CCIN
+TEST(FRUIdentityTest, CreateHardwareCalloutTest)
+{
+    // The right sizes
+    testHWCallout("1234567", "1234", "123456789ABC",
+                  // expected
+                  "1234567", "1234", "123456789ABC");
+
+    // Too long
+    testHWCallout("1234567long", "1234long", "123456789ABClong",
+                  // expected
+                  "1234567", "1234", "123456789ABC");
+    // Too short
+    testHWCallout("11", "22", "333",
+                  // expected
+                  "11", "22", "333");
+
+    // empty
+    testHWCallout("", "", "",
+                  // expected
+                  "", "", "");
+
+    // Leading spaces in the part number will be stripped
+    testHWCallout("    567", "1234", "123456789ABC",
+                  // expected
+                  "567", "1234", "123456789ABC");
+
+    // All spaces in the part number
+    testHWCallout("       ", "1234", "123456789ABC",
+                  // expected
+                  "", "1234", "123456789ABC");
+}
+
+// Test the constructor that takes in a maint procedure
+TEST(FRUIdentityTest, CreateProcedureCalloutTest)
+{
+    FRUIdentity fru{MaintProcedure::noVPDForFRU};
+
+    EXPECT_EQ(fru.flattenedSize(), 12);
+    EXPECT_EQ(fru.type(), 0x4944);
+    EXPECT_EQ(fru.failingComponentType(), FRUIdentity::maintenanceProc);
+    EXPECT_EQ(fru.getMaintProc().value(), "BMCSP01");
+    EXPECT_FALSE(fru.getPN());
+    EXPECT_FALSE(fru.getCCIN());
+    EXPECT_FALSE(fru.getSN());
+
+    // Flatten and unflatten, then compare again
+    std::vector<uint8_t> data;
+    Stream stream{data};
+    fru.flatten(stream);
+
+    EXPECT_EQ(data.size(), fru.flattenedSize());
+
+    stream.offset(0);
+    FRUIdentity newFRU{stream};
+
+    EXPECT_EQ(newFRU.flattenedSize(), 12);
+    EXPECT_EQ(newFRU.type(), 0x4944);
+    EXPECT_EQ(newFRU.failingComponentType(), FRUIdentity::maintenanceProc);
+    EXPECT_EQ(newFRU.getMaintProc().value(), "BMCSP01");
+    EXPECT_FALSE(newFRU.getPN());
+    EXPECT_FALSE(newFRU.getCCIN());
+    EXPECT_FALSE(newFRU.getSN());
 }
