@@ -26,6 +26,19 @@ const int descriptionPos = 2;
 using PELFieldValue = std::tuple<uint32_t, const char*, const char*>;
 using PELValues = std::vector<PELFieldValue>;
 
+// The maintenance procedure enum
+const int mpEnumPos = 0;
+
+// The maintenance procedure value from the registry
+const int mpRegistryNamePos = 1;
+
+// The string name of the maintenance procedure
+const int mpNamePos = 2;
+
+using MaintenanceProcedureValue =
+    std::tuple<MaintProcedure, const char*, const char*>;
+using MaintenanceProcedureValues = std::vector<MaintenanceProcedureValue>;
+
 const std::string sectionVer = "Section Version";
 const std::string subSection = "Sub-section type";
 const std::string createdBy = "Created by";
@@ -70,6 +83,19 @@ PELValues::const_iterator findByValue(uint32_t value, const PELValues& fields);
  */
 PELValues::const_iterator findByName(const std::string& name,
                                      const PELValues& fields);
+
+/**
+ * @brief Finds the entry in the maintenance procedure list
+ *        based on the enum passed in.
+ *
+ * The function asserts that a result is found.
+ *
+ * @param[in] procedure - The procedure enum
+ *
+ * @return const_iterator - Iterator for that list entry
+ */
+MaintenanceProcedureValues::const_iterator
+    getMaintProcedure(MaintProcedure procedure);
 
 /**
  * @brief The values for the 'subsystem' field in the User Header
@@ -130,6 +156,13 @@ extern const std::map<uint8_t, std::string> failingComponentType;
  * @brief Map for Boolean value
  */
 extern const std::map<bool, std::string> boolString;
+
+/**
+ * @brief All maintenance procedures.
+ *
+ * The procedure enum, registry name, and actual string value.
+ */
+extern const MaintenanceProcedureValues maintenanceProcedures;
 
 } // namespace pel_values
 } // namespace pels

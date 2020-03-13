@@ -16,6 +16,7 @@
 #include "pel_values.hpp"
 
 #include <algorithm>
+#include <cassert>
 
 namespace openpower
 {
@@ -23,9 +24,6 @@ namespace pels
 {
 namespace pel_values
 {
-
-// Note: The description fields will be filled in as part of the
-//       PEL parser work.
 
 /**
  * The possible values for the subsystem field  in the User Header.
@@ -213,6 +211,12 @@ const PELValues calloutPriorityValues = {
     {0x43, "medium_group_c", "Medium Priority C, replace these as a group"},
     {0x4C, "low", "Lowest priority replacement"}};
 
+/**
+ * @brief The possible maintenance procedures.
+ */
+const MaintenanceProcedureValues maintenanceProcedures = {
+    {MaintProcedure::noVPDforFRU, "no_vpd_for_fru", "BMCSP01"}};
+
 PELValues::const_iterator findByValue(uint32_t value, const PELValues& fields)
 {
     return std::find_if(fields.begin(), fields.end(),
@@ -324,6 +328,21 @@ std::vector<std::string> getValuesBitwise(uint16_t value,
         });
     return foundValues;
 }
+
+MaintenanceProcedureValues::const_iterator
+    getMaintProcedure(MaintProcedure procedure)
+{
+    auto proc =
+        std::find_if(maintenanceProcedures.begin(), maintenanceProcedures.end(),
+                     [procedure](const auto& entry) {
+                         return std::get<mpEnumPos>(entry) == procedure;
+                     });
+
+    assert(proc != maintenanceProcedures.end());
+
+    return proc;
+}
+
 } // namespace pel_values
 } // namespace pels
 } // namespace openpower
