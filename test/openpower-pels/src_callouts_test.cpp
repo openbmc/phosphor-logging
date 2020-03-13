@@ -89,3 +89,34 @@ TEST(CalloutsTest, BadDataTest)
 
     EXPECT_THROW(Callouts callouts{stream}, std::out_of_range);
 }
+
+TEST(CalloutsTest, TestAddCallouts)
+{
+    Callouts callouts;
+
+    // Empty Callouts size
+    size_t lastSize = 4;
+
+    for (size_t i = 0; i < maxNumberOfCallouts; i++)
+    {
+        auto callout = std::make_unique<Callout>(
+            CalloutPriority::high, "U1-P1", "1234567", "ABCD", "123456789ABC");
+        auto calloutSize = callout->flattenedSize();
+
+        callouts.addCallout(std::move(callout));
+
+        EXPECT_EQ(callouts.flattenedSize(), lastSize + calloutSize);
+
+        lastSize = callouts.flattenedSize();
+
+        EXPECT_EQ(callouts.callouts().size(), i + 1);
+    }
+
+    // Try to add an 11th callout.  Shouldn't work
+
+    auto callout = std::make_unique<Callout>(CalloutPriority::high, "U1-P1",
+                                             "1234567", "ABCD", "123456789ABC");
+    callouts.addCallout(std::move(callout));
+
+    EXPECT_EQ(callouts.callouts().size(), maxNumberOfCallouts);
+}
