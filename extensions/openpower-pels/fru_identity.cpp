@@ -15,6 +15,8 @@
  */
 #include "fru_identity.hpp"
 
+#include "pel_values.hpp"
+
 namespace openpower
 {
 namespace pels
@@ -26,17 +28,17 @@ FRUIdentity::FRUIdentity(Stream& pel)
 {
     pel >> _type >> _size >> _flags;
 
-    if (_flags & (pnSupplied | maintProcSupplied))
+    if (hasPN() || hasMP())
     {
         pel.read(_pnOrProcedureID.data(), _pnOrProcedureID.size());
     }
 
-    if (_flags & ccinSupplied)
+    if (hasCCIN())
     {
         pel.read(_ccin.data(), _ccin.size());
     }
 
-    if (_flags & snSupplied)
+    if (hasSN())
     {
         pel.read(_sn.data(), _sn.size());
     }
@@ -62,6 +64,29 @@ size_t FRUIdentity::flattenedSize() const
     }
 
     return size;
+}
+
+FRUIdentity::FRUIdentity(const std::string& partNumber, const std::string& ccin,
+                         const std::string& serialNumber)
+{
+    _type = substructureType;
+    _flags = hardwareFRU;
+
+    setPartNumber(partNumber);
+    setCCIN(ccin);
+    setSerialNumber(serialNumber);
+
+    _size = flattenedSize();
+}
+
+FRUIdentity::FRUIdentity(MaintProcedure procedure)
+{
+    _type = substructureType;
+    _flags = maintenanceProc;
+
+    setMaintenanceProcedure(procedure);
+
+    _size = flattenedSize();
 }
 
 std::optional<std::string> FRUIdentity::getPN() const
@@ -93,6 +118,12 @@ std::optional<std::string> FRUIdentity::getCCIN() const
     if (hasCCIN())
     {
         std::string ccin{_ccin.begin(), _ccin.begin() + _ccin.size()};
+
+        // Don't leave any NULLs in the string (not there usually)
+        if (auto pos = ccin.find('\0'); pos != std::string::npos)
+        {
+            ccin.resize(pos);
+        }
         return ccin;
     }
 
@@ -104,6 +135,12 @@ std::optional<std::string> FRUIdentity::getSN() const
     if (hasSN())
     {
         std::string sn{_sn.begin(), _sn.begin() + _sn.size()};
+
+        // Don't leave any NULLs in the string (not there usually)
+        if (auto pos = sn.find('\0'); pos != std::string::npos)
+        {
+            sn.resize(pos);
+        }
         return sn;
     }
 
@@ -128,6 +165,56 @@ void FRUIdentity::flatten(Stream& pel) const
     {
         pel.write(_sn.data(), _sn.size());
     }
+}
+
+void FRUIdentity::setPartNumber(const std::string& partNumber)
+{
+    _flags |= pnSupplied;
+    _flags &= ~maintProcSupplied;
+
+    auto pn = partNumber;
+
+    // Strip leading whitespace on this one.
+    while (' ' == pn.front())
+    {
+        pn = pn.substr(1);
+    }
+
+    // Note: strncpy only writes NULLs if pn short
+    strncpy(_pnOrProcedureID.data(), pn.c_str(), _pnOrProcedureID.size());
+
+    // ensure null terminated
+    _pnOrProcedureID.back() = 0;
+}
+
+void FRUIdentity::setCCIN(const std::string& ccin)
+{
+    _flags |= ccinSupplied;
+
+    // Note: _ccin not null terminated, though strncpy writes NULLs if short
+    strncpy(_ccin.data(), ccin.c_str(), _ccin.size());
+}
+
+void FRUIdentity::setSerialNumber(const std::string& serialNumber)
+{
+    _flags |= snSupplied;
+
+    // Note: _sn not null terminated, though strncpy writes NULLs if short
+    strncpy(_sn.data(), serialNumber.c_str(), _sn.size());
+}
+
+void FRUIdentity::setMaintenanceProcedure(MaintProcedure procedure)
+{
+    _flags |= maintProcSupplied;
+    _flags &= ~pnSupplied;
+
+    auto proc = pel_values::getMaintProcedure(procedure);
+
+    strncpy(_pnOrProcedureID.data(), std::get<pel_values::mpNamePos>(*proc),
+            _pnOrProcedureID.size());
+
+    // ensure null terminated
+    _pnOrProcedureID.back() = 0;
 }
 
 } // namespace src
