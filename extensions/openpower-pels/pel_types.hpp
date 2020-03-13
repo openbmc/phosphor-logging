@@ -130,5 +130,13 @@ enum class TransmissionState
     acked = 3
 };
 
+/**
+ * @brief Maintenance procedure enums
+ */
+enum class MaintProcedure
+{
+    noVPDforFRU
+};
+
 } // namespace pels
 } // namespace openpower

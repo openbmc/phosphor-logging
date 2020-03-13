@@ -63,7 +63,7 @@
                                 [
                                     {
                                         "Priority": "high",
-                                        "Procedure": "PSUPPLY"
+                                        "Procedure": "no_vpd_for_fru"
                                     }
                                 ]
                             }

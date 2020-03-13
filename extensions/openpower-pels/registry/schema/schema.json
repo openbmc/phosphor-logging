@@ -394,9 +394,9 @@
 
         "procedure":
         {
-            "description": "The 7 character procedure callout name.",
+            "description": "The maintenance procedure callout.",
             "type": "string",
-            "pattern": "^[A-Z0-9]{7}$"
+            "enum": ["no_vpd_for_fru"]
         },
 
         "calloutType":
