@@ -267,6 +267,17 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
         manager.create(message, severity, additionalData);
     }
 
+    void createWithFFDCFiles(
+        std::string message,
+        sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level severity,
+        std::map<std::string, std::string> additionalData,
+        std::vector<std::tuple<CreateIface::FFDCFormat, uint8_t, uint8_t,
+                               sdbusplus::message::unix_fd>>
+            ffdc) override
+    {
+
+    }
+
   private:
     /** @brief This is a reference to manager object */
     internal::Manager& manager;
