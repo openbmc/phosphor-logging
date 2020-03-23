@@ -275,7 +275,6 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
                                sdbusplus::message::unix_fd>>
             ffdc) override
     {
-
     }
 
   private:
