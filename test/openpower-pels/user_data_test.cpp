@@ -99,8 +99,47 @@ TEST(UserDataTest, ConstructorTest)
     EXPECT_EQ(ud.header().version, 0x01);
     EXPECT_EQ(ud.header().subType, 0x42);
     EXPECT_EQ(ud.header().componentID, 0x1112);
+    EXPECT_EQ(ud.flattenedSize(), 16);
 
     const auto& d = ud.data();
 
     EXPECT_EQ(d, data);
+}
+
+TEST(UserDataTest, ShrinkTest)
+{
+    std::vector<uint8_t> data(100, 0xFF);
+
+    UserData ud(0x1112, 0x42, 0x01, data);
+    EXPECT_TRUE(ud.valid());
+
+    // 4B aligned
+    EXPECT_TRUE(ud.shrink(88));
+    EXPECT_EQ(ud.flattenedSize(), 88);
+    EXPECT_EQ(ud.header().size, 88);
+
+    // rounded off
+    EXPECT_TRUE(ud.shrink(87));
+    EXPECT_EQ(ud.flattenedSize(), 84);
+    EXPECT_EQ(ud.header().size, 84);
+
+    // too big
+    EXPECT_FALSE(ud.shrink(200));
+    EXPECT_EQ(ud.flattenedSize(), 84);
+    EXPECT_EQ(ud.header().size, 84);
+
+    // way too small
+    EXPECT_FALSE(ud.shrink(3));
+    EXPECT_EQ(ud.flattenedSize(), 84);
+    EXPECT_EQ(ud.header().size, 84);
+
+    // the smallest it can go
+    EXPECT_TRUE(ud.shrink(12));
+    EXPECT_EQ(ud.flattenedSize(), 12);
+    EXPECT_EQ(ud.header().size, 12);
+
+    // one too small
+    EXPECT_FALSE(ud.shrink(11));
+    EXPECT_EQ(ud.flattenedSize(), 12);
+    EXPECT_EQ(ud.header().size, 12);
 }
