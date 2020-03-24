@@ -62,12 +62,26 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
     auto ud = util::makeSysInfoUserDataSection(additionalData, dataIface);
     _optionalSections.push_back(std::move(ud));
 
+    // Create a UserData section from AdditionalData.
     if (!additionalData.empty())
     {
         ud = util::makeADUserDataSection(additionalData);
 
-        // To be safe, check there isn't too much data
-        if (size() + ud->header().size <= _maxPELSize)
+        // Shrink the section if necessary.
+        if (size() + ud->header().size > _maxPELSize)
+        {
+            if (ud->shrink(_maxPELSize - size()))
+            {
+                _optionalSections.push_back(std::move(ud));
+            }
+            else
+            {
+                log<level::WARNING>(
+                    "Dropping AdditionalData UserData section",
+                    entry("SECTION_SIZE=%d\n", ud->header().size));
+            }
+        }
+        else
         {
             _optionalSections.push_back(std::move(ud));
         }
