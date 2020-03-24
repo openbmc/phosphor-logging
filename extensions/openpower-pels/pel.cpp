@@ -36,21 +36,22 @@ namespace pels
 {
 namespace message = openpower::pels::message;
 namespace pv = openpower::pels::pel_values;
+using namespace phosphor::logging;
 
 constexpr auto unknownValue = "Unknown";
 
-PEL::PEL(const message::Entry& entry, uint32_t obmcLogID, uint64_t timestamp,
+PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
          phosphor::logging::Entry::Level severity,
          const AdditionalData& additionalData,
          const DataInterfaceBase& dataIface)
 {
-    _ph = std::make_unique<PrivateHeader>(entry.componentID, obmcLogID,
+    _ph = std::make_unique<PrivateHeader>(regEntry.componentID, obmcLogID,
                                           timestamp);
-    _uh = std::make_unique<UserHeader>(entry, severity);
+    _uh = std::make_unique<UserHeader>(regEntry, severity);
 
-    auto src = std::make_unique<SRC>(entry, additionalData, dataIface);
+    auto src = std::make_unique<SRC>(regEntry, additionalData, dataIface);
 
-    auto euh = std::make_unique<ExtendedUserHeader>(dataIface, entry, *src);
+    auto euh = std::make_unique<ExtendedUserHeader>(dataIface, regEntry, *src);
 
     _optionalSections.push_back(std::move(src));
     _optionalSections.push_back(std::move(euh));
@@ -143,7 +144,6 @@ void PEL::flatten(std::vector<uint8_t>& pelBuffer) const
 
     if (!valid())
     {
-        using namespace phosphor::logging;
         log<level::WARNING>("Unflattening an invalid PEL");
     }
 
