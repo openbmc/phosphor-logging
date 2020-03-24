@@ -104,5 +104,22 @@ std::optional<std::string> UserData::getJSON() const
     return std::nullopt;
 }
 
+bool UserData::shrink(size_t newSize)
+{
+    // minimum size is 4 bytes plus the 8B header
+    if ((newSize < flattenedSize()) &&
+        (newSize >= (Section::flattenedSize() + 4)))
+    {
+        auto dataSize = newSize - Section::flattenedSize();
+
+        // Ensure it's 4B aligned
+        _data.resize((dataSize / 4) * 4);
+        _header.size = Section::flattenedSize() + _data.size();
+        return true;
+    }
+
+    return false;
+}
+
 } // namespace pels
 } // namespace openpower

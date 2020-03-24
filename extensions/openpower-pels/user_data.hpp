@@ -88,6 +88,19 @@ class UserData : public Section
      */
     std::optional<std::string> getJSON() const override;
 
+    /**
+     * @brief Shrink the section
+     *
+     * The new size must be between the current size and the minimum
+     * size, which is 12 bytes.  If it isn't a 4 byte aligned value
+     * the code will do the aligning before the resize takes place.
+     *
+     * @param[in] newSize - The new size in bytes
+     *
+     * @return bool - true if successful, false else.
+     */
+    bool shrink(size_t newSize) override;
+
   private:
     /**
      * @brief Fills in the object from the stream data

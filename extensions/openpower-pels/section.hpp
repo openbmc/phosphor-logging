@@ -71,6 +71,25 @@ class Section
         return std::nullopt;
     }
 
+    /**
+     * @brief Shrinks a PEL section
+     *
+     * If this is even possible for a section depends on which section
+     * it is.  If a section cannot be shrunk, it doesn't need to implement
+     * shrink so it will just return false, meaning no shrinking was done.
+     *
+     * If a section can be shrunk, this function will be overridden in that
+     * class.
+     *
+     * @param[in] newSize - The new size, in bytes, to shrink to
+     *
+     * @return bool - true if successful, false else
+     */
+    virtual bool shrink(size_t newSize)
+    {
+        return false;
+    }
+
   protected:
     /**
      * @brief Returns the flattened size of the section header
