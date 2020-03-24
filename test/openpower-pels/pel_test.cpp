@@ -180,6 +180,47 @@ TEST_F(PELTest, CreateFromRegistryTest)
     EXPECT_EQ(udCount, 2); // AD section and sysInfo section
 }
 
+// Test that when the AdditionalData size is over 16KB that
+// the PEL that's created is exactly 16KB since the UserData
+// section that contains all that data was pruned.
+TEST_F(PELTest, CreateTooBigADTest)
+{
+    message::Entry regEntry;
+    uint64_t timestamp = 5;
+
+    regEntry.name = "test";
+    regEntry.subsystem = 5;
+    regEntry.actionFlags = 0xC000;
+    regEntry.src.type = 0xBD;
+    regEntry.src.reasonCode = 0x1234;
+
+    // Over the 16KB max PEL size
+    std::string bigAD{"KEY1="};
+    bigAD += std::string(17000, 'G');
+
+    std::vector<std::string> data{bigAD};
+    AdditionalData ad{data};
+    MockDataInterface dataIface;
+
+    PEL pel{regEntry, 42, timestamp, phosphor::logging::Entry::Level::Error, ad,
+            dataIface};
+
+    EXPECT_TRUE(pel.valid());
+    EXPECT_EQ(pel.size(), 16384);
+
+    // Make sure that there are still 2 UD sections.
+    size_t udCount = 0;
+    for (const auto& section : pel.optionalSections())
+    {
+        if (section->header().id == static_cast<uint16_t>(SectionID::userData))
+        {
+            udCount++;
+        }
+    }
+
+    EXPECT_EQ(udCount, 2); // AD section and sysInfo section
+}
+
 // Test that we'll create Generic optional sections for sections that
 // there aren't explicit classes for.
 TEST_F(PELTest, GenericSectionTest)
