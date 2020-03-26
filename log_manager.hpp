@@ -32,6 +32,16 @@ using ManagerIface =
 
 } // namespace details
 
+constexpr size_t ffdcFormatPos = 0;
+constexpr size_t ffdcSubtypePos = 1;
+constexpr size_t ffdcVersionPos = 2;
+constexpr size_t ffdcFDPos = 3;
+
+using FFDCEntry = std::tuple<CreateIface::FFDCFormat, uint8_t, uint8_t,
+                             sdbusplus::message::unix_fd>;
+
+using FFDCEntries = std::vector<FFDCEntry>;
+
 namespace internal
 {
 
@@ -141,6 +151,26 @@ class Manager : public details::ServerObject<details::ManagerIface>
         sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level severity,
         const std::map<std::string, std::string>& additionalData);
 
+    /** @brief Creates an event log, and accepts FFDC files
+     *
+     * This is the same as create(), but also takes an FFDC argument.
+     *
+     * The FFDC argument is a vector of tuples that allows one to pass in file
+     * descriptors for files that contain FFDC (First Failure Data Capture).
+     * These will be passed to any event logging extensions.
+     *
+     * @param[in] errMsg - The error exception message associated with the
+     *                     error log to be committed.
+     * @param[in] severity - level of the error
+     * @param[in] additionalData - The AdditionalData property for the error
+     * @param[in] ffdc - A vector of FFDC file info
+     */
+    void createWithFFDC(
+        const std::string& message,
+        sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level severity,
+        const std::map<std::string, std::string>& additionalData,
+        const FFDCEntries& ffdc);
+
   private:
     /*
      * @fn _commit()
@@ -181,8 +211,9 @@ class Manager : public details::ServerObject<details::ManagerIface>
      *  extensions to create their own log based on this one.
      *
      *  @param[in] entry - the new event log entry
+     *  @param[in] ffdc - A vector of FFDC file info
      */
-    void doExtensionLogCreate(const Entry& entry);
+    void doExtensionLogCreate(const Entry& entry, const FFDCEntries& ffdc);
 
     /** @brief Common wrapper for creating an Entry object
      *
@@ -190,9 +221,12 @@ class Manager : public details::ServerObject<details::ManagerIface>
      *                     error log to be committed.
      * @param[in] errLvl - level of the error
      * @param[in] additionalData - The AdditionalData property for the error
+     * @param[in] ffdc - A vector of FFDC file info. Defaults to an empty
+     * vector.
      */
     void createEntry(std::string errMsg, Entry::Level errLvl,
-                     std::vector<std::string> additionalData);
+                     std::vector<std::string> additionalData,
+                     const FFDCEntries& ffdc = FFDCEntries{});
 
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus::bus& busLog;
@@ -267,6 +301,16 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
         manager.create(message, severity, additionalData);
     }
 
+    /** @brief D-Bus method call implementation to create an event log with FFDC
+     *
+     * The same as create(), but takes an extra FFDC argument.
+     *
+     * @param[in] errMsg - The error exception message associated with the
+     *                     error log to be committed.
+     * @param[in] severity - Level of the error
+     * @param[in] additionalData - The AdditionalData property for the error
+     * @param[in] ffdc - A vector of FFDC file info
+     */
     void createWithFFDCFiles(
         std::string message,
         sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level severity,
@@ -275,6 +319,7 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
                                sdbusplus::message::unix_fd>>
             ffdc) override
     {
+        manager.createWithFFDC(message, severity, additionalData, ffdc);
     }
 
   private:

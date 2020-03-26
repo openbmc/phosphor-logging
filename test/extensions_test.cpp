@@ -23,13 +23,13 @@ void startup2(internal::Manager& manager)
 
 void create1(const std::string& message, uint32_t id, uint64_t timestamp,
              Entry::Level severity, const AdditionalDataArg& additionalData,
-             const AssociationEndpointsArg& assocs)
+             const AssociationEndpointsArg& assocs, const FFDCArg& ffdc)
 {
 }
 
 void create2(const std::string& message, uint32_t id, uint64_t timestamp,
              Entry::Level severity, const AdditionalDataArg& additionalData,
-             const AssociationEndpointsArg& assocs)
+             const AssociationEndpointsArg& assocs, const FFDCArg& ffdc)
 {
 }
 
@@ -74,10 +74,11 @@ TEST(ExtensionsTest, FunctionCallTest)
 
     AdditionalDataArg ad;
     AssociationEndpointsArg assocs;
+    FFDCArg ffdc;
     EXPECT_EQ(Extensions::getCreateFunctions().size(), 2);
     for (auto& c : Extensions::getCreateFunctions())
     {
-        c("test", 5, 6, Entry::Level::Informational, ad, assocs);
+        c("test", 5, 6, Entry::Level::Informational, ad, assocs, ffdc);
     }
 
     EXPECT_EQ(Extensions::getDeleteFunctions().size(), 2);

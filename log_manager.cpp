@@ -185,7 +185,8 @@ void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
 }
 
 void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
-                          std::vector<std::string> additionalData)
+                          std::vector<std::string> additionalData,
+                          const FFDCEntries& ffdc)
 {
     if (!Extensions::disableDefaultLogCaps())
     {
@@ -229,12 +230,14 @@ void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
                                      std::move(objects), fwVersion, *this);
     serialize(*e);
 
-    doExtensionLogCreate(*e);
+    doExtensionLogCreate(*e, ffdc);
+
+    // Note: No need to close the file descriptors in the FFDC.
 
     entries.insert(std::make_pair(entryId, std::move(e)));
 }
 
-void Manager::doExtensionLogCreate(const Entry& entry)
+void Manager::doExtensionLogCreate(const Entry& entry, const FFDCEntries& ffdc)
 {
     // Make the association <endpointpath>/<endpointtype> paths
     std::vector<std::string> assocs;
@@ -251,7 +254,7 @@ void Manager::doExtensionLogCreate(const Entry& entry)
         try
         {
             create(entry.message(), entry.id(), entry.timestamp(),
-                   entry.severity(), entry.additionalData(), assocs);
+                   entry.severity(), entry.additionalData(), assocs, ffdc);
         }
         catch (std::exception& e)
         {
@@ -581,6 +584,18 @@ void Manager::create(const std::string& message, Entry::Level severity,
     metadata::associations::combine(additionalData, ad);
 
     createEntry(message, severity, ad);
+}
+
+void Manager::createWithFFDC(
+    const std::string& message, Entry::Level severity,
+    const std::map<std::string, std::string>& additionalData,
+    const FFDCEntries& ffdc)
+{
+    // Convert the map into a vector of "key=value" strings
+    std::vector<std::string> ad;
+    metadata::associations::combine(additionalData, ad);
+
+    createEntry(message, severity, ad, ffdc);
 }
 
 } // namespace internal
