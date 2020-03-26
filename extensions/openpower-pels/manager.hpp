@@ -7,6 +7,7 @@
 #include "host_notifier.hpp"
 #include "log_manager.hpp"
 #include "paths.hpp"
+#include "pel.hpp"
 #include "registry.hpp"
 #include "repository.hpp"
 
@@ -86,11 +87,14 @@ class Manager : public PELInterface
      * @param[in] severity - the event log severity
      * @param[in] additionalData - the AdditionalData property
      * @param[in] associations - the Associations property
+     * @param[in] ffdc - A vector of FFDC file information
      */
     void create(const std::string& message, uint32_t obmcLogID,
                 uint64_t timestamp, phosphor::logging::Entry::Level severity,
                 const std::vector<std::string>& additionalData,
-                const std::vector<std::string>& associations);
+                const std::vector<std::string>& associations,
+                const phosphor::logging::FFDCEntries& ffdc =
+                    phosphor::logging::FFDCEntries{});
 
     /**
      * @brief Erase a PEL based on its OpenBMC event log ID
@@ -194,11 +198,13 @@ class Manager : public PELInterface
      * @param[in] severity - The event log severity
      * @param[in] additionalData - The AdditionalData property
      * @param[in] associations - The associations property
+     * @param[in] ffdc - A vector of FFDC file information
      */
     void createPEL(const std::string& message, uint32_t obmcLogID,
                    uint64_t timestamp, phosphor::logging::Entry::Level severity,
                    const std::vector<std::string>& additionalData,
-                   const std::vector<std::string>& associations);
+                   const std::vector<std::string>& associations,
+                   const phosphor::logging::FFDCEntries& ffdc);
 
     /**
      * @brief Schedules a close of the file descriptor to occur from
@@ -237,6 +243,16 @@ class Manager : public PELInterface
      * @param[in] obmcLogID - The OpenBMC event log ID
      */
     void addESELPEL(const std::string& esel, uint32_t obmcLogID);
+
+    /**
+     * @brief Converts the D-Bus FFDC method argument into a data
+     *        structure understood by the PEL code.
+     *
+     * @param[in] ffdc - A vector of FFDC file information
+     *
+     * @return PelFFDC - The PEL FFDC data structure
+     */
+    PelFFDC convertToPelFFDC(const phosphor::logging::FFDCEntries& ffdc);
 
     /**
      * @brief Reference to phosphor-logging's Manager class

@@ -6,6 +6,7 @@
 #include "registry.hpp"
 #include "src.hpp"
 #include "user_data.hpp"
+#include "user_data_formats.hpp"
 #include "user_header.hpp"
 
 #include <memory>
@@ -15,6 +16,19 @@ namespace openpower
 {
 namespace pels
 {
+
+/**
+ * @brief Contains information about an FFDC file.
+ */
+struct PelFFDCfile
+{
+    UserDataFormat format;
+    uint8_t subType;
+    uint8_t version;
+    int fd;
+};
+
+using PelFFDC = std::vector<PelFFDCfile>;
 
 /** @class PEL
  *
@@ -87,11 +101,12 @@ class PEL
      * @param[in] timestamp - Timestamp from the event log
      * @param[in] severity - Severity from the event log
      * @param[in] additionalData - The AdditionalData contents
+     * @param[in] ffdcFiles - FFCD files that go into UserData sections
      * @param[in] dataIface - The data interface object
      */
     PEL(const openpower::pels::message::Entry& entry, uint32_t obmcLogID,
         uint64_t timestamp, phosphor::logging::Entry::Level severity,
-        const AdditionalData& additionalData,
+        const AdditionalData& additionalData, const PelFFDC& ffdcFiles,
         const DataInterfaceBase& dataIface);
 
     /**
@@ -359,6 +374,16 @@ std::unique_ptr<UserData> makeADUserDataSection(const AdditionalData& ad);
 std::unique_ptr<UserData>
     makeSysInfoUserDataSection(const AdditionalData& ad,
                                const DataInterfaceBase& dataIface);
+
+/**
+ * @brief Create a UserData section that contains the data in the file
+ *        pointed to by the file descriptor passed in.
+ *
+ * @param[in] componentID - The component ID of the PEL creator
+ * @param[in] file - The FFDC file information
+ */
+std::unique_ptr<UserData> makeFFDCuserDataSection(uint16_t componentID,
+                                                  const PelFFDCfile& file);
 } // namespace util
 
 } // namespace pels
