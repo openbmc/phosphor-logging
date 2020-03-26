@@ -67,10 +67,10 @@ std::string escapeJSON(const std::string& input)
 
     return output;
 }
-char* dumpHex(const void* data, size_t size)
+char* dumpHex(const void* data, size_t size, size_t indentCount)
 {
     const int symbolSize = 100;
-    std::string jsonIndent(indentLevel, 0x20);
+    std::string jsonIndent(indentLevel * indentCount, 0x20);
     jsonIndent.append("\"");
     char* buffer = (char*)calloc(10 * size, sizeof(char));
     char* symbol = (char*)calloc(symbolSize, sizeof(char));
