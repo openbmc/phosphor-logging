@@ -40,7 +40,11 @@ test/*_test.trs
 test/*_test_*.log
 test/*_test_*.trs
 test/test-suite.log
-test/*_test_*
+test/remote_logging_test_address
+test/remote_logging_test_config
+test/remote_logging_test_port
+test/serialization_test_path
+test/serialization_test_properties
 test/*_test
 phosphor-rsyslog-config/phosphor-rsyslog-conf
 peltool
