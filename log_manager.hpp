@@ -171,6 +171,18 @@ class Manager : public details::ServerObject<details::ManagerIface>
         const std::map<std::string, std::string>& additionalData,
         const FFDCEntries& ffdc);
 
+    /** @brief Common wrapper for creating an Entry object
+     *
+     * @return true if quiesce on error setting is enabled, false otherwise
+     */
+    bool isQuiesceOnErrorEnabled();
+
+    /** @brief Check if error has callout and if so, block boot
+     *
+     * @param[in] entry - The error to check for callouts
+     */
+    void checkQuiesceOnError(const Entry& entry);
+
   private:
     /*
      * @fn _commit()

@@ -30,6 +30,7 @@
 
 using namespace phosphor::logging;
 using namespace std::chrono;
+using sdbusplus::exception::SdBusError;
 extern const std::map<metadata::Metadata,
                       std::function<metadata::associations::Type>>
     meta;
@@ -230,11 +231,46 @@ void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
                                      std::move(objects), fwVersion, *this);
     serialize(*e);
 
+    if (isQuiesceOnErrorEnabled())
+    {
+        checkQuiesceOnError(*e);
+    }
+
     doExtensionLogCreate(*e, ffdc);
 
     // Note: No need to close the file descriptors in the FFDC.
 
     entries.insert(std::make_pair(entryId, std::move(e)));
+}
+
+bool Manager::isQuiesceOnErrorEnabled()
+{
+    std::variant<bool> property;
+
+    auto method = this->busLog.new_method_call(
+        "xyz.openbmc_project.Settings", "/xyz/openbmc_project/logging/settings",
+        "org.freedesktop.DBus.Properties", "Get");
+
+    method.append("xyz.openbmc_project.Logging.Settings", "QuiesceOnHwError");
+
+    try
+    {
+        auto reply = this->busLog.call(method);
+        reply.read(property);
+    }
+    catch (const SdBusError& e)
+    {
+        log<level::ERR>("Error reading QuiesceOnHwError property",
+                        entry("ERROR=%s", e.what()));
+        throw;
+    }
+
+    return std::get<bool>(property);
+}
+
+void Manager::checkQuiesceOnError(const Entry& entry)
+{
+    // TODO in later commit in this series
 }
 
 void Manager::doExtensionLogCreate(const Entry& entry, const FFDCEntries& ffdc)
