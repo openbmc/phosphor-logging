@@ -235,19 +235,35 @@ void PEL::printSectionInJSON(const Section& section, std::string& buf,
         auto json = (sectionID == "PS" || sectionID == "SS")
                         ? section.getJSON(registry)
                         : section.getJSON();
+
+        buf += "\"" + sectionName + "\": {\n";
+
         if (json)
         {
-            buf += "\"" + sectionName + "\": {\n";
             buf += *json + "\n},\n";
         }
         else
         {
-            buf += "\"" + sectionName + "\": [\n";
+            jsonInsert(buf, pv::sectionVer,
+                       getNumberString("%d", section.header().version), 1);
+            jsonInsert(buf, pv::subSection,
+                       getNumberString("%d", section.header().subType), 1);
+            jsonInsert(buf, pv::createdBy,
+                       getNumberString("0x%X", section.header().componentID),
+                       1);
+
             std::vector<uint8_t> data;
             Stream s{data};
             section.flatten(s);
-            std::string dstr = dumpHex(std::data(data), data.size());
-            buf += dstr + "],\n";
+            std::string dstr =
+                dumpHex(std::data(data) + SectionHeader::flattenedSize(),
+                        data.size(), 2);
+
+            std::string jsonIndent(indentLevel, 0x20);
+            buf += jsonIndent + "\"Data\": [\n";
+            buf += dstr;
+            buf += jsonIndent + "]\n";
+            buf += "},\n";
         }
     }
     else

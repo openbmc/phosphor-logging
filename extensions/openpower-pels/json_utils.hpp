@@ -24,11 +24,12 @@ std::string escapeJSON(const std::string& input);
 
 /**
  * @brief get hex dump for PEL section in json format.
- * @param[in] const void* - Raw PEL data
- * @param[i] size_t - size of Raw PEL
+ * @param[in] const void* data - Raw PEL data
+ * @param[i] size_t size - size of Raw PEL
+ * @param[in] size_t indentCount - The number of indent levels to indent
  * @return char * - the Hex dump
  */
-char* dumpHex(const void* data, size_t size);
+char* dumpHex(const void* data, size_t size, size_t indentCount);
 
 /**
  * @brief Inserts key-value into a JSON string
