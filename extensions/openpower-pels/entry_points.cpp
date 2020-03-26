@@ -55,8 +55,9 @@ REGISTER_EXTENSION_FUNCTION(pelStartup);
 
 void pelCreate(const std::string& message, uint32_t id, uint64_t timestamp,
                Entry::Level severity, const AdditionalDataArg& additionalData,
-               const AssociationEndpointsArg& assocs)
+               const AssociationEndpointsArg& assocs, const FFDCArg& ffdc)
 {
+    // Next: pass through ffdc arg
     manager->create(message, id, timestamp, severity, additionalData, assocs);
 }
 

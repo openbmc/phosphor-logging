@@ -19,6 +19,8 @@ using StartupFunction = std::function<void(internal::Manager&)>;
 
 using AdditionalDataArg = std::vector<std::string>;
 using AssociationEndpointsArg = std::vector<std::string>;
+using FFDCArg = FFDCEntries;
+
 /**
  *  @brief The function type that will be called after an event log
  *         is created.
@@ -28,10 +30,11 @@ using AssociationEndpointsArg = std::vector<std::string>;
  * @param[in] Level - The event level
  * @param[in] const AdditionalDataArg&) - the additional data
  * @param[in] const AssociationEndpoints& - Association endpoints (callouts)
+ * @param[in] const FFDCArg& - A vector of FFDC file info.
  */
 using CreateFunction = std::function<void(
     const std::string&, uint32_t, uint64_t, Entry::Level,
-    const AdditionalDataArg&, const AssociationEndpointsArg&)>;
+    const AdditionalDataArg&, const AssociationEndpointsArg&, const FFDCArg&)>;
 
 /**
  * @brief The function type that will be called after an event log is deleted.
