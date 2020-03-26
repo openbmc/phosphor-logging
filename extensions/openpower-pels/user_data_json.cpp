@@ -19,6 +19,7 @@
 #include "json_utils.hpp"
 #include "pel_types.hpp"
 #include "pel_values.hpp"
+#include "stream.hpp"
 #include "user_data_formats.hpp"
 
 #include <fifo_map.hpp>
@@ -95,6 +96,99 @@ std::string prettyJSON(uint16_t componentID, uint8_t subType, uint8_t version,
 }
 
 /**
+ * @brief Return a JSON string from the passed in CBOR data.
+ *
+ * @param[in] componentID - The comp ID from the UserData section header
+ * @param[in] subType - The subtype from the UserData section header
+ * @param[in] version - The version from the UserData section header
+ * @param[in] data - The CBOR data
+ *
+ * @return std::string - The JSON string
+ */
+std::string getCBORJSON(uint16_t componentID, uint8_t subType, uint8_t version,
+                        const std::vector<uint8_t>& data)
+{
+    // The CBOR parser needs the pad bytes added to 4 byte align
+    // removed.  The number of bytes added to the pad is on the
+    // very end, so will remove both fields before parsing.
+
+    // If the data vector is too short, an exception will get
+    // thrown which will be handled up the call stack.
+
+    auto cborData = data;
+    uint32_t pad{};
+
+    Stream stream{cborData};
+    stream.offset(cborData.size() - 4);
+    stream >> pad;
+
+    if (cborData.size() > (pad + sizeof(pad)))
+    {
+        cborData.resize(data.size() - sizeof(pad) - pad);
+    }
+
+    fifoJSON json = nlohmann::json::from_cbor(cborData);
+
+    return prettyJSON(componentID, subType, version, json);
+}
+
+/**
+ * @brief Return a JSON string from the passed in text data.
+ *
+ * The function breaks up the input text into a vector of 60 character
+ * strings and converts that into JSON.  It will convert any unprintable
+ * characters to periods.
+ *
+ * @param[in] componentID - The comp ID from the UserData section header
+ * @param[in] subType - The subtype from the UserData section header
+ * @param[in] version - The version from the UserData section header
+ * @param[in] data - The CBOR data
+ *
+ * @return std::string - The JSON string
+ */
+std::string getTextJSON(uint16_t componentID, uint8_t subType, uint8_t version,
+                        const std::vector<uint8_t>& data)
+{
+    constexpr size_t maxLineLength = 60;
+    std::vector<std::string> text;
+    size_t startPos = 0;
+    bool done = false;
+
+    // Converts any unprintable characters to periods.
+    auto validate = [](char& ch) {
+        if ((ch < ' ') || (ch > '~'))
+        {
+            ch = '.';
+        }
+    };
+
+    // Break up the data into an array of 60 character strings
+    while (!done)
+    {
+        // 60 or less characters left
+        if (startPos + maxLineLength >= data.size())
+        {
+            std::string line{reinterpret_cast<const char*>(&data[startPos]),
+                             data.size() - startPos};
+            std::for_each(line.begin(), line.end(), validate);
+            text.push_back(std::move(line));
+            done = true;
+        }
+        else
+        {
+            std::string line{reinterpret_cast<const char*>(&data[startPos]),
+                             maxLineLength};
+            std::for_each(line.begin(), line.end(), validate);
+            text.push_back(std::move(line));
+            startPos += maxLineLength;
+        }
+    }
+
+    fifoJSON json = text;
+    return prettyJSON(componentID, subType, version, json);
+}
+
+/**
  * @brief Convert to an appropriate JSON string as the data is one of
  *        the formats that we natively support.
  *
@@ -120,6 +214,14 @@ std::optional<std::string>
 
             return prettyJSON(componentID, subType, version, json);
         }
+        case static_cast<uint8_t>(UserDataFormat::cbor):
+        {
+            return getCBORJSON(componentID, subType, version, data);
+        }
+        case static_cast<uint8_t>(UserDataFormat::text):
+        {
+            return getTextJSON(componentID, subType, version, data);
+        }
         default:
             break;
     }
@@ -143,7 +245,11 @@ std::optional<std::string> getJSON(uint16_t componentID, uint8_t subType,
     }
     catch (std::exception& e)
     {
-        log<level::ERR>("Failed parsing UserData", entry("ERROR=%s", e.what()));
+        log<level::ERR>("Failed parsing UserData", entry("ERROR=%s", e.what()),
+                        entry("COMP_ID=0x%X", componentID),
+                        entry("SUBTYPE=0x%X", subType),
+                        entry("VERSION=%d", version),
+                        entry("DATA_LENGTH=%lu\n", data.size()));
     }
 
     return std::nullopt;
