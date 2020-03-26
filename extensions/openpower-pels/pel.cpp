@@ -27,6 +27,9 @@
 #include "stream.hpp"
 #include "user_data_formats.hpp"
 
+#include <sys/stat.h>
+#include <unistd.h>
+
 #include <iostream>
 #include <phosphor-logging/log.hpp>
 
@@ -474,10 +477,116 @@ std::unique_ptr<UserData>
     return makeJSONUserDataSection(json);
 }
 
+std::vector<uint8_t> readFD(int fd)
+{
+    std::vector<uint8_t> data;
+
+    // Get the size
+    struct stat s;
+    int r = fstat(fd, &s);
+    if (r != 0)
+    {
+        auto e = errno;
+        log<level::ERR>("Could not get FFDC file size from FD",
+                        entry("ERRNO=%d", e));
+        return data;
+    }
+
+    if (0 == s.st_size)
+    {
+        log<level::ERR>("FFDC file is empty");
+        return data;
+    }
+
+    data.resize(s.st_size);
+
+    // Make sure its at the beginning, as maybe another
+    // extension already used it.
+    r = lseek(fd, 0, SEEK_SET);
+    if (r == -1)
+    {
+        auto e = errno;
+        log<level::ERR>("Could not seek to beginning of FFDC file",
+                        entry("ERRNO=%d", e));
+        return data;
+    }
+
+    r = read(fd, data.data(), s.st_size);
+    if (r == -1)
+    {
+        auto e = errno;
+        log<level::ERR>("Could not read FFDC file", entry("ERRNO=%d", e));
+    }
+    else if (r != s.st_size)
+    {
+        log<level::WARNING>("Could not read full FFDC file",
+                            entry("FILE_SIZE=%d", s.st_size),
+                            entry("SIZE_READ=%d", r));
+    }
+
+    return data;
+}
+
 std::unique_ptr<UserData> makeFFDCuserDataSection(uint16_t componentID,
                                                   const PelFFDCfile& file)
 {
-    return std::unique_ptr<UserData>();
+    auto data = readFD(file.fd);
+
+    if (data.empty())
+    {
+        return std::unique_ptr<UserData>();
+    }
+
+    // The data needs 4 Byte alignment, and save amount padded for the
+    // CBOR case.
+    uint32_t pad = 0;
+    while (data.size() % 4)
+    {
+        data.push_back(0);
+        pad++;
+    }
+
+    // For JSON, CBOR, and Text use our component ID, subType, and version,
+    // otherwise use the supplied ones.
+    uint16_t compID = static_cast<uint16_t>(ComponentID::phosphorLogging);
+    uint8_t subType{};
+    uint8_t version{};
+
+    switch (file.format)
+    {
+        case UserDataFormat::json:
+            subType = static_cast<uint8_t>(UserDataFormat::json);
+            version = static_cast<uint8_t>(UserDataFormatVersion::json);
+            break;
+        case UserDataFormat::cbor:
+            subType = static_cast<uint8_t>(UserDataFormat::cbor);
+            version = static_cast<uint8_t>(UserDataFormatVersion::cbor);
+
+            // The CBOR parser will fail on the extra pad bytes since they
+            // aren't CBOR.  Add the amount we padded to the end and other
+            // code will remove it all before parsing.
+            {
+                data.resize(data.size() + 4);
+                Stream stream{data};
+                stream.offset(data.size() - 4);
+                stream << pad;
+            }
+
+            break;
+        case UserDataFormat::text:
+            subType = static_cast<uint8_t>(UserDataFormat::text);
+            version = static_cast<uint8_t>(UserDataFormatVersion::text);
+            break;
+        case UserDataFormat::custom:
+        default:
+            // Use the passed in values
+            compID = componentID;
+            subType = file.subType;
+            version = file.version;
+            break;
+    }
+
+    return std::make_unique<UserData>(compID, subType, version, data);
 }
 
 } // namespace util
