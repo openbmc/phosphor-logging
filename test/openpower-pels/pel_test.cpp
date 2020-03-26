@@ -26,6 +26,7 @@
 
 namespace fs = std::filesystem;
 using namespace openpower::pels;
+using ::testing::NiceMock;
 using ::testing::Return;
 
 class PELTest : public CleanLogID
@@ -139,10 +140,11 @@ TEST_F(PELTest, CreateFromRegistryTest)
 
     std::vector<std::string> data{"KEY1=VALUE1"};
     AdditionalData ad{data};
-    MockDataInterface dataIface;
+    NiceMock<MockDataInterface> dataIface;
+    PelFFDC ffdc;
 
-    PEL pel{regEntry, 42, timestamp, phosphor::logging::Entry::Level::Error, ad,
-            dataIface};
+    PEL pel{regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
+            ad,       ffdc, dataIface};
 
     EXPECT_TRUE(pel.valid());
     EXPECT_EQ(pel.privateHeader().obmcLogID(), 42);
@@ -193,6 +195,7 @@ TEST_F(PELTest, CreateTooBigADTest)
     regEntry.actionFlags = 0xC000;
     regEntry.src.type = 0xBD;
     regEntry.src.reasonCode = 0x1234;
+    PelFFDC ffdc;
 
     // Over the 16KB max PEL size
     std::string bigAD{"KEY1="};
@@ -200,10 +203,10 @@ TEST_F(PELTest, CreateTooBigADTest)
 
     std::vector<std::string> data{bigAD};
     AdditionalData ad{data};
-    MockDataInterface dataIface;
+    NiceMock<MockDataInterface> dataIface;
 
-    PEL pel{regEntry, 42, timestamp, phosphor::logging::Entry::Level::Error, ad,
-            dataIface};
+    PEL pel{regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
+            ad,       ffdc, dataIface};
 
     EXPECT_TRUE(pel.valid());
     EXPECT_EQ(pel.size(), 16384);

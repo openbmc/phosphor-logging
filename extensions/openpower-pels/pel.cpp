@@ -42,7 +42,7 @@ constexpr auto unknownValue = "Unknown";
 
 PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
          phosphor::logging::Entry::Level severity,
-         const AdditionalData& additionalData,
+         const AdditionalData& additionalData, const PelFFDC& ffdcFiles,
          const DataInterfaceBase& dataIface)
 {
     _ph = std::make_unique<PrivateHeader>(regEntry.componentID, obmcLogID,
@@ -85,6 +85,39 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
         {
             _optionalSections.push_back(std::move(ud));
         }
+    }
+
+    // Add any FFDC files into UserData sections
+    for (const auto& file : ffdcFiles)
+    {
+        ud = util::makeFFDCuserDataSection(regEntry.componentID, file);
+        if (!ud)
+        {
+            log<level::WARNING>(
+                "Could not make PEL FFDC UserData section from file",
+                entry("COMPONENT_ID=0x%02X", regEntry.componentID),
+                entry("SUBTYPE=0x%X", file.subType),
+                entry("VERSION=0x%X", file.version));
+            continue;
+        }
+
+        // Shrink it if necessary
+        if (size() + ud->header().size > _maxPELSize)
+        {
+            if (!ud->shrink(_maxPELSize - size()))
+            {
+                log<level::WARNING>(
+                    "Could not shrink FFDC UserData section",
+                    entry("COMPONENT_ID=0x%02X", regEntry.componentID),
+                    entry("SUBTYPE=0x%X", file.subType),
+                    entry("VERSION=0x%X", file.version));
+
+                // Give up adding FFDC
+                break;
+            }
+        }
+
+        _optionalSections.push_back(std::move(ud));
     }
 
     _ph->setSectionCount(2 + _optionalSections.size());
@@ -439,6 +472,12 @@ std::unique_ptr<UserData>
     addStatesToJSON(json, dataIface);
 
     return makeJSONUserDataSection(json);
+}
+
+std::unique_ptr<UserData> makeFFDCuserDataSection(uint16_t componentID,
+                                                  const PelFFDCfile& file)
+{
+    return std::unique_ptr<UserData>();
 }
 
 } // namespace util

@@ -24,6 +24,7 @@
 #include <filesystem>
 #include <fstream>
 #include <xyz/openbmc_project/Common/error.hpp>
+#include <xyz/openbmc_project/Logging/Create/server.hpp>
 
 namespace openpower
 {
@@ -36,6 +37,8 @@ namespace rg = openpower::pels::message;
 
 namespace common_error = sdbusplus::xyz::openbmc_project::Common::Error;
 
+using Create = sdbusplus::xyz::openbmc_project::Logging::server::Create;
+
 namespace additional_data
 {
 constexpr auto rawPEL = "RAWPEL";
@@ -45,7 +48,8 @@ constexpr auto esel = "ESEL";
 void Manager::create(const std::string& message, uint32_t obmcLogID,
                      uint64_t timestamp, Entry::Level severity,
                      const std::vector<std::string>& additionalData,
-                     const std::vector<std::string>& associations)
+                     const std::vector<std::string>& associations,
+                     const FFDCEntries& ffdc)
 {
     AdditionalData ad{additionalData};
 
@@ -66,7 +70,7 @@ void Manager::create(const std::string& message, uint32_t obmcLogID,
         else
         {
             createPEL(message, obmcLogID, timestamp, severity, additionalData,
-                      associations);
+                      associations, ffdc);
         }
     }
 }
@@ -217,11 +221,44 @@ bool Manager::isDeleteProhibited(uint32_t obmcLogID)
     return false;
 }
 
+PelFFDC Manager::convertToPelFFDC(const FFDCEntries& ffdc)
+{
+    PelFFDC pelFFDC;
+
+    std::for_each(ffdc.begin(), ffdc.end(), [&pelFFDC](const auto& f) {
+        PelFFDCfile pf;
+        pf.subType = std::get<ffdcSubtypePos>(f);
+        pf.version = std::get<ffdcVersionPos>(f);
+        pf.fd = std::get<ffdcFDPos>(f);
+
+        switch (std::get<ffdcFormatPos>(f))
+        {
+            case Create::FFDCFormat::JSON:
+                pf.format = UserDataFormat::json;
+                break;
+            case Create::FFDCFormat::CBOR:
+                pf.format = UserDataFormat::cbor;
+                break;
+            case Create::FFDCFormat::Text:
+                pf.format = UserDataFormat::text;
+                break;
+            case Create::FFDCFormat::Custom:
+                pf.format = UserDataFormat::custom;
+                break;
+        }
+
+        pelFFDC.push_back(pf);
+    });
+
+    return pelFFDC;
+}
+
 void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
                         uint64_t timestamp,
                         phosphor::logging::Entry::Level severity,
                         const std::vector<std::string>& additionalData,
-                        const std::vector<std::string>& associations)
+                        const std::vector<std::string>& associations,
+                        const FFDCEntries& ffdc)
 {
     auto entry = _registry.lookup(message, rg::LookupType::name);
     std::string msg;
@@ -230,8 +267,10 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
     {
         AdditionalData ad{additionalData};
 
+        auto pelFFDC = convertToPelFFDC(ffdc);
+
         auto pel = std::make_unique<openpower::pels::PEL>(
-            *entry, obmcLogID, timestamp, severity, ad, *_dataIface);
+            *entry, obmcLogID, timestamp, severity, ad, pelFFDC, *_dataIface);
 
         _repo.add(pel);
 
