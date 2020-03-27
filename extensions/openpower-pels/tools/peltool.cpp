@@ -209,13 +209,15 @@ std::vector<uint8_t> getFileData(const std::string& name)
  *        stdout the full PEL in JSON if fullPEL is true
  * @param[in] itr - std::map iterator of <uint32_t, BCDTime>
  * @param[in] hidden - Boolean to include hidden PELs
+ * @param[in] includeInfo - Boolean to include informational PELs
  * @param[in] fullPEL - Boolean to print full JSON representation of PEL
  * @param[in] foundPEL - Boolean to check if any PEL is present
  * @param[in] scrubRegex - SRC regex object
  * @return std::string - JSON string of PEL entry (empty if fullPEL is true)
  */
 template <typename T>
-std::string genPELJSON(T itr, bool hidden, bool fullPEL, bool& foundPEL,
+std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool fullPEL,
+                       bool& foundPEL,
                        const std::optional<std::regex>& scrubRegex)
 {
     std::size_t found;
@@ -240,6 +242,10 @@ std::string genPELJSON(T itr, bool hidden, bool fullPEL, bool& foundPEL,
         }
         PEL pel{data};
         if (!pel.valid())
+        {
+            return listStr;
+        }
+        if (!includeInfo && pel.userHeader().severity() == 0)
         {
             return listStr;
         }
@@ -350,10 +356,11 @@ std::string genPELJSON(T itr, bool hidden, bool fullPEL, bool& foundPEL,
  * @brief Print a list of PELs or a JSON array of PELs
  * @param[in] order - Boolean to print in reverse orser
  * @param[in] hidden - Boolean to include hidden PELs
+ * @param[in] includeInfo - Boolean to include informational PELs
  * @param[in] fullPEL - Boolean to print full PEL into a JSON array
  * @param[in] scrubRegex - SRC regex object
  */
-void printPELs(bool order, bool hidden, bool fullPEL,
+void printPELs(bool order, bool hidden, bool includeInfo, bool fullPEL,
                const std::optional<std::regex>& scrubRegex)
 {
     std::string listStr;
@@ -373,9 +380,10 @@ void printPELs(bool order, bool hidden, bool fullPEL,
         }
     }
     bool foundPEL = false;
-    auto buildJSON = [&listStr, &hidden, &fullPEL, &foundPEL,
+    auto buildJSON = [&listStr, &hidden, &includeInfo, &fullPEL, &foundPEL,
                       &scrubRegex](const auto& i) {
-        listStr += genPELJSON(i, hidden, fullPEL, foundPEL, scrubRegex);
+        listStr +=
+            genPELJSON(i, hidden, includeInfo, fullPEL, foundPEL, scrubRegex);
     };
     if (order)
     {
@@ -548,9 +556,11 @@ void displayPEL(const PEL& pel)
 /**
  * @brief Print number of PELs
  * @param[in] hidden - Bool to include hidden logs
+ * @param[in] includeInfo - Bool to include informational logs
  * @param[in] scrubRegex - SRC regex object
  */
-void printPELCount(bool hidden, const std::optional<std::regex>& scrubRegex)
+void printPELCount(bool hidden, bool includeInfo,
+                   const std::optional<std::regex>& scrubRegex)
 {
     std::size_t count = 0;
     for (auto it = fs::directory_iterator(EXTENSION_PERSIST_DIR "/pels/logs");
@@ -567,6 +577,10 @@ void printPELCount(bool hidden, const std::optional<std::regex>& scrubRegex)
         }
         PEL pel{data};
         if (!pel.valid())
+        {
+            continue;
+        }
+        if (!includeInfo && pel.userHeader().severity() == 0)
         {
             continue;
         }
@@ -684,6 +698,7 @@ int main(int argc, char** argv)
     bool listPEL = false;
     bool listPELDescOrd = false;
     bool hidden = false;
+    bool includeInfo = false;
     bool deleteAll = false;
     bool showPELCount = false;
     bool fullPEL = false;
@@ -697,6 +712,7 @@ int main(int argc, char** argv)
     app.add_flag("-n", showPELCount, "Show number of PELs");
     app.add_flag("-r", listPELDescOrd, "Reverse order of output");
     app.add_flag("-h", hidden, "Include hidden PELs");
+    app.add_flag("--info", includeInfo, "Include informational PELs");
     app.add_option("-d, --delete", idToDelete, "Delete a PEL based on its ID");
     app.add_flag("-D, --delete-all", deleteAll, "Delete all PELs");
     app.add_option("-s, --scrub", scrubFile,
@@ -728,7 +744,7 @@ int main(int argc, char** argv)
         {
             scrubRegex = genRegex(scrubFile);
         }
-        printPELs(listPELDescOrd, hidden, fullPEL, scrubRegex);
+        printPELs(listPELDescOrd, hidden, includeInfo, fullPEL, scrubRegex);
     }
     else if (showPELCount)
     {
@@ -736,7 +752,7 @@ int main(int argc, char** argv)
         {
             scrubRegex = genRegex(scrubFile);
         }
-        printPELCount(hidden, scrubRegex);
+        printPELCount(hidden, includeInfo, scrubRegex);
     }
     else if (!idToDelete.empty())
     {
