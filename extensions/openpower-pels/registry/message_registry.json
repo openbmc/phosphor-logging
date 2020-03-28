@@ -135,6 +135,25 @@
         },
 
         {
+            "Name": "org.open_power.PHAL.Error.Boot",
+            "Subsystem": "bmc_firmware",
+
+            "SRC":
+            {
+                "ReasonCode": "0x1007",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "Failure occured during boot",
+                "Message": "Failure occured during boot"
+            }
+        },
+
+        {
             "Name": "org.open_power.Logging.Error.SentBadPELToHost",
             "Subsystem": "bmc_firmware",
             "Severity": "non_error",
