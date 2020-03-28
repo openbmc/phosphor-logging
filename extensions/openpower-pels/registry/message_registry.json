@@ -197,6 +197,29 @@
                 "Notes": [
                 ]
             }
+        },
+
+        {
+            "Name": "org.open_power.PHAL.Error.Boot",
+            "Subsystem": "cec_hardware",
+            "Severity": "unrecoverable",
+
+            "SRC":
+            {
+                "ReasonCode": "0x3000",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "Failure occured during boot process",
+                "Message": "Failure occured during boot process",
+                "Notes": [
+                    "Debug traces will be captured in AdditionalData section"
+                ]
+            }
         }
     ]
 }
