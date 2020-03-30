@@ -183,6 +183,14 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     void checkQuiesceOnError(const Entry& entry);
 
+    /** @brief Check if inventory callout present in input entry
+     *
+     * @param[in] entry - The error to check for callouts
+     *
+     * @return true if inventory item in associations, false otherwise
+     */
+    bool isCalloutPresent(const Entry& entry);
+
   private:
     /*
      * @fn _commit()
