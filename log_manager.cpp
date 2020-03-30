@@ -268,8 +268,29 @@ bool Manager::isQuiesceOnErrorEnabled()
     return std::get<bool>(property);
 }
 
+bool Manager::isCalloutPresent(const Entry& entry)
+{
+    for (const auto& c : entry.additionalData())
+    {
+        if (c.find("CALLOUT_") != std::string::npos)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void Manager::checkQuiesceOnError(const Entry& entry)
 {
+
+    if (!isCalloutPresent(entry))
+    {
+        return;
+    }
+
+    logging::log<logging::level::INFO>(
+        "QuiesceOnError set and callout present");
     // TODO in later commit in this series
 }
 
