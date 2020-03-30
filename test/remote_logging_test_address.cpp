@@ -18,7 +18,7 @@ TEST_F(TestRemoteLogging, testGoodAddress)
 
 TEST_F(TestRemoteLogging, testBadAddress)
 {
-    EXPECT_THROW(config->address("not_an_IP"), InvalidArgument);
+    EXPECT_THROW(config->address("this is not_an_IP!"), InvalidArgument);
 }
 
 } // namespace test
