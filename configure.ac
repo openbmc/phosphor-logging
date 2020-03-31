@@ -25,8 +25,8 @@ AS_IF([test "x$enable_install_scripts" != "xyes"], [
     AX_APPEND_COMPILE_FLAGS([-fpic -Wall -Werror], [CXXFLAGS])
 
     # Python
-    AM_PATH_PYTHON([2.7], [AC_SUBST([PYTHON], [echo "$PYTHON"])], [AC_MSG_ERROR(
-        [Could not find python-2.7 installed...python-2.7 is required])])
+    AM_PATH_PYTHON([3], [AC_SUBST([PYTHON], [echo "$PYTHON"])], [AC_MSG_ERROR(
+        [Could not find python-3 installed...python-3 is required])])
 
     # Suppress the --with-libtool-sysroot error
     LT_INIT
