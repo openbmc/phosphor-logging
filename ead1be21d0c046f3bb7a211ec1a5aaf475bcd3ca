@@ -1,0 +1,9 @@
+Code-Review+1: Jayanth Othayoth <ojayanth@in.ibm.com>
+Code-Review+2: Matt Spinler <spinler@us.ibm.com>
+Ok-To-Test+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Verified+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Submitted-by: Matt Spinler <spinler@us.ibm.com>
+Submitted-at: Wed, 01 Apr 2020 17:58:01 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-logging/+/30757
+Project: openbmc/phosphor-logging
+Branch: refs/heads/master
