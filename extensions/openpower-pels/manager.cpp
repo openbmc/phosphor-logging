@@ -145,6 +145,13 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
 
         _eventLogger.log("org.open_power.Logging.Error.BadHostPEL",
                          Entry::Level::Error, ad);
+
+        // Save it to a file for debug in the lab.  Just keep the latest.
+        // Not adding it to the PEL because it could already be max size
+        // and don't want to truncate an already invalid PEL.
+        std::ofstream pelFile{getPELRepoPath() / "badPEL"};
+        pelFile.write(reinterpret_cast<const char*>(pelData.data()),
+                      pelData.size());
     }
 }
 
