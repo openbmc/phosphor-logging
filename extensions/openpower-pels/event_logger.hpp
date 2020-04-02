@@ -53,11 +53,10 @@ class EventLogger
     /**
      * @brief Constructor
      *
-     * @param[in] event - The sd_event object
      * @param[in] creator - The function to use to create the event log
      */
-    EventLogger(sd_event* event, LogFunction creator) :
-        _event(event), _creator(creator)
+    EventLogger(LogFunction creator) :
+        _event(sdeventplus::Event::get_default()), _creator(creator)
     {
     }
 
