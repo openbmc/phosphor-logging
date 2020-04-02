@@ -15,16 +15,20 @@
  */
 #include "extensions/openpower-pels/manager.hpp"
 #include "log_manager.hpp"
+#include "mocks.hpp"
 #include "pel_utils.hpp"
 
 #include <fstream>
 #include <regex>
+#include <sdbusplus/test/sdbus_mock.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
 
 #include <gtest/gtest.h>
 
 using namespace openpower::pels;
 namespace fs = std::filesystem;
+
+using ::testing::NiceMock;
 
 class TestLogger
 {
@@ -45,10 +49,11 @@ class TestLogger
 class ManagerTest : public CleanPELFiles
 {
   public:
-    ManagerTest() : logManager(bus, "logging_path")
+    ManagerTest() :
+        bus(sdbusplus::get_mocked_new(&sdbusInterface)),
+        logManager(bus, "logging_path")
     {
         sd_event_default(&sdEvent);
-        bus.attach_event(sdEvent, SD_EVENT_PRIORITY_NORMAL);
     }
 
     ~ManagerTest()
@@ -56,7 +61,8 @@ class ManagerTest : public CleanPELFiles
         sd_event_unref(sdEvent);
     }
 
-    sdbusplus::bus::bus bus = sdbusplus::bus::new_default();
+    NiceMock<sdbusplus::SdBusMock> sdbusInterface;
+    sdbusplus::bus::bus bus;
     phosphor::logging::internal::Manager logManager;
     sd_event* sdEvent;
     TestLogger logger;
@@ -89,7 +95,7 @@ std::optional<fs::path> findAnyPELInRepo()
 TEST_F(ManagerTest, TestCreateWithPEL)
 {
     std::unique_ptr<DataInterfaceBase> dataIface =
-        std::make_unique<DataInterface>(bus);
+        std::make_unique<MockDataInterface>();
 
     openpower::pels::Manager manager{
         logManager, std::move(dataIface),
@@ -131,7 +137,7 @@ TEST_F(ManagerTest, TestCreateWithPEL)
 TEST_F(ManagerTest, TestCreateWithInvalidPEL)
 {
     std::unique_ptr<DataInterfaceBase> dataIface =
-        std::make_unique<DataInterface>(bus);
+        std::make_unique<MockDataInterface>();
 
     openpower::pels::Manager manager{
         logManager, std::move(dataIface),
@@ -207,7 +213,7 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
     registryFile.close();
 
     std::unique_ptr<DataInterfaceBase> dataIface =
-        std::make_unique<DataInterface>(logManager.getBus());
+        std::make_unique<MockDataInterface>();
 
     openpower::pels::Manager manager{
         logManager, std::move(dataIface),
@@ -254,7 +260,7 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
 TEST_F(ManagerTest, TestDBusMethods)
 {
     std::unique_ptr<DataInterfaceBase> dataIface =
-        std::make_unique<DataInterface>(bus);
+        std::make_unique<MockDataInterface>();
 
     Manager manager{logManager, std::move(dataIface),
                     std::bind(std::mem_fn(&TestLogger::log), &logger,
@@ -465,7 +471,7 @@ TEST_F(ManagerTest, TestESELToRawData)
 TEST_F(ManagerTest, TestCreateWithESEL)
 {
     std::unique_ptr<DataInterfaceBase> dataIface =
-        std::make_unique<DataInterface>(bus);
+        std::make_unique<MockDataInterface>();
 
     openpower::pels::Manager manager{
         logManager, std::move(dataIface),
