@@ -176,6 +176,10 @@ TEST_F(ManagerTest, TestCreateWithInvalidPEL)
     EXPECT_EQ(logger.ad["SRC"], (*invalidPEL.primarySRC())->asciiString());
     EXPECT_EQ(logger.ad["PEL_SIZE"], std::to_string(data.size()));
 
+    // Check that the bad PEL data was saved to a file.
+    auto badPELData = readPELFile(getPELRepoPath() / "badPEL");
+    EXPECT_EQ(*badPELData, data);
+
     fs::remove_all(pelFilename.parent_path());
 }
 
