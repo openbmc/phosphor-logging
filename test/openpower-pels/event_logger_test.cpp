@@ -67,10 +67,9 @@ TEST(EventLoggerTest, TestCreateEvents)
 
     CreateHelper ch;
 
-    EventLogger eventLogger(
-        sdEvent, std::bind(std::mem_fn(&CreateHelper::create), &ch,
-                           std::placeholders::_1, std::placeholders::_2,
-                           std::placeholders::_3));
+    EventLogger eventLogger(std::bind(
+        std::mem_fn(&CreateHelper::create), &ch, std::placeholders::_1,
+        std::placeholders::_2, std::placeholders::_3));
 
     ch._eventLogger = &eventLogger;
 
