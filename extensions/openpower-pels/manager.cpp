@@ -285,10 +285,11 @@ sdbusplus::message::unix_fd Manager::getPEL(uint32_t pelID)
 
 void Manager::scheduleFDClose(int fd)
 {
+    sdeventplus::Event event = sdeventplus::Event::get_default();
+
     _fdCloserEventSource = std::make_unique<sdeventplus::source::Defer>(
-        _logManager.getBus().get_event(),
-        std::bind(std::mem_fn(&Manager::closeFD), this, fd,
-                  std::placeholders::_1));
+        event, std::bind(std::mem_fn(&Manager::closeFD), this, fd,
+                         std::placeholders::_1));
 }
 
 void Manager::closeFD(int fd, sdeventplus::source::EventBase& source)
