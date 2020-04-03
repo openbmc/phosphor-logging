@@ -90,7 +90,8 @@ class TestLogManager : public testing::Test
 
     ~TestLogManager()
     {
-        fs::remove_all(ERRLOG_PERSIST_PATH);
+        // Leave the directory as other testcases use it and they
+        // may be running in parallel from other jobs.
     }
 };
 
