@@ -17,17 +17,34 @@ namespace test
 {
 
 using namespace std::chrono_literals;
+namespace fs = std::filesystem;
 
 // Test that the update timestamp changes when the resolved property changes
 TEST(TestUpdateTS, testChangeResolved)
 {
     // Setting resolved will serialize, so need this directory.
-    std::filesystem::create_directory(ERRLOG_PERSIST_PATH);
+    fs::create_directory(ERRLOG_PERSIST_PATH);
+
+    if (!fs::exists(ERRLOG_PERSIST_PATH))
+    {
+        ADD_FAILURE() << "Could not create " << ERRLOG_PERSIST_PATH << "\n";
+        exit(1);
+    }
 
     auto bus = sdbusplus::bus::new_default();
     phosphor::logging::internal::Manager manager(bus, OBJ_INTERNAL);
 
-    uint32_t id = 99;
+    // Use a random number for the ID to avoid other CI
+    // testcases running in parallel.
+    std::srand(std::time(nullptr));
+    uint32_t id = std::rand();
+
+    if (fs::exists(fs::path{ERRLOG_PERSIST_PATH} / std::to_string(id)))
+    {
+        std::cerr << "Another testcase is using ID " << id << "\n";
+        id = std::rand();
+    }
+
     uint64_t timestamp{100};
     std::string message{"test error"};
     std::string fwLevel{"level42"};
@@ -65,7 +82,8 @@ TEST(TestUpdateTS, testChangeResolved)
     elog.resolved(false);
     EXPECT_EQ(updateTS, elog.updateTimestamp());
 
-    std::filesystem::remove_all(ERRLOG_PERSIST_PATH);
+    // Leave the directory in case other CI instances are running
+    fs::remove(fs::path{ERRLOG_PERSIST_PATH} / std::to_string(id));
 }
 
 } // namespace test
