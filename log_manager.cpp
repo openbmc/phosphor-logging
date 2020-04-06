@@ -291,7 +291,17 @@ void Manager::checkQuiesceOnError(const Entry& entry)
 
     logging::log<logging::level::INFO>(
         "QuiesceOnError set and callout present");
+
+    std::string blockPath(OBJ_LOGGING);
+    blockPath += "/block";
+    blockPath += std::to_string(entry.id());
+    auto blockObj =
+        std::make_unique<Block>(this->busLog, blockPath, entry.id());
+    this->blockingErrors.push_back(std::move(blockObj));
+
     // TODO in later commit in this series
+    // Call systemd to quiesce host
+    // Ensure blockingErrors removes entries when log resolved
 }
 
 void Manager::doExtensionLogCreate(const Entry& entry, const FFDCEntries& ffdc)
