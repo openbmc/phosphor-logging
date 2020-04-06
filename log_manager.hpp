@@ -1,5 +1,6 @@
 #pragma once
 
+#include "elog_block.hpp"
 #include "elog_entry.hpp"
 #include "xyz/openbmc_project/Collection/DeleteAll/server.hpp"
 #include "xyz/openbmc_project/Logging/Create/server.hpp"
@@ -130,6 +131,15 @@ class Manager : public details::ServerObject<details::ManagerIface>
      *  @return int - count of info errors
      */
     int getInfoErrSize();
+
+    /** @brief Returns the number of blocking errors
+     *
+     *  @return int - count of blocking errors
+     */
+    int getBlockingErrSize()
+    {
+        return blockingErrors.size();
+    }
 
     sdbusplus::bus::bus& getBus()
     {
@@ -265,6 +275,9 @@ class Manager : public details::ServerObject<details::ManagerIface>
 
     /** @brief The BMC firmware version */
     const std::string fwVersion;
+
+    /** @brief Array of blocking errors */
+    std::vector<std::unique_ptr<Block>> blockingErrors;
 };
 
 } // namespace internal
