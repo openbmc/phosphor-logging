@@ -357,6 +357,26 @@ void Manager::processMetadata(const std::string& errorName,
     }
 }
 
+void Manager::checkAndRemoveBlockingError(uint32_t entryId)
+{
+    if (!getBlockingErrSize())
+    {
+        return;
+    }
+
+    auto it = find_if(
+        blockingErrors.begin(), blockingErrors.end(),
+        [&](std::unique_ptr<Block>& obj) { return obj->entryId == entryId; });
+    if (it != blockingErrors.end())
+    {
+        // grab the unique ptr and then erase from vector
+        // the Block object is deleted once inst goes out of scope
+        auto inst = std::move(*it);
+        blockingErrors.erase(it);
+    }
+    return;
+}
+
 void Manager::erase(uint32_t entryId)
 {
     auto entryFound = entries.find(entryId);
@@ -404,6 +424,8 @@ void Manager::erase(uint32_t entryId)
             removeId(realErrors, entryId);
         }
         entries.erase(entryFound);
+
+        checkAndRemoveBlockingError(entryId);
 
         for (auto& remove : Extensions::getDeleteFunctions())
         {

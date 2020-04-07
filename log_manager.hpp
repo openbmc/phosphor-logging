@@ -201,6 +201,12 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     bool isCalloutPresent(const Entry& entry);
 
+    /** @brief Check (and remove) entry being erased from blocking errors
+     *
+     * @param[in] entryId - The entry that is being erased
+     */
+    void checkAndRemoveBlockingError(uint32_t entryId);
+
   private:
     /*
      * @fn _commit()
