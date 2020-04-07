@@ -140,6 +140,22 @@ TEST_F(TestQuiesceOnError, testBlockingErrorsCreated)
     manager.checkQuiesceOnError(elog);
     // Created error with callout so expect a blocking error now
     EXPECT_EQ(manager.getBlockingErrSize(), 1);
+
+    // Now delete the error and make sure the object and entry go away
+    EXPECT_CALL(sdbusMock, sd_bus_emit_object_removed(testing::_, testing::_))
+        .Times(testing::AnyNumber());
+    EXPECT_CALL(sdbusMock,
+                sd_bus_emit_object_removed(
+                    testing::_, testing::HasSubstr(
+                                    "/xyz/openbmc_project/logging/block100")))
+        .Times(1);
+
+    // Make sure nothing happens within invalid id
+    manager.checkAndRemoveBlockingError(id + 1);
+    EXPECT_EQ(manager.getBlockingErrSize(), 1);
+
+    manager.checkAndRemoveBlockingError(id);
+    EXPECT_EQ(manager.getBlockingErrSize(), 0);
 }
 
 } // namespace test
