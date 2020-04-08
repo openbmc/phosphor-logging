@@ -387,9 +387,15 @@
 
         "symbolicFRU":
         {
-            "description": "The 7 character symbolic FRU callout name.",
+            "description": "The symbolic FRU callout.",
             "type": "string",
-            "pattern": "^[A-Z0-9]{7}$"
+            "enum": ["service_docs"]
+        },
+
+        "symbolicFRUTrusted":
+        {
+            "description": "The symbolic FRU callout with a trusted location code. (Can light LEDs).",
+            "ref": "#/definitions/symbolicFRU"
         },
 
         "procedure":
@@ -399,18 +405,9 @@
             "enum": ["no_vpd_for_fru"]
         },
 
-        "calloutType":
-        {
-            "description": "The failing component type from the FRU identity callout substructure.  If not specified, the values hardware_fru, symbolic_fru, or maint_procedure will be used, depending on the callout type.",
-            "type": "string",
-            "enum": ["hardware_fru", "code_fru", "config_procedure",
-                     "maint_procedure", "external_fru", "external_code_fru",
-                     "tool_fru", "symbolic_fru", "symbolic_fru_trusted_loccode"]
-        },
-
         "calloutList":
         {
-            "description": "The list of FRU callouts to add to a PEL.  If just LocCode is specified, it is a normal hardware FRU callout.  Otherwise, Procedure or SymbolicFRU can be used to specify those types of callouts.  With the latter 2 types, LocCode is optional.  CalloutType is also optional, and is only needed if a value other than hardware_fru, maint_procedure, or symbolic_fru is desired.",
+            "description": "The list of FRU callouts to add to a PEL.  If just LocCode is specified, it is a normal hardware FRU callout.  If Procedure is specified, it is a procedure callout.  If SymbolicFRU or SymbolicFRUTrusted are specified, it is a Symbolic FRU callout.  SymbolicFRUTrusted also requires LocCode.",
             "type": "array",
             "items":
             {
@@ -420,24 +417,52 @@
                     "Priority": {"$ref": "#/definitions/priority" },
                     "LocCode": {"$ref": "#/definitions/locationCode" },
                     "SymbolicFRU": {"$ref": "#/definitions/symbolicFRU" },
-                    "Procedure": {"$ref": "#/definitions/procedure" },
-                    "CalloutType": {"$ref": "#/definitions/calloutType" }
+                    "SymbolicFRUTrusted": {"$ref": "#/definitions/symbolicFRUTrusted" },
+                    "Procedure": {"$ref": "#/definitions/procedure" }
                 },
                 "additionalProperties": false,
                 "required": ["Priority"],
 
-                "anyOf":
+                "oneOf":
                 [
-                    { "required": ["LocCode"] },
-                    { "required": ["SymbolicFRU"] },
-                    { "required": ["Procedure"] }
-                ],
+                    {
+                        "allOf":
+                        [
+                            { "required": ["LocCode"] },
+                            { "not": { "required": ["SymbolicFRU"] }},
+                            { "not": { "required": ["SymbolicFRUTrusted"] }},
+                            { "not": { "required": ["Procedure"] }}
+                        ]
+                    },
+                    {
 
-                "not":
-                {
-                    "description": "A callout is not both a SymbolicFRU and a Procedure",
-                    "required": ["SymbolicFRU", "Procedure"]
-                }
+                        "allOf":
+                        [
+                            { "required": ["SymbolicFRU"] },
+                            { "not": { "required": ["SymbolicFRUTrusted"] }},
+                            { "not": { "required": ["Procedure"] }}
+                        ]
+                    },
+
+                    {
+                        "allOf":
+                        [
+                            { "required": ["SymbolicFRUTrusted", "LocationCode"] },
+                            { "not": { "required": ["SymbolicFRU"] }},
+                            { "not": { "required": ["Procedure"] }}
+                        ]
+                    },
+
+                    {
+                        "allOf":
+                        [
+                            { "required": ["Procedure"] },
+                            { "not": { "required": ["SymbolicFRU"] }},
+                            { "not": { "required": ["SymbolicFRUTrusted"] }},
+                            { "not": { "required": ["LocCode"] }}
+                        ]
+                    }
+                ]
             },
             "minItems": 1,
             "maxItems": 10,
