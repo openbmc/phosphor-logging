@@ -236,7 +236,7 @@ uint16_t getComponentID(uint8_t srcType, uint16_t reasonCode,
 
     // If the ComponentID field is there, use that.  Otherwise, if it's a
     // 0xBD BMC error SRC, use the reasoncode.
-    if (pelEntry.find("ComponentID") != pelEntry.end())
+    if (pelEntry.contains("ComponentID"))
     {
         std::string componentID = pelEntry["ComponentID"];
         id = strtoul(componentID.c_str(), nullptr, 16);
@@ -560,33 +560,33 @@ std::optional<Entry> Registry::lookup(const std::string& name, LookupType type,
             entry.name = (*e)["Name"];
             entry.subsystem = helper::getSubsystem((*e)["Subsystem"]);
 
-            if (e->find("ActionFlags") != e->end())
+            if (e->contains("ActionFlags"))
             {
                 entry.actionFlags = helper::getActionFlags((*e)["ActionFlags"]);
             }
 
-            if (e->find("MfgActionFlags") != e->end())
+            if (e->contains("MfgActionFlags"))
             {
                 entry.mfgActionFlags =
                     helper::getActionFlags((*e)["MfgActionFlags"]);
             }
 
-            if (e->find("Severity") != e->end())
+            if (e->contains("Severity"))
             {
                 entry.severity = helper::getSeverity((*e)["Severity"]);
             }
 
-            if (e->find("MfgSeverity") != e->end())
+            if (e->contains("MfgSeverity"))
             {
                 entry.mfgSeverity = helper::getSeverity((*e)["MfgSeverity"]);
             }
 
-            if (e->find("EventType") != e->end())
+            if (e->contains("EventType"))
             {
                 entry.eventType = helper::getEventType((*e)["EventType"]);
             }
 
-            if (e->find("EventScope") != e->end())
+            if (e->contains("EventScope"))
             {
                 entry.eventScope = helper::getEventScope((*e)["EventScope"]);
             }
@@ -594,7 +594,7 @@ std::optional<Entry> Registry::lookup(const std::string& name, LookupType type,
             auto& src = (*e)["SRC"];
             entry.src.reasonCode = helper::getSRCReasonCode(src, name);
 
-            if (src.find("Type") != src.end())
+            if (src.contains("Type"))
             {
                 entry.src.type = helper::getSRCType(src, name);
             }
@@ -608,18 +608,18 @@ std::optional<Entry> Registry::lookup(const std::string& name, LookupType type,
             entry.componentID = helper::getComponentID(
                 entry.src.type, entry.src.reasonCode, *e, name);
 
-            if (src.find("Words6To9") != src.end())
+            if (src.contains("Words6To9"))
             {
                 entry.src.hexwordADFields =
                     helper::getSRCHexwordFields(src, name);
             }
 
-            if (src.find("SymptomIDFields") != src.end())
+            if (src.contains("SymptomIDFields"))
             {
                 entry.src.symptomID = helper::getSRCSymptomIDFields(src, name);
             }
 
-            if (src.find("PowerFault") != src.end())
+            if (src.contains("PowerFault"))
             {
                 entry.src.powerFault = src["PowerFault"];
             }
@@ -627,7 +627,7 @@ std::optional<Entry> Registry::lookup(const std::string& name, LookupType type,
             auto& doc = (*e)["Documentation"];
             entry.doc.message = doc["Message"];
             entry.doc.description = doc["Description"];
-            if (doc.find("MessageArgSources") != doc.end())
+            if (doc.contains("MessageArgSources"))
             {
                 entry.doc.messageArgSources = doc["MessageArgSources"];
             }
