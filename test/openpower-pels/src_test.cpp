@@ -411,3 +411,115 @@ TEST_F(SRCTest, InventoryCalloutNoVPDTest)
     ASSERT_TRUE(src.callouts());
     EXPECT_EQ(src.callouts()->callouts().size(), 1);
 }
+
+TEST_F(SRCTest, RegistryCalloutTest)
+{
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+    entry.src.powerFault = false;
+
+    entry.callouts = R"(
+        [
+        {
+            "System": "systemA",
+            "CalloutList":
+            [
+                {
+                    "Priority": "high",
+                    "SymbolicFRU": "service_docs"
+                },
+                {
+                    "Priority": "medium",
+                    "Procedure": "no_vpd_for_fru"
+                }
+            ]
+        },
+        {
+            "System": "systemB",
+            "CalloutList":
+            [
+                {
+                    "Priority": "high",
+                    "LocCode": "P0-C8",
+                    "SymbolicFRUTrusted": "service_docs"
+                },
+                {
+                    "Priority": "medium",
+                    "SymbolicFRUTrusted": "service_docs"
+                }
+            ]
+
+        }
+        ])"_json;
+
+    {
+        // Call out a symbolic FRU and a procedure
+        AdditionalData ad;
+        NiceMock<MockDataInterface> dataIface;
+        EXPECT_CALL(dataIface, getSystemType).WillOnce(Return("systemA"));
+
+        SRC src{entry, ad, dataIface};
+
+        auto& callouts = src.callouts()->callouts();
+        ASSERT_EQ(callouts.size(), 2);
+
+        EXPECT_EQ(callouts[0]->locationCodeSize(), 0);
+        EXPECT_EQ(callouts[0]->priority(), 'H');
+
+        EXPECT_EQ(callouts[1]->locationCodeSize(), 0);
+        EXPECT_EQ(callouts[1]->priority(), 'M');
+
+        auto& fru1 = callouts[0]->fruIdentity();
+        EXPECT_EQ(fru1->getPN().value(), "SVCDOCS");
+        EXPECT_EQ(fru1->failingComponentType(), src::FRUIdentity::symbolicFRU);
+        EXPECT_FALSE(fru1->getMaintProc());
+        EXPECT_FALSE(fru1->getSN());
+        EXPECT_FALSE(fru1->getCCIN());
+
+        auto& fru2 = callouts[1]->fruIdentity();
+        EXPECT_EQ(fru2->getMaintProc().value(), "BMCSP01");
+        EXPECT_EQ(fru2->failingComponentType(),
+                  src::FRUIdentity::maintenanceProc);
+        EXPECT_FALSE(fru2->getPN());
+        EXPECT_FALSE(fru2->getSN());
+        EXPECT_FALSE(fru2->getCCIN());
+    }
+
+    {
+        // Call out a trusted symbolic FRU with a location code, and
+        // another one without.
+        AdditionalData ad;
+        NiceMock<MockDataInterface> dataIface;
+        EXPECT_CALL(dataIface, getSystemType).WillOnce(Return("systemB"));
+
+        SRC src{entry, ad, dataIface};
+
+        auto& callouts = src.callouts()->callouts();
+        EXPECT_EQ(callouts.size(), 2);
+
+        EXPECT_EQ(callouts[0]->locationCode(), "P0-C8");
+        EXPECT_EQ(callouts[0]->priority(), 'H');
+
+        EXPECT_EQ(callouts[1]->locationCodeSize(), 0);
+        EXPECT_EQ(callouts[1]->priority(), 'M');
+
+        auto& fru1 = callouts[0]->fruIdentity();
+        EXPECT_EQ(fru1->getPN().value(), "SVCDOCS");
+        EXPECT_EQ(fru1->failingComponentType(),
+                  src::FRUIdentity::symbolicFRUTrustedLocCode);
+        EXPECT_FALSE(fru1->getMaintProc());
+        EXPECT_FALSE(fru1->getSN());
+        EXPECT_FALSE(fru1->getCCIN());
+
+        // It asked for a trusted symbolic FRU, but no location code
+        // was provided so it is switched back to a normal one
+        auto& fru2 = callouts[1]->fruIdentity();
+        EXPECT_EQ(fru2->getPN().value(), "SVCDOCS");
+        EXPECT_EQ(fru2->failingComponentType(), src::FRUIdentity::symbolicFRU);
+        EXPECT_FALSE(fru2->getMaintProc());
+        EXPECT_FALSE(fru2->getSN());
+        EXPECT_FALSE(fru2->getCCIN());
+    }
+}
