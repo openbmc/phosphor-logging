@@ -318,3 +318,70 @@ TEST(CalloutTest, TestProcedureCallout)
     auto& newFRU = newCallout.fruIdentity();
     EXPECT_EQ(newFRU->getMaintProc().value(), fru->getMaintProc().value());
 }
+
+// Create a callout object by passing in the symbolic FRU to add.
+TEST(CalloutTest, TestSymbolicFRUCallout)
+{
+    // symbolic FRU with a location code
+    {
+        Callout callout{CalloutPriority::high, "service_docs", "P1-C3", false};
+
+        // size/flags/pri/locsize fields + plus loc + FRUIdentity size
+        size_t size = 4 + 8 + 12;
+
+        EXPECT_EQ(callout.flags(),
+                  Callout::calloutType | Callout::fruIdentIncluded);
+
+        EXPECT_EQ(callout.flattenedSize(), size);
+        EXPECT_EQ(callout.priority(), 'H');
+        EXPECT_EQ(callout.locationCode(), "P1-C3");
+        EXPECT_EQ(callout.locationCodeSize(), 8);
+
+        auto& fru = callout.fruIdentity();
+
+        EXPECT_EQ(fru->failingComponentType(), FRUIdentity::symbolicFRU);
+        EXPECT_EQ(fru->getPN().value(), "SVCDOCS");
+    }
+
+    // symbolic FRU without a location code
+    {
+        Callout callout{CalloutPriority::high, "service_docs", "", false};
+
+        // size/flags/pri/locsize fields + plus loc + FRUIdentity size
+        size_t size = 4 + 0 + 12;
+
+        EXPECT_EQ(callout.flags(),
+                  Callout::calloutType | Callout::fruIdentIncluded);
+
+        EXPECT_EQ(callout.flattenedSize(), size);
+        EXPECT_EQ(callout.priority(), 'H');
+        EXPECT_EQ(callout.locationCode(), "");
+        EXPECT_EQ(callout.locationCodeSize(), 0);
+
+        auto& fru = callout.fruIdentity();
+
+        EXPECT_EQ(fru->failingComponentType(), FRUIdentity::symbolicFRU);
+        EXPECT_EQ(fru->getPN().value(), "SVCDOCS");
+    }
+
+    // symbolic FRU with a trusted location code
+    {
+        Callout callout{CalloutPriority::high, "service_docs", "P1-C3", true};
+
+        // size/flags/pri/locsize fields + plus loc + FRUIdentity size
+        size_t size = 4 + 8 + 12;
+
+        EXPECT_EQ(callout.flags(),
+                  Callout::calloutType | Callout::fruIdentIncluded);
+
+        EXPECT_EQ(callout.flattenedSize(), size);
+        EXPECT_EQ(callout.priority(), 'H');
+        EXPECT_EQ(callout.locationCode(), "P1-C3");
+        EXPECT_EQ(callout.locationCodeSize(), 8);
+
+        auto& fru = callout.fruIdentity();
+        EXPECT_EQ(fru->failingComponentType(),
+                  FRUIdentity::symbolicFRUTrustedLocCode);
+        EXPECT_EQ(fru->getPN().value(), "SVCDOCS");
+    }
+}
