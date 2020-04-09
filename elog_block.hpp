@@ -1,9 +1,12 @@
 #pragma once
 
+#include "config.h"
+
 #include "xyz/openbmc_project/Logging/ErrorBlocksTransition/server.hpp"
 
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/object.hpp>
+#include <xyz/openbmc_project/Association/Definitions/server.hpp>
 
 namespace phosphor
 {
@@ -11,7 +14,11 @@ namespace logging
 {
 
 using BlockIface = sdbusplus::server::object::object<
-    sdbusplus::xyz::openbmc_project::Logging::server::ErrorBlocksTransition>;
+    sdbusplus::xyz::openbmc_project::Logging::server::ErrorBlocksTransition,
+    sdbusplus::xyz::openbmc_project::Association::server::Definitions>;
+
+using AssociationList =
+    std::vector<std::tuple<std::string, std::string, std::string>>;
 
 /** @class Block
  *  @brief OpenBMC logging Block implementation.
@@ -34,7 +41,15 @@ class Block : public BlockIface
      *  @param[in] entryId - Distinct ID of the error.
      */
     Block(sdbusplus::bus::bus& bus, const std::string& path, uint32_t entryId) :
-        BlockIface(bus, path.c_str()), entryId(entryId){};
+        BlockIface(bus, path.c_str()), entryId(entryId)
+    {
+        std::string entryPath{std::string(OBJ_ENTRY) + '/' +
+                              std::to_string(entryId)};
+        AssociationList assoc{std::make_tuple(std::string{"blocking_error"},
+                                              std::string{"blocking_obj"},
+                                              entryPath)};
+        associations(std::move(assoc));
+    };
 
     uint32_t entryId;
 
