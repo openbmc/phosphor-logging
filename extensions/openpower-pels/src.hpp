@@ -345,10 +345,12 @@ class SRC : public Section
      * The callout sources are the AdditionalData event log property
      * and the message registry JSON.
      *
-     * @param[in] additionalData - the AdditionalData values
+     * @param[in] regEntry - The message registry entry for the error
+     * @param[in] additionalData - The AdditionalData values
      * @param[in] dataIface - The DataInterface object
      */
-    void addCallouts(const AdditionalData& additionalData,
+    void addCallouts(const message::Entry& regEntry,
+                     const AdditionalData& additionalData,
                      const DataInterfaceBase& dataIface);
 
     /**
@@ -359,6 +361,26 @@ class SRC : public Section
      */
     void addInventoryCallout(const std::string& inventoryPath,
                              const DataInterfaceBase& dataIface);
+
+    /**
+     * @brief Adds FRU callouts based on the registry entry JSON
+     *       for this error.
+     * @param[in] regEntry - The message registry entry for the error
+     * @param[in] additionalData - The AdditionalData values
+     * @param[in] dataIface - The DataInterface object
+     */
+    void addRegistryCallouts(const message::Entry& regEntry,
+                             const AdditionalData& additionalData,
+                             const DataInterfaceBase& dataIface);
+
+    /**
+     * @brief Adds a single FRU callout from the message registry.
+     *
+     * @param[in] callout - The registry callout structure
+     * @param[in] dataIface - The DataInterface object
+     */
+    void addRegistryCallout(const message::RegistryCallout& callout,
+                            const DataInterfaceBase& dataIface);
 
     /**
      * @brief Creates the Callouts object _callouts

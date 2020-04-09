@@ -120,7 +120,7 @@ SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
 
     _asciiString = std::make_unique<src::AsciiString>(regEntry);
 
-    addCallouts(additionalData, dataIface);
+    addCallouts(regEntry, additionalData, dataIface);
 
     _size = baseSRCSize;
     _size += _callouts ? _callouts->flattenedSize() : 0;
@@ -502,7 +502,8 @@ std::optional<std::string> SRC::getJSON(message::Registry& registry) const
     return ps;
 }
 
-void SRC::addCallouts(const AdditionalData& additionalData,
+void SRC::addCallouts(const message::Entry& regEntry,
+                      const AdditionalData& additionalData,
                       const DataInterfaceBase& dataIface)
 {
     auto item = additionalData.getValue("CALLOUT_INVENTORY_PATH");
@@ -512,6 +513,11 @@ void SRC::addCallouts(const AdditionalData& additionalData,
     }
 
     // TODO: CALLOUT_DEVICE_PATH
+
+    if (regEntry.callouts)
+    {
+        addRegistryCallouts(regEntry, additionalData, dataIface);
+    }
 }
 
 void SRC::addInventoryCallout(const std::string& inventoryPath,
@@ -543,8 +549,79 @@ void SRC::addInventoryCallout(const std::string& inventoryPath,
     }
 
     _callouts->addCallout(std::move(callout));
+}
 
-} // namespace pels
+void SRC::addRegistryCallouts(const message::Entry& regEntry,
+                              const AdditionalData& additionalData,
+                              const DataInterfaceBase& dataIface)
+{
+    try
+    {
+        auto systemType = dataIface.getSystemType();
+
+        auto regCallouts = message::Registry::getCallouts(
+            regEntry.callouts.value(), systemType, additionalData);
+
+        for (const auto& regCallout : regCallouts)
+        {
+            addRegistryCallout(regCallout, dataIface);
+        }
+    }
+    catch (std::exception& e)
+    {
+        log<level::ERR>("Error parsing PEL message registry callout JSON",
+                        entry("ERROR=%s", e.what()));
+    }
+}
+
+void SRC::addRegistryCallout(const message::RegistryCallout& regCallout,
+                             const DataInterfaceBase& dataIface)
+{
+    std::unique_ptr<src::Callout> callout;
+
+    // TODO: expand this location code.
+    auto locCode = regCallout.locCode;
+
+    // Via the PEL values table, get the priority enum.
+    // The schema will have validated the priority was a valid value.
+    auto priorityIt =
+        pv::findByName(regCallout.priority, pv::calloutPriorityValues);
+    assert(priorityIt != pv::calloutPriorityValues.end());
+    auto priority =
+        static_cast<CalloutPriority>(std::get<pv::fieldValuePos>(*priorityIt));
+
+    if (!regCallout.procedure.empty())
+    {
+        // Procedure callout
+        callout =
+            std::make_unique<src::Callout>(priority, regCallout.procedure);
+    }
+    else if (!regCallout.symbolicFRU.empty())
+    {
+        // Symbolic FRU callout
+        callout = std::make_unique<src::Callout>(
+            priority, regCallout.symbolicFRU, locCode, false);
+    }
+    else if (!regCallout.symbolicFRUTrusted.empty())
+    {
+        // Symbolic FRU with trusted location code callout
+
+        // The registry wants it to be trusted, but that requires a valid
+        // location code for it to actually be.
+        callout = std::make_unique<src::Callout>(
+            priority, regCallout.symbolicFRUTrusted, locCode, !locCode.empty());
+    }
+    else
+    {
+        // TODO: HW callouts
+    }
+
+    if (callout)
+    {
+        createCalloutsObject();
+        _callouts->addCallout(std::move(callout));
+    }
+}
 
 } // namespace pels
 } // namespace openpower
