@@ -95,6 +95,19 @@ class FRUIdentity
     FRUIdentity(const std::string& procedureFromRegistry);
 
     /**
+     * @brief Constructor
+     *
+     * Creates the object with a symbolic FRU callout.
+     *
+     * @param[in] symbolicFRUFromRegistry - The symbolic FRU name as
+     *                                      defined in the message registry.
+     * @param[in] trustedLocationCode - If this FRU callout's location code
+     *                                  can be trusted to be correct.
+     */
+    FRUIdentity(const std::string& symbolicFRUFromRegistry,
+                bool trustedLocationCode);
+
+    /**
      * @brief Flatten the object into the stream
      *
      * @param[in] stream - The stream to write to
@@ -236,6 +249,16 @@ class FRUIdentity
      *                                the PEL message registry.
      */
     void setMaintenanceProcedure(const std::string& procedureFromRegistry);
+
+    /**
+     * @brief Sets the 8 character null terminated symbolic FRU
+     *        field.  This is in the same field as the part
+     *        number since they are mutually exclusive.
+     *
+     * @param[in] symbolicFRUFromRegistry - The symbolic FRU name as
+     *                                      defined in the message registry.
+     */
+    void setSymbolicFRU(const std::string& symbolicFRUFromRegistry);
 
     /**
      * @brief The callout substructure type field. Will be "ID".

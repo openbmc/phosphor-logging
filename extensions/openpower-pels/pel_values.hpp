@@ -136,6 +136,11 @@ extern const std::map<bool, std::string> boolString;
  */
 extern const std::map<std::string, std::string> maintenanceProcedures;
 
+/**
+ * @brief Map for symbolic FRUs.
+ */
+extern const std::map<std::string, std::string> symbolicFRUs;
+
 } // namespace pel_values
 } // namespace pels
 } // namespace openpower

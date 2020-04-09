@@ -202,3 +202,65 @@ TEST(FRUIdentityTest, CreateProcedureCalloutTest)
         EXPECT_FALSE(fru.getSN());
     }
 }
+
+// Test the constructor that takes in a symbolic FRU.
+TEST(FRUIdentityTest, CreateSymbolicFRUCalloutTest)
+{
+    // Symbolic FRU (not trusted)
+    {
+        FRUIdentity fru{"service_docs", false};
+
+        EXPECT_EQ(fru.flattenedSize(), 12);
+        EXPECT_EQ(fru.type(), 0x4944);
+        EXPECT_EQ(fru.failingComponentType(), FRUIdentity::symbolicFRU);
+        EXPECT_EQ(fru.getPN().value(), "SVCDOCS");
+        EXPECT_FALSE(fru.getMaintProc());
+        EXPECT_FALSE(fru.getCCIN());
+        EXPECT_FALSE(fru.getSN());
+
+        // Flatten and unflatten, then compare again
+        std::vector<uint8_t> data;
+        Stream stream{data};
+        fru.flatten(stream);
+
+        EXPECT_EQ(data.size(), fru.flattenedSize());
+
+        stream.offset(0);
+        FRUIdentity newFRU{stream};
+
+        EXPECT_EQ(newFRU.flattenedSize(), 12);
+        EXPECT_EQ(newFRU.type(), 0x4944);
+        EXPECT_EQ(newFRU.failingComponentType(), FRUIdentity::symbolicFRU);
+        EXPECT_EQ(newFRU.getPN().value(), "SVCDOCS");
+        EXPECT_FALSE(newFRU.getMaintProc());
+        EXPECT_FALSE(newFRU.getCCIN());
+        EXPECT_FALSE(newFRU.getSN());
+    }
+
+    // Trusted symbolic FRU
+    {
+        FRUIdentity fru{"service_docs", true};
+
+        EXPECT_EQ(fru.flattenedSize(), 12);
+        EXPECT_EQ(fru.type(), 0x4944);
+        EXPECT_EQ(fru.failingComponentType(),
+                  FRUIdentity::symbolicFRUTrustedLocCode);
+        EXPECT_EQ(fru.getPN().value(), "SVCDOCS");
+        EXPECT_FALSE(fru.getMaintProc());
+        EXPECT_FALSE(fru.getCCIN());
+        EXPECT_FALSE(fru.getSN());
+    }
+
+    // Invalid symbolic FRU
+    {
+        FRUIdentity fru{"garbage", false};
+
+        EXPECT_EQ(fru.flattenedSize(), 12);
+        EXPECT_EQ(fru.type(), 0x4944);
+        EXPECT_EQ(fru.failingComponentType(), FRUIdentity::symbolicFRU);
+        EXPECT_EQ(fru.getPN().value(), "INVALID");
+        EXPECT_FALSE(fru.getMaintProc());
+        EXPECT_FALSE(fru.getCCIN());
+        EXPECT_FALSE(fru.getSN());
+    }
+}
