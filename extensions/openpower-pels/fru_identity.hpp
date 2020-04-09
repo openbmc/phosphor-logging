@@ -89,9 +89,10 @@ class FRUIdentity
      *
      * Creates the object with a maintenance procedure callout.
      *
-     * @param[in] procedure - The procedure to use
+     * @param[in] procedureFromRegistry - The maintenance procedure name
+     *                                    as defined in the message registry.
      */
-    FRUIdentity(MaintProcedure procedure);
+    FRUIdentity(const std::string& procedureFromRegistry);
 
     /**
      * @brief Flatten the object into the stream
@@ -230,8 +231,11 @@ class FRUIdentity
      * @brief Sets the 8 character null terminated procedure
      *        field.  This is in the same field as the part
      *        number since they are mutually exclusive.
+     *
+     * @param procedureFromRegistry - The procedure name as defined in
+     *                                the PEL message registry.
      */
-    void setMaintenanceProcedure(MaintProcedure procedure);
+    void setMaintenanceProcedure(const std::string& procedureFromRegistry);
 
     /**
      * @brief The callout substructure type field. Will be "ID".

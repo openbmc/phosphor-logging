@@ -281,7 +281,7 @@ TEST(CalloutTest, TestHardwareCallout)
 // Create a callout object by passing in the maintenance procedure to add.
 TEST(CalloutTest, TestProcedureCallout)
 {
-    Callout callout{CalloutPriority::medium, MaintProcedure::noVPDforFRU};
+    Callout callout{CalloutPriority::medium, "no_vpd_for_fru"};
 
     // size/flags/pri/locsize fields + FRUIdentity size
     // No location code.

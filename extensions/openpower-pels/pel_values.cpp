@@ -212,10 +212,11 @@ const PELValues calloutPriorityValues = {
     {0x4C, "low", "Lowest priority replacement"}};
 
 /**
- * @brief The possible maintenance procedures.
+ * @brief Map of the registry names for the maintenance procedures
+ *        to their actual names.
  */
-const MaintenanceProcedureValues maintenanceProcedures = {
-    {MaintProcedure::noVPDforFRU, "no_vpd_for_fru", "BMCSP01"}};
+const std::map<std::string, std::string> maintenanceProcedures = {
+    {"no_vpd_for_fru", "BMCSP01"}};
 
 PELValues::const_iterator findByValue(uint32_t value, const PELValues& fields)
 {
@@ -327,20 +328,6 @@ std::vector<std::string> getValuesBitwise(uint16_t value,
             }
         });
     return foundValues;
-}
-
-MaintenanceProcedureValues::const_iterator
-    getMaintProcedure(MaintProcedure procedure)
-{
-    auto proc =
-        std::find_if(maintenanceProcedures.begin(), maintenanceProcedures.end(),
-                     [procedure](const auto& entry) {
-                         return std::get<mpEnumPos>(entry) == procedure;
-                     });
-
-    assert(proc != maintenanceProcedures.end());
-
-    return proc;
 }
 
 } // namespace pel_values

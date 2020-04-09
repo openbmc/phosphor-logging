@@ -143,13 +143,5 @@ enum class CalloutPriority
     low = 'L'
 };
 
-/**
- * @brief Maintenance procedure enums
- */
-enum class MaintProcedure
-{
-    noVPDforFRU
-};
-
 } // namespace pels
 } // namespace openpower

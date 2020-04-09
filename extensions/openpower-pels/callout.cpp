@@ -94,7 +94,8 @@ Callout::Callout(CalloutPriority priority, const std::string& locationCode,
     _size = flattenedSize();
 }
 
-Callout::Callout(CalloutPriority priority, MaintProcedure procedure)
+Callout::Callout(CalloutPriority priority,
+                 const std::string& procedureFromRegistry)
 {
     _flags = calloutType | fruIdentIncluded;
 
@@ -102,7 +103,7 @@ Callout::Callout(CalloutPriority priority, MaintProcedure procedure)
 
     _locationCodeSize = 0;
 
-    _fruIdentity = std::make_unique<FRUIdentity>(procedure);
+    _fruIdentity = std::make_unique<FRUIdentity>(procedureFromRegistry);
 
     _size = flattenedSize();
 }

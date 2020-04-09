@@ -87,9 +87,10 @@ class Callout
      * out maintenance procedure.
      *
      * @param[in] priority - The priority of the callout
-     * @param[in] procedure - The maintenance procedure
+     * @param[in] procedureFromRegistry - The maintenance procedure name
+     *                                    as defined in the message registry.
      */
-    Callout(CalloutPriority priority, MaintProcedure procedure);
+    Callout(CalloutPriority priority, const std::string& procedureFromRegistry);
 
     /**
      * @brief Returns the size of this object when flattened into a PEL

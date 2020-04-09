@@ -159,31 +159,46 @@ TEST(FRUIdentityTest, CreateHardwareCalloutTest)
 // Test the constructor that takes in a maint procedure
 TEST(FRUIdentityTest, CreateProcedureCalloutTest)
 {
-    FRUIdentity fru{MaintProcedure::noVPDforFRU};
+    {
+        FRUIdentity fru{"no_vpd_for_fru"};
 
-    EXPECT_EQ(fru.flattenedSize(), 12);
-    EXPECT_EQ(fru.type(), 0x4944);
-    EXPECT_EQ(fru.failingComponentType(), FRUIdentity::maintenanceProc);
-    EXPECT_EQ(fru.getMaintProc().value(), "BMCSP01");
-    EXPECT_FALSE(fru.getPN());
-    EXPECT_FALSE(fru.getCCIN());
-    EXPECT_FALSE(fru.getSN());
+        EXPECT_EQ(fru.flattenedSize(), 12);
+        EXPECT_EQ(fru.type(), 0x4944);
+        EXPECT_EQ(fru.failingComponentType(), FRUIdentity::maintenanceProc);
+        EXPECT_EQ(fru.getMaintProc().value(), "BMCSP01");
+        EXPECT_FALSE(fru.getPN());
+        EXPECT_FALSE(fru.getCCIN());
+        EXPECT_FALSE(fru.getSN());
 
-    // Flatten and unflatten, then compare again
-    std::vector<uint8_t> data;
-    Stream stream{data};
-    fru.flatten(stream);
+        // Flatten and unflatten, then compare again
+        std::vector<uint8_t> data;
+        Stream stream{data};
+        fru.flatten(stream);
 
-    EXPECT_EQ(data.size(), fru.flattenedSize());
+        EXPECT_EQ(data.size(), fru.flattenedSize());
 
-    stream.offset(0);
-    FRUIdentity newFRU{stream};
+        stream.offset(0);
+        FRUIdentity newFRU{stream};
 
-    EXPECT_EQ(newFRU.flattenedSize(), 12);
-    EXPECT_EQ(newFRU.type(), 0x4944);
-    EXPECT_EQ(newFRU.failingComponentType(), FRUIdentity::maintenanceProc);
-    EXPECT_EQ(newFRU.getMaintProc().value(), "BMCSP01");
-    EXPECT_FALSE(newFRU.getPN());
-    EXPECT_FALSE(newFRU.getCCIN());
-    EXPECT_FALSE(newFRU.getSN());
+        EXPECT_EQ(newFRU.flattenedSize(), 12);
+        EXPECT_EQ(newFRU.type(), 0x4944);
+        EXPECT_EQ(newFRU.failingComponentType(), FRUIdentity::maintenanceProc);
+        EXPECT_EQ(newFRU.getMaintProc().value(), "BMCSP01");
+        EXPECT_FALSE(newFRU.getPN());
+        EXPECT_FALSE(newFRU.getCCIN());
+        EXPECT_FALSE(newFRU.getSN());
+    }
+
+    {
+        // Invalid maintenance procedure
+        FRUIdentity fru{"invalid"};
+
+        EXPECT_EQ(fru.flattenedSize(), 12);
+        EXPECT_EQ(fru.type(), 0x4944);
+        EXPECT_EQ(fru.failingComponentType(), FRUIdentity::maintenanceProc);
+        EXPECT_EQ(fru.getMaintProc().value(), "INVALID");
+        EXPECT_FALSE(fru.getPN());
+        EXPECT_FALSE(fru.getCCIN());
+        EXPECT_FALSE(fru.getSN());
+    }
 }
