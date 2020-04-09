@@ -226,6 +226,18 @@ class DataInterfaceBase
                                     std::string& ccin,
                                     std::string& serialNumber) const = 0;
 
+    /**
+     * @brief Gets the system type from Entity Manager
+     *
+     * @param[in] std::string - The system type string
+     */
+    virtual std::string getSystemType() const
+    {
+        // TODO, not implemented by entity manager yet, but adding now
+        // so it can be mocked.
+        return _systemType;
+    }
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
@@ -326,6 +338,11 @@ class DataInterfaceBase
      * @brief The motherboard CCIN
      */
     std::string _motherboardCCIN;
+
+    /**
+     * @brief The system type
+     */
+    std::string _systemType;
 };
 
 /**
