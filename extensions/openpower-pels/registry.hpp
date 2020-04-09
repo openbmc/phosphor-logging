@@ -1,4 +1,6 @@
 #pragma once
+#include "additional_data.hpp"
+
 #include <filesystem>
 #include <nlohmann/json.hpp>
 #include <optional>
@@ -169,6 +171,18 @@ struct Entry
 };
 
 /**
+ * @brief Holds callout information pulled out of the JSON.
+ */
+struct RegistryCallout
+{
+    std::string priority;
+    std::string locCode;
+    std::string procedure;
+    std::string symbolicFRU;
+    std::string symbolicFRUTrusted;
+};
+
+/**
  * @class Registry
  *
  * This class wraps the message registry JSON data and allows one to find
@@ -234,6 +248,26 @@ class Registry
      */
     std::optional<Entry> lookup(const std::string& name, LookupType type,
                                 bool toCache = false);
+
+    /**
+     * @brief Find the callouts to put into the PEL based on the calloutJSON
+     *        data.
+     *
+     * The system type and AdditionalData are used to index into the correct
+     * callout table.
+     *
+     * Throws exceptions on failures.
+     *
+     * @param[in] calloutJSON - Where to look up the  callouts
+     * @param[in] systemType - The system type from EntityManager
+     * @param[in] additionalData - The AdditionalData property
+     *
+     * @return std::vector<RegistryCallout> - The callouts to use
+     */
+    static std::vector<RegistryCallout>
+        getCallouts(const nlohmann::json& calloutJSON,
+                    const std::string& systemType,
+                    const AdditionalData& additionalData);
 
   private:
     /**
