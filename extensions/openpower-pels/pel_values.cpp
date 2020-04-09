@@ -218,6 +218,13 @@ const PELValues calloutPriorityValues = {
 const std::map<std::string, std::string> maintenanceProcedures = {
     {"no_vpd_for_fru", "BMCSP01"}};
 
+/**
+ * @brief Map of the registry names for the symbolic FRUs to their
+ *        actual names.
+ */
+const std::map<std::string, std::string> symbolicFRUs = {
+    {"service_docs", "SVCDOCS"}};
+
 PELValues::const_iterator findByValue(uint32_t value, const PELValues& fields)
 {
     return std::find_if(fields.begin(), fields.end(),

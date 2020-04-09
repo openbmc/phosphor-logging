@@ -93,6 +93,17 @@ FRUIdentity::FRUIdentity(const std::string& procedureFromRegistry)
     _size = flattenedSize();
 }
 
+FRUIdentity::FRUIdentity(const std::string& symbolicFRUFromRegistry,
+                         bool trustedLocationCode)
+{
+    _type = substructureType;
+    _flags = (trustedLocationCode) ? symbolicFRUTrustedLocCode : symbolicFRU;
+
+    setSymbolicFRU(symbolicFRUFromRegistry);
+
+    _size = flattenedSize();
+}
+
 std::optional<std::string> FRUIdentity::getPN() const
 {
     if (hasPN())
@@ -224,6 +235,30 @@ void FRUIdentity::setMaintenanceProcedure(
     {
         log<level::ERR>("Invalid maintenance procedure",
                         entry("PROCEDURE=%s", procedureFromRegistry.c_str()));
+        strncpy(_pnOrProcedureID.data(), "INVALID", _pnOrProcedureID.size());
+    }
+
+    // ensure null terminated
+    _pnOrProcedureID.back() = 0;
+}
+
+void FRUIdentity::setSymbolicFRU(const std::string& symbolicFRUFromRegistry)
+{
+
+    // Treat this has a HW callout.
+    _flags |= pnSupplied;
+    _flags &= ~maintProcSupplied;
+
+    if (pel_values::symbolicFRUs.count(symbolicFRUFromRegistry))
+    {
+        strncpy(_pnOrProcedureID.data(),
+                pel_values::symbolicFRUs.at(symbolicFRUFromRegistry).c_str(),
+                _pnOrProcedureID.size());
+    }
+    else
+    {
+        log<level::ERR>("Invalid symbolic FRU",
+                        entry("FRU=%s", symbolicFRUFromRegistry.c_str()));
         strncpy(_pnOrProcedureID.data(), "INVALID", _pnOrProcedureID.size());
     }
 
