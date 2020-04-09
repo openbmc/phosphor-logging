@@ -108,6 +108,22 @@ Callout::Callout(CalloutPriority priority,
     _size = flattenedSize();
 }
 
+Callout::Callout(CalloutPriority priority,
+                 const std::string& symbolicFRUFromRegistry,
+                 const std::string& locationCode, bool trustedLocationCode)
+{
+    _flags = calloutType | fruIdentIncluded;
+
+    _priority = static_cast<uint8_t>(priority);
+
+    setLocationCode(locationCode);
+
+    _fruIdentity = std::make_unique<FRUIdentity>(symbolicFRUFromRegistry,
+                                                 trustedLocationCode);
+
+    _size = flattenedSize();
+}
+
 void Callout::setLocationCode(const std::string& locationCode)
 {
     if (locationCode.empty())
