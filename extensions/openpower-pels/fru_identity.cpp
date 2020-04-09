@@ -17,6 +17,10 @@
 
 #include "pel_values.hpp"
 
+#include <phosphor-logging/log.hpp>
+
+using namespace phosphor::logging;
+
 namespace openpower
 {
 namespace pels
@@ -79,12 +83,12 @@ FRUIdentity::FRUIdentity(const std::string& partNumber, const std::string& ccin,
     _size = flattenedSize();
 }
 
-FRUIdentity::FRUIdentity(MaintProcedure procedure)
+FRUIdentity::FRUIdentity(const std::string& procedureFromRegistry)
 {
     _type = substructureType;
     _flags = maintenanceProc;
 
-    setMaintenanceProcedure(procedure);
+    setMaintenanceProcedure(procedureFromRegistry);
 
     _size = flattenedSize();
 }
@@ -203,15 +207,25 @@ void FRUIdentity::setSerialNumber(const std::string& serialNumber)
     strncpy(_sn.data(), serialNumber.c_str(), _sn.size());
 }
 
-void FRUIdentity::setMaintenanceProcedure(MaintProcedure procedure)
+void FRUIdentity::setMaintenanceProcedure(
+    const std::string& procedureFromRegistry)
 {
     _flags |= maintProcSupplied;
     _flags &= ~pnSupplied;
 
-    auto proc = pel_values::getMaintProcedure(procedure);
-
-    strncpy(_pnOrProcedureID.data(), std::get<pel_values::mpNamePos>(*proc),
+    if (pel_values::maintenanceProcedures.count(procedureFromRegistry))
+    {
+        strncpy(
+            _pnOrProcedureID.data(),
+            pel_values::maintenanceProcedures.at(procedureFromRegistry).c_str(),
             _pnOrProcedureID.size());
+    }
+    else
+    {
+        log<level::ERR>("Invalid maintenance procedure",
+                        entry("PROCEDURE=%s", procedureFromRegistry.c_str()));
+        strncpy(_pnOrProcedureID.data(), "INVALID", _pnOrProcedureID.size());
+    }
 
     // ensure null terminated
     _pnOrProcedureID.back() = 0;

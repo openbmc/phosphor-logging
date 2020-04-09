@@ -38,9 +38,4 @@ TEST(PELFieldsTest, TestFindFields)
 
     s = findByName("foo", subsystemValues);
     ASSERT_EQ(s, subsystemValues.end());
-
-    auto p = getMaintProcedure(MaintProcedure::noVPDforFRU);
-    ASSERT_NE(p, maintenanceProcedures.end());
-    ASSERT_EQ("no_vpd_for_fru", std::get<mpRegistryNamePos>(*p));
-    ASSERT_EQ("BMCSP01", std::get<mpNamePos>(*p));
 }
