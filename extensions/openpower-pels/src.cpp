@@ -539,7 +539,7 @@ void SRC::addInventoryCallout(const std::string& inventoryPath,
 
         // Use the 'NoVPDforFRU' maintenance procedure instead
         callout = std::make_unique<src::Callout>(CalloutPriority::high,
-                                                 MaintProcedure::noVPDforFRU);
+                                                 "no_vpd_for_fru");
     }
 
     _callouts->addCallout(std::move(callout));
