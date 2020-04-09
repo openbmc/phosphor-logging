@@ -161,6 +161,11 @@ struct Entry
      * The Documentation related fields.
      */
     DOC doc;
+
+    /**
+     * @brief The callout JSON, if the entry has callouts.
+     */
+    std::optional<nlohmann::json> callouts;
 };
 
 /**
@@ -185,10 +190,30 @@ class Registry
 
     /**
      * @brief Constructor
+     *
+     * Will load the callout JSON.
+     *
      * @param[in] registryFile - The path to the file.
      */
     explicit Registry(const std::filesystem::path& registryFile) :
-        _registryFile(registryFile)
+        Registry(registryFile, true)
+    {
+    }
+
+    /**
+     * @brief Constructor
+     *
+     * This version contains a parameter that allows the callout JSON
+     * to be saved in the Entry struct or not, as it isn't needed at
+     * all in some cases.
+     *
+     * @param[in] registryFile - The path to the file.
+     * @param[in] loadCallouts - If the callout JSON should be saved.
+     */
+    explicit Registry(const std::filesystem::path& registryFile,
+                      bool loadCallouts) :
+        _registryFile(registryFile),
+        _loadCallouts(loadCallouts)
     {
     }
 
@@ -229,6 +254,11 @@ class Registry
      * @brief The full message registry object.
      */
     std::optional<nlohmann::json> _registry;
+
+    /**
+     * @brief If the callout JSON should be saved in the Entry on lookup.
+     */
+    bool _loadCallouts;
 };
 
 namespace helper

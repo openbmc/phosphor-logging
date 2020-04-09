@@ -376,6 +376,19 @@ std::optional<Entry> Registry::lookup(const std::string& name, LookupType type,
                 entry.doc.messageArgSources = doc["MessageArgSources"];
             }
 
+            // If there are callouts defined, save the JSON for later
+            if (_loadCallouts)
+            {
+                if (e->contains("Callouts"))
+                {
+                    entry.callouts = (*e)["Callouts"];
+                }
+                else if (e->contains("CalloutsUsingAD"))
+                {
+                    entry.callouts = (*e)["CalloutsUsingAD"];
+                }
+            }
+
             return entry;
         }
         catch (std::exception& e)
