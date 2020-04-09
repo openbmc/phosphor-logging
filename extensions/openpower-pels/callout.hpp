@@ -84,13 +84,29 @@ class Callout
      * @brief Constructor
      *
      * Creates the objects with a FRUIdentity substructure that calls
-     * out maintenance procedure.
+     * out a maintenance procedure.
      *
      * @param[in] priority - The priority of the callout
      * @param[in] procedureFromRegistry - The maintenance procedure name
      *                                    as defined in the message registry.
      */
     Callout(CalloutPriority priority, const std::string& procedureFromRegistry);
+
+    /**
+     * @brief Constructor
+     *
+     * Creates the objects with a FRUIdentity substructure that calls
+     * out a symbolic FRU.
+     *
+     * @param[in] priority - The priority of the callout
+     * @param[in] symbolicFRUFromRegistry - The symbolic FRU name as
+     *                                      defined in the message registry.
+     * @param[in] locationCode - The location code of the callout
+     * @param[in] trustedLocationCode - If the location is trusted
+     */
+    Callout(CalloutPriority priority,
+            const std::string& symbolicFRUFromRegistry,
+            const std::string& locationCode, bool trustedLocationCode);
 
     /**
      * @brief Returns the size of this object when flattened into a PEL
