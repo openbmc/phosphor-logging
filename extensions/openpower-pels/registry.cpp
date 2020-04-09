@@ -262,6 +262,262 @@ uint16_t getComponentID(uint8_t srcType, uint16_t reasonCode,
     return id;
 }
 
+/**
+ * @brief Says if the JSON is the format that contains AdditionalData keys
+ *        as in index into them.
+ *
+ * @param[in] json - The highest level callout JSON
+ *
+ * @return bool - If it is the AdditionalData format or not
+ */
+bool calloutUsesAdditionalData(const nlohmann::json& json)
+{
+    return (json.contains("ADName") &&
+            json.contains("CalloutsWithTheirADValues"));
+}
+
+/**
+ * @brief Finds the callouts to use when there is no AdditionalData,
+ *        but the system type may be used as a key.
+ *
+ * One entry in the array looks like the following.  The System key
+ * is optional and if not present it means that entry applies to
+ * every configuration that doesn't have another entry with a matching
+ * System key.
+ *
+ *    {
+ *        "System": "system1",
+ *        "CalloutList":
+ *        [
+ *            {
+ *                "Priority": "high",
+ *                "LocCode": "P1-C1"
+ *            },
+ *            {
+ *                "Priority": "low",
+ *                "LocCode": "P1"
+ *            }
+ *        ]
+ *    }
+ */
+const nlohmann::json& findCalloutList(const nlohmann::json& json,
+                                      const std::string& systemType)
+{
+    const nlohmann::json* callouts = nullptr;
+
+    if (!json.is_array())
+    {
+        throw std::runtime_error{"findCalloutList was not passed a JSON array"};
+    }
+
+    // The entry with the system type match will take precedence over the entry
+    // without any "System" field in it at all, which will match all other
+    // cases.
+    for (const auto& calloutList : json)
+    {
+        if (calloutList.contains("System"))
+        {
+            if (systemType == calloutList["System"].get<std::string>())
+            {
+                callouts = &calloutList["CalloutList"];
+                break;
+            }
+        }
+        else
+        {
+            // Any entry with no System key
+            callouts = &calloutList["CalloutList"];
+        }
+    }
+
+    if (!callouts)
+    {
+        log<level::WARNING>(
+            "No matching system type entry or default system type entry "
+            " for PEL callout list",
+            entry("SYSTEMTYPE=%s", systemType.c_str()));
+
+        throw std::runtime_error{
+            "Could not find a CalloutList JSON for this error and system type"};
+    }
+
+    return *callouts;
+}
+
+/**
+ * @brief Creates a RegistryCallout based on the input JSON.
+ *
+ * The JSON looks like:
+ *     {
+ *          "Priority": "high",
+ *          "LocCode": "E1"
+ *          ...
+ *     }
+ *
+ * Schema validation enforces what keys are present.
+ *
+ * @param[in] json - The JSON dictionary entry for a callout
+ *
+ * @return RegistryCallout - A filled in RegistryCallout
+ */
+RegistryCallout makeRegistryCallout(const nlohmann::json& json)
+{
+    RegistryCallout callout;
+
+    callout.priority = "high";
+
+    if (json.contains("Priority"))
+    {
+        callout.priority = json["Priority"].get<std::string>();
+    }
+
+    if (json.contains("LocCode"))
+    {
+        callout.locCode = json["LocCode"].get<std::string>();
+    }
+
+    if (json.contains("Procedure"))
+    {
+        callout.procedure = json["Procedure"].get<std::string>();
+    }
+    else if (json.contains("SymbolicFRU"))
+    {
+        callout.symbolicFRU = json["SymbolicFRU"].get<std::string>();
+    }
+    else if (json.contains("SymbolicFRUTrusted"))
+    {
+        callout.symbolicFRUTrusted =
+            json["SymbolicFRUTrusted"].get<std::string>();
+    }
+
+    return callout;
+}
+
+/**
+ * @brief Returns the callouts to use when an AdditionalData key is
+ *        required to find the correct entries.
+ *
+ *       The System property is used to find which CalloutList to use.
+ *       If System is missing, then that CalloutList is valid for
+ *       everything.
+ *
+ * The JSON looks like:
+ *    [
+ *        {
+ *            "System": "systemA",
+ *            "CalloutList":
+ *            [
+ *                {
+ *                    "Priority": "high",
+ *                    "LocCode": "P1-C5"
+ *                }
+ *            ]
+ *         }
+ *    ]
+ *
+ * @param[in] json - The callout JSON
+ * @param[in] systemType - The system type from EntityManager
+ *
+ * @return std::vector<RegistryCallout> - The callouts to use
+ */
+std::vector<RegistryCallout> getCalloutsWithoutAD(const nlohmann::json& json,
+                                                  const std::string& systemType)
+{
+    std::vector<RegistryCallout> calloutEntries;
+
+    // Find the CalloutList to use based on the system type
+    const auto& calloutList = findCalloutList(json, systemType);
+
+    // We finally found the callouts, make the objects.
+    for (const auto& callout : calloutList)
+    {
+        calloutEntries.push_back(std::move(makeRegistryCallout(callout)));
+    }
+
+    return calloutEntries;
+}
+
+/**
+ * @brief Returns the callouts to use when an AdditionalData key is
+ *        required to find the correct entries.
+ *
+ * The JSON looks like:
+ *    {
+ *        "ADName": "PROC_NUM",
+ *        "CalloutsWithTheirADValues":
+ *        [
+ *            {
+ *                "ADValue": "0",
+ *                "Callouts":
+ *                [
+ *                    {
+ *                        "CalloutList":
+ *                        [
+ *                            {
+ *                                "Priority": "high",
+ *                                "LocCode": "P1-C5"
+ *                            }
+ *                        ]
+ *                    }
+ *                ]
+ *            }
+ *        ]
+ *     }
+ *
+ * Note that the "Callouts" entry above is the same as the top level
+ * entry used when there is no AdditionalData key.
+ *
+ * @param[in] json - The callout JSON
+ * @param[in] systemType - The system type from EntityManager
+ * @param[in] additionalData - The AdditionalData property
+ *
+ * @return std::vector<RegistryCallout> - The callouts to use
+ */
+std::vector<RegistryCallout>
+    getCalloutsUsingAD(const nlohmann::json& json,
+                       const std::string& systemType,
+                       const AdditionalData& additionalData)
+{
+    // This indicates which AD field we'll be using
+    auto keyName = json["ADName"].get<std::string>();
+
+    // Get the actual value from the AD data
+    auto adValue = additionalData.getValue(keyName);
+
+    if (!adValue)
+    {
+        // The AdditionalData did not contain the necessary key
+        log<level::WARNING>(
+            "The PEL message registry callouts JSON "
+            "said to use an AdditionalData key that isn't in the "
+            "AdditionalData event log property",
+            entry("ADNAME=%s\n", keyName.c_str()));
+        throw std::runtime_error{
+            "Missing AdditionalData entry for this callout"};
+    }
+
+    const auto& callouts = json["CalloutsWithTheirADValues"];
+
+    // find the entry with that AD value
+    auto it = std::find_if(
+        callouts.begin(), callouts.end(), [adValue](const nlohmann::json& j) {
+            return *adValue == j["ADValue"].get<std::string>();
+        });
+
+    if (it == callouts.end())
+    {
+        log<level::WARNING>(
+            "No callout entry found for the AdditionalData value used",
+            entry("AD_VALUE=%s", adValue->c_str()));
+
+        throw std::runtime_error{
+            "No callout entry found for the AdditionalData value used"};
+    }
+
+    // Proceed to find the callouts possibly based on system type.
+    return getCalloutsWithoutAD((*it)["Callouts"], systemType);
+}
+
 } // namespace helper
 
 std::optional<Entry> Registry::lookup(const std::string& name, LookupType type,
@@ -430,6 +686,22 @@ std::optional<nlohmann::json>
         return std::nullopt;
     }
     return registry;
+}
+
+std::vector<RegistryCallout>
+    Registry::getCallouts(const nlohmann::json& calloutJSON,
+                          const std::string& systemType,
+                          const AdditionalData& additionalData)
+{
+    // The JSON may either use an AdditionalData key
+    // as an index, or not.
+    if (helper::calloutUsesAdditionalData(calloutJSON))
+    {
+        return helper::getCalloutsUsingAD(calloutJSON, systemType,
+                                          additionalData);
+    }
+
+    return helper::getCalloutsWithoutAD(calloutJSON, systemType);
 }
 
 } // namespace message

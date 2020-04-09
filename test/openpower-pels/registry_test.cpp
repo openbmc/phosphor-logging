@@ -22,6 +22,7 @@
 #include <gtest/gtest.h>
 
 using namespace openpower::pels::message;
+using namespace openpower::pels;
 namespace fs = std::filesystem;
 
 const auto registryData = R"(
@@ -333,4 +334,271 @@ TEST_F(RegistryTest, TestGetComponentID)
     // Not present on a 0x11 SRC
     EXPECT_THROW(getComponentID(0x11, 0x8800, R"({})"_json, "foo"),
                  std::runtime_error);
+}
+
+// Test when callouts are in the JSON.
+TEST_F(RegistryTest, TestGetCallouts)
+{
+    {
+        // Callouts without AD, that depend on system type,
+        // where there is a default entry without a system type.
+        auto json = R"(
+        [
+        {
+            "System": "system1",
+            "CalloutList":
+            [
+                {
+                    "Priority": "high",
+                    "LocCode": "P1-C1"
+                },
+                {
+                    "Priority": "low",
+                    "LocCode": "P1"
+                },
+                {
+                    "Priority": "low",
+                    "SymbolicFRU": "service_docs"
+                }
+            ]
+        },
+        {
+            "CalloutList":
+            [
+                {
+                    "Priority": "medium",
+                    "Procedure": "no_vpd_for_fru"
+                },
+                {
+                    "Priority": "low",
+                    "LocCode": "P3-C8",
+                    "SymbolicFRUTrusted": "service_docs"
+                }
+            ]
+
+        }
+        ])"_json;
+
+        AdditionalData ad;
+
+        auto callouts = Registry::getCallouts(json, "system1", ad);
+        EXPECT_EQ(callouts.size(), 3);
+        EXPECT_EQ(callouts[0].priority, "high");
+        EXPECT_EQ(callouts[0].locCode, "P1-C1");
+        EXPECT_EQ(callouts[0].procedure, "");
+        EXPECT_EQ(callouts[0].symbolicFRU, "");
+        EXPECT_EQ(callouts[0].symbolicFRUTrusted, "");
+        EXPECT_EQ(callouts[1].priority, "low");
+        EXPECT_EQ(callouts[1].locCode, "P1");
+        EXPECT_EQ(callouts[1].procedure, "");
+        EXPECT_EQ(callouts[1].symbolicFRU, "");
+        EXPECT_EQ(callouts[1].symbolicFRUTrusted, "");
+        EXPECT_EQ(callouts[2].priority, "low");
+        EXPECT_EQ(callouts[2].locCode, "");
+        EXPECT_EQ(callouts[2].procedure, "");
+        EXPECT_EQ(callouts[2].symbolicFRU, "service_docs");
+        EXPECT_EQ(callouts[2].symbolicFRUTrusted, "");
+
+        // system2 isn't in the JSON, so it will pick the default one
+        callouts = Registry::getCallouts(json, "system2", ad);
+        EXPECT_EQ(callouts.size(), 2);
+        EXPECT_EQ(callouts[0].priority, "medium");
+        EXPECT_EQ(callouts[0].locCode, "");
+        EXPECT_EQ(callouts[0].procedure, "no_vpd_for_fru");
+        EXPECT_EQ(callouts[0].symbolicFRU, "");
+        EXPECT_EQ(callouts[1].priority, "low");
+        EXPECT_EQ(callouts[1].locCode, "P3-C8");
+        EXPECT_EQ(callouts[1].procedure, "");
+        EXPECT_EQ(callouts[1].symbolicFRU, "");
+        EXPECT_EQ(callouts[1].symbolicFRUTrusted, "service_docs");
+    }
+
+    // Empty JSON array (treated as an error)
+    {
+        auto json = R"([])"_json;
+        AdditionalData ad;
+        EXPECT_THROW(Registry::getCallouts(json, "system1", ad),
+                     std::runtime_error);
+    }
+
+    {
+        // Callouts without AD, that depend on system type,
+        // where there isn't a default entry without a system type.
+        auto json = R"(
+        [
+        {
+            "System": "system1",
+            "CalloutList":
+            [
+                {
+                    "Priority": "high",
+                    "LocCode": "P1-C1"
+                },
+                {
+                    "Priority": "low",
+                    "LocCode": "P1",
+                    "SymbolicFRU": "1234567"
+                }
+            ]
+        },
+        {
+            "System": "system2",
+            "CalloutList":
+            [
+                {
+                    "Priority": "medium",
+                    "LocCode": "P7",
+                    "CalloutType": "tool_fru"
+                }
+            ]
+
+        }
+        ])"_json;
+
+        AdditionalData ad;
+
+        auto callouts = Registry::getCallouts(json, "system1", ad);
+        EXPECT_EQ(callouts.size(), 2);
+        EXPECT_EQ(callouts[0].priority, "high");
+        EXPECT_EQ(callouts[0].locCode, "P1-C1");
+        EXPECT_EQ(callouts[0].procedure, "");
+        EXPECT_EQ(callouts[0].symbolicFRU, "");
+        EXPECT_EQ(callouts[0].symbolicFRUTrusted, "");
+        EXPECT_EQ(callouts[1].priority, "low");
+        EXPECT_EQ(callouts[1].locCode, "P1");
+        EXPECT_EQ(callouts[1].procedure, "");
+        EXPECT_EQ(callouts[1].symbolicFRU, "1234567");
+        EXPECT_EQ(callouts[1].symbolicFRUTrusted, "");
+
+        callouts = Registry::getCallouts(json, "system2", ad);
+        EXPECT_EQ(callouts.size(), 1);
+        EXPECT_EQ(callouts[0].priority, "medium");
+        EXPECT_EQ(callouts[0].locCode, "P7");
+        EXPECT_EQ(callouts[0].procedure, "");
+        EXPECT_EQ(callouts[0].symbolicFRU, "");
+        EXPECT_EQ(callouts[0].symbolicFRUTrusted, "");
+
+        // There is no entry for system3 or a default system,
+        // so this should fail.
+        EXPECT_THROW(Registry::getCallouts(json, "system3", ad),
+                     std::runtime_error);
+    }
+
+    {
+        // Callouts that use the AdditionalData key PROC_NUM
+        // as an index into them, along with a system type.
+        // It supports PROC_NUMs 0 and 1.
+        auto json = R"(
+        {
+            "ADName": "PROC_NUM",
+            "CalloutsWithTheirADValues":
+            [
+                {
+                    "ADValue": "0",
+                    "Callouts":
+                    [
+                        {
+                            "System": "system3",
+                            "CalloutList":
+                            [
+                                {
+                                    "Priority": "high",
+                                    "LocCode": "P1-C5"
+                                },
+                                {
+                                    "Priority": "medium",
+                                    "LocCode": "P1-C6",
+                                    "SymbolicFRU": "1234567"
+                                },
+                                {
+                                    "Priority": "low",
+                                    "Procedure": "no_vpd_for_fru",
+                                    "CalloutType": "config_procedure"
+                                }
+                            ]
+                        },
+                        {
+                            "CalloutList":
+                            [
+                                {
+                                    "Priority": "low",
+                                    "LocCode": "P55"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "ADValue": "1",
+                    "Callouts":
+                    [
+                        {
+                            "CalloutList":
+                            [
+                                {
+                                    "Priority": "high",
+                                    "LocCode": "P1-C6",
+                                    "CalloutType": "external_fru"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        })"_json;
+
+        {
+            // Find callouts for PROC_NUM 0 on system3
+            std::vector<std::string> adData{"PROC_NUM=0"};
+            AdditionalData ad{adData};
+
+            auto callouts = Registry::getCallouts(json, "system3", ad);
+            EXPECT_EQ(callouts.size(), 3);
+            EXPECT_EQ(callouts[0].priority, "high");
+            EXPECT_EQ(callouts[0].locCode, "P1-C5");
+            EXPECT_EQ(callouts[0].procedure, "");
+            EXPECT_EQ(callouts[0].symbolicFRU, "");
+            EXPECT_EQ(callouts[0].symbolicFRUTrusted, "");
+            EXPECT_EQ(callouts[1].priority, "medium");
+            EXPECT_EQ(callouts[1].locCode, "P1-C6");
+            EXPECT_EQ(callouts[1].procedure, "");
+            EXPECT_EQ(callouts[1].symbolicFRU, "1234567");
+            EXPECT_EQ(callouts[1].symbolicFRUTrusted, "");
+            EXPECT_EQ(callouts[2].priority, "low");
+            EXPECT_EQ(callouts[2].locCode, "");
+            EXPECT_EQ(callouts[2].procedure, "no_vpd_for_fru");
+            EXPECT_EQ(callouts[2].symbolicFRU, "");
+            EXPECT_EQ(callouts[2].symbolicFRUTrusted, "");
+
+            // Find callouts for PROC_NUM 0 that uses the default system entry.
+            callouts = Registry::getCallouts(json, "system99", ad);
+            EXPECT_EQ(callouts.size(), 1);
+            EXPECT_EQ(callouts[0].priority, "low");
+            EXPECT_EQ(callouts[0].locCode, "P55");
+            EXPECT_EQ(callouts[0].procedure, "");
+            EXPECT_EQ(callouts[0].symbolicFRU, "");
+            EXPECT_EQ(callouts[0].symbolicFRUTrusted, "");
+        }
+        {
+            // Find callouts for PROC_NUM 1 that uses a default system entry.
+            std::vector<std::string> adData{"PROC_NUM=1"};
+            AdditionalData ad{adData};
+
+            auto callouts = Registry::getCallouts(json, "system1", ad);
+            EXPECT_EQ(callouts.size(), 1);
+            EXPECT_EQ(callouts[0].priority, "high");
+            EXPECT_EQ(callouts[0].locCode, "P1-C6");
+            EXPECT_EQ(callouts[0].procedure, "");
+            EXPECT_EQ(callouts[0].symbolicFRU, "");
+            EXPECT_EQ(callouts[0].symbolicFRUTrusted, "");
+        }
+        {
+            // There is no entry for PROC_NUM 2, it will fail.
+            std::vector<std::string> adData{"PROC_NUM=2"};
+            AdditionalData ad{adData};
+
+            EXPECT_THROW(Registry::getCallouts(json, "system1", ad),
+                         std::runtime_error);
+        }
+    }
 }
