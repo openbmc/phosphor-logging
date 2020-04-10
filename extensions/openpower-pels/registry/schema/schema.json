@@ -195,9 +195,58 @@
                      "user_error", "corrosion"]
         },
 
+        "systemAndSeverity":
+        {
+            "description": "A severity entry that has an optional system type qualifier.  Used when the severity needs to be based on the system type.",
+            "type": "object",
+            "properties":
+            {
+                "System": { "$ref": "#/definitions/system" },
+                "SevValue": { "$ref": "#/definitions/severityTypes" }
+            },
+            "additionalProperties": false,
+            "required": ["SevValue"]
+        },
+
         "severity":
         {
-            "description": "PEL severity enumeration.  Optional.  If not provided, will use the event log severity.  See the PEL spec for more detailed definitions.",
+            "description": "PEL severity field.  Optional.  If not provided, it will use the event log severity. It can either be an enum of the severity value, or an array of them that is based on system type, where an entry without a system type acts as the catch all.",
+            "oneOf":
+            [
+                {
+                    "$ref": "#/definitions/severityTypes"
+                },
+                {
+                    "type": "array",
+                    "items":
+                    {
+                        "$ref": "#/definitions/systemAndSeverity"
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true
+                }
+            ],
+
+            "examples":
+            [
+                "unrecoverable",
+
+                [
+                    {
+                        "System": "systemA",
+                        "SevValue": "predictive"
+                    },
+                    {
+                        "SevValue": "unrecoverable"
+                    }
+                ]
+            ]
+
+        },
+
+        "severityTypes":
+        {
+            "description": "PEL severity enumeration.  See the PEL spec for more detailed definitions.",
             "type": "string",
 
             "enum": ["non_error",
@@ -488,7 +537,8 @@
         "system":
         {
             "description": "The system type string, as specified by entity manger.  It is used to index into different sections of the JSON.",
-            "type": "string"
+            "type": "string",
+            "minLength": 1
         },
 
         "callouts":
