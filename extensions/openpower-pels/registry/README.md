@@ -56,13 +56,33 @@ This field is part of the PEL User Header section, and is used to specify
 the PEL severity.  It is an optional field, if it isn't specified, then the
 severity of the OpenBMC event log will be converted into a PEL severity value.
 
+It can either be the plain severity value, or an array of severity values that
+are based on system type, where an entry without a system type will match
+anything unless another entry has a matching system type.
+
 ```
 "Severity": "unrecoverable"
 ```
 
+```
+Severity":
+[
+    {
+        "System": "system1",
+        "SevValue": "recovered"
+    },
+    {
+        "Severity": "unrecoverable"
+    }
+]
+```
+The above example shows that on system 'system1' the severity will be
+recovered, and on every other system it will be unrecoverable.
+
 ### Mfg Severity
 This is an optional field and is used to override the Severity field when a
-specific manufacturing isolation mode is enabled.
+specific manufacturing isolation mode is enabled.  It has the same format as
+Severity.
 
 ```
 "MfgSeverity": "unrecoverable"
