@@ -1,5 +1,6 @@
 #pragma once
 
+#include "data_interface.hpp"
 #include "elog_entry.hpp"
 #include "pel_values.hpp"
 #include "registry.hpp"
@@ -42,9 +43,11 @@ class UserHeader : public Section
      *
      * @param[in] entry - The message registry entry for this error
      * @param[in] severity - The OpenBMC event log severity for this error
+     * @param[in] dataIface - The DataInterface object
      */
     UserHeader(const message::Entry& entry,
-               phosphor::logging::Entry::Level severity);
+               phosphor::logging::Entry::Level severity,
+               const DataInterfaceBase& dataIface);
 
     /**
      * @brief Constructor
@@ -232,6 +235,20 @@ class UserHeader : public Section
      */
     void validate() override;
 
+    /**
+     * @brief Returns the severity value to use from the list
+     *        of them passed in based on the system type.
+     *
+     * If there isn't an entry found for the current system
+     * type then std::nullopt will be returned.
+     *
+     * @param[in] severities - The array of {systype, severity}
+     *                         structures to find an entry in.
+     * @param[in] systemType - The system type from DataInterface.
+     */
+    std::optional<uint8_t>
+        getSeverity(const std::vector<message::RegistrySeverity>& severities,
+                    const std::string& systemType) const;
     /**
      * @brief The subsystem associated with the event.
      */

@@ -48,7 +48,20 @@ const auto registryData = R"(
         {
             "Name": "xyz.openbmc_project.Power.OverVoltage",
             "Subsystem": "power_control_hw",
-            "Severity": "unrecoverable",
+            "Severity":
+            [
+                {
+                    "System": "systemA",
+                    "SevValue": "unrecoverable"
+                },
+                {
+                    "System": "systemB",
+                    "SevValue": "recovered"
+                },
+                {
+                    "SevValue": "predictive"
+                }
+            ],
             "MfgSeverity": "non_error",
             "ActionFlags": ["service_action", "report", "call_home"],
             "MfgActionFlags": ["hidden"],
@@ -139,8 +152,18 @@ TEST_F(RegistryTest, TestFindEntry)
     ASSERT_TRUE(entry);
     EXPECT_EQ(entry->name, "xyz.openbmc_project.Power.OverVoltage");
     EXPECT_EQ(entry->subsystem, 0x62);
-    EXPECT_EQ(*(entry->severity), 0x40);
-    EXPECT_EQ(*(entry->mfgSeverity), 0x00);
+
+    ASSERT_EQ(entry->severity->size(), 3);
+    EXPECT_EQ((*entry->severity)[0].severity, 0x40);
+    EXPECT_EQ((*entry->severity)[0].system, "systemA");
+    EXPECT_EQ((*entry->severity)[1].severity, 0x10);
+    EXPECT_EQ((*entry->severity)[1].system, "systemB");
+    EXPECT_EQ((*entry->severity)[2].severity, 0x20);
+    EXPECT_EQ((*entry->severity)[2].system, "");
+
+    EXPECT_EQ(entry->mfgSeverity->size(), 1);
+    EXPECT_EQ((*entry->mfgSeverity)[0].severity, 0x00);
+
     EXPECT_EQ(*(entry->actionFlags), 0xA800);
     EXPECT_EQ(*(entry->mfgActionFlags), 0x4000);
     EXPECT_EQ(entry->componentID, 0x2300);
