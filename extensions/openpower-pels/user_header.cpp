@@ -46,7 +46,8 @@ void UserHeader::flatten(Stream& stream) const
 }
 
 UserHeader::UserHeader(const message::Entry& entry,
-                       phosphor::logging::Entry::Level severity)
+                       phosphor::logging::Entry::Level severity,
+                       const DataInterfaceBase& dataIface)
 {
     _header.id = static_cast<uint16_t>(SectionID::userHeader);
     _header.size = UserHeader::flattenedSize();
@@ -61,8 +62,32 @@ UserHeader::UserHeader(const message::Entry& entry,
 
     // Get the severity from the registry if it's there, otherwise get it
     // from the OpenBMC event log severity value.
-    _eventSeverity =
-        entry.severity.value_or(convertOBMCSeverityToPEL(severity));
+    if (!entry.severity)
+    {
+        _eventSeverity = convertOBMCSeverityToPEL(severity);
+    }
+    else
+    {
+        // Find the severity possibly dependent on the system type.
+        auto sev =
+            getSeverity(entry.severity.value(), dataIface.getSystemType());
+        if (sev)
+        {
+            _eventSeverity = *sev;
+        }
+        else
+        {
+            // Someone screwed up the message registry.
+            log<level::ERR>(
+                "No severity entry found for this error and system type",
+                phosphor::logging::entry("ERROR=%s", entry.name.c_str()),
+                phosphor::logging::entry("SYSTEMTYPE=%s",
+                                         dataIface.getSystemType().c_str()));
+
+            // Have to choose something, just use informational.
+            _eventSeverity = 0;
+        }
+    }
 
     // TODO: ibm-dev/dev/#1144 Handle manufacturing sev & action flags
 
@@ -166,5 +191,35 @@ std::optional<std::string> UserHeader::getJSON() const
     uh.erase(uh.size() - 2);
     return uh;
 }
+
+std::optional<uint8_t> UserHeader::getSeverity(
+    const std::vector<message::RegistrySeverity>& severities,
+    const std::string& systemType) const
+{
+    const uint8_t* s = nullptr;
+
+    // Find the severity to use for this system type, or use the default
+    // entry (where no system type is specified).
+    for (const auto& sev : severities)
+    {
+        if (sev.system == systemType)
+        {
+            s = &sev.severity;
+            break;
+        }
+        else if (sev.system.empty())
+        {
+            s = &sev.severity;
+        }
+    }
+
+    if (s)
+    {
+        return *s;
+    }
+
+    return std::nullopt;
+}
+
 } // namespace pels
 } // namespace openpower

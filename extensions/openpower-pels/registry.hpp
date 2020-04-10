@@ -22,6 +22,18 @@ enum class LookupType
 };
 
 /**
+ * @brief A possible severity/system type combination
+ *
+ * If there is no system type defined for this entry,
+ * then the system field will be empty.
+ */
+struct RegistrySeverity
+{
+    std::string system;
+    uint8_t severity;
+};
+
+/**
  * @brief Represents the Documentation related fields in the message registry.
  *        It is part of the 'Entry' structure that will be filled in when
  *        an error is looked up in the registry.
@@ -122,14 +134,17 @@ struct Entry
     /**
      * @brief The optional PEL severity field.  If not specified, the PEL
      *        will use the severity of the OpenBMC event log.
+     *
+     * If the system type is specified in any of the entries in the vector,
+     * then the system type will be needed to find the actual severity.
      */
-    std::optional<uint8_t> severity;
+    std::optional<std::vector<RegistrySeverity>> severity;
 
     /**
      * @brief The optional severity field to use when in manufacturing tolerance
-     *        mode.
+     *        mode.  It behaves like the severity field above.
      */
-    std::optional<uint8_t> mfgSeverity;
+    std::optional<std::vector<RegistrySeverity>> mfgSeverity;
 
     /**
      * @brief The PEL action flags field.
@@ -317,6 +332,30 @@ uint8_t getSubsystem(const std::string& subsystemName);
  * @return uint8_t The PEL severity value
  */
 uint8_t getSeverity(const std::string& severityName);
+
+/**
+ * @brief Returns all of the system type/severity values found
+ * in the severity JSON passed in.
+ *
+ * The JSON is either a simple string, like:
+ *     "unrecoverable"
+ * or an array of system type/severity pairs, like:
+ *     [
+ *        {
+ *            "System": "1",
+ *            "SevValue": "predictive"
+ *        },
+ *        {
+ *            "System": "2",
+ *            "SevValue": "recovered"
+ *        }
+ *     ]
+ *
+ * @param[in] severity - The severity JSON
+ * @return The list of severity/system combinations.  If the System key
+ *         wasn't used, then that field will be empty in the structure.
+ */
+std::vector<RegistrySeverity> getSeverities(const nlohmann::json& severity);
 
 /**
  * @brief A helper function to get the action flags value based on

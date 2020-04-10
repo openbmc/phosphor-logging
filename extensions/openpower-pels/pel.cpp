@@ -50,7 +50,7 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
 {
     _ph = std::make_unique<PrivateHeader>(regEntry.componentID, obmcLogID,
                                           timestamp);
-    _uh = std::make_unique<UserHeader>(regEntry, severity);
+    _uh = std::make_unique<UserHeader>(regEntry, severity, dataIface);
 
     auto src = std::make_unique<SRC>(regEntry, additionalData, dataIface);
 

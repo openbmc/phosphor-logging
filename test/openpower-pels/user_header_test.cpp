@@ -17,11 +17,13 @@
 #include "extensions/openpower-pels/pel_types.hpp"
 #include "extensions/openpower-pels/private_header.hpp"
 #include "extensions/openpower-pels/user_header.hpp"
+#include "mocks.hpp"
 #include "pel_utils.hpp"
 
 #include <gtest/gtest.h>
 
 using namespace openpower::pels;
+using ::testing::Return;
 
 TEST(UserHeaderTest, SizeTest)
 {
@@ -99,32 +101,74 @@ TEST(UserHeaderTest, CorruptDataTest2)
 TEST(UserHeaderTest, ConstructionTest)
 {
     using namespace openpower::pels::message;
-    Entry regEntry;
+    {
+        Entry regEntry;
 
-    regEntry.name = "test";
-    regEntry.subsystem = 5;
-    regEntry.severity = 0x40;
-    regEntry.actionFlags = 0xC000;
-    regEntry.eventType = 1;
-    regEntry.eventScope = 2;
+        regEntry.name = "test";
+        regEntry.subsystem = 5;
+        regEntry.severity = {{"", 0x40}};
+        regEntry.actionFlags = 0xC000;
+        regEntry.eventType = 1;
+        regEntry.eventScope = 2;
 
-    UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error);
+        MockDataInterface dataIface;
+        EXPECT_CALL(dataIface, getSystemType).WillOnce(Return("systemA"));
 
-    ASSERT_TRUE(uh.valid());
-    EXPECT_EQ(uh.header().id, 0x5548);
-    EXPECT_EQ(uh.header().size, UserHeader::flattenedSize());
-    EXPECT_EQ(uh.header().version, 0x01);
-    EXPECT_EQ(uh.header().subType, 0x00);
-    EXPECT_EQ(uh.header().componentID,
-              static_cast<uint16_t>(ComponentID::phosphorLogging));
+        UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error,
+                      dataIface);
 
-    ASSERT_EQ(uh.subsystem(), 5);
-    ASSERT_EQ(uh.severity(), 0x40);
-    ASSERT_EQ(uh.eventType(), 1);
-    ASSERT_EQ(uh.scope(), 2);
-    ASSERT_EQ(uh.problemDomain(), 0);
-    ASSERT_EQ(uh.problemVector(), 0);
-    ASSERT_EQ(uh.actionFlags(), 0xC000);
+        ASSERT_TRUE(uh.valid());
+        EXPECT_EQ(uh.header().id, 0x5548);
+        EXPECT_EQ(uh.header().size, UserHeader::flattenedSize());
+        EXPECT_EQ(uh.header().version, 0x01);
+        EXPECT_EQ(uh.header().subType, 0x00);
+        EXPECT_EQ(uh.header().componentID,
+                  static_cast<uint16_t>(ComponentID::phosphorLogging));
+
+        ASSERT_EQ(uh.subsystem(), 5);
+        ASSERT_EQ(uh.severity(), 0x40);
+        ASSERT_EQ(uh.eventType(), 1);
+        ASSERT_EQ(uh.scope(), 2);
+        ASSERT_EQ(uh.problemDomain(), 0);
+        ASSERT_EQ(uh.problemVector(), 0);
+        ASSERT_EQ(uh.actionFlags(), 0xC000);
+    }
+
+    // Test the system type based severity lookups
+    {
+        Entry regEntry;
+
+        regEntry.name = "test";
+        regEntry.subsystem = 5;
+        regEntry.severity = {{"", 0x20}, {"systemB", 0x10}, {"systemA", 0x00}};
+
+        MockDataInterface dataIface;
+        EXPECT_CALL(dataIface, getSystemType)
+            .WillOnce(Return("systemA"))
+            .WillOnce(Return("systemB"))
+            .WillOnce(Return("systemC"));
+
+        {
+            UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error,
+                          dataIface);
+
+            EXPECT_EQ(uh.severity(), 0x00);
+        }
+
+        {
+            UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error,
+                          dataIface);
+
+            EXPECT_EQ(uh.severity(), 0x10);
+        }
+
+        {
+            UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error,
+                          dataIface);
+
+            EXPECT_EQ(uh.severity(), 0x20);
+        }
+    }
 }
 
 // Test that the severity comes from the event log if not
@@ -141,7 +185,9 @@ TEST(UserHeaderTest, UseEventLogSevTest)
     regEntry.eventScope = 2;
     // Leave off severity
 
-    UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error);
+    MockDataInterface dataIface;
+
+    UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error, dataIface);
     ASSERT_EQ(uh.severity(), 0x40);
 }
 
@@ -153,10 +199,12 @@ TEST(UserHeaderTest, DefaultEventTypeScopeTest)
 
     regEntry.name = "test";
     regEntry.subsystem = 5;
-    regEntry.severity = 0x40;
+    regEntry.severity = {{"", 0x40}};
     regEntry.actionFlags = 0xC000;
 
-    UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error);
+    MockDataInterface dataIface;
+
+    UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error, dataIface);
 
     ASSERT_EQ(uh.eventType(), 0);
     ASSERT_EQ(uh.scope(), 0x03);

@@ -68,6 +68,41 @@ uint8_t getSeverity(const std::string& severityName)
     return std::get<pv::fieldValuePos>(*s);
 }
 
+std::vector<RegistrySeverity> getSeverities(const nlohmann::json& severity)
+{
+    std::vector<RegistrySeverity> severities;
+
+    // The plain string value, like "unrecoverable"
+    if (severity.is_string())
+    {
+        RegistrySeverity s;
+        s.severity = getSeverity(severity.get<std::string>());
+        severities.push_back(std::move(s));
+    }
+    else
+    {
+        // An array, with an element like:
+        // {
+        //    "SevValue": "unrecoverable",
+        //    "System", "systemA"
+        // }
+        for (const auto& sev : severity)
+        {
+            RegistrySeverity s;
+            s.severity = getSeverity(sev["SevValue"].get<std::string>());
+
+            if (sev.contains("System"))
+            {
+                s.system = sev["System"].get<std::string>();
+            }
+
+            severities.push_back(std::move(s));
+        }
+    }
+
+    return severities;
+}
+
 uint16_t getActionFlags(const std::vector<std::string>& flags)
 {
     uint16_t actionFlags = 0;
@@ -573,12 +608,12 @@ std::optional<Entry> Registry::lookup(const std::string& name, LookupType type,
 
             if (e->contains("Severity"))
             {
-                entry.severity = helper::getSeverity((*e)["Severity"]);
+                entry.severity = helper::getSeverities((*e)["Severity"]);
             }
 
             if (e->contains("MfgSeverity"))
             {
-                entry.mfgSeverity = helper::getSeverity((*e)["MfgSeverity"]);
+                entry.mfgSeverity = helper::getSeverities((*e)["MfgSeverity"]);
             }
 
             if (e->contains("EventType"))
