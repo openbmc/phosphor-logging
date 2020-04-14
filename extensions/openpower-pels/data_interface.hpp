@@ -215,16 +215,24 @@ class DataInterfaceBase
      *        a callout on an inventory path.
      *
      * @param[in] inventoryPath - The item to get the data for
-     * @param[out] locationCode - Filled in with the  location code
      * @param[out] fruPartNumber - Filled in with the VINI/FN keyword
      * @param[out] ccin - Filled in with the VINI/CC keyword
      * @param[out] serialNumber - Filled in with the VINI/SN keyword
      */
     virtual void getHWCalloutFields(const std::string& inventoryPath,
-                                    std::string& locationCode,
                                     std::string& fruPartNumber,
                                     std::string& ccin,
                                     std::string& serialNumber) const = 0;
+
+    /**
+     * @brief Get the location code for an inventory item.
+     *
+     * @param[in] inventoryPath - The item to get the data for
+     *
+     * @return std::string - The location code
+     */
+    virtual std::string
+        getLocationCode(const std::string& inventoryPath) const = 0;
 
     /**
      * @brief Gets the system type from Entity Manager
@@ -407,15 +415,26 @@ class DataInterface : public DataInterfaceBase
      *        a callout on an inventory path.
      *
      * @param[in] inventoryPath - The item to get the data for
-     * @param[out] locationCode - Filled in with the  location code
      * @param[out] fruPartNumber - Filled in with the VINI/FN keyword
      * @param[out] ccin - Filled in with the VINI/CC keyword
      * @param[out] serialNumber - Filled in with the VINI/SN keyword
      */
     void getHWCalloutFields(const std::string& inventoryPath,
-                            std::string& locationCode,
                             std::string& fruPartNumber, std::string& ccin,
                             std::string& serialNumber) const override;
+
+    /**
+     * @brief Get the location code for an inventory item.
+     *
+     * Throws an exception if the inventory item doesn't have the
+     * location code interface.
+     *
+     * @param[in] inventoryPath - The item to get the data for
+     *
+     * @return std::string - The location code
+     */
+    std::string
+        getLocationCode(const std::string& inventoryPath) const override;
 
   private:
     /**

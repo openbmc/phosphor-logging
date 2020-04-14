@@ -529,25 +529,39 @@ void SRC::addInventoryCallout(const std::string& inventoryPath,
     std::string sn;
     std::unique_ptr<src::Callout> callout;
 
-    createCalloutsObject();
-
     try
     {
-        dataIface.getHWCalloutFields(inventoryPath, locCode, fn, ccin, sn);
+        locCode = dataIface.getLocationCode(inventoryPath);
 
-        callout = std::make_unique<src::Callout>(CalloutPriority::high, locCode,
-                                                 fn, ccin, sn);
+        try
+        {
+            dataIface.getHWCalloutFields(inventoryPath, fn, ccin, sn);
+
+            callout = std::make_unique<src::Callout>(CalloutPriority::high,
+                                                     locCode, fn, ccin, sn);
+        }
+        catch (const SdBusError& e)
+        {
+            std::string msg = "No VPD found for " + inventoryPath;
+            log<level::WARNING>(msg.c_str(), entry("ERROR=%s", e.what()));
+
+            // Just create the callout with empty FRU fields
+            callout = std::make_unique<src::Callout>(CalloutPriority::high,
+                                                     locCode, fn, ccin, sn);
+        }
     }
     catch (const SdBusError& e)
     {
-        log<level::INFO>("No VPD found for FRU callout",
-                         entry("PATH=%s", inventoryPath.c_str()));
+        std::string msg = "Could not get location code for " + inventoryPath;
+        log<level::WARNING>(msg.c_str(), entry("ERROR=%s", e.what()));
 
-        // Use the 'NoVPDforFRU' maintenance procedure instead
+        // If this were to happen, people would have to look in the UserData
+        // section that contains CALLOUT_INVENTORY_PATH to see what failed.
         callout = std::make_unique<src::Callout>(CalloutPriority::high,
                                                  "no_vpd_for_fru");
     }
 
+    createCalloutsObject();
     _callouts->addCallout(std::move(callout));
 }
 

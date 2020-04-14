@@ -308,7 +308,6 @@ void DataInterface::motherboardIfaceAdded(sdbusplus::message::message& msg)
 }
 
 void DataInterface::getHWCalloutFields(const std::string& inventoryPath,
-                                       std::string& locationCode,
                                        std::string& fruPartNumber,
                                        std::string& ccin,
                                        std::string& serialNumber) const
@@ -320,13 +319,7 @@ void DataInterface::getHWCalloutFields(const std::string& inventoryPath,
     // will provide this info.  Any missing interfaces will result
     // in exceptions being thrown.
 
-    auto service = getService(inventoryPath, interface::locCode);
-
-    DBusValue locCode;
-    getProperty(service, inventoryPath, interface::locCode, "LocationCode",
-                locCode);
-
-    locationCode = std::get<std::string>(locCode);
+    auto service = getService(inventoryPath, interface::viniRecordVPD);
 
     auto properties =
         getAllProperties(service, inventoryPath, interface::viniRecordVPD);
@@ -339,6 +332,18 @@ void DataInterface::getHWCalloutFields(const std::string& inventoryPath,
 
     value = std::get<std::vector<uint8_t>>(properties["SN"]);
     serialNumber = std::string{value.begin(), value.end()};
+}
+
+std::string
+    DataInterface::getLocationCode(const std::string& inventoryPath) const
+{
+    auto service = getService(inventoryPath, interface::locCode);
+
+    DBusValue locCode;
+    getProperty(service, inventoryPath, interface::locCode, "LocationCode",
+                locCode);
+
+    return std::get<std::string>(locCode);
 }
 
 } // namespace pels

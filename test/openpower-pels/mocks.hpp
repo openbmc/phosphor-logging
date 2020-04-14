@@ -30,10 +30,11 @@ class MockDataInterface : public DataInterfaceBase
     MOCK_METHOD(std::string, getHostState, (), (const override));
     MOCK_METHOD(std::string, getMotherboardCCIN, (), (const override));
     MOCK_METHOD(void, getHWCalloutFields,
-                (const std::string&, std::string&, std::string&, std::string&,
-                 std::string&),
+                (const std::string&, std::string&, std::string&, std::string&),
                 (const override));
     MOCK_METHOD(std::string, getSystemType, (), (const override));
+    MOCK_METHOD(std::string, getLocationCode, (const std::string&),
+                (const override));
 
     void changeHostState(bool newState)
     {

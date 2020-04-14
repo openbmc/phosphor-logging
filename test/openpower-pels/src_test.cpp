@@ -329,11 +329,13 @@ TEST_F(SRCTest, InventoryCalloutTest)
     AdditionalData ad{adData};
     NiceMock<MockDataInterface> dataIface;
 
-    EXPECT_CALL(dataIface, getHWCalloutFields("motherboard", _, _, _, _))
+    EXPECT_CALL(dataIface, getLocationCode("motherboard"))
+        .WillOnce(Return("UTMS-P1"));
+
+    EXPECT_CALL(dataIface, getHWCalloutFields("motherboard", _, _, _))
         .Times(1)
-        .WillOnce(DoAll(SetArgReferee<1>("UTMS-P1"),
-                        SetArgReferee<2>("1234567"), SetArgReferee<3>("CCCC"),
-                        SetArgReferee<4>("123456789ABC")));
+        .WillOnce(DoAll(SetArgReferee<1>("1234567"), SetArgReferee<2>("CCCC"),
+                        SetArgReferee<3>("123456789ABC")));
 
     SRC src{entry, ad, dataIface};
     EXPECT_TRUE(src.valid());
@@ -364,8 +366,62 @@ TEST_F(SRCTest, InventoryCalloutTest)
     EXPECT_EQ(src.callouts()->callouts().size(), 1);
 }
 
-// Test that when the FRU fields can't be obtained that
+// Test that when the location code can't be obtained that
 // a procedure callout is used.
+TEST_F(SRCTest, InventoryCalloutNoLocCodeTest)
+{
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+    entry.src.powerFault = false;
+
+    std::vector<std::string> adData{"CALLOUT_INVENTORY_PATH=motherboard"};
+    AdditionalData ad{adData};
+    NiceMock<MockDataInterface> dataIface;
+
+    auto func = []() {
+        throw sdbusplus::exception::SdBusError(5, "Error");
+        return std::string{};
+    };
+
+    EXPECT_CALL(dataIface, getLocationCode("motherboard"))
+        .Times(1)
+        .WillOnce(InvokeWithoutArgs(func));
+
+    EXPECT_CALL(dataIface, getHWCalloutFields(_, _, _, _)).Times(0);
+
+    SRC src{entry, ad, dataIface};
+    EXPECT_TRUE(src.valid());
+
+    ASSERT_TRUE(src.callouts());
+
+    EXPECT_EQ(src.callouts()->callouts().size(), 1);
+
+    auto& callout = src.callouts()->callouts().front();
+    EXPECT_EQ(callout->locationCodeSize(), 0);
+
+    auto& fru = callout->fruIdentity();
+
+    EXPECT_EQ(fru->getMaintProc().value(), "BMCSP01");
+    EXPECT_FALSE(fru->getPN());
+    EXPECT_FALSE(fru->getSN());
+    EXPECT_FALSE(fru->getCCIN());
+
+    // flatten and unflatten
+    std::vector<uint8_t> data;
+    Stream stream{data};
+    src.flatten(stream);
+
+    stream.offset(0);
+    SRC newSRC{stream};
+    EXPECT_TRUE(newSRC.valid());
+    ASSERT_TRUE(src.callouts());
+    EXPECT_EQ(src.callouts()->callouts().size(), 1);
+}
+
+// Test that when the VPD can't be obtained that
+// a callout is still created.
 TEST_F(SRCTest, InventoryCalloutNoVPDTest)
 {
     message::Entry entry;
@@ -378,28 +434,31 @@ TEST_F(SRCTest, InventoryCalloutNoVPDTest)
     AdditionalData ad{adData};
     NiceMock<MockDataInterface> dataIface;
 
+    EXPECT_CALL(dataIface, getLocationCode("motherboard"))
+        .Times(1)
+        .WillOnce(Return("UTMS-P10"));
+
     auto func = []() { throw sdbusplus::exception::SdBusError(5, "Error"); };
 
-    EXPECT_CALL(dataIface, getHWCalloutFields("motherboard", _, _, _, _))
+    EXPECT_CALL(dataIface, getHWCalloutFields("motherboard", _, _, _))
         .Times(1)
         .WillOnce(InvokeWithoutArgs(func));
 
     SRC src{entry, ad, dataIface};
     EXPECT_TRUE(src.valid());
-
     ASSERT_TRUE(src.callouts());
-
     EXPECT_EQ(src.callouts()->callouts().size(), 1);
 
     auto& callout = src.callouts()->callouts().front();
+    EXPECT_EQ(callout->locationCode(), "UTMS-P10");
 
     auto& fru = callout->fruIdentity();
 
-    EXPECT_EQ(fru->getMaintProc().value(), "BMCSP01");
-    EXPECT_FALSE(fru->getPN());
-    EXPECT_FALSE(fru->getSN());
-    EXPECT_FALSE(fru->getCCIN());
-    //
+    EXPECT_EQ(fru->getPN(), "");
+    EXPECT_EQ(fru->getCCIN(), "");
+    EXPECT_EQ(fru->getSN(), "");
+    EXPECT_FALSE(fru->getMaintProc());
+
     // flatten and unflatten
     std::vector<uint8_t> data;
     Stream stream{data};
