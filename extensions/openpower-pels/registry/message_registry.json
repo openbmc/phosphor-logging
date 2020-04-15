@@ -220,6 +220,145 @@
                     "Debug traces will be captured in AdditionalData section"
                 ]
             }
+        },
+
+        {
+            "Name": "org.open_power.Attn.Error.Terminate",
+            "Subsystem": "other_na",
+            "Severity": "critical_system_term",
+
+            "SRC":
+            {
+                "ReasonCode": "0xD138",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "Status shows TI special attention active",
+                "Message": "TI special attention detected",
+                "Notes": [
+                    "This entry is for any TI special attention event ",
+                    "reported by the attention handler component"
+                ]
+            }
+        },
+
+        {
+            "Name": "org.open_power.Attn.Error.Fail",
+            "Subsystem": "bmc_firmware",
+            "Severity": "unrecoverable_loss_of_function",
+
+            "SRC":
+            {
+                "ReasonCode": "0xD13E",
+                "Words6To9":
+                {
+                    "6":
+                    {
+                        "Description": "Error code from attention handler",
+                        "AdditionalDataPropSource": "ERROR_CODE"
+                    }
+                }
+            },
+            "Documentation":
+            {
+                "Description": "The attention handler encountered an error",
+                "MessageArgSources" : ["SRCWord6"],
+                "Message": "Attention handler error %1",
+                "Notes": [
+                    "Attention handler will provide error code"
+                ]
+            }
+        },
+
+        {
+            "Name": "org.open_power.Attn.Error.Vital",
+            "Subsystem": "processor_chip",
+            "Severity": "critical",
+
+            "SRC":
+            {
+                "ReasonCode": "0xD16D",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "Status shows SBE vital attention active",
+                "Message": "SBE vital attention detected",
+                "Notes": [
+                    "This entry is for any SBE vital attention event ",
+                    "reported by the attention handler component"
+                ]
+            }
+        },
+
+        {
+            "Name": "org.open_power.HwDiags.Error.Checkstop",
+            "Subsystem": "cec_hardware",
+            "Severity": "critical",
+
+            "SRC":
+            {
+                "ReasonCode": "0xE504",
+                "Words6To9":
+                {
+                    "6":
+                    {
+                        "Description": "Chip ID",
+                        "AdditionalDataPropSource": "CHIP_ID"
+                    },
+                    "8":
+                    {
+                        "Description": "Error Signature",
+                        "AdditionalDataPropSource": "SIGNATURE"
+                    }
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "A checkstop condition has been detected",
+                "MessageArgSources" : ["SRCWord6", "SRCWord8"],
+                "Message": "Checkstop: Chip %1, Signature %2",
+                "Notes": [
+                    "This entry is for any checkstop event reported by ",
+                    "the hardware diagnostics component."
+                ]
+            }
+        },
+
+        {
+            "Name": "org.open_power.HwDiags.Error.Fail",
+            "Subsystem": "bmc_firmware",
+            "Severity": "diagnostic_error",
+
+            "SRC":
+            {
+                "ReasonCode": "0xE580",
+                "Words6To9":
+                {
+                    "6":
+                    {
+                        "Description": "Error code from hardware diagnostics",
+                        "AdditionalDataPropSource": "ERROR_CODE"
+                    }
+                }
+            },
+            "Documentation":
+            {
+                "Description": "Hardware diagnostics encountered an error",
+                "MessageArgSources" : ["SRCWord6"],
+                "Message": "Hardware diagnostics error %1",
+                "Notes": [
+                    "Hardware diagnostics will provide error code"
+                ]
+            }
         }
     ]
 }
