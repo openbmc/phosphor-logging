@@ -8,3 +8,5 @@ used.
 | 0x1000       | Common Errors that span repositories |
 | 0x2000       | phosphor-logging |
 | 0x3000       | openpower-proc-control |
+| 0xD100       | attn-handler |
+| 0xE500       | openpower-hardware-diags |
