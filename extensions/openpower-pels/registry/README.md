@@ -6,6 +6,7 @@ The message registry is a JSON file.
 ## Contents
 * [Component IDs](#component-ids)
 * [Message Registry](#message-registry-fields)
+* [Modifying and Testing](#modifying-and-testing)
 
 ## Component IDs
 A component ID is a 2 byte value of the form 0xYY00 used in a PEL to:
@@ -354,3 +355,37 @@ The defaults are:
 - Normal hardware FRU: hardware_fru
 - Symbolic FRU: symbolic_fru
 - Procedure: maint_procedure
+
+## Modifying and Testing
+
+The general process for adding new entries to the message registry is:
+
+1. Update message_registry.json to add the new errors.
+2. If a new component ID is used (usually the first byte of the SRC reason
+   code), document it in ComponentIDs.md.
+3. Validate the file. It must be valid JSON and obey the schema.  The
+   `process_registry.py` script in `extensions/openpower-pels/registry/tools`
+   will validate both, though it requires the python-jsonschema package to do
+   the schema validation.  This script is also run to validate the message
+   registry as part of CI testing.
+
+```
+ ./tools/process_registry.py -v -s schema/schema.json -r message_registry.json
+```
+
+4. One can test what PELs are generated from these new entries without writing
+   any code to create the corresponding event logs:
+    1. Copy the modified message_registry.json into `/etc/phosphor-logging/` on
+       the BMC. That directory may need to be created.
+    2. Use busctl to call the Create method to create an event log
+       corresponding to the message registry entry under test.
+
+```
+busctl call xyz.openbmc_project.Logging /xyz/openbmc_project/logging \
+xyz.openbmc_project.Logging.Create Create ssa{ss} \
+xyz.openbmc_project.Common.Error.Timeout \
+xyz.openbmc_project.Logging.Entry.Level.Error 1 "TIMEOUT_IN_MSEC" "5"
+```
+
+    3. Check the PEL that was created using peltool.
+    4. When finished, delete the file from `/etc/phosphor-logging/`.
