@@ -141,6 +141,15 @@ class Manager : public details::ServerObject<details::ManagerIface>
         return blockingErrors.size();
     }
 
+    /** @brief Returns the number of property change callback objects
+     *
+     *  @return int - count of property callback entries
+     */
+    int getEntryCallbackSize()
+    {
+        return propChangedEntryCallback.size();
+    }
+
     sdbusplus::bus::bus& getBus()
     {
         return busLog;
@@ -264,6 +273,19 @@ class Manager : public details::ServerObject<details::ManagerIface>
                      std::vector<std::string> additionalData,
                      const FFDCEntries& ffdc = FFDCEntries{});
 
+    /** @brief Notified on entry property changes
+     *
+     * If an entry is blocking, this callback will be registered to monitor for
+     * the entry having it's Resolved field set to true. If it is then remove
+     * the blocking object.
+     *
+     * @param[in] msg - sdbusplus dbusmessage
+     */
+    void onEntryResolve(sdbusplus::message::message& msg);
+
+    /** @brief Remove block objects for any resolved entries  */
+    void findAndRemoveResolvedBlocks();
+
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus::bus& busLog;
 
@@ -284,6 +306,10 @@ class Manager : public details::ServerObject<details::ManagerIface>
 
     /** @brief Array of blocking errors */
     std::vector<std::unique_ptr<Block>> blockingErrors;
+
+    /** @brief Map of entry id to call back object on properties changed */
+    std::map<uint32_t, std::unique_ptr<sdbusplus::bus::match::match>>
+        propChangedEntryCallback;
 };
 
 } // namespace internal
