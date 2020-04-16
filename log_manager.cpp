@@ -286,6 +286,39 @@ bool Manager::isCalloutPresent(const Entry& entry)
     return (false);
 }
 
+void Manager::findAndRemoveResolvedBlocks()
+{
+    for (auto& entry : entries)
+    {
+        if (entry.second->resolved())
+        {
+            checkAndRemoveBlockingError(entry.first);
+        }
+    }
+}
+
+void Manager::onEntryResolve(sdbusplus::message::message& msg)
+{
+    using Interface = std::string;
+    using Property = std::string;
+    using Value = std::string;
+    using Properties = std::map<Property, sdbusplus::message::variant<Value>>;
+
+    Interface interface;
+    Properties properties;
+
+    msg.read(interface, properties);
+
+    for (const auto& p : properties)
+    {
+        if (p.first == "Resolved")
+        {
+            findAndRemoveResolvedBlocks();
+            return;
+        }
+    }
+}
+
 void Manager::checkQuiesceOnError(const Entry& entry)
 {
 
@@ -297,16 +330,26 @@ void Manager::checkQuiesceOnError(const Entry& entry)
     logging::log<logging::level::INFO>(
         "QuiesceOnError set and callout present");
 
-    std::string blockPath(OBJ_LOGGING);
-    blockPath += "/block";
-    blockPath += std::to_string(entry.id());
+    auto blockPath =
+        std::string(OBJ_LOGGING) + "/block" + std::to_string(entry.id());
     auto blockObj =
         std::make_unique<Block>(this->busLog, blockPath, entry.id());
     this->blockingErrors.push_back(std::move(blockObj));
 
+    // Register call back if log is resolved
+    using namespace sdbusplus::bus::match::rules;
+    auto entryPath = std::string(OBJ_ENTRY) + '/' + std::to_string(entry.id());
+    auto callback = std::make_unique<sdbusplus::bus::match::match>(
+        this->busLog,
+        propertiesChanged(entryPath, "xyz.openbmc_project.Logging.Entry"),
+        std::bind(std::mem_fn(&Manager::onEntryResolve), this,
+                  std::placeholders::_1));
+
+    propChangedEntryCallback.insert(
+        std::make_pair(entry.id(), std::move(callback)));
+
     // TODO in later commit in this series
     // Call systemd to quiesce host
-    // Ensure blockingErrors removes entries when log resolved
 }
 
 void Manager::doExtensionLogCreate(const Entry& entry, const FFDCEntries& ffdc)
@@ -364,6 +407,7 @@ void Manager::checkAndRemoveBlockingError(uint32_t entryId)
         return;
     }
 
+    // First look for blocking object and remove
     auto it = find_if(
         blockingErrors.begin(), blockingErrors.end(),
         [&](std::unique_ptr<Block>& obj) { return obj->entryId == entryId; });
@@ -374,6 +418,14 @@ void Manager::checkAndRemoveBlockingError(uint32_t entryId)
         auto inst = std::move(*it);
         blockingErrors.erase(it);
     }
+
+    // Now remove the callback looking for the error to be resolved
+    auto resolveFind = propChangedEntryCallback.find(entryId);
+    if (resolveFind != propChangedEntryCallback.end())
+    {
+        propChangedEntryCallback.erase(resolveFind);
+    }
+
     return;
 }
 
