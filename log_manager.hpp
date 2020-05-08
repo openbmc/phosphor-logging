@@ -286,6 +286,13 @@ class Manager : public details::ServerObject<details::ManagerIface>
     /** @brief Remove block objects for any resolved entries  */
     void findAndRemoveResolvedBlocks();
 
+    /** @brief Quiesce host if it is running
+     *
+     * This is called when the user has requested the system be quiesced
+     * if a log with a callout is created
+     */
+    void checkAndQuiesceHost();
+
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus::bus& busLog;
 
