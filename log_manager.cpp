@@ -27,6 +27,7 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <xyz/openbmc_project/State/Host/server.hpp>
 
 using namespace phosphor::logging;
 using namespace std::chrono;
@@ -314,6 +315,59 @@ void Manager::onEntryResolve(sdbusplus::message::message& msg)
     }
 }
 
+void Manager::checkAndQuiesceHost()
+{
+    // First check host state
+    sdbusplus::message::variant<std::string> property;
+
+    auto method = this->busLog.new_method_call(
+        "xyz.openbmc_project.State.Host", "/xyz/openbmc_project/state/host0",
+        "org.freedesktop.DBus.Properties", "Get");
+
+    method.append("xyz.openbmc_project.State.Host", "CurrentHostState");
+
+    try
+    {
+        auto reply = this->busLog.call(method);
+        reply.read(property);
+    }
+    catch (const SdBusError& e)
+    {
+        // Quiescing the host is a "best effort" type function. If unable to
+        // read the host state or it comes back empty, just return.
+        // The boot block object will still be created and the associations to
+        // find the log will be present. Don't want a dependency with
+        // phosphor-state-manager service
+        log<level::INFO>("Error reading QuiesceOnHwError property",
+                         entry("ERROR=%s", e.what()));
+        return;
+    }
+
+    std::string hostState = std::get<std::string>(property);
+
+    // If host state is empty, do nothing
+    if (hostState.empty())
+    {
+        return;
+    }
+
+    using Host = sdbusplus::xyz::openbmc_project::State::server::Host;
+    auto state = Host::convertHostStateFromString(hostState);
+    if (state != Host::HostState::Running)
+    {
+        return;
+    }
+
+    auto quiesce = this->busLog.new_method_call(
+        "org.freedesktop.systemd1", "/org/freedesktop/systemd1",
+        "org.freedesktop.systemd1.Manager", "StartUnit");
+
+    quiesce.append("obmc-host-quiesce@0.target");
+    quiesce.append("replace");
+
+    this->busLog.call_noreply(quiesce);
+}
+
 void Manager::checkQuiesceOnError(const Entry& entry)
 {
 
@@ -343,8 +397,7 @@ void Manager::checkQuiesceOnError(const Entry& entry)
     propChangedEntryCallback.insert(
         std::make_pair(entry.id(), std::move(callback)));
 
-    // TODO in later commit in this series
-    // Call systemd to quiesce host
+    checkAndQuiesceHost();
 }
 
 void Manager::doExtensionLogCreate(const Entry& entry, const FFDCEntries& ffdc)
