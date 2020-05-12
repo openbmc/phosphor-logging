@@ -51,7 +51,7 @@ class Manager : public PELInterface
         PELInterface(logManager.getBus(), OBJ_LOGGING),
         _logManager(logManager), _eventLogger(std::move(creatorFunc)),
         _repo(getPELRepoPath()),
-        _registry(getMessageRegistryPath() / message::registryFileName),
+        _registry(getPELReadOnlyDataPath() / message::registryFileName),
         _dataIface(std::move(dataIface))
     {
     }

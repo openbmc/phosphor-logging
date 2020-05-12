@@ -40,7 +40,7 @@ namespace message = openpower::pels::message;
 namespace pv = openpower::pels::pel_values;
 
 using PELFunc = std::function<void(const PEL&)>;
-message::Registry registry(getMessageRegistryPath() / message::registryFileName,
+message::Registry registry(getPELReadOnlyDataPath() / message::registryFileName,
                            false);
 namespace service
 {

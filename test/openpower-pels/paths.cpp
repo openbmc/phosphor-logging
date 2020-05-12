@@ -50,13 +50,13 @@ std::filesystem::path getPELRepoPath()
     return repoPath;
 }
 
-std::filesystem::path getMessageRegistryPath()
+std::filesystem::path getPELReadOnlyDataPath()
 {
     static std::string registryPath;
 
     if (registryPath.empty())
     {
-        char templ[] = "/tmp/msgregtestXXXXXX";
+        char templ[] = "/tmp/pelrodatatestXXXXXX";
         registryPath = mkdtemp(templ);
     }
 
