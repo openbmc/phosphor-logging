@@ -208,7 +208,7 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
 }
 )";
 
-    auto path = getMessageRegistryPath();
+    auto path = getPELReadOnlyDataPath();
     fs::create_directories(path);
     path /= "message_registry.json";
 
