@@ -33,7 +33,7 @@ class CleanPELFiles : public ::testing::Test
     {
         pelIDFile = openpower::pels::getPELIDFile();
         repoPath = openpower::pels::getPELRepoPath();
-        registryPath = openpower::pels::getMessageRegistryPath();
+        registryPath = openpower::pels::getPELReadOnlyDataPath();
     }
 
     void TearDown() override
