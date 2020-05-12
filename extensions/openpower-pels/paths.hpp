@@ -17,8 +17,8 @@ std::filesystem::path getPELIDFile();
 std::filesystem::path getPELRepoPath();
 
 /**
- * @brief Returns the path to the message registry JSON file
+ * @brief Returns the path to the read only data directory
  */
-std::filesystem::path getMessageRegistryPath();
+std::filesystem::path getPELReadOnlyDataPath();
 } // namespace pels
 } // namespace openpower

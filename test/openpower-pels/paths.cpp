@@ -50,17 +50,17 @@ std::filesystem::path getPELRepoPath()
     return repoPath;
 }
 
-std::filesystem::path getMessageRegistryPath()
+std::filesystem::path getPELReadOnlyDataPath()
 {
-    static std::string registryPath;
+    static std::string dataPath;
 
-    if (registryPath.empty())
+    if (dataPath.empty())
     {
-        char templ[] = "/tmp/msgregtestXXXXXX";
-        registryPath = mkdtemp(templ);
+        char templ[] = "/tmp/pelrodatatestXXXXXX";
+        dataPath = mkdtemp(templ);
     }
 
-    return registryPath;
+    return dataPath;
 }
 
 } // namespace pels

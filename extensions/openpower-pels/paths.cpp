@@ -40,7 +40,7 @@ fs::path getPELRepoPath()
     return repoPath;
 }
 
-fs::path getMessageRegistryPath()
+fs::path getPELReadOnlyDataPath()
 {
     return std::filesystem::path{"/usr/share/phosphor-logging/pels"};
 }
