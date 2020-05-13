@@ -9,8 +9,7 @@
 namespace openpower::pels
 {
 
-using DBusValue =
-    sdbusplus::message::variant<std::string, bool, std::vector<uint8_t>>;
+using DBusValue = std::variant<std::string, bool, std::vector<uint8_t>>;
 using DBusProperty = std::string;
 using DBusInterface = std::string;
 using DBusService = std::string;
