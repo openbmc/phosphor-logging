@@ -206,6 +206,7 @@ std::optional<std::string>
 {
     switch (subType)
     {
+        // clang-format off
         case static_cast<uint8_t>(UserDataFormat::json):
         {
             std::string jsonString{data.begin(), data.begin() + data.size()};
@@ -214,14 +215,11 @@ std::optional<std::string>
 
             return prettyJSON(componentID, subType, version, json);
         }
+        // clang-format on
         case static_cast<uint8_t>(UserDataFormat::cbor):
-        {
             return getCBORJSON(componentID, subType, version, data);
-        }
         case static_cast<uint8_t>(UserDataFormat::text):
-        {
             return getTextJSON(componentID, subType, version, data);
-        }
         default:
             break;
     }
