@@ -204,6 +204,7 @@ std::optional<std::string>
     getBuiltinFormatJSON(uint16_t componentID, uint8_t subType, uint8_t version,
                          const std::vector<uint8_t>& data)
 {
+    // clang-format off
     switch (subType)
     {
         case static_cast<uint8_t>(UserDataFormat::json):
@@ -225,6 +226,7 @@ std::optional<std::string>
         default:
             break;
     }
+    // clang-format on
     return std::nullopt;
 }
 
