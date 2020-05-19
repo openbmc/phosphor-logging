@@ -57,7 +57,8 @@ libpel_cxx_flags = \
 	$(SYSTEMD_CFLAGS) \
 	$(SDBUSPLUS_CFLAGS) \
 	$(SDEVENTPLUS_CFLAGS) \
-	$(PHOSPHOR_DBUS_INTERFACES_CFLAGS)
+	$(PHOSPHOR_DBUS_INTERFACES_CFLAGS) \
+	-Wno-stringop-truncation
 
 libpel_la_CXXFLAGS = $(libpel_cxx_flags)
 
