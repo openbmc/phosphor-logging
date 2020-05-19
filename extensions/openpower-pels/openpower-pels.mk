@@ -43,7 +43,7 @@ libpel_la_SOURCES = \
 	extensions/openpower-pels/severity.cpp \
 	extensions/openpower-pels/user_header.cpp
 
-libpel_ldflags =  \
+libpel_la_LDFLAGS =  \
 	$(SYSTEMD_LIBS) \
 	$(PHOSPHOR_LOGGING_LIBS) \
 	$(SDBUSPLUS_LIBS) \
@@ -53,7 +53,7 @@ libpel_ldflags =  \
 
 libpel_la_LIBADD = $(libpel_ldflags)
 
-libpel_cxx_flags = \
+libpel_la_CXXFLAGS = \
 	$(SYSTEMD_CFLAGS) \
 	$(SDBUSPLUS_CFLAGS) \
 	$(SDEVENTPLUS_CFLAGS) \
