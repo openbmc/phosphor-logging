@@ -59,6 +59,8 @@ libpel_cxx_flags = \
 	$(SDEVENTPLUS_CFLAGS) \
 	$(PHOSPHOR_DBUS_INTERFACES_CFLAGS)
 
+libpel_la_CXXFLAGS = $(libpel_cxx_flags)
+
 registrydir = $(datadir)/phosphor-logging/pels/
 registry_DATA = extensions/openpower-pels/registry/message_registry.json
 
