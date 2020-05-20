@@ -24,6 +24,7 @@
 
 using namespace openpower::pels;
 using ::testing::Return;
+using ::testing::ReturnRef;
 
 TEST(UserHeaderTest, SizeTest)
 {
@@ -112,7 +113,9 @@ TEST(UserHeaderTest, ConstructionTest)
         regEntry.eventScope = 2;
 
         MockDataInterface dataIface;
-        EXPECT_CALL(dataIface, getSystemType).WillOnce(Return("systemA"));
+        std::vector<std::string> names{"systemA"};
+
+        EXPECT_CALL(dataIface, getSystemNames).WillOnce(ReturnRef(names));
 
         UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error,
                       dataIface);
@@ -143,10 +146,14 @@ TEST(UserHeaderTest, ConstructionTest)
         regEntry.severity = {{"", 0x20}, {"systemB", 0x10}, {"systemA", 0x00}};
 
         MockDataInterface dataIface;
-        EXPECT_CALL(dataIface, getSystemType)
-            .WillOnce(Return("systemA"))
-            .WillOnce(Return("systemB"))
-            .WillOnce(Return("systemC"));
+        std::vector<std::string> names1{"systemA"};
+        std::vector<std::string> names2{"systemB"};
+        std::vector<std::string> names3{"systemC"};
+
+        EXPECT_CALL(dataIface, getSystemNames)
+            .WillOnce(ReturnRef(names1))
+            .WillOnce(ReturnRef(names2))
+            .WillOnce(ReturnRef(names3));
 
         {
             UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error,
@@ -203,6 +210,9 @@ TEST(UserHeaderTest, DefaultEventTypeScopeTest)
     regEntry.actionFlags = 0xC000;
 
     MockDataInterface dataIface;
+
+    std::vector<std::string> names{"systemA"};
+    EXPECT_CALL(dataIface, getSystemNames).WillOnce(ReturnRef(names));
 
     UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error, dataIface);
 

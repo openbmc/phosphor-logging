@@ -70,7 +70,7 @@ UserHeader::UserHeader(const message::Entry& entry,
     {
         // Find the severity possibly dependent on the system type.
         auto sev =
-            getSeverity(entry.severity.value(), dataIface.getSystemType());
+            getSeverity(entry.severity.value(), dataIface.getSystemNames());
         if (sev)
         {
             _eventSeverity = *sev;
@@ -78,11 +78,15 @@ UserHeader::UserHeader(const message::Entry& entry,
         else
         {
             // Someone screwed up the message registry.
+            std::string types;
+            const auto& compatibles = dataIface.getSystemNames();
+            std::for_each(compatibles.begin(), compatibles.end(),
+                          [&types](const auto& t) { types += t + '|'; });
+
             log<level::ERR>(
-                "No severity entry found for this error and system type",
+                "No severity entry found for this error and system name",
                 phosphor::logging::entry("ERROR=%s", entry.name.c_str()),
-                phosphor::logging::entry("SYSTEMTYPE=%s",
-                                         dataIface.getSystemType().c_str()));
+                phosphor::logging::entry("SYSTEMNAMES=%s", types.c_str()));
 
             // Have to choose something, just use informational.
             _eventSeverity = 0;
@@ -194,7 +198,7 @@ std::optional<std::string> UserHeader::getJSON() const
 
 std::optional<uint8_t> UserHeader::getSeverity(
     const std::vector<message::RegistrySeverity>& severities,
-    const std::string& systemType) const
+    const std::vector<std::string>& systemNames) const
 {
     const uint8_t* s = nullptr;
 
@@ -202,7 +206,8 @@ std::optional<uint8_t> UserHeader::getSeverity(
     // entry (where no system type is specified).
     for (const auto& sev : severities)
     {
-        if (sev.system == systemType)
+        if (std::find(systemNames.begin(), systemNames.end(), sev.system) !=
+            systemNames.end())
         {
             s = &sev.severity;
             break;

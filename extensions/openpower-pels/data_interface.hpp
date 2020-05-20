@@ -235,15 +235,13 @@ class DataInterfaceBase
         getLocationCode(const std::string& inventoryPath) const = 0;
 
     /**
-     * @brief Gets the system type from Entity Manager
+     * @brief Get the list of system type names the system is called.
      *
-     * @param[in] std::string - The system type string
+     * @return std::vector<std::string> - The list of names
      */
-    virtual std::string getSystemType() const
+    virtual const std::vector<std::string>& getSystemNames() const
     {
-        // TODO, not implemented by entity manager yet, but adding now
-        // so it can be mocked.
-        return _systemType;
+        return _systemNames;
     }
 
   protected:
@@ -348,9 +346,9 @@ class DataInterfaceBase
     std::string _motherboardCCIN;
 
     /**
-     * @brief The system type
+     * @brief The compatible system names array
      */
-    std::string _systemType;
+    std::vector<std::string> _systemNames;
 };
 
 /**

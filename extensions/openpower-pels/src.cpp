@@ -571,10 +571,10 @@ void SRC::addRegistryCallouts(const message::Entry& regEntry,
 {
     try
     {
-        auto systemType = dataIface.getSystemType();
+        auto systemNames = dataIface.getSystemNames();
 
         auto regCallouts = message::Registry::getCallouts(
-            regEntry.callouts.value(), systemType, additionalData);
+            regEntry.callouts.value(), systemNames, additionalData);
 
         for (const auto& regCallout : regCallouts)
         {
