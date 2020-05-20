@@ -26,6 +26,7 @@ using ::testing::_;
 using ::testing::InvokeWithoutArgs;
 using ::testing::NiceMock;
 using ::testing::Return;
+using ::testing::ReturnRef;
 using ::testing::SetArgReferee;
 namespace fs = std::filesystem;
 
@@ -517,7 +518,9 @@ TEST_F(SRCTest, RegistryCalloutTest)
         // Call out a symbolic FRU and a procedure
         AdditionalData ad;
         NiceMock<MockDataInterface> dataIface;
-        EXPECT_CALL(dataIface, getSystemType).WillOnce(Return("systemA"));
+        std::vector<std::string> names{"systemA"};
+
+        EXPECT_CALL(dataIface, getSystemNames).WillOnce(ReturnRef(names));
 
         SRC src{entry, ad, dataIface};
 
@@ -551,7 +554,9 @@ TEST_F(SRCTest, RegistryCalloutTest)
         // another one without.
         AdditionalData ad;
         NiceMock<MockDataInterface> dataIface;
-        EXPECT_CALL(dataIface, getSystemType).WillOnce(Return("systemB"));
+        std::vector<std::string> names{"systemB"};
+
+        EXPECT_CALL(dataIface, getSystemNames).WillOnce(ReturnRef(names));
 
         SRC src{entry, ad, dataIface};
 

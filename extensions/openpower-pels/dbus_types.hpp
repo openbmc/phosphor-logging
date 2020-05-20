@@ -9,7 +9,8 @@
 namespace openpower::pels
 {
 
-using DBusValue = std::variant<std::string, bool, std::vector<uint8_t>>;
+using DBusValue = std::variant<std::string, bool, std::vector<uint8_t>,
+                               std::vector<std::string>>;
 using DBusProperty = std::string;
 using DBusInterface = std::string;
 using DBusService = std::string;
