@@ -34,6 +34,7 @@ namespace object_path
 {
 constexpr auto objectMapper = "/xyz/openbmc_project/object_mapper";
 constexpr auto systemInv = "/xyz/openbmc_project/inventory/system";
+constexpr auto chassisInv = "/xyz/openbmc_project/inventory/system/chassis";
 constexpr auto baseInv = "/xyz/openbmc_project/inventory";
 constexpr auto bmcState = "/xyz/openbmc_project/state/bmc0";
 constexpr auto chassisState = "/xyz/openbmc_project/state/chassis0";
@@ -58,6 +59,8 @@ constexpr auto invMotherboard =
     "xyz.openbmc_project.Inventory.Item.Board.Motherboard";
 constexpr auto viniRecordVPD = "com.ibm.ipzvpd.VINI";
 constexpr auto locCode = "com.ibm.ipzvpd.Location";
+constexpr auto invCompatible =
+    "xyz.openbmc_project.Inventory.Decorator.Compatible";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::OperatingSystem::server;
@@ -141,6 +144,13 @@ DataInterface::DataInterface(sdbusplus::bus::bus& bus) : _bus(bus)
         bus, object_path::hostState, interface::hostState, "CurrentHostState",
         *this, [this](const auto& value) {
             this->_hostState = std::get<std::string>(value);
+        }));
+
+    // Watch the compatible system names property
+    _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
+        bus, object_path::chassisInv, interface::invCompatible, "Names", *this,
+        [this](const auto& value) {
+            this->_systemNames = std::get<std::vector<std::string>>(value);
         }));
 }
 

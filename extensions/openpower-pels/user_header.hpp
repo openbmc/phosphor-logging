@@ -244,11 +244,11 @@ class UserHeader : public Section
      *
      * @param[in] severities - The array of {systype, severity}
      *                         structures to find an entry in.
-     * @param[in] systemType - The system type from DataInterface.
+     * @param[in] systemTypes - List of compatible system type names
      */
     std::optional<uint8_t>
         getSeverity(const std::vector<message::RegistrySeverity>& severities,
-                    const std::string& systemType) const;
+                    const std::vector<std::string>& systemTypes) const;
     /**
      * @brief The subsystem associated with the event.
      */

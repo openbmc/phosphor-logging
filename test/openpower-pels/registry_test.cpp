@@ -362,6 +362,8 @@ TEST_F(RegistryTest, TestGetComponentID)
 // Test when callouts are in the JSON.
 TEST_F(RegistryTest, TestGetCallouts)
 {
+    std::vector<std::string> names;
+
     {
         // Callouts without AD, that depend on system type,
         // where there is a default entry without a system type.
@@ -403,8 +405,9 @@ TEST_F(RegistryTest, TestGetCallouts)
         ])"_json;
 
         AdditionalData ad;
+        names.push_back("system1");
 
-        auto callouts = Registry::getCallouts(json, "system1", ad);
+        auto callouts = Registry::getCallouts(json, names, ad);
         EXPECT_EQ(callouts.size(), 3);
         EXPECT_EQ(callouts[0].priority, "high");
         EXPECT_EQ(callouts[0].locCode, "P1-C1");
@@ -423,7 +426,8 @@ TEST_F(RegistryTest, TestGetCallouts)
         EXPECT_EQ(callouts[2].symbolicFRUTrusted, "");
 
         // system2 isn't in the JSON, so it will pick the default one
-        callouts = Registry::getCallouts(json, "system2", ad);
+        names[0] = "system2";
+        callouts = Registry::getCallouts(json, names, ad);
         EXPECT_EQ(callouts.size(), 2);
         EXPECT_EQ(callouts[0].priority, "medium");
         EXPECT_EQ(callouts[0].locCode, "");
@@ -440,7 +444,8 @@ TEST_F(RegistryTest, TestGetCallouts)
     {
         auto json = R"([])"_json;
         AdditionalData ad;
-        EXPECT_THROW(Registry::getCallouts(json, "system1", ad),
+        names[0] = "system1";
+        EXPECT_THROW(Registry::getCallouts(json, names, ad),
                      std::runtime_error);
     }
 
@@ -479,8 +484,9 @@ TEST_F(RegistryTest, TestGetCallouts)
         ])"_json;
 
         AdditionalData ad;
+        names[0] = "system1";
 
-        auto callouts = Registry::getCallouts(json, "system1", ad);
+        auto callouts = Registry::getCallouts(json, names, ad);
         EXPECT_EQ(callouts.size(), 2);
         EXPECT_EQ(callouts[0].priority, "high");
         EXPECT_EQ(callouts[0].locCode, "P1-C1");
@@ -493,7 +499,8 @@ TEST_F(RegistryTest, TestGetCallouts)
         EXPECT_EQ(callouts[1].symbolicFRU, "1234567");
         EXPECT_EQ(callouts[1].symbolicFRUTrusted, "");
 
-        callouts = Registry::getCallouts(json, "system2", ad);
+        names[0] = "system2";
+        callouts = Registry::getCallouts(json, names, ad);
         EXPECT_EQ(callouts.size(), 1);
         EXPECT_EQ(callouts[0].priority, "medium");
         EXPECT_EQ(callouts[0].locCode, "P7");
@@ -503,7 +510,8 @@ TEST_F(RegistryTest, TestGetCallouts)
 
         // There is no entry for system3 or a default system,
         // so this should fail.
-        EXPECT_THROW(Registry::getCallouts(json, "system3", ad),
+        names[0] = "system3";
+        EXPECT_THROW(Registry::getCallouts(json, names, ad),
                      std::runtime_error);
     }
 
@@ -574,8 +582,9 @@ TEST_F(RegistryTest, TestGetCallouts)
             // Find callouts for PROC_NUM 0 on system3
             std::vector<std::string> adData{"PROC_NUM=0"};
             AdditionalData ad{adData};
+            names[0] = "system3";
 
-            auto callouts = Registry::getCallouts(json, "system3", ad);
+            auto callouts = Registry::getCallouts(json, names, ad);
             EXPECT_EQ(callouts.size(), 3);
             EXPECT_EQ(callouts[0].priority, "high");
             EXPECT_EQ(callouts[0].locCode, "P1-C5");
@@ -594,7 +603,9 @@ TEST_F(RegistryTest, TestGetCallouts)
             EXPECT_EQ(callouts[2].symbolicFRUTrusted, "");
 
             // Find callouts for PROC_NUM 0 that uses the default system entry.
-            callouts = Registry::getCallouts(json, "system99", ad);
+            names[0] = "system99";
+
+            callouts = Registry::getCallouts(json, names, ad);
             EXPECT_EQ(callouts.size(), 1);
             EXPECT_EQ(callouts[0].priority, "low");
             EXPECT_EQ(callouts[0].locCode, "P55");
@@ -606,8 +617,9 @@ TEST_F(RegistryTest, TestGetCallouts)
             // Find callouts for PROC_NUM 1 that uses a default system entry.
             std::vector<std::string> adData{"PROC_NUM=1"};
             AdditionalData ad{adData};
+            names[0] = "system1";
 
-            auto callouts = Registry::getCallouts(json, "system1", ad);
+            auto callouts = Registry::getCallouts(json, names, ad);
             EXPECT_EQ(callouts.size(), 1);
             EXPECT_EQ(callouts[0].priority, "high");
             EXPECT_EQ(callouts[0].locCode, "P1-C6");
@@ -620,7 +632,7 @@ TEST_F(RegistryTest, TestGetCallouts)
             std::vector<std::string> adData{"PROC_NUM=2"};
             AdditionalData ad{adData};
 
-            EXPECT_THROW(Registry::getCallouts(json, "system1", ad),
+            EXPECT_THROW(Registry::getCallouts(json, names, ad),
                          std::runtime_error);
         }
     }

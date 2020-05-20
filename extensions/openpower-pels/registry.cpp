@@ -335,8 +335,9 @@ bool calloutUsesAdditionalData(const nlohmann::json& json)
  *        ]
  *    }
  */
-const nlohmann::json& findCalloutList(const nlohmann::json& json,
-                                      const std::string& systemType)
+const nlohmann::json&
+    findCalloutList(const nlohmann::json& json,
+                    const std::vector<std::string>& systemTypes)
 {
     const nlohmann::json* callouts = nullptr;
 
@@ -352,7 +353,9 @@ const nlohmann::json& findCalloutList(const nlohmann::json& json,
     {
         if (calloutList.contains("System"))
         {
-            if (systemType == calloutList["System"].get<std::string>())
+            if (std::find(systemTypes.begin(), systemTypes.end(),
+                          calloutList["System"].get<std::string>()) !=
+                systemTypes.end())
             {
                 callouts = &calloutList["CalloutList"];
                 break;
@@ -367,10 +370,13 @@ const nlohmann::json& findCalloutList(const nlohmann::json& json,
 
     if (!callouts)
     {
+        std::string types;
+        std::for_each(systemTypes.begin(), systemTypes.end(),
+                      [&types](const auto& t) { types += t + '|'; });
         log<level::WARNING>(
             "No matching system type entry or default system type entry "
             " for PEL callout list",
-            entry("SYSTEMTYPE=%s", systemType.c_str()));
+            entry("SYSTEMTYPES=%s", types.c_str()));
 
         throw std::runtime_error{
             "Could not find a CalloutList JSON for this error and system type"};
@@ -451,17 +457,18 @@ RegistryCallout makeRegistryCallout(const nlohmann::json& json)
  *    ]
  *
  * @param[in] json - The callout JSON
- * @param[in] systemType - The system type from EntityManager
+ * @param[in] systemTypes - List of compatible system type names
  *
  * @return std::vector<RegistryCallout> - The callouts to use
  */
-std::vector<RegistryCallout> getCalloutsWithoutAD(const nlohmann::json& json,
-                                                  const std::string& systemType)
+std::vector<RegistryCallout>
+    getCalloutsWithoutAD(const nlohmann::json& json,
+                         const std::vector<std::string>& systemTypes)
 {
     std::vector<RegistryCallout> calloutEntries;
 
     // Find the CalloutList to use based on the system type
-    const auto& calloutList = findCalloutList(json, systemType);
+    const auto& calloutList = findCalloutList(json, systemTypes);
 
     // We finally found the callouts, make the objects.
     for (const auto& callout : calloutList)
@@ -503,14 +510,14 @@ std::vector<RegistryCallout> getCalloutsWithoutAD(const nlohmann::json& json,
  * entry used when there is no AdditionalData key.
  *
  * @param[in] json - The callout JSON
- * @param[in] systemType - The system type from EntityManager
+ * @param[in] systemTypes - List of compatible system type names
  * @param[in] additionalData - The AdditionalData property
  *
  * @return std::vector<RegistryCallout> - The callouts to use
  */
 std::vector<RegistryCallout>
     getCalloutsUsingAD(const nlohmann::json& json,
-                       const std::string& systemType,
+                       const std::vector<std::string>& systemTypes,
                        const AdditionalData& additionalData)
 {
     // This indicates which AD field we'll be using
@@ -550,7 +557,7 @@ std::vector<RegistryCallout>
     }
 
     // Proceed to find the callouts possibly based on system type.
-    return getCalloutsWithoutAD((*it)["Callouts"], systemType);
+    return getCalloutsWithoutAD((*it)["Callouts"], systemTypes);
 }
 
 } // namespace helper
@@ -725,18 +732,18 @@ std::optional<nlohmann::json>
 
 std::vector<RegistryCallout>
     Registry::getCallouts(const nlohmann::json& calloutJSON,
-                          const std::string& systemType,
+                          const std::vector<std::string>& systemTypes,
                           const AdditionalData& additionalData)
 {
     // The JSON may either use an AdditionalData key
     // as an index, or not.
     if (helper::calloutUsesAdditionalData(calloutJSON))
     {
-        return helper::getCalloutsUsingAD(calloutJSON, systemType,
+        return helper::getCalloutsUsingAD(calloutJSON, systemTypes,
                                           additionalData);
     }
 
-    return helper::getCalloutsWithoutAD(calloutJSON, systemType);
+    return helper::getCalloutsWithoutAD(calloutJSON, systemTypes);
 }
 
 } // namespace message

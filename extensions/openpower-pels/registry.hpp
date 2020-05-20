@@ -274,14 +274,14 @@ class Registry
      * Throws exceptions on failures.
      *
      * @param[in] calloutJSON - Where to look up the  callouts
-     * @param[in] systemType - The system type from EntityManager
+     * @param[in] systemTypes - List of compatible system type names
      * @param[in] additionalData - The AdditionalData property
      *
      * @return std::vector<RegistryCallout> - The callouts to use
      */
     static std::vector<RegistryCallout>
         getCallouts(const nlohmann::json& calloutJSON,
-                    const std::string& systemType,
+                    const std::vector<std::string>& systemTypes,
                     const AdditionalData& additionalData);
 
   private:
