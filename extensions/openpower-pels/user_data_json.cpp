@@ -206,20 +206,17 @@ std::optional<std::string>
 {
     switch (subType)
     {
-        case static_cast<uint8_t>(UserDataFormat::json):
-        {
+        case static_cast<uint8_t>(UserDataFormat::json): {
             std::string jsonString{data.begin(), data.begin() + data.size()};
 
             fifoJSON json = nlohmann::json::parse(jsonString);
 
             return prettyJSON(componentID, subType, version, json);
         }
-        case static_cast<uint8_t>(UserDataFormat::cbor):
-        {
+        case static_cast<uint8_t>(UserDataFormat::cbor): {
             return getCBORJSON(componentID, subType, version, data);
         }
-        case static_cast<uint8_t>(UserDataFormat::text):
-        {
+        case static_cast<uint8_t>(UserDataFormat::text): {
             return getTextJSON(componentID, subType, version, data);
         }
         default:

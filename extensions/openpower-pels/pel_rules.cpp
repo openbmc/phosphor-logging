@@ -36,8 +36,7 @@ std::tuple<uint16_t, uint8_t> check(uint16_t actionFlags, uint8_t eventType,
 
     switch (sevType)
     {
-        case SeverityType::nonError:
-        {
+        case SeverityType::nonError: {
             // Informational errors never need service actions or call home.
             newActionFlags.reset(serviceActionFlagBit);
             newActionFlags.reset(callHomeFlagBit);
@@ -59,8 +58,7 @@ std::tuple<uint16_t, uint8_t> check(uint16_t actionFlags, uint8_t eventType,
             }
             break;
         }
-        case SeverityType::recovered:
-        {
+        case SeverityType::recovered: {
             // Recovered errors are hidden, and by definition need no
             // service action or call home.
             newActionFlags.set(hiddenFlagBit);
@@ -72,8 +70,7 @@ std::tuple<uint16_t, uint8_t> check(uint16_t actionFlags, uint8_t eventType,
         case SeverityType::unrecoverable:
         case SeverityType::critical:
         case SeverityType::diagnostic:
-        case SeverityType::symptom:
-        {
+        case SeverityType::symptom: {
             // Report these others as normal errors.
             newActionFlags.reset(hiddenFlagBit);
             newActionFlags.set(serviceActionFlagBit);

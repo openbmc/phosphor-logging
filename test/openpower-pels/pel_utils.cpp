@@ -180,8 +180,7 @@ std::vector<uint8_t> pelDataFactory(TestPELType type)
             data.insert(data.end(), srcSectionNoCallouts.begin(),
                         srcSectionNoCallouts.end());
             break;
-        case TestPELType::primarySRCSection2Callouts:
-        {
+        case TestPELType::primarySRCSection2Callouts: {
             // Start with the no-callouts SRC, and add the callouts section
             // from above.
             auto src = srcSectionNoCallouts;
@@ -229,8 +228,7 @@ std::vector<uint8_t> srcDataFactory(TestSRCType type)
         case TestSRCType::mruStructure:
             return srcMRUCallout;
 
-        case TestSRCType::calloutStructureA:
-        {
+        case TestSRCType::calloutStructureA: {
             // Add just the FRU identity substructure to the base structure
             std::vector<uint8_t> data{
                 0xFF, 0x28, 'H', 4,   // size, flags, priority, LC length
@@ -244,8 +242,7 @@ std::vector<uint8_t> srcDataFactory(TestSRCType type)
             data[0] = data.size();
             return data;
         }
-        case TestSRCType::calloutStructureB:
-        {
+        case TestSRCType::calloutStructureB: {
             // Add all 3 substructures to the base structure
 
             std::vector<uint8_t> data{
@@ -262,8 +259,7 @@ std::vector<uint8_t> srcDataFactory(TestSRCType type)
             data[0] = data.size();
             return data;
         }
-        case TestSRCType::calloutSection2Callouts:
-        {
+        case TestSRCType::calloutSection2Callouts: {
             std::vector<uint8_t> data{0xC0, 0x00, 0x00,
                                       0x00}; // ID, flags, length in words
 

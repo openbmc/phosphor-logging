@@ -51,20 +51,17 @@ Callout::Callout(Stream& pel)
 
         switch (type)
         {
-            case FRUIdentity::substructureType:
-            {
+            case FRUIdentity::substructureType: {
                 _fruIdentity = std::make_unique<FRUIdentity>(pel);
                 currentSize += _fruIdentity->flattenedSize();
                 break;
             }
-            case PCEIdentity::substructureType:
-            {
+            case PCEIdentity::substructureType: {
                 _pceIdentity = std::make_unique<PCEIdentity>(pel);
                 currentSize += _pceIdentity->flattenedSize();
                 break;
             }
-            case MRU::substructureType:
-            {
+            case MRU::substructureType: {
                 _mru = std::make_unique<MRU>(pel);
                 currentSize += _mru->flattenedSize();
                 break;
