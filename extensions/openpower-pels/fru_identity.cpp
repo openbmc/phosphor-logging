@@ -28,6 +28,29 @@ namespace pels
 namespace src
 {
 
+namespace
+{
+
+/**
+ * @brief Fills in the std::array from the string value
+ *
+ * If the string is shorter than the array, it will be padded with
+ * '\0's.
+ *
+ * @param[in] source - The string to fill in the array with
+ * @param[out] target - The input object that supports [] and size()
+ */
+template <typename T>
+void fillArray(const std::string& source, T& target)
+{
+    for (size_t i = 0; i < target.size(); i++)
+    {
+        target[i] = (source.size() > i) ? source[i] : '\0';
+    }
+}
+
+}; // namespace
+
 FRUIdentity::FRUIdentity(Stream& pel)
 {
     pel >> _type >> _size >> _flags;
@@ -195,8 +218,7 @@ void FRUIdentity::setPartNumber(const std::string& partNumber)
         pn = pn.substr(1);
     }
 
-    // Note: strncpy only writes NULLs if pn short
-    strncpy(_pnOrProcedureID.data(), pn.c_str(), _pnOrProcedureID.size());
+    fillArray(pn, _pnOrProcedureID);
 
     // ensure null terminated
     _pnOrProcedureID.back() = 0;
@@ -206,16 +228,14 @@ void FRUIdentity::setCCIN(const std::string& ccin)
 {
     _flags |= ccinSupplied;
 
-    // Note: _ccin not null terminated, though strncpy writes NULLs if short
-    strncpy(_ccin.data(), ccin.c_str(), _ccin.size());
+    fillArray(ccin, _ccin);
 }
 
 void FRUIdentity::setSerialNumber(const std::string& serialNumber)
 {
     _flags |= snSupplied;
 
-    // Note: _sn not null terminated, though strncpy writes NULLs if short
-    strncpy(_sn.data(), serialNumber.c_str(), _sn.size());
+    fillArray(serialNumber, _sn);
 }
 
 void FRUIdentity::setMaintenanceProcedure(
@@ -226,10 +246,8 @@ void FRUIdentity::setMaintenanceProcedure(
 
     if (pel_values::maintenanceProcedures.count(procedureFromRegistry))
     {
-        strncpy(
-            _pnOrProcedureID.data(),
-            pel_values::maintenanceProcedures.at(procedureFromRegistry).c_str(),
-            _pnOrProcedureID.size());
+        fillArray(pel_values::maintenanceProcedures.at(procedureFromRegistry),
+                  _pnOrProcedureID);
     }
     else
     {
@@ -251,9 +269,8 @@ void FRUIdentity::setSymbolicFRU(const std::string& symbolicFRUFromRegistry)
 
     if (pel_values::symbolicFRUs.count(symbolicFRUFromRegistry))
     {
-        strncpy(_pnOrProcedureID.data(),
-                pel_values::symbolicFRUs.at(symbolicFRUFromRegistry).c_str(),
-                _pnOrProcedureID.size());
+        fillArray(pel_values::symbolicFRUs.at(symbolicFRUFromRegistry),
+                  _pnOrProcedureID);
     }
     else
     {
