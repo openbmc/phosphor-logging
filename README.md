@@ -520,13 +520,13 @@ AM_CONDITIONAL([ENABLE_FOO_EXTENSION],
 phosphor_log_manager_SOURCES += \
         extensions/foo/foo.cpp
 ```
-3. In `extensions/extensions.mk`, add the makefile include:
+4. In `extensions/extensions.mk`, add the makefile include:
 ```
 if ENABLE_FOO_EXTENSION
 include extensions/foo/foo.mk
 endif
 ```
-4. In the extension code, register the functions to call and optionally disable
+5. In the extension code, register the functions to call and optionally disable
    log capping using the provided macros:
 ```
 DISABLE_LOG_ENTRY_CAPS();
