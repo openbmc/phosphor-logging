@@ -559,6 +559,29 @@ REGISTER_EXTENSION_FUNCTION(fooRemove);
 The supported extensions are:
 
 * OpenPower PELs
-    * Enabled with --enable-openpower-pel-extension
-    * Detailed information can be found
-        [here](extensions/openpower-pels/README.md)
+* Enabled with --enable-openpower-pel-extension
+* Detailed information can be found
+[here](extensions/openpower-pels/README.md)
+
+## Boot Fail on Hardware Errors
+
+phosphor-logging supports a setting, which when set, will results in the
+software looking at new phosphor-logging entries being created, and if a
+CALLOUT* is found within the entry, ensuring the system will not power
+on.
+
+The full design for this can be found
+[here](https://github.com/openbmc/docs/blob/master/designs/fail-boot-on-hw-error.md)
+
+To enable this function:
+
+```
+busctl set-property xyz.openbmc_project.Settings /xyz/openbmc_project/logging/settings xyz.openbmc_project.Logging.Settings QuiesceOnHwError b true
+```
+
+To check if an entry is blocking the boot:
+```
+obmcutil listbootblock
+```
+
+Resolve or clear the corresponding entry to allow the system to boot.
