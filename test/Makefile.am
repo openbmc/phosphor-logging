@@ -19,7 +19,8 @@ test_cppflags = \
 	$(GTEST_CPPFLAGS) \
 	$(AM_CPPFLAGS) \
 	$(PHOSPHOR_DBUS_INTERFACES_CFLAGS) \
-	$(SDBUSPLUS_CFLAGS)
+	$(SDBUSPLUS_CFLAGS) \
+	$(SYSTEMD_CFLAGS)
 
 test_cxxflags = \
 	$(PTHREAD_CFLAGS)
@@ -30,7 +31,8 @@ test_ldflags = \
 	$(PTHREAD_LIBS) \
 	$(OESDK_TESTCASE_FLAGS) \
 	$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
-	$(SDBUSPLUS_LIBS)
+	$(SDBUSPLUS_LIBS) \
+	$(SYSTEMD_LIBS)
 
 test_ldadd = \
 	$(top_builddir)/elog_serialize.o \
