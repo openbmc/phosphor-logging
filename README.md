@@ -4,10 +4,10 @@ logging.
 
 ## Table Of Contents
 * [Building](#to-build)
-* [Remote Logging](#remote-logging-via-rsyslog)
 * [Event Logs](#event-logs)
 * [Application Specific Error YAML](#adding-application-specific-error-yaml)
 * [Event Log Extensions](#event-log-extensions)
+* [Remote Logging](#remote-logging-via-rsyslog)
 * [Boot Fail on Hardware Errors](#boot-fail-on-hardware-errors)
 
 ## To Build
@@ -20,63 +20,6 @@ To build this package, do the following steps:
 
 To clean the repository run `./bootstrap.sh clean`.
 ```
-
-## Remote Logging via Rsyslog
-The BMC has the ability to stream out local logs (that go to the systemd journal)
-via rsyslog (https://www.rsyslog.com/).
-
-The BMC will send everything. Any kind of filtering and appropriate storage
-will have to be managed on the rsyslog server. Various examples are available
-on the internet. Here are few pointers :
-https://www.rsyslog.com/storing-and-forwarding-remote-messages/
-https://www.rsyslog.com/doc/rsyslog%255Fconf%255Ffilter.html
-https://www.thegeekdiary.com/understanding-rsyslog-filter-options/
-
-#### Configuring rsyslog server for remote logging
-The BMC is an rsyslog client. To stream out logs, it needs to talk to an rsyslog
-server, to which there's connectivity over a network. REST API can be used to
-set the remote server's IP address and port number.
-
-The following presumes a user has logged on to the BMC (see
-https://github.com/openbmc/docs/blob/master/rest-api.md).
-
-Set the IP:
-```
-curl -b cjar -k -H "Content-Type: application/json" -X PUT \
-    -d '{"data": <IP address>}' \
-    https://<BMC IP address>/xyz/openbmc_project/logging/config/remote/attr/Address
-```
-
-Set the port:
-```
-curl -b cjar -k -H "Content-Type: application/json" -X PUT \
-    -d '{"data": <port number>}' \
-    https://<BMC IP address>/xyz/openbmc_project/logging/config/remote/attr/Port
-```
-
-#### Querying the current configuration
-```
-curl -b cjar -k \
-    https://<BMC IP address>/xyz/openbmc_project/logging/config/remote
-```
-
-#### Setting the hostname
-Rsyslog can store logs separately for each host. For this reason, it's useful to
-provide a unique hostname to each managed BMC. Here's how that can be done via a
-REST API :
-```
-curl -b cjar -k -H "Content-Type: application/json" -X PUT \
-    -d '{"data": "myHostName"}' \
-    https://<BMC IP address>//xyz/openbmc_project/network/config/attr/HostName
-```
-
-#### Disabling remote logging
-Remote logging can be disabled by writing 0 to the port, or an empty string("")
-to the IP.
-
-#### Changing the rsyslog server
-When switching to a new server from an existing one (i.e the address, or port,
-or both change), it is recommended to disable the existing configuration first.
 
 ## Event Logs
 OpenBMC event logs are a collection of D-Bus interfaces owned by
@@ -563,6 +506,63 @@ The supported extensions are:
     * Enabled with --enable-openpower-pel-extension
     * Detailed information can be found
         [here](extensions/openpower-pels/README.md)
+
+## Remote Logging via Rsyslog
+The BMC has the ability to stream out local logs (that go to the systemd journal)
+via rsyslog (https://www.rsyslog.com/).
+
+The BMC will send everything. Any kind of filtering and appropriate storage
+will have to be managed on the rsyslog server. Various examples are available
+on the internet. Here are few pointers :
+https://www.rsyslog.com/storing-and-forwarding-remote-messages/
+https://www.rsyslog.com/doc/rsyslog%255Fconf%255Ffilter.html
+https://www.thegeekdiary.com/understanding-rsyslog-filter-options/
+
+#### Configuring rsyslog server for remote logging
+The BMC is an rsyslog client. To stream out logs, it needs to talk to an rsyslog
+server, to which there's connectivity over a network. REST API can be used to
+set the remote server's IP address and port number.
+
+The following presumes a user has logged on to the BMC (see
+https://github.com/openbmc/docs/blob/master/rest-api.md).
+
+Set the IP:
+```
+curl -b cjar -k -H "Content-Type: application/json" -X PUT \
+    -d '{"data": <IP address>}' \
+    https://<BMC IP address>/xyz/openbmc_project/logging/config/remote/attr/Address
+```
+
+Set the port:
+```
+curl -b cjar -k -H "Content-Type: application/json" -X PUT \
+    -d '{"data": <port number>}' \
+    https://<BMC IP address>/xyz/openbmc_project/logging/config/remote/attr/Port
+```
+
+#### Querying the current configuration
+```
+curl -b cjar -k \
+    https://<BMC IP address>/xyz/openbmc_project/logging/config/remote
+```
+
+#### Setting the hostname
+Rsyslog can store logs separately for each host. For this reason, it's useful to
+provide a unique hostname to each managed BMC. Here's how that can be done via a
+REST API :
+```
+curl -b cjar -k -H "Content-Type: application/json" -X PUT \
+    -d '{"data": "myHostName"}' \
+    https://<BMC IP address>//xyz/openbmc_project/network/config/attr/HostName
+```
+
+#### Disabling remote logging
+Remote logging can be disabled by writing 0 to the port, or an empty string("")
+to the IP.
+
+#### Changing the rsyslog server
+When switching to a new server from an existing one (i.e the address, or port,
+or both change), it is recommended to disable the existing configuration first.
 
 ## Boot Fail on Hardware Errors
 
