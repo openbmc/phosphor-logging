@@ -57,6 +57,10 @@ pel_objects = \
 	$(top_builddir)/extensions/openpower-pels/user_data.o \
 	$(top_builddir)/extensions/openpower-pels/user_header.o
 
+pel_test_utils_ldadd = \
+	$(top_builddir)/test/openpower-pels/pel_utils.o \
+	$(top_builddir)/test/openpower-pels/paths.o
+
 additional_data_test_SOURCES = %reldir%/additional_data_test.cpp
 additional_data_test_CPPFLAGS = $(test_cppflags)
 additional_data_test_CXXFLAGS = $(test_cxxflags)
@@ -86,62 +90,68 @@ section_header_test_LDADD = $(test_ldadd)
 section_header_test_LDFLAGS = $(test_ldflags)
 
 private_header_test_SOURCES = \
-	%reldir%/private_header_test.cpp %reldir%/pel_utils.cpp %reldir%/paths.cpp
+	%reldir%/private_header_test.cpp
 private_header_test_CPPFLAGS = $(test_cppflags)
 private_header_test_CXXFLAGS = $(test_cxxflags)
 private_header_test_LDADD = \
 	$(test_ldadd) \
+	$(pel_test_utils_ldadd) \
 	$(pel_objects)
 private_header_test_LDFLAGS = $(test_ldflags)
 
 user_header_test_SOURCES = \
-	%reldir%/user_header_test.cpp %reldir%/pel_utils.cpp %reldir%/paths.cpp
+	%reldir%/user_header_test.cpp
 user_header_test_CPPFLAGS = $(test_cppflags)
 user_header_test_CXXFLAGS = $(test_cxxflags)
 user_header_test_LDADD = \
 	$(test_ldadd) \
+	$(pel_test_utils_ldadd) \
 	$(pel_objects)
 user_header_test_LDFLAGS = $(test_ldflags)
 
 log_id_test_SOURCES = \
-	%reldir%/log_id_test.cpp %reldir%/paths.cpp
+	%reldir%/log_id_test.cpp
 log_id_test_CPPFLAGS = $(test_cppflags)
 log_id_test_CXXFLAGS = $(test_cxxflags)
 log_id_test_LDADD = \
 	$(test_ldadd) \
+	$(pel_test_utils_ldadd) \
 	$(top_builddir)/extensions/openpower-pels/log_id.o
 log_id_test_LDFLAGS = $(test_ldflags)
 
 pel_test_SOURCES = \
-	%reldir%/pel_test.cpp %reldir%/paths.cpp %reldir%/pel_utils.cpp
+	%reldir%/pel_test.cpp
 pel_test_CPPFLAGS = $(test_cppflags)
 pel_test_CXXFLAGS = $(test_cxxflags)
 pel_test_LDADD = \
 	$(test_ldadd) \
+	$(pel_test_utils_ldadd) \
 	$(pel_objects)
 pel_test_LDFLAGS = $(test_ldflags)
 
 real_pel_test_SOURCES = \
-	%reldir%/real_pel_test.cpp %reldir%/paths.cpp %reldir%/pel_utils.cpp
+	%reldir%/real_pel_test.cpp
 real_pel_test_CPPFLAGS = $(test_cppflags)
 real_pel_test_CXXFLAGS = $(test_cxxflags)
 real_pel_test_LDADD = \
 	$(test_ldadd) \
+	$(pel_test_utils_ldadd) \
 	$(pel_objects)
 real_pel_test_LDFLAGS = $(test_ldflags)
 
 repository_test_SOURCES = \
-	%reldir%/repository_test.cpp %reldir%/paths.cpp %reldir%/pel_utils.cpp
+	%reldir%/repository_test.cpp
 repository_test_CPPFLAGS = $(test_cppflags)
 repository_test_CXXFLAGS = $(test_cxxflags)
 repository_test_LDADD = \
 	$(test_ldadd) \
 	$(pel_objects) \
+	$(pel_test_utils_ldadd) \
 	$(top_builddir)/extensions/openpower-pels/repository.o
 repository_test_LDFLAGS = $(test_ldflags)
 
 pel_manager_test_SOURCES = \
-	%reldir%/pel_manager_test.cpp %reldir%/paths.cpp %reldir%/pel_utils.cpp
+	%reldir%/pel_manager_test.cpp
 pel_manager_test_CPPFLAGS = $(test_cppflags)
 pel_manager_test_CXXFLAGS = \
 	$(test_cxxflags) \
@@ -149,6 +159,7 @@ pel_manager_test_CXXFLAGS = \
 pel_manager_test_LDADD = \
 	$(test_ldadd) \
 	$(pel_objects) \
+	$(pel_test_utils_ldadd) \
 	$(top_builddir)/extensions/openpower-pels/data_interface.o \
 	$(top_builddir)/extensions/openpower-pels/host_notifier.o \
 	$(top_builddir)/extensions/openpower-pels/manager.o \
@@ -158,11 +169,12 @@ pel_manager_test_LDFLAGS = \
 	$(SDEVENTPLUS_LIBS)
 
 registry_test_SOURCES = \
-	%reldir%/registry_test.cpp %reldir%/paths.cpp
+	%reldir%/registry_test.cpp
 registry_test_CPPFLAGS = $(test_cppflags)
 registry_test_CXXFLAGS = $(test_cxxflags)
 registry_test_LDADD = \
 	$(test_ldadd) \
+	$(pel_test_utils_ldadd) \
 	$(top_builddir)/extensions/openpower-pels/registry.o \
 	$(top_builddir)/extensions/openpower-pels/pel_values.o
 registry_test_LDFLAGS = $(test_ldflags)
@@ -203,20 +215,22 @@ pel_values_test_LDADD = \
 pel_values_test_LDFLAGS = $(test_ldflags)
 
 generic_section_test_SOURCES = \
-	%reldir%/generic_section_test.cpp %reldir%/pel_utils.cpp
+	%reldir%/generic_section_test.cpp
 generic_section_test_CPPFLAGS = $(test_cppflags)
 generic_section_test_CXXFLAGS = $(test_cxxflags)
 generic_section_test_LDADD = \
 	$(test_ldadd) \
+	$(pel_test_utils_ldadd) \
 	$(top_builddir)/extensions/openpower-pels/generic.o
 generic_section_test_LDFLAGS = $(test_ldflags)
 
 user_data_test_SOURCES = \
-	%reldir%/user_data_test.cpp %reldir%/pel_utils.cpp
+	%reldir%/user_data_test.cpp
 user_data_test_CPPFLAGS = $(test_cppflags)
 user_data_test_CXXFLAGS = $(test_cxxflags)
 user_data_test_LDADD = \
 	$(test_ldadd) \
+	$(pel_test_utils_ldadd) \
 	$(top_builddir)/extensions/openpower-pels/user_data.o
 user_data_test_LDFLAGS = $(test_ldflags)
 
@@ -255,12 +269,12 @@ mru_test_LDADD = \
 mru_test_LDFLAGS = $(test_ldflags)
 
 src_callout_test_SOURCES = \
-	%reldir%/src_callout_test.cpp \
-	%reldir%/pel_utils.cpp
+	%reldir%/src_callout_test.cpp
 src_callout_test_CPPFLAGS = $(test_cppflags)
 src_callout_test_CXXFLAGS = $(test_cxxflags)
 src_callout_test_LDADD = \
 	$(test_ldadd) \
+	$(pel_test_utils_ldadd) \
 	$(top_builddir)/extensions/openpower-pels/callout.o \
 	$(top_builddir)/extensions/openpower-pels/fru_identity.o \
 	$(top_builddir)/extensions/openpower-pels/mru.o \
@@ -270,12 +284,12 @@ src_callout_test_LDADD = \
 src_callout_test_LDFLAGS = $(test_ldflags)
 
 src_callouts_test_SOURCES = \
-	%reldir%/src_callouts_test.cpp \
-	%reldir%/pel_utils.cpp
+	%reldir%/src_callouts_test.cpp
 src_callouts_test_CPPFLAGS = $(test_cppflags)
 src_callouts_test_CXXFLAGS = $(test_cxxflags)
 src_callouts_test_LDADD = \
 	$(test_ldadd) \
+	$(pel_test_utils_ldadd) \
 	$(top_builddir)/extensions/openpower-pels/callout.o \
 	$(top_builddir)/extensions/openpower-pels/callouts.o \
 	$(top_builddir)/extensions/openpower-pels/fru_identity.o \
@@ -286,18 +300,17 @@ src_callouts_test_LDADD = \
 src_callouts_test_LDFLAGS = $(test_ldflags)
 
 src_test_SOURCES = \
-	%reldir%/src_test.cpp \
-	%reldir%/pel_utils.cpp
+	%reldir%/src_test.cpp
 src_test_CPPFLAGS = $(test_cppflags)
 src_test_CXXFLAGS = $(test_cxxflags)
 src_test_LDADD = \
 	$(test_ldadd) \
+	$(pel_test_utils_ldadd) \
 	$(top_builddir)/extensions/openpower-pels/ascii_string.o \
 	$(top_builddir)/extensions/openpower-pels/callout.o \
 	$(top_builddir)/extensions/openpower-pels/callouts.o \
 	$(top_builddir)/extensions/openpower-pels/fru_identity.o \
 	$(top_builddir)/extensions/openpower-pels/json_utils.o \
-	$(top_builddir)/extensions/openpower-pels/paths.o \
 	$(top_builddir)/extensions/openpower-pels/mru.o \
 	$(top_builddir)/extensions/openpower-pels/mtms.o \
 	$(top_builddir)/extensions/openpower-pels/pce_identity.o \
@@ -307,12 +320,12 @@ src_test_LDADD = \
 src_test_LDFLAGS = $(test_ldflags)
 
 extended_user_header_test_SOURCES = \
-	%reldir%/extended_user_header_test.cpp \
-	%reldir%/pel_utils.cpp
+	%reldir%/extended_user_header_test.cpp
 extended_user_header_test_CPPFLAGS = $(test_cppflags)
 extended_user_header_test_CXXFLAGS = $(test_cxxflags)
 extended_user_header_test_LDADD = \
 	$(test_ldadd) \
+	$(pel_test_utils_ldadd) \
 	$(top_builddir)/extensions/openpower-pels/ascii_string.o \
 	$(top_builddir)/extensions/openpower-pels/bcd_time.o \
 	$(top_builddir)/extensions/openpower-pels/callout.o \
@@ -323,7 +336,6 @@ extended_user_header_test_LDADD = \
 	$(top_builddir)/extensions/openpower-pels/json_utils.o \
 	$(top_builddir)/extensions/openpower-pels/mru.o \
 	$(top_builddir)/extensions/openpower-pels/mtms.o \
-	$(top_builddir)/extensions/openpower-pels/paths.o \
 	$(top_builddir)/extensions/openpower-pels/pel_values.o \
 	$(top_builddir)/extensions/openpower-pels/pce_identity.o \
 	$(top_builddir)/extensions/openpower-pels/registry.o \
@@ -339,14 +351,13 @@ pel_rules_test_LDADD = \
 pel_rules_test_LDFLAGS = $(test_ldflags)
 
 host_notifier_test_SOURCES = \
-	%reldir%/host_notifier_test.cpp \
-	%reldir%/paths.cpp \
-	%reldir%/pel_utils.cpp
+	%reldir%/host_notifier_test.cpp
 host_notifier_test_CPPFLAGS = $(test_cppflags)
 host_notifier_test_CXXFLAGS = $(test_cxxflags) $(SDEVENTPLUS_CFLAGS)
 host_notifier_test_LDADD = \
 	$(test_ldflags) \
 	$(pel_objects) \
+	$(pel_test_utils_ldadd) \
 	$(top_builddir)/extensions/openpower-pels/host_notifier.o \
 	$(top_builddir)/extensions/openpower-pels/repository.o
 host_notifier_test_LDFLAGS = $(test_ldflags) $(SDEVENTPLUS_LIBS)
