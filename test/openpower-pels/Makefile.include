@@ -4,6 +4,7 @@ check_PROGRAMS += \
 	additional_data_test \
 	ascii_string_test \
 	bcd_time_test \
+	device_callouts_test \
 	event_logger_test \
 	extended_user_header_test \
 	failing_mtms_test \
@@ -37,6 +38,7 @@ pel_objects = \
 	$(top_builddir)/extensions/openpower-pels/bcd_time.o \
 	$(top_builddir)/extensions/openpower-pels/callout.o \
 	$(top_builddir)/extensions/openpower-pels/callouts.o \
+	$(top_builddir)/extensions/openpower-pels/device_callouts.o \
 	$(top_builddir)/extensions/openpower-pels/extended_user_header.o \
 	$(top_builddir)/extensions/openpower-pels/failing_mtms.o \
 	$(top_builddir)/extensions/openpower-pels/fru_identity.o \
@@ -309,6 +311,7 @@ src_test_LDADD = \
 	$(top_builddir)/extensions/openpower-pels/ascii_string.o \
 	$(top_builddir)/extensions/openpower-pels/callout.o \
 	$(top_builddir)/extensions/openpower-pels/callouts.o \
+	$(top_builddir)/extensions/openpower-pels/device_callouts.o \
 	$(top_builddir)/extensions/openpower-pels/fru_identity.o \
 	$(top_builddir)/extensions/openpower-pels/json_utils.o \
 	$(top_builddir)/extensions/openpower-pels/mru.o \
@@ -330,6 +333,7 @@ extended_user_header_test_LDADD = \
 	$(top_builddir)/extensions/openpower-pels/bcd_time.o \
 	$(top_builddir)/extensions/openpower-pels/callout.o \
 	$(top_builddir)/extensions/openpower-pels/callouts.o \
+	$(top_builddir)/extensions/openpower-pels/device_callouts.o \
 	$(top_builddir)/extensions/openpower-pels/data_interface.o \
 	$(top_builddir)/extensions/openpower-pels/extended_user_header.o \
 	$(top_builddir)/extensions/openpower-pels/fru_identity.o \
@@ -377,3 +381,13 @@ event_logger_test_CXXFLAGS = $(test_cxxflags) $(SDEVENTPLUS_CFLAGS)
 event_logger_test_LDADD = \
 	$(test_ldadd)
 event_logger_test_LDFLAGS = $(test_ldflags) $(SDEVENTPLUS_LIBS)
+
+device_callouts_test_SOURCES = \
+	%reldir%/device_callouts_test.cpp
+device_callouts_test_CPPFLAGS = $(test_cppflags)
+device_callouts_test_CXXFLAGS = $(test_cxxflags)
+device_callouts_test_LDADD = \
+	$(test_ldadd) \
+	$(pel_test_utils_ldadd) \
+	$(top_builddir)/extensions/openpower-pels/device_callouts.o
+device_callouts_test_LDFLAGS = $(test_ldflags)
