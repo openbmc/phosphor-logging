@@ -146,20 +146,6 @@ std::filesystem::path
     getJSONFilename(const std::vector<std::string>& compatibleList);
 
 /**
- * @brief Looks up the callouts in the JSON using the I2C keys.
- *
- * @param[in] errnoValue - The errno for the failure
- * @param[in] i2cBus - The I2C bus
- * @param[in] i2cAddress - The I2C address
- * @param[in] calloutJSON - The JSON containing the callouts
- *
- * @return std::vector<Callout> - The callouts
- */
-std::vector<device_callouts::Callout>
-    calloutI2C(int errnoValue, size_t i2CBus, uint8_t i2cAddress,
-               const nlohmann::json& calloutJSON);
-
-/**
  * @brief Determines the type of the path (FSI, I2C, etc) based
  *        on tokens in the device path.
  *

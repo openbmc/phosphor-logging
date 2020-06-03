@@ -94,7 +94,8 @@ const auto calloutJSON = R"(
                     {
                        "Name": "/chassis/motherboard/cpu0",
                        "LocationCode": "P1-C19",
-                       "Priority": "H"
+                       "Priority": "H",
+                       "MRU": "core0"
                     },
                     {
                        "Name": "/chassis/motherboard",
@@ -192,9 +193,9 @@ const auto calloutJSON = R"(
             {
                 "Callouts":[
                     {
-                       "Name": "/chassis/motherboard/cpu0",
-                       "LocationCode": "P1-C19",
-                       "Priority": "H"
+                       "Name": "/chassis/motherboard/cpu2",
+                       "LocationCode": "P1-C12",
+                       "Priority": "M"
                     }
                 ],
                 "Dest": "proc-0 target"
@@ -224,6 +225,39 @@ class DeviceCalloutsTest : public ::testing::Test
 
 std::string DeviceCalloutsTest::filename = "systemA_dev_callouts.json";
 fs::path DeviceCalloutsTest::dataPath;
+
+namespace openpower::pels::device_callouts
+{
+
+// Helpers to compair vectors of Callout objects
+bool operator!=(const Callout& left, const Callout& right)
+{
+    return (left.priority != right.priority) ||
+           (left.locationCode != right.locationCode) ||
+           (left.name != right.name) || (left.mru != right.mru) ||
+           (left.debug != right.debug);
+}
+
+bool operator==(const std::vector<Callout>& left,
+                const std::vector<Callout>& right)
+{
+    if (left.size() != right.size())
+    {
+        return false;
+    }
+
+    for (size_t i = 0; i < left.size(); i++)
+    {
+        if (left[i] != right[i])
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+} // namespace openpower::pels::device_callouts
 
 // Test looking up the JSON file based on the system compatible names
 TEST_F(DeviceCalloutsTest, getJSONFilenameTest)
@@ -255,7 +289,7 @@ TEST_F(DeviceCalloutsTest, getCalloutTypeTest)
     {
         EXPECT_EQ(util::getCalloutType(
                       "/sys/devices/platform/ahb/ahb:apb/ahb:apb:bus@1e78a000/"
-                      "1e78a340.i2c-bus/i2c-10/10-0022"),
+                      "1e78a340.i2c-bus/i2c-14/14-0072"),
                   util::CalloutType::i2c);
     }
 
@@ -398,5 +432,136 @@ TEST_F(DeviceCalloutsTest, getFSISPISearchKeysTest)
     {
         EXPECT_THROW(util::getFSISPISearchKeys("/sys/some/bad/path"),
                      std::invalid_argument);
+    }
+}
+
+TEST_F(DeviceCalloutsTest, getCalloutsTest)
+{
+    std::vector<std::string> systemTypes{"systemA", "systemB"};
+
+    // A really bogus path
+    {
+        EXPECT_THROW(getCallouts(5, "/bad/path", systemTypes),
+                     std::invalid_argument);
+    }
+
+    // I2C
+    {
+        auto callouts = getCallouts(
+            5,
+            "/sys/devices/platform/ahb/ahb:apb/ahb:apb:bus@1e78a000/"
+            "1e78a340.i2c-bus/i2c-14/14-0072",
+            systemTypes);
+
+        std::vector<Callout> expected{
+            {"H", "P1-C19", "/chassis/motherboard/cpu0", "core0",
+             "I2C: bus: 14 address: 114 dest: proc-0 target"},
+            {"M", "P1", "/chassis/motherboard", "", ""}};
+
+        EXPECT_EQ(callouts, expected);
+
+        // Use the bus/address API instead of the device path one
+        callouts = getI2CCallouts(5, 14, 0x72, systemTypes);
+        EXPECT_EQ(callouts, expected);
+
+        // I2C address not in JSON
+        EXPECT_THROW(
+            getCallouts(
+                5,
+                "/sys/devices/platform/ahb/ahb:apb/ahb:apb:bus@1e78a000/"
+                "1e78a340.i2c-bus/i2c-14/14-0099",
+                systemTypes),
+            std::invalid_argument);
+    }
+
+    // FSI
+    {
+        auto callouts = getCallouts(
+            5,
+            "/sys/devices/platform/ahb/ahb:apb/1e79b000.fsi/"
+            "fsi-master/fsi0/slave@00:00/00:00:00:0a/fsi-master/fsi1/"
+            "slave@01:00/01:01:00:06/sbefifo2-dev0/occ-hwmon.2",
+            systemTypes);
+
+        for (auto& c : callouts)
+        {
+            std::cerr << c.priority << " " << c.locationCode << " " << c.name
+                      << " " << c.mru << " " << c.debug << "\n";
+        }
+
+        std::vector<Callout> expected{{"H", "P1-C19",
+                                       "/chassis/motherboard/cpu0", "core",
+                                       "FSI: links: 0-1 dest: proc-0 target"}};
+
+        EXPECT_EQ(callouts, expected);
+
+        // link 9-1 not in JSON
+        EXPECT_THROW(
+            getCallouts(
+                5,
+                "/sys/devices/platform/ahb/ahb:apb/1e79b000.fsi/"
+                "fsi-master/fsi0/slave@09:00/00:00:00:0a/fsi-master/fsi1/"
+                "slave@01:00/01:01:00:06/sbefifo2-dev0/occ-hwmon.2",
+                systemTypes),
+            std::invalid_argument);
+    }
+
+    // FSI-I2C
+    {
+        auto callouts = getCallouts(
+            5,
+            "/sys/devices/platform/ahb/ahb:apb/1e79b000.fsi/"
+            "fsi-master/fsi0/slave@00:00/00:00:00:0a/fsi-master/fsi1/"
+            "slave@03:00/01:01:00:03/i2c-207/207-0019",
+            systemTypes);
+
+        for (auto& c : callouts)
+        {
+            std::cerr << c.priority << " " << c.locationCode << " " << c.name
+                      << " " << c.mru << " " << c.debug << "\n";
+        }
+
+        std::vector<Callout> expected{
+            {"H", "P1-C25", "/chassis/motherboard/cpu5", "",
+             "FSI-I2C: links: 0-3 bus: 7 addr: 25 dest: proc-5 target"},
+            {"M", "P1", "/chassis/motherboard", "", ""},
+            {"L", "P2", "/chassis/motherboard/bmc", "", ""}};
+
+        EXPECT_EQ(callouts, expected);
+
+        // Bus 2 not in JSON
+        EXPECT_THROW(
+            getCallouts(
+                5,
+                "/sys/devices/platform/ahb/ahb:apb/1e79b000.fsi/"
+                "fsi-master/fsi0/slave@00:00/00:00:00:0a/fsi-master/fsi1/"
+                "slave@03:00/01:01:00:03/i2c-202/202-0019",
+                systemTypes),
+            std::invalid_argument);
+    }
+
+    // FSI-SPI
+    {
+        auto callouts =
+            getCallouts(5,
+                        "/sys/devices/platform/ahb/ahb:apb/1e79b000.fsi/"
+                        "fsi-master/fsi0/slave@08:00/00:00:00:04/spi_master/"
+                        "spi3/spi3.0/spi3.00/nvmem",
+                        systemTypes);
+
+        std::vector<Callout> expected{
+            {"H", "P1-C19", "/chassis/motherboard/cpu0", "",
+             "FSI-SPI: links: 8 bus: 3 dest: proc-0 target"}};
+
+        EXPECT_EQ(callouts, expected);
+
+        // Bus 7 not in the JSON
+        EXPECT_THROW(
+            getCallouts(5,
+                        "/sys/devices/platform/ahb/ahb:apb/1e79b000.fsi/"
+                        "fsi-master/fsi0/slave@08:00/00:00:00:04/spi_master/"
+                        "spi7/spi7.0/spi7.00/nvmem",
+                        systemTypes),
+            std::invalid_argument);
     }
 }
