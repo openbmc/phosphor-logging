@@ -225,7 +225,6 @@ class DeviceCalloutsTest : public ::testing::Test
 std::string DeviceCalloutsTest::filename = "systemA_dev_callouts.json";
 fs::path DeviceCalloutsTest::dataPath;
 
-
 // Test looking up the JSON file based on the system compatible names
 TEST_F(DeviceCalloutsTest, getJSONFilenameTest)
 {
@@ -242,3 +241,50 @@ TEST_F(DeviceCalloutsTest, getJSONFilenameTest)
     }
 }
 
+// Test determining the callout type from the device path
+TEST_F(DeviceCalloutsTest, getCalloutTypeTest)
+{
+
+    // Invalid
+    {
+        EXPECT_EQ(util::getCalloutType("/some/bad/device/path"),
+                  util::CalloutType::unknown);
+    }
+
+    // I2C
+    {
+        EXPECT_EQ(util::getCalloutType(
+                      "/sys/devices/platform/ahb/ahb:apb/ahb:apb:bus@1e78a000/"
+                      "1e78a340.i2c-bus/i2c-10/10-0022"),
+                  util::CalloutType::i2c);
+    }
+
+    // FSI
+    {
+        EXPECT_EQ(util::getCalloutType(
+                      "/sys/devices/platform/ahb/ahb:apb/1e79b000.fsi/"
+                      "fsi-master/fsi0/slave@00:00/00:00:00:0a/fsi-master/fsi1/"
+                      "slave@01:00/01:01:00:06/sbefifo2-dev0/occ-hwmon.2"),
+                  util::CalloutType::fsi);
+    }
+
+    // FSI-I2C
+    {
+        EXPECT_EQ(util::getCalloutType(
+                      "/sys/devices/platform/ahb/ahb:apb/1e79b000.fsi/"
+                      "fsi-master/fsi0/slave@00:00/00:00:00:0a/fsi-master/fsi1/"
+                      "slave@01:00/01:01:00:03/i2c-211/211-0055"),
+                  util::CalloutType::fsii2c);
+    }
+
+    // FSI-SPI
+    {
+
+        EXPECT_EQ(
+            util::getCalloutType(
+                "/sys/devices/platform/ahb/ahb:apb/1e79b000.fsi/fsi-master/"
+                "fsi0/slave@00:00/00:00:00:0a/fsi-master/fsi1/slave@08:00/"
+                "01:03:00:04/spi_master/spi9/spi9.0/spi9.00/nvmem"),
+            util::CalloutType::fsispi);
+    }
+}
