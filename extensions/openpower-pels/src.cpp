@@ -28,6 +28,7 @@ namespace pels
 namespace pv = openpower::pels::pel_values;
 namespace rg = openpower::pels::message;
 using namespace phosphor::logging;
+using namespace std::string_literals;
 
 constexpr size_t ccinSize = 4;
 
@@ -144,9 +145,9 @@ void SRC::setUserDefinedHexWords(const message::Entry& regEntry,
         // Can only set words 6 - 9
         if (!isUserDefinedWord(wordNum))
         {
-            log<level::WARNING>("SRC user data word out of range",
-                                entry("WORD_NUM=%d", wordNum),
-                                entry("ERROR_NAME=%s", regEntry.name.c_str()));
+            std::string msg =
+                "SRC user data word out of range: " + std::to_string(wordNum);
+            addDebugData(msg);
             continue;
         }
 
@@ -158,9 +159,9 @@ void SRC::setUserDefinedHexWords(const message::Entry& regEntry,
         }
         else
         {
-            log<level::WARNING>("Source for user data SRC word not found",
-                                entry("ADDITIONALDATA_KEY=%s", adName.c_str()),
-                                entry("ERROR_NAME=%s", regEntry.name.c_str()));
+            std::string msg =
+                "Source for user data SRC word not found: " + adName;
+            addDebugData(msg);
         }
     }
 }
@@ -542,8 +543,9 @@ void SRC::addInventoryCallout(const std::string& inventoryPath,
         }
         catch (const SdBusError& e)
         {
-            std::string msg = "No VPD found for " + inventoryPath;
-            log<level::WARNING>(msg.c_str(), entry("ERROR=%s", e.what()));
+            std::string msg =
+                "No VPD found for " + inventoryPath + ": " + e.what();
+            addDebugData(msg);
 
             // Just create the callout with empty FRU fields
             callout = std::make_unique<src::Callout>(CalloutPriority::high,
@@ -552,8 +554,9 @@ void SRC::addInventoryCallout(const std::string& inventoryPath,
     }
     catch (const SdBusError& e)
     {
-        std::string msg = "Could not get location code for " + inventoryPath;
-        log<level::WARNING>(msg.c_str(), entry("ERROR=%s", e.what()));
+        std::string msg = "Could not get location code for " + inventoryPath +
+                          ": " + e.what();
+        addDebugData(msg);
 
         // If this were to happen, people would have to look in the UserData
         // section that contains CALLOUT_INVENTORY_PATH to see what failed.
@@ -583,8 +586,9 @@ void SRC::addRegistryCallouts(const message::Entry& regEntry,
     }
     catch (std::exception& e)
     {
-        log<level::ERR>("Error parsing PEL message registry callout JSON",
-                        entry("ERROR=%s", e.what()));
+        std::string msg =
+            "Error parsing PEL message registry callout JSON: "s + e.what();
+        addDebugData(msg);
     }
 }
 
