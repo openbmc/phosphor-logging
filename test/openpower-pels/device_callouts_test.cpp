@@ -288,3 +288,115 @@ TEST_F(DeviceCalloutsTest, getCalloutTypeTest)
             util::CalloutType::fsispi);
     }
 }
+
+// Test getting I2C search keys
+TEST_F(DeviceCalloutsTest, getI2CSearchKeysTest)
+{
+
+    {
+        EXPECT_EQ(util::getI2CSearchKeys(
+                      "/sys/devices/platform/ahb/ahb:apb/ahb:apb:bus@1e78a000/"
+                      "1e78a340.i2c-bus/i2c-10/10-0022"),
+                  (std::tuple{10, 0x22}));
+
+        EXPECT_EQ(util::getI2CSearchKeys(
+                      "/sys/devices/platform/ahb/ahb:apb/1e79b000.fsi/"
+                      "fsi-master/fsi0/slave@00:00/00:00:00:0a/fsi-master/fsi1/"
+                      "slave@01:00/01:01:00:03/i2c-211/211-0055"),
+                  (std::tuple{11, 0x55}));
+    }
+
+    {
+        EXPECT_THROW(util::getI2CSearchKeys("/sys/some/bad/path"),
+                     std::invalid_argument);
+    }
+}
+//
+// Test getting SPI search keys
+TEST_F(DeviceCalloutsTest, getSPISearchKeysTest)
+{
+    {
+        EXPECT_EQ(
+            util::getSPISearchKeys(
+                "/sys/devices/platform/ahb/ahb:apb/1e79b000.fsi/fsi-master/"
+                "fsi0/slave@00:00/00:00:00:0a/fsi-master/fsi1/slave@08:00/"
+                "01:03:00:04/spi_master/spi9/spi9.0/spi9.00/nvmem"),
+            9);
+    }
+
+    {
+        EXPECT_THROW(util::getSPISearchKeys("/sys/some/bad/path"),
+                     std::invalid_argument);
+    }
+}
+
+// Test getting FSI search keys
+TEST_F(DeviceCalloutsTest, getFSISearchKeysTest)
+{
+    {
+        EXPECT_EQ(util::getFSISearchKeys(
+                      "/sys/devices/platform/ahb/ahb:apb/1e79b000.fsi/"
+                      "fsi-master/fsi0/slave@00:00/00:00:00:04/spi_master/spi2/"
+                      "spi2.0/spi2.00/nvmem"),
+                  "0");
+    }
+
+    {
+        EXPECT_EQ(util::getFSISearchKeys(
+                      "/sys/devices/platform/ahb/ahb:apb/1e79b000.fsi/"
+                      "fsi-master/fsi0/slave@00:00/00:00:00:0a/fsi-master/fsi1/"
+                      "slave@01:00/01:01:00:06/sbefifo2-dev0/occ-hwmon.2"),
+                  "0-1");
+    }
+
+    {
+        EXPECT_EQ(
+            util::getFSISearchKeys(
+                "/sys/devices/platform/ahb/ahb:apb/1e79b000.fsi/"
+                "fsi-master/fsi0/slave@00:00/00:00:00:0a/fsi-master/fsi1/"
+                "slave@01:00/01:01:00:0a:/fsi-master/slave@04:00/01:01:00:0a"),
+            "0-1-4");
+    }
+
+    {
+        EXPECT_THROW(util::getFSISearchKeys("/sys/some/bad/path"),
+                     std::invalid_argument);
+    }
+}
+
+// Test getting FSI-I2C search keys
+TEST_F(DeviceCalloutsTest, getFSII2CSearchKeysTest)
+{
+    {
+        // Link 0-1 bus 11 address 0x55
+        EXPECT_EQ(util::getFSII2CSearchKeys(
+                      "/sys/devices/platform/ahb/ahb:apb/1e79b000.fsi/"
+                      "fsi-master/fsi0/slave@00:00/00:00:00:0a/fsi-master/fsi1/"
+                      "slave@01:00/01:01:00:03/i2c-211/211-0055"),
+                  (std::tuple{"0-1", std::tuple{11, 0x55}}));
+    }
+
+    {
+        EXPECT_THROW(util::getFSII2CSearchKeys("/sys/some/bad/path"),
+                     std::invalid_argument);
+    }
+}
+
+// Test getting FSI-SPI search keys
+TEST_F(DeviceCalloutsTest, getFSISPISearchKeysTest)
+{
+    {
+        // Link 0-8 SPI 9
+        EXPECT_EQ(
+            util::getFSISPISearchKeys(
+                "/sys/devices/platform/ahb/ahb:apb/1e79b000.fsi/fsi-master/"
+                "fsi0/slave@00:00/00:00:00:0a/fsi-master/fsi1/slave@08:00/"
+                "01:03:00:04/spi_master/spi9/spi9.0/spi9.00/nvmem"),
+            (std::tuple{"0-8", 9}));
+    }
+
+    {
+        EXPECT_THROW(util::getFSISPISearchKeys("/sys/some/bad/path"),
+                     std::invalid_argument);
+    }
+}
