@@ -90,6 +90,16 @@ class Section
         return false;
     }
 
+    /**
+     * @brief Returns any debug data stored in the object
+     *
+     * @return std::vector<std::string>& - The debug data
+     */
+    const std::vector<std::string>& getDebugData() const
+    {
+        return _debugData;
+    }
+
   protected:
     /**
      * @brief Returns the flattened size of the section header
@@ -97,6 +107,17 @@ class Section
     static constexpr size_t flattenedSize()
     {
         return SectionHeader::flattenedSize();
+    }
+
+    /**
+     * @brief Adds debug data to the object that may be displayed
+     *        in a UserData section in the PEL.
+     *
+     * @param[in] data - The new entry to add to the vector of data.
+     */
+    void addDebugData(const std::string& data)
+    {
+        _debugData.push_back(data);
     }
 
     /**
@@ -119,6 +140,14 @@ class Section
      * This is determined by the derived class.
      */
     bool _valid = false;
+
+    /**
+     * @brief Messages that derived classes can add during construction
+     *        of a PEL when something happens that would be useful to
+     *        store in the PEL.  This may get added into a UserData section
+     *        in the PEL.
+     */
+    std::vector<std::string> _debugData;
 };
 } // namespace pels
 } // namespace openpower
