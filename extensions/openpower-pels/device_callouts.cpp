@@ -101,10 +101,69 @@ std::vector<device_callouts::Callout> findCallouts(const std::string& devPath,
                                                    const nlohmann::json& json)
 {
     std::vector<Callout> callouts;
+    fs::path path;
 
-    // TODO
+    // Gives the /sys/devices/platform/ path
+    try
+    {
+        path = fs::canonical(devPath);
+    }
+    catch (const fs::filesystem_error& e)
+    {
+        // Path not there, still try to do the callout
+        path = devPath;
+    }
+
+    switch (util::getCalloutType(path))
+    {
+        case util::CalloutType::i2c:
+            // callouts = calloutI2CUsingPath(errnoValue, path, json);
+            break;
+        case util::CalloutType::fsi:
+            // callouts = calloutFSI(errnoValue, path, json);
+            break;
+        case util::CalloutType::fsii2c:
+            // callouts = calloutFSII2C(errnoValue, path, json);
+            break;
+        case util::CalloutType::fsispi:
+            // callouts = calloutFSISPI(errnoValue, path, json);
+            break;
+        default:
+            std::string msg =
+                "Could not get callout type from device path: " + path.string();
+            throw std::invalid_argument{msg.c_str()};
+            break;
+    }
 
     return callouts;
+}
+
+CalloutType getCalloutType(const std::string& devPath)
+{
+    if ((devPath.find("fsi-master") != std::string::npos) &&
+        (devPath.find("i2c-") != std::string::npos))
+    {
+        return CalloutType::fsii2c;
+    }
+
+    if ((devPath.find("fsi-master") != std::string::npos) &&
+        (devPath.find("spi") != std::string::npos))
+    {
+        return CalloutType::fsispi;
+    }
+
+    // Treat anything else FSI related as plain FSI
+    if (devPath.find("fsi-master") != std::string::npos)
+    {
+        return CalloutType::fsi;
+    }
+
+    if (devPath.find("i2c-bus/i2c-") != std::string::npos)
+    {
+        return CalloutType::i2c;
+    }
+
+    return CalloutType::unknown;
 }
 
 } // namespace util
