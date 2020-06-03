@@ -90,6 +90,111 @@ nlohmann::json loadJSON(const std::vector<std::string>& compatibleList)
     return nlohmann::json::parse(file);
 }
 
+std::tuple<size_t, uint8_t> getI2CSearchKeys(const std::string& devPath)
+{
+    std::smatch match;
+
+    // Look for i2c-A/A-00BB
+    // where A = bus number and BB = address
+    std::regex regex{"i2c-[0-9]+/([0-9]+)-00([0-9a-f]{2})"};
+
+    regex_search(devPath, match, regex);
+
+    if (match.size() != 3)
+    {
+        std::string msg = "Could not get I2C bus and address from " + devPath;
+        throw std::invalid_argument{msg.c_str()};
+    }
+
+    size_t bus = std::stoul(match[1].str(), nullptr, 0);
+
+    // An I2C bus on a CFAM has everything greater than the 10s digit
+    // as the CFAM number, so strip it off.  Like:
+    //    112 = cfam1 bus 12
+    //    1001 = cfam10 bus 1
+    bus = bus % 100;
+
+    uint8_t address = std::stoul(match[2].str(), nullptr, 16);
+
+    return {bus, address};
+}
+
+std::string getFSISearchKeys(const std::string& devPath)
+{
+    std::string links;
+    std::smatch match;
+    auto search = devPath;
+
+    // Look for slave@XX:
+    // where XX = link number in hex
+    std::regex regex{"slave@([0-9a-f]{2}):"};
+
+    // Find all links in the path and separate them with hyphens.
+    while (regex_search(search, match, regex))
+    {
+        // Convert to an int first to handle a hex number like "0a"
+        // though in reality there won't be more than links 0 - 9.
+        auto linkNum = std::stoul(match[1].str(), nullptr, 16);
+        links += std::to_string(linkNum) + '-';
+
+        search = match.suffix();
+    }
+
+    if (links.empty())
+    {
+        std::string msg = "Could not get FSI links from " + devPath;
+        throw std::invalid_argument{msg.c_str()};
+    }
+
+    // Remove the trailing '-'
+    links.pop_back();
+
+    return links;
+}
+
+std::tuple<std::string, std::tuple<size_t, uint8_t>>
+    getFSII2CSearchKeys(const std::string& devPath)
+{
+    // This combines the FSI and i2C search keys
+
+    auto links = getFSISearchKeys(devPath);
+    auto busAndAddr = getI2CSearchKeys(devPath);
+
+    return {std::move(links), std::move(busAndAddr)};
+}
+
+size_t getSPISearchKeys(const std::string& devPath)
+{
+    std::smatch match;
+
+    // Look for spi_master/spiX/ where X is the SPI bus/port number
+    // Note: This doesn't distinguish between multiple chips on
+    // the same port as no need for it yet.
+    std::regex regex{"spi_master/spi(\\d+)/"};
+
+    regex_search(devPath, match, regex);
+
+    if (match.size() != 2)
+    {
+        std::string msg = "Could not get SPI bus from " + devPath;
+        throw std::invalid_argument{msg.c_str()};
+    }
+
+    size_t port = std::stoul(match[1].str());
+
+    return port;
+}
+
+std::tuple<std::string, size_t> getFSISPISearchKeys(const std::string& devPath)
+{
+
+    // Combine the FSI and SPI search keys.
+    auto links = getFSISearchKeys(devPath);
+    auto bus = getSPISearchKeys(devPath);
+
+    return {std::move(links), std::move(bus)};
+}
+
 std::vector<device_callouts::Callout>
     calloutI2C(int errnoValue, size_t i2cBus, uint8_t i2cAddress,
                const nlohmann::json& calloutJSON)
