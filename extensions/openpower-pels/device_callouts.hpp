@@ -166,5 +166,69 @@ std::vector<device_callouts::Callout>
  */
 CalloutType getCalloutType(const std::string& devPath);
 
+/**
+ * @brief Pulls the fields out of the I2C device path to use as search keys
+ *        in the JSON.
+ *
+ * The keys are the I2C bus and address.
+ *
+ * @param[in] devPath - The device path
+ *
+ * @return std::tuple<size_t, uint8_t> - The I2C bus and address keys
+ */
+std::tuple<size_t, uint8_t> getI2CSearchKeys(const std::string& devPath);
+
+/**
+ * @brief Pulls the fields out of the FSI device path to use as search keys
+ *        in the JSON.
+ *
+ * The key is the FSI link.  For multi-hop paths, the links are
+ * separated by '-'s, like "0-1-2".
+ *
+ * @param[in] devPath - The device path
+ *
+ * @return std::string - The FSI links key
+ */
+std::string getFSISearchKeys(const std::string& devPath);
+
+/**
+ * @brief Pulls the fields out of the FSI-I2C device path to use as
+ *        search keys in the JSON.
+ *
+ * The keys are the FSI link string and the  I2C bus and address.
+ *
+ * @param[in] devPath - The device path
+ *
+ * @return std::tuple<std::string, std::tuple<size_t, uint8_t>>
+ *         - The FSI links key along with the I2C bus/address.
+ */
+std::tuple<std::string, std::tuple<size_t, uint8_t>>
+    getFSII2CSearchKeys(const std::string& devPath);
+
+/**
+ * @brief Pulls the fields out of the SPI device path to use as search keys
+ *        in the JSON.
+ *
+ * The key is the SPI bus number.
+ *
+ * @param[in] devPath - The device path
+ *
+ * @return size_t - The SPI bus key
+ */
+size_t getSPISearchKeys(const std::string& devPath);
+
+/**
+ * @brief Pulls the fields out of the FSI-SPI device path to use as
+ *        search keys in the JSON.
+ *
+ * The keys are the FSI link string and the SPI bus number.
+ *
+ * @param[in] devPath - The device path
+ *
+ * @return std::tuple<std::string, size_t>
+ *         - The FSI links key along with the SPI bus number.
+ */
+std::tuple<std::string, size_t> getFSISPISearchKeys(const std::string& devPath);
+
 } // namespace util
 } // namespace openpower::pels::device_callouts
