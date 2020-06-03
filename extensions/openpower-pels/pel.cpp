@@ -48,11 +48,18 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
          const AdditionalData& additionalData, const PelFFDC& ffdcFiles,
          const DataInterfaceBase& dataIface)
 {
+    std::map<std::string, std::vector<std::string>> debugData;
+
     _ph = std::make_unique<PrivateHeader>(regEntry.componentID, obmcLogID,
                                           timestamp);
     _uh = std::make_unique<UserHeader>(regEntry, severity, dataIface);
 
     auto src = std::make_unique<SRC>(regEntry, additionalData, dataIface);
+    if (!src->getDebugData().empty())
+    {
+        // Something didn't go as planned
+        debugData.emplace("SRC", src->getDebugData());
+    }
 
     auto euh = std::make_unique<ExtendedUserHeader>(dataIface, regEntry, *src);
 
@@ -63,31 +70,13 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
     _optionalSections.push_back(std::move(mtms));
 
     auto ud = util::makeSysInfoUserDataSection(additionalData, dataIface);
-    _optionalSections.push_back(std::move(ud));
+    addUserDataSection(std::move(ud));
 
     // Create a UserData section from AdditionalData.
     if (!additionalData.empty())
     {
         ud = util::makeADUserDataSection(additionalData);
-
-        // Shrink the section if necessary.
-        if (size() + ud->header().size > _maxPELSize)
-        {
-            if (ud->shrink(_maxPELSize - size()))
-            {
-                _optionalSections.push_back(std::move(ud));
-            }
-            else
-            {
-                log<level::WARNING>(
-                    "Dropping AdditionalData UserData section",
-                    entry("SECTION_SIZE=%d\n", ud->header().size));
-            }
-        }
-        else
-        {
-            _optionalSections.push_back(std::move(ud));
-        }
+        addUserDataSection(std::move(ud));
     }
 
     // Add any FFDC files into UserData sections
@@ -96,31 +85,46 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
         ud = util::makeFFDCuserDataSection(regEntry.componentID, file);
         if (!ud)
         {
-            log<level::WARNING>(
-                "Could not make PEL FFDC UserData section from file",
-                entry("COMPONENT_ID=0x%02X", regEntry.componentID),
-                entry("SUBTYPE=0x%X", file.subType),
-                entry("VERSION=0x%X", file.version));
+            // Add this error into the debug data UserData section
+            std::ostringstream msg;
+            msg << "Could not make PEL FFDC UserData section from file"
+                << std::hex << regEntry.componentID << " " << file.subType
+                << " " << file.version;
+            if (debugData.count("FFDC File"))
+            {
+                debugData.at("FFDC File").push_back(msg.str());
+            }
+            else
+            {
+                debugData.emplace("FFDC File",
+                                  std::vector<std::string>{msg.str()});
+            }
+
             continue;
         }
 
-        // Shrink it if necessary
-        if (size() + ud->header().size > _maxPELSize)
-        {
-            if (!ud->shrink(_maxPELSize - size()))
-            {
-                log<level::WARNING>(
-                    "Could not shrink FFDC UserData section",
-                    entry("COMPONENT_ID=0x%02X", regEntry.componentID),
-                    entry("SUBTYPE=0x%X", file.subType),
-                    entry("VERSION=0x%X", file.version));
+        addUserDataSection(std::move(ud));
+    }
 
-                // Give up adding FFDC
-                break;
+    // Store in the PEL any important debug data created while
+    // building the PEL sections.
+    if (!debugData.empty())
+    {
+        nlohmann::json data;
+        data["PEL Internal Debug Data"] = debugData;
+        ud = util::makeJSONUserDataSection(data);
+
+        addUserDataSection(std::move(ud));
+
+        // Also put in the journal for debug
+        for (const auto& [name, data] : debugData)
+        {
+            for (const auto& message : data)
+            {
+                std::string entry = name + ": " + message;
+                log<level::INFO>(entry.c_str());
             }
         }
-
-        _optionalSections.push_back(std::move(ud));
     }
 
     _ph->setSectionCount(2 + _optionalSections.size());
@@ -368,6 +372,32 @@ void PEL::toJSON(message::Registry& registry) const
     if (found != std::string::npos)
         buf.replace(found, 1, "");
     std::cout << buf << std::endl;
+}
+
+bool PEL::addUserDataSection(std::unique_ptr<UserData> userData)
+{
+    if (size() + userData->header().size > _maxPELSize)
+    {
+        if (userData->shrink(_maxPELSize - size()))
+        {
+            _optionalSections.push_back(std::move(userData));
+        }
+        else
+        {
+            log<level::WARNING>(
+                "Could not shrink UserData section. Dropping",
+                entry("SECTION_SIZE=%d\n", userData->header().size),
+                entry("COMPONENT_ID=0x%02X", userData->header().componentID),
+                entry("SUBTYPE=0x%X", userData->header().subType),
+                entry("VERSION=0x%X", userData->header().version));
+            return false;
+        }
+    }
+    else
+    {
+        _optionalSections.push_back(std::move(userData));
+    }
+    return true;
 }
 
 namespace util

@@ -317,6 +317,28 @@ class PEL
     std::map<uint16_t, size_t> getPluralSections() const;
 
     /**
+     * @brief Adds the UserData section to this PEL object,
+     *        shrinking it if necessary
+     *
+     * @param[in] userData - The section to add
+     *
+     * @return bool - If the section was added or not.
+     */
+    bool addUserDataSection(std::unique_ptr<UserData> userData);
+
+    /**
+     * @brief helper function for printing PELs.
+     * @param[in] Section& - section object reference
+     * @param[in] std::string - PEL string
+     * @param[in|out] pluralSections - Map used to track sections counts for
+     *                                 when there is more than 1.
+     * @param[in] registry - Registry object reference
+     */
+    void printSectionInJSON(const Section& section, std::string& buf,
+                            std::map<uint16_t, size_t>& pluralSections,
+                            message::Registry& registry) const;
+
+    /**
      * @brief The PEL Private Header section
      */
     std::unique_ptr<PrivateHeader> _ph;
@@ -332,18 +354,6 @@ class PEL
     std::vector<std::unique_ptr<Section>> _optionalSections;
 
     /**
-     * @brief helper function for printing PELs.
-     * @param[in] Section& - section object reference
-     * @param[in] std::string - PEL string
-     * @param[in|out] pluralSections - Map used to track sections counts for
-     *                                 when there is more than 1.
-     * @param[in] registry - Registry object reference
-     */
-    void printSectionInJSON(const Section& section, std::string& buf,
-                            std::map<uint16_t, size_t>& pluralSections,
-                            message::Registry& registry) const;
-
-    /**
      * @brief The maximum size a PEL can be in bytes.
      */
     static constexpr size_t _maxPELSize = 16384;
@@ -351,6 +361,15 @@ class PEL
 
 namespace util
 {
+
+/**
+ * @brief Creates a UserData section object that contains JSON.
+ *
+ * @param[in] json - The JSON contents
+ *
+ * @return std::unique_ptr<UserData> - The UserData object
+ */
+std::unique_ptr<UserData> makeJSONUserDataSection(const nlohmann::json& json);
 
 /**
  * @brief Create a UserData section containing the AdditionalData
