@@ -194,14 +194,255 @@ std::tuple<std::string, size_t> getFSISPISearchKeys(const std::string& devPath)
     return {std::move(links), std::move(bus)};
 }
 
+/**
+ * @brief Pull the callouts out of the JSON callout array passed in
+ *
+ * Create a vector of Callout objects based on the JSON.
+ *
+ * This will also fill in the 'debug' member on the first callout
+ * in the list, which could contain things like the I2C address and
+ * bus extracted from the device path.
+ *
+ * The callouts are in the order they should be added to the PEL.
+ *
+ * @param[in] calloutJSON - The Callouts JSON array to extract from
+ * @param[in] debug - The debug message to add to the first callout
+ *
+ * @return std::vector<Callout> - The Callout objects
+ */
+std::vector<Callout> extractCallouts(const nlohmann::json& calloutJSON,
+                                     const std::string& debug)
+{
+    std::vector<Callout> callouts;
+    bool addDebug = true;
+
+    // The JSON element passed in is the array of callouts
+    if (!calloutJSON.is_array())
+    {
+        throw std::runtime_error(
+            "Dev path callout JSON entry doesn't contain a 'Callouts' array");
+    }
+
+    for (auto& callout : calloutJSON)
+    {
+        Callout c;
+
+        // Add any debug data to the first callout
+        if (addDebug && !debug.empty())
+        {
+            addDebug = false;
+            c.debug = debug;
+        }
+
+        try
+        {
+            c.locationCode = callout.at("LocationCode").get<std::string>();
+            c.name = callout.at("Name").get<std::string>();
+            c.priority = callout.at("Priority").get<std::string>();
+
+            if (callout.contains("MRU"))
+            {
+                c.mru = callout.at("MRU").get<std::string>();
+            }
+        }
+        catch (const nlohmann::json::out_of_range& e)
+        {
+            std::string msg =
+                "Callout entry missing either LocationCode, Name, or Priority "
+                "properties: " +
+                callout.dump();
+            throw std::runtime_error(msg.c_str());
+        }
+
+        callouts.push_back(c);
+    }
+
+    return callouts;
+}
+
+/**
+ * @brief Looks up the callouts in the JSON using the I2C keys.
+ *
+ * @param[in] i2cBus - The I2C bus
+ * @param[in] i2cAddress - The I2C address
+ * @param[in] calloutJSON - The JSON containing the callouts
+ *
+ * @return std::vector<Callout> - The callouts
+ */
 std::vector<device_callouts::Callout>
     calloutI2C(size_t i2cBus, uint8_t i2cAddress,
                const nlohmann::json& calloutJSON)
 {
-    // TODO
-    return {};
+    auto busString = std::to_string(i2cBus);
+    auto addrString = std::to_string(i2cAddress);
+
+    try
+    {
+        const auto& callouts =
+            calloutJSON.at("I2C").at(busString).at(addrString).at("Callouts");
+
+        auto dest = calloutJSON.at("I2C")
+                        .at(busString)
+                        .at(addrString)
+                        .at("Dest")
+                        .get<std::string>();
+
+        std::string msg = "I2C: bus: " + busString + " address: " + addrString +
+                          " dest: " + dest;
+
+        return extractCallouts(callouts, msg);
+    }
+    catch (const nlohmann::json::out_of_range& e)
+    {
+        std::string msg = "Problem looking up I2C callouts on " + busString +
+                          " " + addrString + ": " + std::string{e.what()};
+        throw std::invalid_argument(msg.c_str());
+    }
 }
 
+/**
+ * @brief Looks up the callouts in the JSON for this I2C path.
+ *
+ * @param[in] devPath - The device path
+ * @param[in] calloutJSON - The JSON containing the callouts
+ *
+ * @return std::vector<Callout> - The callouts
+ */
+std::vector<device_callouts::Callout>
+    calloutI2CUsingPath(const std::string& devPath,
+                        const nlohmann::json& calloutJSON)
+{
+    auto [bus, address] = getI2CSearchKeys(devPath);
+
+    return calloutI2C(bus, address, calloutJSON);
+}
+
+/**
+ * @brief Looks up the callouts in the JSON for this FSI path.
+ *
+ * @param[in] devPath - The device path
+ * @param[in] calloutJSON - The JSON containing the callouts
+ *
+ * @return std::vector<Callout> - The callouts
+ */
+std::vector<device_callouts::Callout>
+    calloutFSI(const std::string& devPath, const nlohmann::json& calloutJSON)
+{
+    auto links = getFSISearchKeys(devPath);
+
+    try
+    {
+        const auto& callouts = calloutJSON.at("FSI").at(links).at("Callouts");
+
+        auto dest =
+            calloutJSON.at("FSI").at(links).at("Dest").get<std::string>();
+
+        std::string msg = "FSI: links: " + links + " dest: " + dest;
+
+        return extractCallouts(callouts, msg);
+    }
+    catch (const nlohmann::json::out_of_range& e)
+    {
+        std::string msg = "Problem looking up FSI callouts on " + links + ": " +
+                          std::string{e.what()};
+        throw std::invalid_argument(msg.c_str());
+    }
+}
+
+/**
+ * @brief Looks up the callouts in the JSON for this FSI-I2C path.
+ *
+ * @param[in] devPath - The device path
+ * @param[in] calloutJSON - The JSON containing the callouts
+ *
+ * @return std::vector<Callout> - The callouts
+ */
+std::vector<device_callouts::Callout>
+    calloutFSII2C(const std::string& devPath, const nlohmann::json& calloutJSON)
+{
+    auto linksAndI2C = getFSII2CSearchKeys(devPath);
+    auto links = std::get<std::string>(linksAndI2C);
+    const auto& busAndAddr = std::get<1>(linksAndI2C);
+
+    auto busString = std::to_string(std::get<size_t>(busAndAddr));
+    auto addrString = std::to_string(std::get<uint8_t>(busAndAddr));
+
+    try
+    {
+        auto& callouts = calloutJSON.at("FSI-I2C")
+                             .at(links)
+                             .at(busString)
+                             .at(addrString)
+                             .at("Callouts");
+
+        auto dest = calloutJSON.at("FSI-I2C")
+                        .at(links)
+                        .at(busString)
+                        .at(addrString)
+                        .at("Dest")
+                        .get<std::string>();
+
+        std::string msg = "FSI-I2C: links: " + links + " bus: " + busString +
+                          " addr: " + addrString + " dest: " + dest;
+
+        return extractCallouts(callouts, msg);
+    }
+    catch (const nlohmann::json::out_of_range& e)
+    {
+        std::string msg = "Problem looking up FSI-I2C callouts on " + links +
+                          " " + busString + " " + addrString + ": " + e.what();
+        throw std::invalid_argument(msg.c_str());
+    }
+}
+
+/**
+ * @brief Looks up the callouts in the JSON for this FSI-SPI path.
+ *
+ * @param[in] devPath - The device path
+ * @param[in] calloutJSON - The JSON containing the callouts
+ *
+ * @return std::vector<Callout> - The callouts
+ */
+std::vector<device_callouts::Callout>
+    calloutFSISPI(const std::string& devPath, const nlohmann::json& calloutJSON)
+{
+    auto linksAndSPI = getFSISPISearchKeys(devPath);
+    auto links = std::get<std::string>(linksAndSPI);
+    auto busString = std::to_string(std::get<size_t>(linksAndSPI));
+
+    try
+    {
+        auto& callouts =
+            calloutJSON.at("FSI-SPI").at(links).at(busString).at("Callouts");
+
+        auto dest = calloutJSON.at("FSI-SPI")
+                        .at(links)
+                        .at(busString)
+                        .at("Dest")
+                        .get<std::string>();
+
+        std::string msg = "FSI-SPI: links: " + links + " bus: " + busString +
+                          " dest: " + dest;
+
+        return extractCallouts(callouts, msg);
+    }
+    catch (const nlohmann::json::out_of_range& e)
+    {
+        std::string msg = "Problem looking up FSI-SPI callouts on " + links +
+                          " " + busString + ": " + std::string{e.what()};
+        throw std::invalid_argument(msg.c_str());
+    }
+}
+
+/**
+ * @brief Returns the callouts from the JSON based on the input
+ *        device path.
+ *
+ * @param[in] devPath - The device path
+ * @param[in] json - The callout JSON
+ *
+ * @return std::vector<Callout> - The list of callouts
+ */
 std::vector<device_callouts::Callout> findCallouts(const std::string& devPath,
                                                    const nlohmann::json& json)
 {
@@ -222,16 +463,16 @@ std::vector<device_callouts::Callout> findCallouts(const std::string& devPath,
     switch (util::getCalloutType(path))
     {
         case util::CalloutType::i2c:
-            // callouts = calloutI2CUsingPath(errnoValue, path, json);
+            callouts = calloutI2CUsingPath(path, json);
             break;
         case util::CalloutType::fsi:
-            // callouts = calloutFSI(errnoValue, path, json);
+            callouts = calloutFSI(path, json);
             break;
         case util::CalloutType::fsii2c:
-            // callouts = calloutFSII2C(errnoValue, path, json);
+            callouts = calloutFSII2C(path, json);
             break;
         case util::CalloutType::fsispi:
-            // callouts = calloutFSISPI(errnoValue, path, json);
+            callouts = calloutFSISPI(path, json);
             break;
         default:
             std::string msg =
