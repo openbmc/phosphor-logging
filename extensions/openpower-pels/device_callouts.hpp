@@ -1,7 +1,5 @@
 #pragma once
 
-#include "pel_types.hpp"
-
 #include <filesystem>
 #include <nlohmann/json.hpp>
 #include <string>
@@ -125,6 +123,18 @@ namespace util
 {
 
 /**
+ * @brief The different callout path types
+ */
+enum class CalloutType
+{
+    i2c,
+    fsi,
+    fsii2c,
+    fsispi,
+    unknown
+};
+
+/**
  * @brief Returns the path to the JSON file to look up callouts in.
  *
  * @param[in] compatibleList - The list of compatible names for this
@@ -148,5 +158,16 @@ std::filesystem::path
 std::vector<device_callouts::Callout>
     calloutI2C(int errnoValue, size_t i2CBus, uint8_t i2cAddress,
                const nlohmann::json& calloutJSON);
+
+/**
+ * @brief Determines the type of the path (FSI, I2C, etc) based
+ *        on tokens in the device path.
+ *
+ * @param[in] devPath - The device path
+ *
+ * @return CalloutType - The callout type
+ */
+CalloutType getCalloutType(const std::string& devPath);
+
 } // namespace util
 } // namespace openpower::pels::device_callouts
