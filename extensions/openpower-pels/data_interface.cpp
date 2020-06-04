@@ -356,5 +356,33 @@ std::string
     return std::get<std::string>(locCode);
 }
 
+std::string
+    DataInterface::addLocationCodePrefix(const std::string& locationCode)
+{
+    static const std::string locationCodePrefix{"Ufcs-"};
+
+    if (locationCode.find(locationCodePrefix) == std::string::npos)
+    {
+        return locationCodePrefix + locationCode;
+    }
+
+    return locationCode;
+}
+
+std::string DataInterface::expandLocationCode(const std::string& locationCode,
+                                              uint16_t node) const
+{
+    // TODO: fill in when that API is available
+    return addLocationCodePrefix(locationCode);
+}
+
+std::string DataInterface::getInventoryFromLocCode(
+    const std::string& unexpandedLocationCode, uint16_t node) const
+{
+    // TODO: fill in when that API is available and  call on
+    // addLocationCodePrefix(unexpandedLocationCode);
+    return {};
+}
+
 } // namespace pels
 } // namespace openpower
