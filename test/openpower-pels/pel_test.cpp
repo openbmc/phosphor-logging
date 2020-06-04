@@ -26,8 +26,11 @@
 
 namespace fs = std::filesystem;
 using namespace openpower::pels;
+using ::testing::_;
 using ::testing::NiceMock;
 using ::testing::Return;
+using ::testing::ReturnRef;
+using ::testing::SetArgReferee;
 
 class PELTest : public CleanLogID
 {
@@ -766,4 +769,154 @@ TEST_F(PELTest, CreateWithFFDCTest)
     EXPECT_LT(ud->header().size, 16000);
 
     fs::remove_all(dir);
+}
+
+// Create a PEL with device callouts
+TEST_F(PELTest, CreateWithDevCalloutsTest)
+{
+    message::Entry regEntry;
+    uint64_t timestamp = 5;
+
+    regEntry.name = "test";
+    regEntry.subsystem = 5;
+    regEntry.actionFlags = 0xC000;
+    regEntry.src.type = 0xBD;
+    regEntry.src.reasonCode = 0x1234;
+
+    NiceMock<MockDataInterface> dataIface;
+    PelFFDC ffdc;
+
+    const auto calloutJSON = R"(
+    {
+        "I2C":
+        {
+            "14":
+            {
+                "114":
+                {
+                    "Callouts":[
+                        {
+                        "Name": "/chassis/motherboard/cpu0",
+                        "LocationCode": "P1",
+                        "Priority": "H"
+                        }
+                    ],
+                    "Dest": "proc 0 target"
+                }
+            }
+        }
+    })";
+
+    std::vector<std::string> names{"systemA"};
+    EXPECT_CALL(dataIface, getSystemNames)
+        .Times(2)
+        .WillRepeatedly(ReturnRef(names));
+
+    EXPECT_CALL(dataIface,
+                getLocationCode(
+                    "/xyz/openbmc_project/inventory/chassis/motherboard/cpu0"))
+        .WillOnce(Return("UXXX-P1"));
+
+    EXPECT_CALL(dataIface, getInventoryFromLocCode("P1", 0))
+        .WillOnce(
+            Return("/xyz/openbmc_project/inventory/chassis/motherboard/cpu0"));
+
+    EXPECT_CALL(
+        dataIface,
+        getHWCalloutFields(
+            "/xyz/openbmc_project/inventory/chassis/motherboard/cpu0", _, _, _))
+        .WillOnce(DoAll(SetArgReferee<1>("1234567"), SetArgReferee<2>("CCCC"),
+                        SetArgReferee<3>("123456789ABC")));
+
+    auto dataPath = getPELReadOnlyDataPath();
+    std::ofstream file{dataPath / "systemA_dev_callouts.json"};
+    file << calloutJSON;
+    file.close();
+
+    {
+        std::vector<std::string> data{
+            "CALLOUT_ERRNO=5",
+            "CALLOUT_DEVICE_PATH=/sys/devices/platform/ahb/ahb:apb/"
+            "ahb:apb:bus@1e78a000/1e78a340.i2c-bus/i2c-14/14-0072"};
+
+        AdditionalData ad{data};
+
+        PEL pel{
+            regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
+            ad,       ffdc, dataIface};
+
+        ASSERT_TRUE(pel.primarySRC().value()->callouts());
+        auto& callouts = pel.primarySRC().value()->callouts()->callouts();
+        ASSERT_EQ(callouts.size(), 1);
+
+        EXPECT_EQ(callouts[0]->priority(), 'H');
+        EXPECT_EQ(callouts[0]->locationCode(), "UXXX-P1");
+
+        auto& fru = callouts[0]->fruIdentity();
+        EXPECT_EQ(fru->getPN().value(), "1234567");
+        EXPECT_EQ(fru->getCCIN().value(), "CCCC");
+        EXPECT_EQ(fru->getSN().value(), "123456789ABC");
+
+        const auto& section = pel.optionalSections().back();
+
+        ASSERT_EQ(section->header().id, 0x5544); // UD
+        auto ud = static_cast<UserData*>(section.get());
+
+        // Check that there was a UserData section added that
+        // contains debug details about the device.
+        const auto& d = ud->data();
+        std::string jsonString{d.begin(), d.end()};
+        auto actualJSON = nlohmann::json::parse(jsonString);
+
+        auto expectedJSON = R"(
+            {
+                "PEL Internal Debug Data": {
+                    "SRC": [
+                      "I2C: bus: 14 address: 114 dest: proc 0 target"
+                    ]
+                }
+            }
+        )"_json;
+
+        EXPECT_EQ(actualJSON, expectedJSON);
+    }
+
+    {
+        // Device path not found (wrong i2c addr), so no callouts
+        std::vector<std::string> data{
+            "CALLOUT_ERRNO=5",
+            "CALLOUT_DEVICE_PATH=/sys/devices/platform/ahb/ahb:apb/"
+            "ahb:apb:bus@1e78a000/1e78a340.i2c-bus/i2c-14/14-0099"};
+
+        AdditionalData ad{data};
+
+        PEL pel{
+            regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
+            ad,       ffdc, dataIface};
+
+        // no callouts
+        EXPECT_FALSE(pel.primarySRC().value()->callouts());
+
+        // Now check that there was a UserData section
+        // that contains the lookup error.
+        const auto& section = pel.optionalSections().back();
+
+        ASSERT_EQ(section->header().id, 0x5544); // UD
+        auto ud = static_cast<UserData*>(section.get());
+
+        const auto& d = ud->data();
+
+        std::string jsonString{d.begin(), d.end()};
+
+        auto actualJSON = nlohmann::json::parse(jsonString);
+
+        auto expectedJSON =
+            "{\"PEL Internal Debug Data\":{\"SRC\":"
+            "[\"Problem looking up I2C callouts on 14 153: "
+            "[json.exception.out_of_range.403] key '153' not found\"]}}"_json;
+
+        EXPECT_EQ(actualJSON, expectedJSON);
+    }
+
+    fs::remove_all(dataPath);
 }
