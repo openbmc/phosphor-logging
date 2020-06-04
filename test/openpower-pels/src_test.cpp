@@ -348,6 +348,7 @@ TEST_F(SRCTest, InventoryCalloutTest)
     auto& callout = src.callouts()->callouts().front();
 
     EXPECT_EQ(callout->locationCode(), "UTMS-P1");
+    EXPECT_EQ(callout->priority(), 'H');
 
     auto& fru = callout->fruIdentity();
 
@@ -401,6 +402,7 @@ TEST_F(SRCTest, InventoryCalloutNoLocCodeTest)
 
     auto& callout = src.callouts()->callouts().front();
     EXPECT_EQ(callout->locationCodeSize(), 0);
+    EXPECT_EQ(callout->priority(), 'H');
 
     auto& fru = callout->fruIdentity();
 
@@ -452,6 +454,7 @@ TEST_F(SRCTest, InventoryCalloutNoVPDTest)
 
     auto& callout = src.callouts()->callouts().front();
     EXPECT_EQ(callout->locationCode(), "UTMS-P10");
+    EXPECT_EQ(callout->priority(), 'H');
 
     auto& fru = callout->fruIdentity();
 
@@ -664,4 +667,210 @@ TEST_F(SRCTest, RegistryCalloutTest)
         EXPECT_EQ(fru2->getCCIN().value(), "DDDD");
         EXPECT_EQ(fru2->getSN().value(), "23456789ABCD");
     }
+}
+
+// Test looking up device path fails in the callout jSON.
+TEST_F(SRCTest, DevicePathCalloutTest)
+{
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+    entry.src.powerFault = false;
+
+    const auto calloutJSON = R"(
+    {
+        "I2C":
+        {
+            "14":
+            {
+                "114":
+                {
+                    "Callouts":[
+                    {
+                        "Name": "/chassis/motherboard/cpu0",
+                        "LocationCode": "P1-C40",
+                        "Priority": "H"
+                    },
+                    {
+                        "Name": "/chassis/motherboard",
+                        "LocationCode": "P1",
+                        "Priority": "M"
+                    },
+                    {
+                        "Name": "/chassis/motherboard/bmc",
+                        "LocationCode": "P1-C15",
+                        "Priority": "L"
+                    }
+                    ],
+                    "Dest": "proc 0 target"
+                }
+            }
+        }
+    })";
+
+    auto dataPath = getPELReadOnlyDataPath();
+    std::ofstream file{dataPath / "systemA_dev_callouts.json"};
+    file << calloutJSON;
+    file.close();
+
+    NiceMock<MockDataInterface> dataIface;
+    std::vector<std::string> names{"systemA"};
+
+    EXPECT_CALL(dataIface, getSystemNames)
+        .Times(5)
+        .WillRepeatedly(ReturnRef(names));
+
+    EXPECT_CALL(dataIface, getInventoryFromLocCode("P1-C40", 0))
+        .Times(3)
+        .WillRepeatedly(
+            Return("/xyz/openbmc_project/inventory/chassis/motherboard/cpu0"));
+
+    EXPECT_CALL(dataIface, getInventoryFromLocCode("P1", 0))
+        .Times(3)
+        .WillRepeatedly(
+            Return("/xyz/openbmc_project/inventory/chassis/motherboard"));
+
+    EXPECT_CALL(dataIface, getInventoryFromLocCode("P1-C15", 0))
+        .Times(3)
+        .WillRepeatedly(
+            Return("/xyz/openbmc_project/inventory/chassis/motherboard/bmc"));
+
+    EXPECT_CALL(dataIface,
+                getLocationCode(
+                    "/xyz/openbmc_project/inventory/chassis/motherboard/cpu0"))
+        .Times(3)
+        .WillRepeatedly(Return("Ufcs-P1-C40"));
+    EXPECT_CALL(
+        dataIface,
+        getLocationCode("/xyz/openbmc_project/inventory/chassis/motherboard"))
+        .Times(3)
+        .WillRepeatedly(Return("Ufcs-P1"));
+    EXPECT_CALL(dataIface,
+                getLocationCode(
+                    "/xyz/openbmc_project/inventory/chassis/motherboard/bmc"))
+        .Times(3)
+        .WillRepeatedly(Return("Ufcs-P1-C15"));
+
+    EXPECT_CALL(
+        dataIface,
+        getHWCalloutFields(
+            "/xyz/openbmc_project/inventory/chassis/motherboard/cpu0", _, _, _))
+        .Times(3)
+        .WillRepeatedly(DoAll(SetArgReferee<1>("1234567"),
+                              SetArgReferee<2>("CCCC"),
+                              SetArgReferee<3>("123456789ABC")));
+    EXPECT_CALL(
+        dataIface,
+        getHWCalloutFields("/xyz/openbmc_project/inventory/chassis/motherboard",
+                           _, _, _))
+        .Times(3)
+        .WillRepeatedly(DoAll(SetArgReferee<1>("7654321"),
+                              SetArgReferee<2>("MMMM"),
+                              SetArgReferee<3>("CBA987654321")));
+    EXPECT_CALL(
+        dataIface,
+        getHWCalloutFields(
+            "/xyz/openbmc_project/inventory/chassis/motherboard/bmc", _, _, _))
+        .Times(3)
+        .WillRepeatedly(DoAll(SetArgReferee<1>("7123456"),
+                              SetArgReferee<2>("BBBB"),
+                              SetArgReferee<3>("C123456789AB")));
+
+    // Call this below with different AdditionalData values that
+    // result in the same callouts.
+    auto checkCallouts = [&entry, &dataIface](const auto& items) {
+        AdditionalData ad{items};
+        SRC src{entry, ad, dataIface};
+
+        ASSERT_TRUE(src.callouts());
+        auto& callouts = src.callouts()->callouts();
+
+        ASSERT_EQ(callouts.size(), 3);
+
+        {
+            EXPECT_EQ(callouts[0]->priority(), 'H');
+            EXPECT_EQ(callouts[0]->locationCode(), "Ufcs-P1-C40");
+
+            auto& fru = callouts[0]->fruIdentity();
+            EXPECT_EQ(fru->getPN().value(), "1234567");
+            EXPECT_EQ(fru->getCCIN().value(), "CCCC");
+            EXPECT_EQ(fru->getSN().value(), "123456789ABC");
+        }
+        {
+            EXPECT_EQ(callouts[1]->priority(), 'M');
+            EXPECT_EQ(callouts[1]->locationCode(), "Ufcs-P1");
+
+            auto& fru = callouts[1]->fruIdentity();
+            EXPECT_EQ(fru->getPN().value(), "7654321");
+            EXPECT_EQ(fru->getCCIN().value(), "MMMM");
+            EXPECT_EQ(fru->getSN().value(), "CBA987654321");
+        }
+        {
+            EXPECT_EQ(callouts[2]->priority(), 'L');
+            EXPECT_EQ(callouts[2]->locationCode(), "Ufcs-P1-C15");
+
+            auto& fru = callouts[2]->fruIdentity();
+            EXPECT_EQ(fru->getPN().value(), "7123456");
+            EXPECT_EQ(fru->getCCIN().value(), "BBBB");
+            EXPECT_EQ(fru->getSN().value(), "C123456789AB");
+        }
+    };
+
+    {
+        // Callouts based on the device path
+        std::vector<std::string> items{
+            "CALLOUT_ERRNO=5",
+            "CALLOUT_DEVICE_PATH=/sys/devices/platform/ahb/ahb:apb/"
+            "ahb:apb:bus@1e78a000/1e78a340.i2c-bus/i2c-14/14-0072"};
+
+        checkCallouts(items);
+    }
+
+    {
+        // Callouts based on the I2C bus and address
+        std::vector<std::string> items{"CALLOUT_ERRNO=5", "CALLOUT_IIC_BUS=14",
+                                       "CALLOUT_IIC_ADDR=0x72"};
+        checkCallouts(items);
+    }
+
+    {
+        // Also based on I2C bus and address, but with bus = /dev/i2c-14
+        std::vector<std::string> items{"CALLOUT_ERRNO=5", "CALLOUT_IIC_BUS=14",
+                                       "CALLOUT_IIC_ADDR=0x72"};
+        checkCallouts(items);
+    }
+
+    {
+        // Callout not found
+        std::vector<std::string> items{
+            "CALLOUT_ERRNO=5",
+            "CALLOUT_DEVICE_PATH=/sys/devices/platform/ahb/ahb:apb/"
+            "ahb:apb:bus@1e78a000/1e78a340.i2c-bus/i2c-24/24-0012"};
+
+        AdditionalData ad{items};
+        SRC src{entry, ad, dataIface};
+
+        EXPECT_FALSE(src.callouts());
+        ASSERT_EQ(src.getDebugData().size(), 1);
+        EXPECT_EQ(src.getDebugData()[0],
+                  "Problem looking up I2C callouts on 24 18: "
+                  "[json.exception.out_of_range.403] key '24' not found");
+    }
+
+    {
+        // Callout not found
+        std::vector<std::string> items{"CALLOUT_ERRNO=5", "CALLOUT_IIC_BUS=22",
+                                       "CALLOUT_IIC_ADDR=0x99"};
+        AdditionalData ad{items};
+        SRC src{entry, ad, dataIface};
+
+        EXPECT_FALSE(src.callouts());
+        ASSERT_EQ(src.getDebugData().size(), 1);
+        EXPECT_EQ(src.getDebugData()[0],
+                  "Problem looking up I2C callouts on 22 153: "
+                  "[json.exception.out_of_range.403] key '22' not found");
+    }
+
+    fs::remove_all(dataPath);
 }
