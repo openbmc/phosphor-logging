@@ -357,9 +357,13 @@ class SRC : public Section
      * @brief Adds a FRU callout based on an inventory path
      *
      * @param[in] inventoryPath - The inventory item to call out
+     * @param[in] priority - An optional priority (uses high if nullopt)
+     * @param[in] locationCode - The expanded location code (or look it up)
      * @param[in] dataIface - The DataInterface object
      */
     void addInventoryCallout(const std::string& inventoryPath,
+                             const std::optional<CalloutPriority>& priority,
+                             const std::optional<std::string>& locationCode,
                              const DataInterfaceBase& dataIface);
 
     /**
