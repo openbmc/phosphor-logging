@@ -510,7 +510,20 @@ TEST_F(SRCTest, RegistryCalloutTest)
                     "SymbolicFRUTrusted": "service_docs"
                 }
             ]
-
+        },
+        {
+            "System": "systemC",
+            "CalloutList":
+            [
+                {
+                    "Priority": "high",
+                    "LocCode": "P0-C8"
+                },
+                {
+                    "Priority": "medium",
+                    "LocCode": "P0-C9"
+                }
+            ]
         }
         ])"_json;
 
@@ -556,6 +569,7 @@ TEST_F(SRCTest, RegistryCalloutTest)
         NiceMock<MockDataInterface> dataIface;
         std::vector<std::string> names{"systemB"};
 
+        EXPECT_CALL(dataIface, expandLocationCode).WillOnce(Return("P0-C8"));
         EXPECT_CALL(dataIface, getSystemNames).WillOnce(ReturnRef(names));
 
         SRC src{entry, ad, dataIface};
@@ -585,5 +599,69 @@ TEST_F(SRCTest, RegistryCalloutTest)
         EXPECT_FALSE(fru2->getMaintProc());
         EXPECT_FALSE(fru2->getSN());
         EXPECT_FALSE(fru2->getCCIN());
+    }
+
+    {
+        // Two hardware callouts
+        AdditionalData ad;
+        NiceMock<MockDataInterface> dataIface;
+        std::vector<std::string> names{"systemC"};
+
+        EXPECT_CALL(dataIface, getSystemNames).WillOnce(ReturnRef(names));
+
+        EXPECT_CALL(dataIface, expandLocationCode("P0-C8", 0))
+            .WillOnce(Return("UXXX-P0-C8"));
+
+        EXPECT_CALL(dataIface, expandLocationCode("P0-C9", 0))
+            .WillOnce(Return("UXXX-P0-C9"));
+
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-C8", 0))
+            .WillOnce(Return(
+                "/xyz/openbmc_project/inventory/chassis/motherboard/cpu0"));
+
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-C9", 0))
+            .WillOnce(Return(
+                "/xyz/openbmc_project/inventory/chassis/motherboard/cpu1"));
+
+        EXPECT_CALL(
+            dataIface,
+            getHWCalloutFields(
+                "/xyz/openbmc_project/inventory/chassis/motherboard/cpu0", _, _,
+                _))
+            .Times(1)
+            .WillOnce(DoAll(SetArgReferee<1>("1234567"),
+                            SetArgReferee<2>("CCCC"),
+                            SetArgReferee<3>("123456789ABC")));
+
+        EXPECT_CALL(
+            dataIface,
+            getHWCalloutFields(
+                "/xyz/openbmc_project/inventory/chassis/motherboard/cpu1", _, _,
+                _))
+            .Times(1)
+            .WillOnce(DoAll(SetArgReferee<1>("2345678"),
+                            SetArgReferee<2>("DDDD"),
+                            SetArgReferee<3>("23456789ABCD")));
+
+        SRC src{entry, ad, dataIface};
+
+        auto& callouts = src.callouts()->callouts();
+        EXPECT_EQ(callouts.size(), 2);
+
+        EXPECT_EQ(callouts[0]->locationCode(), "UXXX-P0-C8");
+        EXPECT_EQ(callouts[0]->priority(), 'H');
+
+        auto& fru1 = callouts[0]->fruIdentity();
+        EXPECT_EQ(fru1->getPN().value(), "1234567");
+        EXPECT_EQ(fru1->getCCIN().value(), "CCCC");
+        EXPECT_EQ(fru1->getSN().value(), "123456789ABC");
+
+        EXPECT_EQ(callouts[1]->locationCode(), "UXXX-P0-C9");
+        EXPECT_EQ(callouts[1]->priority(), 'M');
+
+        auto& fru2 = callouts[1]->fruIdentity();
+        EXPECT_EQ(fru2->getPN().value(), "2345678");
+        EXPECT_EQ(fru2->getCCIN().value(), "DDDD");
+        EXPECT_EQ(fru2->getSN().value(), "23456789ABCD");
     }
 }
