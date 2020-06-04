@@ -400,6 +400,16 @@ class SRC : public Section
     }
 
     /**
+     * @brief Adds any FRU callouts based on a device path in the
+     *        AdditionalData parameter.
+     *
+     * @param[in] additionalData - The AdditionalData values
+     * @param[in] dataIface - The DataInterface object
+     */
+    void addDevicePathCallouts(const AdditionalData& additionalData,
+                               const DataInterfaceBase& dataIface);
+
+    /**
      * @brief The SRC version field
      */
     uint8_t _version;
