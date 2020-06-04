@@ -244,6 +244,36 @@ class DataInterfaceBase
         return _systemNames;
     }
 
+    /**
+     * @brief Fills in the placeholder 'Ufcs' in the passed in location
+     *        code with the machine feature code and serial number, which
+     *        is needed to create a valid location code.
+     *
+     * @param[in] locationCode - Location code value starting with Ufcs-, and
+     *                           if that isn't present it will be added first.
+     *
+     * @param[in] node - The node number the location is on.
+     *
+     * @return std::string - The expanded location code
+     */
+    virtual std::string expandLocationCode(const std::string& locationCode,
+                                           uint16_t node) const = 0;
+
+    /**
+     * @brief Returns the inventory path for the FRU that the location
+     *        code represents.
+     *
+     * @param[in] locationCode - Location code value starting with Ufcs-, and
+     *                           if that isn't present it will be added first.
+     *
+     * @param[in] node - The node number the location is on.
+     *
+     * @return std::string - The inventory D-Bus object
+     */
+    virtual std::string
+        getInventoryFromLocCode(const std::string& unexpandedLocationCode,
+                                uint16_t node) const = 0;
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
@@ -434,6 +464,35 @@ class DataInterface : public DataInterfaceBase
     std::string
         getLocationCode(const std::string& inventoryPath) const override;
 
+    /**
+     * @brief Fills in the placeholder 'Ufcs' in the passed in location
+     *        code with the machine feature code and serial number, which
+     *        is needed to create a valid location code.
+     *
+     * @param[in] locationCode - Location code value starting with Ufcs-, and
+     *                           if that isn't present it will be added first.
+     *
+     * @param[in] node - The node number the location is one.
+     *
+     * @return std::string - The expanded location code
+     */
+    std::string expandLocationCode(const std::string& locationCode,
+                                   uint16_t node) const override;
+
+    /**
+     * @brief Returns the inventory path for the FRU that the location
+     *        code represents.
+     *
+     * @param[in] locationCode - Location code value starting with Ufcs-, and
+     *                           if that isn't present it will be added first.
+     *
+     * @param[in] node - The node number the location is on.
+     *
+     * @return std::string - The inventory D-Bus object
+     */
+    std::string getInventoryFromLocCode(const std::string& expandedLocationCode,
+                                        uint16_t node) const override;
+
   private:
     /**
      * @brief Reads the BMC firmware version string and puts it into
@@ -490,6 +549,18 @@ class DataInterface : public DataInterfaceBase
         const auto& c = std::get<std::vector<uint8_t>>(ccin);
         _motherboardCCIN = std::string{c.begin(), c.end()};
     }
+
+    /**
+     * @brief Adds the Ufcs- prefix to the location code passed in.
+     *
+     * Necessary because the location codes that come back from the
+     * message registry and device callout JSON don't have it.
+     *
+     * @param[in] - The location code without a prefix, like P1-C1
+     *
+     * @return std::string - The location code with the prefix
+     */
+    static std::string addLocationCodePrefix(const std::string& locationCode);
 
     /**
      * @brief The D-Bus property or interface watchers that have callbacks
