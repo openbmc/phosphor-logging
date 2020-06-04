@@ -510,7 +510,7 @@ void SRC::addCallouts(const message::Entry& regEntry,
     auto item = additionalData.getValue("CALLOUT_INVENTORY_PATH");
     if (item)
     {
-        addInventoryCallout(*item, dataIface);
+        addInventoryCallout(*item, std::nullopt, std::nullopt, dataIface);
     }
 
     // TODO: CALLOUT_DEVICE_PATH
@@ -522,6 +522,8 @@ void SRC::addCallouts(const message::Entry& regEntry,
 }
 
 void SRC::addInventoryCallout(const std::string& inventoryPath,
+                              const std::optional<CalloutPriority>& priority,
+                              const std::optional<std::string>& locationCode,
                               const DataInterfaceBase& dataIface)
 {
     std::string locCode;
@@ -532,14 +534,24 @@ void SRC::addInventoryCallout(const std::string& inventoryPath,
 
     try
     {
-        locCode = dataIface.getLocationCode(inventoryPath);
+        // Use the passed in location code if there otherwise look it up
+        if (locationCode)
+        {
+            locCode = *locationCode;
+        }
+        else
+        {
+            locCode = dataIface.getLocationCode(inventoryPath);
+        }
 
         try
         {
             dataIface.getHWCalloutFields(inventoryPath, fn, ccin, sn);
 
-            callout = std::make_unique<src::Callout>(CalloutPriority::high,
-                                                     locCode, fn, ccin, sn);
+            CalloutPriority p =
+                priority ? priority.value() : CalloutPriority::high;
+
+            callout = std::make_unique<src::Callout>(p, locCode, fn, ccin, sn);
         }
         catch (const SdBusError& e)
         {
@@ -596,9 +608,22 @@ void SRC::addRegistryCallout(const message::RegistryCallout& regCallout,
                              const DataInterfaceBase& dataIface)
 {
     std::unique_ptr<src::Callout> callout;
-
-    // TODO: expand this location code.
     auto locCode = regCallout.locCode;
+
+    if (!locCode.empty())
+    {
+        try
+        {
+            locCode = dataIface.expandLocationCode(locCode, 0);
+        }
+        catch (const std::exception& e)
+        {
+            auto msg =
+                "Unable to expand location code " + locCode + ": " + e.what();
+            addDebugData(msg);
+            return;
+        }
+    }
 
     // Via the PEL values table, get the priority enum.
     // The schema will have validated the priority was a valid value.
@@ -631,7 +656,25 @@ void SRC::addRegistryCallout(const message::RegistryCallout& regCallout,
     }
     else
     {
-        // TODO: HW callouts
+        // A hardware callout
+        std::string inventoryPath;
+
+        try
+        {
+            // Get the inventory item from the unexpanded location code
+            inventoryPath =
+                dataIface.getInventoryFromLocCode(regCallout.locCode, 0);
+        }
+        catch (const std::exception& e)
+        {
+            std::string msg =
+                "Unable to get inventory path from location code: " + locCode +
+                ": " + e.what();
+            addDebugData(msg);
+            return;
+        }
+
+        addInventoryCallout(inventoryPath, priority, locCode, dataIface);
     }
 
     if (callout)
