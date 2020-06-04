@@ -15,6 +15,7 @@
  */
 #include "src.hpp"
 
+#include "device_callouts.hpp"
 #include "json_utils.hpp"
 #include "paths.hpp"
 #include "pel_values.hpp"
@@ -513,7 +514,7 @@ void SRC::addCallouts(const message::Entry& regEntry,
         addInventoryCallout(*item, std::nullopt, std::nullopt, dataIface);
     }
 
-    // TODO: CALLOUT_DEVICE_PATH
+    addDevicePathCallouts(additionalData, dataIface);
 
     if (regEntry.callouts)
     {
@@ -681,6 +682,149 @@ void SRC::addRegistryCallout(const message::RegistryCallout& regCallout,
     {
         createCalloutsObject();
         _callouts->addCallout(std::move(callout));
+    }
+}
+
+void SRC::addDevicePathCallouts(const AdditionalData& additionalData,
+                                const DataInterfaceBase& dataIface)
+{
+    std::vector<device_callouts::Callout> callouts;
+    int errnoValue = 0;
+    auto calloutErrno = additionalData.getValue("CALLOUT_ERRNO");
+    auto i2cBus = additionalData.getValue("CALLOUT_IIC_BUS");
+    auto i2cAddr = additionalData.getValue("CALLOUT_IIC_ADDR");
+    auto devPath = additionalData.getValue("CALLOUT_DEVICE_PATH");
+
+    // A device callout contains either:
+    // * CALLOUT_ERRNO, CALLOUT_DEVICE_PATH
+    // * CALLOUT_ERRNO, CALLOUT_IIC_BUS, CALLOUT_IIC_ADDR
+
+    if (calloutErrno)
+    {
+        try
+        {
+            errnoValue = std::stoi(*calloutErrno);
+        }
+        catch (const std::exception& e)
+        {
+            std::string msg =
+                "Invalid CALLOUT_ERRNO value in event log: " + *calloutErrno;
+            addDebugData(msg);
+            return;
+        }
+    }
+    else
+    {
+        // CALLOUT_ERRNO is always required with dev path callouts, so
+        // this must not be one.
+        return;
+    }
+
+    if (devPath)
+    {
+        try
+        {
+            callouts = device_callouts::getCallouts(errnoValue, *devPath,
+                                                    dataIface.getSystemNames());
+        }
+        catch (const std::exception& e)
+        {
+            addDebugData(e.what());
+            callouts.clear();
+        }
+    }
+    else if (i2cBus && i2cAddr)
+    {
+        size_t bus;
+        uint8_t address;
+
+        try
+        {
+            // If /dev/i2c- is prepended, remove it
+            if (i2cBus->find("/dev/i2c-") != std::string::npos)
+            {
+                *i2cBus = i2cBus->substr(9);
+            }
+
+            bus = stoul(*i2cBus, nullptr, 0);
+            address = stoul(*i2cAddr, nullptr, 0);
+        }
+        catch (const std::exception& e)
+        {
+            std::string msg = "Invalid CALLOUT_IIC_BUS " + *i2cBus +
+                              " or CALLOUT_IIC_ADDR " + *i2cAddr +
+                              " in AdditionalData property";
+            addDebugData(msg);
+            return;
+        }
+
+        try
+        {
+            callouts = device_callouts::getI2CCallouts(
+                errnoValue, bus, address, dataIface.getSystemNames());
+        }
+        catch (const std::exception& e)
+        {
+            addDebugData(e.what());
+            callouts.clear();
+        }
+    }
+
+    for (const auto& callout : callouts)
+    {
+        // The priority shouldn't be invalid, but check just in case.
+        CalloutPriority priority = CalloutPriority::high;
+
+        if (!callout.priority.empty())
+        {
+            auto p = pel_values::findByValue(
+                static_cast<uint32_t>(callout.priority[0]),
+                pel_values::calloutPriorityValues);
+
+            if (p != pel_values::calloutPriorityValues.end())
+            {
+                priority = static_cast<CalloutPriority>(callout.priority[0]);
+            }
+            else
+            {
+                std::string msg =
+                    "Invalid priority found in dev callout JSON: " +
+                    callout.priority[0];
+                addDebugData(msg);
+            }
+        }
+
+        try
+        {
+            auto inventoryPath =
+                dataIface.getInventoryFromLocCode(callout.locationCode, 0);
+
+            addInventoryCallout(inventoryPath, priority, std::nullopt,
+                                dataIface);
+        }
+        catch (const std::exception& e)
+        {
+            std::string msg =
+                "Unable to get inventory path from location code: " +
+                callout.locationCode + ": " + e.what();
+            addDebugData(msg);
+        }
+
+        // Until the code is there to convert these MRU value strings to
+        // the official MRU values in the callout objects, just store
+        // the MRU name in the debug UserData section.
+        if (!callout.mru.empty())
+        {
+            std::string msg = "MRU: " + callout.mru;
+            addDebugData(msg);
+        }
+
+        // getCallouts() may have generated some debug data it stored
+        // in a callout object.  Save it as well.
+        if (!callout.debug.empty())
+        {
+            addDebugData(callout.debug);
+        }
     }
 }
 
