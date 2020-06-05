@@ -2,8 +2,21 @@
 AC_PREREQ([2.69])
 AC_INIT([phosphor-logging], [1.0], [https://github.com/openbmc/phosphor-logging/issues])
 AC_LANG([C++])
-AM_INIT_AUTOMAKE([subdir-objects -Wall -Werror foreign dist-xz])
+AM_INIT_AUTOMAKE([subdir-objects -Wall -Werror -Wno-portability foreign dist-xz])
 AM_SILENT_RULES([yes])
+
+# Make sure the default CFLAGS of `-O2 -g` don't override CODE_COVERAGE_CFLAGS
+# It is important that this comes before AC_PROG_C{C,XX}, as we are attempting
+# to stop them from populating default CFLAGS and CXXFLAGS.
+AS_IF([test "x$enable_tests" = "xno"], [enable_code_coverage=no])
+AS_IF([test "x$enable_code_coverage" != "xno"], [
+    AS_IF([test "x${CXXFLAGS+set}" != "xset"], [
+        AC_SUBST(CXXFLAGS, [""])
+    ])
+    AS_IF([test "x${CFLAGS+set}" != "xset"], [
+        AC_SUBST(CFLAGS, [""])
+    ])
+])
 
 # Checks for programs
 AC_PROG_CXX
@@ -74,6 +87,27 @@ AS_IF([test "x$enable_oe_sdk" == "xyes"],
 AC_ARG_ENABLE([tests],
     AS_HELP_STRING([--enable-tests], [Specifies running in the CI environment])
 )
+
+
+# Check for valgrind
+AS_IF([test "x$enable_tests" = "xno"], [enable_valgrind=no])
+m4_foreach([vgtool], [valgrind_tool_list],
+    [AX_VALGRIND_DFLT(vgtool, [off])])
+AX_VALGRIND_DFLT([memcheck], [on])
+AX_VALGRIND_CHECK
+AM_EXTRA_RECURSIVE_TARGETS([check-valgrind])
+m4_foreach([vgtool], [valgrind_tool_list],
+    [AM_EXTRA_RECURSIVE_TARGETS([check-valgrind-]vgtool)])
+
+# Code coverage
+AX_CODE_COVERAGE
+AS_IF([test "x$CODE_COVERAGE_ENABLED" = "xyes"], [
+    AX_APPEND_COMPILE_FLAGS([-DHAVE_GCOV], [CODE_COVERAGE_CPPFLAGS])
+])
+m4_ifdef([_AX_CODE_COVERAGE_RULES],
+    [AM_CONDITIONAL(AUTOCONF_CODE_COVERAGE_2019_01_06, [true])],
+    [AM_CONDITIONAL(AUTOCONF_CODE_COVERAGE_2019_01_06, [false])])
+AX_ADD_AM_MACRO_STATIC([])
 
 AC_DEFINE(BUSNAME_LOGGING, "xyz.openbmc_project.Logging", [The log manager DBus busname to own.])
 AC_DEFINE(OBJ_LOGGING, "/xyz/openbmc_project/logging", [The log manager DBus object path.])

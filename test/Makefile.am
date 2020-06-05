@@ -1,4 +1,11 @@
-AM_CPPFLAGS = -I${top_srcdir}
+AM_CPPFLAGS = -I${top_srcdir} \
+	$(CODE_COVERAGE_CPPFLAGS)
+AM_CFLAGS = \
+	$(CODE_COVERAGE_CFLAGS)
+AM_CXXFLAGS = \
+	$(CODE_COVERAGE_CXXFLAGS)
+AM_LDFLAGS = \
+	$(CODE_COVERAGE_LIBS)
 
 TESTS = $(check_PROGRAMS)
 
@@ -20,10 +27,12 @@ test_cppflags = \
 	$(AM_CPPFLAGS) \
 	$(PHOSPHOR_DBUS_INTERFACES_CFLAGS) \
 	$(SDBUSPLUS_CFLAGS) \
-	$(SYSTEMD_CFLAGS)
+	$(SYSTEMD_CFLAGS) \
+	$(CODE_COVERAGE_CPPFLAGS)
 
 test_cxxflags = \
-	$(PTHREAD_CFLAGS)
+	$(PTHREAD_CFLAGS) \
+	$(CODE_COVERAGE_CXXFLAGS)
 
 test_ldflags = \
 	-lgtest_main -lgtest \
@@ -32,7 +41,8 @@ test_ldflags = \
 	$(OESDK_TESTCASE_FLAGS) \
 	$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
 	$(SDBUSPLUS_LIBS) \
-	$(SYSTEMD_LIBS)
+	$(SYSTEMD_LIBS) \
+	$(CODE_COVERAGE_LIBS)
 
 test_ldadd = \
 	$(top_builddir)/elog_serialize.o \
@@ -43,18 +53,20 @@ test_ldadd = \
 	$(top_builddir)/elog-lookup.o \
 	$(top_builddir)/elog-process-metadata.o \
 	$(top_builddir)/sdjournal.o \
-	$(top_builddir)/extensions.o
+	$(top_builddir)/extensions.o \
+	$(CODE_COVERAGE_LIBS)
 
 remote_logging_test_ldadd = \
 	$(top_builddir)/phosphor-rsyslog-config/server-conf.o \
-	$(top_builddir)/sdjournal.o
+	$(top_builddir)/sdjournal.o \
+	$(CODE_COVERAGE_LIBS)
 
 elog_errorwrap_test_CPPFLAGS = $(test_cppflags)
 elog_errorwrap_test_CXXFLAGS = $(test_cxxflags)
 elog_errorwrap_test_SOURCES = elog_errorwrap_test.cpp
 elog_errorwrap_test_LDADD = $(test_ldadd)
 elog_errorwrap_test_LDFLAGS = \
-        $(test_ldflags)
+	$(test_ldflags)
 
 serialization_test_path_CPPFLAGS = $(test_cppflags)
 serialization_test_path_CXXFLAGS = $(test_cxxflags)
@@ -94,7 +106,8 @@ remote_logging_test_config_LDFLAGS = \
 sdjournal_mock_test_CPPFLAGS = $(test_cppflags)
 sdjournal_mock_test_CXXFLAGS = $(test_cxxflags)
 sdjournal_mock_test_SOURCES = sdtest.cpp
-sdjournal_mock_test_LDADD = $(top_builddir)/sdjournal.o
+sdjournal_mock_test_LDADD = $(top_builddir)/sdjournal.o \
+	$(CODE_COVERAGE_LIBS)
 sdjournal_mock_test_LDFLAGS = $(test_ldflags)
 
 extensions_test_CPPFLAGS = $(test_cppflags)
