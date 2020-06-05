@@ -4,6 +4,7 @@ aclocal.m4
 ar-lib
 *-libtool
 autom4te.cache*
+aminclude_static.am
 compile
 config.*
 depcomp
@@ -15,7 +16,7 @@ ltmain.sh
 missing
 test-driver
 test/.deps*
-test/.dirstamp
+*.dirstamp
 test/Makefile
 test/Makefile.in
 .deps*
@@ -30,7 +31,6 @@ xyz/openbmc_project/Logging/Internal/Manager/
 libtool
 callout-test
 callouts-gen.hpp
-callouts/.dirstamp
 elog-lookup.cpp
 elog-process-metadata.cpp
 phosphor-log-manager
@@ -40,6 +40,10 @@ test/*_test.trs
 test/*_test_*.log
 test/*_test_*.trs
 test/test-suite.log
+*.gcda
+*.gcno
+*.trs
+*-coverage*
 test/remote_logging_test_address
 test/remote_logging_test_config
 test/remote_logging_test_port
