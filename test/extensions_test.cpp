@@ -1,6 +1,8 @@
 #include "elog_entry.hpp"
 #include "extensions.hpp"
 
+#include <sdbusplus/test/sdbus_mock.hpp>
+
 #include <gtest/gtest.h>
 
 using namespace phosphor::logging;
@@ -63,7 +65,8 @@ REGISTER_EXTENSION_FUNCTION(deleteLog2);
 
 TEST(ExtensionsTest, FunctionCallTest)
 {
-    auto bus = sdbusplus::bus::new_default();
+    sdbusplus::SdBusMock sdbusMock;
+    sdbusplus::bus::bus bus = sdbusplus::get_mocked_new(&sdbusMock);
     internal::Manager manager(bus, "testpath");
 
     EXPECT_EQ(Extensions::getStartupFunctions().size(), 2);
