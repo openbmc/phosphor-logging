@@ -6,6 +6,7 @@
 
 #include <experimental/filesystem>
 #include <sdbusplus/bus.hpp>
+#include <sdbusplus/test/sdbus_mock.hpp>
 
 #include <gtest/gtest.h>
 
@@ -19,7 +20,8 @@ namespace test
 namespace fs = std::experimental::filesystem;
 
 char tmplt[] = "/tmp/logging_test.XXXXXX";
-auto bus = sdbusplus::bus::new_default();
+sdbusplus::SdBusMock sdbusMock;
+sdbusplus::bus::bus bus = sdbusplus::get_mocked_new(&sdbusMock);
 phosphor::logging::internal::Manager manager(bus, OBJ_INTERNAL);
 
 class TestSerialization : public testing::Test
