@@ -306,9 +306,8 @@ void PEL::printSectionInJSON(const Section& section, std::string& buf,
             Stream s{data};
             section.flatten(s);
             std::string dstr =
-                dumpHex(std::data(data) + SectionHeader::flattenedSize(),
-                        data.size(), 2);
-
+                dumpHex(std::data(data) + SectionHeader::flattenedSize()
+                        data.size() - SectionHeader::flattenedSize(), 2);
             std::string jsonIndent(indentLevel, 0x20);
             buf += jsonIndent + "\"Data\": [\n";
             buf += dstr;
