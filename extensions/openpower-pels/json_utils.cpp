@@ -72,7 +72,7 @@ char* dumpHex(const void* data, size_t size, size_t indentCount)
     const int symbolSize = 100;
     std::string jsonIndent(indentLevel * indentCount, 0x20);
     jsonIndent.append("\"");
-    char* buffer = (char*)calloc(10 * size, sizeof(char));
+    char* buffer = (char*)calloc(std::max(70, 10 * size), sizeof(char));
     char* symbol = (char*)calloc(symbolSize, sizeof(char));
     char ascii[17];
     size_t i, j;
