@@ -12,6 +12,7 @@ will be used instead of creating one.
 * [Action Flags and Event Type Rules](#action-flags-and-event-type-rules)
 * [D-Bus Interfaces](#d-bus-interfaces)
 * [PEL Retention](#pel-retention)
+* [Adding python3 modules for PEL UserData and SRC parsing](#adding-python3-modules-for-pel-userdata-and-src-parsing)
 
 ## Passing PEL related data within an OpenBMC event log
 
@@ -339,3 +340,112 @@ Pass 4. Remove all PELs.
 
 After all these steps, disk capacity will be at most 90% (15% + 30% + 15% +
 30%).
+
+## Adding python3 modules for PEL UserData and SRC parsing
+
+In order to support python3 modules for the parsing of PEL User Data sections
+and to decode SRC data, setuptools is used to import python3 packages from
+external repos to be included in the OpenBMC image.
+```
+Sample layout for setuptools:
+
+setup.py
+src/usr/scom/plugins/ebmc/b0300.py
+src/usr/i2c/plugins/ebmc/b0700.py
+src/build/tools/ebmc/errludP_Helpers.py
+```
+
+`setup.py` is the build script for setuptools. It contains information about the
+package (such as the name and version) as well as which code files to include.
+
+The setup.py template to be used for eBMC User Data parsers:
+```
+import os.path
+from setuptools import setup
+
+# To update this dict with new key/value pair for every component added
+# Key: The package name to be installed as
+# Value: The path containing the package's python modules
+dirmap = {
+    "b0300": "src/usr/scom/plugins/ebmc",
+    "b0700": "src/usr/i2c/plugins/ebmc",
+    "helpers": "src/build/tools/ebmc"
+}
+
+# All packages will be installed under 'udparsers' namespace
+def get_package_name(dirmap_key):
+    return "udparsers.{}".format(dirmap_key)
+
+def get_package_dirent(dirmap_item):
+    package_name = get_package_name(dirmap_item[0])
+    package_dir = dirmap_item[1]
+    return (package_name, package_dir)
+
+def get_packages():
+    return map(get_package_name, dirmap.keys())
+
+def get_package_dirs():
+    return map(get_package_dirent, dirmap.items())
+
+setup(
+        name="Hostboot",
+        version="0.1",
+        packages=list(get_packages()),
+        package_dir=dict(get_package_dirs())
+)
+```
+- User Data parser module
+  - Module name: `xzzzz.py`, where `x` is the Creator Subsystem from the
+    Private Header section (in ASCII) and `zzzz` is the 2 byte Component ID
+    from the User Data section itself (in HEX). All should be converted to
+    lowercase.
+    - For example: `b0100.py` for Hostboot created UserData with CompID 0x0100
+  - Function to provide: `parseUDToJson`
+    - Argument list:
+      1. (int) Sub-section type
+      2. (int) Section version
+      3. (memoryview): Data
+    - Return data:
+      1. (str) JSON string
+
+  - Sample User Data parser module:
+    ```
+    import json
+    def parseUDToJson(subType, ver, data):
+        d = dict()
+        ...
+        # Parse and populate data into dictionary
+        ...
+        jsonStr = json.dumps(d)
+        return jsonStr
+    ```
+- SRC parser module
+  - Module name: `xsrc.py`, where `x` is the Creator Subsystem from the
+    Private Header section (in ASCII, converted to lowercase).
+    - For example: `bsrc.py` for Hostboot generated SRCs
+  - Function to provide: `parseSRCToJson`
+    - Argument list:
+      1. (str) Refcode ASCII string
+      2. (str) Hexword 2
+      3. (str) Hexword 3
+      4. (str) Hexword 4
+      5. (str) Hexword 5
+      6. (str) Hexword 6
+      7. (str) Hexword 7
+      8. (str) Hexword 8
+      9. (str) Hexword 9
+    - Return data:
+      1. (str) JSON string
+
+  - Sample SRC parser module:
+    ```
+    import json
+    def parseSRCToJson(ascii_str, word2, word3, word4, word5, word6, word7, \
+                       word8, word9):
+        d = dict()
+        ...
+        # Decode SRC data into dictionary
+        ...
+        jsonStr = json.dumps(d)
+        return jsonStr
+    ```
