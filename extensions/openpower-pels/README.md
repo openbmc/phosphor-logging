@@ -11,6 +11,7 @@ will be used instead of creating one.
 * [Callouts](#callouts)
 * [Action Flags and Event Type Rules](#action-flags-and-event-type-rules)
 * [D-Bus Interfaces](#d-bus-interfaces)
+* [Adding python3 modules](#python-modules)
 
 ## Passing PEL related data within an OpenBMC event log
 
@@ -288,3 +289,19 @@ Additional rules may be added in the future if necessary.
 
 See the org.open_power.Logging.PEL interface definition for the most up to date
 information.
+
+## Adding python3 modules
+
+In order to support python3 modules for the parsing of PEL User Data sections
+and possibly to decode refcode data too, setuptools is used to import python3
+packages from external repos to be included in the OpenBMC image. The file
+structure below needs to created in the repository which contains the modules.
+
+├── setup.py
+├── mypackage
+    ├── __init__.py
+    └── mymodule.py
+
+setup.py is the build script for setuptools. It contains information about the
+package (such as the name and version) as well as which code files to include.
+More information on setuptools can be found [here](https://setuptools.readthedocs.io/en/latest/setuptools.html)
