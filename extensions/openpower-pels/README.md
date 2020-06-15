@@ -11,6 +11,7 @@ will be used instead of creating one.
 * [Callouts](#callouts)
 * [Action Flags and Event Type Rules](#action-flags-and-event-type-rules)
 * [D-Bus Interfaces](#d-bus-interfaces)
+* [Adding python3 modules for PEL UserData and SRC parsing](#python-modules)
 
 ## Passing PEL related data within an OpenBMC event log
 
@@ -288,3 +289,65 @@ Additional rules may be added in the future if necessary.
 
 See the org.open_power.Logging.PEL interface definition for the most up to date
 information.
+
+## Adding python3 modules for PEL UserData and SRC parsing
+
+In order to support python3 modules for the parsing of PEL User Data sections
+and to decode SRC data, setuptools is used to import python3 packages from
+external repos to be included in the OpenBMC image. The file structure below
+needs to created in the repository which contains the modules.
+
+├── setup.py
+├── mypackage
+    ├── __init__.py
+    └── mymodule.py
+
+setup.py is the build script for setuptools. It contains information about the
+package (such as the name and version) as well as which code files to include.
+
+Sample setup.py:
+```
+#!/usr/bin/env python3
+from setuptools import setup, find_packages
+
+setup(
+    name="HelloWorld",
+    version="1.0",
+    packages=find_packages(),
+    package_data={
+        # If any package contains *.txt or *.rst files, include them:
+        "": ["*.txt", "*.rst"],
+        # And include any *.json files found in the "mypackage" package, too:
+        "mypackage": ["*.json"],
+    },
+)
+```
+More information on setuptools can be found [here](https://setuptools.readthedocs.io/en/latest/setuptools.html)
+
+The python3 module (`mymodule.py` in the example above) needs to provide the
+function for data parsing.
+
+- User Data parser module
+  - Module name: `XYYZZ.py`, where `X` is the Creator Subsystem from the
+    Private Header section (in ASCII) and `YYZZ` is the 2 byte Component ID
+    from the User Data section itself (in HEX)
+    - For example: `B0100.py` for Hostboot created UserData with compID 0x0100
+  - Function to provide: `parseUDToJson`
+    - Argument list:
+      1. (int) Sub-section type
+      2. (int) Section version
+      3. (memoryview): Data
+    - Return data:
+      1. (str) JSON string
+
+Sample User Data parser module:
+```
+import json
+def parseUDToJson(subType, ver, data):
+    d = dict()
+    ...
+    # Parse and populate data into dictionary
+    ...
+    jsonStr = json.dumps(d)
+    return jsonStr
+```
