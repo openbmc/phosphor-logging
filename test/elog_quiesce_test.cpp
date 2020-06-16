@@ -3,6 +3,7 @@
 #include "elog_entry.hpp"
 #include "log_manager.hpp"
 
+#include <filesystem>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/test/sdbus_mock.hpp>
 
@@ -25,6 +26,8 @@ class TestQuiesceOnError : public testing::Test
 
     TestQuiesceOnError() : manager(mockedBus, OBJ_INTERNAL)
     {
+        // Ensure any errors serializing to filesystem have directory created
+        std::filesystem::create_directory(ERRLOG_PERSIST_PATH);
     }
 };
 
