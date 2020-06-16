@@ -18,7 +18,9 @@
 
 #include <arpa/inet.h>
 
+#include <chrono>
 #include <filesystem>
+#include <thread>
 
 #include <gtest/gtest.h>
 
@@ -35,6 +37,7 @@ TEST(LogIdTest, TimeBasedIDTest)
         EXPECT_EQ(id & 0xFF000000, 0x50000000);
         EXPECT_NE(id, lastID);
         lastID = id;
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
 
