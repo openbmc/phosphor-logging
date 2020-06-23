@@ -57,7 +57,8 @@ phosphor_log_manager_SOURCES = \
 	elog_meta.cpp \
 	elog_serialize.cpp \
 	sdjournal.cpp \
-	extensions.cpp
+	extensions.cpp \
+	util.cpp
 
 # Be sure to build needed files before compiling
 BUILT_SOURCES = \

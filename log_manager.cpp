@@ -6,6 +6,7 @@
 #include "elog_meta.hpp"
 #include "elog_serialize.hpp"
 #include "extensions.hpp"
+#include "util.hpp"
 
 #include <poll.h>
 #include <sys/inotify.h>
@@ -739,27 +740,14 @@ void Manager::journalSync()
 
 std::string Manager::readFWVersion()
 {
-    std::string version;
-    std::ifstream versionFile{BMC_VERSION_FILE};
-    std::string line;
-    static constexpr auto VERSION_ID = "VERSION_ID=";
+    auto version = util::getOSReleaseValue("VERSION_ID");
 
-    while (std::getline(versionFile, line))
-    {
-        if (line.find(VERSION_ID) != std::string::npos)
-        {
-            auto pos = line.find_first_of('"') + 1;
-            version = line.substr(pos, line.find_last_of('"') - pos);
-            break;
-        }
-    }
-
-    if (version.empty())
+    if (!version)
     {
         log<level::ERR>("Unable to read BMC firmware version");
     }
 
-    return version;
+    return version.value_or("");
 }
 
 void Manager::create(const std::string& message, Entry::Level severity,
