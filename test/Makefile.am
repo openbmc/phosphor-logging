@@ -54,6 +54,7 @@ test_ldadd = \
 	$(top_builddir)/elog-process-metadata.o \
 	$(top_builddir)/sdjournal.o \
 	$(top_builddir)/extensions.o \
+	$(top_builddir)/util.o \
 	$(CODE_COVERAGE_LIBS)
 
 remote_logging_test_ldadd = \
@@ -120,6 +121,7 @@ extensions_test_LDADD = \
 	$(top_builddir)/elog-process-metadata.o \
 	$(top_builddir)/elog_serialize.o \
 	$(top_builddir)/log_manager.o \
+	$(top_builddir)/util.o \
 	$(top_builddir)/xyz/openbmc_project/Logging/Internal/Manager/server.o
 extensions_test_LDFLAGS = $(test_ldflags)
 

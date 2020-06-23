@@ -17,6 +17,8 @@
 
 #include "data_interface.hpp"
 
+#include "util.hpp"
+
 #include <fstream>
 #include <xyz/openbmc_project/State/OperatingSystem/Status/server.hpp>
 
@@ -225,35 +227,10 @@ DBusService DataInterface::getService(const std::string& objectPath,
     return std::string{};
 }
 
-/**
- * @brief Return a value found in the /etc/os-release file
- *
- * @param[in] key - The key name, like "VERSION"
- *
- * @return std::optional<std::string> - The value
- */
-std::optional<std::string> getOSReleaseValue(const std::string& key)
-{
-    std::ifstream versionFile{BMC_VERSION_FILE};
-    std::string line;
-    std::string keyPattern{key + '='};
-
-    while (std::getline(versionFile, line))
-    {
-        if (line.find(keyPattern) != std::string::npos)
-        {
-            auto pos = line.find_first_of('"') + 1;
-            auto value = line.substr(pos, line.find_last_of('"') - pos);
-            return value;
-        }
-    }
-
-    return std::nullopt;
-}
-
 void DataInterface::readBMCFWVersion()
 {
-    _bmcFWVersion = getOSReleaseValue("VERSION").value_or("");
+    _bmcFWVersion =
+        phosphor::logging::util::getOSReleaseValue("VERSION").value_or("");
 }
 
 void DataInterface::readServerFWVersion()
@@ -263,7 +240,8 @@ void DataInterface::readServerFWVersion()
 
 void DataInterface::readBMCFWVersionID()
 {
-    _bmcFWVersionID = getOSReleaseValue("VERSION_ID").value_or("");
+    _bmcFWVersionID =
+        phosphor::logging::util::getOSReleaseValue("VERSION_ID").value_or("");
 }
 
 void DataInterface::readMotherboardCCIN()
