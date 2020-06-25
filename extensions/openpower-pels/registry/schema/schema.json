@@ -451,7 +451,7 @@
         {
             "description": "The maintenance procedure callout.",
             "type": "string",
-            "enum": ["no_vpd_for_fru"]
+            "enum": ["no_vpd_for_fru", "bmc_code"]
         },
 
         "calloutList":
