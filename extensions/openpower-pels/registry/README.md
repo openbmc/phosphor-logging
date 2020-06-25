@@ -117,7 +117,8 @@ severity or if there are any callouts.  As such, this is an optional field and
 if not supplied the code will fill them in based on those fields.
 
 In fact, even if supplied here, the code may still modify them to ensure they
-are correct.
+are correct.  The rules used for this are
+[here](../README.md#action-flags-and-event-type-rules).
 
 ```
 "ActionFlags": ["service_action", "report", "call_home"]
