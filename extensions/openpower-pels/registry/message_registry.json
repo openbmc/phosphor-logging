@@ -135,6 +135,121 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Sensor.Device.Error.ReadFailure",
+            "Subsystem": "cec_chip_iface",
+
+            "SRC":
+            {
+                "ReasonCode": "0x1007",
+                "Words6To9":
+                {
+                    "6":
+                    {
+                        "Description": "errno of the failure",
+                        "AdditionalDataPropSource": "CALLOUT_ERRNO"
+                    }
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "Sensor device read failure",
+                "Message": "There was a failure when reading a sensor device",
+                "Notes": [
+                    "The severity is set by the creator.",
+                    "The action flags are set automatically by the code.",
+                    "Callouts added based on CALLOUT_DEVICE_PATH."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Common.Device.Error.ReadFailure",
+            "Subsystem": "cec_chip_iface",
+
+            "SRC":
+            {
+                "ReasonCode": "0x1008",
+                "Words6To9":
+                {
+                    "6":
+                    {
+                        "Description": "errno of the failure",
+                        "AdditionalDataPropSource": "CALLOUT_ERRNO"
+                    }
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "Device read failure",
+                "Message": "There was a failure when reading a hardware device",
+                "Notes": [
+                    "The severity is set by the creator.",
+                    "The action flags are set automatically by the code.",
+                    "Callouts added based on CALLOUT_DEVICE_PATH."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Control.Device.Error.WriteFailure",
+            "Subsystem": "cec_chip_iface",
+
+            "SRC":
+            {
+                "ReasonCode": "0x1009",
+                "Words6To9":
+                {
+                    "6":
+                    {
+                        "Description": "errno of the failure",
+                        "AdditionalDataPropSource": "CALLOUT_ERRNO"
+                    }
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "Device write failure",
+                "Message": "There was a failure when writing to a hardware device",
+                "Notes": [
+                    "The severity is set by the creator.",
+                    "The action flags are set automatically by the code.",
+                    "Callouts added based on CALLOUT_DEVICE_PATH"
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Common.Device.Error.WriteFailure",
+            "Subsystem": "cec_chip_iface",
+
+            "SRC":
+            {
+                "ReasonCode": "0x100A",
+                "Words6To9":
+                {
+                    "6":
+                    {
+                        "Description": "errno of the failure",
+                        "AdditionalDataPropSource": "CALLOUT_ERRNO"
+                    }
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "Device write failure",
+                "Message": "There was a failure when writing to a hardware device",
+                "Notes": [
+                    "The severity is set by the creator.",
+                    "The action flags are set automatically by the code.",
+                    "Callouts added based on CALLOUT_DEVICE_PATH"
+                ]
+            }
+        },
+        {
             "Name": "org.open_power.Logging.Error.SentBadPELToHost",
             "Subsystem": "bmc_firmware",
             "Severity": "non_error",
@@ -359,6 +474,38 @@
                     "Hardware diagnostics will provide error code"
                 ]
             }
+        },
+
+
+        {
+            "Name": "org.open_power.HwDiags.Error.TESTME",
+            "Subsystem": "bmc_firmware",
+            "Severity": "diagnostic_error",
+            "ComponentID": "0x2700",
+
+            "SRC":
+            {
+                "ReasonCode": "0x2900",
+                "Type": "11",
+                "Words6To9":
+                {
+                    "6":
+                    {
+                        "Description": "Error code from hardware diagnostics",
+                        "AdditionalDataPropSource": "ERROR_CODE"
+                    }
+                }
+            },
+            "Documentation":
+            {
+                "Description": "Hardware diagnostics encountered an error",
+                "MessageArgSources" : ["SRCWord6"],
+                "Message": "Hardware diagnostics error %1",
+                "Notes": [
+                    "Hardware diagnostics will provide error code"
+                ]
+            }
         }
+
     ]
 }
