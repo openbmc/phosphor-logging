@@ -359,6 +359,158 @@
                     "Hardware diagnostics will provide error code"
                 ]
             }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Power.Regulators.Error.WriteVerification",
+            "Subsystem": "power",
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x2900",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "A write verification error occurred on a device",
+                "Message": "A write verification error occurred on a device",
+                "Notes": [
+                    "This error occurs when a device register is written, ",
+                    "read back, and the two values do not match.  This is ",
+                    "also called a read-back error.  The callout(s) will be ",
+                    "determined based on the AdditionalData property of the ",
+                    "event log."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Power.Regulators.Error.ConfigFile",
+            "Subsystem": "power",
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0xA013",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "A regulators configuration file error occurred",
+                "Message": "A regulators configuration file error occurred",
+                "Notes": [
+                    "The regulators configuration file could not be found, ",
+                    "could not be read, or had invalid contents."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Power.Error.Internal",
+            "Subsystem": "power",
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0xE000",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "An internal firmware error occurred",
+                "Message": "An internal firmware error occurred",
+                "Notes": [
+                    "The error details must be provided in the AdditionalData ",
+                    "property of the event log."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Power.Error.I2C",
+            "Subsystem": "cec_i2c",
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0xE100",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "An I2C error occurred communicating with a device",
+                "Message": "An I2C error occurred communicating with a device",
+                "Notes": [
+                    "The callout(s) will be determined based on the ",
+                    "AdditionalData property of the event log."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Power.Error.PMBus",
+            "Subsystem": "power",
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0xE200",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "A PMBus error occurred on a device",
+                "Message": "A PMBus error occurred on a device",
+                "Notes": [
+                    "This error occurs when the I2C communication was ",
+                    "successful, but the PMBus value read is invalid or ",
+                    "unsupported.  CALLOUT_INVENTORY_PATH should be specified ",
+                    "in the AdditionalData property of the event log so that ",
+                    "the device is called out but not the communication path."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Power.Error.DBus",
+            "Subsystem": "power",
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0xE300",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "A D-Bus error occurred",
+                "Message": "A D-Bus error occurred"
+            }
         }
     ]
 }
