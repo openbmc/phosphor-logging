@@ -58,7 +58,7 @@ def check_component_id(registry_json):
 
         # Don't check on "11" SRCs as those reason codes aren't supposed to
         # match the component ID.
-        if entry.get('Type', '') == "11":
+        if entry['SRC'].get('Type', '') == "11":
             continue
 
         if 'ComponentID' in entry:
