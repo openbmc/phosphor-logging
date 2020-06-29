@@ -12,7 +12,11 @@ will be used instead of creating one.
 * [Action Flags and Event Type Rules](#action-flags-and-event-type-rules)
 * [D-Bus Interfaces](#d-bus-interfaces)
 * [PEL Retention](#pel-retention)
+<<<<<<< HEAD
 * [Adding python3 modules for PEL UserData and SRC parsing](#adding-python3-modules-for-pel-userdata-and-src-parsing)
+=======
+* [Fail Boot on Host Errors](#fail-boot-on-host-errors)
+>>>>>>> pel: fail boot on host errors
 
 ## Passing PEL related data within an OpenBMC event log
 
@@ -449,3 +453,17 @@ setup(
         jsonStr = json.dumps(d)
         return jsonStr
     ```
+
+## Fail Boot on Host Errors
+
+The fail boot on hw error [design][1] provides a function where a system owner
+can tell the firmware to fail the boot of a system if a BMC phosphor-logging
+event has a hardware callout in it.
+
+It is required that when this fail boot on hardware error setting is enabled,
+that the BMC fail the boot for **any** error from the host which satisfies the
+following criteria:
+- not SeverityType::nonError
+- has a callout of any kind from the `FailingComponentType` structure
+
+[1]: https://github.com/openbmc/docs/blob/master/designs/fail-boot-on-hw-error.md
