@@ -11,6 +11,7 @@ will be used instead of creating one.
 * [Callouts](#callouts)
 * [Action Flags and Event Type Rules](#action-flags-and-event-type-rules)
 * [D-Bus Interfaces](#d-bus-interfaces)
+* [Fail Boot on Host Errors](#fail-boot-on-host-errors)
 
 ## Passing PEL related data within an OpenBMC event log
 
@@ -289,3 +290,15 @@ Additional rules may be added in the future if necessary.
 
 See the org.open_power.Logging.PEL interface definition for the most up to date
 information.
+
+## Fail Boot on Host Errors
+
+The fail boot on hw error [design][1] provides a function where a system owner
+can tell the firmware to fail the boot of a system if a BMC phosphor-logging
+event has a hardware callout in it.
+
+It is required that when this fail boot on hardware error setting is enabled,
+that the BMC fail the boot for **any** error from the host which is not
+SeverityType::nonError.
+
+[1]: https://github.com/openbmc/docs/blob/master/designs/fail-boot-on-hw-error.md
