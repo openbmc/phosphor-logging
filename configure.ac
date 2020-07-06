@@ -40,6 +40,21 @@ AS_IF([test "x$enable_install_scripts" != "xyes"], [
     # Python
     AM_PATH_PYTHON([3], [AC_SUBST([PYTHON], [echo "$PYTHON"])], [AC_MSG_ERROR(
         [Could not find python-3 installed...python-3 is required])])
+    AC_ARG_VAR([PYTHON_INCLUDE], [Include flags for python, bypassing python-config])
+    AC_ARG_VAR([PKG_CONFIG], [Path to pkg-config])
+    AS_IF([test -z "$PYTHON_INCLUDE"], [
+        AS_IF([test -z "$PKG_CONFIG"], [
+            AC_PATH_PROGS([PKG_CONFIG],
+                          [pkg-config],
+                          [no],
+                          [`dirname $PYTHON`])
+            AS_IF([test "$PKG_CONFIG" = no], [AC_MSG_ERROR([cannot find pkg-config.])])
+        ])
+        AC_MSG_CHECKING([python include flags])
+        PYTHON_INCLUDE=`$PKG_CONFIG --cflags --libs python3`
+        AC_MSG_RESULT([$PYTHON_INCLUDE])
+    ])
+    AX_APPEND_COMPILE_FLAGS([$PYTHON_INCLUDE], [CXXFLAGS])
 
     # Suppress the --with-libtool-sysroot error
     LT_INIT

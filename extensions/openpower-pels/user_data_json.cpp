@@ -22,6 +22,8 @@
 #include "stream.hpp"
 #include "user_data_formats.hpp"
 
+#include <Python.h>
+
 #include <fifo_map.hpp>
 #include <iomanip>
 #include <nlohmann/json.hpp>
@@ -38,6 +40,11 @@ using namespace phosphor::logging;
 template <class K, class V, class dummy_compare, class A>
 using fifoMap = nlohmann::fifo_map<K, V, nlohmann::fifo_map_compare<K>, A>;
 using fifoJSON = nlohmann::basic_json<fifoMap>;
+
+void pyDecRef(PyObject* pyObj)
+{
+    Py_DECREF(pyObj);
+}
 
 /**
  * @brief Returns a JSON string for use by PEL::printSectionInJSON().
@@ -228,19 +235,122 @@ std::optional<std::string>
     return std::nullopt;
 }
 
+/**
+ * @brief Call Python modules to parse the data into a JSON string
+ *
+ * The module to call is based on the Creator Subsystem ID and the Component
+ * ID under the namespace "udparsers". For example: "udparsers.xyyyy.xyyyy"
+ * where "x" is the Creator Subsystem ID and "yyyy" is the Component ID.
+ *
+ * All modules must provide the following:
+ * Function: parseUDToJson
+ * Argument list:
+ *    1. (int) Sub-section type
+ *    2. (int) Section version
+ *    3. (memoryview): Data
+ *-Return data:
+ *    1. (str) JSON string
+ *
+ * @param[in] componentID - The comp ID from the UserData section header
+ * @param[in] subType - The subtype from the UserData section header
+ * @param[in] version - The version from the UserData section header
+ * @param[in] data - The data itself
+ * @param[in] creatorID - The creatorID from the PrivateHeader section
+ * @return std::optional<std::string> - The JSON string if it could be created,
+ *                                      else std::nullopt
+ */
+std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
+                                         uint8_t version,
+                                         const std::vector<uint8_t>& data,
+                                         uint8_t creatorID)
+{
+    PyObject *pName, *pModule, *pDict, *pFunc, *pArgs, *pData, *pResult,
+        *pBytes;
+    std::string subsystem = getNumberString("%c", tolower(creatorID));
+    std::string compStr = getNumberString("%04x", componentID);
+    std::string subTypeStr = getNumberString("%02x", subType);
+
+    try
+    {
+        pName = PyUnicode_FromString(std::string("udparsers." + subsystem +
+                                                 compStr + "." + subsystem +
+                                                 compStr)
+                                         .c_str());
+        std::unique_ptr<PyObject, decltype(&pyDecRef)> modNamePtr(pName,
+                                                                  &pyDecRef);
+        pModule = PyImport_Import(pName);
+        std::unique_ptr<PyObject, decltype(&pyDecRef)> modPtr(pModule,
+                                                              &pyDecRef);
+
+        if (pModule == NULL)
+        {
+            return std::nullopt;
+        }
+        pDict = PyModule_GetDict(pModule);
+        pFunc =
+            PyDict_GetItemString(pDict, std::string("parseUDToJson").c_str());
+
+        if (PyCallable_Check(pFunc))
+        {
+            auto ud = data.data();
+            pArgs = PyTuple_New(3);
+            std::unique_ptr<PyObject, decltype(&pyDecRef)> argPtr(pArgs,
+                                                                  &pyDecRef);
+            PyTuple_SetItem(pArgs, 0,
+                            PyLong_FromUnsignedLong((unsigned long)subType));
+            PyTuple_SetItem(pArgs, 1,
+                            PyLong_FromUnsignedLong((unsigned long)version));
+            pData = PyMemoryView_FromMemory(
+                reinterpret_cast<char*>(const_cast<unsigned char*>(ud)),
+                data.size(), PyBUF_READ);
+            std::unique_ptr<PyObject, decltype(&pyDecRef)> dataPtr(pData,
+                                                                   &pyDecRef);
+            PyTuple_SetItem(pArgs, 2, pData);
+            pResult = PyObject_CallObject(pFunc, pArgs);
+            std::unique_ptr<PyObject, decltype(&pyDecRef)> resultPtr(pResult,
+                                                                     &pyDecRef);
+            pBytes = PyUnicode_AsEncodedString(pResult, "utf-8", "~E~");
+            std::unique_ptr<PyObject, decltype(&pyDecRef)> pyBytePtr(pBytes,
+                                                                     &pyDecRef);
+            const char* output = PyBytes_AS_STRING(pBytes);
+            fifoJSON json = nlohmann::json::parse(output);
+            return prettyJSON(componentID, subType, version, json);
+        }
+    }
+    catch (std::exception& e)
+    {
+        log<level::ERR>("Bad JSON from parser", entry("ERROR=%s", e.what()),
+                        entry("COMP_ID=0x%X", componentID),
+                        entry("SUBTYPE=0x%X", subType),
+                        entry("VERSION=%d", version),
+                        entry("DATA_LENGTH=%lu\n", data.size()));
+    }
+
+    return std::nullopt;
+}
+
 std::optional<std::string> getJSON(uint16_t componentID, uint8_t subType,
                                    uint8_t version,
-                                   const std::vector<uint8_t>& data)
+                                   const std::vector<uint8_t>& data,
+                                   const uint8_t& creatorID)
 {
     try
     {
-        switch (componentID)
+        if (pv::creatorIDs.at(getNumberString("%c", creatorID)) == "BMC")
         {
-            case static_cast<uint16_t>(ComponentID::phosphorLogging):
-                return getBuiltinFormatJSON(componentID, subType, version,
-                                            data);
-            default:
-                break;
+            switch (componentID)
+            {
+                case static_cast<uint16_t>(ComponentID::phosphorLogging):
+                    return getBuiltinFormatJSON(componentID, subType, version,
+                                                data);
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            return getPythonJSON(componentID, subType, version, data,
+                                 creatorID);
         }
     }
     catch (std::exception& e)
