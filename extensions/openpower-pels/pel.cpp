@@ -265,7 +265,9 @@ void PEL::checkRulesAndFix()
 
 void PEL::printSectionInJSON(const Section& section, std::string& buf,
                              std::map<uint16_t, size_t>& pluralSections,
-                             message::Registry& registry) const
+                             message::Registry& registry,
+                             const std::vector<std::string>& plugins,
+                             const uint8_t& creatorID) const
 {
     char tmpB[5];
     uint8_t id[] = {static_cast<uint8_t>(section.header().id >> 8),
@@ -286,9 +288,26 @@ void PEL::printSectionInJSON(const Section& section, std::string& buf,
 
     if (section.valid())
     {
-        auto json = (sectionID == "PS" || sectionID == "SS")
-                        ? section.getJSON(registry)
-                        : section.getJSON();
+        std::optional<std::string> json;
+        if (sectionID == "PS" || sectionID == "SS")
+        {
+            json = section.getJSON(registry);
+        }
+        else if (sectionID == "UD" || sectionID == "ED")
+        {
+            std::string subsystem = getNumberString("%c", tolower(creatorID));
+            std::string component =
+                getNumberString("%04x", section.header().componentID);
+            if (std::find(plugins.begin(), plugins.end(),
+                          subsystem + component) != plugins.end())
+            {
+                json = section.getJSON(creatorID);
+            }
+        }
+        else
+        {
+            json = section.getJSON();
+        }
 
         buf += "\"" + sectionName + "\": {\n";
 
@@ -355,16 +374,18 @@ std::map<uint16_t, size_t> PEL::getPluralSections() const
     return sections;
 }
 
-void PEL::toJSON(message::Registry& registry) const
+void PEL::toJSON(message::Registry& registry,
+                 const std::vector<std::string>& plugins) const
 {
     auto sections = getPluralSections();
 
     std::string buf = "{\n";
-    printSectionInJSON(*(_ph.get()), buf, sections, registry);
-    printSectionInJSON(*(_uh.get()), buf, sections, registry);
+    printSectionInJSON(*(_ph.get()), buf, sections, registry, plugins);
+    printSectionInJSON(*(_uh.get()), buf, sections, registry, plugins);
     for (auto& section : this->optionalSections())
     {
-        printSectionInJSON(*(section.get()), buf, sections, registry);
+        printSectionInJSON(*(section.get()), buf, sections, registry, plugins,
+                           _ph->creatorID());
     }
     buf += "}";
     std::size_t found = buf.rfind(",");

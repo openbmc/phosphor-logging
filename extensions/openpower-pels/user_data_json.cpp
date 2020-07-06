@@ -19,8 +19,11 @@
 #include "json_utils.hpp"
 #include "pel_types.hpp"
 #include "pel_values.hpp"
+#include "private_header.hpp"
 #include "stream.hpp"
 #include "user_data_formats.hpp"
+
+#include <Python.h>
 
 #include <fifo_map.hpp>
 #include <iomanip>
@@ -228,19 +231,99 @@ std::optional<std::string>
     return std::nullopt;
 }
 
+std::optional<std::string> getPythonJSON(const uint16_t& componentID,
+                                         const uint8_t& subType,
+                                         const uint8_t& version,
+                                         const std::vector<uint8_t>& data,
+                                         const uint8_t& creatorID)
+{
+    PyObject *pName, *pModule, *pDict, *pFunc, *pArgs, *pData, *pResult,
+        *pBytes;
+    std::string subsystem = getNumberString("%c", tolower(creatorID));
+    std::string compStr = getNumberString("%04x", componentID);
+    std::string subTypeStr = getNumberString("%02x", subType);
+
+    try
+    {
+        pName = PyUnicode_FromString(std::string("udparsers." + subsystem +
+                                                 compStr + "." + subsystem +
+                                                 compStr)
+                                         .c_str());
+        pModule = PyImport_Import(pName);
+
+        if (pModule == NULL)
+        {
+            Py_DECREF(pName);
+            return std::nullopt;
+        }
+        pDict = PyModule_GetDict(pModule);
+        pFunc =
+            PyDict_GetItemString(pDict, std::string("parseUDToJson").c_str());
+
+        if (PyCallable_Check(pFunc))
+        {
+            auto ud = data.data();
+            pArgs = PyTuple_New(3);
+            PyTuple_SetItem(pArgs, 0,
+                            PyLong_FromUnsignedLong((unsigned long)subType));
+            PyTuple_SetItem(pArgs, 1,
+                            PyLong_FromUnsignedLong((unsigned long)version));
+            pData = PyMemoryView_FromMemory(
+                reinterpret_cast<char*>(const_cast<unsigned char*>(ud)),
+                data.size(), PyBUF_READ);
+            PyTuple_SetItem(pArgs, 2, pData);
+            pResult = PyObject_CallObject(pFunc, pArgs);
+            pBytes = PyUnicode_AsEncodedString(pResult, "utf-8", "~E~");
+            const char* output = PyBytes_AS_STRING(pBytes);
+            fifoJSON json = nlohmann::json::parse(output);
+
+            Py_DECREF(pArgs);
+            Py_DECREF(pData);
+            Py_XDECREF(pResult);
+            Py_XDECREF(pBytes);
+            Py_DECREF(pName);
+            Py_DECREF(pModule);
+
+            return prettyJSON(componentID, subType, version, json);
+        }
+        Py_DECREF(pName);
+        Py_DECREF(pModule);
+    }
+    catch (std::exception& e)
+    {
+        log<level::ERR>("Failed python parsing", entry("ERROR=%s", e.what()),
+                        entry("COMP_ID=0x%X", componentID),
+                        entry("SUBTYPE=0x%X", subType),
+                        entry("VERSION=%d", version),
+                        entry("DATA_LENGTH=%lu\n", data.size()));
+    }
+
+    return std::nullopt;
+}
+
 std::optional<std::string> getJSON(uint16_t componentID, uint8_t subType,
                                    uint8_t version,
-                                   const std::vector<uint8_t>& data)
+                                   const std::vector<uint8_t>& data,
+                                   const uint8_t& creatorID)
 {
     try
     {
-        switch (componentID)
+        if (pv::creatorIDs.at(getNumberString("%c", creatorID)) == "BMC")
         {
-            case static_cast<uint16_t>(ComponentID::phosphorLogging):
-                return getBuiltinFormatJSON(componentID, subType, version,
-                                            data);
-            default:
-                break;
+            switch (componentID)
+            {
+                case static_cast<uint16_t>(ComponentID::phosphorLogging):
+                    return getBuiltinFormatJSON(componentID, subType, version,
+                                                data);
+                default:
+                    break;
+            }
+        }
+        else if (pv::creatorIDs.at(getNumberString("%c", creatorID)) ==
+                 "Hostboot")
+        {
+            return getPythonJSON(componentID, subType, version, data,
+                                 creatorID);
         }
     }
     catch (std::exception& e)

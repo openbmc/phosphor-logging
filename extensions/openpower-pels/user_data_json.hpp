@@ -14,12 +14,14 @@ namespace openpower::pels::user_data
  * @param[in] subType - The subtype from the UserData section header
  * @param[in] version - The version from the UserData section header
  * @param[in] data - The section data
+ * @param[in] creatorID - Creator Subsystem ID from Private Header
  *
  * @return std::optional<std::string> - The JSON string if it could be created,
  *                                      else std::nullopt.
  */
 std::optional<std::string> getJSON(uint16_t componentID, uint8_t subType,
                                    uint8_t version,
-                                   const std::vector<uint8_t>& data);
+                                   const std::vector<uint8_t>& data,
+                                   const uint8_t& creatorID);
 
 } // namespace openpower::pels::user_data

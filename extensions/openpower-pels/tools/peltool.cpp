@@ -22,6 +22,8 @@
 #include "../pel_types.hpp"
 #include "../pel_values.hpp"
 
+#include <Python.h>
+
 #include <CLI/CLI.hpp>
 #include <bitset>
 #include <fstream>
@@ -205,6 +207,60 @@ std::vector<uint8_t> getFileData(const std::string& name)
 }
 
 /**
+ * @brief Initialize Python interpreter and gathers all UD parser modules in
+ *        site-packages directory. This is to prevent calling a non-existant
+ *        module which will break JSON when Python prints the error message.
+ *
+ * @return std::vector<std::string> Vector of plugins found in filesystem
+ */
+std::vector<std::string> getPlugins()
+{
+    Py_Initialize();
+    std::vector<std::string> plugins;
+    std::vector<std::string> siteDirs;
+    PyObject *pName, *pModule;
+    pName = PyUnicode_FromString(std::string("site").c_str());
+    pModule = PyImport_Import(pName);
+    PyObject* pDict = PyModule_GetDict(pModule);
+    PyObject* pFunc =
+        PyDict_GetItemString(pDict, std::string("getsitepackages").c_str());
+    if (PyCallable_Check(pFunc))
+    {
+        PyObject* pResult = PyObject_CallObject(pFunc, NULL);
+        Py_ssize_t list_size = PyList_Size(pResult);
+        for (Py_ssize_t i = 0; i < list_size; i++)
+        {
+            PyObject* item = PyList_GetItem(pResult, i);
+            PyObject* pBytes = PyUnicode_AsEncodedString(item, "utf-8", "~E~");
+            const char* output = PyBytes_AS_STRING(pBytes);
+            std::string tmpStr(output);
+            siteDirs.push_back(tmpStr);
+            Py_DECREF(pBytes);
+        }
+        Py_DECREF(pResult);
+    }
+    Py_DECREF(pName);
+    Py_DECREF(pModule);
+    for (std::vector<std::string>::iterator it = siteDirs.begin();
+         it != siteDirs.end(); ++it)
+    {
+        if (fs::exists(*it + "/udparsers"))
+        {
+            for (const auto& entry : fs::directory_iterator(*it + "/udparsers"))
+            {
+                if (entry.is_directory() and
+                    fs::exists(entry.path().string() + "/" +
+                               entry.path().stem().string() + ".py"))
+                {
+                    plugins.push_back(entry.path().stem());
+                }
+            }
+        }
+    }
+    return plugins;
+}
+
+/**
  * @brief Creates JSON string of a PEL entry if fullPEL is false or prints to
  *        stdout the full PEL in JSON if fullPEL is true
  * @param[in] itr - std::map iterator of <uint32_t, BCDTime>
@@ -213,12 +269,14 @@ std::vector<uint8_t> getFileData(const std::string& name)
  * @param[in] fullPEL - Boolean to print full JSON representation of PEL
  * @param[in] foundPEL - Boolean to check if any PEL is present
  * @param[in] scrubRegex - SRC regex object
+ * @param[in] plugins - Vector of strings of plugins found in filesystem
  * @return std::string - JSON string of PEL entry (empty if fullPEL is true)
  */
 template <typename T>
 std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool fullPEL,
                        bool& foundPEL,
-                       const std::optional<std::regex>& scrubRegex)
+                       const std::optional<std::regex>& scrubRegex,
+                       const std::vector<std::string>& plugins)
 {
     std::size_t found;
     std::string val;
@@ -274,7 +332,7 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool fullPEL,
             {
                 std::cout << ",\n\n";
             }
-            pel.toJSON(registry);
+            pel.toJSON(registry, plugins);
         }
         else
         {
@@ -365,6 +423,7 @@ void printPELs(bool order, bool hidden, bool includeInfo, bool fullPEL,
 {
     std::string listStr;
     std::map<uint32_t, BCDTime> PELs;
+    std::vector<std::string> plugins;
     listStr = "{\n";
     for (auto it = fs::directory_iterator(EXTENSION_PERSIST_DIR "/pels/logs");
          it != fs::directory_iterator(); ++it)
@@ -380,10 +439,14 @@ void printPELs(bool order, bool hidden, bool includeInfo, bool fullPEL,
         }
     }
     bool foundPEL = false;
+    if (fullPEL)
+    {
+        plugins = getPlugins();
+    }
     auto buildJSON = [&listStr, &hidden, &includeInfo, &fullPEL, &foundPEL,
-                      &scrubRegex](const auto& i) {
-        listStr +=
-            genPELJSON(i, hidden, includeInfo, fullPEL, foundPEL, scrubRegex);
+                      &scrubRegex, &plugins](const auto& i) {
+        listStr += genPELJSON(i, hidden, includeInfo, fullPEL, foundPEL,
+                              scrubRegex, plugins);
     };
     if (order)
     {
@@ -544,7 +607,8 @@ void displayPEL(const PEL& pel)
 {
     if (pel.valid())
     {
-        pel.toJSON(registry);
+        auto plugins = getPlugins();
+        pel.toJSON(registry, plugins);
     }
     else
     {
@@ -724,8 +788,9 @@ int main(int argc, char** argv)
         std::vector<uint8_t> data = getFileData(fileName);
         if (!data.empty())
         {
+            auto plugins = getPlugins();
             PEL pel{data};
-            pel.toJSON(registry);
+            pel.toJSON(registry, plugins);
         }
         else
         {
@@ -765,5 +830,6 @@ int main(int argc, char** argv)
     {
         std::cout << app.help("", CLI::AppFormatMode::All) << std::endl;
     }
+    Py_Finalize();
     return 0;
 }
