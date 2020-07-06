@@ -73,5 +73,6 @@ peltool_SOURCES = \
 	extensions/openpower-pels/tools/peltool.cpp \
 	extensions/openpower-pels/user_data.cpp \
 	extensions/openpower-pels/user_data_json.cpp
+peltool_LDFLAGS = "-lpython$(PYTHON_VERSION)"
 peltool_LDADD = libpel.la
 peltool_CXXFLAGS = "-DPELTOOL"
