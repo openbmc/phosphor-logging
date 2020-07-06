@@ -214,7 +214,23 @@ AS_IF([test "x$enable_openpower_pel_extension" == "xyes"],
             [],
             [AC_MSG_ERROR([Could not find fifo_map.hpp])])
 
-       AX_PKG_CHECK_MODULES([LIBPLDM], [libpldm])]
+       AX_PKG_CHECK_MODULES([LIBPLDM], [libpldm])
+
+       AC_ARG_VAR([PYTHON_INCLUDE], [Include flags for python, bypassing python-config])
+       AC_ARG_VAR([PKG_CONFIG], [Path to pkg-config])
+       AS_IF([test -z "$PYTHON_INCLUDE"], [
+           AS_IF([test -z "$PKG_CONFIG"], [
+               AC_PATH_PROGS([PKG_CONFIG],
+                             [pkg-config],
+                             [no],
+                             [`dirname $PYTHON`])
+               AS_IF([test "$PKG_CONFIG" = no], [AC_MSG_ERROR([cannot find pkg-config.])])
+           ])
+           AC_MSG_CHECKING([python include flags])
+           PYTHON_INCLUDE=`$PKG_CONFIG --cflags python3`
+           AC_MSG_RESULT([$PYTHON_INCLUDE])
+       ])
+       AX_APPEND_COMPILE_FLAGS([$PYTHON_INCLUDE], [CXXFLAGS])]
 )
 
 AC_ARG_ENABLE([dont-send-pels-to-host],
