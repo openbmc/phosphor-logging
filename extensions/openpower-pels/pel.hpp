@@ -239,8 +239,10 @@ class PEL
     /**
      * @brief Output a PEL in JSON.
      * @param[in] registry - Registry object reference
+     * @param[in] plugins - Vector of strings of plugins found in filesystem
      */
-    void toJSON(message::Registry& registry) const;
+    void toJSON(message::Registry& registry,
+                const std::vector<std::string>& plugins) const;
 
     /**
      * @brief Sets the host transmission state in the User Header
@@ -333,10 +335,14 @@ class PEL
      * @param[in|out] pluralSections - Map used to track sections counts for
      *                                 when there is more than 1.
      * @param[in] registry - Registry object reference
+     * @param[in] plugins - Vector of strings of plugins found in filesystem
+     * @param[in] creatorID - Creator Subsystem ID (only for UserData section)
      */
     void printSectionInJSON(const Section& section, std::string& buf,
                             std::map<uint16_t, size_t>& pluralSections,
-                            message::Registry& registry) const;
+                            message::Registry& registry,
+                            const std::vector<std::string>& plugins,
+                            const uint8_t& creatorID = 0) const;
 
     /**
      * @brief The PEL Private Header section
