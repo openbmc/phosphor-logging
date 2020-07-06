@@ -82,11 +82,11 @@ class UserData : public Section
 
     /**
      * @brief Get the section contents in JSON
-     *
+     * @param[in] creatorID - Creator Subsystem ID from Private Header
      * @return The JSON as a string if a parser was found,
      *         otherwise std::nullopt.
      */
-    std::optional<std::string> getJSON() const override;
+    std::optional<std::string> getJSON(uint8_t creatorID) const override;
 
     /**
      * @brief Shrink the section
