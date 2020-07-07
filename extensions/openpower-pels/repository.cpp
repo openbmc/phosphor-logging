@@ -118,6 +118,8 @@ void Repository::restore()
                 _pelAttributes.emplace(
                     LogID(pelID(pel.id()), obmcID(pel.obmcLogID())),
                     attributes);
+
+                updateRepoStats(attributes, true);
             }
             else
             {
@@ -167,6 +169,8 @@ void Repository::add(std::unique_ptr<PEL>& pel)
     _pelAttributes.emplace(LogID(pelID(pel->id()), obmcID(pel->obmcLogID())),
                            attributes);
 
+    updateRepoStats(attributes, true);
+
     processAddCallbacks(*pel);
 }
 
@@ -206,6 +210,8 @@ void Repository::remove(const LogID& id)
     auto pel = findPEL(id);
     if (pel != _pelAttributes.end())
     {
+        updateRepoStats(pel->second, false);
+
         log<level::DEBUG>("Removing PEL from repository",
                           entry("PEL_ID=0x%X", pel->first.pelID.id),
                           entry("OBMC_LOG_ID=%d", pel->first.obmcID.id));
@@ -422,6 +428,74 @@ void Repository::updatePEL(const fs::path& path, PELUpdateFunc updateFunc)
     {
         throw std::runtime_error(
             "Unable to read a valid PEL when trying to update it");
+    }
+}
+
+bool Repository::isServiceableSev(const PELAttributes& pel)
+{
+    auto sevType = static_cast<SeverityType>(pel.severity & 0xF0);
+    auto sevPVEntry =
+        pel_values::findByValue(pel.severity, pel_values::severityValues);
+    std::string sevName = std::get<pel_values::registryNamePos>(*sevPVEntry);
+
+    bool check1 = (sevType == SeverityType::predictive) ||
+                  (sevType == SeverityType::unrecoverable) ||
+                  (sevType == SeverityType::critical);
+
+    bool check2 = ((sevType == SeverityType::recovered) ||
+                   (sevName == "symptom_recovered")) &&
+                  !pel.actionFlags.test(hiddenFlagBit);
+
+    bool check3 = (sevName == "symptom_predictive") ||
+                  (sevName == "symptom_unrecoverable") ||
+                  (sevName == "symptom_critical");
+
+    return check1 || check2 || check3;
+}
+
+void Repository::updateRepoStats(const PELAttributes& pel, bool pelAdded)
+{
+    auto isServiceable = Repository::isServiceableSev(pel);
+    auto bmcPEL = CreatorID::openBMC == static_cast<CreatorID>(pel.creator);
+
+    auto adjustSize = [pelAdded, &pel](auto& runningSize) {
+        if (pelAdded)
+        {
+            runningSize += pel.sizeOnDisk;
+        }
+        else
+        {
+            runningSize = std::max(static_cast<int64_t>(runningSize) -
+                                       static_cast<int64_t>(pel.sizeOnDisk),
+                                   static_cast<int64_t>(0));
+        }
+    };
+
+    adjustSize(_sizes.total);
+
+    if (bmcPEL)
+    {
+        adjustSize(_sizes.bmc);
+        if (isServiceable)
+        {
+            adjustSize(_sizes.bmcServiceable);
+        }
+        else
+        {
+            adjustSize(_sizes.bmcInfo);
+        }
+    }
+    else
+    {
+        adjustSize(_sizes.nonBMC);
+        if (isServiceable)
+        {
+            adjustSize(_sizes.nonBMCServiceable);
+        }
+        else
+        {
+            adjustSize(_sizes.nonBMCInfo);
+        }
     }
 }
 

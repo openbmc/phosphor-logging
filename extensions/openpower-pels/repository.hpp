@@ -112,6 +112,27 @@ class Repository
         }
     };
 
+    /**
+     * @brief A structure for keeping a breakdown of the sizes of PELs
+     *        of different types in the repository.
+     */
+    struct SizeStats
+    {
+        uint64_t total;
+        uint64_t bmc;
+        uint64_t nonBMC;
+        uint64_t bmcServiceable;
+        uint64_t bmcInfo;
+        uint64_t nonBMCServiceable;
+        uint64_t nonBMCInfo;
+
+        SizeStats() :
+            total(0), bmc(0), nonBMC(0), bmcServiceable(0), bmcInfo(0),
+            nonBMCServiceable(0), nonBMCInfo(0)
+        {
+        }
+    };
+
     Repository() = delete;
     ~Repository() = default;
     Repository(const Repository&) = default;
@@ -313,6 +334,25 @@ class Repository
      */
     void setPELHMCTransState(uint32_t pelID, TransmissionState state);
 
+    /**
+     * @brief Returns the size stats structure
+     *
+     * @return const SizeStats& - The stats structure
+     */
+    const SizeStats& getSizeStats() const
+    {
+        return _sizes;
+    }
+
+    /**
+     * @brief Says if the PEL is considered serviceable (not just
+     *        informational) as determined by its severity.
+     *
+     * @param[in] pel - The PELAttributes entry for the PEL
+     * @return bool - If serviceable or not
+     */
+    static bool isServiceableSev(const PELAttributes& pel);
+
   private:
     using PELUpdateFunc = std::function<void(PEL&)>;
 
@@ -372,6 +412,15 @@ class Repository
     void write(const PEL& pel, const std::filesystem::path& path);
 
     /**
+     * @brief Updates the repository statistics after a PEL is
+     *        added or removed.
+     *
+     * @param[in] pel - The PELAttributes entry for the PEL
+     * @param[in] pelAdded - true if the PEL was added, false if removed
+     */
+    void updateRepoStats(const PELAttributes& pel, bool pelAdded);
+
+    /**
      * @brief The filesystem path to the PEL logs.
      */
     const std::filesystem::path _logPath;
@@ -402,6 +451,11 @@ class Repository
      *        before pruning.
      */
     const size_t _maxNumPELs;
+
+    /**
+     * @brief Statistics on the sizes of the stored PELs.
+     */
+    SizeStats _sizes;
 };
 
 } // namespace pels
