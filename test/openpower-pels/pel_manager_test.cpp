@@ -90,6 +90,21 @@ std::optional<fs::path> findAnyPELInRepo()
     return std::nullopt;
 }
 
+size_t countPELsInRepo()
+{
+    size_t count = 0;
+    std::regex expr{"\\d+_\\d+"};
+
+    for (auto& f : fs::directory_iterator(getPELRepoPath() / "logs"))
+    {
+        if (std::regex_search(f.path().string(), expr))
+        {
+            count++;
+        }
+    }
+    return count;
+}
+
 // Test that using the RAWPEL=<file> with the Manager::create() call gets
 // a PEL saved in the repository.
 TEST_F(ManagerTest, TestCreateWithPEL)
@@ -520,5 +535,58 @@ TEST_F(ManagerTest, TestCreateWithESEL)
 
         EXPECT_EQ(logger.errName, "org.open_power.Logging.Error.BadHostPEL");
         EXPECT_EQ(logger.errLevel, phosphor::logging::Entry::Level::Error);
+    }
+}
+
+TEST_F(ManagerTest, TestPruning)
+{
+    sdeventplus::Event e{sdEvent};
+
+    std::unique_ptr<DataInterfaceBase> dataIface =
+        std::make_unique<MockDataInterface>();
+
+    openpower::pels::Manager manager{
+        logManager, std::move(dataIface),
+        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
+                  std::placeholders::_2, std::placeholders::_3)};
+
+    // Create 11 10KB BMC non-informational PELs.
+    // After the 10th one, a prune should be triggered to remove all but 3 to
+    // get under 30% full.  Then when the 11th is added there will be 4 left.
+    uint32_t id = 1;
+    for (int i = 0; i < 11; i++)
+    {
+        auto data = pelFactory(id++, 'O', 0x40, 0x8800, 10 * 1024);
+
+        fs::path pelFilename = makeTempDir() / "rawpel";
+        std::ofstream pelFile{pelFilename};
+        pelFile.write(reinterpret_cast<const char*>(data.data()), data.size());
+        pelFile.close();
+
+        std::string adItem = "RAWPEL=" + pelFilename.string();
+        std::vector<std::string> additionalData{adItem};
+        std::vector<std::string> associations;
+
+        manager.create("error message", 42, 0,
+                       phosphor::logging::Entry::Level::Error, additionalData,
+                       associations);
+
+        // Simulate the code getting back to the event loop
+        // after each create.
+        e.run(std::chrono::milliseconds(1));
+
+        if (i < 9)
+        {
+            EXPECT_EQ(countPELsInRepo(), i + 1);
+        }
+        else if (i == 9)
+        {
+            // Prune occured
+            EXPECT_EQ(countPELsInRepo(), 3);
+        }
+        else // i == 10
+        {
+            EXPECT_EQ(countPELsInRepo(), 4);
+        }
     }
 }

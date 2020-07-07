@@ -120,6 +120,11 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
                               entry("PEL_ID=0x%X", pel->id()));
 
             _repo.add(pel);
+
+            if (_repo.sizeWarning())
+            {
+                scheduleRepoPrune();
+            }
         }
         catch (std::exception& e)
         {
@@ -281,6 +286,11 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
 
         _repo.add(pel);
 
+        if (_repo.sizeWarning())
+        {
+            scheduleRepoPrune();
+        }
+
         auto src = pel->primarySRC();
         if (src)
         {
@@ -412,6 +422,24 @@ void Manager::hostReject(uint32_t pelID, RejectionReason reason)
     {
         _hostNotifier->setHostFull(pelID);
     }
+}
+
+void Manager::scheduleRepoPrune()
+{
+    sdeventplus::Event event = sdeventplus::Event::get_default();
+
+    _repoPrunerEventSource = std::make_unique<sdeventplus::source::Defer>(
+        event, std::bind(std::mem_fn(&Manager::pruneRepo), this,
+                         std::placeholders::_1));
+}
+
+void Manager::pruneRepo(sdeventplus::source::EventBase& source)
+{
+    auto idsToDelete = _repo.prune();
+
+    // Remove the OpenBMC event logs for the PELs that were just removed.
+    std::for_each(idsToDelete.begin(), idsToDelete.end(),
+                  [this](auto id) { this->_logManager.erase(id); });
 }
 
 } // namespace pels

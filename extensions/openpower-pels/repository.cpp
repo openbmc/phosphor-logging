@@ -28,6 +28,8 @@ namespace fs = std::filesystem;
 using namespace phosphor::logging;
 namespace file_error = sdbusplus::xyz::openbmc_project::Common::File::Error;
 
+constexpr size_t warningPercentage = 95;
+
 Repository::Repository(const std::filesystem::path& basePath, size_t repoSize) :
     _logPath(basePath / "logs"), _maxRepoSize(repoSize)
 {
@@ -466,6 +468,11 @@ void Repository::updateRepoStats(const PELAttributes& pel, bool pelAdded)
             adjustSize(_sizes.nonBMCInfo);
         }
     }
+}
+
+bool Repository::sizeWarning() const
+{
+    return _sizes.total > (_maxRepoSize * warningPercentage / 100);
 }
 
 std::vector<Repository::AttributesReference>

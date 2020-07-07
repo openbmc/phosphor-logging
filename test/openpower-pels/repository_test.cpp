@@ -585,6 +585,45 @@ TEST_F(RepositoryTest, TestRepoSizes)
         }
     }
 }
+
+// Test the sizeWarning function
+TEST_F(RepositoryTest, TestSizeWarning)
+{
+    uint32_t id = 1;
+    Repository repo{repoPath, 10000};
+
+    EXPECT_FALSE(repo.sizeWarning());
+
+    // 95% is still OK
+    auto data = pelFactory(id++, 'O', 0x20, 0x8800, 9500);
+    auto pel = std::make_unique<PEL>(data);
+    repo.add(pel);
+
+    EXPECT_FALSE(repo.sizeWarning());
+
+    // Now at 99%
+    data = pelFactory(id++, 'B', 0x20, 0x8800, 400);
+    pel = std::make_unique<PEL>(data);
+    repo.add(pel);
+
+    EXPECT_TRUE(repo.sizeWarning());
+}
+
+// Test sizeWarning at 96%
+TEST_F(RepositoryTest, TestSizeWarning96)
+{
+    Repository repo{repoPath, 10000};
+
+    EXPECT_FALSE(repo.sizeWarning());
+
+    auto data = pelFactory(1, 'O', 0x20, 0x8800, 9600);
+    auto pel = std::make_unique<PEL>(data);
+    repo.add(pel);
+
+    // 96%, just over the threshold
+    EXPECT_TRUE(repo.sizeWarning());
+}
+
 // Prune PELs, when no HMC/OS/PHYP acks
 TEST_F(RepositoryTest, TestPruneNoAcks)
 {

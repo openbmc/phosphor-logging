@@ -254,6 +254,23 @@ class Manager : public PELInterface
     PelFFDC convertToPelFFDC(const phosphor::logging::FFDCEntries& ffdc);
 
     /**
+     * @brief Schedules a PEL repository prune to occur from
+     *        the event loop.
+     *
+     * Uses sd_event_add_defer
+     */
+    void scheduleRepoPrune();
+
+    /**
+     * @brief Prunes old PELs out of the repository to save space.
+     *
+     * This is called from the event loop.
+     *
+     * @param[in] source - The event source object used
+     */
+    void pruneRepo(sdeventplus::source::EventBase& source);
+
+    /**
      * @brief Reference to phosphor-logging's Manager class
      */
     phosphor::logging::internal::Manager& _logManager;
@@ -290,6 +307,12 @@ class Manager : public PELInterface
      *        it has been returned from the getPEL D-Bus method.
      */
     std::unique_ptr<sdeventplus::source::Defer> _fdCloserEventSource;
+
+    /**
+     * @brief The even source for removing old PELs when the repo is
+     *        running out of space to make room for new ones.
+     */
+    std::unique_ptr<sdeventplus::source::Defer> _repoPrunerEventSource;
 };
 
 } // namespace pels
