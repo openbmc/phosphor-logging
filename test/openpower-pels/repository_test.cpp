@@ -588,3 +588,199 @@ TEST_F(RepositoryTest, TestRepoSizes)
         EXPECT_EQ(stats.nonBMCInfo, 0);
     }
 }
+
+// Prune PELs, when no HMC/OS/PHYP acks
+TEST_F(RepositoryTest, TestPruneNoAcks)
+{
+    Repository repo{repoPath, 4096 * 20, 100};
+
+    // Add 10 4096B (on disk) PELs of BMC nonInfo, Info and nonBMC info,
+    // nonInfo errors. None of them acked by PHYP, host, or HMC.
+    for (uint32_t i = 1; i <= 10; i++)
+    {
+        // BMC predictive
+        auto data = pelFactory(i, 'O', 0x20, 0x8800, 500);
+        auto pel = std::make_unique<PEL>(data);
+        repo.add(pel);
+
+        // BMC info
+        data = pelFactory(i + 100, 'O', 0x0, 0x8800, 500);
+        pel = std::make_unique<PEL>(data);
+        repo.add(pel);
+
+        // Hostboot predictive
+        data = pelFactory(i + 200, 'B', 0x20, 0x8800, 500);
+        pel = std::make_unique<PEL>(data);
+        repo.add(pel);
+
+        // Hostboot info
+        data = pelFactory(i + 300, 'B', 0x0, 0x8800, 500);
+        pel = std::make_unique<PEL>(data);
+        repo.add(pel);
+    }
+
+    const auto& sizes = repo.getSizeStats();
+    EXPECT_EQ(sizes.total, 4096 * 40);
+
+    // Sanity check the very first PELs with IDs 1 to 4 are
+    // there so we can check they are removed after the prune.
+    for (uint32_t i = 1; i < 5; i++)
+    {
+        Repository::LogID id{Repository::LogID::Pel{i}};
+        EXPECT_TRUE(repo.getPELAttributes(id));
+    }
+
+    // Prune down to 15%/30%/15%/30% = 90% total
+    auto IDs = repo.prune();
+
+    // Check the final sizes
+    EXPECT_EQ(sizes.total, 4096 * 18);            // 90% of 20 PELs
+    EXPECT_EQ(sizes.bmcInfo, 4096 * 3);           // 15% of 20 PELs
+    EXPECT_EQ(sizes.bmcServiceable, 4096 * 6);    // 30% of 20 PELs
+    EXPECT_EQ(sizes.nonBMCInfo, 4096 * 3);        // 15% of 20 PELs
+    EXPECT_EQ(sizes.nonBMCServiceable, 4096 * 6); // 30% of 20 PELs
+
+    // Check that at least the 4 oldest, which are the oldest of
+    // each type, were removed.
+    for (uint32_t i = 1; i < 5; i++)
+    {
+        Repository::LogID id{Repository::LogID::Pel{i}};
+        EXPECT_FALSE(repo.getPELAttributes(id));
+
+        // Make sure the corresponding OpenBMC event log ID which is
+        // 500 + the PEL ID is in the list.
+        EXPECT_TRUE(std::find(IDs.begin(), IDs.end(), 500 + i) != IDs.end());
+    }
+}
+
+// Test that if filled completely with 1 type of PEL, that
+// pruning still works properly
+TEST_F(RepositoryTest, TestPruneInfoOnly)
+{
+    Repository repo{repoPath, 4096 * 22, 100};
+
+    // Fill 4096*23 bytes on disk of BMC info PELs
+    for (uint32_t i = 1; i <= 23; i++)
+    {
+        auto data = pelFactory(i, 'O', 0, 0x8800, 1000);
+        auto pel = std::make_unique<PEL>(data);
+        repo.add(pel);
+    }
+
+    const auto& sizes = repo.getSizeStats();
+    EXPECT_EQ(sizes.total, 4096 * 23);
+
+    // Pruning to 15% of 4096 * 22 will leave 3 4096B PELs.
+
+    // Sanity check the oldest 20 are there so when they
+    // get pruned below we'll know they were removed.
+    for (uint32_t i = 1; i <= 20; i++)
+    {
+        Repository::LogID id{Repository::LogID::Pel{i}};
+        EXPECT_TRUE(repo.getPELAttributes(id));
+    }
+
+    auto IDs = repo.prune();
+
+    // Check the final sizes
+    EXPECT_EQ(sizes.total, 4096 * 3);
+    EXPECT_EQ(sizes.bmcInfo, 4096 * 3);
+    EXPECT_EQ(sizes.bmcServiceable, 0);
+    EXPECT_EQ(sizes.nonBMCInfo, 0);
+    EXPECT_EQ(sizes.nonBMCServiceable, 0);
+
+    EXPECT_EQ(IDs.size(), 20);
+
+    // Can no longer find the oldest 20 PELs.
+    for (uint32_t i = 1; i <= 20; i++)
+    {
+        Repository::LogID id{Repository::LogID::Pel{i}};
+        EXPECT_FALSE(repo.getPELAttributes(id));
+        EXPECT_TRUE(std::find(IDs.begin(), IDs.end(), 500 + i) != IDs.end());
+    }
+}
+
+// Test that the HMC/OS/PHYP ack values affect the
+// pruning order.
+TEST_F(RepositoryTest, TestPruneWithAcks)
+{
+    Repository repo{repoPath, 4096 * 20, 100};
+
+    // Fill 30% worth of BMC non-info non-acked PELs
+    for (uint32_t i = 1; i <= 6; i++)
+    {
+        // BMC predictive
+        auto data = pelFactory(i, 'O', 0x20, 0x8800, 500);
+        auto pel = std::make_unique<PEL>(data);
+        repo.add(pel);
+    }
+
+    // Add another PEL to push it over the 30%, each time adding
+    // a different type that should be pruned before the above ones
+    // even though those are older.
+    for (uint32_t i = 1; i <= 3; i++)
+    {
+        auto data = pelFactory(i, 'O', 0x20, 0x8800, 500);
+        auto pel = std::make_unique<PEL>(data);
+        auto idToDelete = pel->obmcLogID();
+        repo.add(pel);
+
+        if (0 == i)
+        {
+            repo.setPELHMCTransState(pel->id(), TransmissionState::acked);
+        }
+        else if (1 == i)
+        {
+            repo.setPELHostTransState(pel->id(), TransmissionState::acked);
+        }
+        else
+        {
+            repo.setPELHostTransState(pel->id(), TransmissionState::sent);
+        }
+
+        auto IDs = repo.prune();
+        EXPECT_EQ(repo.getSizeStats().total, 4096 * 6);
+
+        // The newest PEL should be the one deleted
+        ASSERT_EQ(IDs.size(), 1);
+        EXPECT_EQ(IDs[0], idToDelete);
+    }
+}
+
+// Test that the total number of PELs limit is enforced.
+TEST_F(RepositoryTest, TestPruneTooManyPELs)
+{
+    Repository repo{repoPath, 4096 * 100, 10};
+
+    // Add 10, which is the limit and is still OK
+    for (uint32_t i = 1; i <= 10; i++)
+    {
+        auto data = pelFactory(i, 'O', 0x20, 0x8800, 500);
+        auto pel = std::make_unique<PEL>(data);
+        repo.add(pel);
+    }
+
+    auto IDs = repo.prune();
+
+    // Nothing pruned yet
+    EXPECT_TRUE(IDs.empty());
+
+    // Add 1 more PEL which will be too many.
+    {
+        auto data = pelFactory(11, 'O', 0x20, 0x8800, 500);
+        auto pel = std::make_unique<PEL>(data);
+        repo.add(pel);
+    }
+
+    // Now that's it's over the limit of 10, it will bring it down
+    // to 80%, which is 8 after it removes 3.
+    IDs = repo.prune();
+    EXPECT_EQ(repo.getSizeStats().total, 4096 * 8);
+    ASSERT_EQ(IDs.size(), 3);
+
+    // Check that it deleted the oldest ones.
+    // The OpenBMC log ID is the PEL ID + 500.
+    EXPECT_EQ(IDs[0], 500 + 1);
+    EXPECT_EQ(IDs[1], 500 + 2);
+    EXPECT_EQ(IDs[2], 500 + 3);
+}
