@@ -90,6 +90,21 @@ std::optional<fs::path> findAnyPELInRepo()
     return std::nullopt;
 }
 
+size_t countPELsInRepo()
+{
+    size_t count = 0;
+    std::regex expr{"\\d+_\\d+"};
+
+    for (auto& f : fs::directory_iterator(getPELRepoPath() / "logs"))
+    {
+        if (std::regex_search(f.path().string(), expr))
+        {
+            count++;
+        }
+    }
+    return count;
+}
+
 // Test that using the RAWPEL=<file> with the Manager::create() call gets
 // a PEL saved in the repository.
 TEST_F(ManagerTest, TestCreateWithPEL)
@@ -521,4 +536,76 @@ TEST_F(ManagerTest, TestCreateWithESEL)
         EXPECT_EQ(logger.errName, "org.open_power.Logging.Error.BadHostPEL");
         EXPECT_EQ(logger.errLevel, phosphor::logging::Entry::Level::Error);
     }
+}
+
+// Test that PELs will be pruned when necessary
+TEST_F(ManagerTest, TestPruning)
+{
+    sdeventplus::Event e{sdEvent};
+
+    std::unique_ptr<DataInterfaceBase> dataIface =
+        std::make_unique<MockDataInterface>();
+
+    openpower::pels::Manager manager{
+        logManager, std::move(dataIface),
+        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
+                  std::placeholders::_2, std::placeholders::_3)};
+
+    // Create 25 1000B (4096B on disk each, which is what is used for pruning)
+    // BMC non-informational PELs in the 100KB repository.  After the 24th one,
+    // the repo will be 96% full and a prune should be triggered to remove all
+    // but 7 to get under 30% full.  Then when the 25th is added there will be
+    // 8 left.
+
+    auto dir = makeTempDir();
+    for (int i = 1; i <= 25; i++)
+    {
+        auto data = pelFactory(42, 'O', 0x40, 0x8800, 1000);
+
+        fs::path pelFilename = dir / "rawpel";
+        std::ofstream pelFile{pelFilename};
+        pelFile.write(reinterpret_cast<const char*>(data.data()), data.size());
+        pelFile.close();
+
+        std::string adItem = "RAWPEL=" + pelFilename.string();
+        std::vector<std::string> additionalData{adItem};
+        std::vector<std::string> associations;
+
+        manager.create("error message", 42, 0,
+                       phosphor::logging::Entry::Level::Error, additionalData,
+                       associations);
+
+        // Simulate the code getting back to the event loop
+        // after each create.
+        e.run(std::chrono::milliseconds(1));
+
+        if (i < 24)
+        {
+            EXPECT_EQ(countPELsInRepo(), i);
+        }
+        else if (i == 24)
+        {
+            // Prune occured
+            EXPECT_EQ(countPELsInRepo(), 7);
+        }
+        else // i == 25
+        {
+            EXPECT_EQ(countPELsInRepo(), 8);
+        }
+    }
+
+    try
+    {
+        // Make sure the 8 newest ones are still found.
+        for (uint32_t i = 0; i < 8; i++)
+        {
+            manager.getPEL(0x50000012 + i);
+        }
+    }
+    catch (sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument& e)
+    {
+        ADD_FAILURE() << "PELs should have all been found";
+    }
+
+    fs::remove_all(dir);
 }

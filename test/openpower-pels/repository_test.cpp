@@ -784,3 +784,55 @@ TEST_F(RepositoryTest, TestPruneTooManyPELs)
     EXPECT_EQ(IDs[1], 500 + 2);
     EXPECT_EQ(IDs[2], 500 + 3);
 }
+
+// Test the sizeWarning function
+TEST_F(RepositoryTest, TestSizeWarning)
+{
+    uint32_t id = 1;
+    Repository repo{repoPath, 100 * 4096, 500};
+
+    EXPECT_FALSE(repo.sizeWarning());
+
+    // 95% is still OK (disk size for these is 4096)
+    for (uint32_t i = 1; i <= 95; i++)
+    {
+        auto data = pelFactory(i, 'O', 0x20, 0x8800, 500);
+        auto pel = std::make_unique<PEL>(data);
+        repo.add(pel);
+    }
+
+    EXPECT_FALSE(repo.sizeWarning());
+
+    // Now at 96%
+    auto data = pelFactory(id++, 'B', 0x20, 0x8800, 400);
+    auto pel = std::make_unique<PEL>(data);
+    repo.add(pel);
+
+    EXPECT_TRUE(repo.sizeWarning());
+}
+
+// Test sizeWarning when there are too many PEls
+TEST_F(RepositoryTest, TestSizeWarningNumPELs)
+{
+    Repository repo{repoPath, 4096 * 100, 5};
+
+    EXPECT_FALSE(repo.sizeWarning());
+
+    for (uint32_t i = 1; i <= 5; i++)
+    {
+        auto data = pelFactory(i, 'O', 0x20, 0x8800, 500);
+        auto pel = std::make_unique<PEL>(data);
+        repo.add(pel);
+    }
+
+    EXPECT_FALSE(repo.sizeWarning());
+
+    // Add 1 more for a total of 6, now over the limit
+    {
+        auto data = pelFactory(6, 'O', 0x20, 0x8800, 500);
+        auto pel = std::make_unique<PEL>(data);
+        repo.add(pel);
+    }
+
+    EXPECT_TRUE(repo.sizeWarning());
+}

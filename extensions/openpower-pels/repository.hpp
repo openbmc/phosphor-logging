@@ -357,6 +357,16 @@ class Repository
     static bool isServiceableSev(const PELAttributes& pel);
 
     /**
+     * @brief Returns true if the total amount of disk space occupied
+     *        by the PELs in the repo is over 95% of the maximum
+     *        size, or if there are over the maximum number of
+     *        PELs allowed.
+     *
+     * @return bool - true if repo is > 95% full or too many PELs
+     */
+    bool sizeWarning() const;
+
+    /**
      * @brief Deletes PELs to bring the repository size down
      *        to at most 90% full by placing PELs into 4 different
      *        catogories and then removing PELs until those catogories
