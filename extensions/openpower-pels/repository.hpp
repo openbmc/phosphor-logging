@@ -27,15 +27,20 @@ class Repository
     struct PELAttributes
     {
         std::filesystem::path path;
+        size_t sizeOnDisk;
+        uint8_t creator;
+        uint8_t severity;
         std::bitset<16> actionFlags;
         TransmissionState hostState;
         TransmissionState hmcState;
 
         PELAttributes() = delete;
 
-        PELAttributes(const std::filesystem::path& p, uint16_t flags,
+        PELAttributes(const std::filesystem::path& p, size_t size,
+                      uint8_t creator, uint8_t sev, uint16_t flags,
                       TransmissionState hostState, TransmissionState hmcState) :
             path(p),
+            sizeOnDisk(size), creator(creator), severity(sev),
             actionFlags(flags), hostState(hostState), hmcState(hmcState)
         {
         }
