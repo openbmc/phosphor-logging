@@ -28,8 +28,10 @@ namespace fs = std::filesystem;
 using namespace phosphor::logging;
 namespace file_error = sdbusplus::xyz::openbmc_project::Common::File::Error;
 
-Repository::Repository(const std::filesystem::path& basePath) :
-    _logPath(basePath / "logs")
+Repository::Repository(const std::filesystem::path& basePath, size_t repoSize,
+                       size_t maxNumPELs) :
+    _logPath(basePath / "logs"),
+    _maxRepoSize(repoSize), _maxNumPELs(maxNumPELs)
 {
     if (!fs::exists(_logPath))
     {

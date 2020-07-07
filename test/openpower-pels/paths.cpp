@@ -63,5 +63,16 @@ std::filesystem::path getPELReadOnlyDataPath()
     return dataPath;
 }
 
+size_t getPELRepoSize()
+{
+    // 100KB
+    return 100 * 1024;
+}
+
+size_t getMaxNumPELs()
+{
+    return 100;
+}
+
 } // namespace pels
 } // namespace openpower
