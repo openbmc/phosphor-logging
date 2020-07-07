@@ -30,6 +30,8 @@ namespace fs = std::filesystem;
 using namespace phosphor::logging;
 namespace file_error = sdbusplus::xyz::openbmc_project::Common::File::Error;
 
+constexpr size_t warningPercentage = 95;
+
 /**
  * @brief Returns the amount of space the file uses on disk.
  *
@@ -498,6 +500,12 @@ void Repository::updateRepoStats(const PELAttributes& pel, bool pelAdded)
             adjustSize(_sizes.nonBMCInfo);
         }
     }
+}
+
+bool Repository::sizeWarning() const
+{
+    return (_sizes.total > (_maxRepoSize * warningPercentage / 100)) ||
+           (_pelAttributes.size() > _maxNumPELs);
 }
 
 std::vector<Repository::AttributesReference>
