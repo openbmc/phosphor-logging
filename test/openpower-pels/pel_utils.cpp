@@ -46,7 +46,7 @@ const std::vector<uint8_t> privateHeaderSection{
     0x90, 0x91, 0x92, 0x93,                         // OpenBMC log ID
     0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0,    // creator version
     0x50, 0x51, 0x52, 0x53,                         // plid
-    0x80, 0x81, 0x82, 0x83};
+    0x80, 0x81, 0x82, 0x83};                        // PEL ID
 
 const std::vector<uint8_t> userHeaderSection{
     // section header
@@ -146,6 +146,14 @@ const std::vector<uint8_t> srcMRUCallout{
 };
 
 constexpr size_t sectionCountOffset = 27;
+constexpr size_t createTimestampPHOffset = 8;
+constexpr size_t commitTimestampPHOffset = 16;
+constexpr size_t creatorPHOffset = 24;
+constexpr size_t obmcIDPHOffset = 28;
+constexpr size_t plidPHOffset = 40;
+constexpr size_t pelIDPHOffset = 44;
+constexpr size_t sevUHOffset = 10;
+constexpr size_t actionFlagsUHOffset = 18;
 
 std::vector<uint8_t> pelDataFactory(TestPELType type)
 {
@@ -213,6 +221,80 @@ std::vector<uint8_t> pelDataFactory(TestPELType type)
             data.insert(data.end(), failingMTMSSection.begin(),
                         failingMTMSSection.end());
     }
+    return data;
+}
+
+std::vector<uint8_t> pelFactory(uint32_t id, char creatorID, uint8_t severity,
+                                uint16_t actionFlags, size_t size)
+{
+    std::vector<uint8_t> data;
+    size_t offset = 0;
+
+    auto now = std::chrono::system_clock::now();
+    auto timestamp = getBCDTime(now);
+
+    // Start with the default Private Header, and modify it
+    data.insert(data.end(), privateHeaderSection.begin(),
+                privateHeaderSection.end());
+    data.at(creatorPHOffset) = creatorID;
+
+    // Modify the multibyte fields in it
+    Stream stream{data};
+    stream.offset(createTimestampPHOffset);
+    stream << timestamp;
+    stream.offset(commitTimestampPHOffset);
+    stream << timestamp;
+    stream.offset(plidPHOffset);
+    stream << id;
+    stream.offset(pelIDPHOffset);
+    stream << id;
+    stream.offset(obmcIDPHOffset);
+    stream << id + 500;
+
+    offset = data.size();
+
+    // User Header
+    data.insert(data.end(), userHeaderSection.begin(), userHeaderSection.end());
+    data.at(offset + sevUHOffset) = severity;
+    data.at(offset + actionFlagsUHOffset) = actionFlags >> 8;
+    data.at(offset + actionFlagsUHOffset + 1) = actionFlags;
+
+    // Use the default SRC, failing MTMS, and ext user Header sections
+    data.insert(data.end(), srcSectionNoCallouts.begin(),
+                srcSectionNoCallouts.end());
+    data.insert(data.end(), failingMTMSSection.begin(),
+                failingMTMSSection.end());
+    data.insert(data.end(), ExtUserHeaderSection.begin(),
+                ExtUserHeaderSection.end());
+
+    data.at(sectionCountOffset) = 5;
+
+    // Require the size to be enough for all the above sections.
+    assert(size >= data.size());
+    assert(size <= 16384);
+
+    // Add a UserData section to get the size we need.
+    auto udSection = UserDataSection;
+    udSection.resize(size - data.size());
+
+    if (!udSection.empty())
+    {
+        // At least has to be 8B for the header
+        assert(udSection.size() >= 8);
+
+        // UD sections must be 4B aligned
+        assert(udSection.size() % 4 == 0);
+
+        // Set the new size in the section heder
+        Stream udStream{udSection};
+        udStream.offset(2);
+        udStream << static_cast<uint16_t>(udSection.size());
+
+        data.insert(data.end(), udSection.begin(), udSection.end());
+        data[sectionCountOffset]++;
+    }
+
+    assert(size == data.size());
     return data;
 }
 

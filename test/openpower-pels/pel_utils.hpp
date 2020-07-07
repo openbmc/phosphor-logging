@@ -85,6 +85,27 @@ enum class TestSRCType
 std::vector<uint8_t> pelDataFactory(TestPELType type);
 
 /**
+ * @brief PEL factory to create a PEL with the specified fields.
+ *
+ * The size is obtained by adding a UserData section of
+ * the size necessary after adding the 5 required sections.
+ *
+ * @param[in] id - The desired PEL ID
+ * @param[in] creatorID - The desired creator ID
+ * @param[in] severity - The desired severity
+ * @param[in] actionFlags - The desired action flags
+ * @param[in] size - The desired size.
+ *                   Must be:
+ *                     * 4B aligned
+ *                     * min 276 (size of the 5 required sections)
+ *                     * max 16834
+ *
+ * @return std::vector<uint8_t> - The PEL data
+ */
+std::vector<uint8_t> pelFactory(uint32_t id, char creatorID, uint8_t severity,
+                                uint16_t actionFlags, size_t size);
+
+/**
  * @brief SRC data factory, for testing
  *
  * Provides pieces of the SRC PEL section, such as a callout.
