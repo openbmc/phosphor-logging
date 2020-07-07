@@ -434,3 +434,157 @@ TEST_F(RepositoryTest, TestGetPELFD)
 
     EXPECT_FALSE(fd);
 }
+
+// Test the repo size statistics
+TEST_F(RepositoryTest, TestRepoSizes)
+{
+    uint32_t id = 1;
+
+    Repository repo{repoPath, 10000, 500};
+
+    // All of the size stats are the sizes on disk a PEL takes up,
+    // which is different than the file size.  Disk usage seems
+    // to have a granularity of 4096 bytes.  This probably shouldn't
+    // be hardcoded, but I don't know how to look it up dynamically.
+
+    // All sizes are zero
+    {
+        const auto& stats = repo.getSizeStats();
+        EXPECT_EQ(stats.total, 0);
+        EXPECT_EQ(stats.bmc, 0);
+        EXPECT_EQ(stats.nonBMC, 0);
+        EXPECT_EQ(stats.bmcServiceable, 0);
+        EXPECT_EQ(stats.bmcInfo, 0);
+        EXPECT_EQ(stats.nonBMCServiceable, 0);
+        EXPECT_EQ(stats.nonBMCInfo, 0);
+    }
+
+    // Add a 2000B BMC predictive error
+    auto data = pelFactory(id++, 'O', 0x20, 0x8800, 2000);
+    auto pel = std::make_unique<PEL>(data);
+    auto pelID1 = pel->id();
+    repo.add(pel);
+
+    {
+        const auto& stats = repo.getSizeStats();
+        EXPECT_EQ(stats.total, 4096);
+        EXPECT_EQ(stats.bmc, 4096);
+        EXPECT_EQ(stats.nonBMC, 0);
+        EXPECT_EQ(stats.bmcServiceable, 4096);
+        EXPECT_EQ(stats.bmcInfo, 0);
+        EXPECT_EQ(stats.nonBMCServiceable, 0);
+        EXPECT_EQ(stats.nonBMCInfo, 0);
+    }
+
+    // Add a 5000B BMC informational error
+    data = pelFactory(id++, 'O', 0x00, 0x8800, 5000);
+    pel = std::make_unique<PEL>(data);
+    auto pelID2 = pel->id();
+    repo.add(pel);
+
+    {
+        const auto& stats = repo.getSizeStats();
+        EXPECT_EQ(stats.total, 4096 + 8192);
+        EXPECT_EQ(stats.bmc, 4096 + 8192);
+        EXPECT_EQ(stats.nonBMC, 0);
+        EXPECT_EQ(stats.bmcServiceable, 4096);
+        EXPECT_EQ(stats.bmcInfo, 8192);
+        EXPECT_EQ(stats.nonBMCServiceable, 0);
+        EXPECT_EQ(stats.nonBMCInfo, 0);
+    }
+
+    // Add a 4000B Hostboot unrecoverable error
+    data = pelFactory(id++, 'B', 0x40, 0x8800, 4000);
+    pel = std::make_unique<PEL>(data);
+    auto pelID3 = pel->id();
+    repo.add(pel);
+
+    {
+        const auto& stats = repo.getSizeStats();
+        EXPECT_EQ(stats.total, 4096 + 8192 + 4096);
+        EXPECT_EQ(stats.bmc, 4096 + 8192);
+        EXPECT_EQ(stats.nonBMC, 4096);
+        EXPECT_EQ(stats.bmcServiceable, 4096);
+        EXPECT_EQ(stats.bmcInfo, 8192);
+        EXPECT_EQ(stats.nonBMCServiceable, 4096);
+        EXPECT_EQ(stats.nonBMCInfo, 0);
+    }
+
+    // Add a 5000B Hostboot informational error
+    data = pelFactory(id++, 'B', 0x00, 0x8800, 5000);
+    pel = std::make_unique<PEL>(data);
+    auto pelID4 = pel->id();
+    repo.add(pel);
+
+    {
+        const auto& stats = repo.getSizeStats();
+        EXPECT_EQ(stats.total, 4096 + 8192 + 4096 + 8192);
+        EXPECT_EQ(stats.bmc, 4096 + 8192);
+        EXPECT_EQ(stats.nonBMC, 4096 + 8192);
+        EXPECT_EQ(stats.bmcServiceable, 4096);
+        EXPECT_EQ(stats.bmcInfo, 8192);
+        EXPECT_EQ(stats.nonBMCServiceable, 4096);
+        EXPECT_EQ(stats.nonBMCInfo, 8192);
+    }
+
+    // Remove the BMC serviceable error
+    using ID = Repository::LogID;
+    ID id1{ID::Pel(pelID1)};
+
+    repo.remove(id1);
+    {
+        const auto& stats = repo.getSizeStats();
+        EXPECT_EQ(stats.total, 8192 + 4096 + 8192);
+        EXPECT_EQ(stats.bmc, 8192);
+        EXPECT_EQ(stats.nonBMC, 4096 + 8192);
+        EXPECT_EQ(stats.bmcServiceable, 0);
+        EXPECT_EQ(stats.bmcInfo, 8192);
+        EXPECT_EQ(stats.nonBMCServiceable, 4096);
+        EXPECT_EQ(stats.nonBMCInfo, 8192);
+    }
+
+    // Remove the Hostboot informational error
+    ID id4{ID::Pel(pelID4)};
+
+    repo.remove(id4);
+    {
+        const auto& stats = repo.getSizeStats();
+        EXPECT_EQ(stats.total, 8192 + 4096);
+        EXPECT_EQ(stats.bmc, 8192);
+        EXPECT_EQ(stats.nonBMC, 4096);
+        EXPECT_EQ(stats.bmcServiceable, 0);
+        EXPECT_EQ(stats.bmcInfo, 8192);
+        EXPECT_EQ(stats.nonBMCServiceable, 4096);
+        EXPECT_EQ(stats.nonBMCInfo, 0);
+    }
+
+    // Remove the BMC informational error
+    ID id2{ID::Pel(pelID2)};
+
+    repo.remove(id2);
+    {
+        const auto& stats = repo.getSizeStats();
+        EXPECT_EQ(stats.total, 4096);
+        EXPECT_EQ(stats.bmc, 0);
+        EXPECT_EQ(stats.nonBMC, 4096);
+        EXPECT_EQ(stats.bmcServiceable, 0);
+        EXPECT_EQ(stats.bmcInfo, 0);
+        EXPECT_EQ(stats.nonBMCServiceable, 4096);
+        EXPECT_EQ(stats.nonBMCInfo, 0);
+    }
+
+    // Remove the hostboot unrecoverable error
+    ID id3{ID::Pel(pelID3)};
+
+    repo.remove(id3);
+    {
+        const auto& stats = repo.getSizeStats();
+        EXPECT_EQ(stats.total, 0);
+        EXPECT_EQ(stats.bmc, 0);
+        EXPECT_EQ(stats.nonBMC, 0);
+        EXPECT_EQ(stats.bmcServiceable, 0);
+        EXPECT_EQ(stats.bmcInfo, 0);
+        EXPECT_EQ(stats.nonBMCServiceable, 0);
+        EXPECT_EQ(stats.nonBMCInfo, 0);
+    }
+}
