@@ -15,6 +15,8 @@
  */
 #include "repository.hpp"
 
+#include <sys/stat.h>
+
 #include <fstream>
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/Common/File/error.hpp>
@@ -27,6 +29,32 @@ namespace pels
 namespace fs = std::filesystem;
 using namespace phosphor::logging;
 namespace file_error = sdbusplus::xyz::openbmc_project::Common::File::Error;
+
+/**
+ * @brief Returns the amount of space the file uses on disk.
+ *
+ * This is different than just the regular size of the file.
+ *
+ * @param[in] file - The file to get the size of
+ *
+ * @return size_t The disk space the file uses
+ */
+size_t getFileDiskSize(const std::filesystem::path& file)
+{
+    constexpr size_t statBlockSize = 512;
+    struct stat statData;
+    auto rc = stat(file.c_str(), &statData);
+    if (rc != 0)
+    {
+        auto e = errno;
+        std::string msg = "call to stat() failed on " + file.native() +
+                          " with errno " + std::to_string(e);
+        log<level::ERR>(msg.c_str());
+        abort();
+    }
+
+    return statData.st_blocks * statBlockSize;
+}
 
 Repository::Repository(const std::filesystem::path& basePath, size_t repoSize,
                        size_t maxNumPELs) :
@@ -77,9 +105,13 @@ void Repository::restore()
                     }
                 }
 
-                PELAttributes attributes{
-                    dirEntry.path(), pel.userHeader().actionFlags(),
-                    pel.hostTransmissionState(), pel.hmcTransmissionState()};
+                PELAttributes attributes{dirEntry.path(),
+                                         getFileDiskSize(dirEntry.path()),
+                                         pel.privateHeader().creatorID(),
+                                         pel.userHeader().severity(),
+                                         pel.userHeader().actionFlags(),
+                                         pel.hostTransmissionState(),
+                                         pel.hmcTransmissionState()};
 
                 using pelID = LogID::Pel;
                 using obmcID = LogID::Obmc;
@@ -122,7 +154,11 @@ void Repository::add(std::unique_ptr<PEL>& pel)
 
     write(*(pel.get()), path);
 
-    PELAttributes attributes{path, pel->userHeader().actionFlags(),
+    PELAttributes attributes{path,
+                             getFileDiskSize(path),
+                             pel->privateHeader().creatorID(),
+                             pel->userHeader().severity(),
+                             pel->userHeader().actionFlags(),
                              pel->hostTransmissionState(),
                              pel->hmcTransmissionState()};
 
