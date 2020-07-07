@@ -29,6 +29,8 @@ using namespace phosphor::logging;
 
 std::unique_ptr<Manager> manager;
 
+DISABLE_LOG_ENTRY_CAPS();
+
 void pelStartup(internal::Manager& logManager)
 {
     EventLogger::LogFunction logger = std::bind(
