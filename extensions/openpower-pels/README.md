@@ -11,6 +11,7 @@ will be used instead of creating one.
 * [Callouts](#callouts)
 * [Action Flags and Event Type Rules](#action-flags-and-event-type-rules)
 * [D-Bus Interfaces](#d-bus-interfaces)
+* [PEL Retention](#pel-retention)
 
 ## Passing PEL related data within an OpenBMC event log
 
@@ -289,3 +290,46 @@ Additional rules may be added in the future if necessary.
 
 See the org.open_power.Logging.PEL interface definition for the most up to date
 information.
+
+## PEL Retention
+
+The PEL repository is allocated a set amount of space on the BMC.  When that
+space gets close to being full, the code will remove a percentage of PELs to
+make room for new ones.  Note that removing a PEL will also remove the
+corresponding OpenBMC event log.
+
+The rules used to remove logs are listed below.  The checks will be run after a
+PEL has been added and the method to create the PEL has returned to the caller,
+i.e. run when control gets back to the event loop.
+
+### Removal Algorithm
+
+If the size used is 95% or under of the allocated space, nothing further needs
+to be done, otherwise continue and run all 4 of the following steps.  Each step
+itself only deletes PELs until it meets its requirement and then it stops.
+
+The steps are:
+
+1. Remove BMC created informational PELs until they take up 15% or less of the
+   allocated space.
+
+2. Remove BMC created non-informational PELs until they take up 30% or less of
+   the allocated space.  A PEL with an associated guard record will never be
+   deleted.
+
+3. Remove non-BMC created informational PELs until they take up 15% or less of
+   the allocated space.
+
+4. Remove non-BMC created non-informational PELs until they take up 30% or less
+   of the allocated space.  A PEL with an associated guard record will never be
+   deleted.
+
+Each step above makes the following 4 passes, stopping as soon as its limit is
+reached:
+
+Pass 1. Remove HMC acknowledged PELs.<br>
+Pass 2. Remove OS acknowledged PELs.<br>
+Pass 3. Remove PHYP acknowledged PELs.<br>
+Pass 4. Remove all PELs.
+
+After these all steps, capacity will be at most 90% (15% + 30% + 15% + 30%).
