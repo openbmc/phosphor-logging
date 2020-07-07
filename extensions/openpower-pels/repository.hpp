@@ -1,5 +1,6 @@
 #pragma once
 #include "bcd_time.hpp"
+#include "paths.hpp"
 #include "pel.hpp"
 
 #include <algorithm>
@@ -118,7 +119,19 @@ class Repository
      *
      * @param[in] basePath - the base filesystem path for the repository
      */
-    Repository(const std::filesystem::path& basePath);
+    Repository(const std::filesystem::path& basePath) :
+        Repository(basePath, getPELRepoSize())
+    {
+    }
+
+    /**
+     * @brief Constructor that takes the repository size
+     *
+     * @param[in] basePath - the base filesystem path for the repository
+     * @param[in] repoSize - The maximum amount of space to use for PELs,
+     *                       in bytes
+     */
+    Repository(const std::filesystem::path& basePath, size_t repoSize);
 
     /**
      * @brief Adds a PEL to the repository
@@ -370,6 +383,12 @@ class Repository
      * @brief Subscriptions for deleted PELs.
      */
     std::map<std::string, DeleteCallback> _deleteSubscriptions;
+
+    /**
+     * @brief The maximum amount of space that the PELs in the
+     *        repository can occupy.
+     */
+    const uint64_t _maxRepoSize;
 };
 
 } // namespace pels

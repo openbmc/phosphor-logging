@@ -25,6 +25,7 @@ namespace pels
 {
 
 namespace fs = std::filesystem;
+static constexpr size_t defaultRepoSize = 20 * 1024 * 1024;
 
 fs::path getPELIDFile()
 {
@@ -43,6 +44,14 @@ fs::path getPELRepoPath()
 fs::path getPELReadOnlyDataPath()
 {
     return std::filesystem::path{"/usr/share/phosphor-logging/pels"};
+}
+
+size_t getPELRepoSize()
+{
+    // For now, always use 20MB, revisit in the future if different
+    // systems need different values so that we only put PEL
+    // content into configure.ac when absolutely necessary.
+    return defaultRepoSize;
 }
 
 } // namespace pels
