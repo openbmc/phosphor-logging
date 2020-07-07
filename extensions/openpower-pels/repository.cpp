@@ -468,5 +468,161 @@ void Repository::updateRepoStats(const PELAttributes& pel, bool pelAdded)
     }
 }
 
+std::vector<Repository::AttributesReference>
+    Repository::getAllPELAttributes(SortOrder order) const
+{
+    std::vector<Repository::AttributesReference> attributes;
+
+    std::for_each(
+        _pelAttributes.begin(), _pelAttributes.end(),
+        [&attributes](auto& pelEntry) { attributes.push_back(pelEntry); });
+
+    std::sort(attributes.begin(), attributes.end(),
+              [order](const auto& left, const auto& right) {
+                  if (order == SortOrder::ascending)
+                  {
+                      return left.get().second.path < right.get().second.path;
+                  }
+                  return left.get().second.path > right.get().second.path;
+              });
+
+    return attributes;
+}
+
+std::vector<uint32_t> Repository::prune()
+{
+    std::vector<uint32_t> obmcLogIDs;
+
+    // Set up the 4 functions to check if the PEL category
+    // is still over the size limit.
+
+    // BMC informational PELs should only take up 15%
+    IsOverLimitFunc overBMCInfoLimit = [this]() {
+        return _sizes.bmcInfo > _maxRepoSize * 15 / 100;
+    };
+
+    // BMC non informational PELs should only take up 30%
+    IsOverLimitFunc overBMCNonInfoLimit = [this]() {
+        return _sizes.bmcServiceable > _maxRepoSize * 30 / 100;
+    };
+
+    // Non BMC informational PELs should only take up 15%
+    IsOverLimitFunc overNonBMCInfoLimit = [this]() {
+        return _sizes.nonBMCInfo > _maxRepoSize * 15 / 100;
+    };
+
+    // Non BMC non informational PELs should only take up 15%
+    IsOverLimitFunc overNonBMCNonInfoLimit = [this]() {
+        return _sizes.nonBMCServiceable > _maxRepoSize * 30 / 100;
+    };
+
+    // Set up the 4 functions to determine which category a PEL is in.
+
+    // A BMC informational PEL
+    IsPELTypeFunc isBMCInfo = [](const PELAttributes& pel) {
+        return (CreatorID::openBMC == static_cast<CreatorID>(pel.creator)) &&
+               !Repository::isServiceableSev(pel);
+    };
+
+    // A BMC non informational PEL
+    IsPELTypeFunc isBMCNonInfo = [](const PELAttributes& pel) {
+        // TODO: Return false if this caused a guard record
+        return (CreatorID::openBMC == static_cast<CreatorID>(pel.creator)) &&
+               Repository::isServiceableSev(pel);
+    };
+
+    // A non BMC informational PEL
+    IsPELTypeFunc isNonBMCInfo = [](const PELAttributes& pel) {
+        return (CreatorID::openBMC != static_cast<CreatorID>(pel.creator)) &&
+               !Repository::isServiceableSev(pel);
+    };
+
+    // A non BMC non informational PEL
+    IsPELTypeFunc isNonBMCNonInfo = [](const PELAttributes& pel) {
+        // TODO: Return false if this caused a guard record
+        return (CreatorID::openBMC != static_cast<CreatorID>(pel.creator)) &&
+               Repository::isServiceableSev(pel);
+    };
+
+    // Check all 4 categories, which will result in at most 90%
+    // usage (15 + 30 + 15 + 30).
+    removePELs(overBMCInfoLimit, isBMCInfo, obmcLogIDs);
+    removePELs(overBMCNonInfoLimit, isBMCNonInfo, obmcLogIDs);
+    removePELs(overNonBMCInfoLimit, isNonBMCInfo, obmcLogIDs);
+    removePELs(overNonBMCNonInfoLimit, isNonBMCNonInfo, obmcLogIDs);
+
+    if (!obmcLogIDs.empty())
+    {
+        std::string msg = "Number of PELs removed to save space: " +
+                          std::to_string(obmcLogIDs.size());
+        log<level::INFO>(msg.c_str());
+    }
+
+    return obmcLogIDs;
+}
+
+void Repository::removePELs(IsOverLimitFunc& isOverLimit,
+                            IsPELTypeFunc& isPELType,
+                            std::vector<uint32_t>& removedBMCLogIDs)
+{
+    if (!isOverLimit())
+    {
+        return;
+    }
+
+    auto attributes = getAllPELAttributes(SortOrder::ascending);
+
+    // Make 4 passes on the PELs, stopping as soon as isOverLimit
+    // returns false.
+    //   Pass 1: only delete HMC acked PELs
+    //   Pass 2: only delete OS acked PELs
+    //   Pass 3: only delete PHYP sent PELs
+    //   Pass 4: delete all PELs
+    static const std::vector<std::function<bool(const PELAttributes& pel)>>
+        stateChecks{[](const auto& pel) {
+                        return pel.hmcState == TransmissionState::acked;
+                    },
+
+                    [](const auto& pel) {
+                        return pel.hostState == TransmissionState::acked;
+                    },
+
+                    [](const auto& pel) {
+                        return pel.hostState == TransmissionState::sent;
+                    },
+
+                    [](const auto& pel) { return true; }};
+
+    for (const auto& stateCheck : stateChecks)
+    {
+        for (auto it = attributes.begin(); it != attributes.end();)
+        {
+            const auto& pel = it->get();
+            if (isPELType(pel.second) && stateCheck(pel.second))
+            {
+                remove(pel.first);
+
+                removedBMCLogIDs.push_back(pel.first.obmcID.id);
+
+                attributes.erase(it);
+
+                if (!isOverLimit())
+                {
+                    break;
+                }
+            }
+            else
+            {
+                ++it;
+            }
+        }
+
+        if (!isOverLimit())
+        {
+            break;
+        }
+    }
+}
+
 } // namespace pels
 } // namespace openpower

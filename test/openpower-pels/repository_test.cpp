@@ -585,3 +585,126 @@ TEST_F(RepositoryTest, TestRepoSizes)
         }
     }
 }
+// Prune PELs, when no HMC/OS/PHYP acks
+TEST_F(RepositoryTest, TestPruneNoAcks)
+{
+    uint32_t id = 1;
+    Repository repo{repoPath, 10000};
+
+    // Add 5K each of BMC nonInfo, Info and nonBMC info, nonInfo errors.
+    // None of them acked by PHYP, host, or HMC for a total of 20KB.
+    for (int i = 0; i < 10; i++)
+    {
+        // BMC predictive
+        auto data = pelFactory(id++, 'O', 0x20, 0x8800, 500);
+        auto pel = std::make_unique<PEL>(data);
+        repo.add(pel);
+
+        // BMC info
+        data = pelFactory(id++, 'O', 0x0, 0x8800, 500);
+        pel = std::make_unique<PEL>(data);
+        repo.add(pel);
+
+        // Hostboot predictive
+        data = pelFactory(id++, 'B', 0x20, 0x8800, 500);
+        pel = std::make_unique<PEL>(data);
+        repo.add(pel);
+
+        // Hostboot info
+        data = pelFactory(id++, 'B', 0x0, 0x8800, 500);
+        pel = std::make_unique<PEL>(data);
+        repo.add(pel);
+    }
+
+    const auto& sizes = repo.getSizeStats();
+    EXPECT_EQ(sizes.total, 20000);
+
+    // Prune down to 15%/30%/15%/30% = 90% total
+    auto IDs = repo.prune();
+
+    // Check the final sizes
+    EXPECT_EQ(sizes.total, 9000);
+    EXPECT_EQ(sizes.bmcInfo, 1500);           // 15% of 10000
+    EXPECT_EQ(sizes.bmcServiceable, 3000);    // 30% of 10000
+    EXPECT_EQ(sizes.nonBMCInfo, 1500);        // 15% of 10000
+    EXPECT_EQ(sizes.nonBMCServiceable, 3000); // 30% of 10000
+}
+
+// Test that if filled completely with 1 type of PEL, that
+// pruning still works properly
+TEST_F(RepositoryTest, TestPruneInfoOnly)
+{
+    uint32_t id = 1;
+    Repository repo{repoPath, 10000};
+
+    // Fill 10000B of BMC info PELs
+    for (int i = 0; i < 10; i++)
+    {
+        // BMC predictive
+        auto data = pelFactory(id++, 'O', 0, 0x8800, 1000);
+        auto pel = std::make_unique<PEL>(data);
+        repo.add(pel);
+    }
+
+    const auto& sizes = repo.getSizeStats();
+    EXPECT_EQ(sizes.total, 10000);
+
+    auto IDs = repo.prune();
+
+    // Check the final sizes
+    EXPECT_EQ(sizes.total, 1000);
+    EXPECT_EQ(sizes.bmcInfo, 1000); // < 15% of 10000
+    EXPECT_EQ(sizes.bmcServiceable, 0);
+    EXPECT_EQ(sizes.nonBMCInfo, 0);
+    EXPECT_EQ(sizes.nonBMCServiceable, 0);
+
+    EXPECT_EQ(IDs.size(), 9);
+}
+
+// Test that the HMC/OS/PHYP ack values affect the
+// pruning order.
+TEST_F(RepositoryTest, TestPruneWithAcks)
+{
+    uint32_t id = 1;
+    Repository repo{repoPath, 10000};
+
+    // Fill 30% worth of BMC non-info non-acked PELs
+    for (int i = 0; i < 6; i++)
+    {
+        // BMC predictive
+        auto data = pelFactory(id++, 'O', 0x20, 0x8800, 500);
+        auto pel = std::make_unique<PEL>(data);
+        repo.add(pel);
+    }
+
+    // Add another PEL to push it over the 30%, each time adding
+    // a different type that should be pruned before the above ones
+    // even though those are older.
+    for (int i = 0; i < 3; i++)
+    {
+        auto data = pelFactory(id++, 'O', 0x20, 0x8800, 500);
+        auto pel = std::make_unique<PEL>(data);
+        auto idToDelete = pel->obmcLogID();
+        repo.add(pel);
+
+        if (0 == i)
+        {
+            repo.setPELHMCTransState(pel->id(), TransmissionState::acked);
+        }
+        else if (1 == i)
+        {
+            repo.setPELHostTransState(pel->id(), TransmissionState::acked);
+        }
+        else
+        {
+            repo.setPELHostTransState(pel->id(), TransmissionState::sent);
+        }
+
+        auto IDs = repo.prune();
+        EXPECT_EQ(repo.getSizeStats().total, 3000);
+
+        // The newest PEL should be the one deleted
+        ASSERT_EQ(IDs.size(), 1);
+        EXPECT_EQ(IDs[0], idToDelete);
+    }
+}
