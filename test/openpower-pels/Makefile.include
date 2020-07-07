@@ -35,7 +35,6 @@ check_PROGRAMS += \
 
 pel_objects = \
 	$(top_builddir)/extensions/openpower-pels/ascii_string.o \
-	$(top_builddir)/extensions/openpower-pels/bcd_time.o \
 	$(top_builddir)/extensions/openpower-pels/callout.o \
 	$(top_builddir)/extensions/openpower-pels/callouts.o \
 	$(top_builddir)/extensions/openpower-pels/device_callouts.o \
@@ -60,6 +59,7 @@ pel_objects = \
 	$(top_builddir)/extensions/openpower-pels/user_header.o
 
 pel_test_utils_ldadd = \
+	$(top_builddir)/extensions/openpower-pels/bcd_time.o \
 	$(top_builddir)/test/openpower-pels/pel_utils.o \
 	$(top_builddir)/test/openpower-pels/paths.o
 
@@ -330,7 +330,6 @@ extended_user_header_test_LDADD = \
 	$(test_ldadd) \
 	$(pel_test_utils_ldadd) \
 	$(top_builddir)/extensions/openpower-pels/ascii_string.o \
-	$(top_builddir)/extensions/openpower-pels/bcd_time.o \
 	$(top_builddir)/extensions/openpower-pels/callout.o \
 	$(top_builddir)/extensions/openpower-pels/callouts.o \
 	$(top_builddir)/extensions/openpower-pels/device_callouts.o \
