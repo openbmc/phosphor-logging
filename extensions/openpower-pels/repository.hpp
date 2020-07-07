@@ -112,6 +112,9 @@ class Repository
         }
     };
 
+    using AttributesReference =
+        std::reference_wrapper<const std::pair<const LogID, PELAttributes>>;
+
     /**
      * @brief A structure for keeping a breakdown of the sizes of PELs
      *        of different types in the repository.
@@ -353,6 +356,38 @@ class Repository
      */
     static bool isServiceableSev(const PELAttributes& pel);
 
+    /**
+     * @brief Deletes PELs to bring the repository size down
+     *        to at most 90% full by placing PELs into 4 different
+     *        catogories and then removing PELs until those catogories
+     *        only take up certain percentages of the allowed space.
+     *
+     * This does not delete the corresponding OpenBMC event logs, which
+     * is why those IDs are returned, so they can be deleted later.
+     *
+     * The categories and their rules are:
+     *  1) Informational BMC PELs cannot take up more than 15% of
+     *     the allocated space.
+     *  2) Non-informational BMC PELs cannot take up more than 30%
+     *     of the allocated space.
+     *  3) Informational non-BMC PELs cannot take up more than 15% of
+     *     the allocated space.
+     *  4) Non-informational non-BMC PELs cannot take up more than 30%
+     *     of the allocated space.
+     *
+     *  While removing PELs in a category, 4 passes will be made, with
+     *  PELs being removed oldest first during each pass.
+     *
+     *   Pass 1: only delete HMC acked PELs
+     *   Pass 2: only delete OS acked PELs
+     *   Pass 3: only delete PHYP sent PELs
+     *   Pass 4: delete all PELs
+     *
+     * @return std::vector<uint32_t> - The OpenBMC event log IDs of
+     *                                 the PELs that were deleted.
+     */
+    std::vector<uint32_t> prune();
+
   private:
     using PELUpdateFunc = std::function<void(PEL&)>;
 
@@ -420,6 +455,48 @@ class Repository
      */
     void updateRepoStats(const PELAttributes& pel, bool pelAdded);
 
+    enum class SortOrder
+    {
+        ascending,
+        descending
+    };
+
+    /**
+     * @brief Returns a vector of all the _pelAttributes entries sorted
+     *        as specified
+     *
+     * @param[in] order - If the PELs should be returned in ascending
+     *                    (oldest first) or descending order.
+     *
+     * @return std::vector<AttributesReference> - The sorted vector of
+     *         references to the pair<LogID, PELAttributes> entries of
+     *         _pelAttributes.
+     */
+    std::vector<AttributesReference> getAllPELAttributes(SortOrder order) const;
+
+    using IsOverLimitFunc = std::function<bool()>;
+    using IsPELTypeFunc = std::function<bool(const PELAttributes&)>;
+
+    /**
+     * @brief Makes 4 passes on the PELs that meet the IsPELTypeFunc
+     *        criteria removing PELs until IsOverLimitFunc returns false.
+     *
+     *   Pass 1: only delete HMC acked PELs
+     *   Pass 2: only delete Os acked PELs
+     *   Pass 3: only delete PHYP sent PELs
+     *   Pass 4: delete all PELs
+     *
+     * @param[in] isOverLimit - The bool(void) function that should
+     *                          return true if PELs still need to be
+     *                           removed.
+     * @param[in] isPELType - The bool(const PELAttributes&) function
+     *                         used to select the PELs to operate on.
+     *
+     * @param[out] removedBMCLogIDs - The OpenBMC event log IDs of the
+     *                                removed PELs.
+     */
+    void removePELs(IsOverLimitFunc& isOverLimit, IsPELTypeFunc& isPELType,
+                    std::vector<uint32_t>& removedBMCLogIDs);
     /**
      * @brief The filesystem path to the PEL logs.
      */
