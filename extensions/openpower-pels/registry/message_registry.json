@@ -315,6 +315,35 @@
         },
 
         {
+            "Name": "org.open_power.Logging.Error.TestError1",
+            "Subsystem": "platform_firmware",
+            "Severity": "unrecoverable",
+
+            "SRC":
+            {
+                "ReasonCode": "0x2003",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {"Priority": "high", "Procedure": "bmc_code"},
+                        {"Priority": "medium", "SymbolicFRU": "service_docs"}
+                    ]
+                }
+            ],
+
+            "Documentation":
+            {
+                "Description": "An error for testing",
+                "Message": "This is a test error"
+            }
+        },
+
+        {
             "Name": "org.open_power.PHAL.Error.Boot",
             "Subsystem": "cec_hardware",
             "Severity": "unrecoverable",
