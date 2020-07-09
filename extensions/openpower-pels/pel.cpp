@@ -464,6 +464,34 @@ nlohmann::json PEL::getCalloutJSON(const PelFFDC& ffdcFiles)
     return callouts;
 }
 
+bool PEL::isCalloutPresent() const
+{
+    auto pSRC = primarySRC();
+    if (!pSRC)
+    {
+        return false;
+    }
+
+    bool calloutPresent = false;
+    if ((*pSRC)->callouts())
+    {
+        for (auto& i : (*pSRC)->callouts()->callouts())
+        {
+            if (((*i).fruIdentity()))
+            {
+                auto& fruId = (*i).fruIdentity();
+                if ((*fruId).failingComponentType() != 0)
+                {
+                    calloutPresent = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    return calloutPresent;
+}
+
 namespace util
 {
 
