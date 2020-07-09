@@ -254,6 +254,17 @@ class Manager : public PELInterface
     PelFFDC convertToPelFFDC(const phosphor::logging::FFDCEntries& ffdc);
 
     /**
+     * @brief Check if the input PEL should cause a quiesce of the system
+     *
+     * If QuiesceOnHwError is enabled within phosphor-settings and the PEL
+     * from the host has a severity which is not SeverityType::nonError then
+     * execute the quiesce and boot block logic.
+     *
+     * @param[in] pel - The PEL to check
+     */
+    void checkPelAndQuiesce(std::unique_ptr<openpower::pels::PEL>& pel);
+
+    /**
      * @brief Reference to phosphor-logging's Manager class
      */
     phosphor::logging::internal::Manager& _logManager;
