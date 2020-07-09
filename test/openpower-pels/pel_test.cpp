@@ -204,6 +204,7 @@ TEST_F(PELTest, CreateFromRegistryTest)
     EXPECT_EQ(mtmsCount, 1);
     EXPECT_EQ(euhCount, 1);
     EXPECT_EQ(udCount, 2); // AD section and sysInfo section
+    ASSERT_FALSE(pel.isCalloutPresent());
 }
 
 // Test that when the AdditionalData size is over 16KB that
@@ -848,6 +849,7 @@ TEST_F(PELTest, CreateWithDevCalloutsTest)
         ASSERT_TRUE(pel.primarySRC().value()->callouts());
         auto& callouts = pel.primarySRC().value()->callouts()->callouts();
         ASSERT_EQ(callouts.size(), 1);
+        ASSERT_TRUE(pel.isCalloutPresent());
 
         EXPECT_EQ(callouts[0]->priority(), 'H');
         EXPECT_EQ(callouts[0]->locationCode(), "UXXX-P1");
