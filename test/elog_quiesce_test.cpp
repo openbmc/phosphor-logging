@@ -81,31 +81,6 @@ TEST_F(TestQuiesceOnError, testCallout)
     EXPECT_EQ(manager.isCalloutPresent(elog), true);
 }
 
-// Test that no blocking errors are created when no callout
-TEST_F(TestQuiesceOnError, testNoBlockingErrorsCreated)
-{
-    uint32_t id = 99;
-    uint64_t timestamp{100};
-    std::string message{"test error"};
-    std::string fwLevel{"level42"};
-    std::vector<std::string> testData{"no", "callout"};
-    phosphor::logging::AssociationList associations{};
-
-    Entry elog{mockedBus,
-               std::string(OBJ_ENTRY) + '/' + std::to_string(id),
-               id,
-               timestamp,
-               Entry::Level::Informational,
-               std::move(message),
-               std::move(testData),
-               std::move(associations),
-               fwLevel,
-               manager};
-
-    manager.checkQuiesceOnError(elog);
-    EXPECT_EQ(manager.getBlockingErrSize(), 0);
-}
-
 // Test that a blocking error is created on entry with callout
 TEST_F(TestQuiesceOnError, testBlockingErrorsCreated)
 {
@@ -140,7 +115,7 @@ TEST_F(TestQuiesceOnError, testBlockingErrorsCreated)
                fwLevel,
                manager};
 
-    manager.checkQuiesceOnError(elog);
+    manager.quiesceOnError(id);
     // Created error with callout so expect a blocking error now
     EXPECT_EQ(manager.getBlockingErrSize(), 1);
 
@@ -195,7 +170,7 @@ TEST_F(TestQuiesceOnError, testBlockingErrorsResolved)
                fwLevel,
                manager};
 
-    manager.checkQuiesceOnError(elog);
+    manager.quiesceOnError(id);
     // Created error with callout so expect a blocking error now
     EXPECT_EQ(manager.getBlockingErrSize(), 1);
     // Also should have a callback create looking for entry to be resolved

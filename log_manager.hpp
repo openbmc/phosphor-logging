@@ -196,11 +196,11 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     bool isQuiesceOnErrorEnabled();
 
-    /** @brief Check if error has callout and if so, block boot
+    /** @brief Create boot block association and quiesce host if running
      *
-     * @param[in] entry - The error to check for callouts
+     * @param[in] entryId - The ID of the phosphor logging error
      */
-    void checkQuiesceOnError(const Entry& entry);
+    void quiesceOnError(const uint32_t entryId);
 
     /** @brief Check if inventory callout present in input entry
      *
