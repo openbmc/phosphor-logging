@@ -284,6 +284,13 @@ class PEL
         return static_cast<TransmissionState>(_uh->hmcTransmissionState());
     }
 
+    /**
+     * @brief Returns true if any callout is present in the primary SRC
+     *
+     * @return true if callout present, false otherwise
+     */
+    bool isCalloutPresent() const;
+
   private:
     /**
      * @brief Builds the section objects from a PEL data buffer
