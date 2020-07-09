@@ -233,9 +233,9 @@ void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
                                      std::move(objects), fwVersion, *this);
     serialize(*e);
 
-    if (isQuiesceOnErrorEnabled())
+    if (isQuiesceOnErrorEnabled() && isCalloutPresent(*e))
     {
-        checkQuiesceOnError(*e);
+        quiesceOnError(entryId);
     }
 
     doExtensionLogCreate(*e, ffdc);
@@ -369,26 +369,20 @@ void Manager::checkAndQuiesceHost()
     this->busLog.call_noreply(quiesce);
 }
 
-void Manager::checkQuiesceOnError(const Entry& entry)
+void Manager::quiesceOnError(const uint32_t entryId)
 {
-
-    if (!isCalloutPresent(entry))
-    {
-        return;
-    }
 
     logging::log<logging::level::INFO>(
         "QuiesceOnError set and callout present");
 
     auto blockPath =
-        std::string(OBJ_LOGGING) + "/block" + std::to_string(entry.id());
-    auto blockObj =
-        std::make_unique<Block>(this->busLog, blockPath, entry.id());
+        std::string(OBJ_LOGGING) + "/block" + std::to_string(entryId);
+    auto blockObj = std::make_unique<Block>(this->busLog, blockPath, entryId);
     this->blockingErrors.push_back(std::move(blockObj));
 
     // Register call back if log is resolved
     using namespace sdbusplus::bus::match::rules;
-    auto entryPath = std::string(OBJ_ENTRY) + '/' + std::to_string(entry.id());
+    auto entryPath = std::string(OBJ_ENTRY) + '/' + std::to_string(entryId);
     auto callback = std::make_unique<sdbusplus::bus::match::match>(
         this->busLog,
         propertiesChanged(entryPath, "xyz.openbmc_project.Logging.Entry"),
@@ -396,7 +390,7 @@ void Manager::checkQuiesceOnError(const Entry& entry)
                   std::placeholders::_1));
 
     propChangedEntryCallback.insert(
-        std::make_pair(entry.id(), std::move(callback)));
+        std::make_pair(entryId, std::move(callback)));
 
     checkAndQuiesceHost();
 }
