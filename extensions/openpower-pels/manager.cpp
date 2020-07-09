@@ -127,6 +127,9 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
             log<level::ERR>("Unable to add PEL to Repository",
                             entry("PEL_ID=0x%X", pel->id()));
         }
+
+        // Check if firmware should quiesce system due to error
+        checkPelAndQuiesce(pel);
     }
     else
     {
@@ -412,6 +415,25 @@ void Manager::hostReject(uint32_t pelID, RejectionReason reason)
     {
         _hostNotifier->setHostFull(pelID);
     }
+}
+
+void Manager::checkPelAndQuiesce(std::unique_ptr<openpower::pels::PEL>& pel)
+{
+    if (pel->userHeader().severity() ==
+        static_cast<uint8_t>(SeverityType::nonError))
+    {
+        log<level::DEBUG>("PEL severity informational. no quiesce needed");
+        return;
+    }
+    if (!_logManager.isQuiesceOnErrorEnabled())
+    {
+        log<level::DEBUG>("QuiesceOnHwError not enabled, no quiesce needed");
+        return;
+    }
+
+    log<level::INFO>("QuiesceOnHwError enabled, PEL severity not nonError");
+
+    _logManager.quiesceOnError(pel->obmcLogID());
 }
 
 } // namespace pels
