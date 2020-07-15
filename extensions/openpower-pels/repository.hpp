@@ -176,9 +176,15 @@ class Repository
     /**
      * @brief Removes a PEL from the repository
      *
+     * Note that the returned LogID is the fully filled in LogID, i.e.
+     * it has both the PEL and OpenBMC IDs, unlike the passed in LogID
+     * which can just have one or the other.
+     *
      * @param[in] id - the ID (either the pel ID, OBMC ID, or both) to remove
+     *
+     * @return std::optional<LogID> - The LogID of the removed PEL
      */
-    void remove(const LogID& id);
+    std::optional<LogID> remove(const LogID& id);
 
     /**
      * @brief Generates the filename to use for the PEL ID and BCDTime.

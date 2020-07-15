@@ -87,6 +87,33 @@ TEST_F(RepositoryTest, AddTest)
     EXPECT_EQ(*newData, pelData);
 }
 
+TEST_F(RepositoryTest, RemoveTest)
+{
+    using pelID = Repository::LogID::Pel;
+    using obmcID = Repository::LogID::Obmc;
+
+    // Add and remove a PEL from the repo
+
+    Repository repo{repoPath};
+
+    auto data = pelDataFactory(TestPELType::pelSimple);
+    auto pel = std::make_unique<PEL>(data, 1);
+
+    pel->assignID();
+    Repository::LogID id{pelID{pel->id()}, obmcID{pel->obmcLogID()}};
+
+    repo.add(pel);
+
+    auto removedID = repo.remove(id);
+    ASSERT_TRUE(removedID);
+    EXPECT_EQ(*removedID, id);
+
+    EXPECT_FALSE(repo.hasPEL(id));
+
+    // Try to remove it again, not there
+    EXPECT_FALSE(repo.remove(id));
+}
+
 TEST_F(RepositoryTest, RestoreTest)
 {
     using pelID = Repository::LogID::Pel;
@@ -137,6 +164,9 @@ TEST_F(RepositoryTest, RestoreTest)
         id.pelID.id = 99;
         id.obmcID.id = 100;
         EXPECT_FALSE(repo.hasPEL(id));
+
+        // Try to remove it anyway
+        EXPECT_FALSE(repo.remove(id));
     }
 
     {

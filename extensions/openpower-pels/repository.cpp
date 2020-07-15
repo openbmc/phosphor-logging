@@ -207,11 +207,14 @@ void Repository::write(const PEL& pel, const fs::path& path)
     }
 }
 
-void Repository::remove(const LogID& id)
+std::optional<Repository::LogID> Repository::remove(const LogID& id)
 {
+    std::optional<LogID> actualID;
+
     auto pel = findPEL(id);
     if (pel != _pelAttributes.end())
     {
+        actualID = pel->first;
         updateRepoStats(pel->second, false);
 
         log<level::DEBUG>("Removing PEL from repository",
@@ -228,6 +231,8 @@ void Repository::remove(const LogID& id)
                           entry("PEL_ID=0x%X", id.pelID.id),
                           entry("OBMC_LOG_ID=%d", id.obmcID.id));
     }
+
+    return actualID;
 }
 
 std::optional<std::vector<uint8_t>> Repository::getPELData(const LogID& id)
