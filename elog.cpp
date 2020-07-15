@@ -14,36 +14,16 @@ using namespace sdbusplus::xyz::openbmc_project::Logging::server;
 auto _prepareMsg(const char* funcName)
 {
     using phosphor::logging::log;
-    constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
-    constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
-    constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
-
     constexpr auto IFACE_INTERNAL(
         "xyz.openbmc_project.Logging.Internal.Manager");
+    constexpr auto LOGGING_DBUS = "xyz.openbmc_project.Logging";
 
     // Transaction id is located at the end of the string separated by a period.
 
     auto b = sdbusplus::bus::new_default();
-    auto mapper = b.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
-                                    MAPPER_INTERFACE, "GetObject");
-    mapper.append(OBJ_INTERNAL, std::vector<std::string>({IFACE_INTERNAL}));
 
-    auto mapperResponseMsg = b.call(mapper);
-    if (mapperResponseMsg.is_method_error())
-    {
-        throw std::runtime_error("Error in mapper call");
-    }
-
-    std::map<std::string, std::vector<std::string>> mapperResponse;
-    mapperResponseMsg.read(mapperResponse);
-    if (mapperResponse.empty())
-    {
-        throw std::runtime_error("Error reading mapper response");
-    }
-
-    const auto& host = mapperResponse.cbegin()->first;
     auto m =
-        b.new_method_call(host.c_str(), OBJ_INTERNAL, IFACE_INTERNAL, funcName);
+        b.new_method_call(LOGGING_DBUS, OBJ_INTERNAL, IFACE_INTERNAL, funcName);
     return m;
 }
 
