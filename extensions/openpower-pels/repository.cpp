@@ -225,12 +225,6 @@ std::optional<Repository::LogID> Repository::remove(const LogID& id)
 
         processDeleteCallbacks(pel->first.pelID.id);
     }
-    else
-    {
-        log<level::DEBUG>("Could not find PEL to remove",
-                          entry("PEL_ID=0x%X", id.pelID.id),
-                          entry("OBMC_LOG_ID=%d", id.obmcID.id));
-    }
 
     return actualID;
 }
