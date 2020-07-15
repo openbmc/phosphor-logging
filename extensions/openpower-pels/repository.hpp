@@ -404,6 +404,17 @@ class Repository
      */
     std::vector<uint32_t> prune();
 
+    /**
+     * @brief Returns the path to the directory where the PEL
+     *        files are stored.
+     *
+     * @return std::filesystem::path - The directory path
+     */
+    const std::filesystem::path& repoPath() const
+    {
+        return _logPath;
+    }
+
   private:
     using PELUpdateFunc = std::function<void(PEL&)>;
 
