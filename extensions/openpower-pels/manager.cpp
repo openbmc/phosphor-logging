@@ -19,6 +19,7 @@
 #include "json_utils.hpp"
 #include "pel.hpp"
 
+#include <sys/inotify.h>
 #include <unistd.h>
 
 #include <filesystem>
@@ -44,6 +45,18 @@ namespace additional_data
 constexpr auto rawPEL = "RAWPEL";
 constexpr auto esel = "ESEL";
 } // namespace additional_data
+
+Manager::~Manager()
+{
+    if (_pelFileDeleteFD != -1)
+    {
+        if (_pelFileDeleteWatchFD != -1)
+        {
+            inotify_rm_watch(_pelFileDeleteFD, _pelFileDeleteWatchFD);
+        }
+        close(_pelFileDeleteFD);
+    }
+}
 
 void Manager::create(const std::string& message, uint32_t obmcLogID,
                      uint64_t timestamp, Entry::Level severity,
@@ -341,11 +354,9 @@ sdbusplus::message::unix_fd Manager::getPEL(uint32_t pelID)
 
 void Manager::scheduleFDClose(int fd)
 {
-    sdeventplus::Event event = sdeventplus::Event::get_default();
-
     _fdCloserEventSource = std::make_unique<sdeventplus::source::Defer>(
-        event, std::bind(std::mem_fn(&Manager::closeFD), this, fd,
-                         std::placeholders::_1));
+        _event, std::bind(std::mem_fn(&Manager::closeFD), this, fd,
+                          std::placeholders::_1));
 }
 
 void Manager::closeFD(int fd, sdeventplus::source::EventBase& source)
@@ -426,11 +437,9 @@ void Manager::hostReject(uint32_t pelID, RejectionReason reason)
 
 void Manager::scheduleRepoPrune()
 {
-    sdeventplus::Event event = sdeventplus::Event::get_default();
-
     _repoPrunerEventSource = std::make_unique<sdeventplus::source::Defer>(
-        event, std::bind(std::mem_fn(&Manager::pruneRepo), this,
-                         std::placeholders::_1));
+        _event, std::bind(std::mem_fn(&Manager::pruneRepo), this,
+                          std::placeholders::_1));
 }
 
 void Manager::pruneRepo(sdeventplus::source::EventBase& source)
@@ -444,5 +453,95 @@ void Manager::pruneRepo(sdeventplus::source::EventBase& source)
     _repoPrunerEventSource.reset();
 }
 
+void Manager::setupPELDeleteWatch()
+{
+    _pelFileDeleteFD = inotify_init1(IN_NONBLOCK);
+    if (-1 == _pelFileDeleteFD)
+    {
+        auto e = errno;
+        std::string msg =
+            "inotify_init1 failed with errno " + std::to_string(e);
+        log<level::ERR>(msg.c_str());
+        abort();
+    }
+
+    _pelFileDeleteWatchFD = inotify_add_watch(
+        _pelFileDeleteFD, _repo.repoPath().c_str(), IN_DELETE);
+    if (-1 == _pelFileDeleteWatchFD)
+    {
+        auto e = errno;
+        std::string msg =
+            "inotify_add_watch failed with error " + std::to_string(e);
+        log<level::ERR>(msg.c_str());
+        abort();
+    }
+
+    _pelFileDeleteEventSource = std::make_unique<sdeventplus::source::IO>(
+        _event, _pelFileDeleteFD, EPOLLIN,
+        std::bind(std::mem_fn(&Manager::pelFileDeleted), this,
+                  std::placeholders::_1, std::placeholders::_2,
+                  std::placeholders::_3));
+}
+
+void Manager::pelFileDeleted(sdeventplus::source::IO& io, int fd,
+                             uint32_t revents)
+{
+    if (!(revents & EPOLLIN))
+    {
+        return;
+    }
+
+    // An event for 1 PEL uses 48B. When all PELs are deleted at once,
+    // as many events as there is room for can be handled in one callback.
+    // A size of 2000 will allow 41 to be processed, with additional
+    // callbacks being needed to process the remaining ones.
+    std::array<uint8_t, 2000> data;
+    auto bytesRead = read(_pelFileDeleteFD, data.data(), data.size());
+    if (bytesRead < 0)
+    {
+        auto e = errno;
+        std::string msg = "Failed reading data from inotify event, errno = " +
+                          std::to_string(e);
+        log<level::ERR>(msg.c_str());
+        abort();
+    }
+
+    auto offset = 0;
+    while (offset < bytesRead)
+    {
+        auto event = reinterpret_cast<inotify_event*>(&data[offset]);
+        if (event->mask & IN_DELETE)
+        {
+            std::string filename{event->name};
+
+            // Get the PEL ID from the filename and tell the
+            // repo it's been removed, and then delete the BMC
+            // event log if it's there.
+            auto pos = filename.find_first_of('_');
+            if (pos != std::string::npos)
+            {
+                try
+                {
+                    auto idString = filename.substr(pos + 1);
+                    auto pelID = std::stoul(idString, nullptr, 16);
+
+                    Repository::LogID id{Repository::LogID::Pel(pelID)};
+                    auto removedLogID = _repo.remove(id);
+                    if (removedLogID)
+                    {
+                        _logManager.erase(removedLogID->obmcID.id);
+                    }
+                }
+                catch (const std::exception& e)
+                {
+                    log<level::INFO>("Could not find PEL ID from its filename",
+                                     entry("FILENAME=%s", filename.c_str()));
+                }
+            }
+        }
+
+        offset += offsetof(inotify_event, name) + event->len;
+    }
+}
 } // namespace pels
 } // namespace openpower

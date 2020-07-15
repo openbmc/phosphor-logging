@@ -105,6 +105,23 @@ size_t countPELsInRepo()
     return count;
 }
 
+void deletePELFile(uint32_t id)
+{
+    char search[20];
+
+    sprintf(search, "\\d+_%.8X", id);
+    std::regex expr{search};
+
+    for (auto& f : fs::directory_iterator(getPELRepoPath() / "logs"))
+    {
+        if (std::regex_search(f.path().string(), expr))
+        {
+            fs::remove(f.path());
+            break;
+        }
+    }
+}
+
 // Test that using the RAWPEL=<file> with the Manager::create() call gets
 // a PEL saved in the repository.
 TEST_F(ManagerTest, TestCreateWithPEL)
@@ -605,6 +622,148 @@ TEST_F(ManagerTest, TestPruning)
     catch (sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument& e)
     {
         ADD_FAILURE() << "PELs should have all been found";
+    }
+
+    fs::remove_all(dir);
+}
+
+// Test that manually deleting a PEL file will be recognized by the code.
+TEST_F(ManagerTest, TestPELManualDelete)
+{
+    sdeventplus::Event e{sdEvent};
+
+    std::unique_ptr<DataInterfaceBase> dataIface =
+        std::make_unique<MockDataInterface>();
+
+    openpower::pels::Manager manager{
+        logManager, std::move(dataIface),
+        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
+                  std::placeholders::_2, std::placeholders::_3)};
+
+    auto data = pelDataFactory(TestPELType::pelSimple);
+    auto dir = makeTempDir();
+    fs::path pelFilename = dir / "rawpel";
+
+    std::string adItem = "RAWPEL=" + pelFilename.string();
+    std::vector<std::string> additionalData{adItem};
+    std::vector<std::string> associations;
+
+    // Add 20 PELs, they will get incrementing IDs like
+    // 0x50000001, 0x50000002, etc.
+    for (int i = 1; i <= 20; i++)
+    {
+        std::ofstream pelFile{pelFilename};
+        pelFile.write(reinterpret_cast<const char*>(data.data()), data.size());
+        pelFile.close();
+
+        manager.create("error message", 42, 0,
+                       phosphor::logging::Entry::Level::Error, additionalData,
+                       associations);
+
+        // Sanity check this ID is really there so we can test
+        // it was deleted later.  This will throw an exception if
+        // not present.
+        manager.getPEL(0x50000000 + i);
+
+        // Run an event loop pass where the internal FD is deleted
+        // after the getPEL function call.
+        e.run(std::chrono::milliseconds(1));
+    }
+
+    EXPECT_EQ(countPELsInRepo(), 20);
+
+    deletePELFile(0x50000001);
+
+    // Run a single event loop pass so the inotify event can run
+    e.run(std::chrono::milliseconds(1));
+
+    EXPECT_EQ(countPELsInRepo(), 19);
+
+    EXPECT_THROW(
+        manager.getPEL(0x50000001),
+        sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument);
+
+    // Delete a few more, they should all get handled in the same
+    // event loop pass
+    std::vector<uint32_t> toDelete{0x50000002, 0x50000003, 0x50000004,
+                                   0x50000005, 0x50000006};
+    std::for_each(toDelete.begin(), toDelete.end(),
+                  [](auto i) { deletePELFile(i); });
+
+    e.run(std::chrono::milliseconds(1));
+
+    EXPECT_EQ(countPELsInRepo(), 14);
+
+    std::for_each(toDelete.begin(), toDelete.end(), [&manager](const auto i) {
+        EXPECT_THROW(
+            manager.getPEL(i),
+            sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument);
+    });
+
+    fs::remove_all(dir);
+}
+
+// Test that deleting all PELs at once is handled OK.
+TEST_F(ManagerTest, TestPELManualDeleteAll)
+{
+    sdeventplus::Event e{sdEvent};
+
+    std::unique_ptr<DataInterfaceBase> dataIface =
+        std::make_unique<MockDataInterface>();
+
+    openpower::pels::Manager manager{
+        logManager, std::move(dataIface),
+        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
+                  std::placeholders::_2, std::placeholders::_3)};
+
+    auto data = pelDataFactory(TestPELType::pelSimple);
+    auto dir = makeTempDir();
+    fs::path pelFilename = dir / "rawpel";
+
+    std::string adItem = "RAWPEL=" + pelFilename.string();
+    std::vector<std::string> additionalData{adItem};
+    std::vector<std::string> associations;
+
+    // Add 200 PELs, they will get incrementing IDs like
+    // 0x50000001, 0x50000002, etc.
+    for (int i = 1; i <= 200; i++)
+    {
+        std::ofstream pelFile{pelFilename};
+        pelFile.write(reinterpret_cast<const char*>(data.data()), data.size());
+        pelFile.close();
+
+        manager.create("error message", 42, 0,
+                       phosphor::logging::Entry::Level::Error, additionalData,
+                       associations);
+
+        // Sanity check this ID is really there so we can test
+        // it was deleted later.  This will throw an exception if
+        // not present.
+        manager.getPEL(0x50000000 + i);
+
+        // Run an event loop pass where the internal FD is deleted
+        // after the getPEL function call.
+        e.run(std::chrono::milliseconds(1));
+    }
+
+    // Delete them all at once
+    auto logPath = getPELRepoPath() / "logs";
+    std::string cmd = "rm " + logPath.string() + "/*";
+    system(cmd.c_str());
+
+    EXPECT_EQ(countPELsInRepo(), 0);
+
+    // It will take 5 event loop passes to process them all
+    for (int i = 0; i < 5; i++)
+    {
+        e.run(std::chrono::milliseconds(1));
+    }
+
+    for (int i = 1; i <= 200; i++)
+    {
+        EXPECT_THROW(
+            manager.getPEL(0x50000000 + i),
+            sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument);
     }
 
     fs::remove_all(dir);
