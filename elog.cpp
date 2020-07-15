@@ -20,12 +20,13 @@ auto _prepareMsg(const char* funcName)
 
     constexpr auto IFACE_INTERNAL(
         "xyz.openbmc_project.Logging.Internal.Manager");
+    constexpr auto LOGGING_DBUS = "xyz.openbmc_project.Logging";
 
     // Transaction id is located at the end of the string separated by a period.
 
     auto b = sdbusplus::bus::new_default();
     auto mapper = b.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
-                                    MAPPER_INTERFACE, "GetObject");
+                                   MAPPER_INTERFACE, LOGGING_DBUS);
     mapper.append(OBJ_INTERNAL, std::vector<std::string>({IFACE_INTERNAL}));
 
     auto mapperResponseMsg = b.call(mapper);
@@ -41,9 +42,8 @@ auto _prepareMsg(const char* funcName)
         throw std::runtime_error("Error reading mapper response");
     }
 
-    const auto& host = mapperResponse.cbegin()->first;
     auto m =
-        b.new_method_call(host.c_str(), OBJ_INTERNAL, IFACE_INTERNAL, funcName);
+        b.new_method_call(LOGGING_DBUS, OBJ_INTERNAL, IFACE_INTERNAL, funcName);
     return m;
 }
 
