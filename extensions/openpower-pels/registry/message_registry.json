@@ -344,6 +344,36 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Logging.Error.Default",
+            "Subsystem": "other_na",
+
+            "SRC":
+            {
+                "ReasonCode": "0x2004",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "This entry is used when no other matching entry is found",
+                "Message": "Unknown (Original event not in message registry)",
+                "Notes": [
+                    "This is used when the actual error name isn't found in ",
+                    "the registry.  The original error name will be stored ",
+                    "in the UserData section that contains the AdditionalData ",
+                    "properties using the key ERROR_NAME.",
+                    "This error may contain callouts if the creator passed ",
+                    "them in.",
+                    "The severity is set by the creator.",
+                    "If this error is seen, then a code change needs to be ",
+                    "made to add the missing error entry to this registry."
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.PHAL.Error.Boot",
             "Subsystem": "cec_hardware",
             "Severity": "unrecoverable",
