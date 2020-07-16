@@ -44,7 +44,10 @@ namespace additional_data
 {
 constexpr auto rawPEL = "RAWPEL";
 constexpr auto esel = "ESEL";
+constexpr auto error = "ERROR_NAME";
 } // namespace additional_data
+
+constexpr auto defaultLogMessage = "xyz.openbmc_project.Logging.Error.Default";
 
 Manager::~Manager()
 {
@@ -286,42 +289,52 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
                         const FFDCEntries& ffdc)
 {
     auto entry = _registry.lookup(message, rg::LookupType::name);
+    auto pelFFDC = convertToPelFFDC(ffdc);
+    AdditionalData ad{additionalData};
     std::string msg;
 
-    if (entry)
+    if (!entry)
     {
-        AdditionalData ad{additionalData};
-
-        auto pelFFDC = convertToPelFFDC(ffdc);
-
-        auto pel = std::make_unique<openpower::pels::PEL>(
-            *entry, obmcLogID, timestamp, severity, ad, pelFFDC, *_dataIface);
-
-        _repo.add(pel);
-
-        if (_repo.sizeWarning())
-        {
-            scheduleRepoPrune();
-        }
-
-        auto src = pel->primarySRC();
-        if (src)
-        {
-            using namespace std::literals::string_literals;
-            auto id = getNumberString("0x%08X", pel->id());
-            msg = "Created PEL "s + id + " with SRC "s + (*src)->asciiString();
-            while (msg.back() == ' ')
-            {
-                msg.pop_back();
-            }
-            log<level::INFO>(msg.c_str());
-        }
-    }
-    else
-    {
-        // TODO ibm-openbmc/dev/1151: Create a new PEL for this case.
-        // For now, just trace it.
+        // Instead, get the default entry that means there is no
+        // other matching entry.  This error will still use the
+        // AdditionalData values of the original error, and this
+        // code will add the error message value that wasn't found
+        // to this AD.  This way, there will at least be a PEL,
+        // possibly with callouts, to allow users to debug the
+        // issue that caused the error even without its own PEL.
         msg = "Event not found in PEL message registry: " + message;
+        log<level::INFO>(msg.c_str());
+
+        entry = _registry.lookup(defaultLogMessage, rg::LookupType::name);
+        if (!entry)
+        {
+            log<level::ERR>("Default event not found in PEL message registry");
+            return;
+        }
+
+        ad.add(additional_data::error, message);
+    }
+
+    auto pel = std::make_unique<openpower::pels::PEL>(
+        *entry, obmcLogID, timestamp, severity, ad, pelFFDC, *_dataIface);
+
+    _repo.add(pel);
+
+    if (_repo.sizeWarning())
+    {
+        scheduleRepoPrune();
+    }
+
+    auto src = pel->primarySRC();
+    if (src)
+    {
+        using namespace std::literals::string_literals;
+        auto id = getNumberString("0x%08X", pel->id());
+        msg = "Created PEL "s + id + " with SRC "s + (*src)->asciiString();
+        while (msg.back() == ' ')
+        {
+            msg.pop_back();
+        }
         log<level::INFO>(msg.c_str());
     }
 }
