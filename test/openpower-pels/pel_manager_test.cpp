@@ -203,6 +203,19 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
                 "Description": "A PGOOD Fault",
                 "Message": "PS had a PGOOD Fault"
             }
+        },
+        {
+            "Name": "xyz.openbmc_project.Logging.Error.Default",
+            "Subsystem": "bmc_firmware",
+            "SRC":
+            {
+                "ReasonCode": "0x2031"
+            },
+            "Documentation":
+            {
+                "Description": "The entry used when no match found",
+                "Message": "This is a generic SRC"
+            }
         }
     ]
 }
@@ -224,7 +237,7 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
         std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
                   std::placeholders::_2, std::placeholders::_3)};
 
-    std::vector<std::string> additionalData;
+    std::vector<std::string> additionalData{"FOO=BAR"};
     std::vector<std::string> associations;
 
     // Create the event log to create the PEL from.
@@ -251,14 +264,64 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
     EXPECT_FALSE(pelFile);
 
     // Create an event log that can't be found in the registry.
-    manager.create("xyz.openbmc_project.Error.Foo", 33, 0,
+    // In this case, xyz.openbmc_project.Logging.Error.Default will
+    // be used as the key instead to find a registry match.
+    manager.create("xyz.openbmc_project.Error.Foo", 42, 0,
                    phosphor::logging::Entry::Level::Error, additionalData,
                    associations);
 
-    // Currently, no PEL should be created.  Eventually, a 'missing registry
-    // entry' PEL will be there.
+    // Ensure a PEL was still created in the repository
     pelFile = findAnyPELInRepo();
-    EXPECT_FALSE(pelFile);
+    ASSERT_TRUE(pelFile);
+
+    data = readPELFile(*pelFile);
+    PEL newPEL(*data);
+
+    EXPECT_TRUE(newPEL.valid());
+    EXPECT_EQ(newPEL.obmcLogID(), 42);
+    EXPECT_EQ(newPEL.primarySRC().value()->asciiString(),
+              "BD8D2031                        ");
+
+    // Check for both the original AdditionalData item as well as
+    // the ERROR_NAME item that should contain the error message
+    // property that wasn't found.
+    std::string errorName;
+    std::string adItem;
+
+    for (const auto& section : newPEL.optionalSections())
+    {
+        if (SectionID::userData == static_cast<SectionID>(section->header().id))
+        {
+            if (UserDataFormat::json ==
+                static_cast<UserDataFormat>(section->header().subType))
+            {
+                auto ud = static_cast<UserData*>(section.get());
+
+                // Check that there was a UserData section added that
+                // contains debug details about the device.
+                const auto& d = ud->data();
+                std::string jsonString{d.begin(), d.end()};
+                auto json = nlohmann::json::parse(jsonString);
+
+                if (json.contains("ERROR_NAME"))
+                {
+                    errorName = json["ERROR_NAME"].get<std::string>();
+                }
+
+                if (json.contains("FOO"))
+                {
+                    adItem = json["FOO"].get<std::string>();
+                }
+            }
+        }
+        if (!errorName.empty())
+        {
+            break;
+        }
+    }
+
+    EXPECT_EQ(errorName, "xyz.openbmc_project.Error.Foo");
+    EXPECT_EQ(adItem, "BAR");
 }
 
 TEST_F(ManagerTest, TestDBusMethods)
