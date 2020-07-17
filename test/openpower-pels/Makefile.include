@@ -56,7 +56,8 @@ pel_objects = \
 	$(top_builddir)/extensions/openpower-pels/severity.o \
 	$(top_builddir)/extensions/openpower-pels/src.o \
 	$(top_builddir)/extensions/openpower-pels/user_data.o \
-	$(top_builddir)/extensions/openpower-pels/user_header.o
+	$(top_builddir)/extensions/openpower-pels/user_header.o \
+	$(FMT_LIBS)
 
 pel_test_utils_ldadd = \
 	$(top_builddir)/extensions/openpower-pels/bcd_time.o \
