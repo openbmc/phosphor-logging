@@ -215,6 +215,7 @@ AS_IF([test "x$enable_openpower_pel_extension" == "xyes"],
             [AC_MSG_ERROR([Could not find fifo_map.hpp])])
 
        AX_PKG_CHECK_MODULES([LIBPLDM], [libpldm])]
+       PKG_CHECK_MODULES([FMT], [fmt])
 )
 
 AC_ARG_ENABLE([dont-send-pels-to-host],
