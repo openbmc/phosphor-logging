@@ -50,6 +50,7 @@ libpel_ldflags =  \
 	$(SDBUSPLUS_LIBS) \
 	$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
 	$(SDEVENTPLUS_LIBS) \
+	$(FMT_LIBS) \
 	-lstdc++fs
 
 libpel_la_LIBADD = $(libpel_ldflags)

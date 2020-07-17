@@ -19,6 +19,7 @@
 #include "json_utils.hpp"
 #include "pel.hpp"
 
+#include <fmt/format.h>
 #include <sys/inotify.h>
 #include <unistd.h>
 
@@ -328,9 +329,9 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
     auto src = pel->primarySRC();
     if (src)
     {
-        using namespace std::literals::string_literals;
-        auto id = getNumberString("0x%08X", pel->id());
-        msg = "Created PEL "s + id + " with SRC "s + (*src)->asciiString();
+        auto msg =
+            fmt::format("Created PEL {:#x} (BMC ID {}) with SRC {}", pel->id(),
+                        pel->obmcLogID(), (*src)->asciiString());
         while (msg.back() == ' ')
         {
             msg.pop_back();
