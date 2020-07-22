@@ -35,13 +35,18 @@ namespace util
 
 fs::path getJSONFilename(const std::vector<std::string>& compatibleList)
 {
+    std::vector<std::string> names{compatibleList};
     auto basePath = getPELReadOnlyDataPath();
     fs::path fullPath;
 
     // Find an entry in the list of compatible system names that
     // matches a filename we have.
 
-    for (const auto& name : compatibleList)
+    // Also match on just _dev_callouts.json, which may be present
+    // when it's known that compatibleList won't be correct.
+    names.push_back("");
+
+    for (const auto& name : names)
     {
         fs::path filename = name + calloutFileSuffix;
 
