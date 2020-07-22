@@ -283,6 +283,30 @@ TEST_F(DeviceCalloutsTest, getJSONFilenameTest)
         std::vector<std::string> compatibles{"system5", "system6"};
         EXPECT_THROW(util::getJSONFilename(compatibles), std::invalid_argument);
     }
+
+    // Test using the fallback name
+    {
+        // If _dev_callouts.json is there, it will be used if no other
+        // match is found.
+        fs::path fallbackFile{dataPath / "_dev_callouts.json"};
+        std::ofstream file{fallbackFile};
+        file << calloutJSON.dump();
+        file.close();
+
+        // Fallback shouldn't be used because the actual systemA file is there
+        {
+            std::vector<std::string> compatibles{"system1", "systemA",
+                                                 "system3"};
+            EXPECT_EQ(util::getJSONFilename(compatibles),
+                      fs::path{dataPath / filename});
+        }
+
+        // Fallback should be used because no other match
+        {
+            std::vector<std::string> compatibles{"systemX", "systemY"};
+            EXPECT_EQ(util::getJSONFilename(compatibles), fallbackFile);
+        }
+    }
 }
 
 // Test determining the callout type from the device path
