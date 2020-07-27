@@ -109,13 +109,20 @@ SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
     // There are multiple fields encoded in the hex data words.
     std::for_each(_hexData.begin(), _hexData.end(),
                   [](auto& word) { word = 0; });
+
+    // Hex Word 2 Nibbles:
+    //   MIGVEPFF
+    //   M: Partition dump status = 0
+    //   I: System boot state = TODO
+    //   G: Partition Boot type = 0
+    //   V: BMC dump status = TODO
+    //   E: Platform boot mode = 0 (side = temporary, speed = fast)
+    //   P: Platform dump status = TODO
+    //  FF: SRC format, set below
+
     setBMCFormat();
     setBMCPosition();
     setMotherboardCCIN(dataIface);
-
-    // Partition dump status and partition boot type always 0 for BMC errors.
-    //
-    // TODO: Fill in other fields that aren't available yet.
 
     // Fill in the last 4 words from the AdditionalData property contents.
     setUserDefinedHexWords(regEntry, additionalData);
