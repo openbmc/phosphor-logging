@@ -30,6 +30,7 @@ namespace pels
 namespace service_name
 {
 constexpr auto objectMapper = "xyz.openbmc_project.ObjectMapper";
+constexpr auto vpdManager = "com.ibm.VPD.Manager";
 } // namespace service_name
 
 namespace object_path
@@ -44,6 +45,7 @@ constexpr auto hostState = "/xyz/openbmc_project/state/host0";
 constexpr auto pldm = "/xyz/openbmc_project/pldm";
 constexpr auto enableHostPELs =
     "/xyz/openbmc_project/logging/send_event_logs_to_host";
+constexpr auto vpdManager = "/com/ibm/VPD/Manager";
 } // namespace object_path
 
 namespace interface
@@ -63,6 +65,7 @@ constexpr auto viniRecordVPD = "com.ibm.ipzvpd.VINI";
 constexpr auto locCode = "com.ibm.ipzvpd.Location";
 constexpr auto invCompatible =
     "xyz.openbmc_project.Inventory.Decorator.Compatible";
+constexpr auto vpdManager = "com.ibm.VPD.Manager";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::OperatingSystem::server;
@@ -350,16 +353,51 @@ std::string
 std::string DataInterface::expandLocationCode(const std::string& locationCode,
                                               uint16_t node) const
 {
-    // TODO: fill in when that API is available
-    return addLocationCodePrefix(locationCode);
+    auto method =
+        _bus.new_method_call(service_name::vpdManager, object_path::vpdManager,
+                             interface::vpdManager, "GetExpandedLocationCode");
+
+    method.append(addLocationCodePrefix(locationCode),
+                  static_cast<uint16_t>(0));
+
+    auto reply = _bus.call(method);
+
+    std::string expandedLocationCode;
+    reply.read(expandedLocationCode);
+
+    return expandedLocationCode;
 }
 
 std::string DataInterface::getInventoryFromLocCode(
     const std::string& unexpandedLocationCode, uint16_t node) const
 {
-    // TODO: fill in when that API is available and  call on
-    // addLocationCodePrefix(unexpandedLocationCode);
-    return {};
+    auto method = _bus.new_method_call(
+        service_name::vpdManager, object_path::vpdManager,
+        interface::vpdManager, "GetFRUsByUnexpandedLocationCode");
+
+    method.append(addLocationCodePrefix(unexpandedLocationCode),
+                  static_cast<uint16_t>(0));
+
+    auto reply = _bus.call(method);
+
+    std::vector<sdbusplus::message::object_path> entries;
+    reply.read(entries);
+
+    // Get the shortest entry from the paths received, as this
+    // would be the path furthest up the inventory hierarchy so
+    // would be the parent FRU.  There is guaranteed to at least
+    // be one entry if the call didn't fail.
+    std::string shortest{entries[0]};
+
+    std::for_each(entries.begin(), entries.end(),
+                  [&shortest](const auto& path) {
+                      if (path.str.size() < shortest.size())
+                      {
+                          shortest = path;
+                      }
+                  });
+
+    return shortest;
 }
 
 } // namespace pels
