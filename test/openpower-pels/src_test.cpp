@@ -618,11 +618,11 @@ TEST_F(SRCTest, RegistryCalloutTest)
         EXPECT_CALL(dataIface, expandLocationCode("P0-C9", 0))
             .WillOnce(Return("UXXX-P0-C9"));
 
-        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-C8", 0))
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-C8", 0, false))
             .WillOnce(Return(
                 "/xyz/openbmc_project/inventory/chassis/motherboard/cpu0"));
 
-        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-C9", 0))
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-C9", 0, false))
             .WillOnce(Return(
                 "/xyz/openbmc_project/inventory/chassis/motherboard/cpu1"));
 
@@ -721,17 +721,17 @@ TEST_F(SRCTest, DevicePathCalloutTest)
         .Times(5)
         .WillRepeatedly(ReturnRef(names));
 
-    EXPECT_CALL(dataIface, getInventoryFromLocCode("P1-C40", 0))
+    EXPECT_CALL(dataIface, getInventoryFromLocCode("P1-C40", 0, false))
         .Times(3)
         .WillRepeatedly(
             Return("/xyz/openbmc_project/inventory/chassis/motherboard/cpu0"));
 
-    EXPECT_CALL(dataIface, getInventoryFromLocCode("P1", 0))
+    EXPECT_CALL(dataIface, getInventoryFromLocCode("P1", 0, false))
         .Times(3)
         .WillRepeatedly(
             Return("/xyz/openbmc_project/inventory/chassis/motherboard"));
 
-    EXPECT_CALL(dataIface, getInventoryFromLocCode("P1-C15", 0))
+    EXPECT_CALL(dataIface, getInventoryFromLocCode("P1-C15", 0, false))
         .Times(3)
         .WillRepeatedly(
             Return("/xyz/openbmc_project/inventory/chassis/motherboard/bmc"));

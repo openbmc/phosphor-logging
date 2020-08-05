@@ -370,15 +370,25 @@ std::string DataInterface::expandLocationCode(const std::string& locationCode,
     return expandedLocationCode;
 }
 
-std::string DataInterface::getInventoryFromLocCode(
-    const std::string& unexpandedLocationCode, uint16_t node) const
+std::string
+    DataInterface::getInventoryFromLocCode(const std::string& locationCode,
+                                           uint16_t node, bool expanded) const
 {
-    auto method = _bus.new_method_call(
-        service_name::vpdManager, object_path::vpdManager,
-        interface::vpdManager, "GetFRUsByUnexpandedLocationCode");
+    std::string methodName = expanded ? "GetFRUsByExpandedLocationCode"
+                                      : "GetFRUsByUnexpandedLocationCode";
 
-    method.append(addLocationCodePrefix(unexpandedLocationCode),
-                  static_cast<uint16_t>(0));
+    auto method =
+        _bus.new_method_call(service_name::vpdManager, object_path::vpdManager,
+                             interface::vpdManager, methodName.c_str());
+
+    if (expanded)
+    {
+        method.append(locationCode);
+    }
+    else
+    {
+        method.append(addLocationCodePrefix(locationCode), node);
+    }
 
     auto reply = _bus.call(method);
 
