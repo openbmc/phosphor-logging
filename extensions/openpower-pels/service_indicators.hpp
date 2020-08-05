@@ -123,13 +123,20 @@ class LightPath : public Policy
 
   private:
     /**
-     * @brief Description TODO
+     * @brief Returns the LED group D-Bus paths to use to turn on the
+     *        LEDs for the passed in location codes.
+     *
+     * @param[in] locationCodes - The location codes
+     *
+     * @return std::vector<std::string> - The LED group D-Bus paths
      */
     std::vector<std::string>
         getLEDGroupPaths(const std::vector<std::string>& locationCodes) const;
 
     /**
-     * @brief Description TODO
+     * @brief Sets the Assert property on the LED group D-Bus objects
+     *
+     * @param[in] std::vector<std::string> - The LED group D-Bus paths
      */
     void assertLEDs(const std::vector<std::string>& ledGroups) const;
 
