@@ -18,6 +18,7 @@
 #include "additional_data.hpp"
 #include "json_utils.hpp"
 #include "pel.hpp"
+#include "service_indicators.hpp"
 
 #include <fmt/format.h>
 #include <sys/inotify.h>
@@ -144,6 +145,10 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
             {
                 scheduleRepoPrune();
             }
+
+            // Activate any resulting service indicators if necessary
+            auto policy = service_indicators::getPolicy(*_dataIface);
+            policy->activate(*pel);
         }
         catch (std::exception& e)
         {
@@ -340,6 +345,10 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
         }
         log<level::INFO>(msg.c_str());
     }
+
+    // Activate any resulting service indicators if necessary
+    auto policy = service_indicators::getPolicy(*_dataIface);
+    policy->activate(*pel);
 }
 
 sdbusplus::message::unix_fd Manager::getPEL(uint32_t pelID)
