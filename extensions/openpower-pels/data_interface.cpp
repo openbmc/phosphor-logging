@@ -342,7 +342,9 @@ std::string
 {
     static const std::string locationCodePrefix{"Ufcs-"};
 
-    if (locationCode.find(locationCodePrefix) == std::string::npos)
+    // Technically there are 2 location code prefixes, Ufcs and Umts, so
+    // if it already starts with a U then don't need to do anything.
+    if (locationCode.front() != 'U')
     {
         return locationCodePrefix + locationCode;
     }
