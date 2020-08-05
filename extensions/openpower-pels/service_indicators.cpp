@@ -33,8 +33,20 @@ std::unique_ptr<Policy> getPolicy(const DataInterfaceBase& dataIface)
 
 bool LightPath::ignore(const PEL& pel) const
 {
-    // TODO
-    return false;
+    auto creator = pel.privateHeader().creatorID();
+
+    // Don't ignore serviceable BMC or hostboot errors
+    if ((static_cast<CreatorID>(creator) == CreatorID::openBMC) ||
+        (static_cast<CreatorID>(creator) == CreatorID::hostboot))
+    {
+        std::bitset<16> actionFlags{pel.userHeader().actionFlags()};
+        if (actionFlags.test(serviceActionFlagBit))
+        {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 void LightPath::activate(const PEL& pel)
@@ -81,19 +93,91 @@ void LightPath::activate(const PEL& pel)
 std::vector<std::string> LightPath::getLocationCodes(
     const std::vector<std::unique_ptr<src::Callout>>& callouts) const
 {
-    // TODO
-    return {};
+    std::vector<std::string> locCodes;
+    bool firstCallout = true;
+    uint8_t firstCalloutPriority;
+
+    // Collect location codes for the first group of callouts,
+    // where a group can be:
+    //  * a single medium priority callout
+    //  * one or more high priority callouts
+    //  * one or more medium group a priority callouts
+    //
+    // All callouts in the group must be hardware callouts.
+
+    for (const auto& callout : callouts)
+    {
+        if (firstCallout)
+        {
+            firstCallout = false;
+
+            firstCalloutPriority = callout->priority();
+
+            // If the first callout is High, Medium, or Medium
+            // group A, and is a hardware callout, then we
+            // want it.
+            if (isRequiredPriority(firstCalloutPriority) &&
+                isHardwareCallout(*callout))
+            {
+                locCodes.push_back(callout->locationCode());
+            }
+            else
+            {
+                break;
+            }
+
+            // By definition a medium priority callout can't be part
+            // of a group, so no need to look for more.
+            if (static_cast<CalloutPriority>(firstCalloutPriority) ==
+                CalloutPriority::medium)
+            {
+                break;
+            }
+        }
+        else
+        {
+            // Only continue while the callouts are the same
+            // priority as the first callout.
+            if (callout->priority() != firstCalloutPriority)
+            {
+                break;
+            }
+
+            // If any callout in the group isn't a hardware callout,
+            // then don't light up any LEDs at all.
+            if (!isHardwareCallout(*callout))
+            {
+                locCodes.clear();
+                break;
+            }
+
+            locCodes.push_back(callout->locationCode());
+        }
+    }
+
+    return locCodes;
 }
 
 bool LightPath::isRequiredPriority(uint8_t priority) const
 {
-    // TODO
-    return true;
+    auto calloutPriority = static_cast<CalloutPriority>(priority);
+    return (calloutPriority == CalloutPriority::high) ||
+           (calloutPriority == CalloutPriority::medium) ||
+           (calloutPriority == CalloutPriority::mediumGroupA);
 }
 
 bool LightPath::isHardwareCallout(const src::Callout& callout) const
 {
-    // TODO
+    const auto& fruIdentity = callout.fruIdentity();
+    if (fruIdentity)
+    {
+        return (callout.locationCodeSize() != 0) &&
+               ((fruIdentity->failingComponentType() ==
+                 src::FRUIdentity::hardwareFRU) ||
+                (fruIdentity->failingComponentType() ==
+                 src::FRUIdentity::symbolicFRUTrustedLocCode));
+    }
+
     return false;
 }
 

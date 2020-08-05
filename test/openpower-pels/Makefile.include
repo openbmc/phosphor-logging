@@ -25,6 +25,7 @@ check_PROGRAMS += \
 	registry_test \
 	repository_test \
 	section_header_test \
+	service_indicators_test \
 	severity_test \
 	src_test \
 	src_callout_test \
@@ -392,3 +393,14 @@ device_callouts_test_LDADD = \
 	$(pel_test_utils_ldadd) \
 	$(top_builddir)/extensions/openpower-pels/device_callouts.o
 device_callouts_test_LDFLAGS = $(test_ldflags)
+
+service_indicators_test_SOURCES = \
+	%reldir%/service_indicators_test.cpp
+service_indicators_test_CPPFLAGS = $(test_cppflags)
+service_indicators_test_CXXFLAGS = $(test_cxxflags)
+service_indicators_test_LDADD = \
+	$(test_ldflags) \
+	$(pel_objects) \
+	$(pel_test_utils_ldadd) \
+	$(top_builddir)/extensions/openpower-pels/service_indicators.o
+service_indicators_test_LDFLAGS = $(test_ldflags)
