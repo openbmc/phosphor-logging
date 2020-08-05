@@ -29,6 +29,8 @@ using namespace openpower::pels;
 namespace fs = std::filesystem;
 
 using ::testing::NiceMock;
+using ::testing::Return;
+using ::testing::ReturnRef;
 
 class TestLogger
 {
@@ -830,4 +832,117 @@ TEST_F(ManagerTest, TestPELManualDeleteAll)
     }
 
     fs::remove_all(dir);
+}
+
+// Test that fault LEDs are turned on when PELs are created
+TEST_F(ManagerTest, TestServiceIndicators)
+{
+    std::unique_ptr<DataInterfaceBase> dataIface =
+        std::make_unique<MockDataInterface>();
+
+    MockDataInterface* mockIface =
+        reinterpret_cast<MockDataInterface*>(dataIface.get());
+
+    openpower::pels::Manager manager{
+        logManager, std::move(dataIface),
+        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
+                  std::placeholders::_2, std::placeholders::_3)};
+
+    // Add a PEL with a callout as if hostboot added it
+    {
+        EXPECT_CALL(*mockIface, getInventoryFromLocCode("U42", 0, true))
+            .WillOnce(Return("/system/chassis/processor"));
+
+        EXPECT_CALL(*mockIface, getFaultLEDGroup("/system/chassis/processor"))
+            .WillOnce(Return("/led/groups/cpu0"));
+
+        EXPECT_CALL(*mockIface, assertLEDGroup("/led/groups/cpu0", true))
+            .Times(1);
+
+        // This hostboot PEL has a single hardware callout in it.
+        auto data = pelFactory(1, 'B', 0x20, 0xA400, 500);
+
+        fs::path pelFilename = makeTempDir() / "rawpel";
+        std::ofstream pelFile{pelFilename};
+        pelFile.write(reinterpret_cast<const char*>(data.data()), data.size());
+        pelFile.close();
+
+        std::string adItem = "RAWPEL=" + pelFilename.string();
+        std::vector<std::string> additionalData{adItem};
+        std::vector<std::string> associations;
+
+        manager.create("error message", 42, 0,
+                       phosphor::logging::Entry::Level::Error, additionalData,
+                       associations);
+
+        fs::remove_all(pelFilename.parent_path());
+    }
+
+    // Add a BMC PEL with a callout that uses the message registry
+    {
+        std::vector<std::string> names{"systemA"};
+        EXPECT_CALL(*mockIface, getSystemNames)
+            .Times(1)
+            .WillOnce(ReturnRef(names));
+
+        EXPECT_CALL(*mockIface, expandLocationCode("P42-C23", 0))
+            .WillOnce(Return("U42-P42-C23"));
+
+        // First call to this is when building the Callout section
+        EXPECT_CALL(*mockIface, getInventoryFromLocCode("P42-C23", 0, false))
+            .WillOnce(Return("/system/chassis/processor"));
+
+        // Second call to this is finding the associated LED group
+        EXPECT_CALL(*mockIface, getInventoryFromLocCode("U42-P42-C23", 0, true))
+            .WillOnce(Return("/system/chassis/processor"));
+
+        EXPECT_CALL(*mockIface, getFaultLEDGroup("/system/chassis/processor"))
+            .WillOnce(Return("/led/groups/cpu0"));
+
+        EXPECT_CALL(*mockIface, assertLEDGroup("/led/groups/cpu0", true))
+            .Times(1);
+
+        const auto registry = R"(
+        {
+            "PELs":
+            [
+                {
+                    "Name": "xyz.openbmc_project.Error.Test",
+                    "Subsystem": "power_supply",
+                    "ActionFlags": ["service_action", "report"],
+                    "SRC":
+                    {
+                        "ReasonCode": "0x2030"
+                    },
+                    "Callouts": [
+                        {
+                            "CalloutList": [
+                                {"Priority": "high", "LocCode": "P42-C23"}
+                            ]
+                        }
+                    ],
+                    "Documentation":
+                    {
+                        "Description": "Test Error",
+                        "Message": "Test Error"
+                    }
+                }
+            ]
+        })";
+
+        auto path = getPELReadOnlyDataPath();
+        fs::create_directories(path);
+        path /= "message_registry.json";
+
+        std::ofstream registryFile{path};
+        registryFile << registry;
+        registryFile.close();
+
+        std::vector<std::string> additionalData;
+        std::vector<std::string> associations;
+
+        manager.create("xyz.openbmc_project.Error.Test", 42, 0,
+                       phosphor::logging::Entry::Level::Error, additionalData,
+                       associations);
+    }
 }
