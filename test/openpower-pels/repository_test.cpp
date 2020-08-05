@@ -834,7 +834,7 @@ TEST_F(RepositoryTest, TestSizeWarning)
     EXPECT_FALSE(repo.sizeWarning());
 
     // Now at 96%
-    auto data = pelFactory(id++, 'B', 0x20, 0x8800, 400);
+    auto data = pelFactory(id++, 'B', 0x20, 0x8800, 500);
     auto pel = std::make_unique<PEL>(data);
     repo.add(pel);
 
