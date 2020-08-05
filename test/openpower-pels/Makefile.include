@@ -166,7 +166,8 @@ pel_manager_test_LDADD = \
 	$(top_builddir)/extensions/openpower-pels/data_interface.o \
 	$(top_builddir)/extensions/openpower-pels/host_notifier.o \
 	$(top_builddir)/extensions/openpower-pels/manager.o \
-	$(top_builddir)/extensions/openpower-pels/repository.o
+	$(top_builddir)/extensions/openpower-pels/repository.o \
+	$(top_builddir)/extensions/openpower-pels/service_indicators.o
 pel_manager_test_LDFLAGS = \
 	$(test_ldflags) \
 	$(SDEVENTPLUS_LIBS)

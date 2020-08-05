@@ -41,6 +41,7 @@ libpel_la_SOURCES = \
 	extensions/openpower-pels/registry.cpp \
 	extensions/openpower-pels/src.cpp \
 	extensions/openpower-pels/section_factory.cpp \
+	extensions/openpower-pels/service_indicators.cpp \
 	extensions/openpower-pels/severity.cpp \
 	extensions/openpower-pels/user_header.cpp
 
