@@ -39,7 +39,7 @@ class MockDataInterface : public DataInterfaceBase
     MOCK_METHOD(std::string, expandLocationCode, (const std::string&, uint16_t),
                 (const override));
     MOCK_METHOD(std::string, getInventoryFromLocCode,
-                (const std::string&, uint16_t), (const override));
+                (const std::string&, uint16_t, bool), (const override));
 
     void changeHostState(bool newState)
     {

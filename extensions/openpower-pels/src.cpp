@@ -671,7 +671,7 @@ void SRC::addRegistryCallout(const message::RegistryCallout& regCallout,
         {
             // Get the inventory item from the unexpanded location code
             inventoryPath =
-                dataIface.getInventoryFromLocCode(regCallout.locCode, 0);
+                dataIface.getInventoryFromLocCode(regCallout.locCode, 0, false);
         }
         catch (const std::exception& e)
         {
@@ -781,8 +781,8 @@ void SRC::addDevicePathCallouts(const AdditionalData& additionalData,
 
         try
         {
-            auto inventoryPath =
-                dataIface.getInventoryFromLocCode(callout.locationCode, 0);
+            auto inventoryPath = dataIface.getInventoryFromLocCode(
+                callout.locationCode, 0, false);
 
             addInventoryCallout(inventoryPath, priority, std::nullopt,
                                 dataIface);

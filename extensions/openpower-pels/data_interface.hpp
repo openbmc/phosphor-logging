@@ -263,16 +263,23 @@ class DataInterfaceBase
      * @brief Returns the inventory path for the FRU that the location
      *        code represents.
      *
-     * @param[in] locationCode - Location code value starting with Ufcs-, and
-     *                           if that isn't present it will be added first.
+     * @param[in] locationCode - If an expanded location code, then the
+     *                           full location code.
+     *                           If not expanded, a location code value
+     *                           starting with Ufcs-, and if that isn't
+     *                           present it will be added first.
      *
-     * @param[in] node - The node number the location is on.
+     * @param[in] node - The node number the location is on.  Ignored if the
+     *                   expanded location code is passed in.
+     *
+     * @param[in] expanded - If the location code already has the relevent
+     *                       VPD fields embedded in it.
      *
      * @return std::string - The inventory D-Bus object
      */
-    virtual std::string
-        getInventoryFromLocCode(const std::string& unexpandedLocationCode,
-                                uint16_t node) const = 0;
+    virtual std::string getInventoryFromLocCode(const std::string& LocationCode,
+                                                uint16_t node,
+                                                bool expanded) const = 0;
 
   protected:
     /**
@@ -483,15 +490,23 @@ class DataInterface : public DataInterfaceBase
      * @brief Returns the inventory path for the FRU that the location
      *        code represents.
      *
-     * @param[in] locationCode - Location code value starting with Ufcs-, and
-     *                           if that isn't present it will be added first.
+     * @param[in] locationCode - If an expanded location code, then the
+     *                           full location code.
+     *                           If not expanded, a location code value
+     *                           starting with Ufcs-, and if that isn't
+     *                           present it will be added first.
      *
-     * @param[in] node - The node number the location is on.
+     * @param[in] node - The node number the location is on.  Ignored if the
+     *                   expanded location code is passed in.
+     *
+     * @param[in] expanded - If the location code already has the relevent
+     *                       VPD fields embedded in it.
      *
      * @return std::string - The inventory D-Bus object
      */
-    std::string getInventoryFromLocCode(const std::string& expandedLocationCode,
-                                        uint16_t node) const override;
+    std::string getInventoryFromLocCode(const std::string& locationCode,
+                                        uint16_t node,
+                                        bool expanded) const override;
 
   private:
     /**
