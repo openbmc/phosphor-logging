@@ -94,13 +94,30 @@ class LightPath : public Policy
     void activate(const PEL& pel) override;
 
     /**
-     * @brief Description TODO
+     * @brief Returns the location codes for the FRU callouts in the
+     *        callouts list that need their LEDs turned on.
+     *
+     * This is public so it can be tested.
+     *
+     * @param[in] callouts - The Callout list from a PEL
+     *
+     * @return std::vector<std::string> - The location codes
      */
     std::vector<std::string> getLocationCodes(
         const std::vector<std::unique_ptr<src::Callout>>& callouts) const;
 
     /**
-     * @brief Description TODO
+     * @brief Function called to check if the code even needs to
+     *        bother looking in the callouts to find LEDs to turn on.
+     *
+     * It will ignore all PELs except for those created by the BMC or
+     * hostboot that have the Serviceable action flag set.
+     *
+     * This is public so it can be tested.
+     *
+     * @param[in] pel - The PEL
+     *
+     * @return bool - If the PEL should be ignored or not.
      */
     bool ignore(const PEL& pel) const;
 
@@ -117,12 +134,28 @@ class LightPath : public Policy
     void assertLEDs(const std::vector<std::string>& ledGroups) const;
 
     /**
-     * @brief Description TODO
+     * @brief Checks if the callout priority is one that the policy
+     *        may turn on an LED for.
+     *
+     * The priorities it cares about are high, medium, and medium
+     * group A.
+     *
+     * @param[in] priority - The priority value from the PEL
+     *
+     * @return bool - If LightPath cares about a callout with this
+     *                priority.
      */
     bool isRequiredPriority(uint8_t priority) const;
 
     /**
-     * @brief Description TODO
+     * @brief Checks if the callout is either a normal FRU
+     *        callout or a symbolic FRU callout with a trusted
+     *        location code, which is one of the requirements for
+     *        LightPath to turn on an LED.
+     *
+     * @param[in] - callout - The Callout object
+     *
+     * @return bool - If the callout is a hardware callout
      */
     bool isHardwareCallout(const src::Callout& callout) const;
 };
