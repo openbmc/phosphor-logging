@@ -551,9 +551,10 @@ class DataInterface : public DataInterfaceBase
     }
 
     /**
-     * @brief Adds the Ufcs- prefix to the location code passed in.
+     * @brief Adds the Ufcs- prefix to the location code passed in
+     *        if necessary.
      *
-     * Necessary because the location codes that come back from the
+     * Needed because the location codes that come back from the
      * message registry and device callout JSON don't have it.
      *
      * @param[in] - The location code without a prefix, like P1-C1
