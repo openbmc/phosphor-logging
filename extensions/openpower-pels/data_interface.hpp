@@ -281,6 +281,26 @@ class DataInterfaceBase
                                                 uint16_t node,
                                                 bool expanded) const = 0;
 
+    /**
+     * @brief Returns the fault LED group D-Bus path for the inventory
+     *        D-Bus path passed in.
+     *
+     * @param[in] inventoryPath - The inventory D-Bus path
+     *
+     * @return std::string - The fault LED group D-Bus path
+     */
+    virtual std::string
+        getFaultLEDGroup(const std::string& inventoryPath) const = 0;
+
+    /**
+     * @brief Sets the Asserted property on the LED group passed in.
+     *
+     * @param[in] ledGroup - The LED group D-Bus path
+     * @param[in] value - The value to set it to
+     */
+    virtual void assertLEDGroup(const std::string& ledGroup,
+                                bool value) const = 0;
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
@@ -507,6 +527,25 @@ class DataInterface : public DataInterfaceBase
     std::string getInventoryFromLocCode(const std::string& locationCode,
                                         uint16_t node,
                                         bool expanded) const override;
+
+    /**
+     * @brief Returns the fault LED group D-Bus path for the inventory
+     *        D-Bus path passed in.
+     *
+     * @param[in] inventoryPath - The inventory D-Bus path
+     *
+     * @return std::string - The fault LED group D-Bus path
+     */
+    std::string
+        getFaultLEDGroup(const std::string& inventoryPath) const override;
+
+    /**
+     * @brief Sets the Asserted property on the LED group passed in.
+     *
+     * @param[in] ledGroup - The LED group D-Bus path
+     * @param[in] value - The value to set it to
+     */
+    void assertLEDGroup(const std::string& ledGroup, bool value) const override;
 
   private:
     /**
