@@ -260,8 +260,9 @@ std::vector<uint8_t> pelFactory(uint32_t id, char creatorID, uint8_t severity,
     data.at(offset + actionFlagsUHOffset + 1) = actionFlags;
 
     // Use the default SRC, failing MTMS, and ext user Header sections
-    data.insert(data.end(), srcSectionNoCallouts.begin(),
-                srcSectionNoCallouts.end());
+    auto src = pelDataFactory(TestPELType::primarySRCSection2Callouts);
+
+    data.insert(data.end(), src.begin(), src.end());
     data.insert(data.end(), failingMTMSSection.begin(),
                 failingMTMSSection.end());
     data.insert(data.end(), ExtUserHeaderSection.begin(),
