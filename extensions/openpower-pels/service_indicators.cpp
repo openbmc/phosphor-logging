@@ -15,6 +15,8 @@
  */
 #include "service_indicators.hpp"
 
+#include <fmt/format.h>
+
 #include <bitset>
 #include <phosphor-logging/log.hpp>
 
@@ -182,13 +184,62 @@ bool LightPath::isHardwareCallout(const src::Callout& callout) const
 std::vector<std::string> LightPath::getLEDGroupPaths(
     const std::vector<std::string>& locationCodes) const
 {
-    // TODO
-    return {};
+    std::vector<std::string> ledGroups;
+    std::string inventoryPath;
+
+    for (const auto& locCode : locationCodes)
+    {
+        try
+        {
+            inventoryPath =
+                _dataIface.getInventoryFromLocCode(locCode, 0, true);
+        }
+        catch (const std::exception& e)
+        {
+            log<level::ERR>(fmt::format("Could not get inventory path for "
+                                        "location code {} ({}).",
+                                        locCode, e.what())
+                                .c_str());
+
+            // Unless we can get the LEDs for all FRUs, we can't turn
+            // on any of them, so clear the list and quit.
+            ledGroups.clear();
+            break;
+        }
+
+        try
+        {
+            ledGroups.push_back(_dataIface.getFaultLEDGroup(inventoryPath));
+        }
+        catch (const std::exception& e)
+        {
+            log<level::ERR>(fmt::format("Could not get LED group path for "
+                                        "inventory path {} ({}).",
+                                        inventoryPath, e.what())
+                                .c_str());
+            ledGroups.clear();
+            break;
+        }
+    }
+
+    return ledGroups;
 }
 
 void LightPath::assertLEDs(const std::vector<std::string>& ledGroups) const
 {
-    // TODO
+    for (const auto& ledGroup : ledGroups)
+    {
+        try
+        {
+            _dataIface.assertLEDGroup(ledGroup, true);
+        }
+        catch (const std::exception& e)
+        {
+            log<level::ERR>(fmt::format("Failed to assert LED group {} ({})",
+                                        ledGroup, e.what())
+                                .c_str());
+        }
+    }
 }
 
 } // namespace openpower::pels::service_indicators

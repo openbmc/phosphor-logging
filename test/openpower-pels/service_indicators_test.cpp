@@ -257,3 +257,85 @@ TEST(ServiceIndicatorsTest, CalloutMixedTypesTest)
                   (std::vector<std::string>{}));
     }
 }
+
+// Test the activate() function
+TEST(ServiceIndicatorsTest, ActivateTest)
+{
+    // pelFactory() will create a PEL with 1 callout with location code
+    // U42.  Test the LED for that gets activated.
+    {
+        MockDataInterface dataIface;
+        service_indicators::LightPath lightPath{dataIface};
+
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("U42", 0, true))
+            .WillOnce(Return("/system/chassis/processor"));
+
+        EXPECT_CALL(dataIface, getFaultLEDGroup("/system/chassis/processor"))
+            .WillOnce(Return("/led/groups/cpu0"));
+
+        EXPECT_CALL(dataIface, assertLEDGroup("/led/groups/cpu0", true))
+            .Times(1);
+
+        auto data = pelFactory(1, 'O', 0x20, 0xA400, 500);
+        PEL pel{data};
+
+        lightPath.activate(pel);
+    }
+
+    // Make getInventoryFromLocCode fail
+    {
+        MockDataInterface dataIface;
+        service_indicators::LightPath lightPath{dataIface};
+
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("U42", 0, true))
+            .WillOnce(Throw(std::runtime_error("Fail")));
+
+        EXPECT_CALL(dataIface, getFaultLEDGroup(_)).Times(0);
+
+        EXPECT_CALL(dataIface, assertLEDGroup(_, true)).Times(0);
+
+        auto data = pelFactory(1, 'O', 0x20, 0xA400, 500);
+        PEL pel{data};
+
+        lightPath.activate(pel);
+    }
+
+    // Make getFaultLEDGroup fail
+    {
+        MockDataInterface dataIface;
+        service_indicators::LightPath lightPath{dataIface};
+
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("U42", 0, true))
+            .WillOnce(Return("/system/chassis/processor"));
+
+        EXPECT_CALL(dataIface, getFaultLEDGroup("/system/chassis/processor"))
+            .WillOnce(Throw(std::runtime_error("Fail")));
+
+        EXPECT_CALL(dataIface, assertLEDGroup(_, true)).Times(0);
+
+        auto data = pelFactory(1, 'O', 0x20, 0xA400, 500);
+        PEL pel{data};
+
+        lightPath.activate(pel);
+    }
+
+    // Make assertLEDGroup fail
+    {
+        MockDataInterface dataIface;
+        service_indicators::LightPath lightPath{dataIface};
+
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("U42", 0, true))
+            .WillOnce(Return("/system/chassis/processor"));
+
+        EXPECT_CALL(dataIface, getFaultLEDGroup("/system/chassis/processor"))
+            .WillOnce(Return("/led/groups/cpu0"));
+
+        EXPECT_CALL(dataIface, assertLEDGroup("/led/groups/cpu0", true))
+            .WillOnce(Throw(std::runtime_error("Fail")));
+
+        auto data = pelFactory(1, 'O', 0x20, 0xA400, 500);
+        PEL pel{data};
+
+        lightPath.activate(pel);
+    }
+}
