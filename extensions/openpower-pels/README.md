@@ -250,13 +250,147 @@ also contains one of aforementioned CALLOUT keys in the AdditionalData
 property, then the PEL code will first add the callouts stemming from the
 CALLOUT items, followed by the callouts from the message registry.
 
-### Using external callout tables
+### Specifying multiple callouts using JSON format FFDC files
 
-Some applications, such as the code from the openpower-hw-diags repository,
-have their own callout tables that contain the callouts to use for the errors
-they generate.
+Multiple callouts can be passed in by the creator at the time of PEL creation.
+This is done by specifying them in a JSON file that is then passed in as an
+[FFDC file](#ffdc-intended-for-userdata-pel-sections).  The JSON will still be
+added into a PEL UserData section for debug.
 
-**TODO**:  The best way to pass these callouts in to the PEL creation code.
+To specify that an FFDC file contains callouts, the format value for that FFDC
+entry must be set to JSON, and the subtype field must be set to 0xCA:
+
+```
+using FFDC = std::tuple<CreateIface::FFDCFormat,
+                        uint8_t,
+                        uint8_t,
+                        sdbusplus::message::unix_fd>;
+
+FFDC ffdc{
+    CreateIface::FFDCFormat::JSON,
+    0xCA, // Callout subtype
+    0x01, // Callout version, set to 0x01
+    fd};
+```
+
+The JSON contains an array of callouts that must be in order of highest
+priority to lowest, with a maximum of 10.  Any callouts after the 10th will
+just be thrown away as there is no room for them in the PEL. The format looks
+like:
+
+```
+[
+    {
+        // First callout
+    },
+    {
+        // Second callout
+    },
+    {
+        // Nth callout
+    }
+]
+```
+
+A callout entry can be a normal hardware callout, a maintenance procedure
+callout, or a symbolic FRU callout.  Each callout must contain a Priority
+field, where the possible values are:
+
+* "H" = High
+* "M" = Medium
+* "A" = Medium Group A
+* "B" = Medium Group B
+* "C" = Medium Group C
+* "L" = Low
+
+Either unexpanded location codes or D-Bus inventory object paths can be used to
+specify the called out part.  An unexpanded location code does not have the
+system VPD information embedded in it, and the 'Ufcs-' prefix is optional (so
+can be either Ufcs-P1 or just P1).
+
+#### Normal hardware FRU callout
+
+Normal hardware callouts must contain either the location code or inventory
+path, and priority.  Even though the PEL code doesn't do any guarding or
+deconfiguring itself, it needs to know if either of those things occurred as
+there are status bits in the PEL to reflect them.  The Guarded and Deconfigured
+fields are used for this.  Those fields are optional and if omitted then their
+values will be false.
+
+When the inventory path of a sub-FRU is passed in, the PEL code will put the
+location code of the parent FRU into the callout.
+
+```
+{
+    "LocationCode": "P0-C1",
+    "Priority": "H"
+}
+
+{
+    "InventoryPath": "/xyz/openbmc_project/inventory/motherboard/cpu0/core5",
+    "Priority": "H",
+    "Deconfigured": true,
+    "Guarded": true
+}
+
+```
+
+MRUs (Manufacturing Replaceable Units) are 4 byte numbers that can optionally
+be added to callouts to specify failing devices on a FRU.  These may be used
+during the manufacturing test process, where there may be the ability to do
+these replacements.  There can be up to 15 MRUs, each with its own priority,
+embedded in a callout.  The possible priority values match the FRU priority
+values.
+
+Note that since JSON only supports numbers in decimal and not in hex, MRU IDs
+will show up as decimal when visually inspecting the JSON.
+
+```
+{
+    "LocationCode": "P0-C1",
+    "Priority": "H",
+    "MRUs": [
+        {
+            "ID": 1234,
+            "Priority": "H"
+        },
+        {
+            "ID": 5678,
+            "Priority": "H"
+        }
+    ]
+}
+```
+
+#### Maintenance procedure callout
+
+The LocationCode field is not used with procedure callouts.  Only the first 7
+characters of the Procedure field will be used by the PEL.
+
+```
+{
+    "Procedure": "PRONAME",
+    "Priority": "H"
+}
+```
+
+#### Symbolic FRU callout
+
+Only the first seven characters of the SymbolicFRU field will be used by the PEL.
+
+If the TrustedLocationCode field is present and set to true, this means the
+location code may be used to turn on service indicators, so the LocationCode
+field is required.  If TrustedLocationCode is false or missing, then the
+LocationCode field is optional.
+
+```
+{
+    "TrustedLocationCode": true,
+    "Location Code": "P0-C1",
+    "Priority": "H",
+    "SymbolicFRU": "FRUNAME"
+}
+```
 
 ## `Action Flags` and `Event Type` Rules
 
