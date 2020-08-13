@@ -16,6 +16,7 @@
 #include "pel.hpp"
 
 #include "bcd_time.hpp"
+#include "extended_user_data.hpp"
 #include "extended_user_header.hpp"
 #include "failing_mtms.hpp"
 #include "json_utils.hpp"
@@ -293,7 +294,7 @@ void PEL::printSectionInJSON(const Section& section, std::string& buf,
         {
             json = section.getJSON(registry, plugins, creatorID);
         }
-        else if (sectionID == "UD")
+        else if ((sectionID == "UD") || (sectionID == "ED"))
         {
             json = section.getJSON(creatorID, plugins);
         }

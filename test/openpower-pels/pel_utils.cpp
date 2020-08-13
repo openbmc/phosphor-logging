@@ -145,6 +145,14 @@ const std::vector<uint8_t> srcMRUCallout{
     0x04, 0x04, 0x04, 0x04, // MRU ID 3
 };
 
+const std::vector<uint8_t> extendedUserDataSection{
+    // Header
+    0x45, 0x44, 0x00, 0x18, 0x01, 0x02, 0x20, 0x00,
+
+    // Creator ID 'O', and then data
+    0x4F, 0x00, 0x00, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
+    0x05, 0x0A, 0x0B, 0x0C};
+
 constexpr size_t sectionCountOffset = 27;
 constexpr size_t createTimestampPHOffset = 8;
 constexpr size_t commitTimestampPHOffset = 16;
@@ -174,7 +182,9 @@ std::vector<uint8_t> pelDataFactory(TestPELType type)
                         UserDataSection.end());
             data.insert(data.end(), ExtUserHeaderSection.begin(),
                         ExtUserHeaderSection.end());
-            data.at(sectionCountOffset) = 6;
+            data.insert(data.end(), extendedUserDataSection.begin(),
+                        extendedUserDataSection.end());
+            data.at(sectionCountOffset) = 7;
             break;
         case TestPELType::privateHeaderSection:
             data.insert(data.end(), privateHeaderSection.begin(),
@@ -220,6 +230,9 @@ std::vector<uint8_t> pelDataFactory(TestPELType type)
         case TestPELType::failingMTMSSection:
             data.insert(data.end(), failingMTMSSection.begin(),
                         failingMTMSSection.end());
+        case TestPELType::extendedUserDataSection:
+            data.insert(data.end(), extendedUserDataSection.begin(),
+                        extendedUserDataSection.end());
     }
     return data;
 }
