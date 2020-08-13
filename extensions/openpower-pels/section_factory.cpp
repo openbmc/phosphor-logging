@@ -15,6 +15,7 @@
  */
 #include "section_factory.hpp"
 
+#include "extended_user_data.hpp"
 #include "extended_user_header.hpp"
 #include "failing_mtms.hpp"
 #include "generic.hpp"
@@ -65,6 +66,9 @@ std::unique_ptr<Section> create(Stream& pelData)
             break;
         case static_cast<uint16_t>(SectionID::extendedUserHeader):
             section = std::make_unique<ExtendedUserHeader>(pelData);
+            break;
+        case static_cast<uint16_t>(SectionID::extUserData):
+            section = std::make_unique<ExtendedUserData>(pelData);
             break;
         default:
             // A generic object, but at least an object.

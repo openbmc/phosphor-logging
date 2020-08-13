@@ -1,5 +1,6 @@
 phosphor_log_manager_SOURCES += \
 	extensions/openpower-pels/entry_points.cpp \
+	extensions/openpower-pels/extended_user_data.cpp \
 	extensions/openpower-pels/host_notifier.cpp \
 	extensions/openpower-pels/manager.cpp \
 	extensions/openpower-pels/pldm_interface.cpp \
@@ -71,6 +72,7 @@ registry_DATA = extensions/openpower-pels/registry/message_registry.json
 bin_PROGRAMS += peltool
 
 peltool_SOURCES = \
+	extensions/openpower-pels/extended_user_data.cpp \
 	extensions/openpower-pels/tools/peltool.cpp \
 	extensions/openpower-pels/src.cpp \
 	extensions/openpower-pels/user_data.cpp \
