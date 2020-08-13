@@ -6,6 +6,7 @@ check_PROGRAMS += \
 	bcd_time_test \
 	device_callouts_test \
 	event_logger_test \
+	extended_user_data_test \
 	extended_user_header_test \
 	failing_mtms_test \
 	fru_identity_test \
@@ -39,6 +40,7 @@ pel_objects = \
 	$(top_builddir)/extensions/openpower-pels/callout.o \
 	$(top_builddir)/extensions/openpower-pels/callouts.o \
 	$(top_builddir)/extensions/openpower-pels/device_callouts.o \
+	$(top_builddir)/extensions/openpower-pels/extended_user_data.o \
 	$(top_builddir)/extensions/openpower-pels/extended_user_header.o \
 	$(top_builddir)/extensions/openpower-pels/failing_mtms.o \
 	$(top_builddir)/extensions/openpower-pels/fru_identity.o \
@@ -383,3 +385,14 @@ service_indicators_test_LDADD = \
 	$(pel_test_utils_ldadd) \
 	$(top_builddir)/extensions/openpower-pels/service_indicators.o
 service_indicators_test_LDFLAGS = $(test_ldflags)
+
+extended_user_data_test_SOURCES = \
+	%reldir%/extended_user_data_test.cpp
+extended_user_data_test_CPPFLAGS = $(test_cppflags)
+extended_user_data_test_CXXFLAGS = $(test_cxxflags)
+extended_user_data_test_LDADD = \
+	$(test_ldadd) \
+	$(pel_test_utils_ldadd) \
+	$(FMT_LIBS) \
+	$(top_builddir)/extensions/openpower-pels/extended_user_data.o
+extended_user_data_test_LDFLAGS = $(test_ldflags)
