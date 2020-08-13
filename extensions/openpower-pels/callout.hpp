@@ -84,6 +84,25 @@ class Callout
      * @brief Constructor
      *
      * Creates the objects with a FRUIdentity substructure that calls
+     * out a normal hardware FRU, and takes a list of MRUs that will
+     * be added to the callout.
+     *
+     * @param[in] priority - The priority of the callout
+     * @param[in] locationCode - The location code of the callout
+     * @param[in] partNumber - The part number of the callout
+     * @param[in] ccin - The CCIN of the callout
+     * @param[in] serialNumber - The serial number of the callout
+     * @param[in] mrus - The MRUs, if any, to add to the callout
+     */
+    Callout(CalloutPriority priority, const std::string& locationCode,
+            const std::string& partNumber, const std::string& ccin,
+            const std::string& serialNumber,
+            const std::vector<MRU::MRUCallout>& mrus);
+
+    /**
+     * @brief Constructor
+     *
+     * Creates the objects with a FRUIdentity substructure that calls
      * out a maintenance procedure.
      *
      * @param[in] priority - The priority of the callout

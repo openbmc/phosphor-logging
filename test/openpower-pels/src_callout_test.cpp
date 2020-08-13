@@ -276,6 +276,34 @@ TEST(CalloutTest, TestHardwareCallout)
             EXPECT_EQ(fru->getSN().value(), "123456789ABC");
         }
     }
+
+    {
+        // With MRUs
+        std::vector<MRU::MRUCallout> mruList{{'H', 1}, {'H', 2}};
+
+        Callout callout{CalloutPriority::high, "U99-P5", "1234567", "ABCD",
+                        "123456789ABC",        mruList};
+
+        EXPECT_EQ(callout.flags(), Callout::calloutType |
+                                       Callout::fruIdentIncluded |
+                                       Callout::mruIncluded);
+
+        EXPECT_EQ(callout.priority(), 'H');
+        EXPECT_EQ(callout.locationCode(), "U99-P5");
+        EXPECT_EQ(callout.locationCodeSize(), 8);
+
+        auto& fru = callout.fruIdentity();
+        EXPECT_EQ(fru->getPN().value(), "1234567");
+        EXPECT_EQ(fru->getCCIN().value(), "ABCD");
+        EXPECT_EQ(fru->getSN().value(), "123456789ABC");
+
+        auto& mruSection = callout.mru();
+        EXPECT_EQ(mruSection->mrus().size(), 2);
+        EXPECT_EQ(mruSection->mrus().at(0).priority, 'H');
+        EXPECT_EQ(mruSection->mrus().at(0).id, 1);
+        EXPECT_EQ(mruSection->mrus().at(1).priority, 'H');
+        EXPECT_EQ(mruSection->mrus().at(1).id, 2);
+    }
 }
 
 // Create a callout object by passing in the maintenance procedure to add.
