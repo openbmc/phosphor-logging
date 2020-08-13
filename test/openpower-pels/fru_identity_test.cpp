@@ -201,6 +201,12 @@ TEST(FRUIdentityTest, CreateProcedureCalloutTest)
         EXPECT_FALSE(fru.getCCIN());
         EXPECT_FALSE(fru.getSN());
     }
+
+    {
+        // Raw maintenance procedure
+        FRUIdentity fru{"BMCSPXXLONG", CalloutValueType::raw};
+        EXPECT_EQ(fru.getMaintProc().value(), "BMCSPXX");
+    }
 }
 
 // Test the constructor that takes in a symbolic FRU.
@@ -262,5 +268,12 @@ TEST(FRUIdentityTest, CreateSymbolicFRUCalloutTest)
         EXPECT_FALSE(fru.getMaintProc());
         EXPECT_FALSE(fru.getCCIN());
         EXPECT_FALSE(fru.getSN());
+    }
+
+    // Raw symbolic FRU
+    {
+        FRUIdentity fru{"SOMEFRULONG", CalloutValueType::raw, false};
+
+        EXPECT_EQ(fru.getPN().value(), "SOMEFRU");
     }
 }

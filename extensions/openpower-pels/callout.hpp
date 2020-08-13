@@ -87,10 +87,43 @@ class Callout
      * out a maintenance procedure.
      *
      * @param[in] priority - The priority of the callout
+     * @param[in] procedure - The maintenance procedure name
+     * @param[in] type - If the procedure is the raw name or the registry name
+     */
+    Callout(CalloutPriority priority, const std::string& procedure,
+            CalloutValueType type);
+
+    /**
+     * @brief Constructor
+     *
+     * Creates the objects with a FRUIdentity substructure that calls
+     * out a maintenance procedure.
+     *
+     * @param[in] priority - The priority of the callout
      * @param[in] procedureFromRegistry - The maintenance procedure name
      *                                    as defined in the message registry.
      */
-    Callout(CalloutPriority priority, const std::string& procedureFromRegistry);
+    Callout(CalloutPriority priority,
+            const std::string& procedureFromRegistry) :
+        Callout(priority, procedureFromRegistry, CalloutValueType::registryName)
+    {
+    }
+
+    /**
+     * @brief Constructor
+     *
+     * Creates the objects with a FRUIdentity substructure that calls
+     * out a symbolic FRU.
+     *
+     * @param[in] priority - The priority of the callout
+     * @param[in] symbolicFRU - The symbolic FRU name
+     * @param[in] type - If the FRU is the raw name or the registry name
+     * @param[in] locationCode - The location code of the callout
+     * @param[in] trustedLocationCode - If the location is trusted
+     */
+    Callout(CalloutPriority priority, const std::string& symbolicFRU,
+            CalloutValueType type, const std::string& locationCode,
+            bool trustedLocationCode);
 
     /**
      * @brief Constructor
@@ -106,7 +139,12 @@ class Callout
      */
     Callout(CalloutPriority priority,
             const std::string& symbolicFRUFromRegistry,
-            const std::string& locationCode, bool trustedLocationCode);
+            const std::string& locationCode, bool trustedLocationCode) :
+        Callout(priority, symbolicFRUFromRegistry,
+                CalloutValueType::registryName, locationCode,
+                trustedLocationCode)
+    {
+    }
 
     /**
      * @brief Returns the size of this object when flattened into a PEL

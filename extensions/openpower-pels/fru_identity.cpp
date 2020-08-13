@@ -17,6 +17,8 @@
 
 #include "pel_values.hpp"
 
+#include <fmt/format.h>
+
 #include <phosphor-logging/log.hpp>
 
 using namespace phosphor::logging;
@@ -106,23 +108,23 @@ FRUIdentity::FRUIdentity(const std::string& partNumber, const std::string& ccin,
     _size = flattenedSize();
 }
 
-FRUIdentity::FRUIdentity(const std::string& procedureFromRegistry)
+FRUIdentity::FRUIdentity(const std::string& procedure, CalloutValueType type)
 {
     _type = substructureType;
     _flags = maintenanceProc;
 
-    setMaintenanceProcedure(procedureFromRegistry);
+    setMaintenanceProcedure(procedure, type);
 
     _size = flattenedSize();
 }
 
-FRUIdentity::FRUIdentity(const std::string& symbolicFRUFromRegistry,
+FRUIdentity::FRUIdentity(const std::string& fru, CalloutValueType type,
                          bool trustedLocationCode)
 {
     _type = substructureType;
     _flags = (trustedLocationCode) ? symbolicFRUTrustedLocCode : symbolicFRU;
 
-    setSymbolicFRU(symbolicFRUFromRegistry);
+    setSymbolicFRU(fru, type);
 
     _size = flattenedSize();
 }
@@ -238,45 +240,63 @@ void FRUIdentity::setSerialNumber(const std::string& serialNumber)
     fillArray(serialNumber, _sn);
 }
 
-void FRUIdentity::setMaintenanceProcedure(
-    const std::string& procedureFromRegistry)
+void FRUIdentity::setMaintenanceProcedure(const std::string& procedure,
+                                          CalloutValueType type)
 {
     _flags |= maintProcSupplied;
     _flags &= ~pnSupplied;
 
-    if (pel_values::maintenanceProcedures.count(procedureFromRegistry))
+    if (type == CalloutValueType::registryName)
     {
-        fillArray(pel_values::maintenanceProcedures.at(procedureFromRegistry),
-                  _pnOrProcedureID);
+        if (pel_values::maintenanceProcedures.count(procedure))
+        {
+            fillArray(pel_values::maintenanceProcedures.at(procedure),
+                      _pnOrProcedureID);
+        }
+        else
+        {
+            log<level::ERR>(
+                fmt::format("Invalid maintenance procedure {}", procedure)
+                    .c_str());
+            strncpy(_pnOrProcedureID.data(), "INVALID",
+                    _pnOrProcedureID.size());
+        }
     }
     else
     {
-        log<level::ERR>("Invalid maintenance procedure",
-                        entry("PROCEDURE=%s", procedureFromRegistry.c_str()));
-        strncpy(_pnOrProcedureID.data(), "INVALID", _pnOrProcedureID.size());
+        fillArray(procedure, _pnOrProcedureID);
     }
 
     // ensure null terminated
     _pnOrProcedureID.back() = 0;
 }
 
-void FRUIdentity::setSymbolicFRU(const std::string& symbolicFRUFromRegistry)
+void FRUIdentity::setSymbolicFRU(const std::string& symbolicFRU,
+                                 CalloutValueType type)
 {
 
     // Treat this has a HW callout.
     _flags |= pnSupplied;
     _flags &= ~maintProcSupplied;
 
-    if (pel_values::symbolicFRUs.count(symbolicFRUFromRegistry))
+    if (type == CalloutValueType::registryName)
     {
-        fillArray(pel_values::symbolicFRUs.at(symbolicFRUFromRegistry),
-                  _pnOrProcedureID);
+        if (pel_values::symbolicFRUs.count(symbolicFRU))
+        {
+            fillArray(pel_values::symbolicFRUs.at(symbolicFRU),
+                      _pnOrProcedureID);
+        }
+        else
+        {
+            log<level::ERR>("Invalid symbolic FRU",
+                            entry("FRU=%s", symbolicFRU.c_str()));
+            strncpy(_pnOrProcedureID.data(), "INVALID",
+                    _pnOrProcedureID.size());
+        }
     }
     else
     {
-        log<level::ERR>("Invalid symbolic FRU",
-                        entry("FRU=%s", symbolicFRUFromRegistry.c_str()));
-        strncpy(_pnOrProcedureID.data(), "INVALID", _pnOrProcedureID.size());
+        fillArray(symbolicFRU, _pnOrProcedureID);
     }
 
     // ensure null terminated
