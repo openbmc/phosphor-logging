@@ -317,6 +317,13 @@ TEST(CalloutTest, TestProcedureCallout)
 
     auto& newFRU = newCallout.fruIdentity();
     EXPECT_EQ(newFRU->getMaintProc().value(), fru->getMaintProc().value());
+
+    // Use raw procedure value
+
+    Callout rawCallout{CalloutPriority::medium, "BMCSPXX",
+                       CalloutValueType::raw};
+    auto& rawFRU = rawCallout.fruIdentity();
+    EXPECT_EQ(rawFRU->getMaintProc().value(), "BMCSPXX");
 }
 
 // Create a callout object by passing in the symbolic FRU to add.
@@ -383,5 +390,17 @@ TEST(CalloutTest, TestSymbolicFRUCallout)
         EXPECT_EQ(fru->failingComponentType(),
                   FRUIdentity::symbolicFRUTrustedLocCode);
         EXPECT_EQ(fru->getPN().value(), "SVCDOCS");
+    }
+
+    // symbolic FRU with raw FRU value
+    {
+        {
+            Callout callout{CalloutPriority::high, "SYMBFRU",
+                            CalloutValueType::raw, "", false};
+
+            auto& fru = callout.fruIdentity();
+
+            EXPECT_EQ(fru->getPN().value(), "SYMBFRU");
+        }
     }
 }
