@@ -94,8 +94,8 @@ Callout::Callout(CalloutPriority priority, const std::string& locationCode,
     _size = flattenedSize();
 }
 
-Callout::Callout(CalloutPriority priority,
-                 const std::string& procedureFromRegistry)
+Callout::Callout(CalloutPriority priority, const std::string& procedure,
+                 CalloutValueType type)
 {
     _flags = calloutType | fruIdentIncluded;
 
@@ -103,14 +103,14 @@ Callout::Callout(CalloutPriority priority,
 
     _locationCodeSize = 0;
 
-    _fruIdentity = std::make_unique<FRUIdentity>(procedureFromRegistry);
+    _fruIdentity = std::make_unique<FRUIdentity>(procedure, type);
 
     _size = flattenedSize();
 }
 
-Callout::Callout(CalloutPriority priority,
-                 const std::string& symbolicFRUFromRegistry,
-                 const std::string& locationCode, bool trustedLocationCode)
+Callout::Callout(CalloutPriority priority, const std::string& symbolicFRU,
+                 CalloutValueType type, const std::string& locationCode,
+                 bool trustedLocationCode)
 {
     _flags = calloutType | fruIdentIncluded;
 
@@ -118,8 +118,8 @@ Callout::Callout(CalloutPriority priority,
 
     setLocationCode(locationCode);
 
-    _fruIdentity = std::make_unique<FRUIdentity>(symbolicFRUFromRegistry,
-                                                 trustedLocationCode);
+    _fruIdentity =
+        std::make_unique<FRUIdentity>(symbolicFRU, type, trustedLocationCode);
 
     _size = flattenedSize();
 }

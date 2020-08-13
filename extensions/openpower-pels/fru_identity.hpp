@@ -13,6 +13,16 @@ namespace src
 {
 
 /**
+ * @brief Specifies if the incoming maintenance procedure or
+ *        symbolic FRU is the registry name or the raw name.
+ */
+enum class CalloutValueType
+{
+    raw,
+    registryName
+};
+
+/**
  * @class FRUIdentity
  *
  * This represents the FRU Identity substructure in the
@@ -92,7 +102,20 @@ class FRUIdentity
      * @param[in] procedureFromRegistry - The maintenance procedure name
      *                                    as defined in the message registry.
      */
-    FRUIdentity(const std::string& procedureFromRegistry);
+    FRUIdentity(const std::string& procedureFromRegistry) :
+        FRUIdentity(procedureFromRegistry, CalloutValueType::registryName)
+    {
+    }
+
+    /**
+     * @brief Constructor
+     *
+     * Creates the object with a maintenance procedure callout.
+     *
+     * @param[in] procedure - The maintenance procedure name.
+     * @param[in] type - If the procedure is the raw name or the registry name.
+     */
+    FRUIdentity(const std::string& procedure, CalloutValueType type);
 
     /**
      * @brief Constructor
@@ -105,6 +128,23 @@ class FRUIdentity
      *                                  can be trusted to be correct.
      */
     FRUIdentity(const std::string& symbolicFRUFromRegistry,
+                bool trustedLocationCode) :
+        FRUIdentity(symbolicFRUFromRegistry, CalloutValueType::registryName,
+                    trustedLocationCode)
+    {
+    }
+
+    /**
+     * @brief Constructor
+     *
+     * Creates the object with a symbolic FRU callout.
+     *
+     * @param[in] fru - The symbolic FRU name.
+     * @param[in] type - If the FRU is the raw name or the registry name.
+     * @param[in] trustedLocationCode - If this FRU callout's location code
+     *                                  can be trusted to be correct.
+     */
+    FRUIdentity(const std::string& fru, CalloutValueType type,
                 bool trustedLocationCode);
 
     /**
@@ -245,20 +285,23 @@ class FRUIdentity
      *        field.  This is in the same field as the part
      *        number since they are mutually exclusive.
      *
-     * @param procedureFromRegistry - The procedure name as defined in
-     *                                the PEL message registry.
+     * @param procedure - The procedure name.
+     * @param[in] type - If the procedure is the raw name or
+     *                   the registry name.
      */
-    void setMaintenanceProcedure(const std::string& procedureFromRegistry);
+    void setMaintenanceProcedure(const std::string& procedure,
+                                 CalloutValueType type);
 
     /**
      * @brief Sets the 8 character null terminated symbolic FRU
      *        field.  This is in the same field as the part
      *        number since they are mutually exclusive.
      *
-     * @param[in] symbolicFRUFromRegistry - The symbolic FRU name as
-     *                                      defined in the message registry.
+     * @param[in] symbolicFRU - The symbolic FRU name.
+     * @param[in] type - If the FRU is the raw name or
+     *                   the registry name.
      */
-    void setSymbolicFRU(const std::string& symbolicFRUFromRegistry);
+    void setSymbolicFRU(const std::string& symbolicFRU, CalloutValueType type);
 
     /**
      * @brief The callout substructure type field. Will be "ID".
