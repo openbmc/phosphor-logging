@@ -41,6 +41,7 @@ TEST(MRUTest, TestConstructor)
 
     EXPECT_EQ(mru.flattenedSize(), data.size());
     EXPECT_EQ(mru.mrus().size(), 4);
+    EXPECT_EQ(mru.flags(), 4);
 
     EXPECT_EQ(mru.mrus().at(0).priority, 'H');
     EXPECT_EQ(mru.mrus().at(0).id, 0x01010101);
@@ -71,4 +72,65 @@ TEST(MRUTest, TestBadData)
 
     Stream stream{data};
     EXPECT_THROW(MRU mru{stream}, std::out_of_range);
+}
+
+TEST(MRUTest, TestVectorConstructor)
+{
+    {
+        std::vector<MRU::MRUCallout> mrus{{'H', 1}, {'M', 2}, {'L', 3}};
+
+        MRU mru{mrus};
+
+        EXPECT_EQ(mru.mrus().size(), 3);
+        EXPECT_EQ(mru.flags(), 3);
+
+        EXPECT_EQ(mru.mrus().at(0).priority, 'H');
+        EXPECT_EQ(mru.mrus().at(0).id, 1);
+        EXPECT_EQ(mru.mrus().at(1).priority, 'M');
+        EXPECT_EQ(mru.mrus().at(1).id, 2);
+        EXPECT_EQ(mru.mrus().at(2).priority, 'L');
+        EXPECT_EQ(mru.mrus().at(2).id, 3);
+
+        // Flatten and unflatten
+        std::vector<uint8_t> data;
+        Stream stream{data};
+
+        mru.flatten(stream);
+        EXPECT_EQ(mru.size(), data.size());
+
+        stream.offset(0);
+        MRU newMRU{stream};
+
+        EXPECT_EQ(newMRU.flattenedSize(), data.size());
+        EXPECT_EQ(newMRU.size(), data.size());
+        EXPECT_EQ(newMRU.mrus().size(), 3);
+
+        EXPECT_EQ(newMRU.mrus().at(0).priority, 'H');
+        EXPECT_EQ(newMRU.mrus().at(0).id, 1);
+        EXPECT_EQ(newMRU.mrus().at(1).priority, 'M');
+        EXPECT_EQ(newMRU.mrus().at(1).id, 2);
+        EXPECT_EQ(newMRU.mrus().at(2).priority, 'L');
+        EXPECT_EQ(newMRU.mrus().at(2).id, 3);
+    }
+
+    {
+        // Too many MRUs
+        std::vector<MRU::MRUCallout> mrus;
+        for (uint32_t i = 0; i < 20; i++)
+        {
+            MRU::MRUCallout mru = {'H', i};
+            mrus.push_back(mru);
+        }
+
+        MRU mru{mrus};
+
+        EXPECT_EQ(mru.mrus().size(), 15);
+        EXPECT_EQ(mru.flags(), 15);
+    }
+
+    {
+        // Too few MRUs
+        std::vector<MRU::MRUCallout> mrus;
+        EXPECT_THROW(MRU mru{mrus}, std::runtime_error);
+    }
 }

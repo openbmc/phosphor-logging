@@ -57,6 +57,15 @@ class MRU
     explicit MRU(Stream& pel);
 
     /**
+     * @brief Constructor
+     *
+     * Creates the object using the passed in MRUs
+     *
+     * @param[in] mrus - The  MRUs
+     */
+    explicit MRU(const std::vector<MRUCallout>& mrus);
+
+    /**
      * @brief Flatten the object into the stream
      *
      * @param[in] stream - The stream to write to
@@ -81,6 +90,26 @@ class MRU
     const std::vector<MRUCallout>& mrus() const
     {
         return _mrus;
+    }
+
+    /**
+     * @brief Returns the size field
+     *
+     * @return size_t - The size of the MRU substructure
+     */
+    size_t size() const
+    {
+        return _size;
+    }
+
+    /**
+     * @brief Returns the flags field
+     *
+     * @return uint8_t - The flags
+     */
+    uint8_t flags() const
+    {
+        return _flags;
     }
 
     /**
