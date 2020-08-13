@@ -80,7 +80,16 @@ Callout::Callout(Stream& pel)
 
 Callout::Callout(CalloutPriority priority, const std::string& locationCode,
                  const std::string& partNumber, const std::string& ccin,
-                 const std::string& serialNumber)
+                 const std::string& serialNumber) :
+    Callout(priority, locationCode, partNumber, ccin, serialNumber,
+            std::vector<MRU::MRUCallout>{})
+{
+}
+
+Callout::Callout(CalloutPriority priority, const std::string& locationCode,
+                 const std::string& partNumber, const std::string& ccin,
+                 const std::string& serialNumber,
+                 const std::vector<MRU::MRUCallout>& mrus)
 {
     _flags = calloutType | fruIdentIncluded;
 
@@ -90,6 +99,12 @@ Callout::Callout(CalloutPriority priority, const std::string& locationCode,
 
     _fruIdentity =
         std::make_unique<FRUIdentity>(partNumber, ccin, serialNumber);
+
+    if (!mrus.empty())
+    {
+        _flags |= mruIncluded;
+        _mru = std::make_unique<MRU>(mrus);
+    }
 
     _size = flattenedSize();
 }

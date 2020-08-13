@@ -26,6 +26,8 @@ namespace src
 
 using namespace phosphor::logging;
 
+static constexpr size_t maxMRUs = 15;
+
 MRU::MRU(Stream& pel)
 {
     pel >> _type >> _size >> _flags >> _reserved4B;
@@ -51,6 +53,27 @@ MRU::MRU(Stream& pel)
                             entry("NUM_MRUS=%lu", _mrus.size()),
                             entry("ACTUAL_SIZE=%lu", actualSize));
     }
+}
+
+MRU::MRU(const std::vector<MRUCallout>& mrus)
+{
+    if (mrus.empty())
+    {
+        log<level::ERR>("Trying to create a MRU section with no MRUs");
+        throw std::runtime_error{"Trying to create a MRU section with no MRUs"};
+    }
+
+    _mrus = mrus;
+    if (_mrus.size() > maxMRUs)
+    {
+        _mrus.resize(maxMRUs);
+    }
+
+    _type = substructureType;
+    _size = sizeof(_type) + sizeof(_size) + sizeof(_flags) +
+            sizeof(_reserved4B) + (sizeof(MRUCallout) * _mrus.size());
+    _flags = _mrus.size();
+    _reserved4B = 0;
 }
 
 void MRU::flatten(Stream& pel) const
