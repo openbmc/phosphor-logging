@@ -12,3 +12,4 @@ used.
 | 0x3000       | openpower-proc-control |
 | 0xD100       | openpower-hardware-diags (attn-handler) |
 | 0xE500       | openpower-hardware-diags |
+| 0x4000       | openpwoer-vpd-parser |
