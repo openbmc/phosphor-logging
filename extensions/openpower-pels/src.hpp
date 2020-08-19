@@ -226,10 +226,13 @@ class SRC : public Section
     /**
      * @brief Get section in JSON.
      * @param[in] registry - Registry object reference
+     * @param[in] plugins - Vector of strings of plugins found in filesystem
+     * @param[in] creatorID - Creator Subsystem ID from Private Header
      * @return std::optional<std::string> - SRC section's JSON
      */
-    std::optional<std::string>
-        getJSON(message::Registry& registry) const override;
+    std::optional<std::string> getJSON(message::Registry& registry,
+                                       const std::vector<std::string>& plugins,
+                                       uint8_t creatorID) const override;
 
     /**
      * @brief Get error details based on refcode and hexwords
