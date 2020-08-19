@@ -298,8 +298,11 @@ void PEL::printSectionInJSON(const Section& section, std::string& buf,
             std::string subsystem = getNumberString("%c", tolower(creatorID));
             std::string component =
                 getNumberString("%04x", section.header().componentID);
-            if (std::find(plugins.begin(), plugins.end(),
-                          subsystem + component) != plugins.end())
+            if ((std::find(plugins.begin(), plugins.end(),
+                           subsystem + component) != plugins.end()) ||
+                (pv::creatorIDs.at(getNumberString("%c", creatorID)) == "BMC" &&
+                 section.header().componentID ==
+                     static_cast<uint16_t>(ComponentID::phosphorLogging)))
             {
                 json = section.getJSON(creatorID);
             }

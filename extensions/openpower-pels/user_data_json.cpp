@@ -371,8 +371,7 @@ std::optional<std::string> getJSON(uint16_t componentID, uint8_t subType,
 {
     try
     {
-        if (pv::creatorIDs.at(getNumberString("%c", creatorID)) == "BMC" &&
-            componentID == static_cast<uint16_t>(ComponentID::phosphorLogging))
+        if (pv::creatorIDs.at(getNumberString("%c", creatorID)) == "BMC")
         {
             return getBuiltinFormatJSON(componentID, subType, version, data);
         }
