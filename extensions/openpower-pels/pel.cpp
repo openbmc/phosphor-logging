@@ -291,7 +291,7 @@ void PEL::printSectionInJSON(const Section& section, std::string& buf,
         std::optional<std::string> json;
         if (sectionID == "PS" || sectionID == "SS")
         {
-            json = section.getJSON(registry);
+            json = section.getJSON(registry, plugins, creatorID);
         }
         else if (sectionID == "UD")
         {

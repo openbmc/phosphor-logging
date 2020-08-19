@@ -219,6 +219,7 @@ std::vector<std::string> getPlugins()
     Py_Initialize();
     std::vector<std::string> plugins;
     std::vector<std::string> siteDirs;
+    std::array<std::string, 2> parserDirs = {"udparsers", "srcparsers"};
     PyObject* pName = PyUnicode_FromString("sys");
     PyObject* pModule = PyImport_Import(pName);
     Py_XDECREF(pName);
@@ -240,15 +241,19 @@ std::vector<std::string> getPlugins()
     }
     for (const auto& dir : siteDirs)
     {
-        if (fs::exists(dir + "/udparsers"))
+        for (const auto& parserDir : parserDirs)
         {
-            for (const auto& entry : fs::directory_iterator(dir + "/udparsers"))
+            if (fs::exists(dir + "/" + parserDir))
             {
-                if (entry.is_directory() and
-                    fs::exists(entry.path().string() + "/" +
-                               entry.path().stem().string() + ".py"))
+                for (const auto& entry :
+                     fs::directory_iterator(dir + "/" + parserDir))
                 {
-                    plugins.push_back(entry.path().stem());
+                    if (entry.is_directory() and
+                        fs::exists(entry.path().string() + "/" +
+                                   entry.path().stem().string() + ".py"))
+                    {
+                        plugins.push_back(entry.path().stem());
+                    }
                 }
             }
         }
