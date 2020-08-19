@@ -62,7 +62,8 @@ pel_objects = \
 pel_test_utils_ldadd = \
 	$(top_builddir)/extensions/openpower-pels/bcd_time.o \
 	$(top_builddir)/test/openpower-pels/pel_utils.o \
-	$(top_builddir)/test/openpower-pels/paths.o
+	$(top_builddir)/test/openpower-pels/paths.o \
+    -lpython$(PYTHON_VERSION)
 
 additional_data_test_SOURCES = %reldir%/additional_data_test.cpp
 additional_data_test_CPPFLAGS = $(test_cppflags)

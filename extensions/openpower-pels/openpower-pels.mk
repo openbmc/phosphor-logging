@@ -51,7 +51,8 @@ libpel_ldflags =  \
 	$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
 	$(SDEVENTPLUS_LIBS) \
 	$(FMT_LIBS) \
-	-lstdc++fs
+	-lstdc++fs \
+	-lpython$(PYTHON_VERSION)
 
 libpel_la_LIBADD = $(libpel_ldflags)
 
@@ -73,6 +74,5 @@ peltool_SOURCES = \
 	extensions/openpower-pels/tools/peltool.cpp \
 	extensions/openpower-pels/user_data.cpp \
 	extensions/openpower-pels/user_data_json.cpp
-peltool_LDFLAGS = "-lpython$(PYTHON_VERSION)"
 peltool_LDADD = libpel.la
 peltool_CXXFLAGS = "-DPELTOOL"
