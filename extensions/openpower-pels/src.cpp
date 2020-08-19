@@ -20,7 +20,12 @@
 #include "paths.hpp"
 #include "pel_values.hpp"
 
+#include <Python.h>
+
+#include <fifo_map.hpp>
+#include <nlohmann/json.hpp>
 #include <phosphor-logging/log.hpp>
+#include <sstream>
 
 namespace openpower
 {
@@ -32,6 +37,65 @@ using namespace phosphor::logging;
 using namespace std::string_literals;
 
 constexpr size_t ccinSize = 4;
+
+// Use fifo_map as nlohmann::json's map. We are just ignoring the 'less'
+// compare.  With this map the keys are kept in FIFO order.
+template <class K, class V, class dummy_compare, class A>
+using fifoMap = nlohmann::fifo_map<K, V, nlohmann::fifo_map_compare<K>, A>;
+using fifoJSON = nlohmann::basic_json<fifoMap>;
+
+void pyDecRef(PyObject* pyObj)
+{
+    Py_XDECREF(pyObj);
+}
+
+/**
+ * @brief Returns a JSON string to append to SRC section.
+ *
+ * The returning string will contain a JSON object, but without
+ * the outer {}.  If the input JSON isn't a JSON object (dict), then
+ * one will be created with the input added to a 'SRC Details' key.
+ *
+ * @param[in] json - The JSON to convert to a string
+ *
+ * @return std::string - The JSON string
+ */
+std::string prettyJSON(const fifoJSON& json)
+{
+    fifoJSON output;
+    if (!json.is_object())
+    {
+        output["SRC Details"] = json;
+    }
+    else
+    {
+        for (const auto& [key, value] : json.items())
+        {
+            output[key] = value;
+        }
+    }
+
+    // Let nlohmann do the pretty printing.
+    std::stringstream stream;
+    stream << std::setw(4) << output;
+
+    auto jsonString = stream.str();
+
+    // Now it looks like:
+    // {
+    //     "Key": "Value",
+    //     ...
+    // }
+
+    // Replace the { and the following newline, and the } and its
+    // preceeding newline.
+    jsonString.erase(0, 2);
+
+    auto pos = jsonString.find_last_of('}');
+    jsonString.erase(pos - 1);
+
+    return jsonString;
+}
 
 void SRC::unflatten(Stream& stream)
 {
@@ -437,9 +501,139 @@ std::optional<std::string> SRC::getCallouts() const
     return printOut;
 }
 
-std::optional<std::string> SRC::getJSON(message::Registry& registry) const
+/**
+ * @brief Call Python modules to parse the data into a JSON string
+ *
+ * The module to call is based on the Creator Subsystem ID under the namespace
+ * "srcparsers". For example: "srcparsers.xsrc.xsrc" where "x" is the Creator
+ * Subsystem ID in ASCII lowercase.
+ *
+ * All modules must provide the following:
+ * Function: parseSRCToJson
+ * Argument list:
+ *    1. (str) ASCII string (Hex Word 1)
+ *    2. (str) Hex Word 2
+ *    3. (str) Hex Word 3
+ *    4. (str) Hex Word 4
+ *    5. (str) Hex Word 5
+ *    6. (str) Hex Word 6
+ *    7. (str) Hex Word 7
+ *    8. (str) Hex Word 8
+ *    9. (str) Hex Word 9
+ *-Return data:
+ *    1. (str) JSON string
+ *
+ * @param[in] hexwords - Vector of strings of Hexwords 1-9
+ * @param[in] creatorID - The creatorID from the Private Header section
+ * @return std::optional<std::string> - The JSON string if it could be created,
+ *                                      else std::nullopt
+ */
+std::optional<std::string> getPythonJSON(std::vector<std::string>& hexwords,
+                                         uint8_t creatorID)
+{
+    PyObject *pName, *pModule, *pDict, *pFunc, *pArgs, *pResult, *pBytes,
+        *eType, *eValue, *eTraceback;
+    std::string pErrStr;
+    std::string module = getNumberString("%c", tolower(creatorID)) + "src";
+    pName = PyUnicode_FromString(
+        std::string("srcparsers." + module + "." + module).c_str());
+    std::unique_ptr<PyObject, decltype(&pyDecRef)> modNamePtr(pName, &pyDecRef);
+    pModule = PyImport_Import(pName);
+    std::unique_ptr<PyObject, decltype(&pyDecRef)> modPtr(pModule, &pyDecRef);
+    if (pModule == NULL)
+    {
+        pErrStr = "No error string found";
+        PyErr_Fetch(&eType, &eValue, &eTraceback);
+        if (eValue)
+        {
+            PyObject* pStr = PyObject_Str(eValue);
+            if (pStr)
+            {
+                pErrStr = PyUnicode_AsUTF8(pStr);
+            }
+            Py_XDECREF(pStr);
+        }
+    }
+    else
+    {
+        pDict = PyModule_GetDict(pModule);
+        pFunc = PyDict_GetItemString(pDict, "parseSRCToJson");
+        if (PyCallable_Check(pFunc))
+        {
+            pArgs = PyTuple_New(9);
+            std::unique_ptr<PyObject, decltype(&pyDecRef)> argPtr(pArgs,
+                                                                  &pyDecRef);
+            for (size_t i = 0; i < 9; i++)
+            {
+                if (i < hexwords.size())
+                {
+                    auto arg = hexwords[i];
+                    PyTuple_SetItem(pArgs, i,
+                                    Py_BuildValue("s#", arg.c_str(), 8));
+                }
+                else
+                {
+                    PyTuple_SetItem(pArgs, i, Py_BuildValue("s", "00000000"));
+                }
+            }
+            pResult = PyObject_CallObject(pFunc, pArgs);
+            std::unique_ptr<PyObject, decltype(&pyDecRef)> resPtr(pResult,
+                                                                  &pyDecRef);
+            if (pResult)
+            {
+                pBytes = PyUnicode_AsEncodedString(pResult, "utf-8", "~E~");
+                std::unique_ptr<PyObject, decltype(&pyDecRef)> pyBytePtr(
+                    pBytes, &pyDecRef);
+                const char* output = PyBytes_AS_STRING(pBytes);
+                try
+                {
+                    fifoJSON json = nlohmann::json::parse(output);
+                    return prettyJSON(json);
+                }
+                catch (std::exception& e)
+                {
+                    log<level::ERR>("Bad JSON from parser",
+                                    entry("ERROR=%s", e.what()),
+                                    entry("SRC=%s", hexwords.front().c_str()),
+                                    entry("PARSER_MODULE=%s", module.c_str()));
+                    return std::nullopt;
+                }
+            }
+            else
+            {
+                pErrStr = "No error string found";
+                PyErr_Fetch(&eType, &eValue, &eTraceback);
+                if (eValue)
+                {
+                    PyObject* pStr = PyObject_Str(eValue);
+                    if (pStr)
+                    {
+                        pErrStr = PyUnicode_AsUTF8(pStr);
+                    }
+                    Py_XDECREF(pStr);
+                }
+            }
+        }
+    }
+    if (!pErrStr.empty())
+    {
+        log<level::ERR>("Python exception thrown by parser",
+                        entry("ERROR=%s", pErrStr.c_str()),
+                        entry("SRC=%s", hexwords.front().c_str()),
+                        entry("PARSER_MODULE=%s", module.c_str()));
+    }
+    Py_XDECREF(eType);
+    Py_XDECREF(eValue);
+    Py_XDECREF(eTraceback);
+    return std::nullopt;
+}
+
+std::optional<std::string> SRC::getJSON(message::Registry& registry,
+                                        const std::vector<std::string>& plugins,
+                                        uint8_t creatorID) const
 {
     std::string ps;
+    std::vector<std::string> hexwords;
     jsonInsert(ps, pv::sectionVer, getNumberString("%d", _header.version), 1);
     jsonInsert(ps, pv::subSection, getNumberString("%d", _header.subType), 1);
     jsonInsert(ps, pv::createdBy, getNumberString("0x%X", _header.componentID),
@@ -477,6 +671,7 @@ std::optional<std::string> SRC::getJSON(message::Registry& registry) const
     jsonInsert(ps, "Valid Word Count", getNumberString("0x%02X", _wordCount),
                1);
     std::string refcode = asciiString();
+    hexwords.push_back(refcode);
     std::string extRefcode;
     size_t pos = refcode.find(0x20);
     if (pos != std::string::npos)
@@ -495,16 +690,30 @@ std::optional<std::string> SRC::getJSON(message::Registry& registry) const
     }
     for (size_t i = 2; i <= _wordCount; i++)
     {
-        jsonInsert(
-            ps, "Hex Word " + std::to_string(i),
-            getNumberString("%08X", _hexData[getWordIndexFromWordNum(i)]), 1);
+        std::string tmpWord =
+            getNumberString("%08X", _hexData[getWordIndexFromWordNum(i)]);
+        jsonInsert(ps, "Hex Word " + std::to_string(i), tmpWord, 1);
+        hexwords.push_back(tmpWord);
     }
     auto calloutJson = getCallouts();
     if (calloutJson)
     {
         ps.append(calloutJson.value());
+        ps.append(",\n");
     }
-    else
+    std::string subsystem = getNumberString("%c", tolower(creatorID));
+    bool srcDetailExists = false;
+    if (std::find(plugins.begin(), plugins.end(), subsystem + "src") !=
+        plugins.end())
+    {
+        auto pyJson = getPythonJSON(hexwords, creatorID);
+        if (pyJson)
+        {
+            ps.append(pyJson.value());
+            srcDetailExists = true;
+        }
+    }
+    if (!srcDetailExists)
     {
         ps.erase(ps.size() - 2);
     }
