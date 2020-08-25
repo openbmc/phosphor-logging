@@ -63,7 +63,7 @@ TEST_F(PrivateHeaderTest, UnflattenFlattenTest)
     EXPECT_EQ(mt.seconds, 0x3A);
     EXPECT_EQ(mt.hundredths, 0x00);
 
-    EXPECT_EQ(ph.creatorID(), 0xAA);
+    EXPECT_EQ(ph.creatorID(), 0x4F);
     EXPECT_EQ(ph.logType(), 0x00);
     EXPECT_EQ(ph.sectionCount(), 0x02);
     EXPECT_EQ(ph.obmcLogID(), 0x90919293);

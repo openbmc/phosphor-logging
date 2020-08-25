@@ -282,7 +282,24 @@ TEST(ServiceIndicatorsTest, ActivateTest)
         lightPath.activate(pel);
     }
 
-    // Make getInventoryFromLocCode fail
+    // A non-info BMC PEL with no callouts will set the platform SAI LED.
+    {
+        MockDataInterface dataIface;
+        service_indicators::LightPath lightPath{dataIface};
+
+        EXPECT_CALL(dataIface,
+                    assertLEDGroup("/xyz/openbmc_project/led/groups/"
+                                   "platform_system_attention_indicator",
+                                   true))
+            .Times(1);
+
+        auto data = pelDataFactory(TestPELType::pelSimple);
+        PEL pel{data};
+
+        lightPath.activate(pel);
+    }
+
+    // Make getInventoryFromLocCode fail - will set the platform SAI LED
     {
         MockDataInterface dataIface;
         service_indicators::LightPath lightPath{dataIface};
@@ -292,7 +309,11 @@ TEST(ServiceIndicatorsTest, ActivateTest)
 
         EXPECT_CALL(dataIface, getFaultLEDGroup(_)).Times(0);
 
-        EXPECT_CALL(dataIface, assertLEDGroup(_, true)).Times(0);
+        EXPECT_CALL(dataIface,
+                    assertLEDGroup("/xyz/openbmc_project/led/groups/"
+                                   "platform_system_attention_indicator",
+                                   true))
+            .Times(1);
 
         auto data = pelFactory(1, 'O', 0x20, 0xA400, 500);
         PEL pel{data};
@@ -300,7 +321,7 @@ TEST(ServiceIndicatorsTest, ActivateTest)
         lightPath.activate(pel);
     }
 
-    // Make getFaultLEDGroup fail
+    // Make getFaultLEDGroup fail - will set the platform SAI LED
     {
         MockDataInterface dataIface;
         service_indicators::LightPath lightPath{dataIface};
@@ -311,7 +332,11 @@ TEST(ServiceIndicatorsTest, ActivateTest)
         EXPECT_CALL(dataIface, getFaultLEDGroup("/system/chassis/processor"))
             .WillOnce(Throw(std::runtime_error("Fail")));
 
-        EXPECT_CALL(dataIface, assertLEDGroup(_, true)).Times(0);
+        EXPECT_CALL(dataIface,
+                    assertLEDGroup("/xyz/openbmc_project/led/groups/"
+                                   "platform_system_attention_indicator",
+                                   true))
+            .Times(1);
 
         auto data = pelFactory(1, 'O', 0x20, 0xA400, 500);
         PEL pel{data};

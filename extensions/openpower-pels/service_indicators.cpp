@@ -25,6 +25,9 @@ namespace openpower::pels::service_indicators
 
 using namespace phosphor::logging;
 
+static constexpr auto platformSaiLedGroup =
+    "/xyz/openbmc_project/led/groups/platform_system_attention_indicator";
+
 std::unique_ptr<Policy> getPolicy(const DataInterfaceBase& dataIface)
 {
     // At the moment there is just one type of policy.
@@ -85,8 +88,17 @@ void LightPath::activate(const PEL& pel)
 
     if (sai)
     {
-        log<level::INFO>("The System Attention Indicator needs to be turned "
-                         "on, when available");
+        try
+        {
+            _dataIface.assertLEDGroup(platformSaiLedGroup, true);
+        }
+        catch (const std::exception& e)
+        {
+            log<level::ERR>(
+                fmt::format("Failed to assert platform SAI LED group: {}",
+                            e.what())
+                    .c_str());
+        }
     }
 }
 

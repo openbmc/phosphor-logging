@@ -39,7 +39,7 @@ const std::vector<uint8_t> privateHeaderSection{
 
     0x20, 0x30, 0x05, 0x09, 0x11, 0x1E, 0x1,  0x63, // create timestamp
     0x20, 0x31, 0x06, 0x0F, 0x09, 0x22, 0x3A, 0x00, // commit timestamp
-    0xAA,                                           // creatorID
+    0x4F,                                           // creatorID 'O'
     0x00,                                           // logtype
     0x00,                                           // reserved
     0x02,                                           // section count
