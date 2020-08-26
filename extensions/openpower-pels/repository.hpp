@@ -415,6 +415,16 @@ class Repository
         return _logPath;
     }
 
+    /**
+     * @brief Returns the ID of the most recently added PEL.
+     *
+     * @return uint32_t - The PEL ID
+     */
+    uint32_t lastPelID() const
+    {
+        return _lastPelID;
+    }
+
   private:
     using PELUpdateFunc = std::function<void(PEL&)>;
 
@@ -560,6 +570,11 @@ class Repository
      * @brief Statistics on the sizes of the stored PELs.
      */
     SizeStats _sizes;
+
+    /**
+     * @brief The ID of the most recently added PEL.
+     */
+    uint32_t _lastPelID = 0;
 };
 
 } // namespace pels

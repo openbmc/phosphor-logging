@@ -171,6 +171,8 @@ void Repository::add(std::unique_ptr<PEL>& pel)
     _pelAttributes.emplace(LogID(pelID(pel->id()), obmcID(pel->obmcLogID())),
                            attributes);
 
+    _lastPelID = pel->id();
+
     updateRepoStats(attributes, true);
 
     processAddCallbacks(*pel);

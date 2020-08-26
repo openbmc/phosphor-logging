@@ -150,9 +150,24 @@ class Manager : public details::ServerObject<details::ManagerIface>
         return propChangedEntryCallback.size();
     }
 
+    /**
+     * @brief Returns the sdbusplus bus object
+     *
+     * @return sdbusplus::bus::bus&
+     */
     sdbusplus::bus::bus& getBus()
     {
         return busLog;
+    }
+
+    /**
+     * @brief Returns the ID of the last created entry
+     *
+     * @return uint32_t - The ID
+     */
+    uint32_t lastEntryID() const
+    {
+        return entryId;
     }
 
     /** @brief Creates an event log
