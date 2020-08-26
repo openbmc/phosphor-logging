@@ -367,8 +367,11 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
 std::optional<std::string> getJSON(uint16_t componentID, uint8_t subType,
                                    uint8_t version,
                                    const std::vector<uint8_t>& data,
-                                   uint8_t creatorID)
+                                   uint8_t creatorID,
+                                   const std::vector<std::string>& plugins)
 {
+    std::string subsystem = getNumberString("%c", tolower(creatorID));
+    std::string component = getNumberString("%04x", componentID);
     try
     {
         if (pv::creatorIDs.at(getNumberString("%c", creatorID)) == "BMC" &&
@@ -376,7 +379,8 @@ std::optional<std::string> getJSON(uint16_t componentID, uint8_t subType,
         {
             return getBuiltinFormatJSON(componentID, subType, version, data);
         }
-        else
+        else if (std::find(plugins.begin(), plugins.end(),
+                           subsystem + component) != plugins.end())
         {
             return getPythonJSON(componentID, subType, version, data,
                                  creatorID);

@@ -74,10 +74,13 @@ class Section
     /**
      * @brief Get section in JSON. Derived classes to override when required to.
      * @param[in] creatorID - Creator Subsystem ID from Private Header
+     * @param[in] plugins - Vector of strings of plugins found in filesystem
      * @return std::optional<std::string> - If a section comes with a JSON
      * representation, this would return the string for it.
      */
-    virtual std::optional<std::string> getJSON(uint8_t creatorID) const
+    virtual std::optional<std::string>
+        getJSON(uint8_t creatorID,
+                const std::vector<std::string>& plugins) const
     {
         return std::nullopt;
     }

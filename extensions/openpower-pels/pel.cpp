@@ -295,15 +295,7 @@ void PEL::printSectionInJSON(const Section& section, std::string& buf,
         }
         else if (sectionID == "UD")
         {
-            std::string subsystem = getNumberString("%c", tolower(creatorID));
-            std::string component =
-                getNumberString("%04x", section.header().componentID);
-            if ((std::find(plugins.begin(), plugins.end(),
-                           subsystem + component) != plugins.end()) ||
-                pv::creatorIDs.at(getNumberString("%c", creatorID)) == "BMC")
-            {
-                json = section.getJSON(creatorID);
-            }
+            json = section.getJSON(creatorID, plugins);
         }
         else
         {

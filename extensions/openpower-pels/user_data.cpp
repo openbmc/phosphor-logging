@@ -95,11 +95,13 @@ void UserData::validate()
     }
 }
 
-std::optional<std::string> UserData::getJSON(uint8_t creatorID) const
+std::optional<std::string>
+    UserData::getJSON(uint8_t creatorID,
+                      const std::vector<std::string>& plugins) const
 {
 #ifdef PELTOOL
     return user_data::getJSON(_header.componentID, _header.subType,
-                              _header.version, _data, creatorID);
+                              _header.version, _data, creatorID, plugins);
 #endif
     return std::nullopt;
 }
