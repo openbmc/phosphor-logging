@@ -85,6 +85,8 @@ TEST_F(RepositoryTest, AddTest)
     auto newData = readPELFile(file);
     auto pelData = pel->data();
     EXPECT_EQ(*newData, pelData);
+
+    EXPECT_EQ(repo.lastPelID(), pel->id());
 }
 
 TEST_F(RepositoryTest, RemoveTest)

@@ -10,12 +10,12 @@
 #include "pel.hpp"
 #include "registry.hpp"
 #include "repository.hpp"
-#include "xyz/openbmc_project/Logging/Create/server.hpp"
 
 #include <org/open_power/Logging/PEL/server.hpp>
 #include <sdbusplus/server.hpp>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
+#include <xyz/openbmc_project/Logging/Create/server.hpp>
 
 namespace openpower
 {
@@ -171,13 +171,26 @@ class Manager : public PELInterface
      */
     void hostReject(uint32_t pelID, RejectionReason reason) override;
 
+    /**
+     * @brief D-Bus method to create a PEL/OpenBMC event log and
+     *        return the created OpenBMC and PEL log IDs.
+     *
+     * The same as the CreateWithFFDCFiles method on the
+     * xyz.openbmc_project.Logging.Create interface, except for
+     * the return values.
+     *
+     * @param[in] message - The event log message property
+     * @param[in] severity - The event log severity
+     * @param[in] additionalData - The AdditionalData property
+     * @param[in] ffdc - A vector of FFDC file information
+     */
     std::tuple<uint32_t, uint32_t> createPELWithFFDCFiles(
         std::string message, phosphor::logging::Entry::Level severity,
         std::map<std::string, std::string> additionalData,
         std::vector<std::tuple<sdbusplus::xyz::openbmc_project::Logging::
                                    server::Create::FFDCFormat,
                                uint8_t, uint8_t, sdbusplus::message::unix_fd>>
-            fFDC);
+            fFDC) override;
 
     /**
      * @brief Converts the ESEL field in an OpenBMC event log to a
