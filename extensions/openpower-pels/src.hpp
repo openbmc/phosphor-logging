@@ -57,6 +57,16 @@ class SRC : public Section
         virtualProgressSRC = 0x80
     };
 
+    /**
+     * @brief Enums for the error status bits in hex word 5
+     *        of BMC SRCs.
+     */
+    enum class ErrorStatusFlags
+    {
+        deconfigured = 0x02000000,
+        guarded = 0x01000000
+    };
+
     SRC() = delete;
     ~SRC() = default;
     SRC(const SRC&) = delete;
@@ -335,6 +345,16 @@ class SRC : public Section
      * @param[in] dataIface - The DataInterface object
      */
     void setMotherboardCCIN(const DataInterfaceBase& dataIface);
+
+    /**
+     * @brief Sets an error status bit in the SRC.
+     *
+     * @param[in] flag - The flag to set
+     */
+    void setErrorStatusFlag(ErrorStatusFlags flag)
+    {
+        _hexData[3] |= static_cast<uint32_t>(flag);
+    }
 
     /**
      * @brief Validates the section contents
