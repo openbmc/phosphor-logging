@@ -754,7 +754,8 @@ void SRC::addCallouts(const message::Entry& regEntry,
 void SRC::addInventoryCallout(const std::string& inventoryPath,
                               const std::optional<CalloutPriority>& priority,
                               const std::optional<std::string>& locationCode,
-                              const DataInterfaceBase& dataIface)
+                              const DataInterfaceBase& dataIface,
+                              const std::vector<src::MRU::MRUCallout>& mrus)
 {
     std::string locCode;
     std::string fn;
@@ -781,7 +782,8 @@ void SRC::addInventoryCallout(const std::string& inventoryPath,
             CalloutPriority p =
                 priority ? priority.value() : CalloutPriority::high;
 
-            callout = std::make_unique<src::Callout>(p, locCode, fn, ccin, sn);
+            callout =
+                std::make_unique<src::Callout>(p, locCode, fn, ccin, sn, mrus);
         }
         catch (const SdBusError& e)
         {
@@ -790,8 +792,8 @@ void SRC::addInventoryCallout(const std::string& inventoryPath,
             addDebugData(msg);
 
             // Just create the callout with empty FRU fields
-            callout = std::make_unique<src::Callout>(CalloutPriority::high,
-                                                     locCode, fn, ccin, sn);
+            callout = std::make_unique<src::Callout>(
+                CalloutPriority::high, locCode, fn, ccin, sn, mrus);
         }
     }
     catch (const SdBusError& e)
@@ -800,8 +802,6 @@ void SRC::addInventoryCallout(const std::string& inventoryPath,
                           ": " + e.what();
         addDebugData(msg);
 
-        // If this were to happen, people would have to look in the UserData
-        // section that contains CALLOUT_INVENTORY_PATH to see what failed.
         callout = std::make_unique<src::Callout>(CalloutPriority::high,
                                                  "no_vpd_for_fru");
     }
@@ -1116,6 +1116,7 @@ void SRC::addJSONCallout(const nlohmann::json& jsonCallout,
     {
         // A hardware FRU
         std::string inventoryPath;
+        std::vector<src::MRU::MRUCallout> mrus;
 
         if (jsonCallout.contains("InventoryPath"))
         {
@@ -1143,6 +1144,11 @@ void SRC::addJSONCallout(const nlohmann::json& jsonCallout,
             }
         }
 
+        if (jsonCallout.contains("MRUs"))
+        {
+            mrus = getMRUsFromJSON(jsonCallout.at("MRUs"));
+        }
+
         // If the location code was also passed in, use that here too
         // so addInventoryCallout doesn't have to look it up.
         std::optional<std::string> lc;
@@ -1151,7 +1157,7 @@ void SRC::addJSONCallout(const nlohmann::json& jsonCallout,
             lc = locCode;
         }
 
-        addInventoryCallout(inventoryPath, priority, lc, dataIface);
+        addInventoryCallout(inventoryPath, priority, lc, dataIface, mrus);
     }
 
     if (callout)
@@ -1185,6 +1191,44 @@ CalloutPriority SRC::getPriorityFromJSON(const nlohmann::json& json)
     }
 
     return priority;
+}
+
+std::vector<src::MRU::MRUCallout>
+    SRC::getMRUsFromJSON(const nlohmann::json& mruJSON)
+{
+    std::vector<src::MRU::MRUCallout> mrus;
+
+    // Looks like:
+    // [
+    //     {
+    //         "ID": 100,
+    //         "Priority": "H"
+    //     }
+    // ]
+    if (!mruJSON.is_array())
+    {
+        addDebugData("MRU callout JSON is not an array");
+        return mrus;
+    }
+
+    for (const auto& mruCallout : mruJSON)
+    {
+        try
+        {
+            auto priority = getPriorityFromJSON(mruCallout);
+            auto id = mruCallout.at("ID").get<uint32_t>();
+
+            src::MRU::MRUCallout mru{static_cast<uint32_t>(priority), id};
+            mrus.push_back(std::move(mru));
+        }
+        catch (const std::exception& e)
+        {
+            addDebugData(fmt::format("Invalid MRU entry in JSON: {}: {}",
+                                     mruCallout.dump(), e.what()));
+        }
+    }
+
+    return mrus;
 }
 
 } // namespace pels
