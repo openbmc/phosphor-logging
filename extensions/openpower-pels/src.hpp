@@ -86,7 +86,26 @@ class SRC : public Section
      * @param[in] dataIface - The DataInterface object
      */
     SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
-        const DataInterfaceBase& dataIface);
+        const DataInterfaceBase& dataIface) :
+        SRC(regEntry, additionalData, nlohmann::json{}, dataIface)
+    {
+    }
+
+    /**
+     * @brief Constructor
+     *
+     * Creates the section with data from the PEL message registry entry for
+     * this error, along with the AdditionalData property contents from the
+     * corresponding event log, and a JSON array of callouts to add.
+     *
+     * @param[in] regEntry - The message registry entry for this event log
+     * @param[in] additionalData - The AdditionalData properties in this event
+     *                             log
+     * @param[in] jsonCallouts - The array of JSON callouts, or an empty object.
+     * @param[in] dataIface - The DataInterface object
+     */
+    SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
+        const nlohmann::json& jsonCallouts, const DataInterfaceBase& dataIface);
 
     /**
      * @brief Flatten the section into the stream
@@ -347,10 +366,12 @@ class SRC : public Section
      *
      * @param[in] regEntry - The message registry entry for the error
      * @param[in] additionalData - The AdditionalData values
+     * @param[in] jsonCallouts - The array of JSON callouts, or an empty object
      * @param[in] dataIface - The DataInterface object
      */
     void addCallouts(const message::Entry& regEntry,
                      const AdditionalData& additionalData,
+                     const nlohmann::json& jsonCallouts,
                      const DataInterfaceBase& dataIface);
 
     /**
@@ -409,6 +430,23 @@ class SRC : public Section
     void addDevicePathCallouts(const AdditionalData& additionalData,
                                const DataInterfaceBase& dataIface);
 
+    /**
+     * @brief Adds any FRU callouts specified in the incoming JSON.
+     *
+     * @param[in] jsonCallouts - The JSON array of callouts
+     * @param[in] dataIface - The DataInterface object
+     */
+    void addJSONCallouts(const nlohmann::json& jsonCallouts,
+                         const DataInterfaceBase& dataIface);
+
+    /**
+     * @brief Adds a single callout based on the JSON
+     *
+     * @param[in] jsonCallouts - A single callout entry
+     * @param[in] dataIface - The DataInterface object
+     */
+    void addJSONCallout(const nlohmann::json& jsonCallout,
+                        const DataInterfaceBase& dataIface);
     /**
      * @brief The SRC version field
      */
