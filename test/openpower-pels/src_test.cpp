@@ -28,6 +28,7 @@ using ::testing::NiceMock;
 using ::testing::Return;
 using ::testing::ReturnRef;
 using ::testing::SetArgReferee;
+using ::testing::Throw;
 namespace fs = std::filesystem;
 
 const auto testRegistry = R"(
@@ -873,4 +874,278 @@ TEST_F(SRCTest, DevicePathCalloutTest)
     }
 
     fs::remove_all(dataPath);
+}
+
+// Test when callouts are passed in via JSON
+TEST_F(SRCTest, JsonCalloutsTest)
+{
+    const auto jsonCallouts = R"(
+        [
+            {
+                "LocationCode": "P0-C1",
+                "Priority": "H",
+                "MRUs": [
+                    {
+                        "ID": 42,
+                        "Priority": "H"
+                    },
+                    {
+                        "ID": 43,
+                        "Priority": "M"
+                    }
+                ]
+            },
+            {
+                "InventoryPath": "/inv/system/chassis/motherboard/cpu0",
+                "Priority": "M",
+                "Guarded": true,
+                "Deconfigured": true
+            },
+            {
+                "Procedure": "PROCEDU",
+                "Priority": "A"
+            },
+            {
+                "SymbolicFRU": "TRUSTED",
+                "Priority": "B",
+                "TrustedLocationCode": true,
+                "LocationCode": "P1-C23"
+            },
+            {
+                "SymbolicFRU": "FRUTST1",
+                "Priority": "C",
+                "LocationCode": "P1-C24"
+            },
+            {
+                "SymbolicFRU": "FRUTST2LONG",
+                "Priority": "L"
+            }
+        ]
+    )"_json;
+
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+    entry.src.powerFault = false;
+
+    AdditionalData ad;
+    NiceMock<MockDataInterface> dataIface;
+
+    // Callout 0 mock calls
+    {
+        EXPECT_CALL(dataIface, expandLocationCode("P0-C1", 0))
+            .Times(1)
+            .WillOnce(Return("UXXX-P0-C1"));
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-C1", 0, false))
+            .Times(1)
+            .WillOnce(Return("/inv/system/chassis/motherboard/bmc"));
+        EXPECT_CALL(
+            dataIface,
+            getHWCalloutFields("/inv/system/chassis/motherboard/bmc", _, _, _))
+            .Times(1)
+            .WillOnce(DoAll(SetArgReferee<1>("1234567"),
+                            SetArgReferee<2>("CCCC"),
+                            SetArgReferee<3>("123456789ABC")));
+    }
+    // Callout 1 mock calls
+    {
+        EXPECT_CALL(dataIface,
+                    getLocationCode("/inv/system/chassis/motherboard/cpu0"))
+            .WillOnce(Return("UYYY-P5"));
+        EXPECT_CALL(
+            dataIface,
+            getHWCalloutFields("/inv/system/chassis/motherboard/cpu0", _, _, _))
+            .Times(1)
+            .WillOnce(DoAll(SetArgReferee<1>("2345678"),
+                            SetArgReferee<2>("DDDD"),
+                            SetArgReferee<3>("23456789ABCD")));
+    }
+    // Callout 3 mock calls
+    {
+        EXPECT_CALL(dataIface, expandLocationCode("P1-C23", 0))
+            .Times(1)
+            .WillOnce(Return("UXXX-P1-C23"));
+    }
+    // Callout 4 mock calls
+    {
+        EXPECT_CALL(dataIface, expandLocationCode("P1-C24", 0))
+            .Times(1)
+            .WillOnce(Return("UXXX-P1-C24"));
+    }
+
+    SRC src{entry, ad, jsonCallouts, dataIface};
+    ASSERT_TRUE(src.callouts());
+
+    const auto& callouts = src.callouts()->callouts();
+    ASSERT_EQ(callouts.size(), 6);
+
+    // Check callout 0
+    {
+        EXPECT_EQ(callouts[0]->priority(), 'H');
+        EXPECT_EQ(callouts[0]->locationCode(), "UXXX-P0-C1");
+
+        auto& fru = callouts[0]->fruIdentity();
+        EXPECT_EQ(fru->getPN().value(), "1234567");
+        EXPECT_EQ(fru->getCCIN().value(), "CCCC");
+        EXPECT_EQ(fru->getSN().value(), "123456789ABC");
+        EXPECT_EQ(fru->failingComponentType(), src::FRUIdentity::hardwareFRU);
+    }
+
+    // Check callout 1
+    {
+        EXPECT_EQ(callouts[1]->priority(), 'M');
+        EXPECT_EQ(callouts[1]->locationCode(), "UYYY-P5");
+
+        auto& fru = callouts[1]->fruIdentity();
+        EXPECT_EQ(fru->getPN().value(), "2345678");
+        EXPECT_EQ(fru->getCCIN().value(), "DDDD");
+        EXPECT_EQ(fru->getSN().value(), "23456789ABCD");
+        EXPECT_EQ(fru->failingComponentType(), src::FRUIdentity::hardwareFRU);
+    }
+
+    // Check callout 2
+    {
+        EXPECT_EQ(callouts[2]->priority(), 'A');
+        EXPECT_EQ(callouts[2]->locationCode(), "");
+
+        auto& fru = callouts[2]->fruIdentity();
+        EXPECT_EQ(fru->getMaintProc().value(), "PROCEDU");
+        EXPECT_EQ(fru->failingComponentType(),
+                  src::FRUIdentity::maintenanceProc);
+    }
+
+    // Check callout 3
+    {
+        EXPECT_EQ(callouts[3]->priority(), 'B');
+        EXPECT_EQ(callouts[3]->locationCode(), "UXXX-P1-C23");
+
+        auto& fru = callouts[3]->fruIdentity();
+        EXPECT_EQ(fru->getPN().value(), "TRUSTED");
+        EXPECT_EQ(fru->failingComponentType(),
+                  src::FRUIdentity::symbolicFRUTrustedLocCode);
+    }
+
+    // Check callout 4
+    {
+        EXPECT_EQ(callouts[4]->priority(), 'C');
+        EXPECT_EQ(callouts[4]->locationCode(), "UXXX-P1-C24");
+
+        auto& fru = callouts[4]->fruIdentity();
+        EXPECT_EQ(fru->getPN().value(), "FRUTST1");
+        EXPECT_EQ(fru->failingComponentType(), src::FRUIdentity::symbolicFRU);
+    }
+
+    // Check callout 5
+    {
+        EXPECT_EQ(callouts[5]->priority(), 'L');
+        EXPECT_EQ(callouts[5]->locationCode(), "");
+
+        auto& fru = callouts[5]->fruIdentity();
+        EXPECT_EQ(fru->getPN().value(), "FRUTST2");
+        EXPECT_EQ(fru->failingComponentType(), src::FRUIdentity::symbolicFRU);
+    }
+
+    // Check that it didn't find any errors
+    const auto& data = src.getDebugData();
+    EXPECT_TRUE(data.empty());
+}
+
+TEST_F(SRCTest, JsonBadCalloutsTest)
+{
+    // The first call will have a Throw in a mock call.
+    // The second will have a different Throw in a mock call.
+    // The others have issues with the Priority field.
+    const auto jsonCallouts = R"(
+        [
+            {
+                "LocationCode": "P0-C1",
+                "Priority": "H"
+            },
+            {
+                "LocationCode": "P0-C2",
+                "Priority": "H"
+            },
+            {
+                "LocationCode": "P0-C3"
+            },
+            {
+                "LocationCode": "P0-C4",
+                "Priority": "X"
+            }
+        ]
+    )"_json;
+
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+    entry.src.powerFault = false;
+
+    AdditionalData ad;
+    NiceMock<MockDataInterface> dataIface;
+
+    // Callout 0 mock calls
+    // Expand location code will fail, so the unexpanded location
+    // code should show up in the callout instead.
+    {
+        EXPECT_CALL(dataIface, expandLocationCode("P0-C1", 0))
+            .WillOnce(Throw(std::runtime_error("Fail")));
+
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-C1", 0, false))
+            .Times(1)
+            .WillOnce(Return("/inv/system/chassis/motherboard/bmc"));
+        EXPECT_CALL(
+            dataIface,
+            getHWCalloutFields("/inv/system/chassis/motherboard/bmc", _, _, _))
+            .Times(1)
+            .WillOnce(DoAll(SetArgReferee<1>("1234567"),
+                            SetArgReferee<2>("CCCC"),
+                            SetArgReferee<3>("123456789ABC")));
+    }
+
+    // Callout 1 mock calls
+    // getInventoryFromLocCode will fail
+    {
+        EXPECT_CALL(dataIface, expandLocationCode("P0-C2", 0))
+            .Times(1)
+            .WillOnce(Return("UXXX-P0-C2"));
+
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-C2", 0, false))
+            .Times(1)
+            .WillOnce(Throw(std::runtime_error("Fail")));
+    }
+
+    SRC src{entry, ad, jsonCallouts, dataIface};
+
+    ASSERT_TRUE(src.callouts());
+
+    const auto& callouts = src.callouts()->callouts();
+
+    // Only the first callout was successful
+    ASSERT_EQ(callouts.size(), 1);
+
+    {
+        EXPECT_EQ(callouts[0]->priority(), 'H');
+        EXPECT_EQ(callouts[0]->locationCode(), "P0-C1");
+
+        auto& fru = callouts[0]->fruIdentity();
+        EXPECT_EQ(fru->getPN().value(), "1234567");
+        EXPECT_EQ(fru->getCCIN().value(), "CCCC");
+        EXPECT_EQ(fru->getSN().value(), "123456789ABC");
+        EXPECT_EQ(fru->failingComponentType(), src::FRUIdentity::hardwareFRU);
+    }
+
+    const auto& data = src.getDebugData();
+    ASSERT_EQ(data.size(), 4);
+    EXPECT_STREQ(data[0].c_str(), "Unable to expand location code P0-C1: Fail");
+    EXPECT_STREQ(data[1].c_str(),
+                 "Failed extracting callout data from JSON: Unable to "
+                 "get inventory path from location code: P0-C2: Fail");
+    EXPECT_STREQ(data[2].c_str(),
+                 "Failed extracting callout data from JSON: "
+                 "[json.exception.out_of_range.403] key 'Priority' not found");
+    EXPECT_STREQ(data[3].c_str(),
+                 "Failed extracting callout data from JSON: Invalid "
+                 "priority 'X' found in JSON callout");
 }
