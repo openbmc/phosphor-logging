@@ -345,6 +345,18 @@ class PEL
                             uint8_t creatorID = 0) const;
 
     /**
+     * @brief Returns any callout JSON found in the FFDC files.
+     *
+     * Looks for an FFDC file that is JSON format and has the
+     * sub-type value set to 0xCA and returns its data as a JSON object.
+     *
+     * @param[in] ffdcFiles - FFCD files that go into UserData sections
+     *
+     * @return json - The callout JSON, or an empty object if not found
+     */
+    nlohmann::json getCalloutJSON(const PelFFDC& ffdcFiles);
+
+    /**
      * @brief The PEL Private Header section
      */
     std::unique_ptr<PrivateHeader> _ph;
@@ -399,6 +411,15 @@ std::unique_ptr<UserData> makeADUserDataSection(const AdditionalData& ad);
 std::unique_ptr<UserData>
     makeSysInfoUserDataSection(const AdditionalData& ad,
                                const DataInterfaceBase& dataIface);
+
+/**
+ * @brief Reads data from an opened file descriptor.
+ *
+ * @param[in] fd - The FD to read from
+ *
+ * @return std::vector<uint8_t> - The data read
+ */
+std::vector<uint8_t> readFD(int fd);
 
 /**
  * @brief Create a UserData section that contains the data in the file
