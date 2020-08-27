@@ -666,6 +666,18 @@ std::optional<std::string> SRC::getJSON(message::Registry& registry,
         }
         // The PEL spec calls it a backplane, so call it that here.
         jsonInsert(ps, "Backplane CCIN", ccinString, 1);
+
+        jsonInsert(ps, "Deconfigured",
+                   pv::boolString.at(
+                       _hexData[3] &
+                       static_cast<uint32_t>(ErrorStatusFlags::deconfigured)),
+                   1);
+
+        jsonInsert(
+            ps, "Guarded",
+            pv::boolString.at(_hexData[3] &
+                              static_cast<uint32_t>(ErrorStatusFlags::guarded)),
+            1);
     }
 
     auto errorDetails = getErrorDetails(registry, DetailLevel::json, true);
@@ -1158,6 +1170,22 @@ void SRC::addJSONCallout(const nlohmann::json& jsonCallout,
         }
 
         addInventoryCallout(inventoryPath, priority, lc, dataIface, mrus);
+
+        if (jsonCallout.contains("Deconfigured"))
+        {
+            if (jsonCallout.at("Deconfigured").get<bool>())
+            {
+                setErrorStatusFlag(ErrorStatusFlags::deconfigured);
+            }
+        }
+
+        if (jsonCallout.contains("Guarded"))
+        {
+            if (jsonCallout.at("Guarded").get<bool>())
+            {
+                setErrorStatusFlag(ErrorStatusFlags::guarded);
+            }
+        }
     }
 
     if (callout)
