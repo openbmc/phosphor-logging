@@ -920,3 +920,84 @@ TEST_F(PELTest, CreateWithDevCalloutsTest)
 
     fs::remove_all(dataPath);
 }
+
+// Test PELs when the callouts are passed in using a JSON file.
+TEST_F(PELTest, CreateWithJSONCalloutsTest)
+{
+    PelFFDCfile ffdcFile;
+    ffdcFile.format = UserDataFormat::json;
+    ffdcFile.subType = 0xCA; // Callout JSON
+    ffdcFile.version = 1;
+
+    // Write these callouts to a JSON file and pass it into
+    // the PEL as an FFDC file.
+    auto inputJSON = R"([
+        {
+            "Priority": "H",
+            "LocationCode": "P0-C1"
+        },
+        {
+            "Priority": "M",
+            "Procedure": "PROCEDURE"
+        }
+    ])"_json;
+
+    auto s = inputJSON.dump();
+    std::vector<uint8_t> data{s.begin(), s.end()};
+    auto dir = makeTempDir();
+    ffdcFile.fd = writeFileAndGetFD(dir, data);
+
+    PelFFDC ffdc;
+    ffdc.push_back(std::move(ffdcFile));
+
+    AdditionalData ad;
+    NiceMock<MockDataInterface> dataIface;
+
+    EXPECT_CALL(dataIface, expandLocationCode("P0-C1", 0))
+        .Times(1)
+        .WillOnce(Return("UXXX-P0-C1"));
+    EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-C1", 0, false))
+        .Times(1)
+        .WillOnce(Return("/inv/system/chassis/motherboard/bmc"));
+    EXPECT_CALL(dataIface, getHWCalloutFields(
+                               "/inv/system/chassis/motherboard/bmc", _, _, _))
+        .Times(1)
+        .WillOnce(DoAll(SetArgReferee<1>("1234567"), SetArgReferee<2>("CCCC"),
+                        SetArgReferee<3>("123456789ABC")));
+
+    message::Entry regEntry;
+    regEntry.name = "test";
+    regEntry.subsystem = 5;
+    regEntry.actionFlags = 0xC000;
+    regEntry.src.type = 0xBD;
+    regEntry.src.reasonCode = 0x1234;
+
+    PEL pel{regEntry, 42,   5,        phosphor::logging::Entry::Level::Error,
+            ad,       ffdc, dataIface};
+
+    ASSERT_TRUE(pel.valid());
+    ASSERT_TRUE(pel.primarySRC().value()->callouts());
+    const auto& callouts = pel.primarySRC().value()->callouts()->callouts();
+    ASSERT_EQ(callouts.size(), 2);
+
+    {
+        EXPECT_EQ(callouts[0]->priority(), 'H');
+        EXPECT_EQ(callouts[0]->locationCode(), "UXXX-P0-C1");
+
+        auto& fru = callouts[0]->fruIdentity();
+        EXPECT_EQ(fru->getPN().value(), "1234567");
+        EXPECT_EQ(fru->getCCIN().value(), "CCCC");
+        EXPECT_EQ(fru->getSN().value(), "123456789ABC");
+        EXPECT_EQ(fru->failingComponentType(), src::FRUIdentity::hardwareFRU);
+    }
+    {
+        EXPECT_EQ(callouts[1]->priority(), 'M');
+        EXPECT_EQ(callouts[1]->locationCode(), "");
+
+        auto& fru = callouts[1]->fruIdentity();
+        EXPECT_EQ(fru->getMaintProc().value(), "PROCEDU");
+        EXPECT_EQ(fru->failingComponentType(),
+                  src::FRUIdentity::maintenanceProc);
+    }
+    fs::remove_all(dir);
+}
