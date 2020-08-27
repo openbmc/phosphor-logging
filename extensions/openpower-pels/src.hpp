@@ -450,6 +450,17 @@ class SRC : public Section
      */
     void addJSONCallout(const nlohmann::json& jsonCallout,
                         const DataInterfaceBase& dataIface);
+
+    /**
+     * @brief Extracts a CalloutPriority value from the json
+     *        using the 'Priority' key.
+     *
+     * @param[in] json - A JSON object that contains the priority key
+     *
+     * @return CalloutPriority - The priority value
+     */
+    CalloutPriority getPriorityFromJSON(const nlohmann::json& json);
+
     /**
      * @brief The SRC version field
      */
