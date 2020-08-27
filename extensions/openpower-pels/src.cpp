@@ -20,6 +20,8 @@
 #include "paths.hpp"
 #include "pel_values.hpp"
 
+#include <fmt/format.h>
+
 #include <phosphor-logging/log.hpp>
 
 namespace openpower
@@ -85,7 +87,7 @@ SRC::SRC(Stream& pel)
 }
 
 SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
-         const DataInterfaceBase& dataIface)
+         const nlohmann::json& jsonCallouts, const DataInterfaceBase& dataIface)
 {
     _header.id = static_cast<uint16_t>(SectionID::primarySRC);
     _header.version = srcSectionVersion;
@@ -129,7 +131,7 @@ SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
 
     _asciiString = std::make_unique<src::AsciiString>(regEntry);
 
-    addCallouts(regEntry, additionalData, dataIface);
+    addCallouts(regEntry, additionalData, jsonCallouts, dataIface);
 
     _size = baseSRCSize;
     _size += _callouts ? _callouts->flattenedSize() : 0;
@@ -513,6 +515,7 @@ std::optional<std::string> SRC::getJSON(message::Registry& registry) const
 
 void SRC::addCallouts(const message::Entry& regEntry,
                       const AdditionalData& additionalData,
+                      const nlohmann::json& jsonCallouts,
                       const DataInterfaceBase& dataIface)
 {
     auto item = additionalData.getValue("CALLOUT_INVENTORY_PATH");
@@ -526,6 +529,11 @@ void SRC::addCallouts(const message::Entry& regEntry,
     if (regEntry.callouts)
     {
         addRegistryCallouts(regEntry, additionalData, dataIface);
+    }
+
+    if (!jsonCallouts.empty())
+    {
+        addJSONCallouts(jsonCallouts, dataIface);
     }
 }
 
@@ -811,6 +819,40 @@ void SRC::addDevicePathCallouts(const AdditionalData& additionalData,
             addDebugData(callout.debug);
         }
     }
+}
+
+void SRC::addJSONCallouts(const nlohmann::json& jsonCallouts,
+                          const DataInterfaceBase& dataIface)
+{
+    if (jsonCallouts.empty())
+    {
+        return;
+    }
+
+    if (!jsonCallouts.is_array())
+    {
+        addDebugData("Callout JSON isn't an array");
+        return;
+    }
+
+    for (const auto& callout : jsonCallouts)
+    {
+        try
+        {
+            addJSONCallout(callout, dataIface);
+        }
+        catch (const std::exception& e)
+        {
+            addDebugData(fmt::format(
+                "Failed extracting callout data from JSON: {}", e.what()));
+        }
+    }
+}
+
+void SRC::addJSONCallout(const nlohmann::json& jsonCallout,
+                         const DataInterfaceBase& dataIface)
+{
+    // TODO
 }
 
 } // namespace pels
