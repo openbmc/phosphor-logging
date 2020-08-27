@@ -108,7 +108,7 @@
             "Documentation":
             {
                 "Description": "An operation failed because it isn't allowed",
-                "Message": "An operation failed becuase it isn't allowed",
+                "Message": "An operation failed because it isn't allowed",
                 "Notes": [
                     "The journal should contain more information"
                 ]
