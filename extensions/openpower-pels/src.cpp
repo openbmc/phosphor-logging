@@ -852,7 +852,125 @@ void SRC::addJSONCallouts(const nlohmann::json& jsonCallouts,
 void SRC::addJSONCallout(const nlohmann::json& jsonCallout,
                          const DataInterfaceBase& dataIface)
 {
-    // TODO
+    auto priority = getPriorityFromJSON(jsonCallout);
+    std::string locCode;
+    std::string unexpandedLocCode;
+    std::unique_ptr<src::Callout> callout;
+
+    // Expand the location code if it's there
+    if (jsonCallout.contains("LocationCode"))
+    {
+        unexpandedLocCode = jsonCallout.at("LocationCode").get<std::string>();
+
+        try
+        {
+            locCode = dataIface.expandLocationCode(unexpandedLocCode, 0);
+        }
+        catch (const std::exception& e)
+        {
+            addDebugData(fmt::format("Unable to expand location code {}: {}",
+                                     unexpandedLocCode, e.what()));
+            // Use the value from the JSON so at least there's something
+            locCode = unexpandedLocCode;
+        }
+    }
+
+    // Create either a procedure, symbolic FRU, or normal FRU callout.
+    if (jsonCallout.contains("Procedure"))
+    {
+        auto procedure = jsonCallout.at("Procedure").get<std::string>();
+
+        callout = std::make_unique<src::Callout>(
+            static_cast<CalloutPriority>(priority), procedure,
+            src::CalloutValueType::raw);
+    }
+    else if (jsonCallout.contains("SymbolicFRU"))
+    {
+        auto fru = jsonCallout.at("SymbolicFRU").get<std::string>();
+
+        bool trusted = false;
+        if (jsonCallout.contains("TrustedLocationCode") && !locCode.empty())
+        {
+            trusted = jsonCallout.at("TrustedLocationCode").get<bool>();
+        }
+
+        callout = std::make_unique<src::Callout>(
+            static_cast<CalloutPriority>(priority), fru,
+            src::CalloutValueType::raw, locCode, trusted);
+    }
+    else
+    {
+        // A hardware FRU
+        std::string inventoryPath;
+
+        if (jsonCallout.contains("InventoryPath"))
+        {
+            inventoryPath = jsonCallout.at("InventoryPath").get<std::string>();
+        }
+        else
+        {
+            if (unexpandedLocCode.empty())
+            {
+                throw std::runtime_error{"JSON callout needs either an "
+                                         "inventory path or location code"};
+            }
+
+            try
+            {
+                inventoryPath = dataIface.getInventoryFromLocCode(
+                    unexpandedLocCode, 0, false);
+            }
+            catch (const std::exception& e)
+            {
+                throw std::runtime_error{
+                    fmt::format("Unable to get inventory path from "
+                                "location code: {}: {}",
+                                unexpandedLocCode, e.what())};
+            }
+        }
+
+        // If the location code was also passed in, use that here too
+        // so addInventoryCallout doesn't have to look it up.
+        std::optional<std::string> lc;
+        if (!locCode.empty())
+        {
+            lc = locCode;
+        }
+
+        addInventoryCallout(inventoryPath, priority, lc, dataIface);
+    }
+
+    if (callout)
+    {
+        createCalloutsObject();
+        _callouts->addCallout(std::move(callout));
+    }
+}
+
+CalloutPriority SRC::getPriorityFromJSON(const nlohmann::json& json)
+{
+    // Looks like:
+    // {
+    //     "Priority": "H"
+    // }
+    auto p = json.at("Priority").get<std::string>();
+    if (p.empty())
+    {
+        throw std::runtime_error{"Priority field in callout is empty"};
+    }
+
+    auto priority = static_cast<CalloutPriority>(p.front());
+
+    // Validate it
+    auto priorityIt = pv::findByValue(static_cast<uint32_t>(priority),
+                                      pv::calloutPriorityValues);
+    if (priorityIt == pv::calloutPriorityValues.end())
+    {
+        throw std::runtime_error{
+            fmt::format("Invalid priority '{}' found in JSON callout", p)};
+    }
+
+    return priority;
 }
 
 } // namespace pels
