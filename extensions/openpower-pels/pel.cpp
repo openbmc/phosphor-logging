@@ -42,6 +42,7 @@ namespace pv = openpower::pels::pel_values;
 using namespace phosphor::logging;
 
 constexpr auto unknownValue = "Unknown";
+constexpr uint8_t jsonCalloutSubtype = 0xCA;
 
 PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
          phosphor::logging::Entry::Level severity,
@@ -49,12 +50,29 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
          const DataInterfaceBase& dataIface)
 {
     std::map<std::string, std::vector<std::string>> debugData;
+    nlohmann::json callouts;
 
     _ph = std::make_unique<PrivateHeader>(regEntry.componentID, obmcLogID,
                                           timestamp);
     _uh = std::make_unique<UserHeader>(regEntry, severity, dataIface);
 
-    auto src = std::make_unique<SRC>(regEntry, additionalData, dataIface);
+    // Extract any callouts embedded in an FFDC file.
+    if (!ffdcFiles.empty())
+    {
+        try
+        {
+            callouts = getCalloutJSON(ffdcFiles);
+        }
+        catch (const std::exception& e)
+        {
+            debugData.emplace("FFDC file JSON callouts error",
+                              std::vector<std::string>{e.what()});
+        }
+    }
+
+    auto src =
+        std::make_unique<SRC>(regEntry, additionalData, callouts, dataIface);
+
     if (!src->getDebugData().empty())
     {
         // Something didn't go as planned
@@ -411,6 +429,32 @@ bool PEL::addUserDataSection(std::unique_ptr<UserData> userData)
         _optionalSections.push_back(std::move(userData));
     }
     return true;
+}
+
+nlohmann::json PEL::getCalloutJSON(const PelFFDC& ffdcFiles)
+{
+    nlohmann::json callouts;
+
+    for (const auto& file : ffdcFiles)
+    {
+        if ((file.format == UserDataFormat::json) &&
+            (file.subType == jsonCalloutSubtype))
+        {
+            auto data = util::readFD(file.fd);
+            if (data.empty())
+            {
+                throw std::runtime_error{
+                    "Could not get data from JSON callout file descriptor"};
+            }
+
+            std::string jsonString{data.begin(), data.begin() + data.size()};
+
+            callouts = nlohmann::json::parse(jsonString);
+            break;
+        }
+    }
+
+    return callouts;
 }
 
 namespace util
