@@ -381,11 +381,14 @@ class SRC : public Section
      * @param[in] priority - An optional priority (uses high if nullopt)
      * @param[in] locationCode - The expanded location code (or look it up)
      * @param[in] dataIface - The DataInterface object
+     * @param[in] mrus - The MRUs to add to the callout
      */
-    void addInventoryCallout(const std::string& inventoryPath,
-                             const std::optional<CalloutPriority>& priority,
-                             const std::optional<std::string>& locationCode,
-                             const DataInterfaceBase& dataIface);
+    void
+        addInventoryCallout(const std::string& inventoryPath,
+                            const std::optional<CalloutPriority>& priority,
+                            const std::optional<std::string>& locationCode,
+                            const DataInterfaceBase& dataIface,
+                            const std::vector<src::MRU::MRUCallout>& mrus = {});
 
     /**
      * @brief Adds FRU callouts based on the registry entry JSON
@@ -457,6 +460,15 @@ class SRC : public Section
      * @return CalloutPriority - The priority value
      */
     CalloutPriority getPriorityFromJSON(const nlohmann::json& json);
+
+    /**
+     * @brief Exracts MRU values and their priorities from the
+     *        input JSON array.
+     *
+     * @param[in] mruJSON - The JSON array
+     */
+    std::vector<src::MRU::MRUCallout>
+        getMRUsFromJSON(const nlohmann::json& mruJSON);
 
     /**
      * @brief The SRC version field

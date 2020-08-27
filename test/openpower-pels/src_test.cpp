@@ -990,6 +990,15 @@ TEST_F(SRCTest, JsonCalloutsTest)
         EXPECT_EQ(fru->getCCIN().value(), "CCCC");
         EXPECT_EQ(fru->getSN().value(), "123456789ABC");
         EXPECT_EQ(fru->failingComponentType(), src::FRUIdentity::hardwareFRU);
+
+        auto& mruCallouts = callouts[0]->mru();
+        ASSERT_TRUE(mruCallouts);
+        auto& mrus = mruCallouts->mrus();
+        ASSERT_EQ(mrus.size(), 2);
+        EXPECT_EQ(mrus[0].id, 42);
+        EXPECT_EQ(mrus[0].priority, 'H');
+        EXPECT_EQ(mrus[1].id, 43);
+        EXPECT_EQ(mrus[1].priority, 'M');
     }
 
     // Check callout 1
