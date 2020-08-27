@@ -977,6 +977,9 @@ TEST_F(SRCTest, JsonCalloutsTest)
     SRC src{entry, ad, jsonCallouts, dataIface};
     ASSERT_TRUE(src.callouts());
 
+    // Check the guarded and deconfigured flags
+    EXPECT_TRUE(src.hexwordData()[3] & 0x03000000);
+
     const auto& callouts = src.callouts()->callouts();
     ASSERT_EQ(callouts.size(), 6);
 
