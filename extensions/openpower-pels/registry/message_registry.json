@@ -536,6 +536,126 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Power.PowerSupply.Error.InputFault",
+            "Subsystem": "power_supply",
+            "Severity": "unrecoverable_redundancy_loss",
+            "ActionFlags": ["service_action", "report"],
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x15F0",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "pwrsply" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "Power Supply input power fault",
+                "Message": "A power supply has indicated an input or under voltage condition.",
+                "Notes": [
+                    "Check the power supply cabling and/or input power ",
+                    "source. The PWRSPLY procedure is used rather than ",
+                    "calling out a location code, as typically these faults ",
+                    "are related to the supplied power, the cable, or the ",
+                    "cable connectors. If the input fault resolves down to an ",
+                    "issue with the power supply itself, the power supply ",
+                    "indicating this input fault should be called out. Add the ",
+                    "CALLOUT_INVENTORY_PATH to the additional data, and set the",
+                    "CALLOUT_PRIORITY to something other than high."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Power.PowerSupply.Error.Fault",
+            "Subsystem": "power_supply",
+            "Severity": "unrecoverable_redundancy_loss",
+            "ActionFlags": ["service_action", "report", "call_home"],
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x15F1",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Power Supply power fault",
+                "Message": "The power supply detected a fault condition, see AdditionalData for further details.",
+                "Notes": [
+                    "The power supply reporting the fault should be called ",
+                    "out using the CALLOUT_INVENTORY_PATH keyword. Include ",
+                    "specific fault, STATUS_* details, and code level in the ",
+                    "AdditionalData section."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Power.PowerSupply.Error.CommFault",
+            "Subsystem": "power_supply",
+            "Severity": "unrecoverable_redundancy_loss",
+            "ActionFlags": ["service_action", "report", "call_home"],
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x15F2",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Power Supply non-power fault",
+                "Message": "A communication failure occurred talking to the power supply",
+                "Notes": [
+                    "Communication problems with the power supply could be ",
+                    "the power supply, or any hardware between it and the ",
+                    "BMC. Reporting the error should be passing in a call ",
+                    "out using CALLOUT_DEVICE_PATH."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Power.PowerSupply.Error.Missing",
+            "Subsystem": "power_supply",
+            "Severity": "unrecoverable",
+            "ActionFlags": ["service_action", "report", "call_home"],
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x15F6",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "medium", "LocCode": "P0-C5" },
+                        { "Priority": "low", "LocCode": "P0" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "Power Supply is missing",
+                "Message": "A power supply that should be present is missing",
+                "Notes": [
+                    "The caller should indicate the CALLOUT_INVENTORY_PATH to ",
+                    "be used with the trusted location code property."
+                ]
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.Power.Regulators.Error.WriteVerification",
             "Subsystem": "power",
             "ComponentID": "0x2700",
