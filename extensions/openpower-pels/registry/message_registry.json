@@ -536,6 +536,111 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Power.PowerSupply.Error.InputFault",
+            "Subsystem": "power_supply",
+            "Severity": "unrecoverable_redundancy_loss",
+            "ActionFlags": ["service_action", "report"],
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x15F0",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "pwrsply" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "Power Supply input power fault",
+                "Message": "A power supply has indicated an input or under voltage condition.",
+                "Notes": [
+                    "Check the power supply cabling and/or input power ",
+                    "source. The PWRSPLY procedure is used rather than ",
+                    "calling out a location code, as typically these faults ",
+                    "are related to the supplied power, the cable, or the ",
+                    "cable connectors."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Power.PowerSupply.Error.PowerSupplyOutputOvercurrent",
+            "Subsystem": "power_supply",
+            "Severity": "unrecoverable_redundancy_loss",
+            "ActionFlags": ["service_action", "report", "call_home"],
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x15F1",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Power Supply power fault",
+                "Message": "The power supply detected an output overcurrent fault condition.",
+                "Notes": [
+                    "The power supply reporting the fault should be called ",
+                    "out using the CALLOUT_INVENTORY_PATH keyword."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Power.PowerSupply.Error.CommFault",
+            "Subsystem": "power_supply",
+            "Severity": "unrecoverable_redundancy_loss",
+            "ActionFlags": ["service_action", "report", "call_home"],
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x15F2",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Power Supply non-power fault",
+                "Message": "A communication failure occurred talking to the power supply",
+                "Notes": [
+                    "Communication problems with the power supply could be ",
+                    "the power supply, or any hardware between it and the ",
+                    "BMC. Reporting the error should be passing in a call ",
+                    "out using CALLOUT_DEVICE_PATH."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Power.PowerSupply.Error.PowerSupplyOutputOvervoltage",
+            "Subsystem": "power_supply",
+            "Severity": "unrecoverable_redundancy_loss",
+            "ActionFlags": ["service_action", "report", "call_home"],
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x15F3",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Power Supply power fault",
+                "Message": "The power supply detected an output overvoltage fault condition.",
+                "Notes": [
+                    "The device reporting the fault should be identified as ",
+                    "the callout by using the CALLOUT_INVENTORY_PATH keyword."
+                ]
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.Power.Regulators.Error.WriteVerification",
             "Subsystem": "power",
             "ComponentID": "0x2700",
