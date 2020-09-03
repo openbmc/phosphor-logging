@@ -895,6 +895,149 @@
                     "where the controller is."
                 ]
             }
+        },
+
+        {
+            "Name": "com.ibm.VPD.Error.InvalidEepromPath",
+            "Subsystem": "cec_vpd",
+            "ComponentID": "0x4000",
+
+            "SRC": {
+                "ReasonCode": "0x4000",
+                "Words6To9":
+                {
+                    "6":
+                    {
+                        "Description": "Errno of the failure.",
+                        "AdditionalDataPropSource": "CALLOUT_ERRNO"
+                    }
+                }
+            },
+
+            "Documentation": {
+                "Description": "A path access error ocurred",
+                "Message": "An EEPROM path access error occurred.",
+                "Notes": [
+                    "This error occurs when parser is unable to access",
+                    "EEPROM path. Errno and device path are captured as",
+                    "additional data."
+        },
+            
+        {
+            "Name": "com.ibm.VPD.Error.InvalidVPD",
+            "Subsystem": "cec_vpd",
+            "ComponentID": "0x4000",
+
+            "SRC": {
+                "ReasonCode": "0x4001",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation": {
+                "Description": "Invalid VPD data.",
+                "Message": "A VPD data exception occurred.",
+                "Notes": [
+                    "This error occurs when VPD data is found to be",
+                    "invalid. This can be when VPD file is missing out",
+                    "mandatory records.Inventory path is captured in",
+                    "additional data."
+                ]
+            }
+        },
+
+        {
+            "Name": "com.ibm.VPD.Error.EccCheckFailed",
+            "Subsystem": "cec_vpd",
+            "ComponentID": "0x4000",
+
+            "SRC": {
+                "ReasonCode": "0x4002",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation": {
+                "Description": "Invalid VPD ecc data.",
+                "Message": "A VPD ecc exception occurred.",
+                "Notes": [
+                    "This error occurs when VPD ecc check fails for the FRU.",
+                    "Inventory path for the failed FRU is captured in additonal",
+                    "data."
+                ]
+            }
+        },
+
+        {
+            "Name": "com.ibm.VPD.Error.InvalidJson",
+            "Subsystem": "cec_vpd",
+            "ComponentID": "0x4000",
+
+            "SRC": {
+                "ReasonCode": "0x4003",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation": {
+                "Description": "Invalid Json",
+                "Message": "A Json failure occurred.",
+                "Notes": [
+                    "This error occurs when parser fails to access",
+                    "Json file or there is any issue with Json data.",
+                    "Failed Json path and cause of failure is captured",
+                    "in additional data."
+                ]
+            }
+        },
+
+        {
+            "Name": "com.ibm.VPD.Error.BlankSystemVPD",
+            "Subsystem": "cec_vpd",
+            "ComponentID": "0x4000",
+
+            "SRC": {
+                "ReasonCode": "0x4004",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation": {
+                "Description": "System VPD restore failed",
+                "Message": "A system VPD restoration error occurred.",
+                "Notes": [
+                    "This error occurs when restoring of system VPD fails.",
+                    "The FRU path and reason for failure is captured in",
+                    "additional data."
+                ]
+            }
+        },
+
+        {
+            "Name": "com.ibm.VPD.Error.DbusFailure",
+            "Subsystem": "cec_vpd",
+            "ComponentID": "0x4000",
+
+            "SRC": {
+                "ReasonCode": "0x4005",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation": {
+                "Description": "Dbus ecxeption",
+                "Message": "A Dbus internal error occurred.",
+                "Notes": [
+                    "This error occurs Dbus operation fails.",
+                    "Exceptions details are captured in additonal",
+                    "data."
+                ]
+            }
         }
     ]
 }
