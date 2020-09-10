@@ -568,7 +568,7 @@ std::optional<std::string> SRC::getCallouts() const
             }
             if (entry->fruIdentity()->getMaintProc().has_value())
             {
-                jsonInsert(printOut, "Procedure Number",
+                jsonInsert(printOut, "Procedure",
                            entry->fruIdentity()->getMaintProc().value(), 3);
                 if (pv::procedureDesc.find(
                         entry->fruIdentity()->getMaintProc().value()) !=
