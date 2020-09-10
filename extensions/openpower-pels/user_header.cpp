@@ -116,8 +116,9 @@ UserHeader::UserHeader(const message::Entry& entry,
     _problemDomain = 0;
     _problemVector = 0;
 
-    // These will be cleaned up later in pel_rules::check()
-    _actionFlags = entry.actionFlags.value_or(0);
+    // These will be set in pel_rules::check() if they're still
+    // at the default value.
+    _actionFlags = entry.actionFlags.value_or(actionFlagsDefault);
 
     _states = 0;
 

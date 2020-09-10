@@ -275,11 +275,17 @@ std::optional<SRC*> PEL::primarySRC() const
 
 void PEL::checkRulesAndFix()
 {
-    auto [actionFlags, eventType] =
-        pel_rules::check(_uh->actionFlags(), _uh->eventType(), _uh->severity());
+    // Only fix if the action flags are at their default value which
+    // means they weren't specified in the registry.  Otherwise
+    // assume the user knows what they are doing.
+    if (_uh->actionFlags() == actionFlagsDefault)
+    {
+        auto [actionFlags, eventType] =
+            pel_rules::check(0, _uh->eventType(), _uh->severity());
 
-    _uh->setActionFlags(actionFlags);
-    _uh->setEventType(eventType);
+        _uh->setActionFlags(actionFlags);
+        _uh->setEventType(eventType);
+    }
 }
 
 void PEL::printSectionInJSON(const Section& section, std::string& buf,

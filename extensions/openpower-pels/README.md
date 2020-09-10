@@ -397,8 +397,7 @@ LocationCode field is optional.
 
 The `Action Flags` and `Event Type` PEL fields are optional in the message
 registry, and if not present the code will set them based on certain rules
-layed out in the PEL spec.  In fact, even if they were specified, the checks
-are still done to ensure consistency across all the logs.
+layed out in the PEL spec.
 
 These rules are:
 1. Always set the `Report` flag, unless the `Do Not Report` flag is already on.
