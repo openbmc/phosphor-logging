@@ -193,6 +193,60 @@ TEST_F(TestQuiesceOnError, testBlockingErrorsResolved)
     EXPECT_EQ(manager.getEntryCallbackSize(), 0);
 }
 
+// Test that a blocking error is only created once for an individual bmc id
+TEST_F(TestQuiesceOnError, testBlockingErrorTwice)
+{
+    uint32_t id = 100;
+    uint64_t timestamp{100};
+    std::string message{"test error"};
+    std::string fwLevel{"level42"};
+    std::vector<std::string> testData{
+        "CALLOUT_INVENTORY_PATH=/xyz/openbmc_project/inventory/system/chassis/"
+        "motherboard/powersupply0/"};
+    phosphor::logging::AssociationList associations{};
+
+    // Ensure D-Bus object created for this blocking error
+    // First allow any number of sd_bus_emit_object_added calls
+    EXPECT_CALL(sdbusMock, sd_bus_emit_object_added(testing::_, testing::_))
+        .Times(testing::AnyNumber());
+    // Second verify the new block100 object is created once
+    EXPECT_CALL(sdbusMock,
+                sd_bus_emit_object_added(
+                    testing::_, testing::HasSubstr(
+                                    "/xyz/openbmc_project/logging/block100")))
+        .Times(1);
+
+    Entry elog{mockedBus,
+               std::string(OBJ_ENTRY) + '/' + std::to_string(id),
+               id,
+               timestamp,
+               Entry::Level::Informational,
+               std::move(message),
+               std::move(testData),
+               std::move(associations),
+               fwLevel,
+               manager};
+
+    manager.quiesceOnError(id);
+    // Created error with callout so expect a blocking error now
+    EXPECT_EQ(manager.getBlockingErrSize(), 1);
+
+    // Now pass in same ID and make sure it's ignored
+    manager.quiesceOnError(id);
+
+    // Now delete the error and make sure the object and entry go away
+    EXPECT_CALL(sdbusMock, sd_bus_emit_object_removed(testing::_, testing::_))
+        .Times(testing::AnyNumber());
+    EXPECT_CALL(sdbusMock,
+                sd_bus_emit_object_removed(
+                    testing::_, testing::HasSubstr(
+                                    "/xyz/openbmc_project/logging/block100")))
+        .Times(1);
+
+    manager.checkAndRemoveBlockingError(id);
+    EXPECT_EQ(manager.getBlockingErrSize(), 0);
+}
+
 } // namespace test
 } // namespace logging
 } // namespace phosphor
