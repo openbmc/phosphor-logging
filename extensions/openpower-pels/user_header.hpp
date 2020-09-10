@@ -13,6 +13,7 @@ namespace pels
 {
 
 static constexpr uint8_t userHeaderVersion = 0x01;
+static constexpr uint16_t actionFlagsDefault = 0xFFFF;
 
 /**
  * @class UserHeader

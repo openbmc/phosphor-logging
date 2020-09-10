@@ -204,6 +204,18 @@ TEST_F(PELTest, CreateFromRegistryTest)
     EXPECT_EQ(mtmsCount, 1);
     EXPECT_EQ(euhCount, 1);
     EXPECT_EQ(udCount, 2); // AD section and sysInfo section
+
+    {
+        // The same thing, but without the action flags specified
+        // in the registry, so the constructor should set them.
+        regEntry.actionFlags = std::nullopt;
+
+        PEL pel2{
+            regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
+            ad,       ffdc, dataIface};
+
+        EXPECT_EQ(pel2.userHeader().actionFlags(), 0xA800);
+    }
 }
 
 // Test that when the AdditionalData size is over 16KB that

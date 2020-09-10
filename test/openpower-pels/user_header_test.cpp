@@ -128,13 +128,26 @@ TEST(UserHeaderTest, ConstructionTest)
         EXPECT_EQ(uh.header().componentID,
                   static_cast<uint16_t>(ComponentID::phosphorLogging));
 
-        ASSERT_EQ(uh.subsystem(), 5);
-        ASSERT_EQ(uh.severity(), 0x40);
-        ASSERT_EQ(uh.eventType(), 1);
-        ASSERT_EQ(uh.scope(), 2);
-        ASSERT_EQ(uh.problemDomain(), 0);
-        ASSERT_EQ(uh.problemVector(), 0);
-        ASSERT_EQ(uh.actionFlags(), 0xC000);
+        EXPECT_EQ(uh.subsystem(), 5);
+        EXPECT_EQ(uh.severity(), 0x40);
+        EXPECT_EQ(uh.eventType(), 1);
+        EXPECT_EQ(uh.scope(), 2);
+        EXPECT_EQ(uh.problemDomain(), 0);
+        EXPECT_EQ(uh.problemVector(), 0);
+        EXPECT_EQ(uh.actionFlags(), 0xC000);
+
+        {
+            // The same thing, but as if the action flags weren't specified
+            // in the registry so they are a nullopt.  The object should
+            // then set them to 0xFFFF.
+            EXPECT_CALL(dataIface, getSystemNames).WillOnce(ReturnRef(names));
+
+            regEntry.actionFlags = std::nullopt;
+
+            UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error,
+                          dataIface);
+            EXPECT_EQ(uh.actionFlags(), 0xFFFF);
+        }
     }
 
     // Test the system type based severity lookups
