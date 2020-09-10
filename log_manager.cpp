@@ -371,6 +371,17 @@ void Manager::checkAndQuiesceHost()
 
 void Manager::quiesceOnError(const uint32_t entryId)
 {
+    // Verify we don't already have this entry blocking
+    auto it = find_if(
+        this->blockingErrors.begin(), this->blockingErrors.end(),
+        [&](std::unique_ptr<Block>& obj) { return obj->entryId == entryId; });
+    if (it != this->blockingErrors.end())
+    {
+        // Already recorded so just return
+        logging::log<logging::level::DEBUG>(
+            "QuiesceOnError set and callout present but entry already logged");
+        return;
+    }
 
     logging::log<logging::level::INFO>(
         "QuiesceOnError set and callout present");
