@@ -568,5 +568,17 @@ void Manager::pelFileDeleted(sdeventplus::source::IO& io, int fd,
         offset += offsetof(inotify_event, name) + event->len;
     }
 }
+
+std::tuple<uint32_t, uint32_t> Manager::createPELWithFFDCFiles(
+    std::string message, Entry::Level severity,
+    std::map<std::string, std::string> additionalData,
+    std::vector<std::tuple<
+        sdbusplus::xyz::openbmc_project::Logging::server::Create::FFDCFormat,
+        uint8_t, uint8_t, sdbusplus::message::unix_fd>>
+        fFDC)
+{
+    return {0, 0};
+}
+
 } // namespace pels
 } // namespace openpower

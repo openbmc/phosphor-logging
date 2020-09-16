@@ -10,6 +10,7 @@
 #include "pel.hpp"
 #include "registry.hpp"
 #include "repository.hpp"
+#include "xyz/openbmc_project/Logging/Create/server.hpp"
 
 #include <org/open_power/Logging/PEL/server.hpp>
 #include <sdbusplus/server.hpp>
@@ -169,6 +170,14 @@ class Manager : public PELInterface
      * @param[in] reason - One of the above two reasons
      */
     void hostReject(uint32_t pelID, RejectionReason reason) override;
+
+    std::tuple<uint32_t, uint32_t> createPELWithFFDCFiles(
+        std::string message, phosphor::logging::Entry::Level severity,
+        std::map<std::string, std::string> additionalData,
+        std::vector<std::tuple<sdbusplus::xyz::openbmc_project::Logging::
+                                   server::Create::FFDCFormat,
+                               uint8_t, uint8_t, sdbusplus::message::unix_fd>>
+            fFDC);
 
     /**
      * @brief Converts the ESEL field in an OpenBMC event log to a
