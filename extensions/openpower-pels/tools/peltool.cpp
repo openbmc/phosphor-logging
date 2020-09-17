@@ -271,13 +271,15 @@ std::vector<std::string> getPlugins()
  * @param[in] foundPEL - Boolean to check if any PEL is present
  * @param[in] scrubRegex - SRC regex object
  * @param[in] plugins - Vector of strings of plugins found in filesystem
+ * @param[in] bmcId - String containing BMC Log ID
  * @return std::string - JSON string of PEL entry (empty if fullPEL is true)
  */
 template <typename T>
 std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool fullPEL,
                        bool& foundPEL,
                        const std::optional<std::regex>& scrubRegex,
-                       const std::vector<std::string>& plugins)
+                       const std::vector<std::string>& plugins,
+                       const std::string& bmcId)
 {
     std::size_t found;
     std::string val;
@@ -301,6 +303,11 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool fullPEL,
         }
         PEL pel{data};
         if (!pel.valid())
+        {
+            return listStr;
+        }
+        if (!bmcId.empty() && pel.privateHeader().obmcLogID() !=
+                                  (uint32_t)std::stoi(bmcId, nullptr, 0))
         {
             return listStr;
         }
@@ -417,10 +424,12 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool fullPEL,
  * @param[in] hidden - Boolean to include hidden PELs
  * @param[in] includeInfo - Boolean to include informational PELs
  * @param[in] fullPEL - Boolean to print full PEL into a JSON array
+ * @param[in] bmcId - String containing BMC Log ID
  * @param[in] scrubRegex - SRC regex object
  */
 void printPELs(bool order, bool hidden, bool includeInfo, bool fullPEL,
-               const std::optional<std::regex>& scrubRegex)
+               const std::optional<std::regex>& scrubRegex,
+               const std::string& bmcId)
 {
     std::string listStr;
     std::map<uint32_t, BCDTime> PELs;
@@ -445,9 +454,9 @@ void printPELs(bool order, bool hidden, bool includeInfo, bool fullPEL,
         plugins = getPlugins();
     }
     auto buildJSON = [&listStr, &hidden, &includeInfo, &fullPEL, &foundPEL,
-                      &scrubRegex, &plugins](const auto& i) {
+                      &scrubRegex, &plugins, &bmcId](const auto& i) {
         listStr += genPELJSON(i, hidden, includeInfo, fullPEL, foundPEL,
-                              scrubRegex, plugins);
+                              scrubRegex, plugins, bmcId);
     };
     if (order)
     {
@@ -759,6 +768,7 @@ int main(int argc, char** argv)
     std::string idPEL;
     std::string idToDelete;
     std::string scrubFile;
+    std::string bmcId;
     std::optional<std::regex> scrubRegex;
     bool listPEL = false;
     bool listPELDescOrd = false;
@@ -781,9 +791,15 @@ int main(int argc, char** argv)
     app.add_flag("-D, --delete-all", deleteAll, "Delete all PELs");
     app.add_option("-s, --scrub", scrubFile,
                    "File containing SRC regular expressions to ignore");
+    app.add_option("--bmc-id", bmcId,
+                   "Display a PEL based on its BMC Event ID");
 
     CLI11_PARSE(app, argc, argv);
 
+    if (!bmcId.empty())
+    {
+        fullPEL = true;
+    }
     if (!fileName.empty())
     {
         std::vector<uint8_t> data = getFileData(fileName);
@@ -809,7 +825,8 @@ int main(int argc, char** argv)
         {
             scrubRegex = genRegex(scrubFile);
         }
-        printPELs(listPELDescOrd, hidden, includeInfo, fullPEL, scrubRegex);
+        printPELs(listPELDescOrd, hidden, includeInfo, fullPEL, scrubRegex,
+                  bmcId);
     }
     else if (showPELCount)
     {
