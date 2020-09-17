@@ -487,18 +487,22 @@ void printPELs(bool order, bool hidden, bool includeInfo, bool fullPEL,
  * @brief Calls the function passed in on the PEL with the ID
  *        passed in.
  *
- * @param[in] id - The string version of the PEL ID, either with or
+ * @param[in] id - The string version of the PEL or BMC Log ID, either with or
  *                 without the 0x prefix.
  * @param[in] func - The std::function<void(const PEL&)> function to run.
+ * @param[in] useBMC - if true, search by BMC Log ID, else search by PEL ID
  */
-void callFunctionOnPEL(const std::string& id, const PELFunc& func)
+void callFunctionOnPEL(const std::string& id, const PELFunc& func, bool useBMC)
 {
     std::string pelID{id};
-    std::transform(pelID.begin(), pelID.end(), pelID.begin(), toupper);
-
-    if (pelID.find("0X") == 0)
+    if (!useBMC)
     {
-        pelID.erase(0, 2);
+        std::transform(pelID.begin(), pelID.end(), pelID.begin(), toupper);
+
+        if (pelID.find("0X") == 0)
+        {
+            pelID.erase(0, 2);
+        }
     }
 
     bool found = false;
@@ -506,32 +510,36 @@ void callFunctionOnPEL(const std::string& id, const PELFunc& func)
     for (auto it = fs::directory_iterator(EXTENSION_PERSIST_DIR "/pels/logs");
          it != fs::directory_iterator(); ++it)
     {
-        // The PEL ID is part of the filename, so use that to find the PEL.
+        // The PEL ID is part of the filename, so use that to find the PEL if
+        // "useBMC" is set to false, otherwise we have to search within the PEL
 
         if (!fs::is_regular_file((*it).path()))
         {
             continue;
         }
 
-        if (ends_with((*it).path(), pelID))
+        if ((ends_with((*it).path(), pelID) && !useBMC) || useBMC)
         {
-            found = true;
-
             auto data = getFileData((*it).path());
             if (!data.empty())
             {
                 PEL pel{data};
-
-                try
+                if (!useBMC ||
+                    (useBMC &&
+                     pel.obmcLogID() == (uint32_t)std::stoi(id, nullptr, 0)))
                 {
-                    func(pel);
-                }
-                catch (std::exception& e)
-                {
-                    std::cerr
-                        << " Internal function threw an exception: " << e.what()
-                        << "\n";
-                    exit(1);
+                    found = true;
+                    try
+                    {
+                        func(pel);
+                        break;
+                    }
+                    catch (std::exception& e)
+                    {
+                        std::cerr << " Internal function threw an exception: "
+                                  << e.what() << "\n";
+                        exit(1);
+                    }
                 }
             }
             else
@@ -539,7 +547,6 @@ void callFunctionOnPEL(const std::string& id, const PELFunc& func)
                 std::cerr << "Could not read PEL file\n";
                 exit(1);
             }
-            break;
         }
     }
 
@@ -757,6 +764,7 @@ int main(int argc, char** argv)
     CLI::App app{"OpenBMC PEL Tool"};
     std::string fileName;
     std::string idPEL;
+    std::string bmcId;
     std::string idToDelete;
     std::string scrubFile;
     std::optional<std::regex> scrubRegex;
@@ -771,6 +779,8 @@ int main(int argc, char** argv)
     app.set_help_flag("--help", "Print this help message and exit");
     app.add_option("--file", fileName, "Display a PEL using its Raw PEL file");
     app.add_option("-i, --id", idPEL, "Display a PEL based on its ID");
+    app.add_option("--bmc-id", bmcId,
+                   "Display a PEL based on its BMC Event ID");
     app.add_flag("-a", fullPEL, "Display all PELs");
     app.add_flag("-l", listPEL, "List PELs");
     app.add_flag("-n", showPELCount, "Show number of PELs");
@@ -801,7 +811,11 @@ int main(int argc, char** argv)
     }
     else if (!idPEL.empty())
     {
-        callFunctionOnPEL(idPEL, displayPEL);
+        callFunctionOnPEL(idPEL, displayPEL, false);
+    }
+    else if (!bmcId.empty())
+    {
+        callFunctionOnPEL(bmcId, displayPEL, true);
     }
     else if (fullPEL || listPEL)
     {
@@ -821,7 +835,7 @@ int main(int argc, char** argv)
     }
     else if (!idToDelete.empty())
     {
-        callFunctionOnPEL(idToDelete, deletePEL);
+        callFunctionOnPEL(idToDelete, deletePEL, false);
     }
     else if (deleteAll)
     {
