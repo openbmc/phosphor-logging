@@ -72,6 +72,18 @@ _PID="12345"
 This is used to pass in an inventory item to use as a callout.  See [here for
 details](#passing-callouts-in-with-the-additionaldata-property)
 
+#### CALLOUT_PRIORITY
+
+This can be used along with CALLOUT_INVENTORY_PATH to specify the priority of
+that FRU callout. If not specified, the default priority is "H"/High Priority.
+
+The possible values are:
+- "H": High Priority
+- "M": Medium Priority
+- "L": Low Priority
+
+See [here for details](#passing-callouts-in-with-the-additionaldata-property)
+
 #### CALLOUT_DEVICE_PATH with CALLOUT_ERRNO
 
 This is used to pass in a device path to create callouts from.  See [here for
@@ -177,7 +189,9 @@ A callout points to a FRU, a symbolic FRU, or an isolation procedure.  There
 can be from zero to ten of them in each PEL, where they are located in the SRC
 section.
 
-There are a few different ways to add callouts to a PEL:
+There are a few different ways to add callouts to a PEL.  In all cases, the
+callouts will be sorted from highest to lowest priority within the PEL after
+they are added.
 
 ### Passing callouts in with the AdditionalData property
 
@@ -187,11 +201,17 @@ AdditionalData event log property.  They are:
 - CALLOUT_INVENTORY_PATH
 
     This keyword is used to call out a single FRU by passing in its D-Bus
-    inventory path.  When the PEL code sees this, it will create a single high
-    priority FRU callout, using the VPD properties (location code, FN, CCIN)
-    from that inventory item.  If that item is not a FRU itself and does not
-    have a location code, it will keep searching its parents until it finds one
-    that is.
+    inventory path.  When the PEL code sees this, it will create a single FRU
+    callout, using the VPD properties (location code, FN, CCIN) from that
+    inventory item.  If that item is not a FRU itself and does not have a
+    location code, it will keep searching its parents until it finds one that
+    is.
+
+    The priority of the FRU callout will be high, unless the CALLOUT_PRIORITY
+    keyword is also present and contains a different priority in which case it
+    will be used instead.  This can be useful when a maintenance procedure with
+    a high priority callout is specified for this error in the message registry
+    and the FRU callout needs to have a different priority.
 
     ```
     CALLOUT_INVENTORY_PATH=
