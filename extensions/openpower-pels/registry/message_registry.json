@@ -815,6 +815,41 @@
                 "Description": "A firmware inter-process communication (D-Bus) error occurred",
                 "Message": "A firmware inter-process communication (D-Bus) error occurred"
             }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Fan.Error.Missing",
+            "Subsystem": "power_fans",
+            "ComponentID": "0x2800",
+            "Severity": "unrecoverable_redundancy_loss",
+            "ActionFlags": ["service_action", "report", "call_home"],
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x76F1",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "SymbolicFRU": "air_mover"},
+                        { "Priority": "low", "LocCode": "P0" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "A fan is missing",
+                "Message": "A fan is missing",
+                "Notes": [
+                    "This error occurs when a fan has been missing for a ",
+                    "certain amount of time.  The callouts are made by ",
+                    "passing in CALLOUT_INVENTORY_PATH which will be ",
+                    "combined with the symbolic FRU (not possible yet) ",
+                    "along with the FRU(s) where the controllers are."
+                ]
+            }
         }
     ]
 }

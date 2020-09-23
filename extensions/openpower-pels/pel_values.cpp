@@ -223,7 +223,9 @@ const std::map<std::string, std::string> maintenanceProcedures = {
  *        actual names.
  */
 const std::map<std::string, std::string> symbolicFRUs = {
-    {"service_docs", "SVCDOCS"}, {"pwrsply", "PWRSPLY"}};
+    {"service_docs", "SVCDOCS"},
+    {"pwrsply", "PWRSPLY"},
+    {"air_mover", "AIRMOVR"}};
 
 PELValues::const_iterator findByValue(uint32_t value, const PELValues& fields)
 {

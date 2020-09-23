@@ -438,7 +438,7 @@
         {
             "description": "The symbolic FRU callout.",
             "type": "string",
-            "enum": ["service_docs", "pwrsply"]
+            "enum": ["service_docs", "pwrsply", "air_mover"]
         },
 
         "symbolicFRUTrusted":
