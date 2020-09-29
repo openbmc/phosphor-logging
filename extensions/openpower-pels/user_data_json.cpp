@@ -142,9 +142,9 @@ std::string getCBORJSON(uint16_t componentID, uint8_t subType, uint8_t version,
 /**
  * @brief Return a JSON string from the passed in text data.
  *
- * The function breaks up the input text into a vector of 60 character
- * strings and converts that into JSON.  It will convert any unprintable
- * characters to periods.
+ * The function breaks up the input text into a vector of strings with
+ * newline as separator and converts that into JSON.  It will convert any
+ * unprintable characters to periods.
  *
  * @param[in] componentID - The comp ID from the UserData section header
  * @param[in] subType - The subtype from the UserData section header
@@ -156,12 +156,10 @@ std::string getCBORJSON(uint16_t componentID, uint8_t subType, uint8_t version,
 std::string getTextJSON(uint16_t componentID, uint8_t subType, uint8_t version,
                         const std::vector<uint8_t>& data)
 {
-    constexpr size_t maxLineLength = 60;
     std::vector<std::string> text;
     size_t startPos = 0;
-    bool done = false;
 
-    // Converts any unprintable characters to periods.
+    // Converts any unprintable characters to periods
     auto validate = [](char& ch) {
         if ((ch < ' ') || (ch > '~'))
         {
@@ -169,26 +167,24 @@ std::string getTextJSON(uint16_t componentID, uint8_t subType, uint8_t version,
         }
     };
 
-    // Break up the data into an array of 60 character strings
-    while (!done)
+    // Break up the data into an array of strings with newline as separator
+    for (size_t pos = 0; pos < data.size(); ++pos)
     {
-        // 60 or less characters left
-        if (startPos + maxLineLength >= data.size())
+        if (data[pos] == '\n')
         {
             std::string line{reinterpret_cast<const char*>(&data[startPos]),
-                             data.size() - startPos};
+                             pos - startPos};
             std::for_each(line.begin(), line.end(), validate);
             text.push_back(std::move(line));
-            done = true;
+            startPos = pos + 1;
         }
-        else
-        {
-            std::string line{reinterpret_cast<const char*>(&data[startPos]),
-                             maxLineLength};
-            std::for_each(line.begin(), line.end(), validate);
-            text.push_back(std::move(line));
-            startPos += maxLineLength;
-        }
+    }
+    if (startPos < data.size())
+    {
+        std::string line{reinterpret_cast<const char*>(&data[startPos]),
+                         data.size() - startPos};
+        std::for_each(line.begin(), line.end(), validate);
+        text.push_back(std::move(line));
     }
 
     fifoJSON json = text;
