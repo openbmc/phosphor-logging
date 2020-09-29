@@ -144,7 +144,7 @@ std::string getCBORJSON(uint16_t componentID, uint8_t subType, uint8_t version,
  *
  * The function breaks up the input text into a vector of 60 character
  * strings and converts that into JSON.  It will convert any unprintable
- * characters to periods.
+ * characters to periods, except newline.
  *
  * @param[in] componentID - The comp ID from the UserData section header
  * @param[in] subType - The subtype from the UserData section header
@@ -161,9 +161,9 @@ std::string getTextJSON(uint16_t componentID, uint8_t subType, uint8_t version,
     size_t startPos = 0;
     bool done = false;
 
-    // Converts any unprintable characters to periods.
+    // Converts any unprintable characters to periods, except newline.
     auto validate = [](char& ch) {
-        if ((ch < ' ') || (ch > '~'))
+        if (((ch < ' ') || (ch > '~')) && ch != '\n')
         {
             ch = '.';
         }
