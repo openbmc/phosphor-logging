@@ -438,7 +438,7 @@
         {
             "description": "The symbolic FRU callout.",
             "type": "string",
-            "enum": ["service_docs"]
+            "enum": ["service_docs", "pwrsply"]
         },
 
         "symbolicFRUTrusted":
@@ -451,7 +451,7 @@
         {
             "description": "The maintenance procedure callout.",
             "type": "string",
-            "enum": ["no_vpd_for_fru", "bmc_code", "pwrsply"]
+            "enum": ["no_vpd_for_fru", "bmc_code"]
         },
 
         "calloutList":
