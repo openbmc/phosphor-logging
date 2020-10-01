@@ -67,13 +67,17 @@ std::string escapeJSON(const std::string& input)
 
     return output;
 }
-char* dumpHex(const void* data, size_t size, size_t indentCount)
+char* dumpHex(const void* data, size_t size, size_t indentCount, bool toJson)
 {
     const int symbolSize = 100;
     std::string jsonIndent(indentLevel * indentCount, 0x20);
-    jsonIndent.append("\"");
+    if (toJson)
+    {
+        jsonIndent.append("\"");
+    }
     char* buffer = (char*)calloc(std::max(70, 10 * (int)size), sizeof(char));
     char* symbol = (char*)calloc(symbolSize, sizeof(char));
+    char* byteCount = (char*)calloc(11, sizeof(char));
     char ascii[17];
     size_t i, j;
     ascii[16] = '\0';
@@ -81,6 +85,11 @@ char* dumpHex(const void* data, size_t size, size_t indentCount)
     {
         if (i % 16 == 0)
         {
+            if (!toJson)
+            {
+                snprintf(byteCount, 11, "%08X  ", i);
+                strcat(buffer, byteCount);
+            }
             strcat(buffer, jsonIndent.c_str());
         }
         snprintf(symbol, symbolSize, "%02X ", ((unsigned char*)data)[i]);
@@ -98,18 +107,27 @@ char* dumpHex(const void* data, size_t size, size_t indentCount)
         if ((i + 1) % 8 == 0 || i + 1 == size)
         {
             std::string asciiString(ascii);
-            asciiString = escapeJSON(asciiString);
-            const char* asciiToPrint = asciiString.c_str();
+            if (toJson)
+            {
+                asciiString = escapeJSON(asciiString);
+            }
             strcat(buffer, " ");
             if ((i + 1) % 16 == 0)
             {
-                if (i + 1 != size)
+                if (i + 1 != size && toJson)
                 {
-                    snprintf(symbol, symbolSize, "|  %s\",\n", asciiToPrint);
+                    snprintf(symbol, symbolSize, "|  %s\",\n",
+                             asciiString.c_str());
+                }
+                else if (toJson)
+                {
+                    snprintf(symbol, symbolSize, "|  %s\"\n",
+                             asciiString.c_str());
                 }
                 else
                 {
-                    snprintf(symbol, symbolSize, "|  %s\"\n", asciiToPrint);
+                    snprintf(symbol, symbolSize, "|  %s\n",
+                             asciiString.c_str());
                 }
                 strcat(buffer, symbol);
                 memset(symbol, 0, strlen(symbol));
@@ -126,14 +144,24 @@ char* dumpHex(const void* data, size_t size, size_t indentCount)
                     strcat(buffer, "   ");
                 }
                 std::string asciiString2(ascii);
-                asciiString2 = escapeJSON(asciiString2);
-                asciiToPrint = asciiString2.c_str();
-                snprintf(symbol, symbolSize, "|  %s\"\n", asciiToPrint);
+                if (toJson)
+                {
+                    asciiString2 = escapeJSON(asciiString2);
+                    snprintf(symbol, symbolSize, "|  %s\"\n",
+                             asciiString2.c_str());
+                }
+                else
+                {
+                    snprintf(symbol, symbolSize, "|  %s\n",
+                             asciiString2.c_str());
+                }
+
                 strcat(buffer, symbol);
                 memset(symbol, 0, strlen(symbol));
             }
         }
     }
+    free(byteCount);
     free(symbol);
     return buffer;
 }
