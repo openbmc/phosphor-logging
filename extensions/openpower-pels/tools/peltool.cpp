@@ -41,7 +41,7 @@ namespace file_error = sdbusplus::xyz::openbmc_project::Common::File::Error;
 namespace message = openpower::pels::message;
 namespace pv = openpower::pels::pel_values;
 
-using PELFunc = std::function<void(const PEL&)>;
+using PELFunc = std::function<void(const PEL&, bool hexDump)>;
 message::Registry registry(getPELReadOnlyDataPath() / message::registryFileName,
                            false);
 namespace service
@@ -271,13 +271,14 @@ std::vector<std::string> getPlugins()
  * @param[in] foundPEL - Boolean to check if any PEL is present
  * @param[in] scrubRegex - SRC regex object
  * @param[in] plugins - Vector of strings of plugins found in filesystem
+ * @param[in] hexDump - Boolean to print hexdump of PEL instead of JSON
  * @return std::string - JSON string of PEL entry (empty if fullPEL is true)
  */
 template <typename T>
 std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool fullPEL,
                        bool& foundPEL,
                        const std::optional<std::regex>& scrubRegex,
-                       const std::vector<std::string>& plugins)
+                       const std::vector<std::string>& plugins, bool hexDump)
 {
     std::size_t found;
     std::string val;
@@ -322,7 +323,12 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool fullPEL,
                 return listStr;
             }
         }
-        if (fullPEL)
+        if (hexDump)
+        {
+            std::cout << dumpHex(std::data(pel.data()), pel.size(), 0, false)
+                      << std::endl;
+        }
+        else if (fullPEL)
         {
             if (!foundPEL)
             {
@@ -418,9 +424,10 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool fullPEL,
  * @param[in] includeInfo - Boolean to include informational PELs
  * @param[in] fullPEL - Boolean to print full PEL into a JSON array
  * @param[in] scrubRegex - SRC regex object
+ * @param[in] hexDump - Boolean to print hexdump of PEL instead of JSON
  */
 void printPELs(bool order, bool hidden, bool includeInfo, bool fullPEL,
-               const std::optional<std::regex>& scrubRegex)
+               const std::optional<std::regex>& scrubRegex, bool hexDump)
 {
     std::string listStr;
     std::map<uint32_t, BCDTime> PELs;
@@ -440,14 +447,15 @@ void printPELs(bool order, bool hidden, bool includeInfo, bool fullPEL,
         }
     }
     bool foundPEL = false;
-    if (fullPEL)
+
+    if (fullPEL && !hexDump)
     {
         plugins = getPlugins();
     }
     auto buildJSON = [&listStr, &hidden, &includeInfo, &fullPEL, &foundPEL,
-                      &scrubRegex, &plugins](const auto& i) {
+                      &scrubRegex, &plugins, &hexDump](const auto& i) {
         listStr += genPELJSON(i, hidden, includeInfo, fullPEL, foundPEL,
-                              scrubRegex, plugins);
+                              scrubRegex, plugins, hexDump);
     };
     if (order)
     {
@@ -457,7 +465,10 @@ void printPELs(bool order, bool hidden, bool includeInfo, bool fullPEL,
     {
         std::for_each(PELs.begin(), PELs.end(), buildJSON);
     }
-
+    if (hexDump)
+    {
+        return;
+    }
     if (foundPEL)
     {
         if (fullPEL)
@@ -489,10 +500,13 @@ void printPELs(bool order, bool hidden, bool includeInfo, bool fullPEL,
  *
  * @param[in] id - The string version of the PEL or BMC Log ID, either with or
  *                 without the 0x prefix.
- * @param[in] func - The std::function<void(const PEL&)> function to run.
+ * @param[in] func - The std::function<void(const PEL&, bool hexDump)> function
+ *                   to run.
  * @param[in] useBMC - if true, search by BMC Log ID, else search by PEL ID
+ * @param[in] hexDump - Boolean to print hexdump of PEL instead of JSON
  */
-void callFunctionOnPEL(const std::string& id, const PELFunc& func, bool useBMC)
+void callFunctionOnPEL(const std::string& id, const PELFunc& func,
+                       bool useBMC = false, bool hexDump = false)
 {
     std::string pelID{id};
     if (!useBMC)
@@ -530,7 +544,7 @@ void callFunctionOnPEL(const std::string& id, const PELFunc& func, bool useBMC)
                     found = true;
                     try
                     {
-                        func(pel);
+                        func(pel, hexDump);
                         break;
                     }
                     catch (std::exception& e)
@@ -560,8 +574,9 @@ void callFunctionOnPEL(const std::string& id, const PELFunc& func, bool useBMC)
  * @brief Delete a PEL by deleting its corresponding event log.
  *
  * @param[in] pel - The PEL to delete
+ * @param[in] hexDump - Boolean to print hexdump of PEL instead of JSON (unused)
  */
-void deletePEL(const PEL& pel)
+void deletePEL(const PEL& pel, bool hexDump = false)
 {
     std::string path{object_path::logEntry};
     path += std::to_string(pel.obmcLogID());
@@ -609,13 +624,23 @@ void deleteAllPELs()
  * @brief Display a single PEL
  *
  * @param[in] pel - the PEL to display
+ * @param[in] hexDump - Boolean to print hexdump of PEL instead of JSON
  */
-void displayPEL(const PEL& pel)
+void displayPEL(const PEL& pel, bool hexDump)
 {
     if (pel.valid())
     {
-        auto plugins = getPlugins();
-        pel.toJSON(registry, plugins);
+        if (hexDump)
+        {
+            std::string dstr =
+                dumpHex(std::data(pel.data()), pel.size(), 0, false);
+            std::cout << dstr << std::endl;
+        }
+        else
+        {
+            auto plugins = getPlugins();
+            pel.toJSON(registry, plugins);
+        }
     }
     else
     {
@@ -774,6 +799,7 @@ int main(int argc, char** argv)
     bool deleteAll = false;
     bool showPELCount = false;
     bool fullPEL = false;
+    bool hexDump = false;
 
     app.set_help_flag("--help", "Print this help message and exit");
     app.add_option("--file", fileName, "Display a PEL using its Raw PEL file");
@@ -790,6 +816,7 @@ int main(int argc, char** argv)
     app.add_flag("-D, --delete-all", deleteAll, "Delete all PELs");
     app.add_option("-s, --scrub", scrubFile,
                    "File containing SRC regular expressions to ignore");
+    app.add_flag("-x", hexDump, "Display PEL(s) in hexdump instead of JSON");
 
     CLI11_PARSE(app, argc, argv);
 
@@ -798,9 +825,18 @@ int main(int argc, char** argv)
         std::vector<uint8_t> data = getFileData(fileName);
         if (!data.empty())
         {
-            auto plugins = getPlugins();
             PEL pel{data};
-            pel.toJSON(registry, plugins);
+            if (hexDump)
+            {
+                std::string dstr =
+                    dumpHex(std::data(pel.data()), pel.size(), 0, false);
+                std::cout << dstr << std::endl;
+            }
+            else
+            {
+                auto plugins = getPlugins();
+                pel.toJSON(registry, plugins);
+            }
         }
         else
         {
@@ -810,11 +846,11 @@ int main(int argc, char** argv)
     }
     else if (!idPEL.empty())
     {
-        callFunctionOnPEL(idPEL, displayPEL, false);
+        callFunctionOnPEL(idPEL, displayPEL, false, hexDump);
     }
     else if (!bmcId.empty())
     {
-        callFunctionOnPEL(bmcId, displayPEL, true);
+        callFunctionOnPEL(bmcId, displayPEL, true, hexDump);
     }
     else if (fullPEL || listPEL)
     {
@@ -822,7 +858,8 @@ int main(int argc, char** argv)
         {
             scrubRegex = genRegex(scrubFile);
         }
-        printPELs(listPELDescOrd, hidden, includeInfo, fullPEL, scrubRegex);
+        printPELs(listPELDescOrd, hidden, includeInfo, fullPEL, scrubRegex,
+                  hexDump);
     }
     else if (showPELCount)
     {
@@ -834,7 +871,7 @@ int main(int argc, char** argv)
     }
     else if (!idToDelete.empty())
     {
-        callFunctionOnPEL(idToDelete, deletePEL, false);
+        callFunctionOnPEL(idToDelete, deletePEL);
     }
     else if (deleteAll)
     {
