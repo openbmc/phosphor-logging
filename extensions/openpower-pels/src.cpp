@@ -744,7 +744,14 @@ void SRC::addCallouts(const message::Entry& regEntry,
                       const nlohmann::json& jsonCallouts,
                       const DataInterfaceBase& dataIface)
 {
+    auto priority = additionalData.getValue("CALLOUT_PRIORITY");
     auto item = additionalData.getValue("CALLOUT_INVENTORY_PATH");
+
+    // A callout priority contains either:
+    // * "H": High Priority
+    // * "M": Medium Priority
+    // * "L": Low Priority.
+    
     if (item)
     {
         addInventoryCallout(*item, std::nullopt, std::nullopt, dataIface);
