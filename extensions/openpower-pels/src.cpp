@@ -745,9 +745,23 @@ void SRC::addCallouts(const message::Entry& regEntry,
                       const DataInterfaceBase& dataIface)
 {
     auto item = additionalData.getValue("CALLOUT_INVENTORY_PATH");
+    auto priority = additionalData.getValue("CALLOUT_PRIORITY");
+
+    std::optional<CalloutPriority> calloutPriority;
+
+    // Only  H, M or L priority values.
+    if (priority)
+    {
+        uint8_t p = (*priority)[0];
+        if (p == 'H' || p == 'M' || p == 'L')
+        {
+            calloutPriority = static_cast<CalloutPriority>(p);
+        }
+    }
+
     if (item)
     {
-        addInventoryCallout(*item, std::nullopt, std::nullopt, dataIface);
+        addInventoryCallout(*item, calloutPriority, std::nullopt, dataIface);
     }
 
     addDevicePathCallouts(additionalData, dataIface);

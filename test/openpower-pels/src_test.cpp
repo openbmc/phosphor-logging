@@ -1161,3 +1161,39 @@ TEST_F(SRCTest, JsonBadCalloutsTest)
                  "Failed extracting callout data from JSON: Invalid "
                  "priority 'X' found in JSON callout");
 }
+
+// Test that an inventory path callout can have
+// a different priority than H.
+TEST_F(SRCTest, InventoryCalloutTestPriority)
+{
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+    entry.src.powerFault = false;
+
+    std::vector<std::string> adData{"CALLOUT_INVENTORY_PATH=motherboard",
+                                    "CALLOUT_PRIORITY=M"};
+    AdditionalData ad{adData};
+    NiceMock<MockDataInterface> dataIface;
+
+    EXPECT_CALL(dataIface, getLocationCode("motherboard"))
+        .WillOnce(Return("UTMS-P1"));
+
+    EXPECT_CALL(dataIface, getHWCalloutFields("motherboard", _, _, _))
+        .Times(1)
+        .WillOnce(DoAll(SetArgReferee<1>("1234567"), SetArgReferee<2>("CCCC"),
+                        SetArgReferee<3>("123456789ABC")));
+
+    SRC src{entry, ad, dataIface};
+    EXPECT_TRUE(src.valid());
+
+    ASSERT_TRUE(src.callouts());
+
+    EXPECT_EQ(src.callouts()->callouts().size(), 1);
+
+    auto& callout = src.callouts()->callouts().front();
+
+    EXPECT_EQ(callout->locationCode(), "UTMS-P1");
+    EXPECT_EQ(callout->priority(), 'M');
+}
