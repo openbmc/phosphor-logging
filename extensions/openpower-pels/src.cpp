@@ -748,7 +748,19 @@ void SRC::addCallouts(const message::Entry& regEntry,
         getRegistryCallouts(regEntry, additionalData, dataIface);
 
     auto item = additionalData.getValue("CALLOUT_INVENTORY_PATH");
+    auto priority = additionalData.getValue("CALLOUT_PRIORITY");
 
+    std::optional<CalloutPriority> calloutPriority;
+
+    // Only  H, M or L priority values.
+    if (priority && !(*priority).empty())
+    {
+        uint8_t p = (*priority)[0];
+        if (p == 'H' || p == 'M' || p == 'L')
+        {
+            calloutPriority = static_cast<CalloutPriority>(p);
+        }
+    }
     // If the first registry callout says to use the passed in inventory
     // path to get the location code for a symbolic FRU callout with a
     // trusted location code, then do not add the inventory path as a
@@ -759,7 +771,7 @@ void SRC::addCallouts(const message::Entry& regEntry,
 
     if (item && !useInvForSymbolicFRULocCode)
     {
-        addInventoryCallout(*item, std::nullopt, std::nullopt, dataIface);
+        addInventoryCallout(*item, calloutPriority, std::nullopt, dataIface);
     }
 
     addDevicePathCallouts(additionalData, dataIface);
