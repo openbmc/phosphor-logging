@@ -748,6 +748,7 @@ void SRC::addCallouts(const message::Entry& regEntry,
         getRegistryCallouts(regEntry, additionalData, dataIface);
 
     auto item = additionalData.getValue("CALLOUT_INVENTORY_PATH");
+<<<<<<< HEAD
 
     // If the first registry callout says to use the passed in inventory
     // path to get the location code for a symbolic FRU callout with a
@@ -758,8 +759,25 @@ void SRC::addCallouts(const message::Entry& regEntry,
         !registryCallouts[0].symbolicFRUTrusted.empty();
 
     if (item && !useInvForSymbolicFRULocCode)
+=======
+    auto priority = additionalData.getValue("CALLOUT_PRIORITY");
+
+    std::optional<CalloutPriority> calloutPriority;
+
+    // Only  H, M or L priority values.
+    if (priority && !(*priority).empty())
     {
-        addInventoryCallout(*item, std::nullopt, std::nullopt, dataIface);
+        uint8_t p = (*priority)[0];
+        if (p == 'H' || p == 'M' || p == 'L')
+        {
+            calloutPriority = static_cast<CalloutPriority>(p);
+        }
+    }
+
+    if (item)
+>>>>>>> Specify PEL callout priority and sort callouts.
+    {
+        addInventoryCallout(*item, calloutPriority, std::nullopt, dataIface);
     }
 
     addDevicePathCallouts(additionalData, dataIface);
