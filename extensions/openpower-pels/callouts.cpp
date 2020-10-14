@@ -61,7 +61,18 @@ void Callouts::addCallout(std::unique_ptr<Callout> callout)
         using namespace phosphor::logging;
         log<level::INFO>("Dropping PEL callout because at max");
     }
+
+    // Mapping including the  3 Medium levels as A,B and C
+    std::map<uint8_t, int> priorities{{'H', 10}, {'M', 9}, {'A', 8},
+                                      {'B', 7},  {'C', 6}, {'L', 5}};
+
+    auto sortPriority = [priorities](const std::unique_ptr<Callout>& p1,
+                                     const std::unique_ptr<Callout>& p2) {
+        return p1->priority() > p2->priority();
+    };
+    std::sort(_callouts.begin(), _callouts.end(), sortPriority);
 }
+
 } // namespace src
 } // namespace pels
 } // namespace openpower

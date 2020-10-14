@@ -120,3 +120,63 @@ TEST(CalloutsTest, TestAddCallouts)
 
     EXPECT_EQ(callouts.callouts().size(), maxNumberOfCallouts);
 }
+
+TEST(CalloutsTest, TestSortCallouts)
+{
+    Callouts callouts;
+
+    // Add  callouts to test sorting
+
+    auto callout = std::make_unique<Callout>(CalloutPriority::high, "U1-P1",
+                                             "1234567", "ABC", "123456789ABC");
+
+    callouts.addCallout(std::move(callout));
+
+    auto callout = std::make_unique<Callout>(CalloutPriority::medium, "U1-P1",
+                                             "1234567", "ABCD", "123456789ABC");
+
+    callouts.addCallout(std::move(callout));
+
+    auto callout = std::make_unique<Callout>(
+        CalloutPriority::low, "U1-P1", "1234567", "ABCDE", "123456789ABC");
+
+    callouts.addCallout(std::move(callout));
+
+    auto callout = std::make_unique<Callout>(
+        CalloutPriority::high, "U1-P1", "1234567", "ABCDE1", "123456789ABC");
+
+    callouts.addCallout(std::move(callout));
+
+    auto callout = std::make_unique<Callout>(
+        CalloutPriority::high, "U1-P1", "1234567", "ABCDE2", "123456789ABC");
+
+    callouts.addCallout(std::move(callout));
+
+    auto callout = std::make_unique<Callout>(
+        CalloutPriority::low, "U1-P1", "1234567", "ABCDE2", "123456789ABC");
+
+    callouts.addCallout(std::move(callout));
+
+    auto callout = std::make_unique<Callout>(
+        CalloutPriority::medium, "U1-P1", "1234567", "ABCD2", "123456789ABC");
+
+    callouts.addCallout(std::move(callout));
+
+    auto callout = std::make_unique<Callout>(
+        CalloutPriority::high, "U1-P1", "1234567", "ABCDE3", "123456789ABC");
+
+    callouts.addCallout(std::move(callout));
+
+    auto callout = std::make_unique<Callout>(
+        CalloutPriority::high, "U1-P1", "1234567", "ABCDE4", "123456789ABC");
+
+    callouts.addCallout(std::move(callout));
+
+    auto callout = std::make_unique<Callout>(
+        CalloutPriority::low, "U1-P1", "1234567", "ABCDE3", "123456789ABC");
+
+    callouts.addCallout(std::move(callout));
+
+    const auto& calloutObjects = callouts.callouts();
+    EXPECT_EQ(calloutObjects[0]->locationCode(), "U1-P1");
+}

@@ -86,6 +86,14 @@ class Callouts
      */
     void addCallout(std::unique_ptr<Callout> callout);
 
+    /**
+     * Testing adding library
+     */
+    const std::vector<std::unique_ptr<Callout>>& callouts1() const
+    {
+        return _callouts;
+    }
+
   private:
     /**
      * @brief The ID of this subsection, which is 0xC0.
