@@ -818,6 +818,31 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Fan.Error.Fault",
+            "Subsystem": "power_fans",
+            "ComponentID": "0x2800",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x76F0",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Fan rotor fault",
+                "Message": "Fan rotor fault",
+                "Notes": [
+                    "This error occurs when a fan rotor has been faulted for a ",
+                    "certain amount of time.  The callout is the fan which is ",
+                    "passed in with CALLOUT_INVENTORY_PATH.  The severity is ",
+                    "passed in during creation and will be either informational ",
+                    "or unrecoverable.  The action flags use the defaults and ",
+                    "vary based on the severity."
+                ]
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.Fan.Error.Missing",
             "Subsystem": "power_fans",
             "ComponentID": "0x2800",
