@@ -406,6 +406,7 @@ RegistryCallout makeRegistryCallout(const nlohmann::json& json)
     RegistryCallout callout;
 
     callout.priority = "high";
+    callout.useInventoryLocCode = false;
 
     if (json.contains("Priority"))
     {
@@ -429,6 +430,11 @@ RegistryCallout makeRegistryCallout(const nlohmann::json& json)
     {
         callout.symbolicFRUTrusted =
             json["SymbolicFRUTrusted"].get<std::string>();
+    }
+
+    if (json.contains("UseInventoryLocCode"))
+    {
+        callout.useInventoryLocCode = json["UseInventoryLocCode"].get<bool>();
     }
 
     return callout;

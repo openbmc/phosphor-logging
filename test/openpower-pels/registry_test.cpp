@@ -384,6 +384,11 @@ TEST_F(RegistryTest, TestGetCallouts)
                 {
                     "Priority": "low",
                     "SymbolicFRU": "service_docs"
+                },
+                {
+                    "Priority": "low",
+                    "SymbolicFRUTrusted": "air_mover",
+                    "UseInventoryLocCode": true
                 }
             ]
         },
@@ -408,7 +413,7 @@ TEST_F(RegistryTest, TestGetCallouts)
         names.push_back("system1");
 
         auto callouts = Registry::getCallouts(json, names, ad);
-        EXPECT_EQ(callouts.size(), 3);
+        EXPECT_EQ(callouts.size(), 4);
         EXPECT_EQ(callouts[0].priority, "high");
         EXPECT_EQ(callouts[0].locCode, "P1-C1");
         EXPECT_EQ(callouts[0].procedure, "");
@@ -424,6 +429,12 @@ TEST_F(RegistryTest, TestGetCallouts)
         EXPECT_EQ(callouts[2].procedure, "");
         EXPECT_EQ(callouts[2].symbolicFRU, "service_docs");
         EXPECT_EQ(callouts[2].symbolicFRUTrusted, "");
+        EXPECT_EQ(callouts[3].priority, "low");
+        EXPECT_EQ(callouts[3].locCode, "");
+        EXPECT_EQ(callouts[3].procedure, "");
+        EXPECT_EQ(callouts[3].symbolicFRU, "");
+        EXPECT_EQ(callouts[3].symbolicFRUTrusted, "air_mover");
+        EXPECT_EQ(callouts[3].useInventoryLocCode, true);
 
         // system2 isn't in the JSON, so it will pick the default one
         names[0] = "system2";
@@ -438,6 +449,7 @@ TEST_F(RegistryTest, TestGetCallouts)
         EXPECT_EQ(callouts[1].procedure, "");
         EXPECT_EQ(callouts[1].symbolicFRU, "");
         EXPECT_EQ(callouts[1].symbolicFRUTrusted, "service_docs");
+        EXPECT_EQ(callouts[1].useInventoryLocCode, false);
     }
 
     // Empty JSON array (treated as an error)

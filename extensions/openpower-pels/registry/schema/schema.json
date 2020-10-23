@@ -454,6 +454,12 @@
             "enum": ["no_vpd_for_fru", "bmc_code"]
         },
 
+        "useInventoryLocCode":
+        {
+            "description": "Used along with SymbolicFRUTrusted to specify that the location code to use with the symbolic FRU is to be taken from the passed in CALLOUT_INVENTORY_PATH callout rather than being specified with LocCode.",
+            "type": "boolean"
+        },
+
         "calloutList":
         {
             "description": "The list of FRU callouts to add to a PEL.  If just LocCode is specified, it is a normal hardware FRU callout.  If Procedure is specified, it is a procedure callout.  If SymbolicFRU or SymbolicFRUTrusted are specified, it is a Symbolic FRU callout.  SymbolicFRUTrusted also requires LocCode.",
@@ -467,7 +473,8 @@
                     "LocCode": {"$ref": "#/definitions/locationCode" },
                     "SymbolicFRU": {"$ref": "#/definitions/symbolicFRU" },
                     "SymbolicFRUTrusted": {"$ref": "#/definitions/symbolicFRUTrusted" },
-                    "Procedure": {"$ref": "#/definitions/procedure" }
+                    "Procedure": {"$ref": "#/definitions/procedure" },
+                    "UseInventoryLocCode": {"$ref": "#/definitions/useInventoryLocCode" }
                 },
                 "additionalProperties": false,
                 "required": ["Priority"],
@@ -480,7 +487,8 @@
                             { "required": ["LocCode"] },
                             { "not": { "required": ["SymbolicFRU"] }},
                             { "not": { "required": ["SymbolicFRUTrusted"] }},
-                            { "not": { "required": ["Procedure"] }}
+                            { "not": { "required": ["Procedure"] }},
+                            { "not": { "required": ["UseInventoryLocCode"] }}
                         ]
                     },
                     {
@@ -489,16 +497,28 @@
                         [
                             { "required": ["SymbolicFRU"] },
                             { "not": { "required": ["SymbolicFRUTrusted"] }},
-                            { "not": { "required": ["Procedure"] }}
+                            { "not": { "required": ["Procedure"] }},
+                            { "not": { "required": ["UseInventoryLocCode"] }}
                         ]
                     },
 
                     {
                         "allOf":
                         [
-                            { "required": ["SymbolicFRUTrusted", "LocationCode"] },
+                            { "required": ["SymbolicFRUTrusted", "LocCode"] },
                             { "not": { "required": ["SymbolicFRU"] }},
-                            { "not": { "required": ["Procedure"] }}
+                            { "not": { "required": ["Procedure"] }},
+                            { "not": { "required": ["UseInventoryLocCode"] }}
+                        ]
+                    },
+
+                    {
+                        "allOf":
+                        [
+                            { "required": ["SymbolicFRUTrusted", "UseInventoryLocCode"] },
+                            { "not": { "required": ["SymbolicFRU"] }},
+                            { "not": { "required": ["Procedure"] }},
+                            { "not": { "required": ["LocCode"] }}
                         ]
                     },
 
@@ -508,7 +528,8 @@
                             { "required": ["Procedure"] },
                             { "not": { "required": ["SymbolicFRU"] }},
                             { "not": { "required": ["SymbolicFRUTrusted"] }},
-                            { "not": { "required": ["LocCode"] }}
+                            { "not": { "required": ["LocCode"] }},
+                            { "not": { "required": ["UseInventoryLocCode"] }}
                         ]
                     }
                 ]

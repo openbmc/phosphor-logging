@@ -414,24 +414,52 @@ class SRC : public Section
                             const std::vector<src::MRU::MRUCallout>& mrus = {});
 
     /**
-     * @brief Adds FRU callouts based on the registry entry JSON
-     *       for this error.
+     * @brief Returns the callouts to use from the registry entry.
+     *
      * @param[in] regEntry - The message registry entry for the error
-     * @param[in] additionalData - The AdditionalData values
+     * @param[in] additionalData - The AdditionalData property
      * @param[in] dataIface - The DataInterface object
      */
-    void addRegistryCallouts(const message::Entry& regEntry,
-                             const AdditionalData& additionalData,
-                             const DataInterfaceBase& dataIface);
+    std::vector<message::RegistryCallout>
+        getRegistryCallouts(const message::Entry& regEntry,
+                            const AdditionalData& additionalData,
+                            const DataInterfaceBase& dataIface);
+
+    /**
+     * @brief Adds the FRU callouts from the list of registry callouts
+     *        passed in to the SRC.
+     *
+     * The last parameter is used only in a special case when the first
+     * callout is a symbolic FRU with a trusted location code.  See the
+     * addRegistryCallout documentation.
+     *
+     * @param[in] callouts - The message registry callouts to add
+     * @param[in] dataIface - The DataInterface object
+     * @param[in] trustedSymbolicFRUInvPath - The optional inventory path used
+     *                                        in the symbolic FRU case.
+     */
+    void addRegistryCallouts(
+        const std::vector<message::RegistryCallout>& callouts,
+        const DataInterfaceBase& dataIface,
+        std::optional<std::string> trustedSymbolicFRUInvPath);
 
     /**
      * @brief Adds a single FRU callout from the message registry.
      *
+     * If the last parameter is filled in, and the registry callout is a
+     * symbolic FRU callout with a trusted location code, and it has the
+     * 'useInventoryLocCode' member set to true, then the location code of
+     * that inventory item will be what is used for that trusted location code.
+     *
      * @param[in] callout - The registry callout structure
      * @param[in] dataIface - The DataInterface object
+     * @param[in] trustedSymbolicFRUInvPath - The optional inventory path used
+     *                                        in the symbolic FRU case.
      */
-    void addRegistryCallout(const message::RegistryCallout& callout,
-                            const DataInterfaceBase& dataIface);
+    void addRegistryCallout(
+        const message::RegistryCallout& callout,
+        const DataInterfaceBase& dataIface,
+        const std::optional<std::string>& trustedSymbolicFRUInvPath);
 
     /**
      * @brief Creates the Callouts object _callouts

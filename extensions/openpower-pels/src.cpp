@@ -744,18 +744,28 @@ void SRC::addCallouts(const message::Entry& regEntry,
                       const nlohmann::json& jsonCallouts,
                       const DataInterfaceBase& dataIface)
 {
+    auto registryCallouts =
+        getRegistryCallouts(regEntry, additionalData, dataIface);
+
     auto item = additionalData.getValue("CALLOUT_INVENTORY_PATH");
-    if (item)
+
+    // If the first registry callout says to use the passed in inventory
+    // path to get the location code for a symbolic FRU callout with a
+    // trusted location code, then do not add the inventory path as a
+    // normal FRU callout.
+    bool useInvForSymbolicFRULocCode =
+        !registryCallouts.empty() && registryCallouts[0].useInventoryLocCode &&
+        !registryCallouts[0].symbolicFRUTrusted.empty();
+
+    if (item && !useInvForSymbolicFRULocCode)
     {
         addInventoryCallout(*item, std::nullopt, std::nullopt, dataIface);
     }
 
     addDevicePathCallouts(additionalData, dataIface);
 
-    if (regEntry.callouts)
-    {
-        addRegistryCallouts(regEntry, additionalData, dataIface);
-    }
+    addRegistryCallouts(registryCallouts, dataIface,
+                        (useInvForSymbolicFRULocCode) ? item : std::nullopt);
 
     if (!jsonCallouts.empty())
     {
@@ -822,20 +832,49 @@ void SRC::addInventoryCallout(const std::string& inventoryPath,
     _callouts->addCallout(std::move(callout));
 }
 
-void SRC::addRegistryCallouts(const message::Entry& regEntry,
-                              const AdditionalData& additionalData,
-                              const DataInterfaceBase& dataIface)
+std::vector<message::RegistryCallout>
+    SRC::getRegistryCallouts(const message::Entry& regEntry,
+                             const AdditionalData& additionalData,
+                             const DataInterfaceBase& dataIface)
+{
+    std::vector<message::RegistryCallout> registryCallouts;
+
+    if (regEntry.callouts)
+    {
+        try
+        {
+            auto systemNames = dataIface.getSystemNames();
+
+            registryCallouts = message::Registry::getCallouts(
+                regEntry.callouts.value(), systemNames, additionalData);
+        }
+        catch (const std::exception& e)
+        {
+            addDebugData(fmt::format(
+                "Error parsing PEL message registry callout JSON: {}",
+                e.what()));
+        }
+    }
+
+    return registryCallouts;
+}
+
+void SRC::addRegistryCallouts(
+    const std::vector<message::RegistryCallout>& callouts,
+    const DataInterfaceBase& dataIface,
+    std::optional<std::string> trustedSymbolicFRUInvPath)
 {
     try
     {
-        auto systemNames = dataIface.getSystemNames();
-
-        auto regCallouts = message::Registry::getCallouts(
-            regEntry.callouts.value(), systemNames, additionalData);
-
-        for (const auto& regCallout : regCallouts)
+        for (const auto& callout : callouts)
         {
-            addRegistryCallout(regCallout, dataIface);
+            addRegistryCallout(callout, dataIface, trustedSymbolicFRUInvPath);
+
+            // Only the first callout gets the inventory path
+            if (trustedSymbolicFRUInvPath)
+            {
+                trustedSymbolicFRUInvPath = std::nullopt;
+            }
         }
     }
     catch (std::exception& e)
@@ -846,8 +885,10 @@ void SRC::addRegistryCallouts(const message::Entry& regEntry,
     }
 }
 
-void SRC::addRegistryCallout(const message::RegistryCallout& regCallout,
-                             const DataInterfaceBase& dataIface)
+void SRC::addRegistryCallout(
+    const message::RegistryCallout& regCallout,
+    const DataInterfaceBase& dataIface,
+    const std::optional<std::string>& trustedSymbolicFRUInvPath)
 {
     std::unique_ptr<src::Callout> callout;
     auto locCode = regCallout.locCode;
@@ -890,6 +931,22 @@ void SRC::addRegistryCallout(const message::RegistryCallout& regCallout,
     else if (!regCallout.symbolicFRUTrusted.empty())
     {
         // Symbolic FRU with trusted location code callout
+
+        // Use the location code from the inventory path if there is one.
+        if (trustedSymbolicFRUInvPath)
+        {
+            try
+            {
+                locCode = dataIface.getLocationCode(*trustedSymbolicFRUInvPath);
+            }
+            catch (const std::exception& e)
+            {
+                addDebugData(
+                    fmt::format("Could not get location code for {}: {}",
+                                *trustedSymbolicFRUInvPath, e.what()));
+                locCode.clear();
+            }
+        }
 
         // The registry wants it to be trusted, but that requires a valid
         // location code for it to actually be.

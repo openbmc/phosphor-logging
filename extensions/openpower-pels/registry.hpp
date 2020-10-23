@@ -195,6 +195,7 @@ struct RegistryCallout
     std::string procedure;
     std::string symbolicFRU;
     std::string symbolicFRUTrusted;
+    bool useInventoryLocCode;
 };
 
 /**

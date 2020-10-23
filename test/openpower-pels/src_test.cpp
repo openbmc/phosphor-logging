@@ -670,6 +670,111 @@ TEST_F(SRCTest, RegistryCalloutTest)
     }
 }
 
+// Test that a symbolic FRU with a trusted location code callout
+// from the registry can get its location from the
+// CALLOUT_INVENTORY_PATH AdditionalData entry.
+TEST_F(SRCTest, SymbolicFRUWithInvPathTest)
+{
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+    entry.src.powerFault = false;
+
+    entry.callouts = R"(
+        [{
+            "CalloutList":
+            [
+                {
+                    "Priority": "high",
+                    "SymbolicFRUTrusted": "service_docs",
+                    "UseInventoryLocCode": true
+                },
+                {
+                    "Priority": "medium",
+                    "LocCode": "P0-C8",
+                    "SymbolicFRUTrusted": "pwrsply"
+                }
+            ]
+        }])"_json;
+
+    {
+        // The location code for the first symbolic FRU callout will
+        // come from this inventory path since UseInventoryLocCode is set.
+        // In this case there will be no normal FRU callout for the motherboard.
+        std::vector<std::string> adData{"CALLOUT_INVENTORY_PATH=motherboard"};
+        AdditionalData ad{adData};
+        NiceMock<MockDataInterface> dataIface;
+        std::vector<std::string> names{"systemA"};
+
+        EXPECT_CALL(dataIface, getSystemNames).WillOnce(ReturnRef(names));
+
+        EXPECT_CALL(dataIface, getLocationCode("motherboard"))
+            .Times(1)
+            .WillOnce(Return("Ufcs-P10"));
+
+        EXPECT_CALL(dataIface, expandLocationCode("P0-C8", 0))
+            .WillOnce(Return("Ufcs-P0-C8"));
+
+        SRC src{entry, ad, dataIface};
+
+        auto& callouts = src.callouts()->callouts();
+        EXPECT_EQ(callouts.size(), 2);
+
+        // The location code for the first symbolic FRU callout with a
+        // trusted location code comes from the motherboard.
+        EXPECT_EQ(callouts[0]->locationCode(), "Ufcs-P10");
+        EXPECT_EQ(callouts[0]->priority(), 'H');
+        auto& fru1 = callouts[0]->fruIdentity();
+        EXPECT_EQ(fru1->getPN().value(), "SVCDOCS");
+        EXPECT_EQ(fru1->failingComponentType(),
+                  src::FRUIdentity::symbolicFRUTrustedLocCode);
+
+        // The second trusted symbolic FRU callouts uses the location
+        // code in the registry as usual.
+        EXPECT_EQ(callouts[1]->locationCode(), "Ufcs-P0-C8");
+        EXPECT_EQ(callouts[1]->priority(), 'M');
+        auto& fru2 = callouts[1]->fruIdentity();
+        EXPECT_EQ(fru2->getPN().value(), "PWRSPLY");
+        EXPECT_EQ(fru2->failingComponentType(),
+                  src::FRUIdentity::symbolicFRUTrustedLocCode);
+    }
+
+    {
+        // This time say we want to use the location code from
+        // the inventory, but don't pass it in and the callout should
+        // end up a regular symbolic FRU
+        entry.callouts = R"(
+        [{
+            "CalloutList":
+            [
+                {
+                    "Priority": "high",
+                    "SymbolicFRUTrusted": "service_docs",
+                    "UseInventoryLocCode": true
+                }
+            ]
+        }])"_json;
+
+        AdditionalData ad;
+        NiceMock<MockDataInterface> dataIface;
+        std::vector<std::string> names{"systemA"};
+
+        EXPECT_CALL(dataIface, getSystemNames).WillOnce(ReturnRef(names));
+
+        SRC src{entry, ad, dataIface};
+
+        auto& callouts = src.callouts()->callouts();
+        EXPECT_EQ(callouts.size(), 1);
+
+        EXPECT_EQ(callouts[0]->locationCode(), "");
+        EXPECT_EQ(callouts[0]->priority(), 'H');
+        auto& fru1 = callouts[0]->fruIdentity();
+        EXPECT_EQ(fru1->getPN().value(), "SVCDOCS");
+        EXPECT_EQ(fru1->failingComponentType(), src::FRUIdentity::symbolicFRU);
+    }
+}
+
 // Test looking up device path fails in the callout jSON.
 TEST_F(SRCTest, DevicePathCalloutTest)
 {

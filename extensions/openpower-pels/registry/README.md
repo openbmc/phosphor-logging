@@ -377,6 +377,29 @@ The defaults are:
 - Symbolic FRU: symbolic_fru
 - Procedure: maint_procedure
 
+#### Symbolic FRU callouts with dynamic trusted location codes
+
+A special case is when one wants to use a symbolic FRU callout with a trusted
+location code, but the location code to use isn\'t known until runtime. This
+means it can\'t be specified using the 'LocCode' key in the registry.
+
+In this case, one should use the 'SymbolicFRUTrusted' key along with the
+'UseInventoryLocCode' key, and then pass in the inventory item that has the
+desired location code using the 'CALLOUT_INVENTORY_PATH' entry inside of the
+AdditionalData property.  The code will then look up the location code for that
+passed in inventory FRU and place it in the symbolic FRU callout.  The normal
+FRU callout with that inventory item will not be created.  The symbolic FRU
+must be the first callout in the registry for this to work.
+
+```
+{
+
+    "Priority": "high",
+    "SymbolicFRUTrusted": "AIR_MOVR",
+    "UseInventoryLocCode": true
+}
+```
+
 ## Modifying and Testing
 
 The general process for adding new entries to the message registry is:
