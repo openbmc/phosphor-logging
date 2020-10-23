@@ -639,7 +639,11 @@
             "Callouts": [
                 {
                     "CalloutList": [
-                        { "Priority": "high", "SymbolicFRU": "pwrsply" }
+                        {
+                            "Priority": "high",
+                            "SymbolicFRUTrusted": "pwrsply",
+                            "UseInventoryLocCode": true
+                        }
                     ]
                 }
             ],
@@ -649,12 +653,9 @@
                 "Message": "A power supply that should be present is missing",
                 "Notes": [
                     "The CalloutList should use the PWRSPLY symbolic FRU ",
-                    "with the trusted location code property. This is not ",
-                    "currently possible. An issue has been opened to allow ",
-                    "for that combination. Until then, PWRSPLY will have a ",
-                    "priority of high, and the caller should provide the ",
-                    "CALLOUT_INVENTORY_PATH with CALLOUT_PRIORITY also set to ",
-                    "high."
+                    "with the trusted location code property.  The ",
+                    "location code in this callout is obtained from ",
+                    "the passed in CALLOUT_INVENTORY_PATH value."
                 ]
             }
         },
@@ -858,8 +859,15 @@
             "Callouts": [
                 {
                     "CalloutList": [
-                        { "Priority": "high", "SymbolicFRU": "air_mover"},
-                        { "Priority": "low", "LocCode": "P0" }
+                        {
+                          "Priority": "high",
+                          "SymbolicFRUTrusted": "air_mover",
+                          "UseInventoryLocCode": true
+                        },
+                        {
+                            "Priority": "low",
+                            "LocCode": "P0"
+                        }
                     ]
                 }
             ],
@@ -869,10 +877,11 @@
                 "Message": "A fan is missing",
                 "Notes": [
                     "This error occurs when a fan has been missing for a ",
-                    "certain amount of time.  The callouts are made by ",
-                    "passing in CALLOUT_INVENTORY_PATH which will be ",
-                    "combined with the symbolic FRU (not possible yet) ",
-                    "along with the FRU(s) where the controllers are."
+                    "certain amount of time.  The first callout is the ",
+                    "symbolic FRU AIR_MOVR that has the trusted fan location ",
+                    "code, which it gets using the passed in ",
+                    "CALLOUT_INVENTORY_PATH.  The second callout is the FRU ",
+                    "where the controller is."
                 ]
             }
         }
