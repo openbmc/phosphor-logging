@@ -239,10 +239,7 @@ class DataInterfaceBase
      *
      * @return std::vector<std::string> - The list of names
      */
-    virtual const std::vector<std::string>& getSystemNames() const
-    {
-        return _systemNames;
-    }
+    virtual std::vector<std::string> getSystemNames() const = 0;
 
     /**
      * @brief Fills in the placeholder 'Ufcs' in the passed in location
@@ -401,11 +398,6 @@ class DataInterfaceBase
      * @brief The motherboard CCIN
      */
     std::string _motherboardCCIN;
-
-    /**
-     * @brief The compatible system names array
-     */
-    std::vector<std::string> _systemNames;
 };
 
 /**
@@ -490,6 +482,13 @@ class DataInterface : public DataInterfaceBase
      */
     std::string
         getLocationCode(const std::string& inventoryPath) const override;
+
+    /**
+     * @brief Get the list of system type names the system is called.
+     *
+     * @return std::vector<std::string> - The list of names
+     */
+    std::vector<std::string> getSystemNames() const override;
 
     /**
      * @brief Fills in the placeholder 'Ufcs' in the passed in location

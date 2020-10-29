@@ -29,7 +29,6 @@ using namespace openpower::pels;
 using ::testing::_;
 using ::testing::NiceMock;
 using ::testing::Return;
-using ::testing::ReturnRef;
 using ::testing::SetArgReferee;
 
 class PELTest : public CleanLogID
@@ -823,7 +822,7 @@ TEST_F(PELTest, CreateWithDevCalloutsTest)
     std::vector<std::string> names{"systemA"};
     EXPECT_CALL(dataIface, getSystemNames)
         .Times(2)
-        .WillRepeatedly(ReturnRef(names));
+        .WillRepeatedly(Return(names));
 
     EXPECT_CALL(dataIface,
                 getLocationCode(

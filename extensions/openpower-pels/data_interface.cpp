@@ -64,8 +64,8 @@ constexpr auto invMotherboard =
     "xyz.openbmc_project.Inventory.Item.Board.Motherboard";
 constexpr auto viniRecordVPD = "com.ibm.ipzvpd.VINI";
 constexpr auto locCode = "com.ibm.ipzvpd.Location";
-constexpr auto invCompatible =
-    "xyz.openbmc_project.Inventory.Decorator.Compatible";
+constexpr auto compatible =
+    "xyz.openbmc_project.Configuration.IBMCompatibleSystem";
 constexpr auto vpdManager = "com.ibm.VPD.Manager";
 constexpr auto association = "xyz.openbmc_project.Association";
 constexpr auto ledGroup = "xyz.openbmc_project.Led.Group";
@@ -152,13 +152,6 @@ DataInterface::DataInterface(sdbusplus::bus::bus& bus) : _bus(bus)
         bus, object_path::hostState, interface::hostState, "CurrentHostState",
         *this, [this](const auto& value) {
             this->_hostState = std::get<std::string>(value);
-        }));
-
-    // Watch the compatible system names property
-    _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
-        bus, object_path::chassisInv, interface::invCompatible, "Names", *this,
-        [this](const auto& value) {
-            this->_systemNames = std::get<std::vector<std::string>>(value);
         }));
 }
 
@@ -442,6 +435,33 @@ void DataInterface::assertLEDGroup(const std::string& ledGroup,
                              interface::dbusProperty, "Set");
     method.append(interface::ledGroup, "Asserted", variant);
     _bus.call(method);
+}
+
+std::vector<std::string> DataInterface::getSystemNames() const
+{
+    DBusSubTree subtree;
+    DBusValue names;
+
+    auto method = _bus.new_method_call(service_name::objectMapper,
+                                       object_path::objectMapper,
+                                       interface::objectMapper, "GetSubTree");
+    method.append(std::string{"/"}, 0,
+                  std::vector<std::string>{interface::compatible});
+    auto reply = _bus.call(method);
+
+    reply.read(subtree);
+    if (subtree.empty())
+    {
+        throw std::runtime_error("Compatible interface not on D-Bus");
+    }
+
+    const auto& object = *(subtree.begin());
+    const auto& path = object.first;
+    const auto& service = object.second.begin()->first;
+
+    getProperty(service, path, interface::compatible, "Names", names);
+
+    return std::get<std::vector<std::string>>(names);
 }
 
 } // namespace pels

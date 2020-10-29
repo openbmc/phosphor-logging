@@ -24,7 +24,6 @@
 
 using namespace openpower::pels;
 using ::testing::Return;
-using ::testing::ReturnRef;
 
 TEST(UserHeaderTest, SizeTest)
 {
@@ -113,9 +112,6 @@ TEST(UserHeaderTest, ConstructionTest)
         regEntry.eventScope = 2;
 
         MockDataInterface dataIface;
-        std::vector<std::string> names{"systemA"};
-
-        EXPECT_CALL(dataIface, getSystemNames).WillOnce(ReturnRef(names));
 
         UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error,
                       dataIface);
@@ -140,8 +136,6 @@ TEST(UserHeaderTest, ConstructionTest)
             // The same thing, but as if the action flags weren't specified
             // in the registry so they are a nullopt.  The object should
             // then set them to 0xFFFF.
-            EXPECT_CALL(dataIface, getSystemNames).WillOnce(ReturnRef(names));
-
             regEntry.actionFlags = std::nullopt;
 
             UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error,
@@ -164,9 +158,9 @@ TEST(UserHeaderTest, ConstructionTest)
         std::vector<std::string> names3{"systemC"};
 
         EXPECT_CALL(dataIface, getSystemNames)
-            .WillOnce(ReturnRef(names1))
-            .WillOnce(ReturnRef(names2))
-            .WillOnce(ReturnRef(names3));
+            .WillOnce(Return(names1))
+            .WillOnce(Return(names2))
+            .WillOnce(Return(names3));
 
         {
             UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error,
@@ -223,9 +217,6 @@ TEST(UserHeaderTest, DefaultEventTypeScopeTest)
     regEntry.actionFlags = 0xC000;
 
     MockDataInterface dataIface;
-
-    std::vector<std::string> names{"systemA"};
-    EXPECT_CALL(dataIface, getSystemNames).WillOnce(ReturnRef(names));
 
     UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error, dataIface);
 

@@ -30,7 +30,6 @@ namespace fs = std::filesystem;
 
 using ::testing::NiceMock;
 using ::testing::Return;
-using ::testing::ReturnRef;
 
 class TestLogger
 {
@@ -883,7 +882,7 @@ TEST_F(ManagerTest, TestServiceIndicators)
         std::vector<std::string> names{"systemA"};
         EXPECT_CALL(*mockIface, getSystemNames)
             .Times(1)
-            .WillOnce(ReturnRef(names));
+            .WillOnce(Return(names));
 
         EXPECT_CALL(*mockIface, expandLocationCode("P42-C23", 0))
             .WillOnce(Return("U42-P42-C23"));

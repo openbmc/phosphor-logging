@@ -26,7 +26,6 @@ using ::testing::_;
 using ::testing::InvokeWithoutArgs;
 using ::testing::NiceMock;
 using ::testing::Return;
-using ::testing::ReturnRef;
 using ::testing::SetArgReferee;
 using ::testing::Throw;
 namespace fs = std::filesystem;
@@ -537,7 +536,7 @@ TEST_F(SRCTest, RegistryCalloutTest)
         NiceMock<MockDataInterface> dataIface;
         std::vector<std::string> names{"systemA"};
 
-        EXPECT_CALL(dataIface, getSystemNames).WillOnce(ReturnRef(names));
+        EXPECT_CALL(dataIface, getSystemNames).WillOnce(Return(names));
 
         SRC src{entry, ad, dataIface};
 
@@ -574,7 +573,7 @@ TEST_F(SRCTest, RegistryCalloutTest)
         std::vector<std::string> names{"systemB"};
 
         EXPECT_CALL(dataIface, expandLocationCode).WillOnce(Return("P0-C8"));
-        EXPECT_CALL(dataIface, getSystemNames).WillOnce(ReturnRef(names));
+        EXPECT_CALL(dataIface, getSystemNames).WillOnce(Return(names));
 
         SRC src{entry, ad, dataIface};
 
@@ -611,7 +610,7 @@ TEST_F(SRCTest, RegistryCalloutTest)
         NiceMock<MockDataInterface> dataIface;
         std::vector<std::string> names{"systemC"};
 
-        EXPECT_CALL(dataIface, getSystemNames).WillOnce(ReturnRef(names));
+        EXPECT_CALL(dataIface, getSystemNames).WillOnce(Return(names));
 
         EXPECT_CALL(dataIface, expandLocationCode("P0-C8", 0))
             .WillOnce(Return("UXXX-P0-C8"));
@@ -707,7 +706,7 @@ TEST_F(SRCTest, SymbolicFRUWithInvPathTest)
         NiceMock<MockDataInterface> dataIface;
         std::vector<std::string> names{"systemA"};
 
-        EXPECT_CALL(dataIface, getSystemNames).WillOnce(ReturnRef(names));
+        EXPECT_CALL(dataIface, getSystemNames).WillOnce(Return(names));
 
         EXPECT_CALL(dataIface, getLocationCode("motherboard"))
             .Times(1)
@@ -760,7 +759,7 @@ TEST_F(SRCTest, SymbolicFRUWithInvPathTest)
         NiceMock<MockDataInterface> dataIface;
         std::vector<std::string> names{"systemA"};
 
-        EXPECT_CALL(dataIface, getSystemNames).WillOnce(ReturnRef(names));
+        EXPECT_CALL(dataIface, getSystemNames).WillOnce(Return(names));
 
         SRC src{entry, ad, dataIface};
 
@@ -825,7 +824,7 @@ TEST_F(SRCTest, DevicePathCalloutTest)
 
     EXPECT_CALL(dataIface, getSystemNames)
         .Times(5)
-        .WillRepeatedly(ReturnRef(names));
+        .WillRepeatedly(Return(names));
 
     EXPECT_CALL(dataIface, getInventoryFromLocCode("P1-C40", 0, false))
         .Times(3)

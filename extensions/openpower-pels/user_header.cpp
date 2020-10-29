@@ -69,24 +69,19 @@ UserHeader::UserHeader(const message::Entry& entry,
     else
     {
         // Find the severity possibly dependent on the system type.
-        auto sev =
-            getSeverity(entry.severity.value(), dataIface.getSystemNames());
+        auto sev = getSeverity(entry.severity.value(), dataIface);
         if (sev)
         {
             _eventSeverity = *sev;
         }
         else
         {
-            // Someone screwed up the message registry.
+            // Either someone  screwed up the message registry
+            // or getSystemNames failed.
             std::string types;
-            const auto& compatibles = dataIface.getSystemNames();
-            std::for_each(compatibles.begin(), compatibles.end(),
-                          [&types](const auto& t) { types += t + '|'; });
-
             log<level::ERR>(
-                "No severity entry found for this error and system name",
-                phosphor::logging::entry("ERROR=%s", entry.name.c_str()),
-                phosphor::logging::entry("SYSTEMNAMES=%s", types.c_str()));
+                "Failed finding the severity in the message registry",
+                phosphor::logging::entry("ERROR=%s", entry.name.c_str()));
 
             // Have to choose something, just use informational.
             _eventSeverity = 0;
@@ -199,9 +194,27 @@ std::optional<std::string> UserHeader::getJSON() const
 
 std::optional<uint8_t> UserHeader::getSeverity(
     const std::vector<message::RegistrySeverity>& severities,
-    const std::vector<std::string>& systemNames) const
+    const DataInterfaceBase& dataIface) const
 {
     const uint8_t* s = nullptr;
+    std::vector<std::string> systemNames;
+
+    // getSystemNames makes D-Bus calls, so only call it if we
+    // know we'll need it because there is a system name in the sev list
+    if (std::any_of(severities.begin(), severities.end(),
+                    [](const auto& sev) { return !sev.system.empty(); }))
+    {
+        try
+        {
+            systemNames = dataIface.getSystemNames();
+        }
+        catch (const std::exception& e)
+        {
+            log<level::ERR>("Failed trying to look up system names on D-Bus",
+                            entry("ERROR=%s", e.what()));
+            return std::nullopt;
+        }
+    }
 
     // Find the severity to use for this system type, or use the default
     // entry (where no system type is specified).

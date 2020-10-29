@@ -34,8 +34,7 @@ class MockDataInterface : public DataInterfaceBase
                 (const override));
     MOCK_METHOD(std::string, getLocationCode, (const std::string&),
                 (const override));
-    MOCK_METHOD(const std::vector<std::string>&, getSystemNames, (),
-                (const override));
+    MOCK_METHOD(std::vector<std::string>, getSystemNames, (), (const override));
     MOCK_METHOD(std::string, expandLocationCode, (const std::string&, uint16_t),
                 (const override));
     MOCK_METHOD(std::string, getInventoryFromLocCode,

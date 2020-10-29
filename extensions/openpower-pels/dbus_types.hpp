@@ -19,5 +19,7 @@ using DBusInterfaceList = std::vector<DBusInterface>;
 using DBusPathList = std::vector<DBusPath>;
 using DBusPropertyMap = std::map<DBusProperty, DBusValue>;
 using DBusInterfaceMap = std::map<DBusInterface, DBusPropertyMap>;
+using DBusSubTree =
+    std::map<DBusPath, std::map<DBusService, DBusInterfaceList>>;
 
 } // namespace openpower::pels
