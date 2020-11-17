@@ -475,63 +475,74 @@
         {
             "Name": "org.open_power.HwDiags.Error.Checkstop",
             "Subsystem": "cec_hardware",
-            "Severity": "critical",
+            "ActionFlags": [ "service_action", "report", "call_home" ],
 
             "SRC":
             {
-                "ReasonCode": "0xE504",
+                "ReasonCode": "0xE510",
+                "SymptomIDFields": [ "SRCWord6", "SRCWord7", "SRCWord8" ],
                 "Words6To9":
                 {
                     "6":
                     {
-                        "Description": "Chip ID",
-                        "AdditionalDataPropSource": "CHIP_ID"
+                        "Description": "[0:15] chip model, [16:23] reserved, [24:31] chip EC level",
+                        "AdditionalDataPropSource": "SRC6"
+                    },
+                    "7":
+                    {
+                        "Description": "[0:15] chip position, [16:23] unused, [24:31] signature attn type",
+                        "AdditionalDataPropSource": "SRC7"
                     },
                     "8":
                     {
-                        "Description": "Error Signature",
-                        "AdditionalDataPropSource": "SIGNATURE"
+                        "Description": "[0:15] signature ID, [16:23] signature instance, [24:31] signature bit position",
+                        "AdditionalDataPropSource": "SRC8"
                     }
                 }
             },
 
             "Documentation":
             {
-                "Description": "A checkstop condition has been detected",
-                "MessageArgSources" : ["SRCWord6", "SRCWord8"],
-                "Message": "Checkstop: Chip %1, Signature %2",
-                "Notes": [
-                    "This entry is for any checkstop event reported by ",
-                    "the hardware diagnostics component."
-                ]
+                "Description": "A system checkstop attention has occurred",
+                "MessageArgSources" : [ "SRCWord6", "SRCWord7", "SRCWord8" ],
+                "Message": "hw-diags signature: %1 %2 %3"
             }
         },
 
         {
-            "Name": "org.open_power.HwDiags.Error.Fail",
-            "Subsystem": "bmc_firmware",
-            "Severity": "diagnostic_error",
+            "Name": "org.open_power.HwDiags.Error.Predictive",
+            "Subsystem": "cec_hardware",
+            "ActionFlags": [ "service_action", "report", "call_home" ],
 
             "SRC":
             {
-                "ReasonCode": "0xE580",
+                "ReasonCode": "0xE511",
+                "SymptomIDFields": [ "SRCWord6", "SRCWord7", "SRCWord8" ],
                 "Words6To9":
                 {
                     "6":
                     {
-                        "Description": "Error code from hardware diagnostics",
-                        "AdditionalDataPropSource": "ERROR_CODE"
+                        "Description": "[0:15] chip model, [16:23] reserved, [24:31] chip EC level",
+                        "AdditionalDataPropSource": "SRC6"
+                    },
+                    "7":
+                    {
+                        "Description": "[0:15] chip position, [16:23] unused, [24:31] signature attn type",
+                        "AdditionalDataPropSource": "SRC7"
+                    },
+                    "8":
+                    {
+                        "Description": "[0:15] signature ID, [16:23] signature instance, [24:31] signature bit position",
+                        "AdditionalDataPropSource": "SRC8"
                     }
                 }
             },
+
             "Documentation":
             {
-                "Description": "Hardware diagnostics encountered an error",
-                "MessageArgSources" : ["SRCWord6"],
-                "Message": "Hardware diagnostics error %1",
-                "Notes": [
-                    "Hardware diagnostics will provide error code"
-                ]
+                "Description": "A hardware attention requiring service has occurred",
+                "MessageArgSources" : [ "SRCWord6", "SRCWord7", "SRCWord8" ],
+                "Message": "hw-diags signature: %1 %2 %3"
             }
         },
 
