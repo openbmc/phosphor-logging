@@ -475,7 +475,7 @@
         {
             "Name": "org.open_power.HwDiags.Error.Checkstop",
             "Subsystem": "cec_hardware",
-            "Severity": "critical",
+            "ActionFlags": [ "service_action", "report", "call_home" ],
 
             "SRC":
             {
@@ -484,13 +484,18 @@
                 {
                     "6":
                     {
-                        "Description": "Chip ID",
-                        "AdditionalDataPropSource": "CHIP_ID"
+                        "Description": "[0:15] chip model, [16:23] reserved, [24:31] chip EC level",
+                        "AdditionalDataPropSource": "WORD6"
+                    },
+                    "7":
+                    {
+                        "Description": "[0:7] primary attn type, [8:15] secondary attn type, [16:31] chip position",
+                        "AdditionalDataPropSource": "WORD7"
                     },
                     "8":
                     {
-                        "Description": "Error Signature",
-                        "AdditionalDataPropSource": "SIGNATURE"
+                        "Description": "[0:15] node ID, [16:23] node instance, [24:31] node bit position",
+                        "AdditionalDataPropSource": "WORD8"
                     }
                 }
             },
