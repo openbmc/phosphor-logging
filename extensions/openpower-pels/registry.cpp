@@ -220,7 +220,7 @@ std::optional<std::map<SRC::WordNum, SRC::AdditionalDataField>>
         }
 
         auto attributes = word.value();
-        std::string adPropName = attributes["AdditionalDataPropSource"];
+        std::string adPropName = attributes["Description"];
         hexwordFields[wordNum] = std::move(adPropName);
     }
 

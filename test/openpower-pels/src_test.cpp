@@ -301,8 +301,8 @@ TEST_F(SRCTest, MessageSubstitutionTest)
     message::Registry registry{path};
     auto entry = registry.lookup("0xABCD", message::LookupType::reasonCode);
 
-    std::vector<std::string> adData{"COMPID=0x1", "FREQUENCY=0x4",
-                                    "DURATION=30", "ERRORCODE=0x01ABCDEF"};
+    std::vector<std::string> adData{"Component ID=0x1", "Failure count=0x4",
+                                    "Time period=30", "Error code=0x01ABCDEF"};
     AdditionalData ad{adData};
     NiceMock<MockDataInterface> dataIface;
 
