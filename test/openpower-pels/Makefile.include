@@ -183,7 +183,8 @@ registry_test_LDADD = \
 	$(test_ldadd) \
 	$(pel_test_utils_ldadd) \
 	$(top_builddir)/extensions/openpower-pels/registry.o \
-	$(top_builddir)/extensions/openpower-pels/pel_values.o
+	$(top_builddir)/extensions/openpower-pels/pel_values.o \
+	$(top_builddir)/extensions/openpower-pels/json_utils.o
 registry_test_LDFLAGS = $(test_ldflags)
 
 severity_test_SOURCES = %reldir%/severity_test.cpp
