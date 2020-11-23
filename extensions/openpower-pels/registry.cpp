@@ -15,6 +15,7 @@
  */
 #include "registry.hpp"
 
+#include "json_utils.hpp"
 #include "pel_types.hpp"
 #include "pel_values.hpp"
 
@@ -220,8 +221,9 @@ std::optional<std::map<SRC::WordNum, SRC::AdditionalDataField>>
         }
 
         auto attributes = word.value();
-        std::string adPropName = attributes["AdditionalDataPropSource"];
-        hexwordFields[wordNum] = std::move(adPropName);
+        std::vector<std::string> adPropSourceDesc = {
+            attributes["AdditionalDataPropSource"], attributes["Description"]};
+        hexwordFields[wordNum] = std::move(adPropSourceDesc);
     }
 
     if (!hexwordFields.empty())

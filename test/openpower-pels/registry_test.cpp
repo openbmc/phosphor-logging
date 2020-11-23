@@ -76,13 +76,13 @@ const auto registryData = R"(
                 {
                     "6":
                     {
-                        "description": "Failing unit number",
+                        "Description": "Failing unit number",
                         "AdditionalDataPropSource": "PS_NUM"
                     },
 
                     "7":
                     {
-                        "description": "bad voltage",
+                        "Description": "bad voltage",
                         "AdditionalDataPropSource": "VOLTAGE"
                     }
                 }
@@ -180,11 +180,11 @@ TEST_F(RegistryTest, TestFindEntry)
 
     auto word = (*hexwords).find(6);
     EXPECT_NE(word, (*hexwords).end());
-    EXPECT_EQ(word->second, "PS_NUM");
+    EXPECT_EQ(word->second.at(0), "PS_NUM");
 
     word = (*hexwords).find(7);
     EXPECT_NE(word, (*hexwords).end());
-    EXPECT_EQ(word->second, "VOLTAGE");
+    EXPECT_EQ(word->second.at(0), "VOLTAGE");
 
     auto& sid = entry->src.symptomID;
     EXPECT_TRUE(sid);
@@ -296,6 +296,7 @@ TEST_F(RegistryTest, TestGetSRCHexwordFields)
       {
         "8":
         {
+            "Description": "TEST",
             "AdditionalDataPropSource": "TEST"
         }
       }
@@ -311,6 +312,7 @@ TEST_F(RegistryTest, TestGetSRCHexwordFields)
       {
         "R":
         {
+            "Description": "TEST",
             "AdditionalDataPropSource": "TEST"
         }
       }

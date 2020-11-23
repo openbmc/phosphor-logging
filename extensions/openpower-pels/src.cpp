@@ -343,7 +343,7 @@ void SRC::setUserDefinedHexWords(const message::Entry& regEntry,
     }
 
     // Save the AdditionalData value corresponding to the
-    // adName key in _hexData[wordNum].
+    // adName[0] key in _hexData[wordNum].
     for (const auto& [wordNum, adName] : *regEntry.src.hexwordADFields)
     {
         // Can only set words 6 - 9
@@ -355,7 +355,7 @@ void SRC::setUserDefinedHexWords(const message::Entry& regEntry,
             continue;
         }
 
-        auto value = ad.getValue(adName);
+        auto value = ad.getValue(adName[0]);
         if (value)
         {
             _hexData[getWordIndexFromWordNum(wordNum)] =
@@ -364,7 +364,7 @@ void SRC::setUserDefinedHexWords(const message::Entry& regEntry,
         else
         {
             std::string msg =
-                "Source for user data SRC word not found: " + adName;
+                "Source for user data SRC word not found: " + adName[0];
             addDebugData(msg);
         }
     }
@@ -454,15 +454,17 @@ std::optional<std::string> SRC::getErrorDetails(message::Registry& registry,
             }
             if (entry->src.hexwordADFields)
             {
-                std::map<size_t, std::string> adFields =
+                std::map<size_t, std::vector<std::string>> adFields =
                     entry->src.hexwordADFields.value();
                 for (const auto& hexwordMap : adFields)
                 {
-                    jsonInsert(errorOut, hexwordMap.second,
-                               getNumberString("0x%X",
-                                               _hexData[getWordIndexFromWordNum(
-                                                   hexwordMap.first)]),
-                               2);
+                    std::vector<std::string> valueDescr;
+                    valueDescr.push_back(getNumberString(
+                        "0x%X",
+                        _hexData[getWordIndexFromWordNum(hexwordMap.first)]));
+                    valueDescr.push_back(hexwordMap.second.at(1));
+                    jsonInsertArray(errorOut, hexwordMap.second.at(0),
+                                    valueDescr, 2);
                 }
             }
             errorOut.erase(errorOut.size() - 2);
