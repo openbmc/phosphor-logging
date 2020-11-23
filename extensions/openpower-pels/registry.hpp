@@ -99,10 +99,13 @@ struct SRC
      *        SRC hexwords.
      *
      * For example, if the AdditionalData event log property contained
-     * "CHIPNUM=42" and this map contained {6, CHIPNUM}, then the code
-     * would put 42 into SRC hexword 6.
+     * "CHIPNUM=42" and this map contained {6, {"CHIPNUM", "DESC"}}, then the
+     * code would put 42 into SRC hexword 6.
+     *
+     * AdditionalDataField specifies two fields from the SRC entry in the
+     * message registry: "AdditionalDataPropSource" and "Description"
      */
-    using AdditionalDataField = std::string;
+    using AdditionalDataField = std::tuple<std::string, std::string>;
     std::optional<std::map<WordNum, AdditionalDataField>> hexwordADFields;
 
     SRC() : type(0), reasonCode(0)

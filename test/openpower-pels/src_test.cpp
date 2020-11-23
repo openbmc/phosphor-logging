@@ -190,11 +190,12 @@ TEST_F(SRCTest, CreateTestNoCallouts)
     entry.src.reasonCode = 0xABCD;
     entry.subsystem = 0x42;
     entry.src.powerFault = true;
-    entry.src.hexwordADFields = {{5, "TEST1"}, // Not a user defined word
-                                 {6, "TEST1"},
-                                 {7, "TEST2"},
-                                 {8, "TEST3"},
-                                 {9, "TEST4"}};
+    entry.src.hexwordADFields = {
+        {5, {"TEST1", "DESCR1"}}, // Not a user defined word
+        {6, {"TEST1", "DESCR1"}},
+        {7, {"TEST2", "DESCR2"}},
+        {8, {"TEST3", "DESCR3"}},
+        {9, {"TEST4", "DESCR4"}}};
 
     // Values for the SRC words pointed to above
     std::vector<std::string> adData{"TEST1=0x12345678", "TEST2=12345678",
@@ -315,7 +316,6 @@ TEST_F(SRCTest, MessageSubstitutionTest)
         errorDetails.value(),
         "Comp 0x1 failed 0x4 times over 0x1E secs with ErrorCode 0x1ABCDEF");
 }
-
 // Test that an inventory path callout string is
 // converted into the appropriate FRU callout.
 TEST_F(SRCTest, InventoryCalloutTest)

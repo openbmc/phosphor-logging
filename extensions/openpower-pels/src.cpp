@@ -342,8 +342,8 @@ void SRC::setUserDefinedHexWords(const message::Entry& regEntry,
         return;
     }
 
-    // Save the AdditionalData value corresponding to the
-    // adName key in _hexData[wordNum].
+    // Save the AdditionalData value corresponding to the first element of
+    // adName tuple into _hexData[wordNum].
     for (const auto& [wordNum, adName] : *regEntry.src.hexwordADFields)
     {
         // Can only set words 6 - 9
@@ -355,7 +355,7 @@ void SRC::setUserDefinedHexWords(const message::Entry& regEntry,
             continue;
         }
 
-        auto value = ad.getValue(adName);
+        auto value = ad.getValue(std::get<0>(adName));
         if (value)
         {
             _hexData[getWordIndexFromWordNum(wordNum)] =
@@ -363,8 +363,8 @@ void SRC::setUserDefinedHexWords(const message::Entry& regEntry,
         }
         else
         {
-            std::string msg =
-                "Source for user data SRC word not found: " + adName;
+            std::string msg = "Source for user data SRC word not found: " +
+                              std::get<0>(adName);
             addDebugData(msg);
         }
     }
@@ -454,15 +454,17 @@ std::optional<std::string> SRC::getErrorDetails(message::Registry& registry,
             }
             if (entry->src.hexwordADFields)
             {
-                std::map<size_t, std::string> adFields =
-                    entry->src.hexwordADFields.value();
+                std::map<size_t, std::tuple<std::string, std::string>>
+                    adFields = entry->src.hexwordADFields.value();
                 for (const auto& hexwordMap : adFields)
                 {
-                    jsonInsert(errorOut, hexwordMap.second,
-                               getNumberString("0x%X",
-                                               _hexData[getWordIndexFromWordNum(
-                                                   hexwordMap.first)]),
-                               2);
+                    std::vector<std::string> valueDescr;
+                    valueDescr.push_back(getNumberString(
+                        "0x%X",
+                        _hexData[getWordIndexFromWordNum(hexwordMap.first)]));
+                    valueDescr.push_back(std::get<1>(hexwordMap.second));
+                    jsonInsertArray(errorOut, std::get<0>(hexwordMap.second),
+                                    valueDescr, 2);
                 }
             }
             errorOut.erase(errorOut.size() - 2);
