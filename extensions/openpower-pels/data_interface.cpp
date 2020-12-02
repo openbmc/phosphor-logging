@@ -20,7 +20,7 @@
 #include "util.hpp"
 
 #include <fstream>
-#include <xyz/openbmc_project/State/OperatingSystem/Status/server.hpp>
+#include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
 
 namespace openpower
 {
@@ -54,7 +54,7 @@ namespace interface
 constexpr auto dbusProperty = "org.freedesktop.DBus.Properties";
 constexpr auto objectMapper = "xyz.openbmc_project.ObjectMapper";
 constexpr auto invAsset = "xyz.openbmc_project.Inventory.Decorator.Asset";
-constexpr auto osStatus = "xyz.openbmc_project.State.OperatingSystem.Status";
+constexpr auto bootProgress = "xyz.openbmc_project.State.Boot.Progress";
 constexpr auto pldmRequester = "xyz.openbmc_project.PLDM.Requester";
 constexpr auto enable = "xyz.openbmc_project.Object.Enable";
 constexpr auto bmcState = "xyz.openbmc_project.State.BMC";
@@ -71,7 +71,7 @@ constexpr auto association = "xyz.openbmc_project.Association";
 constexpr auto ledGroup = "xyz.openbmc_project.Led.Group";
 } // namespace interface
 
-using namespace sdbusplus::xyz::openbmc_project::State::OperatingSystem::server;
+using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
 using sdbusplus::exception::SdBusError;
 
 DataInterface::DataInterface(sdbusplus::bus::bus& bus) : _bus(bus)
@@ -98,15 +98,16 @@ DataInterface::DataInterface(sdbusplus::bus::bus& bus) : _bus(bus)
             }
         }));
 
-    // Watch the OperatingSystemState property
+    // Watch the BootProgress property
     _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
-        bus, object_path::hostState, interface::osStatus,
-        "OperatingSystemState", *this, [this](const auto& value) {
-            auto status =
-                Status::convertOSStatusFromString(std::get<std::string>(value));
+        bus, object_path::hostState, interface::bootProgress, "BootProgress",
+        *this, [this](const auto& value) {
+            auto status = Progress::convertProgressStagesFromString(
+                std::get<std::string>(value));
 
-            if ((status == Status::OSStatus::BootComplete) ||
-                (status == Status::OSStatus::Standby))
+            if ((status == Progress::ProgressStages::SystemInitComplete) ||
+                (status == Progress::ProgressStages::OSStart) ||
+                (status == Progress::ProgressStages::OSRunning))
             {
                 setHostUp(true);
             }
