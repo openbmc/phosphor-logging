@@ -7,6 +7,7 @@
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/object.hpp>
 #include <xyz/openbmc_project/Association/Definitions/server.hpp>
+#include <xyz/openbmc_project/Common/FilePath/server.hpp>
 
 namespace phosphor
 {
@@ -17,7 +18,8 @@ using EntryIfaces = sdbusplus::server::object::object<
     sdbusplus::xyz::openbmc_project::Logging::server::Entry,
     sdbusplus::xyz::openbmc_project::Object::server::Delete,
     sdbusplus::xyz::openbmc_project::Association::server::Definitions,
-    sdbusplus::xyz::openbmc_project::Software::server::Version>;
+    sdbusplus::xyz::openbmc_project::Software::server::Version,
+    sdbusplus::xyz::openbmc_project::Common::server::FilePath>;
 
 using AssociationList =
     std::vector<std::tuple<std::string, std::string, std::string>>;

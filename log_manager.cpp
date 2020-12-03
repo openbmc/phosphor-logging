@@ -231,7 +231,8 @@ void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
                                      errLvl, std::move(errMsg),
                                      std::move(additionalData),
                                      std::move(objects), fwVersion, *this);
-    serialize(*e);
+    auto path = serialize(*e);
+    e->path(path);
 
     if (isQuiesceOnErrorEnabled() && isCalloutPresent(*e))
     {
@@ -570,6 +571,7 @@ void Manager::restore()
             // validate the restored error entry id
             if (sanity(static_cast<uint32_t>(idNum), e->id()))
             {
+                e->path(file.path());
                 e->emit_object_added();
                 if (e->severity() >= Entry::sevLowerLimit)
                 {
