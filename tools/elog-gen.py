@@ -86,9 +86,12 @@ def get_meta_yaml_file(i_error_yaml_file):
 
 def get_cpp_type(i_type):
     typeMap = {
+        'boolean': 'bool',
+        'int8': 'int8_t',
         'int16': 'int16_t',
         'int32': 'int32_t',
         'int64': 'int64_t',
+        'uint8': 'uint8_t',
         'uint16': 'uint16_t',
         'uint32': 'uint32_t',
         'uint64': 'uint64_t',
