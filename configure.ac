@@ -122,6 +122,8 @@ AC_DEFINE(FIRST_CEREAL_CLASS_VERSION_WITH_FWLEVEL, "2",
 
 AC_DEFINE(FIRST_CEREAL_CLASS_VERSION_WITH_UPDATE_TS, "3",
           [First Cereal class version with the update timestamp persisted])
+AC_DEFINE(FIRST_CEREAL_CLASS_VERSION_WITH_FILE_PATH, "4",
+          [First Cereal class version with the error log file path persisted])
 
 AC_ARG_VAR(YAML_DIR_TEST, [The path to the test error yaml files.])
 AS_IF([test "x$YAML_DIR_TEST" == "x"], \
@@ -161,7 +163,7 @@ AC_DEFINE_UNQUOTED([ERROR_INFO_CAP], [$ERROR_INFO_CAP], \
     [Cap on informational (and below) severity errors])
 
 AC_ARG_VAR(CLASS_VERSION, [Class version to register with Cereal])
-AS_IF([test "x$CLASS_VERSION" == "x"], [CLASS_VERSION=3])
+AS_IF([test "x$CLASS_VERSION" == "x"], [CLASS_VERSION=4])
 AC_DEFINE_UNQUOTED([CLASS_VERSION], [$CLASS_VERSION], [Class version to register with Cereal])
 
 AC_ARG_VAR(RSYSLOG_SERVER_CONFIG_FILE, \

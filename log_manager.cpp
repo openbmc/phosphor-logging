@@ -231,6 +231,8 @@ void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
                                      errLvl, std::move(errMsg),
                                      std::move(additionalData),
                                      std::move(objects), fwVersion, *this);
+    auto ePath = serialize(*e);
+    e->path(ePath);
     serialize(*e);
 
     if (isQuiesceOnErrorEnabled() && isCalloutPresent(*e))

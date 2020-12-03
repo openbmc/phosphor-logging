@@ -22,6 +22,8 @@ TEST_F(TestSerialization, testProperties)
         Entry::Level::Informational, std::move(message), std::move(testData),
         std::move(assocations), fwLevel, manager);
     auto path = serialize(*input, TestSerialization::dir);
+    input->path(path);
+    path = serialize(*input, TestSerialization::dir);
 
     auto idStr = path.filename().c_str();
     id = std::stol(idStr);
@@ -39,6 +41,7 @@ TEST_F(TestSerialization, testProperties)
     EXPECT_EQ(input->version(), output->version());
     EXPECT_EQ(input->purpose(), output->purpose());
     EXPECT_EQ(input->updateTimestamp(), output->updateTimestamp());
+    EXPECT_EQ(input->path(), output->path());
 }
 
 } // namespace test
