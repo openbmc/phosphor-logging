@@ -172,6 +172,65 @@ void log(Msg msg, Entry... e)
     details::log(log_tuple);
 }
 
+enum class SensorAssertion : bool
+{
+    asserted = true,
+    deasserted = false,
+};
+
+// The selTuple collects information needed to add a new IPMI SEL record to
+// the journal.  The selTuple consists of the following objects which are
+// used to populate various bytes of data required in an IPMI SEL record:
+//     std::string: The path of the IPMI sensor
+//     std::vector<uint8_t>: Up to three bytes of event data
+//     SensorAssertion: Indicator of the direction of the event
+using selTuple = std::tuple<std::string, std::vector<uint8_t>, SensorAssertion>;
+
+template <level L, typename Msg>
+void log(Msg msg, selTuple&& selInfo)
+{
+    static_assert((std::is_same<const char*, std::decay_t<Msg>>::value ||
+                   std::is_same<char*, std::decay_t<Msg>>::value),
+                  "First parameter must be a C-string.");
+
+    static constexpr char const* ipmiSELObject =
+        "xyz.openbmc_project.Logging.IPMI";
+    static constexpr char const* ipmiSELPath =
+        "/xyz/openbmc_project/Logging/IPMI";
+    static constexpr char const* ipmiSELAddInterface =
+        "xyz.openbmc_project.Logging.IPMI";
+    static constexpr const uint16_t ipmiBMCSlaveAddr = 0x20;
+
+    sdbusplus::bus::bus dbus = sdbusplus::bus::new_default_system();
+
+    auto [sensorPath, selData, sensorAssertion] = selInfo;
+
+    sdbusplus::message::message writeSEL = dbus.new_method_call(
+        ipmiSELObject, ipmiSELPath, ipmiSELAddInterface, "IpmiSelAdd");
+    writeSEL.append(std::string(msg), sensorPath, selData,
+                    static_cast<bool>(sensorAssertion), ipmiBMCSlaveAddr);
+    try
+    {
+        sdbusplus::message::message writeSELResp = dbus.call(writeSEL);
+    }
+    catch (sdbusplus::exception_t& e)
+    {
+        log<level::ERR>(e.what());
+        return;
+    }
+}
+
+static inline auto ipmiSelEntry(std::string&& path,
+                                std::vector<uint8_t>&& selData,
+                                SensorAssertion&& sensorAssertion)
+{
+    const selTuple selInfo =
+        std::make_tuple(std::forward<std::string>(path),
+                        std::forward<std::vector<uint8_t>>(selData),
+                        std::forward<SensorAssertion>(sensorAssertion));
+    return selInfo;
+}
+
 } // namespace logging
 
 } // namespace phosphor
