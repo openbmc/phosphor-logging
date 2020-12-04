@@ -233,18 +233,21 @@ void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
                                      std::move(objects), fwVersion, *this);
     auto ePath = serialize(*e);
     e->path(ePath);
-    serialize(*e);
 
     if (isQuiesceOnErrorEnabled() && isCalloutPresent(*e))
     {
         quiesceOnError(entryId);
     }
 
-    doExtensionLogCreate(*e, ffdc);
+    // Add entry before calling the extensions so that they have access to it
+    entries.insert(std::make_pair(entryId, std::move(e)));
+
+    doExtensionLogCreate(*entries.find(entryId)->second, ffdc);
 
     // Note: No need to close the file descriptors in the FFDC.
 
-    entries.insert(std::make_pair(entryId, std::move(e)));
+    // Call serialize at the end to save any modified field, like path
+    serialize(*entries.find(entryId)->second);
 }
 
 bool Manager::isQuiesceOnErrorEnabled()
