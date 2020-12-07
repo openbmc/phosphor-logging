@@ -55,6 +55,10 @@ class Manager : public PELInterface
         _event(sdeventplus::Event::get_default()),
         _dataIface(std::move(dataIface))
     {
+        for (const auto& entry : _logManager.entries)
+        {
+            setEntryPath(entry.first);
+        }
         setupPELDeleteWatch();
     }
 
@@ -323,6 +327,14 @@ class Manager : public PELInterface
      * @param[in] pel - The PEL to check
      */
     void checkPelAndQuiesce(std::unique_ptr<openpower::pels::PEL>& pel);
+
+    /**
+     * @brief Sets the FilePath of the specified error log entry to the PEL file
+     *        path.
+     *
+     * @param[in] obmcLogID - The OpenBMC entry log ID
+     */
+    void setEntryPath(uint32_t obmcLogID);
 
     /**
      * @brief Reference to phosphor-logging's Manager class

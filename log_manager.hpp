@@ -231,6 +231,9 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     void checkAndRemoveBlockingError(uint32_t entryId);
 
+    /** @brief Persistent map of Entry dbus objects and their ID */
+    std::map<uint32_t, std::unique_ptr<Entry>> entries;
+
   private:
     /*
      * @fn _commit()
@@ -310,9 +313,6 @@ class Manager : public details::ServerObject<details::ManagerIface>
 
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus::bus& busLog;
-
-    /** @brief Persistent map of Entry dbus objects and their ID */
-    std::map<uint32_t, std::unique_ptr<Entry>> entries;
 
     /** @brief List of error ids for high severity errors */
     std::list<uint32_t> realErrors;
