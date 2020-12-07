@@ -239,11 +239,12 @@ void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
         quiesceOnError(entryId);
     }
 
-    doExtensionLogCreate(*e, ffdc);
+    // Add entry before calling the extensions so that they have access to it
+    entries.insert(std::make_pair(entryId, std::move(e)));
+
+    doExtensionLogCreate(*entries.find(entryId)->second, ffdc);
 
     // Note: No need to close the file descriptors in the FFDC.
-
-    entries.insert(std::make_pair(entryId, std::move(e)));
 }
 
 bool Manager::isQuiesceOnErrorEnabled()

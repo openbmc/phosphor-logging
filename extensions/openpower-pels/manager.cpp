@@ -91,6 +91,8 @@ void Manager::create(const std::string& message, uint32_t obmcLogID,
                       associations, ffdc);
         }
     }
+
+    setEntryPath(obmcLogID);
 }
 
 void Manager::addRawPEL(const std::string& rawPelPath, uint32_t obmcLogID)
@@ -609,6 +611,20 @@ void Manager::checkPelAndQuiesce(std::unique_ptr<openpower::pels::PEL>& pel)
                          "and callout is present");
 
         _logManager.quiesceOnError(pel->obmcLogID());
+    }
+}
+
+void Manager::setEntryPath(uint32_t obmcLogID)
+{
+    Repository::LogID id{Repository::LogID::Obmc(obmcLogID)};
+    if (auto attributes = _repo.getPELAttributes(id); attributes)
+    {
+        auto attr = attributes.value().get();
+        auto entry = _logManager.entries.find(obmcLogID);
+        if (entry != _logManager.entries.end())
+        {
+            entry->second->path(attr.path);
+        }
     }
 }
 
