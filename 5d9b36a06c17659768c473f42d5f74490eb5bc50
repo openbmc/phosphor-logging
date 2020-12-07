@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f083d2d2_90d4f91c",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2020-12-07T18:37:48Z",
+      "side": 1,
+      "message": "I would say the path doesn\u0027t need to be even saved to a file, since we know the path here and then also on the restore.  But that would be harder for the PEL extension code to overwrite it.",
+      "revId": "5d9b36a06c17659768c473f42d5f74490eb5bc50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
