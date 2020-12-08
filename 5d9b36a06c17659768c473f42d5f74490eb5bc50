@@ -34,6 +34,24 @@
       "revId": "5d9b36a06c17659768c473f42d5f74490eb5bc50",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb13855b_40de9cab",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2020-12-08T02:49:55Z",
+      "side": 1,
+      "message": "Done. Makes sense. Changed it to be restored to the default path during deserialization. Then the extensions would overwrite this value when they start up because the extensions start up after deserialization is done (after log manager starts up).",
+      "parentUuid": "fd7a3822_5057c0ec",
+      "revId": "5d9b36a06c17659768c473f42d5f74490eb5bc50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
