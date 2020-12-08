@@ -16,6 +16,24 @@
       "revId": "1bb3e5ae0926ae7847c33e772878d7dc4bb92833",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "edeb30ba_cda3671b",
+        "filename": "log_manager.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2020-12-08T19:18:00Z",
+      "side": 1,
+      "message": "I started making the change, but when I got to the PEL manager constructor realized that it needs to loop through all the entries to restsore the paths, so we\u0027d also need a new public interface that would return the IDs of all the entries to be able to set the path for each one.",
+      "parentUuid": "e9bf1cc5_1a2d8310",
+      "revId": "1bb3e5ae0926ae7847c33e772878d7dc4bb92833",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
