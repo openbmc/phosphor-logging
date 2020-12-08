@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e9bf1cc5_1a2d8310",
+        "filename": "log_manager.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2020-12-08T18:53:43Z",
+      "side": 1,
+      "message": "Instead of making this public, you could also add a setEntryFilePath(entry, path) function to wrap setting the path.  I don\u0027t really feel that strongly though if nobody else does.",
+      "revId": "1bb3e5ae0926ae7847c33e772878d7dc4bb92833",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
