@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "84a313dc_bacb77ac",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 622,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2020-12-08T16:57:10Z",
+      "side": 1,
+      "message": "I don\u0027t think auto is a reference by default?  So probably better as auto\u0026",
+      "range": {
+        "startLine": 622,
+        "startChar": 8,
+        "endLine": 622,
+        "endChar": 13
+      },
+      "revId": "4daea80bcb95c958fc2187b582482bd2d433bacb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
