@@ -34,6 +34,24 @@
       "revId": "1bb3e5ae0926ae7847c33e772878d7dc4bb92833",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "455f6888_d3144804",
+        "filename": "log_manager.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2020-12-11T19:53:14Z",
+      "side": 1,
+      "message": "Therefore leaning towards leaving it as is unless there\u0027s additional feedback.",
+      "parentUuid": "edeb30ba_cda3671b",
+      "revId": "1bb3e5ae0926ae7847c33e772878d7dc4bb92833",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
