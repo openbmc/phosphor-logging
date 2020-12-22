@@ -398,6 +398,30 @@
         },
 
         {
+            "Name": "org.open_power.PHAL.Error.ProcPrePowerOff",
+            "Subsystem": "cec_hardware",
+            "ComponentID": "0x3000",
+            "Severity": "unrecoverable",
+
+            "SRC":
+            {
+                "ReasonCode": "0x3002",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "Failure occured during pre-poweroff for processor",
+                "Message": "Failure occured during pre-poweroff for processor",
+                "Notes": [
+                    "Debug traces will be captured in AdditionalData section"
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.Attn.Error.Terminate",
             "Subsystem": "other_na",
             "Severity": "critical_system_term",
