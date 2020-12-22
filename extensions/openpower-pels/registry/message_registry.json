@@ -399,6 +399,31 @@
         },
 
         {
+            "Name": "org.open_power.PHAL.Error.PrePowerOff",
+            "Subsystem": "cec_hardware",
+            "ComponentID": "0x3000",
+
+            "SRC":
+            {
+                "ReasonCode": "0x3002",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "Failure occurred during PHAL pre-poweroff operations",
+                "Message": "Failure occurred during PHAL pre-poweroff operations",
+                "Notes": [
+                    "Severity needs to be set based on needs for this registry.",
+                    "FFDC (First Failure Data Collection) will be collected ",
+                    "and added into PEL."
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.Processor.Error.SbeChipOpFailure",
             "Subsystem": "processor_chip",
             "ComponentID": "0x3500",
