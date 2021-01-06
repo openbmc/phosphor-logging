@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fdae0aa3_0db57ebe",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 1695,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-01-06T14:21:54Z",
+      "side": 1,
+      "message": "Can you move this up to be by the other 0x3000 error?",
+      "revId": "bf30416b9a2a4cc565dcda6805259f80e98b99b4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
