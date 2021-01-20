@@ -1546,6 +1546,105 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Sensor.Threshold.Error.HardShutdownAlarmHigh",
+            "Subsystem": "ambient_temp",
+            "ComponentID": "0x2800",
+            "Severity": "unrecoverable",
+            "ActionFlags": ["service_action", "report"],
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x7205",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                          "Priority": "high",
+                          "SymbolicFRU": "ambient_temp"
+                        }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "The ambient temperature passed the EPOW4 limit.",
+                "Message": "The ambient temperature passed the EPOW4 limit. The system will shut down",
+                "Notes": [
+                    "This error occurs when the ambient temperature surpassed",
+                    "the EPOW4 shutdown limit."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Sensor.Threshold.Error.SoftShutdownAlarmHigh",
+            "Subsystem": "ambient_temp",
+            "ComponentID": "0x2800",
+            "Severity": "unrecoverable",
+            "ActionFlags": ["service_action", "report"],
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x7203",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                          "Priority": "high",
+                          "SymbolicFRU": "ambient_temp"
+                        }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "The ambient temperature passed the EPOW3 limit.",
+                "Message": "The ambient temperature passed the EPOW3 limit. The system will shut down if temp doesn't decrease.",
+                "Notes": [
+                    "This error occurs when the ambient temperature surpassed",
+                    "the EPOW3 shutdown limit."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Sensor.Threshold.Error.SoftShutdownAlarmHighClear",
+            "Subsystem": "ambient_temp",
+            "ComponentID": "0x2800",
+            "Severity": "non_error",
+            "ActionFlags": ["report"],
+            "EventType": "env_normal",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x7204",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                          "Priority": "high",
+                          "SymbolicFRU": "ambient_temp_back"
+                        }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "The ambient temperature is back under the EPOW3 limit.",
+                "Message": "The ambient temperature is back under the EPOW3 limit."
+            }
+        },
+
+        {
             "Name": "com.ibm.VPD.Error.InvalidEepromPath",
             "Subsystem": "cec_vpd",
             "ComponentID": "0x4000",

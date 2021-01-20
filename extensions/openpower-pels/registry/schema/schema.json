@@ -293,7 +293,7 @@
             "description": "The event type PEL field. Optional and defaults to na",
             "type": "string",
             "enum": ["na", "misc_information_only", "tracing_event",
-                     "dump_notification"]
+                     "dump_notification", "env_normal"]
         },
 
         "powerFault":
@@ -438,7 +438,7 @@
         {
             "description": "The symbolic FRU callout.",
             "type": "string",
-            "enum": ["service_docs", "pwrsply", "air_mover", "pgood_part", "usb_pgood"]
+            "enum": ["service_docs", "pwrsply", "air_mover", "pgood_part", "usb_pgood", "ambient_temp", "ambient_temp_back", "ambient_perf_loss"]
         },
 
         "symbolicFRUTrusted":
