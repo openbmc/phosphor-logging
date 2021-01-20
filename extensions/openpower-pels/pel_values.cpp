@@ -176,7 +176,8 @@ const PELValues eventTypeValues = {
     {0x00, "na", "Not Applicable"},
     {0x01, "misc_information_only", "Miscellaneous, Informational Only"},
     {0x02, "tracing_event", "Tracing Event"},
-    {0x08, "dump_notification", "Dump Notification"}};
+    {0x08, "dump_notification", "Dump Notification"},
+    {0x30, "env_normal", "Customer environmental problem back to normal"}};
 
 /**
  * The possible values for the Event Scope field in the User Header.
@@ -223,10 +224,10 @@ const std::map<std::string, std::string> maintenanceProcedures = {
  *        actual names.
  */
 const std::map<std::string, std::string> symbolicFRUs = {
-    {"service_docs", "SVCDOCS"}, {"pwrsply", "PWRSPLY"},
-    {"air_mover", "AIRMOVR"},    {"pgood_part", "PGDPART"},
-    {"usb_pgood", "USBPGD"},
-};
+    {"service_docs", "SVCDOCS"},      {"pwrsply", "PWRSPLY"},
+    {"air_mover", "AIRMOVR"},         {"pgood_part", "PGDPART"},
+    {"usb_pgood", "USBPGD"},          {"ambient_temp", "AMBTEMP"},
+    {"ambient_temp_back", "AMBBACK"}, {"ambient_perf_loss", "AMBPERF"}};
 
 PELValues::const_iterator findByValue(uint32_t value, const PELValues& fields)
 {
