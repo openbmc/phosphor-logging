@@ -26,29 +26,35 @@ auto _prepareMsg(const char* funcName)
     return m;
 }
 
-void commit(const char* name)
+uint32_t commit(const char* name)
 {
     auto msg = _prepareMsg("Commit");
     uint64_t id = sdbusplus::server::transaction::get_id();
     msg.append(id, name);
     auto bus = sdbusplus::bus::new_default();
-    bus.call_noreply(msg);
+    auto reply = bus.call(msg);
+    uint32_t entryID;
+    reply.read(entryID);
+    return entryID;
 }
 
-void commit(const char* name, Entry::Level level)
+uint32_t commit(const char* name, Entry::Level level)
 {
     auto msg = _prepareMsg("CommitWithLvl");
     uint64_t id = sdbusplus::server::transaction::get_id();
     msg.append(id, name, static_cast<uint32_t>(level));
     auto bus = sdbusplus::bus::new_default();
-    bus.call_noreply(msg);
+    auto reply = bus.call(msg);
+    uint32_t entryID;
+    reply.read(entryID);
+    return entryID;
 }
 } // namespace details
 
-void commit(std::string&& name)
+uint32_t commit(std::string&& name)
 {
     log<level::ERR>("method is deprecated, use commit() with exception type");
-    phosphor::logging::details::commit(name.c_str());
+    return phosphor::logging::details::commit(name.c_str());
 }
 
 } // namespace logging
