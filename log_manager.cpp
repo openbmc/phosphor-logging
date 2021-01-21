@@ -66,17 +66,19 @@ int Manager::getInfoErrSize()
     return infoErrors.size();
 }
 
-void Manager::commit(uint64_t transactionId, std::string errMsg)
+uint32_t Manager::commit(uint64_t transactionId, std::string errMsg)
 {
     auto level = getLevel(errMsg);
     _commit(transactionId, std::move(errMsg), level);
+    return entryId;
 }
 
-void Manager::commitWithLvl(uint64_t transactionId, std::string errMsg,
-                            uint32_t errLvl)
+uint32_t Manager::commitWithLvl(uint64_t transactionId, std::string errMsg,
+                                uint32_t errLvl)
 {
     _commit(transactionId, std::move(errMsg),
             static_cast<Entry::Level>(errLvl));
+    return entryId;
 }
 
 void Manager::_commit(uint64_t transactionId, std::string&& errMsg,

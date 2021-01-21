@@ -18,6 +18,11 @@ methods:
           description: >
               The error exception message associated with the error
               event log to be committed.
+      returns:
+        - name: entryID
+          type: uint32
+          description: >
+            The ID of the entry.
     - name: CommitWithLvl
       description: >
           Write the requested error/event entry with its associated metadata
@@ -37,3 +42,8 @@ methods:
           type: uint32
           description: >
               The error level/severity indicator.
+      returns:
+        - name: entryID
+          type: uint32
+          description: >
+            The ID of the entry.

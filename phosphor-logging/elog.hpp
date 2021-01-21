@@ -96,12 +96,16 @@ using map_exception_type_t = typename map_exception_type<T>::type;
  *  @brief Create an error log entry based on journal
  *          entry with a specified exception name
  *  @param[in] name - name of the error exception
+ *
+ *  @return The entry ID
  */
-void commit(const char* name);
+uint32_t commit(const char* name);
 
 /** @fn commit() - override that accepts error level
+ *
+ *  @return The entry ID
  */
-void commit(const char* name, Entry::Level level);
+uint32_t commit(const char* name, Entry::Level level);
 
 } // namespace details
 
@@ -110,34 +114,40 @@ void commit(const char* name, Entry::Level level);
  *  @brief Create an error log entry based on journal
  *          entry with a specified MSG_ID
  *  @param[in] name - name of the error exception
+ *
+ *  @return The entry ID
  */
-void commit(std::string&& name);
+uint32_t commit(std::string&& name);
 
 /** @fn commit()
  *  @brief Create an error log entry based on journal
  *          entry with a specified MSG_ID
+ *
+ *  @return The entry ID
  */
 template <typename T>
-void commit()
+uint32_t commit()
 {
     // Validate if the exception is derived from sdbusplus::exception.
     static_assert(std::is_base_of<sdbusplus::exception::exception, T>::value,
                   "T must be a descendant of sdbusplus::exception::exception");
-    details::commit(T::errName);
+    return details::commit(T::errName);
 }
 
 /** @fn commit()
  *  @brief Create an error log entry based on journal
  *         entry with a specified MSG_ID. This override accepts error level.
  *  @param[in] level - level of the error
+ *
+ *  @return The entry ID
  */
 template <typename T>
-void commit(Entry::Level level)
+uint32_t commit(Entry::Level level)
 {
     // Validate if the exception is derived from sdbusplus::exception.
     static_assert(std::is_base_of<sdbusplus::exception::exception, T>::value,
                   "T must be a descendant of sdbusplus::exception::exception");
-    details::commit(T::errName, level);
+    return details::commit(T::errName, level);
 }
 
 /** @fn elog()
@@ -171,9 +181,11 @@ template <typename T, typename... Args>
  *         error log information and commit the error
  *  @tparam T - exception
  *  @param[in] i_args - Metadata fields to be added to the journal entry
+ *
+ *  @return The entry ID
  */
 template <typename T, typename... Args>
-void report(Args... i_args)
+uint32_t report(Args... i_args)
 {
     // validate if the exception is derived from sdbusplus::exception.
     static_assert(std::is_base_of<sdbusplus::exception::exception, T>::value,
@@ -188,7 +200,7 @@ void report(Args... i_args)
     log<details::map_exception_type_t<T>::L>(
         T::errDesc, details::deduce_entry_type<Args>{i_args}.get()...);
 
-    commit<T>();
+    return commit<T>();
 }
 
 /** @fn report()
@@ -198,9 +210,11 @@ void report(Args... i_args)
  *  @tparam T - exception
  *  @param[in] level - level of the error
  *  @param[in] i_args - Metadata fields to be added to the journal entry
+ *
+ *  @return The entry ID
  */
 template <typename T, typename... Args>
-void report(Entry::Level level, Args... i_args)
+uint32_t report(Entry::Level level, Args... i_args)
 {
     // validate if the exception is derived from sdbusplus::exception.
     static_assert(std::is_base_of<sdbusplus::exception::exception, T>::value,
@@ -215,7 +229,7 @@ void report(Entry::Level level, Args... i_args)
     log<details::map_exception_type_t<T>::L>(
         T::errDesc, details::deduce_entry_type<Args>{i_args}.get()...);
 
-    commit<T>(level);
+    return commit<T>(level);
 }
 
 } // namespace logging

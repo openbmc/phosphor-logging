@@ -79,7 +79,7 @@ class Manager : public details::ServerObject<details::ManagerIface>
      * @param[in] errMsg - The error exception message associated with the
      *                     error log to be committed.
      */
-    void commit(uint64_t transactionId, std::string errMsg) override;
+    uint32_t commit(uint64_t transactionId, std::string errMsg) override;
 
     /*
      * @fn commit()
@@ -92,8 +92,8 @@ class Manager : public details::ServerObject<details::ManagerIface>
      *                     error log to be committed.
      * @param[in] errLvl - level of the error
      */
-    void commitWithLvl(uint64_t transactionId, std::string errMsg,
-                       uint32_t errLvl) override;
+    uint32_t commitWithLvl(uint64_t transactionId, std::string errMsg,
+                           uint32_t errLvl) override;
 
     /** @brief Erase specified entry d-bus object
      *
