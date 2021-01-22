@@ -34,6 +34,24 @@
       "revId": "e7d271ae7ecf460b9c4b76caf9ba555f7d8a532e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7f08f6f7_429f81bc",
+        "filename": "elog.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-22T16:08:57Z",
+      "side": 0,
+      "message": "Sounds good to me.  Thanks for looking.",
+      "parentUuid": "4858e12b_4a62af7b",
+      "revId": "e7d271ae7ecf460b9c4b76caf9ba555f7d8a532e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
