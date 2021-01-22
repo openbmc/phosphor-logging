@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "d620e177_fd17fa23",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 1584,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-01-22T14:14:49Z",
+      "side": 1,
+      "message": "That will be a separate error, that occurs at a different temp value than epow3, epow4, or warning (also not implement yet).",
+      "parentUuid": "89e55405_a63bcaf8",
+      "range": {
+        "startLine": 1584,
+        "startChar": 26,
+        "endLine": 1584,
+        "endChar": 38
+      },
+      "revId": "7179afbeeef0138d4502da8e5927f069b73d5918",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ada9bd1a_78dc4de0",
         "filename": "extensions/openpower-pels/registry/message_registry.json",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2021-01-22T13:46:15Z",
       "side": 1,
       "message": "This is unrecoverable, but the message implies that the system would no longer shutdown if the temp decreased?",
+      "range": {
+        "startLine": 1586,
+        "startChar": 25,
+        "endLine": 1586,
+        "endChar": 38
+      },
+      "revId": "7179afbeeef0138d4502da8e5927f069b73d5918",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6a24611b_7e8cfc6b",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 1586,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-01-22T14:14:49Z",
+      "side": 1,
+      "message": "I was just matching the severity used in the src xlate tables.",
+      "parentUuid": "ada9bd1a_78dc4de0",
       "range": {
         "startLine": 1586,
         "startChar": 25,
