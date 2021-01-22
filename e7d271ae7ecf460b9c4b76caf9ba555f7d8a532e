@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "661ed1c8_4187a032",
+        "filename": "elog.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-22T12:28:10Z",
+      "side": 0,
+      "message": "I would suggest we turn it into a template parameter so that existing code is unchanged. My reasons:\n\n1. Most current users don’t care about the return but you are making them block now where the code use to be fire-and-forget.  (Performance impact)\n2. This code is now not async which means that code owners who really want async behavior are even less likely to use phosphor-logging.\n\nMaybe I’m wrong and the dbus call always blocks even today though?",
+      "revId": "e7d271ae7ecf460b9c4b76caf9ba555f7d8a532e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
