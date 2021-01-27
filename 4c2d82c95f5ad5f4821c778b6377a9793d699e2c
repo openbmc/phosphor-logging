@@ -16,6 +16,24 @@
       "revId": "4c2d82c95f5ad5f4821c778b6377a9793d699e2c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9765caae_8c5a12cf",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 1557,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-01-27T14:21:42Z",
+      "side": 1,
+      "message": "We had a rule of 1 componentID/reason code range per repository, so this falls into the phosphor-fan range since that\u0027s where it will be coming from.  That being said, it probably wouldn\u0027t break anything if we also added 0x72 has a compID/reason code for this repository since nobody else seems to be using it yet.",
+      "parentUuid": "db5407e8_cbfb2a36",
+      "revId": "4c2d82c95f5ad5f4821c778b6377a9793d699e2c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
