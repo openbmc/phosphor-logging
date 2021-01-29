@@ -556,12 +556,9 @@ std::vector<RegistryCallout>
 
     if (it == callouts.end())
     {
-        log<level::WARNING>(
-            "No callout entry found for the AdditionalData value used",
-            entry("AD_VALUE=%s", adValue->c_str()));
-
-        throw std::runtime_error{
-            "No callout entry found for the AdditionalData value used"};
+        // This can happen if not all possible values were in the
+        // message registry and that's fine.
+        return std::vector<RegistryCallout>{};
     }
 
     // Proceed to find the callouts possibly based on system type.

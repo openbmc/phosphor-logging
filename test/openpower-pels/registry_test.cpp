@@ -642,12 +642,12 @@ TEST_F(RegistryTest, TestGetCallouts)
             EXPECT_EQ(callouts[0].symbolicFRUTrusted, "");
         }
         {
-            // There is no entry for PROC_NUM 2, it will fail.
+            // There is no entry for PROC_NUM 2, so no callouts
             std::vector<std::string> adData{"PROC_NUM=2"};
             AdditionalData ad{adData};
 
-            EXPECT_THROW(Registry::getCallouts(json, names, ad),
-                         std::runtime_error);
+            auto callouts = Registry::getCallouts(json, names, ad);
+            EXPECT_TRUE(callouts.empty());
         }
     }
 }
