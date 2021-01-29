@@ -1546,6 +1546,243 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Sensor.Threshold.Error.TemperaturePerfLossHigh",
+            "Subsystem": "power",
+            "ComponentID": "0x2800",
+            "Severity": "predictive",
+            "ActionFlags": ["service_action", "report"],
+
+            "SRC": {
+                "ReasonCode": "0x2801",
+                "Words6To9": {}
+            },
+
+            "CalloutsUsingAD": {
+                "ADName": "SENSOR_NAME",
+                "CalloutsWithTheirADValues": [
+                    {
+                        "ADValue": "/xyz/openbmc_project/sensors/temperature/Ambient_Virtual_Temp",
+                        "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "SymbolicFRU": "ambient_temp" }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+
+            "Documentation": {
+                "Description": "A temperature sensor exceeded its performance loss threshold.",
+                "Message": "A temperature sensor exceeded its performance loss threshold.",
+                "Notes": [
+                    "A temperature sensor crossed its performance loss threshold value",
+                    "If it is the ambient sensor, then a symbolic FRU will be added.",
+                    "Otherwise, CALLOUT_INVENTORY_PATH will be passed in to add",
+                    "a FRU callout."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Sensor.Threshold.Error.TemperaturePerfLossHighClear",
+            "Subsystem": "power",
+            "ComponentID": "0x2800",
+            "Severity": "non_error",
+            "ActionFlags": ["report"],
+            "EventType": "env_normal",
+
+            "SRC": {
+                "ReasonCode": "0x2802",
+                "Words6To9": {}
+            },
+
+            "CalloutsUsingAD": {
+                "ADName": "SENSOR_NAME",
+                "CalloutsWithTheirADValues": [
+                    {
+                        "ADValue": "/xyz/openbmc_project/sensors/temperature/Ambient_Virtual_Temp",
+                        "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "SymbolicFRU": "ambient_temp_back" }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+
+            "Documentation": {
+                "Description": "A temperature sensor is under its performance loss threshold.",
+                "Message": "A temperature sensor is under its performance loss threshold.",
+                "Notes": [
+                    "A temperature sensor crossed under its performance loss threshold value",
+                    "If it is the ambient sensor, then a symbolic FRU will be added."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Sensor.Threshold.Error.TemperatureWarningHigh",
+            "Subsystem": "power",
+            "ComponentID": "0x2800",
+            "Severity": "predictive",
+            "ActionFlags": ["service_action", "report"],
+
+            "SRC": {
+                "ReasonCode": "0x2803",
+                "Words6To9": {}
+            },
+
+            "CalloutsUsingAD": {
+                "ADName": "SENSOR_NAME",
+                "CalloutsWithTheirADValues": [
+                    {
+                        "ADValue": "/xyz/openbmc_project/sensors/temperature/Ambient_Virtual_Temp",
+                        "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "SymbolicFRU": "ambient_temp" }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+
+            "Documentation": {
+                "Description": "A temperature sensor exceeded its warning threshold.",
+                "Message": "A temperature sensor exceeded its warning threshold.",
+                "Notes": [
+                    "A temperature sensor crossed its warning threshold value",
+                    "If it is the ambient sensor, then a symbolic FRU will be added.",
+                    "Otherwise, CALLOUT_INVENTORY_PATH will be passed in to add",
+                    "a FRU callout."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Sensor.Threshold.Error.TemperatureWarningHighClear",
+            "Subsystem": "power",
+            "ComponentID": "0x2800",
+            "Severity": "non_error",
+            "ActionFlags": ["report"],
+            "EventType": "env_normal",
+
+            "SRC": {
+                "ReasonCode": "0x2804",
+                "Words6To9": {}
+            },
+
+            "CalloutsUsingAD": {
+                "ADName": "SENSOR_NAME",
+                "CalloutsWithTheirADValues": [
+                    {
+                        "ADValue": "/xyz/openbmc_project/sensors/temperature/Ambient_Virtual_Temp",
+                        "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "SymbolicFRU": "ambient_temp_back" }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+
+            "Documentation": {
+                "Description": "A temperature sensor is under its warning threshold.",
+                "Message": "A temperature sensor is under its warning threshold.",
+                "Notes": [
+                    "A temperature sensor crossed under its warning threshold value",
+                    "If it is the ambient sensor, then a symbolic FRU will be added."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Sensor.Threshold.Error.TemperatureCriticalHigh",
+            "Subsystem": "power",
+            "ComponentID": "0x2800",
+            "Severity": "predictive",
+            "ActionFlags": ["service_action", "report"],
+
+            "SRC": {
+                "ReasonCode": "0x2805",
+                "Words6To9": {}
+            },
+
+            "CalloutsUsingAD": {
+                "ADName": "SENSOR_NAME",
+                "CalloutsWithTheirADValues": [
+                    {
+                        "ADValue": "/xyz/openbmc_project/sensors/temperature/Ambient_Virtual_Temp",
+                        "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "SymbolicFRU": "ambient_temp" }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+
+            "Documentation": {
+                "Description": "A temperature sensor exceeded its critical threshold.",
+                "Message": "A temperature sensor exceeded its critical threshold.",
+                "Notes": [
+                    "A temperature sensor crossed its critical threshold value",
+                    "If it is the ambient sensor, then a symbolic FRU will be added.",
+                    "Otherwise, CALLOUT_INVENTORY_PATH will be passed in to add",
+                    "a FRU callout."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Sensor.Threshold.Error.TemperatureCriticalHighClear",
+            "Subsystem": "power",
+            "ComponentID": "0x2800",
+            "Severity": "non_error",
+            "ActionFlags": ["report"],
+            "EventType": "env_normal",
+
+            "SRC": {
+                "ReasonCode": "0x2806",
+                "Words6To9": {}
+            },
+
+            "CalloutsUsingAD": {
+                "ADName": "SENSOR_NAME",
+                "CalloutsWithTheirADValues": [
+                    {
+                        "ADValue": "/xyz/openbmc_project/sensors/temperature/Ambient_Virtual_Temp",
+                        "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "SymbolicFRU": "ambient_temp_back" }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+
+            "Documentation": {
+                "Description": "A temperature sensor is under its critical threshold.",
+                "Message": "A temperature sensor is under its critical threshold.",
+                "Notes": [
+                    "A temperature sensor crossed under its critical threshold value",
+                    "If it is the ambient sensor, then a symbolic FRU will be added."
+                ]
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.Sensor.Threshold.Error.SoftShutdownAlarmHigh",
             "Subsystem": "power",
             "ComponentID": "0x2800",
