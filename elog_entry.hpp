@@ -6,6 +6,8 @@
 
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/object.hpp>
+#include <sdeventplus/event.hpp>
+#include <sdeventplus/source/event.hpp>
 #include <xyz/openbmc_project/Association/Definitions/server.hpp>
 #include <xyz/openbmc_project/Common/FilePath/server.hpp>
 
@@ -122,12 +124,33 @@ class Entry : public EntryIfaces
      */
     static constexpr auto sevLowerLimit = Entry::Level::Informational;
 
+    /**
+     * @brief Returns the file descriptor to the Entry file.
+     * @return unix_fd - File descriptor to the Entry file.
+     */
+    sdbusplus::message::unix_fd getEntry() override;
+
   private:
     /** @brief This entry's associations */
     AssociationList assocs = {};
 
     /** @brief This entry's parent */
     internal::Manager& parent;
+
+    /**
+     * @brief The event source for closing the Entry file descriptor after it
+     *        has been returned from the getEntry D-Bus method.
+     */
+    std::unique_ptr<sdeventplus::source::Defer> fdCloseEventSource;
+
+    /**
+     * @brief Closes the file descriptor passed in.
+     * @details This is called from the event loop to close FDs returned from
+     * getEntry().
+     * @param[in] fd - The file descriptor to close
+     * @param[in] source - The event source object used
+     */
+    void closeFD(int fd, sdeventplus::source::EventBase& source);
 };
 
 } // namespace logging
