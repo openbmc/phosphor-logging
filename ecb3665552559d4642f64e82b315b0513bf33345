@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "029f4b2a_9394860c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000029
+      },
+      "writtenOn": "2021-02-05T15:55:36Z",
+      "side": 1,
+      "message": "*sensor-monitor",
+      "range": {
+        "startLine": 14,
+        "startChar": 36,
+        "endLine": 14,
+        "endChar": 51
+      },
+      "revId": "ecb3665552559d4642f64e82b315b0513bf33345",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
