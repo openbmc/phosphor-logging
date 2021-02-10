@@ -136,7 +136,7 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
 
         try
         {
-            log<level::INFO>(
+            log<level::DEBUG>(
                 fmt::format("Adding external PEL {:#x} (BMC ID {}) to repo",
                             pel->id(), obmcLogID)
                     .c_str());
