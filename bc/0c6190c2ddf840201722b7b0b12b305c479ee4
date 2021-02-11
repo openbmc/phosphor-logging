@@ -1,0 +1,9 @@
+Ok-To-Test+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Matt Spinler <spinler@us.ibm.com>
+Code-Review+2: Deepak Kodihalli <deepak.kodihalli.83@gmail.com>
+Submitted-by: Matt Spinler <spinler@us.ibm.com>
+Submitted-at: Thu, 11 Feb 2021 16:21:37 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-logging/+/40521
+Project: openbmc/phosphor-logging
+Branch: refs/heads/master
