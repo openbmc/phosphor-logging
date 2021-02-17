@@ -574,50 +574,22 @@ void callFunctionOnPEL(const std::string& id, const PELFunc& func,
  * @brief Delete a PEL by deleting its corresponding event log.
  *
  * @param[in] pel - The PEL to delete
- * @param[in] hexDump - Boolean to print hexdump of PEL instead of JSON (unused)
  */
-void deletePEL(const PEL& pel, bool hexDump = false)
+void deletePEL(const PEL& pel)
 {
     std::string path{object_path::logEntry};
     path += std::to_string(pel.obmcLogID());
-
-    try
-    {
-        auto bus = sdbusplus::bus::new_default();
-        auto method = bus.new_method_call(service::logging, path.c_str(),
-                                          interface::deleteObj, "Delete");
-        auto reply = bus.call(method);
-    }
-    catch (const SdBusError& e)
-    {
-        std::cerr << "D-Bus call to delete event log " << pel.obmcLogID()
-                  << " failed: " << e.what() << "\n";
-        exit(1);
-    }
+    fs::remove(path.c_str());
 }
 
 /**
- * @brief Delete all PELs by deleting all event logs.
+ * @brief Delete all PEL files.
  */
 void deleteAllPELs()
 {
-    try
-    {
-        // This may move to an audit log some day
-        log<level::INFO>("peltool deleting all event logs");
-
-        auto bus = sdbusplus::bus::new_default();
-        auto method =
-            bus.new_method_call(service::logging, object_path::logging,
-                                interface::deleteAll, "DeleteAll");
-        auto reply = bus.call(method);
-    }
-    catch (const SdBusError& e)
-    {
-        std::cerr << "D-Bus call to delete all event logs failed: " << e.what()
-                  << "\n";
-        exit(1);
-    }
+    for (const auto& entry :
+         fs::directory_iterator(EXTENSION_PERSIST_DIR "/pels/logs"))
+        fs::remove_all(entry.path());
 }
 
 /**
