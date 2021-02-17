@@ -580,20 +580,7 @@ void deletePEL(const PEL& pel, bool hexDump = false)
 {
     std::string path{object_path::logEntry};
     path += std::to_string(pel.obmcLogID());
-
-    try
-    {
-        auto bus = sdbusplus::bus::new_default();
-        auto method = bus.new_method_call(service::logging, path.c_str(),
-                                          interface::deleteObj, "Delete");
-        auto reply = bus.call(method);
-    }
-    catch (const SdBusError& e)
-    {
-        std::cerr << "D-Bus call to delete event log " << pel.obmcLogID()
-                  << " failed: " << e.what() << "\n";
-        exit(1);
-    }
+    fs::remove(path.c_str());
 }
 
 /**
@@ -601,23 +588,7 @@ void deletePEL(const PEL& pel, bool hexDump = false)
  */
 void deleteAllPELs()
 {
-    try
-    {
-        // This may move to an audit log some day
-        log<level::INFO>("peltool deleting all event logs");
-
-        auto bus = sdbusplus::bus::new_default();
-        auto method =
-            bus.new_method_call(service::logging, object_path::logging,
-                                interface::deleteAll, "DeleteAll");
-        auto reply = bus.call(method);
-    }
-    catch (const SdBusError& e)
-    {
-        std::cerr << "D-Bus call to delete all event logs failed: " << e.what()
-                  << "\n";
-        exit(1);
-    }
+    fs::remove_all(EXTENSION_PERSIST_DIR "/pels/logs");
 }
 
 /**
