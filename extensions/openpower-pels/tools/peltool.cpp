@@ -571,52 +571,44 @@ void callFunctionOnPEL(const std::string& id, const PELFunc& func,
 }
 
 /**
- * @brief Delete a PEL by deleting its corresponding event log.
+ * @brief Delete a PEL file.
  *
  * @param[in] pel - The PEL to delete
  * @param[in] hexDump - Boolean to print hexdump of PEL instead of JSON (unused)
  */
 void deletePEL(const PEL& pel, bool hexDump = false)
 {
-    std::string path{object_path::logEntry};
-    path += std::to_string(pel.obmcLogID());
+    std::string pelID{id};
 
-    try
+    std::transform(pelID.begin(), pelID.end(), pelID.begin(), toupper);
+
+    if (pelID.find("0X") == 0)
     {
-        auto bus = sdbusplus::bus::new_default();
-        auto method = bus.new_method_call(service::logging, path.c_str(),
-                                          interface::deleteObj, "Delete");
-        auto reply = bus.call(method);
+        pelID.erase(0, 2);
     }
-    catch (const SdBusError& e)
+
+    for (auto it = fs::directory_iterator(EXTENSION_PERSIST_DIR "/pels/logs");
+         it != fs::directory_iterator(); ++it)
     {
-        std::cerr << "D-Bus call to delete event log " << pel.obmcLogID()
-                  << " failed: " << e.what() << "\n";
-        exit(1);
+        if ((ends_with((*it).path(), pelID))
+
+        {
+            fs::remove((*it).path());
+        }
     }
 }
 
 /**
- * @brief Delete all PELs by deleting all event logs.
+ * @brief Delete all PEL files.
  */
 void deleteAllPELs()
 {
-    try
-    {
-        // This may move to an audit log some day
-        log<level::INFO>("peltool deleting all event logs");
+    log<level::INFO>("peltool deleting all event logs");
 
-        auto bus = sdbusplus::bus::new_default();
-        auto method =
-            bus.new_method_call(service::logging, object_path::logging,
-                                interface::deleteAll, "DeleteAll");
-        auto reply = bus.call(method);
-    }
-    catch (const SdBusError& e)
+    for (const auto& entry :
+         fs::directory_iterator(EXTENSION_PERSIST_DIR "/pels/logs"))
     {
-        std::cerr << "D-Bus call to delete all event logs failed: " << e.what()
-                  << "\n";
-        exit(1);
+        fs::remove(entry.path());
     }
 }
 
