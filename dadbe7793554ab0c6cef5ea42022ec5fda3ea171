@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "467bae13_5f7c4cde",
+        "filename": "extensions/openpower-pels/tools/peltool.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 583,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-03-02T19:05:51Z",
+      "side": 1,
+      "message": "somehow I totally missed this before,  but what needs to be deleted here is a PEL file, not the D-Bus path which is what this was doing since it was making a D-Bus call.\n\nPEL files are named \u003ctimestamp\u003e_\u003cpel ID\u003e, such as 2021030218575048_50000005, so the code needs to find a file that ends  with the PEL ID value.\n\nCheck out the function that starts on line 508 to see how to do it.\n\nit would need:\n        // convert to upper case to match the case of the file name\n        std::transform(pelID.begin(), pelID.end(), pelID.begin(), toupper);\n\n        // remove the OX prefix from argument if present since  the filename doesn\u0027t use it\n        if (pelID.find(\"0X\") \u003d\u003d 0)\n        {\n            pelID.erase(0, 2);\n        }\n\nand \n        //look for the file that ends with that value\n        if ((ends_with((*it).path(), pelID)",
+      "range": {
+        "startLine": 581,
+        "startChar": 0,
+        "endLine": 583,
+        "endChar": 29
+      },
+      "revId": "dadbe7793554ab0c6cef5ea42022ec5fda3ea171",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
