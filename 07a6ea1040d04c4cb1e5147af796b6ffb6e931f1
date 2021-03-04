@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0fe61937_e0755195",
+        "filename": "extensions/openpower-pels/tools/peltool.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 581,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-03-04T14:18:43Z",
+      "side": 1,
+      "message": "Sorry, I steered you wrong.  This deletePEL function is getting called from line 866 by getting passed into callFunctionOnPEL(), which handled finding and loading the PEL file into the PEL object.\n\nWe no longer need that helper function to find and load the PEL object.\n\nSo on line 866, you can call deletePEL(idToDelete) directly, where the passed in ID is a string. so you can call the transform on it below.",
+      "revId": "07a6ea1040d04c4cb1e5147af796b6ffb6e931f1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
