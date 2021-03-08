@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9bf6b5df_68708da9",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-03-08T19:53:25Z",
+      "side": 1,
+      "message": "I\u0027m not sure how this file got in this commit?  Let me know if you need help removing it.",
+      "revId": "718cfc656ecd7271a723f7323a96a5f5264fe602",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
