@@ -34,6 +34,29 @@
       "revId": "50f026c5af846183e7a4a775ae89efb47f7dd14f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "08c42b46_16014269",
+        "filename": "phosphor-logging/log.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1000559
+      },
+      "writtenOn": "2021-03-11T00:46:10Z",
+      "side": 1,
+      "message": "Is this used?",
+      "range": {
+        "startLine": 189,
+        "startChar": 10,
+        "endLine": 189,
+        "endChar": 17
+      },
+      "revId": "50f026c5af846183e7a4a775ae89efb47f7dd14f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
