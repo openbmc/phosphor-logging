@@ -672,6 +672,39 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.State.Shutdown.Power.Error.Blackout",
+            "Subsystem": "power",
+            "ActionFlags": [ "report", "service_action" ],
+            "Severity": "unrecoverable",
+            "ComponentID": "0x2700",
+
+            "SRC":
+            {
+                "Type": "11",
+                "ReasonCode": "0x00AC",
+                "Words6To9": {},
+                "PowerFault": true
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "SymbolicFRU": "ac_module"}
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "Power was lost",
+                "Message": "Power was lost",
+                "Notes": [
+                   "Power failure detected while system powered on.",
+                    "The CalloutList should use the ACMODUL symbolic FRU."
+                ]
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.Power.Error.Shutdown",
             "Subsystem": "power_sequencer",
             "ComponentID": "0x2700",
