@@ -438,7 +438,7 @@
         {
             "description": "The symbolic FRU callout.",
             "type": "string",
-            "enum": ["service_docs", "pwrsply", "air_mover", "pgood_part", "usb_pgood", "ambient_temp", "ambient_temp_back", "ambient_perf_loss"]
+            "enum": ["service_docs", "pwrsply", "air_mover", "pgood_part", "usb_pgood", "ambient_temp", "ambient_temp_back", "ambient_perf_loss", "ac_module"]
         },
 
         "symbolicFRUTrusted":
