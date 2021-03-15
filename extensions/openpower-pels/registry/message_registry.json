@@ -672,6 +672,28 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.State.Shutdown.Power.Error.Blackout",
+            "Subsystem": "power_supply",
+            "ActionFlags": [ "report" ],
+            "ComponentID": "0x2700",
+
+            "SRC":
+            {
+                "Type": "11",
+                "ReasonCode": "0x00AC",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Power was lost",
+                "Message": "Power was lost",
+                "Notes": [
+                   "Power failure detected while system powered on"
+                 ]
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.Power.Error.Shutdown",
             "Subsystem": "power_sequencer",
             "ComponentID": "0x2700",
