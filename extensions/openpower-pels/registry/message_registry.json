@@ -2054,6 +2054,29 @@
                     "data."
                 ]
             }
+        },
+
+        {
+            "Name": "com.ibm.VPD.Error.EepromFailure",
+            "Subsystem": "cec_vpd",
+            "ComponentID": "0x4000",
+
+            "SRC": {
+                "ReasonCode": "0x4006",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation": {
+                 "Description": "EEPROM operation failed.",
+                 "Message": "Read/Open/Write operation failure for the given VPD EEPROM.",
+                 "Notes": [
+                     "This error occurs when there is a failure while reading/writing/opening",
+                     "the EEPROM. The errno is added as additionalData which gives the",
+                     "error code for the failure."
+                 ]
+            }
         }
     ]
 }
