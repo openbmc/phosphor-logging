@@ -36,6 +36,41 @@
     },
     {
       "key": {
+        "uuid": "428d5ff2_3bb0080c",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 677,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2021-03-18T22:25:34Z",
+      "side": 1,
+      "message": "If we specify just those two, hopefully the pel code doesn\u0027t add \u0027call_home\u0027 to it?  Couldn\u0027t quite tell from the readme.",
+      "parentUuid": "c866382c_0692a237",
+      "revId": "4dec8d656d4ccd17c49d586c4a2dc31efa322b66",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3126aed2_44ab475a",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2021-03-18T22:25:34Z",
+      "side": 1,
+      "message": "I think we need \n\n\"PowerFault: true \n\nhere since this could be a SRC that brings system down.",
+      "revId": "4dec8d656d4ccd17c49d586c4a2dc31efa322b66",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bc6043a9_a70cf8f7",
         "filename": "extensions/openpower-pels/registry/message_registry.json",
         "patchSetId": 3
@@ -47,6 +82,30 @@
       "writtenOn": "2021-03-18T21:41:45Z",
       "side": 1,
       "message": "I\u0027ll defer to Brandon if this priority is right.",
+      "range": {
+        "startLine": 690,
+        "startChar": 39,
+        "endLine": 690,
+        "endChar": 42
+      },
+      "revId": "4dec8d656d4ccd17c49d586c4a2dc31efa322b66",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "af5457e4_f4080422",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2021-03-18T22:25:34Z",
+      "side": 1,
+      "message": "No, as Matt suspected this should be high priority...should be the same as on previous systems",
+      "parentUuid": "bc6043a9_a70cf8f7",
       "range": {
         "startLine": 690,
         "startChar": 39,
