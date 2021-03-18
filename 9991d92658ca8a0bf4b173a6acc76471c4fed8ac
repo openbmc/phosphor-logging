@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "8a12dfb8_b5b81bfc",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 1000830
+      },
+      "writtenOn": "2021-03-18T21:38:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "334e87ad_eb130acc",
+      "range": {
+        "startLine": 676,
+        "startChar": 26,
+        "endLine": 676,
+        "endChar": 38
+      },
+      "revId": "9991d92658ca8a0bf4b173a6acc76471c4fed8ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "12f822de_00901219",
         "filename": "extensions/openpower-pels/registry/message_registry.json",
         "patchSetId": 1
