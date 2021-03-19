@@ -90,6 +90,24 @@
     },
     {
       "key": {
+        "uuid": "3e4e59c5_7dfbf78a",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 677,
+      "author": {
+        "id": 1000830
+      },
+      "writtenOn": "2021-03-19T02:21:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e522740d_0d6442c0",
+      "revId": "4dec8d656d4ccd17c49d586c4a2dc31efa322b66",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3126aed2_44ab475a",
         "filename": "extensions/openpower-pels/registry/message_registry.json",
         "patchSetId": 3
@@ -104,6 +122,24 @@
       "revId": "4dec8d656d4ccd17c49d586c4a2dc31efa322b66",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "af711a95_3389b4eb",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 1000830
+      },
+      "writtenOn": "2021-03-19T02:21:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3126aed2_44ab475a",
+      "revId": "4dec8d656d4ccd17c49d586c4a2dc31efa322b66",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -151,6 +187,30 @@
       "revId": "4dec8d656d4ccd17c49d586c4a2dc31efa322b66",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5fafeebd_654bc1eb",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 1000830
+      },
+      "writtenOn": "2021-03-19T02:21:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af5457e4_f4080422",
+      "range": {
+        "startLine": 690,
+        "startChar": 39,
+        "endLine": 690,
+        "endChar": 42
+      },
+      "revId": "4dec8d656d4ccd17c49d586c4a2dc31efa322b66",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
