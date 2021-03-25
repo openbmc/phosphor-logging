@@ -95,6 +95,7 @@ enum class SeverityType
     predictive = 0x20,
     unrecoverable = 0x40,
     critical = 0x50,
+    critSysTerm = 0x51,
     diagnostic = 0x60,
     symptom = 0x70
 };

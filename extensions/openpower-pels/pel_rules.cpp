@@ -71,6 +71,7 @@ std::tuple<uint16_t, uint8_t> check(uint16_t actionFlags, uint8_t eventType,
         case SeverityType::predictive:
         case SeverityType::unrecoverable:
         case SeverityType::critical:
+        case SeverityType::critSysTerm:
         case SeverityType::diagnostic:
         case SeverityType::symptom:
         {
