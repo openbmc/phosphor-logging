@@ -265,6 +265,8 @@ std::vector<std::string> getPlugins()
  * @brief Creates JSON string of a PEL entry if fullPEL is false or prints to
  *        stdout the full PEL in JSON if fullPEL is true
  * @param[in] itr - std::map iterator of <uint32_t, BCDTime>
+ * @param[in] critSysTerm - Boolean to include critical error and system
+ * termination PELs
  * @param[in] hidden - Boolean to include hidden PELs
  * @param[in] includeInfo - Boolean to include informational PELs
  * @param[in] fullPEL - Boolean to print full JSON representation of PEL
@@ -275,11 +277,12 @@ std::vector<std::string> getPlugins()
  * @return std::string - JSON string of PEL entry (empty if fullPEL is true)
  */
 template <typename T>
-std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool fullPEL,
-                       bool& foundPEL,
+std::string genPELJSON(T itr, bool critSysTerm, bool hidden, bool includeInfo,
+                       bool fullPEL, bool& foundPEL,
                        const std::optional<std::regex>& scrubRegex,
                        const std::vector<std::string>& plugins, bool hexDump)
 {
+    const int critSeverity = 0x51;
     std::size_t found;
     std::string val;
     char tmpValStr[50];
@@ -306,6 +309,10 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool fullPEL,
             return listStr;
         }
         if (!includeInfo && pel.userHeader().severity() == 0)
+        {
+            return listStr;
+        }
+        if (critSysTerm && pel.userHeader().severity() != critSeverity)
         {
             return listStr;
         }
@@ -419,6 +426,8 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool fullPEL,
 
 /**
  * @brief Print a list of PELs or a JSON array of PELs
+ * @param[in] critSysTerm - Boolean to include critical error and system
+ * termination PELs
  * @param[in] order - Boolean to print in reverse orser
  * @param[in] hidden - Boolean to include hidden PELs
  * @param[in] includeInfo - Boolean to include informational PELs
@@ -426,8 +435,9 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool fullPEL,
  * @param[in] scrubRegex - SRC regex object
  * @param[in] hexDump - Boolean to print hexdump of PEL instead of JSON
  */
-void printPELs(bool order, bool hidden, bool includeInfo, bool fullPEL,
-               const std::optional<std::regex>& scrubRegex, bool hexDump)
+void printPELs(bool critSysTerm, bool order, bool hidden, bool includeInfo,
+               bool fullPEL, const std::optional<std::regex>& scrubRegex,
+               bool hexDump)
 {
     std::string listStr;
     std::map<uint32_t, BCDTime> PELs;
@@ -452,10 +462,11 @@ void printPELs(bool order, bool hidden, bool includeInfo, bool fullPEL,
     {
         plugins = getPlugins();
     }
-    auto buildJSON = [&listStr, &hidden, &includeInfo, &fullPEL, &foundPEL,
-                      &scrubRegex, &plugins, &hexDump](const auto& i) {
-        listStr += genPELJSON(i, hidden, includeInfo, fullPEL, foundPEL,
-                              scrubRegex, plugins, hexDump);
+    auto buildJSON = [&listStr, &critSysTerm, &hidden, &includeInfo, &fullPEL,
+                      &foundPEL, &scrubRegex, &plugins,
+                      &hexDump](const auto& i) {
+        listStr += genPELJSON(i, critSysTerm, hidden, includeInfo, fullPEL,
+                              foundPEL, scrubRegex, plugins, hexDump);
     };
     if (order)
     {
@@ -641,13 +652,15 @@ void displayPEL(const PEL& pel, bool hexDump)
 
 /**
  * @brief Print number of PELs
+ * @param[in] critSysTerm - Bool to include CritSysTerm
  * @param[in] hidden - Bool to include hidden logs
  * @param[in] includeInfo - Bool to include informational logs
  * @param[in] scrubRegex - SRC regex object
  */
-void printPELCount(bool hidden, bool includeInfo,
+void printPELCount(bool hidden, bool critSysTerm, bool includeInfo,
                    const std::optional<std::regex>& scrubRegex)
 {
+    const int critSeverity = 0x51;
     std::size_t count = 0;
     for (auto it = fs::directory_iterator(EXTENSION_PERSIST_DIR "/pels/logs");
          it != fs::directory_iterator(); ++it)
@@ -663,6 +676,10 @@ void printPELCount(bool hidden, bool includeInfo,
         }
         PEL pel{data};
         if (!pel.valid())
+        {
+            continue;
+        }
+        if (!critSysTerm && pel.userHeader().severity() == critSeverity)
         {
             continue;
         }
@@ -783,6 +800,7 @@ int main(int argc, char** argv)
     std::string scrubFile;
     std::optional<std::regex> scrubRegex;
     bool listPEL = false;
+    bool critSysTerm = false;
     bool listPELDescOrd = false;
     bool hidden = false;
     bool includeInfo = false;
@@ -798,6 +816,8 @@ int main(int argc, char** argv)
                    "Display a PEL based on its BMC Event ID");
     app.add_flag("-a", fullPEL, "Display all PELs");
     app.add_flag("-l", listPEL, "List PELs");
+    app.add_flag("-t, --termination", critSysTerm,
+                 "List only critical system terminating PELs");
     app.add_flag("-n", showPELCount, "Show number of PELs");
     app.add_flag("-r", listPELDescOrd, "Reverse order of output");
     app.add_flag("-h", hidden, "Include hidden PELs");
@@ -848,8 +868,8 @@ int main(int argc, char** argv)
         {
             scrubRegex = genRegex(scrubFile);
         }
-        printPELs(listPELDescOrd, hidden, includeInfo, fullPEL, scrubRegex,
-                  hexDump);
+        printPELs(critSysTerm, listPELDescOrd, hidden, includeInfo,fullPEL,
+                  scrubRegex, hexDump);
     }
     else if (showPELCount)
     {
@@ -857,7 +877,7 @@ int main(int argc, char** argv)
         {
             scrubRegex = genRegex(scrubFile);
         }
-        printPELCount(hidden, includeInfo, scrubRegex);
+        printPELCount(hidden, critSysTerm, includeInfo, scrubRegex);
     }
     else if (!idToDelete.empty())
     {
