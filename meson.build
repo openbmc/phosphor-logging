@@ -217,6 +217,8 @@ executable('callout-test',
     install: true,
 )
 
+subdir('dist')
+
 if not get_option('tests').disabled()
     subdir('test')
 endif
