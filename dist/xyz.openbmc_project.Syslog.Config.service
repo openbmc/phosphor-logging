@@ -1,0 +1,12 @@
+[Unit]
+Description=Rsyslog config updater
+
+[Service]
+ExecStart=/usr/bin/env phosphor-rsyslog-conf
+SyslogIdentifier=phosphor-rsyslog-conf
+Restart=always
+Type=dbus
+BusName=xyz.openbmc_project.Syslog.Config
+
+[Install]
+WantedBy=multi-user.target

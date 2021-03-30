@@ -47,6 +47,33 @@ AS_IF([test "x$enable_install_scripts" != "xyes"], [
     # Checks for libraries.
     AX_PKG_CHECK_MODULES([SYSTEMD], [], [libsystemd >= 221], [], [AC_MSG_ERROR(["systemd required and not found."])])
 
+    AC_ARG_WITH([systemdsystemunitdir],
+         [AS_HELP_STRING([--with-systemdsystemunitdir=DIR], [Directory for systemd service files])],
+         [],
+         [with_systemdsystemunitdir=auto]
+    )
+    AS_IF([test "x$with_systemdsystemunitdir" = "xyes" -o "x$with_systemdsystemunitdir" = "xauto"],
+        [def_systemdsystemunitdir=$($PKG_CONFIG --variable=systemdsystemunitdir systemd)
+         AS_IF([test "x$def_systemdsystemunitdir" = "x"],
+               [AS_IF([test "x$with_systemdsystemunitdir" = "xyes"],
+                      [AC_MSG_ERROR([systemd support requested but pkg-config unable to query systemd package])]
+                )
+                with_systemdsystemunitdir=no],
+               [with_systemdsystemunitdir="$def_systemdsystemunitdir"]
+         )]
+    )
+    AS_IF([test "x$with_systemdsystemunitdir" != "xno"],
+          [AC_SUBST([systemdsystemunitdir], [$with_systemdsystemunitdir])]
+    )
+
+    AC_ARG_WITH([dbuspolicydir],
+            AS_HELP_STRING([--with-dbuspolicydir=DIR], [D-Bus policy directory]),
+            [],
+            [with_dbuspolicydir=$($PKG_CONFIG --variable=sysconfdir dbus-1)/dbus-1/system.d])
+    AS_IF([test "x$with_dbuspolicydir" != "xno"],
+          [AC_SUBST([dbuspolicydir], [$with_dbuspolicydir])]
+    )
+
     # sdbusplus is non-private because we have no library to link.
     # If we ever have a library, move this to private.
     AX_PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus])
@@ -58,6 +85,7 @@ AS_IF([test "x$enable_install_scripts" != "xyes"], [
     AS_IF([test "x$SDBUSPLUSPLUS" == "x"],
         AC_MSG_ERROR(["Requires sdbus++"]))
 ])
+
 
 # Check/set gtest specific functions.
 AX_PTHREAD([GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=1"],[GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=0"])
@@ -241,6 +269,6 @@ AC_ARG_ENABLE([dont-send-pels-to-host],
 )
 
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_FILES([Makefile test/Makefile phosphor-rsyslog-config/Makefile])
+AC_CONFIG_FILES([Makefile dist/Makefile test/Makefile phosphor-rsyslog-config/Makefile])
 AC_CONFIG_FILES([phosphor-logging.pc])
 AC_OUTPUT
