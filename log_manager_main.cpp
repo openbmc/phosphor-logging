@@ -8,6 +8,9 @@
 #include <sdbusplus/server/manager.hpp>
 #include <sdeventplus/event.hpp>
 
+// For testing
+//------------
+
 int main(int argc, char* argv[])
 {
     auto bus = sdbusplus::bus::new_default();
