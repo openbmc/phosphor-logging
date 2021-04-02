@@ -51,6 +51,7 @@ uint32_t commit(const char* name, Entry::Level level)
 }
 } // namespace details
 
+// Not sure why this C++ method is deprecated
 uint32_t commit(std::string&& name)
 {
     log<level::ERR>("method is deprecated, use commit() with exception type");
