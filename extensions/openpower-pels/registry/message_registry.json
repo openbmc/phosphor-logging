@@ -612,7 +612,7 @@
         {
             "Name": "xyz.openbmc_project.Power.PowerSupply.Error.CommFault",
             "Subsystem": "power_supply",
-            "Severity": "unrecoverable_redundancy_loss",
+            "Severity": "unrecoverable",
             "ActionFlags": ["service_action", "report", "call_home"],
             "ComponentID": "0x2700",
 
@@ -637,7 +637,7 @@
         {
             "Name": "xyz.openbmc_project.Power.PowerSupply.Error.Missing",
             "Subsystem": "power_supply",
-            "Severity": "unrecoverable",
+            "Severity": "unrecoverable_redundancy_loss",
             "ActionFlags": ["service_action", "report", "call_home"],
             "ComponentID": "0x2700",
 
