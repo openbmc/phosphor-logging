@@ -279,17 +279,6 @@ class DataInterfaceBase
                                                 bool expanded) const = 0;
 
     /**
-     * @brief Returns the fault LED group D-Bus path for the inventory
-     *        D-Bus path passed in.
-     *
-     * @param[in] inventoryPath - The inventory D-Bus path
-     *
-     * @return std::string - The fault LED group D-Bus path
-     */
-    virtual std::string
-        getFaultLEDGroup(const std::string& inventoryPath) const = 0;
-
-    /**
      * @brief Sets the Asserted property on the LED group passed in.
      *
      * @param[in] ledGroup - The LED group D-Bus path
@@ -297,6 +286,16 @@ class DataInterfaceBase
      */
     virtual void assertLEDGroup(const std::string& ledGroup,
                                 bool value) const = 0;
+
+    /**
+     * @brief Sets the Functional property on the OperationalStatus
+     *        interface on a D-Bus object.
+     *
+     * @param[in] objectPath - The D-Bus object path
+     * @param[in] functional - The value
+     */
+    virtual void setFunctional(const std::string& objectPath,
+                               bool functional) const = 0;
 
   protected:
     /**
@@ -528,23 +527,22 @@ class DataInterface : public DataInterfaceBase
                                         bool expanded) const override;
 
     /**
-     * @brief Returns the fault LED group D-Bus path for the inventory
-     *        D-Bus path passed in.
-     *
-     * @param[in] inventoryPath - The inventory D-Bus path
-     *
-     * @return std::string - The fault LED group D-Bus path
-     */
-    std::string
-        getFaultLEDGroup(const std::string& inventoryPath) const override;
-
-    /**
      * @brief Sets the Asserted property on the LED group passed in.
      *
      * @param[in] ledGroup - The LED group D-Bus path
      * @param[in] value - The value to set it to
      */
     void assertLEDGroup(const std::string& ledGroup, bool value) const override;
+
+    /**
+     * @brief Sets the Functional property on the OperationalStatus
+     *        interface on a D-Bus object.
+     *
+     * @param[in] objectPath - The D-Bus object path
+     * @param[in] functional - The value
+     */
+    void setFunctional(const std::string& objectPath,
+                       bool functional) const override;
 
   private:
     /**
