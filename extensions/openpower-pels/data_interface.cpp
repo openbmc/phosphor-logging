@@ -67,8 +67,9 @@ constexpr auto locCode = "com.ibm.ipzvpd.Location";
 constexpr auto compatible =
     "xyz.openbmc_project.Configuration.IBMCompatibleSystem";
 constexpr auto vpdManager = "com.ibm.VPD.Manager";
-constexpr auto association = "xyz.openbmc_project.Association";
 constexpr auto ledGroup = "xyz.openbmc_project.Led.Group";
+constexpr auto operationalStatus =
+    "xyz.openbmc_project.State.Decorator.OperationalStatus";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
@@ -409,24 +410,6 @@ std::string
     return shortest;
 }
 
-std::string
-    DataInterface::getFaultLEDGroup(const std::string& inventoryPath) const
-{
-    auto associationPath = inventoryPath + "/" + "fault_led_group";
-    auto service = getService(associationPath, interface::association);
-
-    DBusValue endpoints;
-    getProperty(service, associationPath, interface::association, "endpoints",
-                endpoints);
-    auto paths = std::get<std::vector<std::string>>(endpoints);
-    if (paths.empty())
-    {
-        throw std::runtime_error("Association endpoints property empty");
-    }
-
-    return paths[0];
-}
-
 void DataInterface::assertLEDGroup(const std::string& ledGroup,
                                    bool value) const
 {
@@ -435,6 +418,19 @@ void DataInterface::assertLEDGroup(const std::string& ledGroup,
         _bus.new_method_call(service_name::ledGroupManager, ledGroup.c_str(),
                              interface::dbusProperty, "Set");
     method.append(interface::ledGroup, "Asserted", variant);
+    _bus.call(method);
+}
+
+void DataInterface::setFunctional(const std::string& objectPath,
+                                  bool value) const
+{
+    DBusValue variant = value;
+    auto service = getService(objectPath, interface::operationalStatus);
+
+    auto method = _bus.new_method_call(service.c_str(), objectPath.c_str(),
+                                       interface::dbusProperty, "Set");
+
+    method.append(interface::operationalStatus, "Functional", variant);
     _bus.call(method);
 }
 
