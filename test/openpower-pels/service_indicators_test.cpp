@@ -270,10 +270,8 @@ TEST(ServiceIndicatorsTest, ActivateTest)
         EXPECT_CALL(dataIface, getInventoryFromLocCode("U42", 0, true))
             .WillOnce(Return("/system/chassis/processor"));
 
-        EXPECT_CALL(dataIface, getFaultLEDGroup("/system/chassis/processor"))
-            .WillOnce(Return("/led/groups/cpu0"));
-
-        EXPECT_CALL(dataIface, assertLEDGroup("/led/groups/cpu0", true))
+        EXPECT_CALL(dataIface,
+                    setFunctional("/system/chassis/processor", false))
             .Times(1);
 
         auto data = pelFactory(1, 'O', 0x20, 0xA400, 500);
@@ -307,7 +305,7 @@ TEST(ServiceIndicatorsTest, ActivateTest)
         EXPECT_CALL(dataIface, getInventoryFromLocCode("U42", 0, true))
             .WillOnce(Throw(std::runtime_error("Fail")));
 
-        EXPECT_CALL(dataIface, getFaultLEDGroup(_)).Times(0);
+        EXPECT_CALL(dataIface, setFunctional).Times(0);
 
         EXPECT_CALL(dataIface,
                     assertLEDGroup("/xyz/openbmc_project/led/groups/"
@@ -321,41 +319,16 @@ TEST(ServiceIndicatorsTest, ActivateTest)
         lightPath.activate(pel);
     }
 
-    // Make getFaultLEDGroup fail - will set the platform SAI LED
+    // Make setFunctional fail
     {
         MockDataInterface dataIface;
         service_indicators::LightPath lightPath{dataIface};
 
         EXPECT_CALL(dataIface, getInventoryFromLocCode("U42", 0, true))
             .WillOnce(Return("/system/chassis/processor"));
-
-        EXPECT_CALL(dataIface, getFaultLEDGroup("/system/chassis/processor"))
-            .WillOnce(Throw(std::runtime_error("Fail")));
 
         EXPECT_CALL(dataIface,
-                    assertLEDGroup("/xyz/openbmc_project/led/groups/"
-                                   "platform_system_attention_indicator",
-                                   true))
-            .Times(1);
-
-        auto data = pelFactory(1, 'O', 0x20, 0xA400, 500);
-        PEL pel{data};
-
-        lightPath.activate(pel);
-    }
-
-    // Make assertLEDGroup fail
-    {
-        MockDataInterface dataIface;
-        service_indicators::LightPath lightPath{dataIface};
-
-        EXPECT_CALL(dataIface, getInventoryFromLocCode("U42", 0, true))
-            .WillOnce(Return("/system/chassis/processor"));
-
-        EXPECT_CALL(dataIface, getFaultLEDGroup("/system/chassis/processor"))
-            .WillOnce(Return("/led/groups/cpu0"));
-
-        EXPECT_CALL(dataIface, assertLEDGroup("/led/groups/cpu0", true))
+                    setFunctional("/system/chassis/processor", false))
             .WillOnce(Throw(std::runtime_error("Fail")));
 
         auto data = pelFactory(1, 'O', 0x20, 0xA400, 500);

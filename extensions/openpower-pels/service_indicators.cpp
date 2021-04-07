@@ -75,12 +75,11 @@ void LightPath::activate(const PEL& pel)
         auto locCodes = getLocationCodes(callouts);
         if (!locCodes.empty())
         {
-            // Find the LED groups for those location codes.
-            auto ledPaths = getLEDGroupPaths(locCodes);
-            if (!ledPaths.empty())
+            // Find the inventory paths for those location codes.
+            auto paths = getInventoryPaths(locCodes);
+            if (!paths.empty())
             {
-                // Tell the LED groups to assert their LEDs.
-                assertLEDs(ledPaths);
+                assertLEDs(paths);
                 sai = false;
             }
         }
@@ -193,18 +192,19 @@ bool LightPath::isHardwareCallout(const src::Callout& callout) const
     return false;
 }
 
-std::vector<std::string> LightPath::getLEDGroupPaths(
+std::vector<std::string> LightPath::getInventoryPaths(
     const std::vector<std::string>& locationCodes) const
 {
-    std::vector<std::string> ledGroups;
+    std::vector<std::string> paths;
     std::string inventoryPath;
 
     for (const auto& locCode : locationCodes)
     {
         try
         {
-            inventoryPath =
+            auto inventoryPath =
                 _dataIface.getInventoryFromLocCode(locCode, 0, true);
+            paths.push_back(std::move(inventoryPath));
         }
         catch (const std::exception& e)
         {
@@ -213,43 +213,30 @@ std::vector<std::string> LightPath::getLEDGroupPaths(
                                         locCode, e.what())
                                 .c_str());
 
-            // Unless we can get the LEDs for all FRUs, we can't turn
+            // Unless we can set the LEDs for all FRUs, we can't turn
             // on any of them, so clear the list and quit.
-            ledGroups.clear();
-            break;
-        }
-
-        try
-        {
-            ledGroups.push_back(_dataIface.getFaultLEDGroup(inventoryPath));
-        }
-        catch (const std::exception& e)
-        {
-            log<level::ERR>(fmt::format("Could not get LED group path for "
-                                        "inventory path {} ({}).",
-                                        inventoryPath, e.what())
-                                .c_str());
-            ledGroups.clear();
+            paths.clear();
             break;
         }
     }
 
-    return ledGroups;
+    return paths;
 }
 
-void LightPath::assertLEDs(const std::vector<std::string>& ledGroups) const
+void LightPath::assertLEDs(const std::vector<std::string>& inventoryPaths) const
 {
-    for (const auto& ledGroup : ledGroups)
+    for (const auto& path : inventoryPaths)
     {
         try
         {
-            _dataIface.assertLEDGroup(ledGroup, true);
+            _dataIface.setFunctional(path, false);
         }
         catch (const std::exception& e)
         {
-            log<level::ERR>(fmt::format("Failed to assert LED group {} ({})",
-                                        ledGroup, e.what())
-                                .c_str());
+            log<level::INFO>(
+                fmt::format("Could not set Functional property on {} ({})",
+                            path, e.what())
+                    .c_str());
         }
     }
 }
