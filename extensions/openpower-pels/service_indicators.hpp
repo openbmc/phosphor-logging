@@ -123,22 +123,26 @@ class LightPath : public Policy
 
   private:
     /**
-     * @brief Returns the LED group D-Bus paths to use to turn on the
-     *        LEDs for the passed in location codes.
+     * @brief Returns the inventory D-Bus paths for the passed
+     *        in location codes.
      *
      * @param[in] locationCodes - The location codes
      *
-     * @return std::vector<std::string> - The LED group D-Bus paths
+     * @return std::vector<std::string> - The inventory D-Bus paths
      */
     std::vector<std::string>
-        getLEDGroupPaths(const std::vector<std::string>& locationCodes) const;
+        getInventoryPaths(const std::vector<std::string>& locationCodes) const;
 
     /**
-     * @brief Sets the Assert property on the LED group D-Bus objects
+     * @brief Sets the Functional property on the passed in
+     *        inventory paths to false.
      *
-     * @param[in] std::vector<std::string> - The LED group D-Bus paths
+     * There is code watching for this that will then turn on
+     * any LEDs for that FRU.
+     *
+     * @param[in] inventoryPaths - The inventory D-Bus paths
      */
-    void assertLEDs(const std::vector<std::string>& ledGroups) const;
+    void setNotFunctional(const std::vector<std::string>& inventoryPaths) const;
 
     /**
      * @brief Checks if the callout priority is one that the policy

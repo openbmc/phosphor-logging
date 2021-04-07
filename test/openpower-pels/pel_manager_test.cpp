@@ -852,10 +852,8 @@ TEST_F(ManagerTest, TestServiceIndicators)
         EXPECT_CALL(*mockIface, getInventoryFromLocCode("U42", 0, true))
             .WillOnce(Return("/system/chassis/processor"));
 
-        EXPECT_CALL(*mockIface, getFaultLEDGroup("/system/chassis/processor"))
-            .WillOnce(Return("/led/groups/cpu0"));
-
-        EXPECT_CALL(*mockIface, assertLEDGroup("/led/groups/cpu0", true))
+        EXPECT_CALL(*mockIface,
+                    setFunctional("/system/chassis/processor", false))
             .Times(1);
 
         // This hostboot PEL has a single hardware callout in it.
@@ -895,10 +893,8 @@ TEST_F(ManagerTest, TestServiceIndicators)
         EXPECT_CALL(*mockIface, getInventoryFromLocCode("U42-P42-C23", 0, true))
             .WillOnce(Return("/system/chassis/processor"));
 
-        EXPECT_CALL(*mockIface, getFaultLEDGroup("/system/chassis/processor"))
-            .WillOnce(Return("/led/groups/cpu0"));
-
-        EXPECT_CALL(*mockIface, assertLEDGroup("/led/groups/cpu0", true))
+        EXPECT_CALL(*mockIface,
+                    setFunctional("/system/chassis/processor", false))
             .Times(1);
 
         const auto registry = R"(
