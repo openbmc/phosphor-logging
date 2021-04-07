@@ -672,6 +672,31 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Power.PowerSupply.Error.NotSupported",
+            "Subsystem": "power_supply",
+            "Severity": "unrecoverable",
+            "ActionFlags": ["service_action", "report", "call_home"],
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x15F7",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Power Supply configuration is not supported",
+                "Message": "The power supply configuration is not supported",
+                "Notes": [
+                    "The combination of power supplies detected in the ",
+                    "system is not supported. This could be caused by ",
+                    "mismatched models, less than expected number of power ",
+                    "supplies, or other unsupported characteristics."
+                ]
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.State.Shutdown.Power.Error.Blackout",
             "Subsystem": "power",
             "ActionFlags": [ "report", "service_action" ],
