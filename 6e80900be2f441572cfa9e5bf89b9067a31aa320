@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "29e6fe57_d0b0d719",
+        "filename": "extensions/openpower-pels/service_indicators.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-08T22:00:41Z",
+      "side": 1,
+      "message": "I don\u0027t really see a use case for that, so I\u0027ll probably just leave it how it is for now.",
+      "parentUuid": "cf671939_88ed2720",
+      "revId": "6e80900be2f441572cfa9e5bf89b9067a31aa320",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a4563278_9ac31f7e",
         "filename": "extensions/openpower-pels/service_indicators.cpp",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2021-04-08T10:42:47Z",
       "side": 1,
       "message": "hmm.. for a given location code, can there be more than 1 Inventory D-Bus paths ?",
+      "revId": "6e80900be2f441572cfa9e5bf89b9067a31aa320",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2080b10c_c7e235b3",
+        "filename": "extensions/openpower-pels/service_indicators.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-08T22:00:41Z",
+      "side": 1,
+      "message": "I wasn\u0027t planning on this having to support setting all child objects to not functional as well, just the main one that has the LocationCode interface on it in the inventory.",
+      "parentUuid": "a4563278_9ac31f7e",
       "revId": "6e80900be2f441572cfa9e5bf89b9067a31aa320",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "62dec66e_3794a745",
+        "filename": "extensions/openpower-pels/service_indicators.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-08T22:00:41Z",
+      "side": 1,
+      "message": "Yea, that\u0027s on line 92 in this file.",
+      "parentUuid": "e286fc08_03e62194",
+      "revId": "6e80900be2f441572cfa9e5bf89b9067a31aa320",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "030da1fc_64172de6",
         "filename": "extensions/openpower-pels/service_indicators.hpp",
         "patchSetId": 1
@@ -64,6 +118,24 @@
       "writtenOn": "2021-04-08T10:42:47Z",
       "side": 1,
       "message": "is \"assertLEDs\", a misnomer since it\u0027s not asserting the LEDs ?..",
+      "revId": "6e80900be2f441572cfa9e5bf89b9067a31aa320",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ea2459fb_b3e4fb89",
+        "filename": "extensions/openpower-pels/service_indicators.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-08T22:00:41Z",
+      "side": 1,
+      "message": "I had left it because assertLEDs() sounded more appropriate to call in a LightPath::activate() function than setNotFunctional()\n\nThat being said, I went back and forth on this originally so since someone else has an opinion I can change it.",
+      "parentUuid": "030da1fc_64172de6",
       "revId": "6e80900be2f441572cfa9e5bf89b9067a31aa320",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
