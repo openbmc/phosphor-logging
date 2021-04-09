@@ -34,6 +34,17 @@ RAWPEL="/tmp/pels/pel.5"
 The code will assign its own error log ID to this PEL, and also update the
 commit timestamp field to the current time.
 
+#### POWER_THERMAL_CRITICAL_FAULT
+
+This keyword is used to set the power fault bit in PEL. The syntax is:
+```
+POWER_THERMAL_CRITICAL_FAULT=<FLAG>
+e.g.
+POWER_THERMAL_CRITICAL_FAULT=TRUE
+```
+
+Note that TRUE is the only value supported.
+
 #### ESEL
 
 This keyword's data contains a full PEL in string format.  This is how hostboot
