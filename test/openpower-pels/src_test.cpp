@@ -252,6 +252,28 @@ TEST_F(SRCTest, CreateTestNoCallouts)
     EXPECT_FALSE(newSRC.callouts());
 }
 
+// Create an SRC from the message registry
+TEST_F(SRCTest, PowerFaultTest)
+{
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+    entry.src.powerFault = false;
+
+    // Values for the SRC words pointed to above
+    std::vector<std::string> adData{"POWER_THERMAL_CRITICAL_FAULT=TRUE",
+                                    "TEST2=12345678", "TEST3=0XDEF", "TEST4=Z"};
+    AdditionalData ad{adData};
+    NiceMock<MockDataInterface> dataIface;
+
+    SRC src{entry, ad, dataIface};
+
+    EXPECT_TRUE(src.valid());
+    EXPECT_TRUE(src.isPowerFaultEvent());
+    EXPECT_EQ(src.size(), baseSRCSize);
+}
+
 // Test when the CCIN string isn't a 4 character number
 TEST_F(SRCTest, BadCCINTest)
 {
