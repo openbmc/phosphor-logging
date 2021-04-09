@@ -291,7 +291,10 @@ SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
     _version = srcVersion;
 
     _flags = 0;
-    if (regEntry.src.powerFault.value_or(false))
+
+    auto item = additionalData.getValue("POWER_THERMAL_CRITICAL_FAULT");
+    if ( (regEntry.src.powerFault.value_or(false)) || 
+         ( item && ((*item).compare("TRUE")==0)) ) 
     {
         _flags |= powerFaultEvent;
     }
