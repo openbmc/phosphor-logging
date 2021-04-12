@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d9c3be1e_f899b0a3",
+        "filename": "test/openpower-pels/src_test.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-12T20:58:12Z",
+      "side": 1,
+      "message": "oh sorry one more small thing - could you update this comment to match what the testcase is testing? e.g. Test that POWER_THERMAL_CRITICAL_FAULT\u003dTRUE will set the power fault bit.",
+      "range": {
+        "startLine": 255,
+        "startChar": 0,
+        "endLine": 255,
+        "endChar": 42
+      },
+      "revId": "ef83606f6a28d0fc3d3c1bbda22b63d90999c52a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
