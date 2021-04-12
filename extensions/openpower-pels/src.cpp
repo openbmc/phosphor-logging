@@ -855,10 +855,19 @@ std::vector<message::RegistryCallout>
 
     if (regEntry.callouts)
     {
+        std::vector<std::string> systemNames;
+
         try
         {
-            auto systemNames = dataIface.getSystemNames();
+            systemNames = dataIface.getSystemNames();
+        }
+        catch (const std::exception& e)
+        {
+            // Compatible interface not available yet
+        }
 
+        try
+        {
             registryCallouts = message::Registry::getCallouts(
                 regEntry.callouts.value(), systemNames, additionalData);
         }
