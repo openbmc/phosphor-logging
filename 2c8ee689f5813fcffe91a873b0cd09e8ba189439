@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b5e91e19_19dd3eb0",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 685,
+      "author": {
+        "id": 1000085
+      },
+      "writtenOn": "2021-04-13T16:48:52Z",
+      "side": 1,
+      "message": "Not clear if there should be a SymbolicFRU here for \"pwrsply\", some other procedure, or if we rely on the code logging this to put in an inventory call out.",
+      "range": {
+        "startLine": 681,
+        "startChar": 0,
+        "endLine": 685,
+        "endChar": 14
+      },
+      "revId": "2c8ee689f5813fcffe91a873b0cd09e8ba189439",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
