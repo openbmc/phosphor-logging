@@ -24,7 +24,6 @@
 
 #include <Python.h>
 
-#include <fifo_map.hpp>
 #include <iomanip>
 #include <nlohmann/json.hpp>
 #include <phosphor-logging/log.hpp>
@@ -34,12 +33,7 @@ namespace openpower::pels::user_data
 {
 namespace pv = openpower::pels::pel_values;
 using namespace phosphor::logging;
-
-// Use fifo_map as nlohmann::json's map. We are just ignoring the 'less'
-// compare.  With this map the keys are kept in FIFO order.
-template <class K, class V, class dummy_compare, class A>
-using fifoMap = nlohmann::fifo_map<K, V, nlohmann::fifo_map_compare<K>, A>;
-using fifoJSON = nlohmann::basic_json<fifoMap>;
+using orderedJSON = nlohmann::ordered_json;
 
 void pyDecRef(PyObject* pyObj)
 {
@@ -58,9 +52,9 @@ void pyDecRef(PyObject* pyObj)
  * @return std::string - The JSON string
  */
 std::string prettyJSON(uint16_t componentID, uint8_t subType, uint8_t version,
-                       const fifoJSON& json)
+                       const orderedJSON& json)
 {
-    fifoJSON output;
+    orderedJSON output;
     output[pv::sectionVer] = std::to_string(version);
     output[pv::subSection] = std::to_string(subType);
     output[pv::createdBy] = getNumberString("0x%04X", componentID);
@@ -134,7 +128,7 @@ std::string getCBORJSON(uint16_t componentID, uint8_t subType, uint8_t version,
         cborData.resize(data.size() - sizeof(pad) - pad);
     }
 
-    fifoJSON json = nlohmann::json::from_cbor(cborData);
+    orderedJSON json = nlohmann::json::from_cbor(cborData);
 
     return prettyJSON(componentID, subType, version, json);
 }
@@ -187,7 +181,7 @@ std::string getTextJSON(uint16_t componentID, uint8_t subType, uint8_t version,
         text.push_back(std::move(line));
     }
 
-    fifoJSON json = text;
+    orderedJSON json = text;
     return prettyJSON(componentID, subType, version, json);
 }
 
@@ -213,7 +207,7 @@ std::optional<std::string>
         {
             std::string jsonString{data.begin(), data.begin() + data.size()};
 
-            fifoJSON json = nlohmann::json::parse(jsonString);
+            orderedJSON json = nlohmann::json::parse(jsonString);
 
             return prettyJSON(componentID, subType, version, json);
         }
@@ -315,7 +309,7 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
                 const char* output = PyBytes_AS_STRING(pBytes);
                 try
                 {
-                    fifoJSON json = nlohmann::json::parse(output);
+                    orderedJSON json = nlohmann::json::parse(output);
                     return prettyJSON(componentID, subType, version, json);
                 }
                 catch (std::exception& e)
