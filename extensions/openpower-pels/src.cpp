@@ -22,7 +22,6 @@
 #ifdef PELTOOL
 #include <Python.h>
 
-#include <fifo_map.hpp>
 #include <nlohmann/json.hpp>
 #include <sstream>
 #endif
@@ -42,11 +41,7 @@ using namespace std::string_literals;
 constexpr size_t ccinSize = 4;
 
 #ifdef PELTOOL
-// Use fifo_map as nlohmann::json's map. We are just ignoring the 'less'
-// compare.  With this map the keys are kept in FIFO order.
-template <class K, class V, class dummy_compare, class A>
-using fifoMap = nlohmann::fifo_map<K, V, nlohmann::fifo_map_compare<K>, A>;
-using fifoJSON = nlohmann::basic_json<fifoMap>;
+using orderedJSON = nlohmann::ordered_json;
 
 void pyDecRef(PyObject* pyObj)
 {
@@ -64,9 +59,9 @@ void pyDecRef(PyObject* pyObj)
  *
  * @return std::string - The JSON string
  */
-std::string prettyJSON(const fifoJSON& json)
+std::string prettyJSON(const orderedJSON& json)
 {
-    fifoJSON output;
+    orderedJSON output;
     if (!json.is_object())
     {
         output["SRC Details"] = json;
@@ -187,7 +182,7 @@ std::optional<std::string> getPythonJSON(std::vector<std::string>& hexwords,
                 const char* output = PyBytes_AS_STRING(pBytes);
                 try
                 {
-                    fifoJSON json = nlohmann::json::parse(output);
+                    orderedJSON json = nlohmann::json::parse(output);
                     return prettyJSON(json);
                 }
                 catch (std::exception& e)
