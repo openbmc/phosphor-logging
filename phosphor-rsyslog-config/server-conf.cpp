@@ -13,6 +13,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
+#include <optional>
 #include <string>
 
 namespace phosphor
@@ -23,6 +24,82 @@ namespace rsyslog_config
 namespace utils = phosphor::rsyslog_utils;
 using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
+
+namespace internal
+{
+
+bool isIPv6Address(const std::string& addr)
+{
+    struct in6_addr result;
+    return inet_pton(AF_INET6, addr.c_str(), &result) == 1;
+}
+
+std::optional<std::pair<std::string, uint32_t>> parseConfig(std::istream& ss)
+{
+    std::string line;
+    std::getline(ss, line);
+
+    //"*.* @@<address>:<port>" or
+    //"*.* @@[<ipv6-address>:<port>"
+    constexpr auto start = 6; // Skip "*.* @@"
+    std::string serverAddress;
+    std::string serverPort;
+
+    // Ignore if line is commented
+    if (!line.empty() && '#' != line.at(0))
+    {
+        // Check if there is "[]", and make IPv6 address from it
+        auto posColonLeft = line.find('[');
+        auto posColonRight = line.find(']');
+        if (posColonLeft != std::string::npos ||
+            posColonRight != std::string::npos)
+        {
+            // It contains [ or ], so it should be an IPv6 address
+            if (posColonLeft == std::string::npos ||
+                posColonRight == std::string::npos)
+            {
+                // There either '[' or ']', invalid config
+                return {};
+            }
+            if (line.size() < posColonRight + 2 ||
+                line.at(posColonRight + 1) != ':')
+            {
+                // There is no ':', or no more content after ':', invalid config
+                return {};
+            }
+            serverAddress =
+                line.substr(posColonLeft + 1, posColonRight - posColonLeft - 1);
+            serverPort = line.substr(posColonRight + 2);
+        }
+        else
+        {
+            auto pos = line.find(':');
+            if (pos == std::string::npos)
+            {
+                // There is no ':', invalid config
+                return {};
+            }
+            serverAddress = line.substr(start, pos - start);
+            serverPort = line.substr(pos + 1);
+        }
+    }
+    if (serverAddress.empty() || serverPort.empty())
+    {
+        return {};
+    }
+    try
+    {
+        uint32_t port = std::stoul(serverPort);
+        return std::make_pair(std::move(serverAddress), port);
+    }
+    catch (const std::exception& ex)
+    {
+        log<level::ERR>("Invalid config", entry("ERR=%s", ex.what()));
+        return {};
+    }
+}
+
+} // namespace internal
 
 std::string Server::address(std::string value)
 {
@@ -99,7 +176,14 @@ void Server::writeConfig(const std::string& serverAddress, uint16_t serverPort,
     if (serverPort && !serverAddress.empty())
     {
         // write '*.* @@<remote-host>:<port>'
-        stream << "*.* @@" << serverAddress << ":" << serverPort;
+        if (internal::isIPv6Address(serverAddress))
+        {
+            stream << "*.* @@[" << serverAddress << "]:" << serverPort;
+        }
+        else
+        {
+            stream << "*.* @@" << serverAddress << ":" << serverPort;
+        }
     }
     else // this is a disable request
     {
@@ -133,23 +217,12 @@ bool Server::addressValid(const std::string& address)
 void Server::restore(const char* filePath)
 {
     std::fstream stream(filePath, std::fstream::in);
-    std::string line;
 
-    std::getline(stream, line);
-
-    // Ignore if line is commented
-    if ('#' != line.at(0))
+    auto ret = internal::parseConfig(stream);
+    if (ret)
     {
-        auto pos = line.find(':');
-        if (pos != std::string::npos)
-        {
-            //"*.* @@<address>:<port>"
-            constexpr auto start = 6; // Skip "*.* @@"
-            auto serverAddress = line.substr(start, pos - start);
-            auto serverPort = line.substr(pos + 1);
-            NetworkClient::address(std::move(serverAddress));
-            NetworkClient::port(std::stoul(serverPort));
-        }
+        NetworkClient::address(ret->first);
+        NetworkClient::port(ret->second);
     }
 }
 
