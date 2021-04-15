@@ -5,6 +5,13 @@
 
 namespace phosphor
 {
+
+namespace rsyslog_config::internal
+{
+extern std::optional<std::pair<std::string, uint32_t>>
+    parseConfig(std::istream& ss);
+}
+
 namespace logging
 {
 namespace test
@@ -53,6 +60,78 @@ TEST_F(TestRemoteLogging, testClearPort)
     EXPECT_EQ(getConfig(configFilePath.c_str()), "*.* @@1.1.1.1:100");
     config->port(0);
     EXPECT_EQ(getConfig(configFilePath.c_str()), "*.* ~");
+}
+
+TEST_F(TestRemoteLogging, testGoodIPv6Config)
+{
+    config->address("abcd:ef01::01");
+    config->port(50000);
+    EXPECT_EQ(getConfig(configFilePath.c_str()), "*.* @@[abcd:ef01::01]:50000");
+}
+
+TEST_F(TestRemoteLogging, parseConfigGoodIpv6)
+{
+    // A good case
+    std::string str = "*.* @@[abcd:ef01::01]:50000";
+    std::stringstream ss(str);
+    auto ret = phosphor::rsyslog_config::internal::parseConfig(ss);
+    EXPECT_TRUE(ret);
+    EXPECT_EQ(ret->first, "abcd:ef01::01");
+    EXPECT_EQ(ret->second, 50000);
+}
+
+TEST_F(TestRemoteLogging, parseConfigBadIpv6WithoutRightBracket)
+{
+    // Bad case: without ]
+    std::string str = "*.* @@[abcd:ef01::01:50000";
+    std::stringstream ss(str);
+    auto ret = phosphor::rsyslog_config::internal::parseConfig(ss);
+    EXPECT_FALSE(ret);
+}
+
+TEST_F(TestRemoteLogging, parseConfigBadIpv6WithoutLeftBracket)
+{
+    // Bad case: without [
+    std::string str = "*.* @@abcd:ef01::01]:50000";
+    std::stringstream ss(str);
+    auto ret = phosphor::rsyslog_config::internal::parseConfig(ss);
+    EXPECT_FALSE(ret);
+}
+
+TEST_F(TestRemoteLogging, parseConfigBadIpv6WithoutPort)
+{
+    // Bad case: without port
+    std::string str = "*.* @@[abcd:ef01::01]:";
+    std::stringstream ss(str);
+    auto ret = phosphor::rsyslog_config::internal::parseConfig(ss);
+    EXPECT_FALSE(ret);
+}
+
+TEST_F(TestRemoteLogging, parseConfigBadIpv6InvalidPort)
+{
+    // Bad case: without port
+    std::string str = "*.* @@[abcd:ef01::01]:xxx";
+    std::stringstream ss(str);
+    auto ret = phosphor::rsyslog_config::internal::parseConfig(ss);
+    EXPECT_FALSE(ret);
+}
+
+TEST_F(TestRemoteLogging, parseConfigBadIpv6WihtoutColon)
+{
+    // Bad case: invalid IPv6 address
+    std::string str = "*.* @@[abcd:ef01::01]";
+    std::stringstream ss(str);
+    auto ret = phosphor::rsyslog_config::internal::parseConfig(ss);
+    EXPECT_FALSE(ret);
+}
+
+TEST_F(TestRemoteLogging, parseConfigBadEmpty)
+{
+    // Bad case: invalid IPv6 address
+    std::string str = "";
+    std::stringstream ss(str);
+    auto ret = phosphor::rsyslog_config::internal::parseConfig(ss);
+    EXPECT_FALSE(ret);
 }
 
 } // namespace test
