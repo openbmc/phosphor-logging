@@ -30,7 +30,7 @@ class SdJournalHandler
      * @return an int meant to be intepreted by the journal_send caller during
      * testing.
      */
-    virtual int journal_send_call(const char* fmt)
+    virtual int journal_send_call(const char* /*fmt*/)
     {
         return 0;
     };
