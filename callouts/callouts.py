@@ -12,10 +12,11 @@ def main():
 
     parser.add_argument(
         '-i', '--callouts_yaml', dest='callouts_yaml',
-        default='callouts-example.yaml', help='input callouts yaml')
+        default=os.path.join(script_dir, 'callouts-example.yaml'),
+        help='input callouts yaml')
     args = parser.parse_args()
 
-    with open(os.path.join(script_dir, args.callouts_yaml), 'r') as fd:
+    with open(args.callouts_yaml, 'r') as fd:
         calloutsMap = yaml.safe_load(fd)
 
         # Render the mako template
