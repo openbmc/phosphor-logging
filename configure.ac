@@ -131,7 +131,7 @@ AS_IF([test "x$YAML_DIR" == "x"], \
     [YAML_DIR="None"])
 AC_ARG_VAR(CALLOUTS_YAML, [YAML filepath containing generated callouts.])
 AS_IF([test "x$CALLOUTS_YAML" == "x"], \
-    [CALLOUTS_YAML="callouts-example.yaml"])
+    [CALLOUTS_YAML="callouts/callouts-example.yaml"])
 
 AC_ARG_VAR(ERRLOG_PERSIST_PATH, [Path of directory housing persisted errors.])\
 AS_IF([test "x$ERRLOG_PERSIST_PATH" == "x"],
