@@ -24,6 +24,12 @@ namespace utils = phosphor::rsyslog_utils;
 using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 
+static bool isIPv6Address(const std::string& addr)
+{
+    struct in6_addr result;
+    return inet_pton(AF_INET6, addr.c_str(), &result) == 1;
+}
+
 std::string Server::address(std::string value)
 {
     using Argument = xyz::openbmc_project::Common::InvalidArgument;
@@ -99,7 +105,14 @@ void Server::writeConfig(const std::string& serverAddress, uint16_t serverPort,
     if (serverPort && !serverAddress.empty())
     {
         // write '*.* @@<remote-host>:<port>'
-        stream << "*.* @@" << serverAddress << ":" << serverPort;
+        if (isIPv6Address(serverAddress))
+        {
+            stream << "*.* @@[" << serverAddress << "]:" << serverPort;
+        }
+        else
+        {
+            stream << "*.* @@" << serverAddress << ":" << serverPort;
+        }
     }
     else // this is a disable request
     {
@@ -135,19 +148,41 @@ void Server::restore(const char* filePath)
 
     std::getline(stream, line);
 
+    //"*.* @@<address>:<port>" or
+    //"*.* @@[<ipv6-address>:<port>"
+    constexpr auto start = 6; // Skip "*.* @@"
+    std::string serverAddress;
+    std::string serverPort;
+
     // Ignore if line is commented
     if ('#' != line.at(0))
     {
-        auto pos = line.find(':');
+        // Check if there is "[]", and make IPv6 address from it
+        auto pos = line.find('[');
         if (pos != std::string::npos)
         {
-            //"*.* @@<address>:<port>"
-            constexpr auto start = 6; // Skip "*.* @@"
-            auto serverAddress = line.substr(start, pos - start);
-            auto serverPort = line.substr(pos + 1);
-            NetworkClient::address(std::move(serverAddress));
-            NetworkClient::port(std::stoul(serverPort));
+            auto pos2 = line.find(']');
+            if (pos2 == std::string::npos || line.at(pos2 + 1) != ':')
+            {
+                // There is '[' but no ']', invalid config
+                return;
+            }
+            serverAddress = line.substr(pos + 1, pos2 - pos - 1);
+            serverPort = line.substr(pos2 + 2);
         }
+        else
+        {
+            auto pos = line.find(':');
+            if (pos == std::string::npos)
+            {
+                // There is no ':', invalid config
+                return;
+            }
+            serverAddress = line.substr(start, pos - start);
+            serverPort = line.substr(pos + 1);
+        }
+        NetworkClient::address(std::move(serverAddress));
+        NetworkClient::port(std::stoul(serverPort));
     }
 }
 
