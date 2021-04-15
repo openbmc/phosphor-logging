@@ -14,6 +14,9 @@ TEST_F(TestRemoteLogging, testGoodAddress)
 {
     config->address("1.1.1.1");
     EXPECT_EQ(config->address(), "1.1.1.1");
+
+    config->address("abcd:ef01::01");
+    EXPECT_EQ(config->address(), "abcd:ef01::01");
 }
 
 TEST_F(TestRemoteLogging, testBadAddress)
