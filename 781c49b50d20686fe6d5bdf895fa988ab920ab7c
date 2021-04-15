@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d5421100_72e2a057",
+        "filename": "phosphor-rsyslog-config/server-conf.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-15T21:43:29Z",
+      "side": 1,
+      "message": "is there any chance the \u0027]\u0027 could be at the end of a line so the line.at() would throw?",
+      "range": {
+        "startLine": 165,
+        "startChar": 45,
+        "endLine": 165,
+        "endChar": 63
+      },
+      "revId": "781c49b50d20686fe6d5bdf895fa988ab920ab7c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
