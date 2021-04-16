@@ -1,0 +1,11 @@
+#pragma once
+
+// @TODO(stwcx): These values are currently configured in autoconf but never
+//               modified by anyone, nor could I see why they ever would be.
+//               Once autoconf is removed, they should be switched over to
+//               a constant in a header file.
+
+#define BUSNAME_LOGGING "xyz.openbmc_project.Logging"
+#define OBJ_INTERNAL "/xyz/openbmc_project/logging/internal/manager"
+
+// vim: ft=cpp
