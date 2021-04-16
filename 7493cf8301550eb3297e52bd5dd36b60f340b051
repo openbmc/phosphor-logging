@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "424c36b6_a782c1fd",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-04-16T15:30:13Z",
+      "side": 1,
+      "message": "It makes more sense... I will change it",
+      "parentUuid": "c2345777_fe1b625e",
+      "revId": "7493cf8301550eb3297e52bd5dd36b60f340b051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a95dafc1_8e849508",
         "filename": "extensions/openpower-pels/README.md",
         "patchSetId": 2
@@ -30,6 +48,30 @@
       "writtenOn": "2021-04-16T13:56:32Z",
       "side": 1,
       "message": "How about a bulleted list of the possible values along with what they do?  Like how SYSTEM_TERM is used with the Critical severity to make the 0x51 value, etc.",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 54
+      },
+      "revId": "7493cf8301550eb3297e52bd5dd36b60f340b051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c5ad77b_d687e8a2",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-04-16T15:30:13Z",
+      "side": 1,
+      "message": "Do you want me to put SYSTEM_FAIL, PARTITION_TERM, PARTITION_FAIL etc? we don\u0027t support them.. so I can say not-supported?",
+      "parentUuid": "a95dafc1_8e849508",
       "range": {
         "startLine": 60,
         "startChar": 0,
