@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c2345777_fe1b625e",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-16T13:56:32Z",
+      "side": 1,
+      "message": "maybe something like:\nThis is used when the passed in event log severity determines the PEL severity and a more granular PEL severity is needed beyond what the normal event log to PEL severity conversion could give.\n\nthough that sound wordy",
+      "revId": "7493cf8301550eb3297e52bd5dd36b60f340b051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a95dafc1_8e849508",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-16T13:56:32Z",
+      "side": 1,
+      "message": "How about a bulleted list of the possible values along with what they do?  Like how SYSTEM_TERM is used with the Critical severity to make the 0x51 value, etc.",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 54
+      },
+      "revId": "7493cf8301550eb3297e52bd5dd36b60f340b051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
