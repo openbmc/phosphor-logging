@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4cd1d7a8_2dcf1e78",
+        "filename": "phosphor-rsyslog-config/server-conf.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-16T16:14:41Z",
+      "side": 1,
+      "message": "this also requires a non-blank line,  but this was how the original code already worked.",
+      "range": {
+        "startLine": 49,
+        "startChar": 20,
+        "endLine": 49,
+        "endChar": 26
+      },
+      "revId": "a8cc07ae4a4e00ae6e66a2e8952e68594b6bb7fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
