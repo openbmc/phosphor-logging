@@ -176,6 +176,7 @@ def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
             metadata_process=metadata_process))
     f.close()
 
+
 def get_elog_data(i_elog_yaml,
                   i_elog_meta_yaml,
                   i_namespace,
@@ -196,7 +197,7 @@ def get_elog_data(i_elog_yaml,
      meta_data, parents, metadata_process) = o_elog_data
     ifile = yaml.safe_load(open(i_elog_yaml))
 
-    #for all the errors in error yaml file
+    # for all the errors in error yaml file
     for error in ifile:
         if 'name' not in error:
             print("Error - Did not find name in entry %s in file %s " % (
@@ -208,11 +209,11 @@ def get_elog_data(i_elog_yaml,
         if 'description' in error:
             error_msg[fullname] = error['description'].strip()
 
-        #set default values
+        # set default values
         error_lvl[fullname] = "ERR"
         parents[fullname] = None
 
-        #check if meta data yaml file is found
+        # check if meta data yaml file is found
         if not os.path.isfile(i_elog_meta_yaml):
             continue
         mfile = yaml.safe_load(open(i_elog_meta_yaml))
@@ -233,7 +234,7 @@ def get_elog_data(i_elog_yaml,
 
         # Get 0th inherited error (current support - single inheritance)
         if 'inherits' in match:
-            parents[fullname]  = match['inherits'][0]
+            parents[fullname] = match['inherits'][0]
 
         # Put all errors in meta[] even the meta is empty
         # so that child errors could inherits such error without meta
@@ -247,7 +248,7 @@ def get_elog_data(i_elog_yaml,
                 meta_data[str_short]['str'] = i['str']
                 meta_data[str_short]['str_short'] = str_short
                 meta_data[str_short]['type'] = get_cpp_type(i['type'])
-                if ('process' in i) and (True == i['process']):
+                if ('process' in i) and (i['process'] is True):
                     metadata_process[str_short] = fullname + "." + str_short
         meta[fullname] = tmp_meta
 
@@ -290,6 +291,7 @@ def main(i_args):
                  options.output_hpp,
                  options.templatedir,
                  options.elog_mako)
+
 
 # Only run if it's a script
 if __name__ == '__main__':
