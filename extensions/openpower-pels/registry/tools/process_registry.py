@@ -93,9 +93,9 @@ def check_message_args(registry_json):
 
         if num_placeholders != \
                 len(entry['Documentation']['MessageArgSources']):
-                    sys.exit("Different number of placeholders found in "
-                             "Message vs MessageArgSources for error {}".
-                             format(entry['Name']))
+            sys.exit("Different number of placeholders found in "
+                     "Message vs MessageArgSources for error {}".
+                     format(entry['Name']))
 
 
 def validate_schema(registry, schema):
