@@ -1,0 +1,7 @@
+option('yamldir', type: 'string', description: 'Path to YAML')
+option(
+    'callout_yaml',
+    type: 'string',
+    value: 'callouts/callouts-example.yaml',
+    description: 'Path to Callout YAML',
+)
