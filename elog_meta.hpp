@@ -44,7 +44,7 @@ inline void parse(const std::vector<std::string>& data,
             metadata.emplace(std::move(key), std::move(value));
         }
     }
-};
+}
 
 /** @brief Combine the metadata keys and values from the map
  *         into a vector of strings that look like:
