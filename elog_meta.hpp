@@ -78,9 +78,10 @@ void build(const std::string& match, const std::vector<std::string>& data,
 // for this metadata.
 using namespace example::xyz::openbmc_project::Example::Elog;
 template <>
-inline void build<TestErrorTwo::DEV_ID>(const std::string& match,
-                                        const std::vector<std::string>& data,
-                                        AssociationList& list)
+inline void
+    build<TestErrorTwo::DEV_ID>(const std::string& /*match*/,
+                                const std::vector<std::string>& /*data*/,
+                                AssociationList& /*list*/)
 {
 }
 
