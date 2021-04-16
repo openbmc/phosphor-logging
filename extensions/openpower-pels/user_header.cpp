@@ -47,6 +47,7 @@ void UserHeader::flatten(Stream& stream) const
 
 UserHeader::UserHeader(const message::Entry& entry,
                        phosphor::logging::Entry::Level severity,
+                       const AdditionalData& additionalData,
                        const DataInterfaceBase& dataIface)
 {
     _header.id = static_cast<uint16_t>(SectionID::userHeader);
@@ -85,6 +86,17 @@ UserHeader::UserHeader(const message::Entry& entry,
 
             // Have to choose something, just use informational.
             _eventSeverity = 0;
+        }
+    }
+
+    auto sev_level = additionalData.getValue("SEVERITY_DETAIL");
+    auto cur_sev = pv::getValue(_eventSeverity, pel_values::severityValues);
+    if (cur_sev.find("Critical") != std::string::npos)
+    {
+        if (sev_level.value_or("") == "SYSTEM_TERM")
+        {
+            // Change to Critical Error, System Termination
+            _eventSeverity |= 0x01;
         }
     }
 
