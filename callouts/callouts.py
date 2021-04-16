@@ -14,6 +14,11 @@ def main():
         '-i', '--callouts_yaml', dest='callouts_yaml',
         default=os.path.join(script_dir, 'callouts-example.yaml'),
         help='input callouts yaml')
+    parser.add_argument(
+        '-o', '--output', dest='output',
+        default='callouts-gen.hpp',
+        help='output file name (default: callouts-gen.hpp)')
+
     args = parser.parse_args()
 
     with open(args.callouts_yaml, 'r') as fd:
@@ -22,7 +27,7 @@ def main():
         # Render the mako template
         template = os.path.join(script_dir, 'callouts-gen.mako.hpp')
         t = Template(filename=template)
-        with open('callouts-gen.hpp', 'w') as fd:
+        with open(args.output, 'w') as fd:
             fd.write(
                 t.render(
                     calloutsMap=calloutsMap))
