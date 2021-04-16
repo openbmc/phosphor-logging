@@ -81,6 +81,161 @@
       "revId": "7493cf8301550eb3297e52bd5dd36b60f340b051",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c6ff5b79_e772abfe",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-16T16:01:23Z",
+      "side": 1,
+      "message": "You can just list the one supported one.",
+      "parentUuid": "4c5ad77b_d687e8a2",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 54
+      },
+      "revId": "7493cf8301550eb3297e52bd5dd36b60f340b051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a9f8fdd_010d3997",
+        "filename": "extensions/openpower-pels/user_header.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-16T16:01:23Z",
+      "side": 1,
+      "message": "can you add a comment that says what this code is doing?",
+      "revId": "7493cf8301550eb3297e52bd5dd36b60f340b051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd0ab359_429359f1",
+        "filename": "extensions/openpower-pels/user_header.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-16T16:01:23Z",
+      "side": 1,
+      "message": "we try to use camelCase for all variables.",
+      "range": {
+        "startLine": 92,
+        "startChar": 9,
+        "endLine": 92,
+        "endChar": 19
+      },
+      "revId": "7493cf8301550eb3297e52bd5dd36b60f340b051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9436dbeb_ff7d6a39",
+        "filename": "extensions/openpower-pels/user_header.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-16T16:01:23Z",
+      "side": 1,
+      "message": "instead of looking in PelValues, there are severity types defined here: https://github.com/openbmc/phosphor-logging/blob/master/extensions/openpower-pels/pel_types.hpp#L91\n\nthen you can just compare the upper nibble against this type to see if it is critical.  This is probably done in other places in the code you could look at.",
+      "revId": "7493cf8301550eb3297e52bd5dd36b60f340b051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7c81b85b_c1d5eac8",
+        "filename": "test/openpower-pels/user_header_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-16T16:01:23Z",
+      "side": 1,
+      "message": "doesn\u0027t apply for this testcase, can remove.  you could also just leave adData empty.",
+      "range": {
+        "startLine": 211,
+        "startChar": 1,
+        "endLine": 211,
+        "endChar": 48
+      },
+      "revId": "7493cf8301550eb3297e52bd5dd36b60f340b051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4adf674e_124a66da",
+        "filename": "test/openpower-pels/user_header_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-16T16:01:23Z",
+      "side": 1,
+      "message": "same comment as above.",
+      "revId": "7493cf8301550eb3297e52bd5dd36b60f340b051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d95adbb3_d0049e8c",
+        "filename": "test/openpower-pels/user_header_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-16T16:01:23Z",
+      "side": 1,
+      "message": "same comment as above.",
+      "revId": "7493cf8301550eb3297e52bd5dd36b60f340b051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42dc0207_b3b6dda1",
+        "filename": "test/openpower-pels/user_header_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-16T16:01:23Z",
+      "side": 1,
+      "message": "...",
+      "revId": "7493cf8301550eb3297e52bd5dd36b60f340b051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
