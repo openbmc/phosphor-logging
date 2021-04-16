@@ -5,3 +5,16 @@ option(
     value: 'callouts/callouts-example.yaml',
     description: 'Path to Callout YAML',
 )
+
+option(
+    'error_cap',
+    type: 'integer',
+    value: 200,
+    description: 'Max number of error enttries allowed for commit',
+)
+option(
+    'error_info_cap',
+    type: 'integer',
+    value: 10,
+    description: 'Cap on informational (and below) severity errors',
+)
