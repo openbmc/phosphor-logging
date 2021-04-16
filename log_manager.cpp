@@ -437,7 +437,7 @@ void Manager::doExtensionLogCreate(const Entry& entry, const FFDCEntries& ffdc)
     }
 }
 
-void Manager::processMetadata(const std::string& errorName,
+void Manager::processMetadata(const std::string& /*errorName*/,
                               const std::vector<std::string>& additionalData,
                               AssociationList& objects) const
 {
@@ -709,6 +709,7 @@ void Manager::journalSync()
         struct pollfd fds = {
             .fd = fd,
             .events = POLLIN,
+            .revents = 0,
         };
         constexpr auto pollTimeout = 5; // 5 seconds
         rc = poll(&fds, 1, pollTimeout * 1000);

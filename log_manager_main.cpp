@@ -8,7 +8,7 @@
 #include <sdbusplus/server/manager.hpp>
 #include <sdeventplus/event.hpp>
 
-int main(int argc, char* argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
     auto bus = sdbusplus::bus::new_default();
     auto event = sdeventplus::Event::get_default();
