@@ -1,11 +1,32 @@
 #pragma once
+#include <cstddef>
+
+#define PROCESS_META 1
 
 // @TODO(stwcx): These values are currently configured in autoconf but never
 //               modified by anyone, nor could I see why they ever would be.
 //               Once autoconf is removed, they should be switched over to
 //               a constant in a header file.
 
+#define BMC_VERSION_FILE "/etc/os-release"
 #define BUSNAME_LOGGING "xyz.openbmc_project.Logging"
+#define CALLOUT_FWD_ASSOCIATION "callout"
+#define CALLOUT_REV_ASSOCIATION "fault"
+#define INVENTORY_ROOT "/xyz/openbmc_project/inventory"
+#define OBJ_ENTRY "/xyz/openbmc_project/logging/entry"
 #define OBJ_INTERNAL "/xyz/openbmc_project/logging/internal/manager"
+#define OBJ_LOGGING "/xyz/openbmc_project/logging"
+#define SYSTEMD_BUSNAME "org.freedesktop.systemd1"
+#define SYSTEMD_INTERFACE "org.freedesktop.systemd1.Manager"
+#define SYSTEMD_PATH "/org/freedesktop/systemd1"
+
+#define ERRLOG_PERSIST_PATH "/var/lib/phosphor-logging/errors" // TODO: need /tmp/errors in some cases?
+
+static constexpr size_t ERROR_CAP = @error_cap@;
+static constexpr size_t ERROR_INFO_CAP = @error_info_cap@;
+
+static constexpr auto FIRST_CEREAL_CLASS_VERSION_WITH_FWLEVEL = "2";
+static constexpr auto FIRST_CEREAL_CLASS_VERSION_WITH_UPDATE_TS = "3";
+static constexpr size_t CLASS_VERSION = 3;
 
 // vim: ft=cpp
