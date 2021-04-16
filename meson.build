@@ -170,3 +170,23 @@ executable('phosphor-log-manager',
     ],
     install: true,
 )
+# Generate test executables which run in obmc env (qemu, real hardware).
+executable('logging-test',
+    'logging_test.cpp',
+    link_with: libphosphor_logging,
+    dependencies: [
+        pdi_dep,
+        sdbusplus_dep,
+    ],
+    install: true,
+)
+executable('callout-test',
+    'callouts/callout_test.cpp',
+    link_with: libphosphor_logging,
+    dependencies: [
+        pdi_dep,
+        sdbusplus_dep,
+        sdeventplus_dep,
+    ],
+    install: true,
+)
