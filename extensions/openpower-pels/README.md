@@ -45,6 +45,20 @@ POWER_THERMAL_CRITICAL_FAULT=TRUE
 
 Note that TRUE is the only value supported.
 
+#### SEVERITY_DETAIL
+
+This keyword is used to set the severity of error in PEL.
+User Header of PEL is updated to show the severity of error
+
+The syntax is:
+```
+SEVERITY_DETAIL=<SEVERITY_TYPE>
+e.g.
+SEVERITY_DETAIL=SYSTEM_TERM
+```
+
+Note that SEVERITY_DETAIL is the only value supported.
+
 #### ESEL
 
 This keyword's data contains a full PEL in string format.  This is how hostboot

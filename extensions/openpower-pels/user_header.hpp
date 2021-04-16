@@ -44,10 +44,13 @@ class UserHeader : public Section
      *
      * @param[in] entry - The message registry entry for this error
      * @param[in] severity - The OpenBMC event log severity for this error
+     * @param[in] additionalData - The AdditionalData properties in this
+     *                             error log
      * @param[in] dataIface - The DataInterface object
      */
     UserHeader(const message::Entry& entry,
                phosphor::logging::Entry::Level severity,
+               const AdditionalData& additionalData,
                const DataInterfaceBase& dataIface);
 
     /**
