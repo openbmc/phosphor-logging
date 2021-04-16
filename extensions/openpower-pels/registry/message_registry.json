@@ -398,12 +398,13 @@
 
         {
             "Name": "org.open_power.Attn.Error.Terminate",
-            "Subsystem": "other_na",
-            "Severity": "critical_system_term",
+            "Subsystem": "cec_hardware",
+            "Severity": "non_error",
 
             "SRC":
             {
                 "ReasonCode": "0xD138",
+                "SymptomIDFields": [ "SRCWord3", "SRCWord4", "SRCWord5", "SRCWord6", "SRCWord7", "SRCWord8", "SRCWord9" ],
                 "Words6To9":
                 {
                 }
