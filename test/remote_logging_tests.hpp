@@ -2,7 +2,7 @@
 
 #include "phosphor-rsyslog-config/server-conf.hpp"
 
-#include <experimental/filesystem>
+#include <filesystem>
 #include <sdbusplus/bus.hpp>
 
 #include "gmock/gmock.h"
@@ -15,7 +15,7 @@ namespace logging
 namespace test
 {
 
-namespace fs = std::experimental::filesystem;
+namespace fs = std::filesystem;
 
 char tmplt[] = "/tmp/logging_test.XXXXXX";
 auto bus = sdbusplus::bus::new_default();

@@ -4,7 +4,7 @@
 
 #include <stdlib.h>
 
-#include <experimental/filesystem>
+#include <filesystem>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/test/sdbus_mock.hpp>
 
@@ -17,7 +17,7 @@ namespace logging
 namespace test
 {
 
-namespace fs = std::experimental::filesystem;
+namespace fs = std::filesystem;
 
 char tmplt[] = "/tmp/logging_test.XXXXXX";
 sdbusplus::SdBusMock sdbusMock;
