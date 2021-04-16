@@ -112,8 +112,9 @@ TEST(UserHeaderTest, ConstructionTest)
         regEntry.eventScope = 2;
 
         MockDataInterface dataIface;
+        AdditionalData ad;
 
-        UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error,
+        UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error, ad,
                       dataIface);
 
         ASSERT_TRUE(uh.valid());
@@ -138,7 +139,7 @@ TEST(UserHeaderTest, ConstructionTest)
             // then set them to 0xFFFF.
             regEntry.actionFlags = std::nullopt;
 
-            UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error,
+            UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error, ad,
                           dataIface);
             EXPECT_EQ(uh.actionFlags(), 0xFFFF);
         }
@@ -152,6 +153,8 @@ TEST(UserHeaderTest, ConstructionTest)
         regEntry.subsystem = 5;
         regEntry.severity = {{"", 0x20}, {"systemB", 0x10}, {"systemA", 0x00}};
 
+        AdditionalData ad;
+
         MockDataInterface dataIface;
         std::vector<std::string> names1{"systemA"};
         std::vector<std::string> names2{"systemB"};
@@ -163,21 +166,21 @@ TEST(UserHeaderTest, ConstructionTest)
             .WillOnce(Return(names3));
 
         {
-            UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error,
+            UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error, ad,
                           dataIface);
 
             EXPECT_EQ(uh.severity(), 0x00);
         }
 
         {
-            UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error,
+            UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error, ad,
                           dataIface);
 
             EXPECT_EQ(uh.severity(), 0x10);
         }
 
         {
-            UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error,
+            UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error, ad,
                           dataIface);
 
             EXPECT_EQ(uh.severity(), 0x20);
@@ -200,9 +203,56 @@ TEST(UserHeaderTest, UseEventLogSevTest)
     // Leave off severity
 
     MockDataInterface dataIface;
+    AdditionalData ad;
 
-    UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error, dataIface);
+    UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error, ad,
+                  dataIface);
     ASSERT_EQ(uh.severity(), 0x40);
+}
+
+// Test that the critical severity comes from the event log if not
+// in the message registry
+TEST(UserHeaderTest, UseEventLogSevCritTest)
+{
+    using namespace openpower::pels::message;
+    Entry regEntry;
+
+    regEntry.name = "test";
+    regEntry.subsystem = 5;
+    regEntry.actionFlags = 0xC000;
+    regEntry.eventType = 1;
+    regEntry.eventScope = 2;
+    // Leave off severity
+
+    MockDataInterface dataIface;
+    AdditionalData ad;
+
+    UserHeader uh(regEntry, phosphor::logging::Entry::Level::Critical, ad,
+                  dataIface);
+    ASSERT_EQ(uh.severity(), 0x50);
+}
+
+// Test that the critical severity comes from the event log if not
+// in the message registry and termination condition is set
+TEST(UserHeaderTest, UseEventLogSevCritTermTest)
+{
+    using namespace openpower::pels::message;
+    Entry regEntry;
+
+    regEntry.name = "test";
+    regEntry.subsystem = 5;
+    regEntry.actionFlags = 0xC000;
+    regEntry.eventType = 1;
+    regEntry.eventScope = 2;
+    // Leave off severity
+
+    MockDataInterface dataIface;
+    std::vector<std::string> adData{"SEVERITY_DETAIL=SYSTEM_TERM"};
+    AdditionalData ad{adData};
+
+    UserHeader uh(regEntry, phosphor::logging::Entry::Level::Critical, ad,
+                  dataIface);
+    ASSERT_EQ(uh.severity(), 0x51);
 }
 
 // Test that the optional event type & scope fields work
@@ -217,8 +267,10 @@ TEST(UserHeaderTest, DefaultEventTypeScopeTest)
     regEntry.actionFlags = 0xC000;
 
     MockDataInterface dataIface;
+    AdditionalData ad;
 
-    UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error, dataIface);
+    UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error, ad,
+                  dataIface);
 
     ASSERT_EQ(uh.eventType(), 0);
     ASSERT_EQ(uh.scope(), 0x03);

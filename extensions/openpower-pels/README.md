@@ -45,6 +45,21 @@ POWER_THERMAL_CRITICAL_FAULT=TRUE
 
 Note that TRUE is the only value supported.
 
+#### SEVERITY_DETAIL
+
+This is used when the passed in event log severity determines the PEL
+severity and a more granular PEL severity is needed beyond what the normal
+event log to PEL severity conversion could give.
+
+The syntax is:
+```
+SEVERITY_DETAIL=<SEVERITY_TYPE>
+e.g.
+SEVERITY_DETAIL=SYSTEM_TERM
+```
+Option Supported:
+- SYSTEM_TERM, changes the Severity value from 0x50 to 0x51
+
 #### ESEL
 
 This keyword's data contains a full PEL in string format.  This is how hostboot
