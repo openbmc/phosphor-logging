@@ -1,0 +1,99 @@
+project('phosphor-logging', 'cpp',
+    meson_version: '>= 0.57.0',
+    default_options: [
+      'buildtype=debugoptimized',
+      'cpp_std=c++20',
+      'warning_level=3',
+      'werror=true',
+    ],
+    version: '1.0.0',
+)
+
+python_prog = find_program('python3')
+
+# Get sdbusplus dependency.
+sdbusplus_dep = dependency('sdbusplus', required: false)
+if sdbusplus_dep.found()
+    sdbusplusplus_prog = find_program('sdbus++')
+    sdbuspp_gen_meson_prog = find_program('sdbus++-gen-meson')
+else
+    sdbusplus_proj = subproject('sdbusplus', required: true)
+    sdbusplus_dep = sdbusplus_proj.get_variable('sdbusplus_dep')
+    sdbusplusplus_prog = sdbusplus_proj.get_variable('sdbusplusplus_prog')
+    sdbuspp_gen_meson_prog = sdbusplus_proj.get_variable(
+        'sdbuspp_gen_meson_prog'
+    )
+endif
+
+# Get PDI and sdeventplus dependency.
+pdi_dep = dependency(
+    'phosphor-dbus-interfaces',
+    fallback: ['phosphor-dbus-interfaces', 'phosphor_dbus_interfaces_dep'],
+)
+sdeventplus_dep = dependency(
+    'sdeventplus',
+    fallback: ['sdeventplus', 'sdeventplus_dep' ],
+)
+
+# Find the installed YAML directory, either from a configure option or
+# by pulling it from the PDI dependency.
+yamldir = get_option('yamldir')
+if yamldir == ''
+    yamldir = pdi_dep.get_variable(pkgconfig: 'yamldir', internal: 'yamldir')
+endif
+
+# Create config.h with constants that use to come from autoconf.
+conf_data = configuration_data()
+configure_file(
+    input: 'config.h.meson',
+    output: 'config.h',
+    configuration: conf_data,
+)
+
+# Generate callouts-gen.hpp.
+callouts_gen = custom_target('callouts-gen.hpp'.underscorify(),
+    input: [
+        'callouts/callouts.py',
+        'callouts/callouts-gen.mako.hpp',
+        get_option('callout_yaml'),
+    ],
+    output: 'callouts-gen.hpp',
+    command: [ python_prog, '@INPUT0@', '-i', '@INPUT2@', '-o', '@OUTPUT0@' ],
+)
+
+subdir('phosphor-logging')
+
+# Build libphosphor-logging.
+libphosphor_logging = library(
+    'phosphor_logging',
+    files(
+        'elog.cpp',
+        'elog_meta.cpp',
+        'sdjournal.cpp',
+    ),
+    callouts_gen,
+    elog_errors_gen,
+    dependencies: [ sdbusplus_dep, pdi_dep, sdeventplus_dep ],
+    version: meson.project_version(),
+    install: true,
+)
+
+import('pkgconfig').generate(
+    libphosphor_logging,
+    name: meson.project_name(),
+    version: meson.project_version(),
+    requires: [
+        'libsystemd',
+        'phosphor-dbus-interfaces',
+        'sdbusplus',
+    ],
+    description: 'Phosphor logging utilities',
+)
+
+# Create dependency for use as subproject.
+phosphor_logging_dep = declare_dependency(
+    include_directories: include_directories('.'),
+    link_with: libphosphor_logging,
+    sources: [ callouts_gen, elog_errors_gen ],
+    dependencies: [ sdbusplus_dep, pdi_dep, sdeventplus_dep],
+)
