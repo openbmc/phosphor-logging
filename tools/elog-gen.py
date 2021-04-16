@@ -137,10 +137,11 @@ def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
         meta_yaml = get_meta_yaml_file(error_yaml)
 
         # Verify the input mako file
-        template_path = "/".join((i_template_dir, i_elog_mako))
+        template_path = os.path.join(i_template_dir, i_elog_mako)
         if (not (os.path.isfile(template_path))):
             print("Cannot find input template file " + template_path)
             exit(1)
+        template_path = os.path.abspath(template_path)
 
         get_elog_data(error_yaml,
                       meta_yaml,
