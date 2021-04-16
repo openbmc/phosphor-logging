@@ -47,6 +47,7 @@ void UserHeader::flatten(Stream& stream) const
 
 UserHeader::UserHeader(const message::Entry& entry,
                        phosphor::logging::Entry::Level severity,
+                       const AdditionalData& additionalData,
                        const DataInterfaceBase& dataIface)
 {
     _header.id = static_cast<uint16_t>(SectionID::userHeader);
@@ -88,6 +89,19 @@ UserHeader::UserHeader(const message::Entry& entry,
         }
     }
 
+    // Convert Critical error (0x50) to Critical Error-System Termination
+    // (0x51), if the AdditionalData is set to SYSTEM_TERM
+    auto sevLevel = additionalData.getValue("SEVERITY_DETAIL");
+    auto sevType = static_cast<SeverityType>(_eventSeverity & 0xF0);
+    if (sevType == SeverityType::critical)
+    {
+        if (sevLevel.value_or("") == "SYSTEM_TERM")
+        {
+            // Change to Critical Error, System Termination
+            _eventSeverity |= 0x01;
+        }
+    }
+
     // TODO: ibm-dev/dev/#1144 Handle manufacturing sev & action flags
 
     if (entry.eventType)
@@ -98,8 +112,6 @@ UserHeader::UserHeader(const message::Entry& entry,
     {
         // There are different default event types for info errors
         // vs non info ones.
-        auto sevType = static_cast<SeverityType>(_eventSeverity & 0xF0);
-
         _eventType = (sevType == SeverityType::nonError)
                          ? static_cast<uint8_t>(EventType::miscInformational)
                          : static_cast<uint8_t>(EventType::notApplicable);
