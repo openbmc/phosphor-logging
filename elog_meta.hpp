@@ -1,5 +1,7 @@
 #pragma once
 
+#include "config.h"
+
 #include "callouts-gen.hpp"
 #include "elog_entry.hpp"
 

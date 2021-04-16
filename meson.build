@@ -35,6 +35,15 @@ sdeventplus_dep = dependency(
     fallback: ['sdeventplus', 'sdeventplus_dep' ],
 )
 
+# Get Cereal dependency.
+cereal_dep = dependency('cereal', required: false)
+if not cereal_dep.found()
+    subproject('cereal', required: false)
+    cereal_dep = declare_dependency(
+        include_directories: [ 'subprojects/cereal/include' ],
+    )
+endif
+
 # Find the installed YAML directory, either from a configure option or
 # by pulling it from the PDI dependency.
 yamldir = get_option('yamldir')
@@ -44,11 +53,19 @@ endif
 
 # Create config.h with constants that use to come from autoconf.
 conf_data = configuration_data()
+conf_data.set('error_cap', get_option('error_cap'))
+conf_data.set('error_info_cap', get_option('error_info_cap'))
 configure_file(
     input: 'config.h.meson',
     output: 'config.h',
     configuration: conf_data,
 )
+
+# Generate sdbus++ files.
+generated_sources = []
+generated_others = []
+subdir('gen')
+subdir('gen/xyz')
 
 # Generate callouts-gen.hpp.
 callouts_gen = custom_target('callouts-gen.hpp'.underscorify(),
@@ -59,6 +76,38 @@ callouts_gen = custom_target('callouts-gen.hpp'.underscorify(),
     ],
     output: 'callouts-gen.hpp',
     command: [ python_prog, '@INPUT0@', '-i', '@INPUT2@', '-o', '@OUTPUT0@' ],
+)
+# Generate elog-lookup.cpp
+elog_lookup_gen = custom_target('elog-lookup.cpp'.underscorify(),
+    input: files(
+        'tools/elog-gen.py',
+        'tools/phosphor-logging/templates/elog-lookup-template.mako.cpp',
+    ),
+    output: 'elog-lookup.cpp',
+    command: [
+        python_prog, '@INPUT0@',
+        '-t', '',
+        '-m', '@INPUT1@',
+        '-y', yamldir,
+        '-u', meson.current_source_dir() / '../tools/',
+        '-o', '@OUTPUT0@',
+    ],
+)
+# Generate elog-process-metadata.cpp
+elog_process_gen = custom_target('elog-process-metadata.cpp'.underscorify(),
+    input: files(
+        'tools/elog-gen.py',
+        'tools/phosphor-logging/templates/elog-process-metadata.mako.cpp',
+    ),
+    output: 'elog-process-metadata.cpp',
+    command: [
+        python_prog, '@INPUT0@',
+        '-t', '',
+        '-m', '@INPUT1@',
+        '-y', yamldir,
+        '-u', meson.current_source_dir() / '../tools/',
+        '-o', '@OUTPUT0@',
+    ],
 )
 
 subdir('phosphor-logging')
@@ -96,4 +145,28 @@ phosphor_logging_dep = declare_dependency(
     link_with: libphosphor_logging,
     sources: [ callouts_gen, elog_errors_gen ],
     dependencies: [ sdbusplus_dep, pdi_dep, sdeventplus_dep],
+)
+
+# Generate daemon.
+executable('phosphor-log-manager',
+    generated_sources,
+    elog_lookup_gen,
+    elog_process_gen,
+    'elog_entry.cpp',
+    'elog_meta.cpp',
+    'elog_serialize.cpp',
+    'extensions.cpp',
+    'log_manager.cpp',
+    'log_manager_main.cpp',
+    'sdjournal.cpp',
+    'util.cpp',
+    include_directories: include_directories('gen'),
+    link_with: libphosphor_logging,
+    dependencies: [
+        cereal_dep,
+        pdi_dep,
+        sdbusplus_dep,
+        sdeventplus_dep
+    ],
+    install: true,
 )
