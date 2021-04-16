@@ -3,7 +3,7 @@
 #include "extensions.hpp"
 #include "log_manager.hpp"
 
-#include <experimental/filesystem>
+#include <filesystem>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/manager.hpp>
 #include <sdeventplus/event.hpp>
@@ -22,7 +22,7 @@ int main(int /*argc*/, char* /*argv*/[])
     phosphor::logging::Manager mgr(bus, OBJ_LOGGING, iMgr);
 
     // Create a directory to persist errors.
-    std::experimental::filesystem::create_directories(ERRLOG_PERSIST_PATH);
+    std::filesystem::create_directories(ERRLOG_PERSIST_PATH);
 
     // Recreate error d-bus objects from persisted errors.
     iMgr.restore();

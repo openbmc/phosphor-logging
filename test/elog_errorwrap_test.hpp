@@ -4,7 +4,7 @@
 #include "log_manager.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
-#include <experimental/filesystem>
+#include <filesystem>
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/elog.hpp>
 #include <phosphor-logging/log.hpp>
@@ -20,7 +20,7 @@ namespace logging
 namespace internal
 {
 
-namespace fs = std::experimental::filesystem;
+namespace fs = std::filesystem;
 
 class journalInterface
 {
