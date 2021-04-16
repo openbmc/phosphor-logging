@@ -64,7 +64,7 @@ sdbusplus::message::unix_fd Entry::getEntry()
     return fd;
 }
 
-void Entry::closeFD(int fd, sdeventplus::source::EventBase& source)
+void Entry::closeFD(int fd, sdeventplus::source::EventBase& /*source*/)
 {
     close(fd);
     fdCloseEventSource.reset();

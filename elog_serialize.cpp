@@ -12,7 +12,7 @@
 // Register class version
 // From cereal documentation;
 // "This macro should be placed at global scope"
-CEREAL_CLASS_VERSION(phosphor::logging::Entry, CLASS_VERSION);
+CEREAL_CLASS_VERSION(phosphor::logging::Entry, CLASS_VERSION)
 
 namespace phosphor
 {
@@ -27,7 +27,7 @@ namespace logging
  *                       a serialized data across code levels
  */
 template <class Archive>
-void save(Archive& a, const Entry& e, const std::uint32_t version)
+void save(Archive& a, const Entry& e, const std::uint32_t /*version*/)
 {
     a(e.id(), e.severity(), e.timestamp(), e.message(), e.additionalData(),
       e.associations(), e.resolved(), e.version(), e.updateTimestamp());
