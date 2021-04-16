@@ -55,7 +55,8 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
 
     _ph = std::make_unique<PrivateHeader>(regEntry.componentID, obmcLogID,
                                           timestamp);
-    _uh = std::make_unique<UserHeader>(regEntry, severity, dataIface);
+    _uh = std::make_unique<UserHeader>(regEntry, severity, additionalData,
+                                       dataIface);
 
     // Extract any callouts embedded in an FFDC file.
     if (!ffdcFiles.empty())
