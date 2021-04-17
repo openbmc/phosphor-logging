@@ -25,6 +25,8 @@ namespace fs = std::filesystem;
 class journalInterface
 {
   public:
+    virtual ~journalInterface() = default;
+
     virtual void journalSync() = 0;
     virtual int sd_journal_open(sd_journal** j, int k) = 0;
     virtual int sd_journal_get_data(sd_journal* j, const char* transactionIdVar,
@@ -42,7 +44,7 @@ class journalImpl : public journalInterface
     void sd_journal_close(sd_journal* j);
 };
 
-int journalImpl::sd_journal_open(sd_journal** j, int k)
+int journalImpl::sd_journal_open(sd_journal**, int)
 {
     return 1;
 }
@@ -52,14 +54,13 @@ void journalImpl::journalSync()
     return;
 }
 
-int journalImpl::sd_journal_get_data(sd_journal* j,
-                                     const char* transactionIdVar,
-                                     const void** data, size_t length)
+int journalImpl::sd_journal_get_data(sd_journal*, const char*, const void**,
+                                     size_t)
 {
     return 1;
 }
 
-void journalImpl::sd_journal_close(sd_journal* j)
+void journalImpl::sd_journal_close(sd_journal*)
 {
     return;
 }
