@@ -9,7 +9,7 @@ namespace internal
 
 TEST_F(TestLogManager, logCap)
 {
-    for (auto i = 0; i < ERROR_INFO_CAP + 20; i++)
+    for (size_t i = 0; i < ERROR_INFO_CAP + 20; i++)
     {
         manager.commitWithLvl(i, "FOO", 6);
     }
@@ -18,7 +18,7 @@ TEST_F(TestLogManager, logCap)
     // ERROR_INFO_CAP
     EXPECT_EQ(ERROR_INFO_CAP, manager.getInfoErrSize());
 
-    for (auto i = 0; i < ERROR_CAP + 20; i++)
+    for (size_t i = 0; i < ERROR_CAP + 20; i++)
     {
         manager.commitWithLvl(i, "FOO", 0);
     }
