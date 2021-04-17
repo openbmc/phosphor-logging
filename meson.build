@@ -111,6 +111,7 @@ elog_process_gen = custom_target('elog-process-metadata.cpp'.underscorify(),
 )
 
 subdir('phosphor-logging')
+subdir('phosphor-rsyslog-config')
 
 # Build libphosphor-logging.
 libphosphor_logging = library(

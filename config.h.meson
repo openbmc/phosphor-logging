@@ -10,6 +10,7 @@
 
 #define BMC_VERSION_FILE "/etc/os-release"
 #define BUSNAME_LOGGING "xyz.openbmc_project.Logging"
+#define BUSNAME_SYSLOG_CONFIG "xyz.openbmc_project.Syslog.Config"
 #define BUSPATH_REMOTE_LOGGING_CONFIG                                          \
     "/xyz/openbmc_project/logging/config/remote"
 #define CALLOUT_FWD_ASSOCIATION "callout"
@@ -18,6 +19,7 @@
 #define OBJ_ENTRY "/xyz/openbmc_project/logging/entry"
 #define OBJ_INTERNAL "/xyz/openbmc_project/logging/internal/manager"
 #define OBJ_LOGGING "/xyz/openbmc_project/logging"
+#define RSYSLOG_SERVER_CONFIG_FILE "/etc/rsyslog.d/server.conf"
 #define SYSTEMD_BUSNAME "org.freedesktop.systemd1"
 #define SYSTEMD_INTERFACE "org.freedesktop.systemd1.Manager"
 #define SYSTEMD_PATH "/org/freedesktop/systemd1"
