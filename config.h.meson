@@ -10,6 +10,8 @@
 
 #define BMC_VERSION_FILE "/etc/os-release"
 #define BUSNAME_LOGGING "xyz.openbmc_project.Logging"
+#define BUSPATH_REMOTE_LOGGING_CONFIG                                          \
+    "/xyz/openbmc_project/logging/config/remote"
 #define CALLOUT_FWD_ASSOCIATION "callout"
 #define CALLOUT_REV_ASSOCIATION "fault"
 #define INVENTORY_ROOT "/xyz/openbmc_project/inventory"
@@ -20,7 +22,11 @@
 #define SYSTEMD_INTERFACE "org.freedesktop.systemd1.Manager"
 #define SYSTEMD_PATH "/org/freedesktop/systemd1"
 
-#define ERRLOG_PERSIST_PATH "/var/lib/phosphor-logging/errors" // TODO: need /tmp/errors in some cases?
+#ifdef TESTCASE
+#define ERRLOG_PERSIST_PATH "/tmp/errors"
+#else
+#define ERRLOG_PERSIST_PATH "/var/lib/phosphor-logging/errors"
+#endif
 
 static constexpr size_t ERROR_CAP = @error_cap@;
 static constexpr size_t ERROR_INFO_CAP = @error_info_cap@;
