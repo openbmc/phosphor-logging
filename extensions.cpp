@@ -1,5 +1,9 @@
 #include "extensions.hpp"
 
+// The 'extensions_test' testcase needs to define these itself.
+// Skip over the definition to avoid duplicate symbol definitions.
+#ifndef TESTCASE_extensions_test
+
 namespace phosphor
 {
 namespace logging
@@ -14,3 +18,5 @@ Extensions::DefaultErrorCaps Extensions::defaultErrorCaps =
 
 } // namespace logging
 } // namespace phosphor
+
+#endif
