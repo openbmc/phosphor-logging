@@ -15,53 +15,55 @@ DeleteProhibitedFunctions Extensions::deleteProhibitedFunctions{};
 Extensions::DefaultErrorCaps Extensions::defaultErrorCaps =
     Extensions::DefaultErrorCaps::enable;
 
-void startup1(internal::Manager& manager)
+void startup1(internal::Manager& /*manager*/)
 {
 }
 
-void startup2(internal::Manager& manager)
+void startup2(internal::Manager& /*manager*/)
 {
 }
 
-void create1(const std::string& message, uint32_t id, uint64_t timestamp,
-             Entry::Level severity, const AdditionalDataArg& additionalData,
-             const AssociationEndpointsArg& assocs, const FFDCArg& ffdc)
+void create1(const std::string& /*message*/, uint32_t /*id*/,
+             uint64_t /*timestamp*/, Entry::Level /*severity*/,
+             const AdditionalDataArg& /*additionalData*/,
+             const AssociationEndpointsArg& /*assocs*/, const FFDCArg& /*ffdc*/)
 {
 }
 
-void create2(const std::string& message, uint32_t id, uint64_t timestamp,
-             Entry::Level severity, const AdditionalDataArg& additionalData,
-             const AssociationEndpointsArg& assocs, const FFDCArg& ffdc)
+void create2(const std::string& /*message*/, uint32_t /*id*/,
+             uint64_t /*timestamp*/, Entry::Level /*severity*/,
+             const AdditionalDataArg& /*additionalData*/,
+             const AssociationEndpointsArg& /*assocs*/, const FFDCArg& /*ffdc*/)
 {
 }
 
-void deleteLog1(uint32_t id)
+void deleteLog1(uint32_t /*id*/)
 {
 }
 
-void deleteLog2(uint32_t id)
+void deleteLog2(uint32_t /*id*/)
 {
 }
 
-void deleteProhibited1(uint32_t id, bool& prohibited)
-{
-    prohibited = true;
-}
-
-void deleteProhibited2(uint32_t id, bool& prohibited)
+void deleteProhibited1(uint32_t /*id*/, bool& prohibited)
 {
     prohibited = true;
 }
 
-DISABLE_LOG_ENTRY_CAPS();
-REGISTER_EXTENSION_FUNCTION(startup1);
-REGISTER_EXTENSION_FUNCTION(startup2);
-REGISTER_EXTENSION_FUNCTION(create1);
-REGISTER_EXTENSION_FUNCTION(create2);
-REGISTER_EXTENSION_FUNCTION(deleteProhibited1);
-REGISTER_EXTENSION_FUNCTION(deleteProhibited2);
-REGISTER_EXTENSION_FUNCTION(deleteLog1);
-REGISTER_EXTENSION_FUNCTION(deleteLog2);
+void deleteProhibited2(uint32_t /*id*/, bool& prohibited)
+{
+    prohibited = true;
+}
+
+DISABLE_LOG_ENTRY_CAPS()
+REGISTER_EXTENSION_FUNCTION(startup1)
+REGISTER_EXTENSION_FUNCTION(startup2)
+REGISTER_EXTENSION_FUNCTION(create1)
+REGISTER_EXTENSION_FUNCTION(create2)
+REGISTER_EXTENSION_FUNCTION(deleteProhibited1)
+REGISTER_EXTENSION_FUNCTION(deleteProhibited2)
+REGISTER_EXTENSION_FUNCTION(deleteLog1)
+REGISTER_EXTENSION_FUNCTION(deleteLog2)
 
 TEST(ExtensionsTest, FunctionCallTest)
 {
