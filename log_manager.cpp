@@ -1,11 +1,10 @@
 #include "config.h"
 
-#include "log_manager.hpp"
-
 #include "elog_entry.hpp"
 #include "elog_meta.hpp"
 #include "elog_serialize.hpp"
 #include "extensions.hpp"
+#include "log_manager.hpp"
 #include "util.hpp"
 
 #include <poll.h>
@@ -81,9 +80,16 @@ uint32_t Manager::commitWithLvl(uint64_t transactionId, std::string errMsg,
     return entryId;
 }
 
-void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
-                      Entry::Level errLvl)
+void Manager::_commit(uint64_t transactionId [[maybe_unused]],
+                      std::string&& errMsg, Entry::Level errLvl)
 {
+    std::vector<std::string> additionalData{};
+
+    // When running as a test-case, the system may have a LOT of journal
+    // data and we may not have permissions to do some of the journal sync
+    // operations.  Just skip over them.
+#ifndef TESTCASE
+
     constexpr const auto transactionIdVar = "TRANSACTION_ID";
     // Length of 'TRANSACTION_ID' string.
     constexpr const auto transactionIdVarSize = std::strlen(transactionIdVar);
@@ -113,8 +119,6 @@ void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
 
     // Add _PID field information in AdditionalData.
     metalist.insert("_PID");
-
-    std::vector<std::string> additionalData;
 
     // Read the journal from the end to get the most recent entry first.
     // The result from the sd_journal_get_data() is of the form VARIABLE=value.
@@ -186,6 +190,7 @@ void Manager::_commit(uint64_t transactionId, std::string&& errMsg,
 
     sd_journal_close(j);
 
+#endif
     createEntry(errMsg, errLvl, additionalData);
 }
 
@@ -251,6 +256,12 @@ void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
 
 bool Manager::isQuiesceOnErrorEnabled()
 {
+    // When running under tests, the Logging.Settings service will not be
+    // present.  Assume false.
+#ifdef TESTCASE
+    return false;
+#endif
+
     std::variant<bool> property;
 
     auto method = this->busLog.new_method_call(
@@ -675,6 +686,7 @@ void Manager::journalSync()
                 log<level::ERR>("Failed to kill journal service");
                 break;
             }
+
             continue;
         }
 
