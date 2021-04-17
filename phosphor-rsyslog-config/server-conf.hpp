@@ -106,7 +106,7 @@ class Server : public Iface
     /** @brief React to hostname change
      *  @param[in] msg - sdbusplus message
      */
-    void hostnameChanged(sdbusplus::message::message& msg)
+    void hostnameChanged(sdbusplus::message::message& /*msg*/)
     {
         restart();
     }
