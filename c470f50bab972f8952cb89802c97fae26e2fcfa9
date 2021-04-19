@@ -16,6 +16,24 @@
       "revId": "c470f50bab972f8952cb89802c97fae26e2fcfa9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e006c38_fc11383b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-04-19T15:36:11Z",
+      "side": 1,
+      "message": "Done. It looks fine now.",
+      "parentUuid": "153b7291_3d70d60b",
+      "revId": "c470f50bab972f8952cb89802c97fae26e2fcfa9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
