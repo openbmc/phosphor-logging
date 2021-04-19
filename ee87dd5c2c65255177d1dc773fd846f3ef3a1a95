@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a401ddd0_090a40ee",
+        "filename": "extensions/openpower-pels/user_header.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-19T14:57:12Z",
+      "side": 1,
+      "message": "There\u0027s 5 total different critical severities - 0x50 through 0x54.  So if you ORed in a 1, you would be changing a 0x52 to a 0x53, which isn\u0027t what is desired.  Even though that isn\u0027t really a use case, it wouldn\u0027t be good if it happened.\n\nprobably better to just set it directly to 0x51.  Also I guess you could just do a hardcoded check to see if it\u0027s 0x50, and then set/or it to 0x51 if necessary.",
+      "range": {
+        "startLine": 101,
+        "startChar": 26,
+        "endLine": 101,
+        "endChar": 35
+      },
+      "revId": "ee87dd5c2c65255177d1dc773fd846f3ef3a1a95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
