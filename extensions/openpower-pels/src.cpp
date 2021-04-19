@@ -481,9 +481,6 @@ std::optional<std::string>
     {
         if (regEntry.doc.messageArgSources)
         {
-            size_t msgLen = regEntry.doc.message.length();
-            char msg[msgLen + 1];
-            strcpy(msg, regEntry.doc.message.c_str());
             std::vector<uint32_t> argSourceVals;
             std::string message;
             const auto& argValues = regEntry.doc.messageArgSources.value();
@@ -492,14 +489,18 @@ std::optional<std::string>
                 argSourceVals.push_back(_hexData[getWordIndexFromWordNum(
                     argValues[i].back() - '0')]);
             }
-            const char* msgPointer = msg;
-            while (*msgPointer)
+
+            auto it = std::begin(regEntry.doc.message);
+            auto it_end = std::end(regEntry.doc.message);
+
+            while (it != it_end)
             {
-                if (*msgPointer == '%')
+                if (*it == '%')
                 {
-                    msgPointer++;
-                    size_t wordIndex = *msgPointer - '0';
-                    if (isdigit(*msgPointer) && wordIndex >= 1 &&
+                    ++it;
+
+                    size_t wordIndex = *it - '0';
+                    if (isdigit(*it) && wordIndex >= 1 &&
                         static_cast<uint16_t>(wordIndex) <=
                             argSourceVals.size())
                     {
@@ -508,15 +509,16 @@ std::optional<std::string>
                     }
                     else
                     {
-                        message.append("%" + std::string(1, *msgPointer));
+                        message.append("%" + std::string(1, *it));
                     }
                 }
                 else
                 {
-                    message.push_back(*msgPointer);
+                    message.push_back(*it);
                 }
-                msgPointer++;
+                ++it;
             }
+
             return message;
         }
         else
