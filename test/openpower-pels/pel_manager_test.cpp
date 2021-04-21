@@ -813,7 +813,11 @@ TEST_F(ManagerTest, TestPELManualDeleteAll)
     // Delete them all at once
     auto logPath = getPELRepoPath() / "logs";
     std::string cmd = "rm " + logPath.string() + "/*";
-    system(cmd.c_str());
+
+    {
+        auto rc = system(cmd.c_str());
+        EXPECT_EQ(rc, 0);
+    }
 
     EXPECT_EQ(countPELsInRepo(), 0);
 

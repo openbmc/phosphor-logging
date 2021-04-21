@@ -68,9 +68,9 @@ class Section
      * representation, this would return the string for it.
      */
     virtual std::optional<std::string>
-        getJSON(message::Registry& registry,
-                const std::vector<std::string>& plugins,
-                uint8_t creatorID) const
+        getJSON(message::Registry& /*registry*/,
+                const std::vector<std::string>& /*plugins*/,
+                uint8_t /*creatorID*/) const
     {
         return std::nullopt;
     }
@@ -83,8 +83,8 @@ class Section
      * representation, this would return the string for it.
      */
     virtual std::optional<std::string>
-        getJSON(uint8_t creatorID,
-                const std::vector<std::string>& plugins) const
+        getJSON(uint8_t /*creatorID*/,
+                const std::vector<std::string>& /*plugins*/) const
     {
         return std::nullopt;
     }
@@ -103,7 +103,7 @@ class Section
      *
      * @return bool - true if successful, false else
      */
-    virtual bool shrink(size_t newSize)
+    virtual bool shrink(size_t /*newSize*/)
     {
         return false;
     }

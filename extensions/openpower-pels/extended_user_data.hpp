@@ -77,7 +77,7 @@ class ExtendedUserData : public Section
      *
      * @return uint8_t - The creator ID
      */
-    const uint8_t creatorID() const
+    uint8_t creatorID() const
     {
         return _creatorID;
     }

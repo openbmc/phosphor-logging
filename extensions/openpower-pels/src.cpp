@@ -635,9 +635,10 @@ std::optional<std::string> SRC::getCallouts() const
     return printOut;
 }
 
-std::optional<std::string> SRC::getJSON(message::Registry& registry,
-                                        const std::vector<std::string>& plugins,
-                                        uint8_t creatorID) const
+std::optional<std::string>
+    SRC::getJSON(message::Registry& registry,
+                 const std::vector<std::string>& plugins [[maybe_unused]],
+                 uint8_t creatorID) const
 {
     std::string ps;
     std::vector<std::string> hexwords;
