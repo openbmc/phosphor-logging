@@ -420,9 +420,13 @@ TEST_F(PELTest, SysInfoSectionTest)
     std::string jsonString{d.begin(), d.end()};
     auto json = nlohmann::json::parse(jsonString);
 
-    // Ensure the 'Process Name' entry contains 'pel_test'
+    // Ensure the 'Process Name' entry contains the name of this test
+    // executable.
     auto name = json["Process Name"].get<std::string>();
-    EXPECT_NE(name.find("pel_test"), std::string::npos);
+    auto found = (name.find("pel_test") != std::string::npos) ||
+                 (name.find("test-openpower-pels-pel") != std::string::npos);
+    EXPECT_TRUE(found);
+    // @TODO(stwcx): remove 'pel_test' when removing autotools.
 
     auto version = json["BMC Version ID"].get<std::string>();
     EXPECT_EQ(version, "ABCD1234");
