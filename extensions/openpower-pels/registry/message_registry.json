@@ -1612,6 +1612,50 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Fan.Presence.Error.Detection",
+            "ComponentID": "0x2800",
+            "Subsystem": "power_fans",
+            "Severity": "non_error",
+            "ActionFlags": ["report"],
+            "MfgSeverity": "predictive",
+            "MfgActionFlags": ["service_action", "report"],
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x76F2",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "System": "ibm,rainier",
+                    "CalloutList": [
+                        {"Priority": "medium", "LocCode": "P0"}
+                    ]
+                },
+                {
+                    "System": "ibm,everest",
+                    "CalloutList": [
+                        {"Priority": "medium", "LocCode": "P1"}
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "Presence detect methods for the same fan disagree",
+                "Message": "Presence detect methods for the same fan disagree",
+                "Notes": [
+                    "This error occurs when there is more than one way to detect",
+                    "fan presence, and they don't all agree.  For example, the",
+                    "GPIO says a fan isn't present, but the tach readings are",
+                    "nonzero.  This is informational, unless in manufacturing.",
+                    "The fan FRU is passed in as a high priority callout.",
+                    "The FRU the GPIO source is on is called out medium."
+                ]
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.Sensor.Threshold.Error.TemperaturePerfLossHigh",
             "Subsystem": "power",
             "ComponentID": "0x2800",
