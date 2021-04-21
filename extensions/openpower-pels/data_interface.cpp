@@ -351,7 +351,7 @@ std::string
 }
 
 std::string DataInterface::expandLocationCode(const std::string& locationCode,
-                                              uint16_t node) const
+                                              uint16_t /*node*/) const
 {
     auto method =
         _bus.new_method_call(service_name::vpdManager, object_path::vpdManager,

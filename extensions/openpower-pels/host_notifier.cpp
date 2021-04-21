@@ -228,7 +228,7 @@ void HostNotifier::scheduleDispatch()
                                           this, std::placeholders::_1));
 }
 
-void HostNotifier::dispatch(sdeventplus::source::EventBase& source)
+void HostNotifier::dispatch(sdeventplus::source::EventBase& /*source*/)
 {
     _dispatcher.reset();
 

@@ -51,7 +51,7 @@ void fillArray(const std::string& source, T& target)
     }
 }
 
-}; // namespace
+} // namespace
 
 FRUIdentity::FRUIdentity(Stream& pel)
 {

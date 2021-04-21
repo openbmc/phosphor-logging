@@ -121,7 +121,7 @@ class EventLogger
      *
      * @param[in] source - The event source object used
      */
-    void create(sdeventplus::source::EventBase& source)
+    void create(sdeventplus::source::EventBase& /*source*/)
     {
         _eventSource.reset();
 
