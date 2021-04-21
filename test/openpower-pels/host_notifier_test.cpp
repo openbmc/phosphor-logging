@@ -52,7 +52,7 @@ class HostNotifierTest : public CleanPELFiles
 
         mockHostIface = reinterpret_cast<MockHostInterface*>(hostIface.get());
 
-        auto send = [this](uint32_t id, uint32_t size) {
+        auto send = [this](uint32_t /*id*/, uint32_t /*size*/) {
             return this->mockHostIface->send(0);
         };
 
@@ -368,10 +368,10 @@ TEST_F(HostNotifierTest, TestHostRetry)
 
     HostNotifier notifier{repo, dataIface, std::move(hostIface)};
 
-    auto sendFailure = [this](uint32_t id, uint32_t size) {
+    auto sendFailure = [this](uint32_t /*id*/, uint32_t /*size*/) {
         return this->mockHostIface->send(1);
     };
-    auto sendSuccess = [this](uint32_t id, uint32_t size) {
+    auto sendSuccess = [this](uint32_t /*id*/, uint32_t /*size*/) {
         return this->mockHostIface->send(0);
     };
 
@@ -418,7 +418,7 @@ TEST_F(HostNotifierTest, TestHardFailure)
     HostNotifier notifier{repo, dataIface, std::move(hostIface)};
 
     // Every call will fail
-    auto sendFailure = [this](uint32_t id, uint32_t size) {
+    auto sendFailure = [this](uint32_t /*id*/, uint32_t /*size*/) {
         return this->mockHostIface->send(1);
     };
 

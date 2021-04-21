@@ -29,7 +29,7 @@ using namespace phosphor::logging;
 
 std::unique_ptr<Manager> manager;
 
-DISABLE_LOG_ENTRY_CAPS();
+DISABLE_LOG_ENTRY_CAPS()
 
 void pelStartup(internal::Manager& logManager)
 {
@@ -53,7 +53,7 @@ void pelStartup(internal::Manager& logManager)
 #endif
 }
 
-REGISTER_EXTENSION_FUNCTION(pelStartup);
+REGISTER_EXTENSION_FUNCTION(pelStartup)
 
 void pelCreate(const std::string& message, uint32_t id, uint64_t timestamp,
                Entry::Level severity, const AdditionalDataArg& additionalData,
@@ -63,21 +63,21 @@ void pelCreate(const std::string& message, uint32_t id, uint64_t timestamp,
                     ffdc);
 }
 
-REGISTER_EXTENSION_FUNCTION(pelCreate);
+REGISTER_EXTENSION_FUNCTION(pelCreate)
 
 void pelDelete(uint32_t id)
 {
     return manager->erase(id);
 }
 
-REGISTER_EXTENSION_FUNCTION(pelDelete);
+REGISTER_EXTENSION_FUNCTION(pelDelete)
 
 void pelDeleteProhibited(uint32_t id, bool& prohibited)
 {
     prohibited = manager->isDeleteProhibited(id);
 }
 
-REGISTER_EXTENSION_FUNCTION(pelDeleteProhibited);
+REGISTER_EXTENSION_FUNCTION(pelDeleteProhibited)
 
 } // namespace pels
 } // namespace openpower

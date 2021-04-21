@@ -202,7 +202,7 @@ class MockHostInterface : public HostInterface
      * @param[in] fd - The file descriptor used
      * @param[in] events - The event bits
      */
-    void receive(sdeventplus::source::IO& source, int fd,
+    void receive(sdeventplus::source::IO& /*source*/, int /*fd*/,
                  uint32_t events) override
     {
         if (!(events & EPOLLIN))

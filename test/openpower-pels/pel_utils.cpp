@@ -230,9 +230,11 @@ std::vector<uint8_t> pelDataFactory(TestPELType type)
         case TestPELType::failingMTMSSection:
             data.insert(data.end(), failingMTMSSection.begin(),
                         failingMTMSSection.end());
+            break;
         case TestPELType::extendedUserDataSection:
             data.insert(data.end(), extendedUserDataSection.begin(),
                         extendedUserDataSection.end());
+            break;
     }
     return data;
 }

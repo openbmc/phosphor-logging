@@ -147,7 +147,7 @@ void PLDMInterface::instanceIDCallback(sd_bus_message* msg)
     }
 }
 
-int iidCallback(sd_bus_message* msg, void* data, sd_bus_error* err)
+int iidCallback(sd_bus_message* msg, void* data, sd_bus_error* /*err*/)
 {
     auto* interface = static_cast<PLDMInterface*>(data);
     interface->instanceIDCallback(msg);
@@ -254,7 +254,7 @@ void PLDMInterface::doSend()
     }
 }
 
-void PLDMInterface::receive(IO& io, int fd, uint32_t revents)
+void PLDMInterface::receive(IO& /*io*/, int fd, uint32_t revents)
 {
     if (!(revents & EPOLLIN))
     {

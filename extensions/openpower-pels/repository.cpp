@@ -593,7 +593,7 @@ std::vector<uint32_t> Repository::prune()
     };
 
     // When counting PELs, count every PEL
-    IsPELTypeFunc isAnyPEL = [](const PELAttributes& pel) { return true; };
+    IsPELTypeFunc isAnyPEL = [](const PELAttributes& /*pel*/) { return true; };
 
     // Check all 4 categories, which will result in at most 90%
     // usage (15 + 30 + 15 + 30).
@@ -649,7 +649,7 @@ void Repository::removePELs(IsOverLimitFunc& isOverLimit,
                         return pel.hostState == TransmissionState::sent;
                     },
 
-                    [](const auto& pel) { return true; }};
+                    [](const auto& /*pel*/) { return true; }};
 
     for (const auto& stateCheck : stateChecks)
     {

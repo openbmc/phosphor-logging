@@ -257,7 +257,7 @@ void Manager::erase(uint32_t obmcLogID)
     _repo.remove(id);
 }
 
-bool Manager::isDeleteProhibited(uint32_t obmcLogID)
+bool Manager::isDeleteProhibited(uint32_t /*obmcLogID*/)
 {
     return false;
 }
@@ -298,7 +298,7 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
                         uint64_t timestamp,
                         phosphor::logging::Entry::Level severity,
                         const std::vector<std::string>& additionalData,
-                        const std::vector<std::string>& associations,
+                        const std::vector<std::string>& /*associations*/,
                         const FFDCEntries& ffdc)
 {
     auto entry = _registry.lookup(message, rg::LookupType::name);
@@ -392,7 +392,7 @@ void Manager::scheduleFDClose(int fd)
                           std::placeholders::_1));
 }
 
-void Manager::closeFD(int fd, sdeventplus::source::EventBase& source)
+void Manager::closeFD(int fd, sdeventplus::source::EventBase& /*source*/)
 {
     close(fd);
     _fdCloserEventSource.reset();
@@ -475,7 +475,7 @@ void Manager::scheduleRepoPrune()
                           std::placeholders::_1));
 }
 
-void Manager::pruneRepo(sdeventplus::source::EventBase& source)
+void Manager::pruneRepo(sdeventplus::source::EventBase& /*source*/)
 {
     auto idsToDelete = _repo.prune();
 
@@ -516,7 +516,7 @@ void Manager::setupPELDeleteWatch()
                   std::placeholders::_3));
 }
 
-void Manager::pelFileDeleted(sdeventplus::source::IO& io, int fd,
+void Manager::pelFileDeleted(sdeventplus::source::IO& /*io*/, int /*fd*/,
                              uint32_t revents)
 {
     if (!(revents & EPOLLIN))

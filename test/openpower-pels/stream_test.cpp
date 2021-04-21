@@ -129,9 +129,11 @@ TEST(StreamTest, ReadWriteTest)
     std::vector<uint8_t> data{0x11, 0x22, 0x33, 0x44, 0x55, 0x66,
                               0x77, 0x88, 0x99, 0xaa, 0xbb, 0xcc};
     Stream stream{data};
-    uint8_t buf[data.size()];
 
-    stream.read(buf, data.size());
+    auto buf = decltype(data)(data.size());
+    ASSERT_EQ(data.size(), buf.size());
+
+    stream.read(buf.data(), buf.size());
 
     for (size_t i = 0; i < data.size(); i++)
     {
@@ -142,7 +144,7 @@ TEST(StreamTest, ReadWriteTest)
     }
 
     stream.offset(6);
-    stream.write(buf, 6);
+    stream.write(buf.data(), 6);
     for (size_t i = 0; i < 6; i++)
     {
         EXPECT_EQ(buf[i], data[i + 6]);
