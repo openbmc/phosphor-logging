@@ -26,8 +26,10 @@
 
 #ifdef TESTCASE
 #define ERRLOG_PERSIST_PATH "/tmp/errors"
+#define EXTENSION_PERSIST_DIR "/tmp/extensions"
 #else
 #define ERRLOG_PERSIST_PATH "/var/lib/phosphor-logging/errors"
+#define EXTENSION_PERSIST_DIR "/var/lib/phosphor-logging/extensions"
 #endif
 
 static constexpr size_t ERROR_CAP = @error_cap@;

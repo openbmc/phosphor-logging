@@ -1,0 +1,91 @@
+openpower_pels = {
+    'additional_data': {},
+    'ascii_string': {},
+    'bcd_time': {},
+    'device_callouts': {},
+    'event_logger': {},
+    'extended_user_data': {},
+    'extended_user_header': {},
+    'failing_mtms': {},
+    'fru_identity': {},
+    'generic_section': {},
+    'host_notifier': {
+        'sources': [
+            '../../extensions/openpower-pels/host_notifier.cpp',
+            '../../extensions/openpower-pels/repository.cpp',
+        ],
+    },
+    'json_utils': {},
+    'log_id': {},
+    'mru': {},
+    'mtms': {},
+    'pce_identity': {},
+    'pel_manager': {
+        'sources': [
+            '../../elog_entry.cpp',
+            '../../elog_serialize.cpp',
+            '../../extensions.cpp',
+            '../../log_manager.cpp',
+            elog_lookup_gen,
+            elog_process_gen,
+            generated_sources,
+            log_manager_ext_sources,
+        ],
+        'deps': [ cereal_dep ],
+    },
+    'pel_rules': {},
+    'pel': {},
+    'pel_values': {},
+    'private_header': {},
+    'real_pel': {},
+    'registry': {},
+    'repository': {
+        'sources': [
+            '../../extensions/openpower-pels/repository.cpp',
+        ],
+    },
+    'section_header': {},
+    'service_indicators': {},
+    'severity': {},
+    'src': {},
+    'src_callout': {},
+    'src_callouts': {},
+    'stream': {},
+    'user_data': {},
+    'user_header': {},
+}
+
+foreach t : openpower_pels.keys()
+    test(
+        'test_openpower_pels_' + t.underscorify(),
+        executable(
+            'test-openpower-pels-' + t.underscorify(),
+            t + '_test.cpp',
+            'pel_utils.cpp',
+            'paths.cpp',
+            libpel_sources,
+            peltool_sources,
+            '../../util.cpp',
+            openpower_pels.get(t).get('sources', []),
+            link_with: [
+                libphosphor_logging,
+            ],
+            link_args: [ '-lpython' + python_ver ],
+            cpp_args: [
+                '-DTESTCASE=' + t.underscorify(),
+                '-DTESTCASE_' + t.underscorify(),
+            ],
+            dependencies: [
+                gtest_dep,
+                gmock_dep,
+                libpel_deps,
+                peltool_deps,
+                openpower_pels.get(t).get('deps', []),
+            ],
+            include_directories: include_directories(
+                '../../',
+                '../../gen',
+            ),
+        )
+    )
+endforeach
