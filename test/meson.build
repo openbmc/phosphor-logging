@@ -19,6 +19,10 @@ if not gtest_dep.found() or not gmock_dep.found()
   endif
 endif
 
+if not get_option('openpower-pel-extension').disabled()
+    subdir('openpower-pels')
+endif
+
 tests = [
     'elog_quiesce_test',
     'elog_update_ts_test',
@@ -45,12 +49,9 @@ foreach t : tests
                 '-DTESTCASE_' + t.underscorify(),
             ],
             dependencies: [
-                cereal_dep,
                 gmock_dep,
                 gtest_dep,
-                pdi_dep,
-                sdbusplus_dep,
-                sdeventplus_dep,
+                log_manager_deps,
             ],
             include_directories: include_directories('..', '../gen'),
         )
