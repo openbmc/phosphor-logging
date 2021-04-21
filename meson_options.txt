@@ -1,4 +1,10 @@
 option('tests', type: 'feature', description: 'Build tests')
+option(
+    'openpower-pel-extension',
+    type: 'feature',
+    description: 'Create PELs',
+    value: 'disabled'
+)
 
 option('yamldir', type: 'string', description: 'Path to YAML')
 option(

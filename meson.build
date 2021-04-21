@@ -9,6 +9,7 @@ project('phosphor-logging', 'cpp',
     version: '1.0.0',
 )
 
+cpp = meson.get_compiler('cpp')
 python_prog = find_program('python3')
 
 # Get sdbusplus dependency.
@@ -26,9 +27,14 @@ else
 endif
 
 # Get PDI and sdeventplus dependency.
+pdi_vars = []
+if not get_option('openpower-pel-extension').disabled()
+    pdi_vars += [ 'data_org_open_power=true' ]
+endif
 pdi_dep = dependency(
     'phosphor-dbus-interfaces',
     fallback: ['phosphor-dbus-interfaces', 'phosphor_dbus_interfaces_dep'],
+    default_options: pdi_vars,
 )
 sdeventplus_dep = dependency(
     'sdeventplus',
@@ -111,6 +117,11 @@ elog_process_gen = custom_target('elog-process-metadata.cpp'.underscorify(),
 )
 
 subdir('phosphor-logging')
+
+log_manager_ext_sources = []
+log_manager_ext_deps = []
+
+subdir('extensions')
 subdir('phosphor-rsyslog-config')
 
 # Build libphosphor-logging.
@@ -151,6 +162,7 @@ phosphor_logging_dep = declare_dependency(
 # Generate daemon.
 log_manager_sources = [
     generated_sources,
+    elog_errors_gen,
     elog_lookup_gen,
     elog_process_gen,
     files(
@@ -163,16 +175,21 @@ log_manager_sources = [
         'util.cpp',
     )
 ]
+log_manager_deps = [
+    cereal_dep,
+    pdi_dep,
+    sdbusplus_dep,
+    sdeventplus_dep,
+]
 executable('phosphor-log-manager',
     log_manager_sources,
+    log_manager_ext_sources,
     'log_manager_main.cpp',
     include_directories: include_directories('gen'),
     link_with: libphosphor_logging,
     dependencies: [
-        cereal_dep,
-        pdi_dep,
-        sdbusplus_dep,
-        sdeventplus_dep
+        log_manager_deps,
+        log_manager_ext_deps,
     ],
     install: true,
 )
