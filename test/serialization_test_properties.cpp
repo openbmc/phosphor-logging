@@ -23,10 +23,10 @@ TEST_F(TestSerialization, testProperties)
         std::move(assocations), fwLevel, manager);
     auto path = serialize(*input, TestSerialization::dir);
 
-    auto idStr = path.filename().c_str();
-    id = std::stol(idStr);
+    auto idStr = path.filename();
+    id = std::stol(idStr.c_str());
     auto output = std::make_unique<Entry>(
-        bus, std::string(OBJ_ENTRY) + '/' + idStr, id, manager);
+        bus, std::filesystem::path(OBJ_ENTRY) / idStr, id, manager);
     deserialize(path, *output);
 
     EXPECT_EQ(input->id(), output->id());
