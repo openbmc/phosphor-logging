@@ -229,7 +229,7 @@ void commitError(const char* text)
 
 int main(int argc, char* argv[])
 {
-    char arg;
+    int arg;
 
     if (argc == 1)
         return elog_test();
