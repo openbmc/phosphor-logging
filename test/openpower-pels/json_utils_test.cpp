@@ -35,8 +35,7 @@ TEST(JsonUtilsTest, NumberToStringTest)
     EXPECT_EQ(getNumberString("%d", number), "123");
     EXPECT_EQ(getNumberString("%03X", number), "07B");
     EXPECT_EQ(getNumberString("0x%X", number), "0x7B");
-    ASSERT_EXIT((getNumberString("%123", number), exit(0)),
-                ::testing::KilledBySignal(SIGSEGV), ".*");
+    EXPECT_THROW(getNumberString("%123", number), std::invalid_argument);
 }
 
 TEST(JsonUtilsTest, JsonInsertTest)

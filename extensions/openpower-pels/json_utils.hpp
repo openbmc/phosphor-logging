@@ -71,9 +71,14 @@ std::string getNumberString(const char* format, T number)
     static_assert(std::is_integral<T>::value, "Integral required.");
 
     int len = asprintf(&value, format, number);
-    if (len)
+    if (len >= 0)
     {
         numString = value;
+    }
+    else
+    {
+        throw std::invalid_argument(
+            std::string("getNumberString: invalid format string: ") + format);
     }
     free(value);
 
