@@ -125,6 +125,8 @@ bool Server::addressValid(const std::string& address)
                         entry("ERRNO=%d", result));
         return false;
     }
+
+    freeaddrinfo(res);
     return true;
 }
 
