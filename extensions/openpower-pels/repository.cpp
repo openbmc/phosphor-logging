@@ -211,22 +211,22 @@ void Repository::write(const PEL& pel, const fs::path& path)
 
 std::optional<Repository::LogID> Repository::remove(const LogID& id)
 {
-    std::optional<LogID> actualID;
-
     auto pel = findPEL(id);
-    if (pel != _pelAttributes.end())
+    if (pel == _pelAttributes.end())
     {
-        actualID = pel->first;
-        updateRepoStats(pel->second, false);
-
-        log<level::DEBUG>("Removing PEL from repository",
-                          entry("PEL_ID=0x%X", pel->first.pelID.id),
-                          entry("OBMC_LOG_ID=%d", pel->first.obmcID.id));
-        fs::remove(pel->second.path);
-        _pelAttributes.erase(pel);
-
-        processDeleteCallbacks(pel->first.pelID.id);
+        return std::nullopt;
     }
+
+    LogID actualID = pel->first;
+    updateRepoStats(pel->second, false);
+
+    log<level::DEBUG>("Removing PEL from repository",
+                      entry("PEL_ID=0x%X", actualID.pelID.id),
+                      entry("OBMC_LOG_ID=%d", actualID.obmcID.id));
+    fs::remove(pel->second.path);
+    _pelAttributes.erase(pel);
+
+    processDeleteCallbacks(actualID.pelID.id);
 
     return actualID;
 }
