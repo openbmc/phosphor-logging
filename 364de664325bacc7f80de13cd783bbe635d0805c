@@ -34,6 +34,24 @@
       "revId": "364de664325bacc7f80de13cd783bbe635d0805c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3ec25d85_750cd02c",
+        "filename": "meson.build",
+        "patchSetId": 7
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-23T16:09:45Z",
+      "side": 1,
+      "message": "I guess I forgot about building this outside of an SDK since you just added that support, but otherwise the only standalone build is an ARM SDK so tests wouldn\u0027t run anyway.\n\nSo you\u0027ve convinced me.",
+      "parentUuid": "26f6b970_6de8a91a",
+      "revId": "364de664325bacc7f80de13cd783bbe635d0805c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
