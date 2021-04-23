@@ -16,6 +16,24 @@
       "revId": "364de664325bacc7f80de13cd783bbe635d0805c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "26f6b970_6de8a91a",
+        "filename": "meson.build",
+        "patchSetId": 7
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-04-23T16:02:13Z",
+      "side": 1,
+      "message": "Hmm.  A few repositories have this pattern of \u0027if not disabled\u0027 and a few have the feature defaulting to enabled:\n\n./sdbusplus/meson.build:if not get_option(\u0027tests\u0027).disabled()\n./openpower-pnor-code-mgmt/meson.build:if not get_option(\u0027tests\u0027).disabled()\n./openpower-proc-control/meson.build:if not get_option(\u0027tests\u0027).disabled()\n\n./phosphor-led-manager/meson_options.txt:option(\u0027tests\u0027, type : \u0027feature\u0027, description : \u0027Build tests\u0027, value: \u0027enabled\u0027)\n./bmcweb/meson_options.txt:option (\u0027tests\u0027, type : \u0027feature\u0027, value : \u0027enabled\u0027, description : \u0027Enable Unit tests for bmcweb\u0027)\n./pldm/meson_options.txt:option(\u0027tests\u0027, type: \u0027feature\u0027, description: \u0027Build tests\u0027, value: \u0027enabled\u0027)\n./openpower-vpd-parser/meson_options.txt:option(\u0027tests\u0027, type: \u0027feature\u0027, value : \u0027enabled\u0027, description: \u0027Build tests\u0027)\n./telemetry/meson_options.txt:option(\u0027buildtest\u0027, type: \u0027boolean\u0027, value: true, description: \u0027Build tests\u0027)\n\nI can do whichever direction you want, but I think we should in general encourage test-first coding, which would mean that test cases are enabled by default and are what are your first line of development.  I really can\u0027t think of many cases where someone would casually be changing code and *not* want to run the test cases.",
+      "parentUuid": "374860c7_97b5ddc9",
+      "revId": "364de664325bacc7f80de13cd783bbe635d0805c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
