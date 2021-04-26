@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b3d8cf4e_b90fe978",
+        "filename": "dist/xyz.openbmc_project.Logging.service",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-04-26T21:20:21Z",
+      "side": 1,
+      "message": "I know you\u0027re just doing a port but might as well fix this up while you\u0027re at it? \nThis should just be \"/usr/bin/phosphor-log-manager\" now and the SyslogIdentifier line should be removed. We decided to just do things like systemd and hard code the paths.",
+      "revId": "b8e45f998ddd575b63f9c800ce701c46e6a49d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "04d4499f_c7318014",
+        "filename": "dist/xyz.openbmc_project.Syslog.Config.service",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-04-26T21:20:21Z",
+      "side": 1,
+      "message": "Same comment here about hard coding the path.",
+      "revId": "b8e45f998ddd575b63f9c800ce701c46e6a49d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
