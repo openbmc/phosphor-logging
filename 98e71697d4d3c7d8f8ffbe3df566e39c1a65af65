@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e2479f2c_f333c3cb",
+        "filename": "extensions/openpower-pels/tools/peltool.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-26T20:54:57Z",
+      "side": 1,
+      "message": "Sorry, one more small thing.  Since a value of 0x50 is the base \u0027critical severity\u0027, could you rename this one to something like critSysTermSeverity?",
+      "range": {
+        "startLine": 44,
+        "startChar": 14,
+        "endLine": 44,
+        "endChar": 27
+      },
+      "revId": "98e71697d4d3c7d8f8ffbe3df566e39c1a65af65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
