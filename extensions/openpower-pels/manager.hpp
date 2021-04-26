@@ -217,8 +217,10 @@ class Manager : public PELInterface
      * @param[in] rawPelPath - The path to the file that contains the
      *                         raw PEL.
      * @param[in] obmcLogID - the corresponding OpenBMC event log id
+     *
+     * @param[in] additionalData - The AdditionalData property
      */
-    void addRawPEL(const std::string& rawPelPath, uint32_t obmcLogID);
+    void addRawPEL(const std::string& rawPelPath, uint32_t obmcLogID, const AdditionalData& additionalData);
 
     /**
      * @brief Creates a PEL based on the OpenBMC event log contents.
@@ -263,8 +265,9 @@ class Manager : public PELInterface
      *
      * @param[in] pelData - The PEL to add as a vector of uint8_ts
      * @param[in] obmcLogID - the OpenBMC event log ID
+     * @param[in] additionalData - The AdditionalData property
      */
-    void addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID);
+    void addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID, const AdditionalData& additionalData);
 
     /**
      * @brief Adds the PEL stored in the ESEL field of the AdditionalData
@@ -272,8 +275,9 @@ class Manager : public PELInterface
      *
      * @param[in] esel - The ESEL AdditionalData contents
      * @param[in] obmcLogID - The OpenBMC event log ID
+     * @param[in] additionalData - The AdditionalData property
      */
-    void addESELPEL(const std::string& esel, uint32_t obmcLogID);
+    void addESELPEL(const std::string& esel, uint32_t obmcLogID, const AdditionalData& additionalData);
 
     /**
      * @brief Converts the D-Bus FFDC method argument into a data

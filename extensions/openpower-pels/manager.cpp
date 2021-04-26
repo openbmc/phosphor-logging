@@ -76,14 +76,14 @@ void Manager::create(const std::string& message, uint32_t obmcLogID,
     auto rawPelPath = ad.getValue(additional_data::rawPEL);
     if (rawPelPath)
     {
-        addRawPEL(*rawPelPath, obmcLogID);
+        addRawPEL(*rawPelPath, obmcLogID, ad);
     }
     else
     {
         auto esel = ad.getValue(additional_data::esel);
         if (esel)
         {
-            addESELPEL(*esel, obmcLogID);
+            addESELPEL(*esel, obmcLogID, ad);
         }
         else
         {
@@ -95,7 +95,7 @@ void Manager::create(const std::string& message, uint32_t obmcLogID,
     setEntryPath(obmcLogID);
 }
 
-void Manager::addRawPEL(const std::string& rawPelPath, uint32_t obmcLogID)
+void Manager::addRawPEL(const std::string& rawPelPath, uint32_t obmcLogID, const AdditionalData& additionalData)
 {
     if (fs::exists(rawPelPath))
     {
@@ -114,7 +114,7 @@ void Manager::addRawPEL(const std::string& rawPelPath, uint32_t obmcLogID)
 
         file.close();
 
-        addPEL(data, obmcLogID);
+        addPEL(data, obmcLogID, additionalData);
     }
     else
     {
@@ -124,7 +124,7 @@ void Manager::addRawPEL(const std::string& rawPelPath, uint32_t obmcLogID)
     }
 }
 
-void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
+void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID, const AdditionalData& additionalData)
 {
 
     auto pel = std::make_unique<openpower::pels::PEL>(pelData, obmcLogID);
@@ -133,6 +133,9 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
         // PELs created by others still need these fields set by us.
         pel->assignID();
         pel->setCommitTime();
+
+        // Update System Info to Extended User Data
+        pel->updateSysInfoInExtendedUserDataSection(additionalData, *_dataIface);
 
         try
         {
@@ -193,7 +196,7 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
     }
 }
 
-void Manager::addESELPEL(const std::string& esel, uint32_t obmcLogID)
+void Manager::addESELPEL(const std::string& esel, uint32_t obmcLogID, const AdditionalData& additionalData)
 {
     std::vector<uint8_t> data;
 
@@ -210,7 +213,7 @@ void Manager::addESELPEL(const std::string& esel, uint32_t obmcLogID)
         log<level::ERR>("Problems converting ESEL string to a byte vector");
     }
 
-    addPEL(data, obmcLogID);
+    addPEL(data, obmcLogID, additionalData);
 }
 
 std::vector<uint8_t> Manager::eselToRawData(const std::string& esel)
