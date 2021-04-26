@@ -95,6 +95,18 @@ class ExtendedUserData : public Section
     }
 
     /**
+     * @brief Returns the raw section data that can be modified
+     *
+     * This doesn't include the creator ID.
+     *
+     * @return std::vector<uint8_t>&
+     */
+    std::vector<uint8_t>& mData()
+    {
+        return _mData;
+    }
+
+    /**
      * @brief Get the section contents in JSON
      *
      * @param[in] creatorID - Creator Subsystem ID - unused (see the .cpp)
@@ -155,6 +167,11 @@ class ExtendedUserData : public Section
      * @brief The section data
      */
     std::vector<uint8_t> _data;
+
+    /**
+     * @brief The raw section data
+     */
+    std::vector<uint8_t> _mData;
 };
 
 } // namespace openpower::pels

@@ -80,6 +80,7 @@ ExtendedUserData::ExtendedUserData(uint16_t componentID, uint8_t subType,
     _reserved1B = 0;
     _reserved2B = 0;
     _data = data;
+    _mData = data;
     _header.size = flattenedSize();
     _valid = true;
 }
