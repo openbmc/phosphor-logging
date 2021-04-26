@@ -291,6 +291,16 @@ class PEL
      */
     bool isCalloutPresent() const;
 
+    /**
+     * @brief Updates the system info data into HB extended user 
+     *        data section to this PEL object
+     *
+     * @param[in] additionalData - The AdditionalData property
+     * @param[in] dataIface - The data interface object
+     */
+    void updateSysInfoInExtendedUserDataSection(const AdditionalData& additionalData, 
+                                                const DataInterfaceBase& dataIface) const;
+
   private:
     /**
      * @brief Builds the section objects from a PEL data buffer
