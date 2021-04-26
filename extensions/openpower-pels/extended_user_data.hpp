@@ -95,6 +95,47 @@ class ExtendedUserData : public Section
     }
 
     /**
+     * @brief Returns the section data updated with new data
+     *
+     * @param[in] subType - The type of user data
+     * @param[in] componentID - Component ID of the creator
+     * @param[in] newData - The new data
+     *
+     */
+    void updateDataSection(const uint8_t subType, const uint16_t componentId,
+                           const std::vector<uint8_t>& newData)
+    {
+        auto origDataSize = 0;
+
+        if (newData.size() >= 4)
+        {
+            // Update component Id & subtype in section header of ED
+            _header.componentID = static_cast<uint16_t>(componentId);
+            _header.subType = static_cast<uint8_t>(subType);
+
+            if (newData.size() > _data.size())
+            {
+                // Don't allow section to get bigger
+                origDataSize = _data.size();
+                _data = newData;
+                _data.resize(origDataSize);
+            }
+            else
+            {
+                // Use shrink to handle 4B alignment and update the header size
+                auto status =
+                    shrink(Section::flattenedSize() + 4 + newData.size());
+                if (status)
+                {
+                    origDataSize = _data.size();
+                    _data = newData;
+                    _data.resize(origDataSize);
+                }
+            }
+        }
+    }
+
+    /**
      * @brief Get the section contents in JSON
      *
      * @param[in] creatorID - Creator Subsystem ID - unused (see the .cpp)
