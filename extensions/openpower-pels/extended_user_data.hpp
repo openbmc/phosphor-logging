@@ -95,6 +95,24 @@ class ExtendedUserData : public Section
     }
 
     /**
+     * @brief Returns the section data updated with new data
+     *
+     * @param[in] new data
+     *
+     */
+    void updateDataSection(const std::vector<uint8_t>& newData)
+    {
+        if (newData.size())
+        {
+            if (newData.size() <= _data.size())
+            {
+                _data = newData;
+                shrink(_data.size());
+            }
+        }
+    }
+
+    /**
      * @brief Get the section contents in JSON
      *
      * @param[in] creatorID - Creator Subsystem ID - unused (see the .cpp)
