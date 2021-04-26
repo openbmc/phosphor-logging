@@ -121,7 +121,8 @@ bool ExtendedUserData::shrink(size_t newSize)
         auto dataSize = newSize - Section::flattenedSize() - 4;
 
         // Ensure it's 4B aligned
-        _data.resize((dataSize / 4) * 4);
+        dataSize += (dataSize % 4);
+        _data.resize(dataSize);
         _header.size = flattenedSize();
         return true;
     }

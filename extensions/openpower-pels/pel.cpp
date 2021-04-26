@@ -493,6 +493,41 @@ bool PEL::isCalloutPresent() const
     return calloutPresent;
 }
 
+void PEL::updateSysInfoInExtendedUserDataSection(
+    const DataInterfaceBase& dataIface)
+{
+    const AdditionalData additionalData;
+
+    // Check for PEL from Hostboot
+    if (_ph->creatorID() == static_cast<uint8_t>(CreatorID::hostboot))
+    {
+        // Get the ED section from PEL
+        auto op = std::find_if(_optionalSections.begin(),
+                               _optionalSections.end(), [](auto& section) {
+                                   return section->header().id ==
+                                          static_cast<uint16_t>(
+                                              SectionID::extUserData);
+                               });
+
+        // Check for ED section found and its not the last section of PEL
+        if (op != _optionalSections.end())
+        {
+            // Get the extended user data class mapped to found section
+            auto extUserData = static_cast<ExtendedUserData*>(op->get());
+
+            // Check for the creator ID is for OpenBMC
+            if (extUserData->creatorID() ==
+                static_cast<uint8_t>(CreatorID::openBMC))
+            {
+                // Update system data to ED section
+                auto ud =
+                    util::makeSysInfoUserDataSection(additionalData, dataIface);
+                extUserData->updateDataSection(ud->data());
+            }
+        }
+    }
+}
+
 namespace util
 {
 
@@ -554,7 +589,10 @@ void addProcessNameToJSON(nlohmann::json& json,
     {
     }
 
-    json["Process Name"] = std::move(name);
+    if (pid)
+    {
+        json["Process Name"] = std::move(name);
+    }
 }
 
 void addBMCFWVersionIDToJSON(nlohmann::json& json,

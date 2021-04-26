@@ -2,6 +2,8 @@
 
 #include "section.hpp"
 #include "stream.hpp"
+#include "pel_values.hpp"
+#include "user_data_formats.hpp"
 
 namespace openpower::pels
 {
@@ -92,6 +94,44 @@ class ExtendedUserData : public Section
     const std::vector<uint8_t>& data() const
     {
         return _data;
+    }
+
+    /**
+     * @brief Returns the section data updated with new data
+     *
+     * @param[in] new data
+     *
+     */
+    void updateDataSection(const std::vector<uint8_t>& newData)
+    {
+        auto origDataSize = 0;
+
+        // Update component Id & subtype in section header of ED
+        _header.componentID = 
+            static_cast<uint16_t>(ComponentID::phosphorLogging);
+        _header.subType = static_cast<uint8_t>(UserDataFormat::json);
+
+        if (newData.size() >= 4)
+        {
+            if (newData.size() > _data.size())
+            {
+                // Don't allow section to get bigger
+                origDataSize = _data.size();
+                _data = newData;
+                _data.resize(origDataSize);
+            }
+            else
+            {
+                // Use shrink to handle 4B alignment and update the header size
+                auto status = shrink(Section::flattenedSize() + 4 + newData.size());
+                if ( status )
+                {
+                    origDataSize = _data.size();
+                    _data = newData;
+                    _data.resize(origDataSize);
+                }
+            }
+        }
     }
 
     /**
