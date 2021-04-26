@@ -134,6 +134,9 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
         pel->assignID();
         pel->setCommitTime();
 
+        // Update System Info to Extended User Data
+        pel->updateSysInfoInExtendedUserDataSection(*_dataIface);
+
         try
         {
             log<level::DEBUG>(
