@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "5e12f811_4625d546",
+        "filename": "extensions/openpower-pels/extended_user_data.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-04-27T07:39:54Z",
+      "side": 1,
+      "message": "yeah right _data to be updated.\nI\u0027ll have another function created that would check the data size and update accordingly.",
+      "parentUuid": "7c409db6_c8c78ef4",
+      "revId": "3a24fe8b9ffafcf88cddb1807e89322a00e7b549",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ae992bc2_d49a150a",
         "filename": "extensions/openpower-pels/pel.hpp",
         "patchSetId": 3
@@ -30,6 +48,30 @@
       "writtenOn": "2021-04-26T16:10:16Z",
       "side": 1,
       "message": "extra space",
+      "range": {
+        "startLine": 295,
+        "startChar": 64,
+        "endLine": 295,
+        "endChar": 65
+      },
+      "revId": "3a24fe8b9ffafcf88cddb1807e89322a00e7b549",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "777302ce_a0af4eb7",
+        "filename": "extensions/openpower-pels/pel.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-04-27T07:39:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae992bc2_d49a150a",
       "range": {
         "startLine": 295,
         "startChar": 64,
