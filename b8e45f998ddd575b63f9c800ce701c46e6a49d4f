@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "de49592b_808940c2",
+        "filename": "dist/xyz.openbmc_project.Logging.service",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2021-04-27T09:22:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3d8cf4e_b90fe978",
+      "revId": "b8e45f998ddd575b63f9c800ce701c46e6a49d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "04d4499f_c7318014",
         "filename": "dist/xyz.openbmc_project.Syslog.Config.service",
         "patchSetId": 3
@@ -33,6 +51,24 @@
       "revId": "b8e45f998ddd575b63f9c800ce701c46e6a49d4f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f5ce8fe7_2cfceef3",
+        "filename": "dist/xyz.openbmc_project.Syslog.Config.service",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2021-04-27T09:22:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04d4499f_c7318014",
+      "revId": "b8e45f998ddd575b63f9c800ce701c46e6a49d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
