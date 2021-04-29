@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1ab4fc12_0049f915",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-29T18:23:43Z",
+      "side": 1,
+      "message": "you won\u0027t need to do this.  the rest of the code was written to expect this function to throw an exception.",
+      "range": {
+        "startLine": 203,
+        "startChar": 0,
+        "endLine": 218,
+        "endChar": 5
+      },
+      "revId": "43cfe87a2b3a87885dbeb6eb1ae84e5f41f84329",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b87ebd4_04bf1dbb",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-29T18:23:43Z",
+      "side": 1,
+      "message": "this isn\u0027t needed.  Strings are initialized to empty in the constructor.",
+      "range": {
+        "startLine": 242,
+        "startChar": 21,
+        "endLine": 242,
+        "endChar": 37
+      },
+      "revId": "43cfe87a2b3a87885dbeb6eb1ae84e5f41f84329",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d3cad22_b1ef6f40",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-29T18:23:43Z",
+      "side": 1,
+      "message": "There\u0027s not many other try/catch blocks in the dataInterface functions, but in this case I think we\u0027ll want them in these, around the getservice and getProperty, so we can still create PELs with empty fields even when the inventory manager isn\u0027t around.  It would be fine to add a journal entry in these when they aren\u0027t found.",
+      "revId": "43cfe87a2b3a87885dbeb6eb1ae84e5f41f84329",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b6d6f73e_fb677d86",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-29T18:23:43Z",
+      "side": 1,
+      "message": "It gets riskier and riskier hardcoding paths the more segments they have since there\u0027s more of a chance someone will change them.  The previous code was finding the motherboard by looking for a Motherboard interface, and then using that object path.  I *think* hardcoding it will be OK though, we\u0027ll just have to keep an eye out if anyone changes it.",
+      "range": {
+        "startLine": 277,
+        "startChar": 31,
+        "endLine": 277,
+        "endChar": 46
+      },
+      "revId": "43cfe87a2b3a87885dbeb6eb1ae84e5f41f84329",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
