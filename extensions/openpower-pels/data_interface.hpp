@@ -34,20 +34,14 @@ class DataInterfaceBase
      *
      * @return string - The machine Type/Model string
      */
-    virtual std::string getMachineTypeModel() const
-    {
-        return _machineTypeModel;
-    }
+    virtual std::string getMachineTypeModel() const = 0;
 
     /**
      * @brief Returns the machine serial number
      *
      * @return string - The machine serial number
      */
-    virtual std::string getMachineSerialNumber() const
-    {
-        return _machineSerialNumber;
-    }
+    virtual std::string getMachineSerialNumber() const = 0;
 
     /**
      * @brief Says if the system is managed by a hardware
@@ -205,10 +199,7 @@ class DataInterfaceBase
      *
      * @return std::string The motherboard CCIN
      */
-    virtual std::string getMotherboardCCIN() const
-    {
-        return _motherboardCCIN;
-    }
+    virtual std::string getMotherboardCCIN() const = 0;
 
     /**
      * @brief Get the fields from the inventory necessary for doing
@@ -325,16 +316,6 @@ class DataInterfaceBase
     }
 
     /**
-     * @brief The machine type-model.  Always kept up to date
-     */
-    std::string _machineTypeModel;
-
-    /**
-     * @brief The machine serial number.  Always kept up to date
-     */
-    std::string _machineSerialNumber;
-
-    /**
      * @brief The hardware management console status.  Always kept
      *        up to date.
      */
@@ -392,11 +373,6 @@ class DataInterfaceBase
      * @brief The host state property
      */
     std::string _hostState;
-
-    /**
-     * @brief The motherboard CCIN
-     */
-    std::string _motherboardCCIN;
 };
 
 /**
@@ -455,6 +431,26 @@ class DataInterface : public DataInterfaceBase
     void getProperty(const std::string& service, const std::string& objectPath,
                      const std::string& interface, const std::string& property,
                      DBusValue& value) const;
+    /**
+     * @brief Returns the machine Type/Model
+     *
+     * @return string - The machine Type/Model string
+     */
+    std::string getMachineTypeModel() const override;
+
+    /**
+     * @brief Returns the machine serial number
+     *
+     * @return string - The machine serial number
+     */
+    std::string getMachineSerialNumber() const override;
+
+    /**
+     * @brief Returns the motherboard CCIN
+     *
+     * @return std::string The motherboard CCIN
+     */
+    std::string getMotherboardCCIN() const override;
 
     /**
      * @brief Get the fields from the inventory necessary for doing
@@ -564,14 +560,6 @@ class DataInterface : public DataInterfaceBase
     void readBMCFWVersionID();
 
     /**
-     * @brief Reads the motherboard CCIN and puts it into _motherboardCCIN.
-     *
-     * It finds the motherboard first, possibly having to wait for it to
-     * show up.
-     */
-    void readMotherboardCCIN();
-
-    /**
      * @brief Finds all D-Bus paths that contain any of the interfaces
      *        passed in, by using GetSubTreePaths.
      *
@@ -589,17 +577,6 @@ class DataInterface : public DataInterfaceBase
      */
     void motherboardIfaceAdded(sdbusplus::message::message& msg);
 
-    /**
-     * @brief Set the motherboard CCIN from the DBus variant that
-     *        contains it.
-     *
-     * @param[in] ccin - The CCIN variant, a vector<uint8_t>.
-     */
-    void setMotherboardCCIN(const DBusValue& ccin)
-    {
-        const auto& c = std::get<std::vector<uint8_t>>(ccin);
-        _motherboardCCIN = std::string{c.begin(), c.end()};
-    }
 
     /**
      * @brief Adds the Ufcs- prefix to the location code passed in
