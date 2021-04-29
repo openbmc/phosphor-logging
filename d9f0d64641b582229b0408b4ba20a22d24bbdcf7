@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "25fa2745_fc115f1b",
+        "filename": "test/openpower-pels/meson.build",
+        "patchSetId": 6
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-29T19:07:05Z",
+      "side": 1,
+      "message": "This was way faster.  Thanks!",
+      "revId": "d9f0d64641b582229b0408b4ba20a22d24bbdcf7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
