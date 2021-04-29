@@ -19,7 +19,10 @@
 
 #include "util.hpp"
 
+#include <fmt/format.h>
+
 #include <fstream>
+#include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
 
 namespace openpower
@@ -39,6 +42,8 @@ namespace object_path
 constexpr auto objectMapper = "/xyz/openbmc_project/object_mapper";
 constexpr auto systemInv = "/xyz/openbmc_project/inventory/system";
 constexpr auto chassisInv = "/xyz/openbmc_project/inventory/system/chassis";
+constexpr auto motherBoardInv =
+    "/xyz/openbmc_project/inventory/system/chassis/motherboard";
 constexpr auto baseInv = "/xyz/openbmc_project/inventory";
 constexpr auto bmcState = "/xyz/openbmc_project/state/bmc0";
 constexpr auto chassisState = "/xyz/openbmc_project/state/chassis0";
@@ -74,30 +79,13 @@ constexpr auto operationalStatus =
 
 using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
 using sdbusplus::exception::SdBusError;
+using namespace phosphor::logging;
 
 DataInterface::DataInterface(sdbusplus::bus::bus& bus) : _bus(bus)
 {
     readBMCFWVersion();
     readServerFWVersion();
     readBMCFWVersionID();
-    readMotherboardCCIN();
-
-    // Watch both the Model and SN properties on the system's Asset iface
-    _properties.emplace_back(std::make_unique<InterfaceWatcher<DataInterface>>(
-        bus, object_path::systemInv, interface::invAsset, *this,
-        [this](const auto& properties) {
-            auto model = properties.find("Model");
-            if (model != properties.end())
-            {
-                this->_machineTypeModel = std::get<std::string>(model->second);
-            }
-
-            auto sn = properties.find("SerialNumber");
-            if (sn != properties.end())
-            {
-                this->_machineSerialNumber = std::get<std::string>(sn->second);
-            }
-        }));
 
     // Watch the BootProgress property
     _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
@@ -245,55 +233,87 @@ void DataInterface::readBMCFWVersionID()
         phosphor::logging::util::getOSReleaseValue("VERSION_ID").value_or("");
 }
 
-void DataInterface::readMotherboardCCIN()
+std::string DataInterface::getMachineTypeModel() const
 {
+    std::string model;
     try
     {
-        // First, try to find the motherboard
-        auto motherboards = getPaths({interface::invMotherboard});
-        if (motherboards.empty())
-        {
-            throw std::runtime_error("No motherboards yet");
-        }
 
-        // Found it, so now get the CCIN
-        _properties.emplace_back(
-            std::make_unique<PropertyWatcher<DataInterface>>(
-                _bus, motherboards.front(), interface::viniRecordVPD, "CC",
-                *this,
-                [this](const auto& ccin) { this->setMotherboardCCIN(ccin); }));
+        auto service = getService(object_path::systemInv, interface::invAsset);
+        if (!service.empty())
+        {
+            DBusValue value;
+            getProperty(service, object_path::systemInv, interface::invAsset,
+                        "Model", value);
+
+            model = std::get<std::string>(value);
+        }
     }
     catch (const std::exception& e)
     {
-        // No motherboard in the inventory yet - watch for it
-        _inventoryIfacesAddedMatch = std::make_unique<sdbusplus::bus::match_t>(
-            _bus, match_rules::interfacesAdded(object_path::baseInv),
-            std::bind(std::mem_fn(&DataInterface::motherboardIfaceAdded), this,
-                      std::placeholders::_1));
+        log<level::WARNING>(fmt::format("Failed reading Model property from "
+                                        "Interface: {} exception: {}",
+                                        interface::invAsset, e.what())
+                                .c_str());
     }
+
+    return model;
 }
 
-void DataInterface::motherboardIfaceAdded(sdbusplus::message::message& msg)
+std::string DataInterface::getMachineSerialNumber() const
 {
-    sdbusplus::message::object_path path;
-    DBusInterfaceMap interfaces;
-
-    msg.read(path, interfaces);
-
-    // This is watching the whole inventory, so check if it's what we want
-    if (interfaces.find(interface::invMotherboard) == interfaces.end())
+    std::string sn;
+    try
     {
-        return;
+
+        auto service = getService(object_path::systemInv, interface::invAsset);
+        if (!service.empty())
+        {
+            DBusValue value;
+            getProperty(service, object_path::systemInv, interface::invAsset,
+                        "SerialNumber", value);
+
+            sn = std::get<std::string>(value);
+        }
+    }
+    catch (const std::exception& e)
+    {
+        log<level::WARNING>(fmt::format("Failed reading SerialNumber property from "
+                                        "Interface: {} exception: {}",
+                                        interface::invAsset, e.what())
+                                .c_str());
     }
 
-    // Done watching for any new inventory interfaces
-    _inventoryIfacesAddedMatch.reset();
+    return sn;
+}
 
-    // Watch the motherboard CCIN, using the service from this signal
-    // for the initial property read.
-    _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
-        _bus, path, interface::viniRecordVPD, "CC", msg.get_sender(), *this,
-        [this](const auto& ccin) { this->setMotherboardCCIN(ccin); }));
+std::string DataInterface::getMotherboardCCIN() const
+{
+    std::string ccin;
+
+    try
+    {
+        auto service =
+            getService(object_path::motherBoardInv, interface::viniRecordVPD);
+        if (!service.empty())
+        {
+            DBusValue value;
+            getProperty(service, object_path::motherBoardInv,
+                        interface::viniRecordVPD, "CC", value);
+
+            auto cc = std::get<std::vector<uint8_t>>(value);
+            ccin = std::string{cc.begin(), cc.end()};
+        }
+    }
+    catch (const std::exception& e)
+    {
+        log<level::WARNING>(fmt::format("Failed reading CC property from "
+                                        "Interface: {} exception: {}",
+                                        interface::viniRecordVPD, e.what())
+                                .c_str());
+    }
+
+    return ccin;
 }
 
 void DataInterface::getHWCalloutFields(const std::string& inventoryPath,
