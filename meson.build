@@ -42,8 +42,9 @@ sdeventplus_dep = dependency(
 )
 
 # Get Cereal dependency.
-cereal_dep = dependency('cereal', required: false)
-if not cereal_dep.found()
+if cpp.has_header('cereal/cereal.hpp')
+    cereal_dep = declare_dependency()
+else
     subproject('cereal', required: false)
     cereal_dep = declare_dependency(
         include_directories: [ 'subprojects/cereal/include' ],
