@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3b5523ca_d066abac",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-30T20:17:42Z",
+      "side": 1,
+      "message": "looks like you changed the spacing on these.  in general, I prefer occasion spaces to make it easier to read.",
+      "revId": "c474cc35617d054c9c162af153c84572b965bca4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a7bb11f_1ff660f4",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-04-30T20:17:42Z",
+      "side": 1,
+      "message": "how about here use fmt:format to make it easy to see what is wrong without needing to use a verbose journal, like here: https://github.com/openbmc/phosphor-logging/blob/master/extensions/openpower-pels/extended_user_data.cpp#L63\n\nSo like: \nlog\u003clevel:WARNING\u003e(fmt::format(\"Could not get machine type model: {}\", e.what).c_str())",
+      "range": {
+        "startLine": 249,
+        "startChar": 7,
+        "endLine": 250,
+        "endChar": 61
+      },
+      "revId": "c474cc35617d054c9c162af153c84572b965bca4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
