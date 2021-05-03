@@ -430,6 +430,36 @@
         },
 
         {
+            "Name": "org.open_power.Processor.Error.SbeChipOpTimeout",
+            "Subsystem": "processor_chip",
+            "ComponentID": "0x3500",
+
+            "SRC":
+            {
+                "ReasonCode": "0x3501",
+                "SymptomIDFields": [ "SRCWord6" ],
+                "Words6To9":
+                {
+                    "6":
+                    {
+                        "Description": "[0:15] chip position, [16:23] command class, [24:31] command type",
+                        "AdditionalDataPropSource": "SRC6"
+                    }
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "SBE chipop timeout",
+                "Message": "chipop timeout reported during SBE communication",
+                "Notes": [
+                    "The severity is set by the creator.",
+                    "Check SBE Dump associated to this error to debug the failure."
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.Attn.Error.Terminate",
             "Subsystem": "other_na",
             "Severity": "critical_system_term",
