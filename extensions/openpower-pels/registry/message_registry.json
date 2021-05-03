@@ -454,7 +454,37 @@
                 ]
             }
         },
+        
+        {
+            "Name": "org.open_power.Processor.Error.SbeChipOpInvalidState",
+            "Subsystem": "processor_chip",
 
+            "SRC":
+            {
+                "ReasonCode": "0x3502",
+                "SymptomIDFields": [ "SRCWord6" ],
+                "Words6To9":
+                {
+                    "6":
+                    {
+                        "Description": "[0:15] chip position, [16:23] command class, [24:31] command type",
+                        "AdditionalDataPropSource": "SRC6"
+                    }
+                    "7":
+                    {
+                        "Description": "Value of SBE state",
+                        "AdditionalDataPropSource": "SRC7"
+                    }
+                }
+            },
+            "Documentation":
+            {
+                "Description": "The SBE on this processor is not in a state where chipOps can be issued",
+                "Message": "SBE Chipop is not allowed due to invalid SBE state ",
+                "Notes": [
+                    "The severity is set by the creator.",
+                ]
+            }
         {
             "Name": "org.open_power.Attn.Error.Terminate",
             "Subsystem": "other_na",
