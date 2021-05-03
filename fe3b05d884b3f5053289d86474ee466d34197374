@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b12d37cc_0721643d",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-05-03T21:59:41Z",
+      "side": 1,
+      "message": "machine serial number",
+      "range": {
+        "startLine": 281,
+        "startChar": 56,
+        "endLine": 281,
+        "endChar": 62
+      },
+      "revId": "fe3b05d884b3f5053289d86474ee466d34197374",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8497166a_35fcd06e",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-05-03T21:59:41Z",
+      "side": 1,
+      "message": "motherboard ccin",
+      "range": {
+        "startLine": 310,
+        "startChar": 56,
+        "endLine": 310,
+        "endChar": 62
+      },
+      "revId": "fe3b05d884b3f5053289d86474ee466d34197374",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
