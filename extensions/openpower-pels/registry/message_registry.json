@@ -249,6 +249,37 @@
                 ]
             }
         },
+
+        {
+            "Name": "org.open_power.Common.Error.SbeChipOpFailure",
+            "Subsystem": "processor_chip",
+
+            "SRC":
+            {
+                "ReasonCode": "0x100B",
+                "SymptomIDFields": [ "SRCWord6" ],
+                "Words6To9":
+                {
+                    "6":
+                    {
+                        "Description": "[0:15] chip position, [16:23] command class, [24:31] command type",
+                        "AdditionalDataPropSource": "SRC6"
+                    }
+                }
+            },
+            "Documentation":
+            {
+                "Description": "chipop failure with SBE provided FFDC",
+                "Message": "chipop request failure reported by SBE",
+                "Notes": [
+                    "The severity is set by the creator.",
+                    "Callouts added based on SBE provided FFDC.",
+                    "SBE provided additional debug data included as part of the",
+                    "additional user data section."
+                ]
+            }
+        },
+
         {
             "Name": "org.open_power.Logging.Error.SentBadPELToHost",
             "Subsystem": "bmc_firmware",
