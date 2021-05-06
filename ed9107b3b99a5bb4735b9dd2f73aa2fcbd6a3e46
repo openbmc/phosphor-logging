@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "19188c7c_f1102638",
+        "filename": "extensions/openpower-pels/extended_user_data.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-05-06T16:44:47Z",
+      "side": 1,
+      "message": "Added following here:\n         // Update component Id \u0026 subtype in section header of ED\n         _header.componentID \u003d \n             static_cast\u003cuint16_t\u003e(ComponentID::phosphorLogging);\n         _header.subType \u003d static_cast\u003cuint8_t\u003e(UserDataFormat::json);",
+      "revId": "ed9107b3b99a5bb4735b9dd2f73aa2fcbd6a3e46",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
