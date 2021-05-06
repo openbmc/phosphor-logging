@@ -16,6 +16,23 @@
       "revId": "ed9107b3b99a5bb4735b9dd2f73aa2fcbd6a3e46",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "44f6d826_21f26ae4",
+        "filename": "extensions/openpower-pels/extended_user_data.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-05-06T17:59:10Z",
+      "side": 1,
+      "message": "The argument to shrink() is the desired new size of the whole section, including 8B section header + 4B creator ID + data size.\n\nSo I think the code would be like:\n\n// minimum data size is 4 bytes\nif (newData.size() \u003e\u003d 4)\n{\n   auto origDataSize \u003d _data.size();\n  _data \u003d newData;\n\n  if (_data.size() \u003e origDataSize)\n  {\n    // Don\u0027t allow section to get bigger\n    _data.resize(origDataSize);\n  }\n  else\n  {\n     // Use shrink to handle 4B alignment and update the header size\n     shrink(Section::flattenedSize() + 4 + _data.size());\n  }\n\n}",
+      "revId": "ed9107b3b99a5bb4735b9dd2f73aa2fcbd6a3e46",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
