@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "2def2836_a71aee59",
+        "filename": "extensions/openpower-pels/extended_user_data.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-05-10T20:41:36Z",
+      "side": 1,
+      "message": "if newSize were 199, then dataSize would first be 199 - 8 - 4 \u003d 187, then 187 +\u003d 187%4 \u003d 187 +\u003d 3 \u003d 190.\n\nso if data size is 190, then full section size is 190 + 8 + 4 \u003d 202 which is too big.",
+      "parentUuid": "6079ebf3_1702068b",
+      "revId": "2744d25c956d0287173fe6fca8c6804d3e8468cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "080c6ec9_bbe34ea0",
         "filename": "extensions/openpower-pels/extended_user_data.hpp",
         "patchSetId": 8
