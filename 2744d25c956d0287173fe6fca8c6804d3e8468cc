@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "3cc665f5_2c7c20b4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-05-10T18:36:31Z",
+      "side": 1,
+      "message": "Ok will do",
+      "parentUuid": "95e8aa47_fca92155",
+      "revId": "2744d25c956d0287173fe6fca8c6804d3e8468cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bf9ed8ef_2776e418",
         "filename": "extensions/openpower-pels/extended_user_data.cpp",
         "patchSetId": 8
@@ -30,6 +48,24 @@
       "writtenOn": "2021-05-10T18:02:09Z",
       "side": 1,
       "message": "this may increase the size though over newSize. For example size 30 would go to 32, and then the final size would be greater than newSize. I think it needs to be left how it is.",
+      "revId": "2744d25c956d0287173fe6fca8c6804d3e8468cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6079ebf3_1702068b",
+        "filename": "extensions/openpower-pels/extended_user_data.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-05-10T18:36:31Z",
+      "side": 1,
+      "message": "Yes the size may go up but it would still be within valid range. Is it ok otherwise to get the final size truncated? \nMax size is 200 bytes and it would enter this part of code only when the new size is \"less than or equal to 200 bytes\" so even if the newSize is ..197,198 or 199 it would still end up at 200 bytes max only and not beyond that.",
+      "parentUuid": "bf9ed8ef_2776e418",
       "revId": "2744d25c956d0287173fe6fca8c6804d3e8468cc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -59,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "3f9a7f1c_ef9c7551",
+        "filename": "extensions/openpower-pels/extended_user_data.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-05-10T18:36:31Z",
+      "side": 1,
+      "message": "Ok will look into it.",
+      "parentUuid": "080c6ec9_bbe34ea0",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 69
+      },
+      "revId": "2744d25c956d0287173fe6fca8c6804d3e8468cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3ac6a879_ffcf8c20",
         "filename": "extensions/openpower-pels/user_data_json.cpp",
         "patchSetId": 8
@@ -70,6 +130,30 @@
       "writtenOn": "2021-05-10T18:02:09Z",
       "side": 1,
       "message": "I\u0027m thinking you shouldn\u0027t actually need this, because here:\n\nhttps://github.com/openbmc/phosphor-logging/blob/master/extensions/openpower-pels/extended_user_data.cpp#L110\n\nIt is passing in the creatorID field from the ExtUserData section, which will be equal to OpenBMC in the case you care about.",
+      "range": {
+        "startLine": 368,
+        "startChar": 10,
+        "endLine": 368,
+        "endChar": 78
+      },
+      "revId": "2744d25c956d0287173fe6fca8c6804d3e8468cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ff3a43d0_78e712cf",
+        "filename": "extensions/openpower-pels/user_data_json.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-05-10T18:36:31Z",
+      "side": 1,
+      "message": "yeah ok.",
+      "parentUuid": "3ac6a879_ffcf8c20",
       "range": {
         "startLine": 368,
         "startChar": 10,
