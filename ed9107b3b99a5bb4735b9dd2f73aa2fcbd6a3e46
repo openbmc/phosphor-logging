@@ -51,6 +51,24 @@
       "revId": "ed9107b3b99a5bb4735b9dd2f73aa2fcbd6a3e46",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bf76aaa4_60085f74",
+        "filename": "extensions/openpower-pels/extended_user_data.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-05-10T12:30:13Z",
+      "side": 1,
+      "message": "Shrink function is working now with minor modification \"\u003c\u003d\"\n115 bool ExtendedUserData::shrink(size_t newSize)\n116 {\n117     // minimum size is 8B header + 4B of fields + 4B of data\n118     if ((newSize \u003c\u003d flattenedSize()) \u0026\u0026\n119         (newSize \u003e\u003d (Section::flattenedSize() + 8)))",
+      "parentUuid": "f736146f_0724324e",
+      "revId": "ed9107b3b99a5bb4735b9dd2f73aa2fcbd6a3e46",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
