@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "95e8aa47_fca92155",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-05-10T18:02:09Z",
+      "side": 1,
+      "message": "Can you add more of a description into the commit message?  We try to avoid 1 line commit messages.",
+      "revId": "2744d25c956d0287173fe6fca8c6804d3e8468cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bf9ed8ef_2776e418",
+        "filename": "extensions/openpower-pels/extended_user_data.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-05-10T18:02:09Z",
+      "side": 1,
+      "message": "this may increase the size though over newSize. For example size 30 would go to 32, and then the final size would be greater than newSize. I think it needs to be left how it is.",
+      "revId": "2744d25c956d0287173fe6fca8c6804d3e8468cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "080c6ec9_bbe34ea0",
+        "filename": "extensions/openpower-pels/extended_user_data.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-05-10T18:02:09Z",
+      "side": 1,
+      "message": "while it would be safe to set the component ID inside of this function I think, I don\u0027t think it\u0027s safe to set the subType, because as this function just takes a vector of bytes there\u0027s no way to tell it\u0027s JSON.\n\nI guess you could either pass in the subType as a function argument, or just set it directly from the PEL function after it calls this.  And for that matter, may as well do the same with componentID as you\u0027ll do with subType.",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 69
+      },
+      "revId": "2744d25c956d0287173fe6fca8c6804d3e8468cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3ac6a879_ffcf8c20",
+        "filename": "extensions/openpower-pels/user_data_json.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-05-10T18:02:09Z",
+      "side": 1,
+      "message": "I\u0027m thinking you shouldn\u0027t actually need this, because here:\n\nhttps://github.com/openbmc/phosphor-logging/blob/master/extensions/openpower-pels/extended_user_data.cpp#L110\n\nIt is passing in the creatorID field from the ExtUserData section, which will be equal to OpenBMC in the case you care about.",
+      "range": {
+        "startLine": 368,
+        "startChar": 10,
+        "endLine": 368,
+        "endChar": 78
+      },
+      "revId": "2744d25c956d0287173fe6fca8c6804d3e8468cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
