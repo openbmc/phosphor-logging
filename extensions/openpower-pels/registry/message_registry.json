@@ -1915,7 +1915,6 @@
             "Name": "xyz.openbmc_project.Sensor.Threshold.Error.HardShutdownAlarmHigh",
             "Subsystem": "power",
             "ComponentID": "0x2800",
-            "Severity": "unrecoverable",
             "ActionFlags": ["service_action", "report"],
 
             "SRC": {
