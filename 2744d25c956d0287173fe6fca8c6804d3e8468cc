@@ -155,6 +155,30 @@
     },
     {
       "key": {
+        "uuid": "563eb327_6ed63def",
+        "filename": "extensions/openpower-pels/extended_user_data.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-05-11T09:46:39Z",
+      "side": 1,
+      "message": "How about this one:\n    void updateDataSection(\n            const uint8_t subType,\n            const uint16_t componentId,\n            const std::vector\u003cuint8_t\u003e\u0026 newData)",
+      "parentUuid": "3f9a7f1c_ef9c7551",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 69
+      },
+      "revId": "2744d25c956d0287173fe6fca8c6804d3e8468cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3ac6a879_ffcf8c20",
         "filename": "extensions/openpower-pels/user_data_json.cpp",
         "patchSetId": 8
