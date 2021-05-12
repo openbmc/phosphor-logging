@@ -1583,6 +1583,7 @@
 
             "Callouts": [
                 {
+                    "System": "ibm,rainier",
                     "CalloutList": [
                         {
                           "Priority": "high",
@@ -1592,6 +1593,20 @@
                         {
                             "Priority": "low",
                             "LocCode": "P0"
+                        }
+                    ]
+                },
+                {
+                    "System": "ibm,everest",
+                    "CalloutList": [
+                        {
+                          "Priority": "high",
+                          "SymbolicFRUTrusted": "air_mover",
+                          "UseInventoryLocCode": true
+                        },
+                        {
+                            "Priority": "low",
+                            "LocCode": "P1"
                         }
                     ]
                 }
@@ -1606,7 +1621,7 @@
                     "symbolic FRU AIR_MOVR that has the trusted fan location ",
                     "code, which it gets using the passed in ",
                     "CALLOUT_INVENTORY_PATH.  The second callout is the FRU ",
-                    "where the controller is."
+                    "where the controller and GPIO expander are."
                 ]
             }
         },
