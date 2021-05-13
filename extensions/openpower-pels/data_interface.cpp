@@ -224,7 +224,13 @@ void DataInterface::readBMCFWVersion()
 
 void DataInterface::readServerFWVersion()
 {
-    // Not available yet
+    auto value =
+        phosphor::logging::util::getOSReleaseValue("VERSION_ID").value_or("");
+    if ((value != "") && (value.find_last_of(')') != std::string::npos))
+    {
+        std::size_t pos = value.find_first_of('(') + 1;
+        _serverFWVersion = value.substr(pos, value.find_last_of(')') - pos);
+    }
 }
 
 void DataInterface::readBMCFWVersionID()
