@@ -34,6 +34,24 @@
       "revId": "e9d2710d4f217fd0f8911f73078b6667a89e68d3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "92f06e73_5eeaa74c",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-05-13T18:34:20Z",
+      "side": 1,
+      "message": "It seems if \")\" not found it would return npos as well so better I check for \")\" available before populating _serverFWVersion. No need to check for \"(\" as in if \")\" is available \"(\" should be available as well.",
+      "parentUuid": "00aa7122_c852ab36",
+      "revId": "e9d2710d4f217fd0f8911f73078b6667a89e68d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
