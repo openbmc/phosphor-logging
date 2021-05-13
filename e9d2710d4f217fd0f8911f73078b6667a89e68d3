@@ -16,6 +16,24 @@
       "revId": "e9d2710d4f217fd0f8911f73078b6667a89e68d3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "00aa7122_c852ab36",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-05-13T18:11:07Z",
+      "side": 1,
+      "message": "Yeah will check for value being not empty. Regarding closing bracket, as I understand if not found would return entire length of string that still would be fine.",
+      "parentUuid": "e6c2f10c_b5875445",
+      "revId": "e9d2710d4f217fd0f8911f73078b6667a89e68d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
