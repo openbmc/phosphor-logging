@@ -321,8 +321,8 @@ class Manager : public PELInterface
      * @brief Check if the input PEL should cause a quiesce of the system
      *
      * If QuiesceOnHwError is enabled within phosphor-settings and the PEL
-     * from the host has a severity which is not SeverityType::nonError then
-     * execute the quiesce and boot block logic.
+     * from the host has a severity which is not SeverityType::nonError or
+     * recovered then execute the quiesce and boot block logic.
      *
      * @param[in] pel - The PEL to check
      */

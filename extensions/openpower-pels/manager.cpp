@@ -595,10 +595,13 @@ std::tuple<uint32_t, uint32_t> Manager::createPELWithFFDCFiles(
 
 void Manager::checkPelAndQuiesce(std::unique_ptr<openpower::pels::PEL>& pel)
 {
-    if (pel->userHeader().severity() ==
-        static_cast<uint8_t>(SeverityType::nonError))
+    if ((pel->userHeader().severity() ==
+         static_cast<uint8_t>(SeverityType::nonError)) ||
+        (pel->userHeader().severity() ==
+         static_cast<uint8_t>(SeverityType::recovered)))
     {
-        log<level::DEBUG>("PEL severity informational. no quiesce needed");
+        log<level::DEBUG>(
+            "PEL severity informational or recovered. no quiesce needed");
         return;
     }
     if (!_logManager.isQuiesceOnErrorEnabled())
@@ -610,8 +613,9 @@ void Manager::checkPelAndQuiesce(std::unique_ptr<openpower::pels::PEL>& pel)
     // Now check if it has any type of callout
     if (pel->isCalloutPresent())
     {
-        log<level::INFO>("QuiesceOnHwError enabled, PEL severity not nonError, "
-                         "and callout is present");
+        log<level::INFO>(
+            "QuiesceOnHwError enabled, PEL severity not nonError or recovered, "
+            "and callout is present");
 
         _logManager.quiesceOnError(pel->obmcLogID());
     }
