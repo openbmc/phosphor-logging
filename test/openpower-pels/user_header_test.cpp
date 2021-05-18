@@ -275,3 +275,39 @@ TEST(UserHeaderTest, DefaultEventTypeScopeTest)
     ASSERT_EQ(uh.eventType(), 0);
     ASSERT_EQ(uh.scope(), 0x03);
 }
+
+// Test that the event severity & action flags override
+// when QuiesceOnHwError is set
+TEST(UserHeaderTest, UseEventLogQuiesceOnErrorTest)
+{
+    using namespace openpower::pels::message;
+    Entry regEntry;
+
+    regEntry.name = "test";
+    regEntry.subsystem = 5;
+    regEntry.actionFlags = 0xC000;
+    regEntry.eventType = 1;
+    regEntry.eventScope = 2;
+    regEntry.severity = {{"", 0x40}, {"systemB", 0x10}, {"systemA", 0x00}};
+
+    // set the value for mfg severity and action flags
+    regEntry.mfgSeverity = {{"systemA", 0x20}};
+    regEntry.mfgActionFlags = 0xF000;
+
+    std::vector<std::string> names{"systemA"};
+
+    MockDataInterface dataIface;
+    AdditionalData ad;
+
+    EXPECT_CALL(dataIface, getSystemNames)
+	    .WillOnce(Return(names));
+    EXPECT_CALL(dataIface, getQuiesceOnError)
+	    .WillOnce(Return(true));
+
+    UserHeader uh(regEntry, phosphor::logging::Entry::Level::Error, ad,
+		    dataIface);
+
+    EXPECT_EQ(uh.severity(), 0x20);
+    EXPECT_EQ(uh.actionFlags(), 0xF000);
+}
+
