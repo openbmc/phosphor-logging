@@ -61,75 +61,115 @@ UserHeader::UserHeader(const message::Entry& entry,
     _eventScope = entry.eventScope.value_or(
         static_cast<uint8_t>(EventScope::entirePlatform));
 
-    // Get the severity from the registry if it's there, otherwise get it
-    // from the OpenBMC event log severity value.
-    if (!entry.severity)
     {
-        _eventSeverity = convertOBMCSeverityToPEL(severity);
-    }
-    else
-    {
-        // Find the severity possibly dependent on the system type.
-        auto sev = getSeverity(entry.severity.value(), dataIface);
-        if (sev)
+        bool mfgSevStatus = false;
+        bool mfgActionFlagStatus = false;
+
+        // Get the mfg severity & action flags
+        if (entry.mfgSeverity || entry.mfgActionFlags)
         {
-            _eventSeverity = *sev;
+            // Find the mf severity possibly dependent on the system type.
+            auto sev = getSeverity(entry.mfgSeverity.value(), dataIface);
+            auto val = entry.mfgActionFlags.value();
+
+            if (sev || val)
+            {
+                bool mfgProp = dataIface.getQuiesceOnError();
+                if (mfgProp)
+                {
+                    if (sev)
+                    {
+                        _eventSeverity = *sev;
+                        mfgSevStatus = true;
+                    }
+
+                    if (val)
+                    {
+                        _actionFlags = val;
+                        mfgActionFlagStatus = true;
+                    }
+                }
+            }
+        }
+
+        if (!mfgSevStatus)
+        {
+            // Get the severity from the registry if it's there, otherwise get
+            // it from the OpenBMC event log severity value.
+            if (!entry.severity)
+            {
+                _eventSeverity = convertOBMCSeverityToPEL(severity);
+            }
+            else
+            {
+                // Find the severity possibly dependent on the system type.
+                auto sev = getSeverity(entry.severity.value(), dataIface);
+                if (sev)
+                {
+                    _eventSeverity = *sev;
+                }
+                else
+                {
+                    // Either someone  screwed up the message registry
+                    // or getSystemNames failed.
+                    std::string types;
+                    log<level::ERR>(
+                        "Failed finding the severity in the message registry",
+                        phosphor::logging::entry("ERROR=%s",
+                                                 entry.name.c_str()));
+
+                    // Have to choose something, just use informational.
+                    _eventSeverity = 0;
+                }
+            }
+        }
+
+        // Convert Critical error (0x50) to Critical Error-System Termination
+        // (0x51), if the AdditionalData is set to SYSTEM_TERM
+        auto sevLevel = additionalData.getValue("SEVERITY_DETAIL");
+        if ((_eventSeverity & 0xF0) == 0x50)
+        {
+            if (sevLevel.value_or("") == "SYSTEM_TERM")
+            {
+                // Change to Critical Error, System Termination
+                _eventSeverity = 0x51;
+            }
+        }
+
+        // TODO: ibm-dev/dev/#1144 Handle manufacturing sev & action flags
+
+        if (entry.eventType)
+        {
+            _eventType = *entry.eventType;
         }
         else
         {
-            // Either someone  screwed up the message registry
-            // or getSystemNames failed.
-            std::string types;
-            log<level::ERR>(
-                "Failed finding the severity in the message registry",
-                phosphor::logging::entry("ERROR=%s", entry.name.c_str()));
-
-            // Have to choose something, just use informational.
-            _eventSeverity = 0;
+            // There are different default event types for info errors
+            // vs non info ones.
+            auto sevType = static_cast<SeverityType>(_eventSeverity & 0xF0);
+            _eventType =
+                (sevType == SeverityType::nonError)
+                    ? static_cast<uint8_t>(EventType::miscInformational)
+                    : static_cast<uint8_t>(EventType::notApplicable);
         }
-    }
 
-    // Convert Critical error (0x50) to Critical Error-System Termination
-    // (0x51), if the AdditionalData is set to SYSTEM_TERM
-    auto sevLevel = additionalData.getValue("SEVERITY_DETAIL");
-    if ((_eventSeverity & 0xF0) == 0x50)
-    {
-        if (sevLevel.value_or("") == "SYSTEM_TERM")
+        _reserved4Byte1 = 0;
+
+        // No uses for problem domain or vector
+        _problemDomain = 0;
+        _problemVector = 0;
+
+        // These will be set in pel_rules::check() if they're still
+        // at the default value.
+        if (!mfgActionFlagStatus)
         {
-            // Change to Critical Error, System Termination
-            _eventSeverity = 0x51;
+            _actionFlags = entry.actionFlags.value_or(actionFlagsDefault);
         }
+
+        _states = 0;
+
+        _valid = true;
     }
-
-    // TODO: ibm-dev/dev/#1144 Handle manufacturing sev & action flags
-
-    if (entry.eventType)
-    {
-        _eventType = *entry.eventType;
-    }
-    else
-    {
-        // There are different default event types for info errors
-        // vs non info ones.
-        auto sevType = static_cast<SeverityType>(_eventSeverity & 0xF0);
-        _eventType = (sevType == SeverityType::nonError)
-                         ? static_cast<uint8_t>(EventType::miscInformational)
-                         : static_cast<uint8_t>(EventType::notApplicable);
-    }
-
-    _reserved4Byte1 = 0;
-
-    // No uses for problem domain or vector
-    _problemDomain = 0;
-    _problemVector = 0;
-
-    // These will be set in pel_rules::check() if they're still
-    // at the default value.
-    _actionFlags = entry.actionFlags.value_or(actionFlagsDefault);
-
-    _states = 0;
-
-    _valid = true;
 }
 
 UserHeader::UserHeader(Stream& pel)
