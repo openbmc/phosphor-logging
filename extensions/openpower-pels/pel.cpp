@@ -28,6 +28,7 @@
 #include "stream.hpp"
 #include "user_data_formats.hpp"
 
+#include <fmt/format.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
@@ -624,6 +625,19 @@ std::string lastSegment(char separator, std::string data)
     return data;
 }
 
+void addIMKeyword(nlohmann::json& json, const DataInterfaceBase& dataIface)
+{
+    auto keyword = dataIface.getSystemIMKeyword();
+
+    std::string value{};
+
+    std::for_each(keyword.begin(), keyword.end(), [&](const auto& byte) {
+        value += fmt::format("{:02X}", byte);
+    });
+
+    json["System IM"] = value;
+}
+
 void addStatesToJSON(nlohmann::json& json, const DataInterfaceBase& dataIface)
 {
     json["BMCState"] = lastSegment('.', dataIface.getBMCState());
@@ -639,6 +653,7 @@ std::unique_ptr<UserData>
 
     addProcessNameToJSON(json, ad.getValue("_PID"), dataIface);
     addBMCFWVersionIDToJSON(json, dataIface);
+    addIMKeyword(json, dataIface);
     addStatesToJSON(json, dataIface);
 
     return makeJSONUserDataSection(json);
