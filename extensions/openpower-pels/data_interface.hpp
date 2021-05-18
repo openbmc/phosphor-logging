@@ -288,6 +288,13 @@ class DataInterfaceBase
     virtual void setFunctional(const std::string& objectPath,
                                bool functional) const = 0;
 
+    /**
+     * @brief Returns the manufacturing property
+     *
+     * @return bool - Manufacturing property
+     */
+    virtual bool getMfgProperty() const = 0;
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
@@ -539,6 +546,13 @@ class DataInterface : public DataInterfaceBase
      */
     void setFunctional(const std::string& objectPath,
                        bool functional) const override;
+
+    /**
+     * @brief Returns the manufacturing property
+     *
+     * @return bool - Manufacturing property
+     */
+    bool getMfgProperty() const override;
 
   private:
     /**

@@ -61,31 +61,56 @@ UserHeader::UserHeader(const message::Entry& entry,
     _eventScope = entry.eventScope.value_or(
         static_cast<uint8_t>(EventScope::entirePlatform));
 
-    // Get the severity from the registry if it's there, otherwise get it
-    // from the OpenBMC event log severity value.
-    if (!entry.severity)
     {
-        _eventSeverity = convertOBMCSeverityToPEL(severity);
-    }
-    else
-    {
-        // Find the severity possibly dependent on the system type.
-        auto sev = getSeverity(entry.severity.value(), dataIface);
-        if (sev)
-        {
-            _eventSeverity = *sev;
-        }
-        else
-        {
-            // Either someone  screwed up the message registry
-            // or getSystemNames failed.
-            std::string types;
-            log<level::ERR>(
-                "Failed finding the severity in the message registry",
-                phosphor::logging::entry("ERROR=%s", entry.name.c_str()));
+        bool mfgProp = false;
 
-            // Have to choose something, just use informational.
-            _eventSeverity = 0;
+        // Get the mfg severity & action flags
+        if (entry.mfgSeverity && entry.mfgActionFlags)
+        {
+            // Find the mf severity possibly dependent on the system type.
+            auto sev = getSeverity(entry.mfgSeverity.value(), dataIface);
+
+            if (sev)
+            {
+                mfgProp = dataIface.getMfgProperty();
+                if (mfgProp)
+                {
+                    _eventSeverity = *sev;
+                    mfgProp = true;
+                }
+            }
+        }
+
+        if (!mfgProp)
+        {
+            // Get the severity from the registry if it's there, otherwise get
+            // it from the OpenBMC event log severity value.
+            if (!entry.severity)
+            {
+                _eventSeverity = convertOBMCSeverityToPEL(severity);
+            }
+            else
+            {
+                // Find the severity possibly dependent on the system type.
+                auto sev = getSeverity(entry.severity.value(), dataIface);
+                if (sev)
+                {
+                    _eventSeverity = *sev;
+                }
+                else
+                {
+                    // Either someone  screwed up the message registry
+                    // or getSystemNames failed.
+                    std::string types;
+                    log<level::ERR>(
+                        "Failed finding the severity in the message registry",
+                        phosphor::logging::entry("ERROR=%s",
+                                                 entry.name.c_str()));
+
+                    // Have to choose something, just use informational.
+                    _eventSeverity = 0;
+                }
+            }
         }
     }
 
