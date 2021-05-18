@@ -5,6 +5,7 @@ project('phosphor-logging', 'cpp',
       'cpp_std=c++20',
       'warning_level=3',
       'werror=true',
+      'tests=' + (meson.is_subproject() ? 'disabled' : 'auto'),
     ],
     version: '1.0.0',
 )
