@@ -11,5 +11,5 @@ install_data(
 install_data(
     ['busconfig/phosphor-logging.conf',
      'busconfig/phosphor-rsyslog-config.conf'],
-    install_dir: get_option('sysconfdir') / 'dbus-1/system.d'
+    install_dir: get_option('datadir') / 'dbus-1' / 'system.d'
 )
