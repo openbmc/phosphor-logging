@@ -44,6 +44,7 @@ class MockDataInterface : public DataInterfaceBase
     MOCK_METHOD(void, setFunctional, (const std::string&, bool),
                 (const override));
     MOCK_METHOD(std::vector<uint8_t>, getSystemIMKeyword, (), (const override));
+    MOCK_METHOD(bool, getQuiesceOnError, (), (const override));
 
     void changeHostState(bool newState)
     {
