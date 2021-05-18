@@ -42,13 +42,21 @@ sdeventplus_dep = dependency(
 )
 
 # Get Cereal dependency.
-if cpp.has_header('cereal/cereal.hpp')
-    cereal_dep = declare_dependency()
-else
-    subproject('cereal', required: false)
-    cereal_dep = declare_dependency(
-        include_directories: [ 'subprojects/cereal/include' ],
-    )
+cereal_dep = dependency('cereal', required: false)
+has_cereal = cpp.has_header_symbol(
+    'cereal/cereal.hpp',
+    'cereal::specialize',
+    dependencies: cereal_dep,
+    required: false)
+if not has_cereal
+    cereal_opts = import('cmake').subproject_options()
+    cereal_opts.add_cmake_defines({'BUILD_TESTS': 'OFF'})
+    cereal_proj = import('cmake').subproject(
+        'cereal',
+        options: cereal_opts,
+        required: false)
+    assert(cereal_proj.found(), 'cereal is required')
+    cereal_dep = cereal_proj.get_variable('cm_cereal_dep')
 endif
 
 # Find the installed YAML directory, either from a configure option or
