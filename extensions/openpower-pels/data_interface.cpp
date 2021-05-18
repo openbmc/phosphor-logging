@@ -35,6 +35,7 @@ namespace service_name
 constexpr auto objectMapper = "xyz.openbmc_project.ObjectMapper";
 constexpr auto vpdManager = "com.ibm.VPD.Manager";
 constexpr auto ledGroupManager = "xyz.openbmc_project.LED.GroupManager";
+constexpr auto logSetting = "xyz.openbmc_project.Settings";
 } // namespace service_name
 
 namespace object_path
@@ -52,6 +53,7 @@ constexpr auto pldm = "/xyz/openbmc_project/pldm";
 constexpr auto enableHostPELs =
     "/xyz/openbmc_project/logging/send_event_logs_to_host";
 constexpr auto vpdManager = "/com/ibm/VPD/Manager";
+constexpr auto logSetting = "/xyz/openbmc_project/logging/settings";
 } // namespace object_path
 
 namespace interface
@@ -75,6 +77,7 @@ constexpr auto vpdManager = "com.ibm.VPD.Manager";
 constexpr auto ledGroup = "xyz.openbmc_project.Led.Group";
 constexpr auto operationalStatus =
     "xyz.openbmc_project.State.Decorator.OperationalStatus";
+constexpr auto logSetting = "xyz.openbmc_project.Logging.Settings";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
@@ -487,6 +490,34 @@ std::vector<std::string> DataInterface::getSystemNames() const
     getProperty(service, path, interface::compatible, "Names", names);
 
     return std::get<std::vector<std::string>>(names);
+}
+
+bool DataInterface::getQuiesceOnError() const
+{
+    bool ret = false;
+    try
+    {
+        auto service =
+            getService(object_path::logSetting, interface::logSetting);
+        if (!service.empty())
+        {
+            DBusValue value;
+            getProperty(service, object_path::logSetting, interface::logSetting,
+                        "QuiesceOnHwError", value);
+
+            ret = std::get<bool>(value);
+        }
+    }
+    catch (const std::exception& e)
+    {
+        log<level::WARNING>(
+            fmt::format("Failed reading QuiesceOnHwError property from "
+                        "Interface: {} exception: {}",
+                        interface::logSetting, e.what())
+                .c_str());
+    }
+
+    return ret;
 }
 
 } // namespace pels
