@@ -34,6 +34,8 @@
 #include <iostream>
 #include <phosphor-logging/log.hpp>
 
+constexpr size_t imkwSize = 4;
+
 namespace openpower
 {
 namespace pels
@@ -624,6 +626,25 @@ std::string lastSegment(char separator, std::string data)
     return data;
 }
 
+void addIMKeyword(nlohmann::json& json, const DataInterfaceBase& dataIface)
+{
+    auto systemIMKeyword = dataIface.getSystemIMKeyword();
+
+    if (imkwSize == systemIMKeyword.size())
+    {
+        char* buffer = new char[sizeof("ABCD1234\n")];
+        snprintf(buffer, sizeof("ABCD1234"), "%08X",
+                 *(uint32_t*)systemIMKeyword.data());
+        json["System IM"] = "0x" + std::string(buffer);
+        delete[] buffer;
+    }
+    else
+    {
+        log<level::WARNING>("System IM keyword is not expected size");
+        json["System IM"] = "unavailable";
+    }
+}
+
 void addStatesToJSON(nlohmann::json& json, const DataInterfaceBase& dataIface)
 {
     json["BMCState"] = lastSegment('.', dataIface.getBMCState());
@@ -639,6 +660,7 @@ std::unique_ptr<UserData>
 
     addProcessNameToJSON(json, ad.getValue("_PID"), dataIface);
     addBMCFWVersionIDToJSON(json, dataIface);
+    addIMKeyword(json, dataIface);
     addStatesToJSON(json, dataIface);
 
     return makeJSONUserDataSection(json);

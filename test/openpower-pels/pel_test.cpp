@@ -402,6 +402,8 @@ TEST_F(PELTest, SysInfoSectionTest)
     EXPECT_CALL(dataIface, getBMCState()).WillOnce(Return("State.Ready"));
     EXPECT_CALL(dataIface, getChassisState()).WillOnce(Return("State.On"));
     EXPECT_CALL(dataIface, getHostState()).WillOnce(Return("State.Off"));
+    EXPECT_CALL(dataIface, getSystemIMKeyword())
+        .WillOnce(Return(std::vector<uint8_t>{0x34, 0x12, 0xcd, 0xab}));
 
     std::string pid = "_PID=" + std::to_string(getpid());
     std::vector<std::string> ad{pid};
@@ -439,6 +441,9 @@ TEST_F(PELTest, SysInfoSectionTest)
 
     state = json["HostState"].get<std::string>();
     EXPECT_EQ(state, "Off");
+
+    auto keyword = json["System IM"].get<std::string>();
+    EXPECT_EQ(keyword, "0xABCD1234");
 }
 
 // Test that the sections that override

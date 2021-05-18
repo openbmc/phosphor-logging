@@ -202,6 +202,13 @@ class DataInterfaceBase
     virtual std::string getMotherboardCCIN() const = 0;
 
     /**
+     * @brief Returns the system IM
+     *
+     * @return std::string The system IM
+     */
+    virtual std::vector<uint8_t> getSystemIMKeyword() const = 0;
+
+    /**
      * @brief Get the fields from the inventory necessary for doing
      *        a callout on an inventory path.
      *
@@ -451,6 +458,13 @@ class DataInterface : public DataInterfaceBase
      * @return std::string The motherboard CCIN
      */
     std::string getMotherboardCCIN() const override;
+
+    /**
+     * @brief Returns the system IM
+     *
+     * @return std::vector The system IM keyword in 4 byte vector
+     */
+    std::vector<uint8_t> getSystemIMKeyword() const override;
 
     /**
      * @brief Get the fields from the inventory necessary for doing

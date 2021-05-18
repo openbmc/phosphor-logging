@@ -68,6 +68,7 @@ constexpr auto hostState = "xyz.openbmc_project.State.Host";
 constexpr auto invMotherboard =
     "xyz.openbmc_project.Inventory.Item.Board.Motherboard";
 constexpr auto viniRecordVPD = "com.ibm.ipzvpd.VINI";
+constexpr auto vsbpRecordVPD = "com.ibm.ipzvpd.VSBP";
 constexpr auto locCode = "com.ibm.ipzvpd.Location";
 constexpr auto compatible =
     "xyz.openbmc_project.Configuration.IBMCompatibleSystem";
@@ -322,6 +323,35 @@ std::string DataInterface::getMotherboardCCIN() const
     }
 
     return ccin;
+}
+
+std::vector<uint8_t> DataInterface::getSystemIMKeyword() const
+{
+    std::vector<uint8_t> systemIM;
+
+    try
+    {
+        auto service =
+            getService(object_path::motherBoardInv, interface::vsbpRecordVPD);
+        if (!service.empty())
+        {
+            DBusValue value;
+            getProperty(service, object_path::motherBoardInv,
+                        interface::vsbpRecordVPD, "IM", value);
+
+            systemIM = std::get<std::vector<uint8_t>>(value);
+        }
+    }
+    catch (const std::exception& e)
+    {
+        log<level::WARNING>(
+            fmt::format("Failed reading System IM property from "
+                        "Interface: {} exception: {}",
+                        interface::vsbpRecordVPD, e.what())
+                .c_str());
+    }
+
+    return systemIM;
 }
 
 void DataInterface::getHWCalloutFields(const std::string& inventoryPath,
