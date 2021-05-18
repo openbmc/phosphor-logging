@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d3581bf2_d3153d33",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-05-18T18:45:13Z",
+      "side": 1,
+      "message": "I think it would be useful to store the value even if it is wrong, since it would be good for debug.  Something like the following maybe:\n\nstd::string value{\"0x\"};\nstd::for_each(keyword.begin(), keyword.end(), [] (const auto\u0026 byte)\n{\n   value +\u003d fmt::format(\"{0x:}\", byte);\n})\n\n\nAll the format documentation is at https://fmt.dev/latest/syntax.html.  Not sure if the {0x:} on a value of 0 would convert to a \"0\" or \"00\", but there\u0027s hopefully a way to specify a width.  Could also maybe just use the getNumberString() function used elsewhere in this file if fmt::format won\u0027t work right.",
+      "revId": "61423e8dffd309b1462efea31ca3f7e5c4830633",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
