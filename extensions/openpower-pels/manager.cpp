@@ -531,7 +531,7 @@ void Manager::pelFileDeleted(sdeventplus::source::IO& /*io*/, int /*fd*/,
     // as many events as there is room for can be handled in one callback.
     // A size of 2000 will allow 41 to be processed, with additional
     // callbacks being needed to process the remaining ones.
-    std::array<uint8_t, 2000> data;
+    std::array<uint8_t, 2000> data{};
     auto bytesRead = read(_pelFileDeleteFD, data.data(), data.size());
     if (bytesRead < 0)
     {

@@ -241,7 +241,7 @@ std::optional<std::vector<SRC::WordNum>>
     // Looks like:
     // "SymptomIDFields": ["SRCWord3", "SRCWord6"],
 
-    for (const std::string& field : src["SymptomIDFields"])
+    for (const std::string field : src["SymptomIDFields"])
     {
         // Just need the last digit off the end, e.g. SRCWord6.
         // The schema enforces the format of these.
