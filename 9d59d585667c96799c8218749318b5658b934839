@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5fdcc36f_666a5476",
+        "filename": "extensions/openpower-pels/registry.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1000188
+      },
+      "writtenOn": "2021-05-19T20:47:42Z",
+      "side": 1,
+      "message": "Why is the reference invalid? src outlives field.",
+      "revId": "9d59d585667c96799c8218749318b5658b934839",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
