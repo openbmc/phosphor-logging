@@ -34,6 +34,24 @@
       "revId": "9d59d585667c96799c8218749318b5658b934839",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b03931a_53ad3d60",
+        "filename": "extensions/openpower-pels/registry.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1000188
+      },
+      "writtenOn": "2021-05-19T22:15:53Z",
+      "side": 1,
+      "message": "Right, I guess their implicit conversion operators only support ValueTypes. It would probably be worth doing a cleanup later that uses std::string_view and charconv",
+      "parentUuid": "052f38cb_6058a976",
+      "revId": "9d59d585667c96799c8218749318b5658b934839",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
