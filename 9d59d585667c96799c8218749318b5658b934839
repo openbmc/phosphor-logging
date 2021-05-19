@@ -16,6 +16,24 @@
       "revId": "9d59d585667c96799c8218749318b5658b934839",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "052f38cb_6058a976",
+        "filename": "extensions/openpower-pels/registry.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-05-19T21:57:48Z",
+      "side": 1,
+      "message": "The error was:\n14:49:38 | ../git/extensions/openpower-pels/registry.cpp: In function \u0027std::optional\u003cstd::vector\u003cunsigned int\u003e \u003e openpower::pels::message::helper::getSRCSymptomIDFields(const json\u0026, const string\u0026)\u0027:\n14:49:38 | ../git/extensions/openpower-pels/registry.cpp:244:29: error: loop variable \u0027field\u0027 of type \u0027const string\u0026\u0027 {aka \u0027const std::__cxx11::basic_string\u003cchar\u003e\u0026\u0027} binds to a temporary constructed from type \u0027const nlohmann::basic_json\u003c\u003e\u0027 [-Werror\u003drange-loop-construct]\n14:49:38 |   244 |     for (const std::string\u0026 field : src[\"SymptomIDFields\"])\n14:49:38 |       |                             ^~~~~\n14:49:38 | ../git/extensions/openpower-pels/registry.cpp:244:29: note: use non-reference type \u0027const string\u0027 {aka \u0027const std::__cxx11::basic_string\u003cchar\u003e\u0027} to make the copy explicit or \u0027const nlohmann::basic_json\u003c\u003e\u0026\u0027 to prevent copying",
+      "parentUuid": "5fdcc36f_666a5476",
+      "revId": "9d59d585667c96799c8218749318b5658b934839",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
