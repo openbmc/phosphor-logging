@@ -115,7 +115,7 @@ class Extensions
      */
     explicit Extensions(StartupFunction func)
     {
-        startupFunctions.push_back(func);
+        getStartupFunctions().push_back(func);
     }
 
     /**
@@ -128,7 +128,7 @@ class Extensions
      */
     explicit Extensions(CreateFunction func)
     {
-        createFunctions.push_back(func);
+        getCreateFunctions().push_back(func);
     }
 
     /**
@@ -141,7 +141,7 @@ class Extensions
      */
     explicit Extensions(DeleteFunction func)
     {
-        deleteFunctions.push_back(func);
+        getDeleteFunctions().push_back(func);
     }
 
     /**
@@ -155,7 +155,7 @@ class Extensions
      */
     explicit Extensions(DeleteProhibitedFunction func)
     {
-        deleteProhibitedFunctions.push_back(func);
+        getDeleteProhibitedFunctions().push_back(func);
     }
 
     /**
@@ -169,44 +169,38 @@ class Extensions
      */
     explicit Extensions(DefaultErrorCaps defaultCaps)
     {
-        defaultErrorCaps = defaultCaps;
+        getDefaultErrorCaps() = defaultCaps;
     }
 
     /**
      * @brief Returns the Startup functions
      * @return StartupFunctions - the Startup functions
      */
-    static StartupFunctions& getStartupFunctions()
-    {
-        return startupFunctions;
-    }
+    static StartupFunctions& getStartupFunctions();
 
     /**
      * @brief Returns the Create functions
      * @return CreateFunctions - the Create functions
      */
-    static CreateFunctions& getCreateFunctions()
-    {
-        return createFunctions;
-    }
+    static CreateFunctions& getCreateFunctions();
 
     /**
      * @brief Returns the Delete functions
      * @return DeleteFunctions - the Delete functions
      */
-    static DeleteFunctions& getDeleteFunctions()
-    {
-        return deleteFunctions;
-    }
+    static DeleteFunctions& getDeleteFunctions();
 
     /**
      * @brief Returns the DeleteProhibited functions
      * @return DeleteProhibitedFunctions - the DeleteProhibited functions
      */
-    static DeleteProhibitedFunctions& getDeleteProhibitedFunctions()
-    {
-        return deleteProhibitedFunctions;
-    }
+    static DeleteProhibitedFunctions& getDeleteProhibitedFunctions();
+
+    /**
+     * @brief Returns the DefaultErrorCaps value
+     * @return DefaultErrorCaps - the DefaultErrorCaps value
+     */
+    static DefaultErrorCaps& getDefaultErrorCaps();
 
     /**
      * @brief Say if the default log capping policy should be disabled
@@ -214,35 +208,8 @@ class Extensions
      */
     static bool disableDefaultLogCaps()
     {
-        return defaultErrorCaps == DefaultErrorCaps::disable;
+        return getDefaultErrorCaps() == DefaultErrorCaps::disable;
     }
-
-  private:
-    /**
-     * @brief Vector of functions to call on app startup.
-     */
-    static StartupFunctions startupFunctions;
-
-    /**
-     * @brief Vector of functions to call after creating an event log.
-     */
-    static CreateFunctions createFunctions;
-
-    /**
-     * @brief Vector of functions to call after deleting an event log.
-     */
-    static DeleteFunctions deleteFunctions;
-
-    /**
-     * @brief Vector of functions to call to check if deleting a
-     *        particular event log is prohibited.
-     */
-    static DeleteProhibitedFunctions deleteProhibitedFunctions;
-
-    /**
-     * @brief If default log capping should be disabled.
-     */
-    static DefaultErrorCaps defaultErrorCaps;
 };
 
 } // namespace logging

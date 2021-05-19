@@ -7,14 +7,6 @@
 
 using namespace phosphor::logging;
 
-// gtest doesn't like this happening in another file, so do it here.
-StartupFunctions Extensions::startupFunctions{};
-CreateFunctions Extensions::createFunctions{};
-DeleteFunctions Extensions::deleteFunctions{};
-DeleteProhibitedFunctions Extensions::deleteProhibitedFunctions{};
-Extensions::DefaultErrorCaps Extensions::defaultErrorCaps =
-    Extensions::DefaultErrorCaps::enable;
-
 void startup1(internal::Manager& /*manager*/)
 {
 }
