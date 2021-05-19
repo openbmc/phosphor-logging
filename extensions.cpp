@@ -1,22 +1,39 @@
 #include "extensions.hpp"
 
-// The 'extensions_test' testcase needs to define these itself.
-// Skip over the definition to avoid duplicate symbol definitions.
-#ifndef TESTCASE_extensions_test
-
 namespace phosphor
 {
 namespace logging
 {
 
-StartupFunctions Extensions::startupFunctions{};
-CreateFunctions Extensions::createFunctions{};
-DeleteFunctions Extensions::deleteFunctions{};
-DeleteProhibitedFunctions Extensions::deleteProhibitedFunctions{};
-Extensions::DefaultErrorCaps Extensions::defaultErrorCaps =
-    Extensions::DefaultErrorCaps::enable;
+StartupFunctions& Extensions::getStartupFunctions()
+{
+    static StartupFunctions startupFunctions{};
+    return startupFunctions;
+}
+
+CreateFunctions& Extensions::getCreateFunctions()
+{
+    static CreateFunctions createFunctions{};
+    return createFunctions;
+}
+
+DeleteFunctions& Extensions::getDeleteFunctions()
+{
+    static DeleteFunctions deleteFunctions{};
+    return deleteFunctions;
+}
+
+DeleteProhibitedFunctions& Extensions::getDeleteProhibitedFunctions()
+{
+    static DeleteProhibitedFunctions deleteProhibitedFunctions{};
+    return deleteProhibitedFunctions;
+}
+
+Extensions::DefaultErrorCaps& Extensions::getDefaultErrorCaps()
+{
+    static DefaultErrorCaps defaultErrorCaps = DefaultErrorCaps::enable;
+    return defaultErrorCaps;
+}
 
 } // namespace logging
 } // namespace phosphor
-
-#endif
