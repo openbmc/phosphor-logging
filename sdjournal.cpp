@@ -1,11 +1,28 @@
-#include "config.h"
+#include <systemd/sd-journal.h>
 
+#include <cstdarg>
 #include <phosphor-logging/sdjournal.hpp>
 
 namespace phosphor
 {
 namespace logging
 {
+
+int SdJournalHandler::journal_send_call(const char*)
+{
+    return 0;
+}
+
+int SdJournalHandler::journal_send(const char* fmt, ...)
+{
+    va_list args;
+    va_start(args, fmt);
+
+    int rc = ::sd_journal_send(fmt, args, NULL);
+    va_end(args);
+
+    return rc;
+}
 
 SdJournalHandler sdjournal_impl;
 SdJournalHandler* sdjournal_ptr = &sdjournal_impl;
