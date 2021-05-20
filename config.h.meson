@@ -24,13 +24,9 @@
 #define SYSTEMD_INTERFACE "org.freedesktop.systemd1.Manager"
 #define SYSTEMD_PATH "/org/freedesktop/systemd1"
 
-#ifdef TESTCASE
-#define ERRLOG_PERSIST_PATH "/tmp/errors"
-#define EXTENSION_PERSIST_DIR "/tmp/extensions"
-#else
-#define ERRLOG_PERSIST_PATH "/var/lib/phosphor-logging/errors"
-#define EXTENSION_PERSIST_DIR "/var/lib/phosphor-logging/extensions"
-#endif
+extern const char *ERRLOG_PERSIST_PATH;
+extern const char *EXTENSION_PERSIST_DIR;
+extern const bool IS_UNIT_TEST;
 
 static constexpr size_t ERROR_CAP = @error_cap@;
 static constexpr size_t ERROR_INFO_CAP = @error_info_cap@;
