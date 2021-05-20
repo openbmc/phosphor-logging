@@ -41,13 +41,10 @@ foreach t : tests
         executable(
             'test-' + t.underscorify(),
             t + '.cpp',
+            'common.cpp',
             log_manager_sources,
             '../phosphor-rsyslog-config/server-conf.cpp',
             link_with: libphosphor_logging,
-            cpp_args: [
-                '-DTESTCASE=' + t.underscorify(),
-                '-DTESTCASE_' + t.underscorify(),
-            ],
             dependencies: [
                 gmock_dep,
                 gtest_dep,

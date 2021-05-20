@@ -89,109 +89,111 @@ void Manager::_commit(uint64_t transactionId [[maybe_unused]],
     // When running as a test-case, the system may have a LOT of journal
     // data and we may not have permissions to do some of the journal sync
     // operations.  Just skip over them.
-#ifndef TESTCASE
-
-    constexpr const auto transactionIdVar = "TRANSACTION_ID";
-    // Length of 'TRANSACTION_ID' string.
-    constexpr const auto transactionIdVarSize = std::strlen(transactionIdVar);
-    // Length of 'TRANSACTION_ID=' string.
-    constexpr const auto transactionIdVarOffset = transactionIdVarSize + 1;
-
-    // Flush all the pending log messages into the journal
-    journalSync();
-
-    sd_journal* j = nullptr;
-    int rc = sd_journal_open(&j, SD_JOURNAL_LOCAL_ONLY);
-    if (rc < 0)
+    if (!IS_UNIT_TEST)
     {
-        logging::log<logging::level::ERR>(
-            "Failed to open journal",
-            logging::entry("DESCRIPTION=%s", strerror(-rc)));
-        return;
-    }
+        constexpr const auto transactionIdVar = "TRANSACTION_ID";
+        // Length of 'TRANSACTION_ID' string.
+        constexpr const auto transactionIdVarSize =
+            std::strlen(transactionIdVar);
+        // Length of 'TRANSACTION_ID=' string.
+        constexpr const auto transactionIdVarOffset = transactionIdVarSize + 1;
 
-    std::string transactionIdStr = std::to_string(transactionId);
-    std::set<std::string> metalist;
-    auto metamap = g_errMetaMap.find(errMsg);
-    if (metamap != g_errMetaMap.end())
-    {
-        metalist.insert(metamap->second.begin(), metamap->second.end());
-    }
+        // Flush all the pending log messages into the journal
+        journalSync();
 
-    // Add _PID field information in AdditionalData.
-    metalist.insert("_PID");
-
-    // Read the journal from the end to get the most recent entry first.
-    // The result from the sd_journal_get_data() is of the form VARIABLE=value.
-    SD_JOURNAL_FOREACH_BACKWARDS(j)
-    {
-        const char* data = nullptr;
-        size_t length = 0;
-
-        // Look for the transaction id metadata variable
-        rc = sd_journal_get_data(j, transactionIdVar, (const void**)&data,
-                                 &length);
+        sd_journal* j = nullptr;
+        int rc = sd_journal_open(&j, SD_JOURNAL_LOCAL_ONLY);
         if (rc < 0)
         {
-            // This journal entry does not have the TRANSACTION_ID
-            // metadata variable.
-            continue;
+            logging::log<logging::level::ERR>(
+                "Failed to open journal",
+                logging::entry("DESCRIPTION=%s", strerror(-rc)));
+            return;
         }
 
-        // journald does not guarantee that sd_journal_get_data() returns NULL
-        // terminated strings, so need to specify the size to use to compare,
-        // use the returned length instead of anything that relies on NULL
-        // terminators like strlen().
-        // The data variable is in the form of 'TRANSACTION_ID=1234'. Remove
-        // the TRANSACTION_ID characters plus the (=) sign to do the comparison.
-        // 'data + transactionIdVarOffset' will be in the form of '1234'.
-        // 'length - transactionIdVarOffset' will be the length of '1234'.
-        if ((length <= (transactionIdVarOffset)) ||
-            (transactionIdStr.compare(0, transactionIdStr.size(),
-                                      data + transactionIdVarOffset,
-                                      length - transactionIdVarOffset) != 0))
+        std::string transactionIdStr = std::to_string(transactionId);
+        std::set<std::string> metalist;
+        auto metamap = g_errMetaMap.find(errMsg);
+        if (metamap != g_errMetaMap.end())
         {
-            // The value of the TRANSACTION_ID metadata is not the requested
-            // transaction id number.
-            continue;
+            metalist.insert(metamap->second.begin(), metamap->second.end());
         }
 
-        // Search for all metadata variables in the current journal entry.
-        for (auto i = metalist.cbegin(); i != metalist.cend();)
+        // Add _PID field information in AdditionalData.
+        metalist.insert("_PID");
+
+        // Read the journal from the end to get the most recent entry first.
+        // The result from the sd_journal_get_data() is of the form
+        // VARIABLE=value.
+        SD_JOURNAL_FOREACH_BACKWARDS(j)
         {
-            rc = sd_journal_get_data(j, (*i).c_str(), (const void**)&data,
+            const char* data = nullptr;
+            size_t length = 0;
+
+            // Look for the transaction id metadata variable
+            rc = sd_journal_get_data(j, transactionIdVar, (const void**)&data,
                                      &length);
             if (rc < 0)
             {
-                // Metadata variable not found, check next metadata variable.
-                i++;
+                // This journal entry does not have the TRANSACTION_ID
+                // metadata variable.
                 continue;
             }
 
-            // Metadata variable found, save it and remove it from the set.
-            additionalData.emplace_back(data, length);
-            i = metalist.erase(i);
-        }
-        if (metalist.empty())
-        {
-            // All metadata variables found, break out of journal loop.
-            break;
-        }
-    }
-    if (!metalist.empty())
-    {
-        // Not all the metadata variables were found in the journal.
-        for (auto& metaVarStr : metalist)
-        {
-            logging::log<logging::level::INFO>(
-                "Failed to find metadata",
-                logging::entry("META_FIELD=%s", metaVarStr.c_str()));
-        }
-    }
+            // journald does not guarantee that sd_journal_get_data() returns
+            // NULL terminated strings, so need to specify the size to use to
+            // compare, use the returned length instead of anything that relies
+            // on NULL terminators like strlen(). The data variable is in the
+            // form of 'TRANSACTION_ID=1234'. Remove the TRANSACTION_ID
+            // characters plus the (=) sign to do the comparison. 'data +
+            // transactionIdVarOffset' will be in the form of '1234'. 'length -
+            // transactionIdVarOffset' will be the length of '1234'.
+            if ((length <= (transactionIdVarOffset)) ||
+                (transactionIdStr.compare(
+                     0, transactionIdStr.size(), data + transactionIdVarOffset,
+                     length - transactionIdVarOffset) != 0))
+            {
+                // The value of the TRANSACTION_ID metadata is not the requested
+                // transaction id number.
+                continue;
+            }
 
-    sd_journal_close(j);
+            // Search for all metadata variables in the current journal entry.
+            for (auto i = metalist.cbegin(); i != metalist.cend();)
+            {
+                rc = sd_journal_get_data(j, (*i).c_str(), (const void**)&data,
+                                         &length);
+                if (rc < 0)
+                {
+                    // Metadata variable not found, check next metadata
+                    // variable.
+                    i++;
+                    continue;
+                }
 
-#endif
+                // Metadata variable found, save it and remove it from the set.
+                additionalData.emplace_back(data, length);
+                i = metalist.erase(i);
+            }
+            if (metalist.empty())
+            {
+                // All metadata variables found, break out of journal loop.
+                break;
+            }
+        }
+        if (!metalist.empty())
+        {
+            // Not all the metadata variables were found in the journal.
+            for (auto& metaVarStr : metalist)
+            {
+                logging::log<logging::level::INFO>(
+                    "Failed to find metadata",
+                    logging::entry("META_FIELD=%s", metaVarStr.c_str()));
+            }
+        }
+
+        sd_journal_close(j);
+    }
     createEntry(errMsg, errLvl, additionalData);
 }
 
@@ -259,9 +261,10 @@ bool Manager::isQuiesceOnErrorEnabled()
 {
     // When running under tests, the Logging.Settings service will not be
     // present.  Assume false.
-#ifdef TESTCASE
-    return false;
-#endif
+    if (IS_UNIT_TEST)
+    {
+        return false;
+    }
 
     std::variant<bool> property;
 
