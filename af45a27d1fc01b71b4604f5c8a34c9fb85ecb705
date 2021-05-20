@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c7b72db1_067b00da",
+        "filename": "dist/meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2021-05-20T16:39:15Z",
+      "side": 0,
+      "message": "Does it work without explicit list?\nThe example in the doc shows it as a list expression:\nhttps://mesonbuild.com/Installing.html",
+      "range": {
+        "startLine": 12,
+        "startChar": 4,
+        "endLine": 13,
+        "endChar": 46
+      },
+      "revId": "af45a27d1fc01b71b4604f5c8a34c9fb85ecb705",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
