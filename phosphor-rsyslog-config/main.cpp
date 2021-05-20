@@ -4,6 +4,8 @@
 
 #include <sdbusplus/bus.hpp>
 
+#include "config_main.h"
+
 int main(int /*argc*/, char* /*argv*/[])
 {
     auto bus = sdbusplus::bus::new_default();
