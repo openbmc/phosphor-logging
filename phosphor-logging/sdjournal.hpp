@@ -1,9 +1,5 @@
 #pragma once
 
-#include <systemd/sd-journal.h>
-
-#include <cstdarg>
-
 namespace phosphor
 {
 namespace logging
@@ -30,10 +26,7 @@ class SdJournalHandler
      * @return an int meant to be intepreted by the journal_send caller during
      * testing.
      */
-    virtual int journal_send_call(const char* /*fmt*/)
-    {
-        return 0;
-    };
+    virtual int journal_send_call(const char* fmt);
 
     /**
      * Send the information to sd_journal_send.
@@ -45,16 +38,7 @@ class SdJournalHandler
      * sentinel default makes sure the last parameter is null.
      */
     virtual int journal_send(const char* fmt, ...)
-        __attribute__((format(printf, 2, 0))) __attribute__((sentinel))
-    {
-        va_list args;
-        va_start(args, fmt);
-
-        int rc = ::sd_journal_send(fmt, args, NULL);
-        va_end(args);
-
-        return rc;
-    }
+        __attribute__((format(printf, 2, 0))) __attribute__((sentinel));
 };
 
 extern SdJournalHandler* sdjournal_ptr;
