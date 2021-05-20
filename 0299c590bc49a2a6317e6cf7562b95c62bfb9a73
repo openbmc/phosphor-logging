@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6001e702_dc53704b",
+        "filename": "dist/meson.build",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2021-05-20T16:35:10Z",
+      "side": 1,
+      "message": "Historically, all dbus policies are under /etc/dbus-1/system.d in almost every Linux distro.\nSame for udev-rules files that stored under /lib/udev/rules.d. Moreover, \"lib\" prefix is not arch-dependant.",
+      "range": {
+        "startLine": 14,
+        "startChar": 17,
+        "endLine": 14,
+        "endChar": 62
+      },
+      "revId": "0299c590bc49a2a6317e6cf7562b95c62bfb9a73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
