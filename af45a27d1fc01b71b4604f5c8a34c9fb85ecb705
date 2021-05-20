@@ -22,6 +22,30 @@
       "revId": "af45a27d1fc01b71b4604f5c8a34c9fb85ecb705",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eb4a1d3f_1bc7c4cc",
+        "filename": "dist/meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000188
+      },
+      "writtenOn": "2021-05-20T21:25:43Z",
+      "side": 0,
+      "message": "Most commands that take sources in meson do.\n\nFrom the output log of the unit tests\n```\nInstalling /data0/jenkins/workspace/ci-repository/openbmc/phosphor-logging/dist/busconfig/phosphor-logging.conf to /usr/local/share/dbus-1/system.d\nInstalling /data0/jenkins/workspace/ci-repository/openbmc/phosphor-logging/dist/busconfig/phosphor-rsyslog-config.conf to /usr/local/share/dbus-1/system.d\n```",
+      "parentUuid": "c7b72db1_067b00da",
+      "range": {
+        "startLine": 12,
+        "startChar": 4,
+        "endLine": 13,
+        "endChar": 46
+      },
+      "revId": "af45a27d1fc01b71b4604f5c8a34c9fb85ecb705",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
