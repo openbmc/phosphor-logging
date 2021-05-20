@@ -33,6 +33,8 @@
 #include <string>
 #include <xyz/openbmc_project/Common/File/error.hpp>
 
+#include "config_main.h"
+
 namespace fs = std::filesystem;
 using namespace phosphor::logging;
 using namespace openpower::pels;
@@ -62,6 +64,11 @@ namespace object_path
 constexpr auto logEntry = "/xyz/openbmc_project/logging/entry/";
 constexpr auto logging = "/xyz/openbmc_project/logging";
 } // namespace object_path
+
+std::string pelLogDir()
+{
+    return std::string(EXTENSION_PERSIST_DIR) + "/pels/logs";
+}
 
 /**
  * @brief helper function to get PEL commit timestamp from file name
@@ -288,13 +295,12 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool critSysTerm,
     std::string val;
     char tmpValStr[50];
     std::string listStr;
-    char name[50];
-    sprintf(name, "%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X_%.8X", itr.second.yearMSB,
+    char name[51];
+    sprintf(name, "/%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X_%.8X", itr.second.yearMSB,
             itr.second.yearLSB, itr.second.month, itr.second.day,
             itr.second.hour, itr.second.minutes, itr.second.seconds,
             itr.second.hundredths, itr.first);
-    std::string fileName(name);
-    fileName = EXTENSION_PERSIST_DIR "/pels/logs/" + fileName;
+    auto fileName = pelLogDir() + name;
     try
     {
         std::vector<uint8_t> data = getFileData(fileName);
@@ -444,7 +450,7 @@ void printPELs(bool order, bool hidden, bool includeInfo, bool critSysTerm,
     std::map<uint32_t, BCDTime> PELs;
     std::vector<std::string> plugins;
     listStr = "{\n";
-    for (auto it = fs::directory_iterator(EXTENSION_PERSIST_DIR "/pels/logs");
+    for (auto it = fs::directory_iterator(pelLogDir());
          it != fs::directory_iterator(); ++it)
     {
         if (!fs::is_regular_file((*it).path()))
@@ -533,7 +539,7 @@ void callFunctionOnPEL(const std::string& id, const PELFunc& func,
 
     bool found = false;
 
-    for (auto it = fs::directory_iterator(EXTENSION_PERSIST_DIR "/pels/logs");
+    for (auto it = fs::directory_iterator(pelLogDir());
          it != fs::directory_iterator(); ++it)
     {
         // The PEL ID is part of the filename, so use that to find the PEL if
@@ -598,7 +604,7 @@ void deletePEL(const std::string& id)
         pelID.erase(0, 2);
     }
 
-    for (auto it = fs::directory_iterator(EXTENSION_PERSIST_DIR "/pels/logs");
+    for (auto it = fs::directory_iterator(pelLogDir());
          it != fs::directory_iterator(); ++it)
     {
         if (ends_with((*it).path(), pelID))
@@ -615,8 +621,7 @@ void deleteAllPELs()
 {
     log<level::INFO>("peltool deleting all event logs");
 
-    for (const auto& entry :
-         fs::directory_iterator(EXTENSION_PERSIST_DIR "/pels/logs"))
+    for (const auto& entry : fs::directory_iterator(pelLogDir()))
     {
         fs::remove(entry.path());
     }
@@ -662,7 +667,8 @@ void printPELCount(bool hidden, bool includeInfo, bool critSysTerm,
                    const std::optional<std::regex>& scrubRegex)
 {
     std::size_t count = 0;
-    for (auto it = fs::directory_iterator(EXTENSION_PERSIST_DIR "/pels/logs");
+
+    for (auto it = fs::directory_iterator(pelLogDir());
          it != fs::directory_iterator(); ++it)
     {
         if (!fs::is_regular_file((*it).path()))

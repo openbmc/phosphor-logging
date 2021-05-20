@@ -63,10 +63,8 @@ openpower_test_lib = static_library(
     'paths.cpp',
     libpel_sources,
     peltool_sources,
+    '../common.cpp',
     '../../util.cpp',
-    cpp_args: [
-        '-DTESTCASE=openpower_test_lib',
-    ],
     include_directories: include_directories(
         '../../',
         '../../gen',
@@ -89,10 +87,6 @@ foreach t : openpower_pels.keys()
                 libphosphor_logging,
             ],
             link_args: [ '-lpython' + python_ver ],
-            cpp_args: [
-                '-DTESTCASE=' + t.underscorify(),
-                '-DTESTCASE_' + t.underscorify(),
-            ],
             dependencies: [
                 gtest_dep,
                 gmock_dep,
