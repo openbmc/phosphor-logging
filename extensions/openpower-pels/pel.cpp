@@ -610,7 +610,7 @@ void addBMCFWVersionIDToJSON(nlohmann::json& json,
         id = unknownValue;
     }
 
-    json["BMC Version ID"] = std::move(id);
+    json["FW Version ID"] = std::move(id);
 }
 
 std::string lastSegment(char separator, std::string data)
