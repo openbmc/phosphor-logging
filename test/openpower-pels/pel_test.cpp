@@ -428,7 +428,7 @@ TEST_F(PELTest, SysInfoSectionTest)
     EXPECT_TRUE(found);
     // @TODO(stwcx): remove 'pel_test' when removing autotools.
 
-    auto version = json["BMC Version ID"].get<std::string>();
+    auto version = json["FW Version ID"].get<std::string>();
     EXPECT_EQ(version, "ABCD1234");
 
     auto state = json["BMCState"].get<std::string>();
