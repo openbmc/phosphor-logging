@@ -45,6 +45,54 @@
       "revId": "05aa560c266eea82e3352559266382f14fe24358",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9379a6c9_b46027d7",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-05-21T06:44:54Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c3a3dbdd_63b745ca",
+      "range": {
+        "startLine": 453,
+        "startChar": 65,
+        "endLine": 453,
+        "endChar": 71
+      },
+      "revId": "05aa560c266eea82e3352559266382f14fe24358",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4b8b48be_8c49b88e",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-05-21T06:44:54Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c469d0a2_88351c2d",
+      "range": {
+        "startLine": 453,
+        "startChar": 36,
+        "endLine": 453,
+        "endChar": 47
+      },
+      "revId": "05aa560c266eea82e3352559266382f14fe24358",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
