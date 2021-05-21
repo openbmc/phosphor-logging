@@ -58,6 +58,7 @@ class Manager : public PELInterface
         for (const auto& entry : _logManager.entries)
         {
             setEntryPath(entry.first);
+            setCallHomeFlag(entry.first);
         }
         setupPELDeleteWatch();
     }
@@ -335,6 +336,13 @@ class Manager : public PELInterface
      * @param[in] obmcLogID - The OpenBMC entry log ID
      */
     void setEntryPath(uint32_t obmcLogID);
+
+    /**
+     * @brief Sets the callhome bit in PEL to update d-bus property.
+     *
+     * @param[in] obmcLogID - The OpenBMC entry log ID
+     */
+    void setCallHomeFlag(uint32_t obmcLogID);
 
     /**
      * @brief Reference to phosphor-logging's Manager class
