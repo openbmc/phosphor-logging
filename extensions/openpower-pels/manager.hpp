@@ -58,6 +58,7 @@ class Manager : public PELInterface
         for (const auto& entry : _logManager.entries)
         {
             setEntryPath(entry.first);
+            setServiceProviderNotifyFlag(entry.first);
         }
         setupPELDeleteWatch();
     }
@@ -352,6 +353,13 @@ class Manager : public PELInterface
      * @param[in] obmcLogID - The OpenBMC entry log ID
      */
     void setEntryPath(uint32_t obmcLogID);
+
+    /**
+     * @brief Sets the serviceProviderNotify D-bus property of PEL.
+     *
+     * @param[in] obmcLogID - The OpenBMC entry log ID
+     */
+    void setServiceProviderNotifyFlag(uint32_t obmcLogID);
 
     /**
      * @brief Reference to phosphor-logging's Manager class
