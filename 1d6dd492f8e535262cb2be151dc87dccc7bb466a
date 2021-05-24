@@ -46,6 +46,30 @@
       "revId": "1d6dd492f8e535262cb2be151dc87dccc7bb466a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ff08426d_fbc82102",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 630,
+      "author": {
+        "id": 1000369
+      },
+      "writtenOn": "2021-05-24T12:08:34Z",
+      "side": 1,
+      "message": "Will the json/pel backend stuff be ok with an empty string as value (accept/add the key with no value)?",
+      "parentUuid": "f9f2fc06_7b5f5211",
+      "range": {
+        "startLine": 630,
+        "startChar": 4,
+        "endLine": 630,
+        "endChar": 49
+      },
+      "revId": "1d6dd492f8e535262cb2be151dc87dccc7bb466a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
