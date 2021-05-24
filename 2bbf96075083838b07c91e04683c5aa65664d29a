@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7ea93305_e6dd3f9d",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-05-24T12:26:27Z",
+      "side": 1,
+      "message": "will fix.",
+      "revId": "2bbf96075083838b07c91e04683c5aa65664d29a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
