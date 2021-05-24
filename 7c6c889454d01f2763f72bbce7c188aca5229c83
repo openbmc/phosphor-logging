@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "24f20363_e2104530",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1000369
+      },
+      "writtenOn": "2021-05-24T12:44:19Z",
+      "side": 1,
+      "message": "Matt, can the ComponentID be added in the message registry? I thought it was reserved in the ComponentID.md and also registered in another file.",
+      "range": {
+        "startLine": 403,
+        "startChar": 12,
+        "endLine": 403,
+        "endChar": 36
+      },
+      "revId": "7c6c889454d01f2763f72bbce7c188aca5229c83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
