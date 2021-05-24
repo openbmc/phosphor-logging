@@ -118,6 +118,7 @@ class Manager : public details::ServerObject<details::ManagerIface>
             ++iter;
             erase(e);
         }
+        entryId = 0;
     }
 
     /** @brief Returns the count of high severity errors
