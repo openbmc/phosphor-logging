@@ -22,6 +22,30 @@
       "revId": "3fa97ce66a062072bfdf9fd77e77a5337d7229ba",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "030d1672_1952d611",
+        "filename": "extensions/openpower-pels/user_header.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-05-26T11:37:27Z",
+      "side": 1,
+      "message": "yeah ok. Also same applies to mfgActionFlags as well. I\u0027ll add check for both and then process it.",
+      "parentUuid": "d1ca7435_6d0a010b",
+      "range": {
+        "startLine": 72,
+        "startChar": 11,
+        "endLine": 72,
+        "endChar": 73
+      },
+      "revId": "3fa97ce66a062072bfdf9fd77e77a5337d7229ba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
