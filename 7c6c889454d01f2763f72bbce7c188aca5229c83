@@ -22,6 +22,30 @@
       "revId": "7c6c889454d01f2763f72bbce7c188aca5229c83",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0f961aa6_2c58dac0",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1000369
+      },
+      "writtenOn": "2021-05-26T16:41:56Z",
+      "side": 1,
+      "message": "Disregard previous question. I see in the readme file \"Component IDs are specified in the message registry either as the upper byte of the SRC reason code field for `BD` SRCs, or in the standalone `ComponentID` field.\"",
+      "parentUuid": "24f20363_e2104530",
+      "range": {
+        "startLine": 403,
+        "startChar": 12,
+        "endLine": 403,
+        "endChar": 36
+      },
+      "revId": "7c6c889454d01f2763f72bbce7c188aca5229c83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
