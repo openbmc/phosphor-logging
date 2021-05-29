@@ -255,7 +255,7 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
                                          uint8_t creatorID)
 {
     PyObject *pName, *pModule, *pDict, *pFunc, *pArgs, *pData, *pResult,
-        *pBytes, *eType, *eValue, *eTraceback;
+        *pBytes, *eType, *eValue, *eTraceback, *pKey;
     std::string pErrStr;
     std::string module = getNumberString("%c", tolower(creatorID)) +
                          getNumberString("%04x", componentID);
@@ -263,25 +263,53 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
         std::string("udparsers." + module + "." + module).c_str());
     std::unique_ptr<PyObject, decltype(&pyDecRef)> modNamePtr(pName, &pyDecRef);
     pModule = PyImport_Import(pName);
-    std::unique_ptr<PyObject, decltype(&pyDecRef)> modPtr(pModule, &pyDecRef);
     if (pModule == NULL)
     {
         pErrStr = "No error string found";
         PyErr_Fetch(&eType, &eValue, &eTraceback);
+        if (eType)
+        {
+            Py_XDECREF(eType);
+        }
+        if (eTraceback)
+        {
+            Py_XDECREF(eTraceback);
+        }
         if (eValue)
         {
             PyObject* pStr = PyObject_Str(eValue);
+            Py_XDECREF(eValue);
             if (pStr)
             {
                 pErrStr = PyUnicode_AsUTF8(pStr);
+                Py_XDECREF(pStr);
             }
-            Py_XDECREF(pStr);
         }
     }
     else
     {
+        std::unique_ptr<PyObject, decltype(&pyDecRef)> modPtr(pModule,
+                                                              &pyDecRef);
+        std::string funcToCall = "parseUDToJson";
+        pKey = PyUnicode_FromString(funcToCall.c_str());
+        std::unique_ptr<PyObject, decltype(&pyDecRef)> keyPtr(pKey, &pyDecRef);
         pDict = PyModule_GetDict(pModule);
-        pFunc = PyDict_GetItemString(pDict, "parseUDToJson");
+        Py_INCREF(pDict);
+        if (!PyDict_Contains(pDict, pKey))
+        {
+            Py_DECREF(pDict);
+            log<level::ERR>(
+                "Python module error",
+                entry("ERROR=%s",
+                      std::string(funcToCall + " function missing").c_str()),
+                entry("PARSER_MODULE=%s", module.c_str()),
+                entry("SUBTYPE=0x%X", subType), entry("VERSION=%d", version),
+                entry("DATA_LENGTH=%lu\n", data.size()));
+            return std::nullopt;
+        }
+        pFunc = PyDict_GetItemString(pDict, funcToCall.c_str());
+        Py_DECREF(pDict);
+        Py_INCREF(pFunc);
         if (PyCallable_Check(pFunc))
         {
             auto ud = data.data();
@@ -295,14 +323,13 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
             pData = PyMemoryView_FromMemory(
                 reinterpret_cast<char*>(const_cast<unsigned char*>(ud)),
                 data.size(), PyBUF_READ);
-            std::unique_ptr<PyObject, decltype(&pyDecRef)> dataPtr(pData,
-                                                                   &pyDecRef);
             PyTuple_SetItem(pArgs, 2, pData);
             pResult = PyObject_CallObject(pFunc, pArgs);
-            std::unique_ptr<PyObject, decltype(&pyDecRef)> resPtr(pResult,
-                                                                  &pyDecRef);
+            Py_DECREF(pFunc);
             if (pResult)
             {
+                std::unique_ptr<PyObject, decltype(&pyDecRef)> resPtr(
+                    pResult, &pyDecRef);
                 pBytes = PyUnicode_AsEncodedString(pResult, "utf-8", "~E~");
                 std::unique_ptr<PyObject, decltype(&pyDecRef)> pyBytePtr(
                     pBytes, &pyDecRef);
@@ -310,7 +337,12 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
                 try
                 {
                     orderedJSON json = orderedJSON::parse(output);
-                    return prettyJSON(componentID, subType, version, json);
+                    if ((json.is_object() && !json.empty()) ||
+                        (json.is_array() && json.size() > 0) ||
+                        (json.is_string() && json != ""))
+                    {
+                        return prettyJSON(componentID, subType, version, json);
+                    }
                 }
                 catch (std::exception& e)
                 {
@@ -327,14 +359,23 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
             {
                 pErrStr = "No error string found";
                 PyErr_Fetch(&eType, &eValue, &eTraceback);
+                if (eType)
+                {
+                    Py_XDECREF(eType);
+                }
+                if (eTraceback)
+                {
+                    Py_XDECREF(eTraceback);
+                }
                 if (eValue)
                 {
                     PyObject* pStr = PyObject_Str(eValue);
+                    Py_XDECREF(eValue);
                     if (pStr)
                     {
                         pErrStr = PyUnicode_AsUTF8(pStr);
+                        Py_XDECREF(pStr);
                     }
-                    Py_XDECREF(pStr);
                 }
             }
         }
@@ -348,9 +389,6 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
                         entry("VERSION=%d", version),
                         entry("DATA_LENGTH=%lu\n", data.size()));
     }
-    Py_XDECREF(eType);
-    Py_XDECREF(eValue);
-    Py_XDECREF(eTraceback);
     return std::nullopt;
 }
 
