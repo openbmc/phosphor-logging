@@ -23,6 +23,7 @@
 
 using namespace openpower::pels;
 using ::testing::_;
+using ::testing::DoAll;
 using ::testing::InvokeWithoutArgs;
 using ::testing::NiceMock;
 using ::testing::Return;

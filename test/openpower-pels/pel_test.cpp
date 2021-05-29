@@ -27,6 +27,7 @@
 namespace fs = std::filesystem;
 using namespace openpower::pels;
 using ::testing::_;
+using ::testing::DoAll;
 using ::testing::NiceMock;
 using ::testing::Return;
 using ::testing::SetArgReferee;
