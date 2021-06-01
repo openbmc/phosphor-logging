@@ -329,6 +329,16 @@ class Manager : public PELInterface
     void checkPelAndQuiesce(std::unique_ptr<openpower::pels::PEL>& pel);
 
     /**
+     * @brief Update eventId D-bus property for this error log
+     *
+     * Update the eventId property of D-bus with SRC and hexwords from the
+     * PEL created
+     *
+     * @param[in] pel - The PEL to use
+     */
+    void updateEventId(std::unique_ptr<openpower::pels::PEL>& pel);
+
+    /**
      * @brief Sets the FilePath of the specified error log entry to the PEL file
      *        path.
      *
