@@ -210,6 +210,13 @@ class Manager : public PELInterface
      */
     static std::vector<uint8_t> eselToRawData(const std::string& esel);
 
+    /**
+     * @brief Generate event ID from the PEL
+     *
+     * @param[in] pel - The PEL to use
+     */
+    std::string getEventId(const openpower::pels::PEL& pel);
+
   private:
     /**
      * @brief Adds a received raw PEL to the PEL repository
@@ -327,6 +334,16 @@ class Manager : public PELInterface
      * @param[in] pel - The PEL to check
      */
     void checkPelAndQuiesce(std::unique_ptr<openpower::pels::PEL>& pel);
+
+    /**
+     * @brief Update eventId D-bus property for this error log
+     *
+     * Update the eventId property of D-bus with SRC and hexwords from the
+     * PEL created
+     *
+     * @param[in] pel - The PEL to use
+     */
+    void updateEventId(std::unique_ptr<openpower::pels::PEL>& pel);
 
     /**
      * @brief Sets the FilePath of the specified error log entry to the PEL file
