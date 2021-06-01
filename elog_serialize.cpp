@@ -29,7 +29,7 @@ namespace logging
 template <class Archive>
 void save(Archive& a, const Entry& e, const std::uint32_t /*version*/)
 {
-    a(e.id(), e.severity(), e.timestamp(), e.message(), e.additionalData(),
+    a(e.id(), e.severity(), e.timestamp(), e.message(),e.eventId(), e.additionalData(),
       e.associations(), e.resolved(), e.version(), e.updateTimestamp());
 }
 
@@ -49,6 +49,7 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
     Entry::Level severity{};
     uint64_t timestamp{};
     std::string message{};
+    std::string eventId{};
     std::vector<std::string> additionalData{};
     bool resolved{};
     AssociationList associations{};
@@ -57,19 +58,19 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
 
     if (version < std::stoul(FIRST_CEREAL_CLASS_VERSION_WITH_FWLEVEL))
     {
-        a(id, severity, timestamp, message, additionalData, associations,
+        a(id, severity, timestamp, message, eventId, additionalData, associations,
           resolved);
         updateTimestamp = timestamp;
     }
     else if (version < std::stoul(FIRST_CEREAL_CLASS_VERSION_WITH_UPDATE_TS))
     {
-        a(id, severity, timestamp, message, additionalData, associations,
+        a(id, severity, timestamp, message, eventId, additionalData, associations,
           resolved, fwVersion);
         updateTimestamp = timestamp;
     }
     else
     {
-        a(id, severity, timestamp, message, additionalData, associations,
+        a(id, severity, timestamp, message, eventId, additionalData, associations,
           resolved, fwVersion, updateTimestamp);
     }
 
@@ -77,6 +78,7 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
     e.severity(severity);
     e.timestamp(timestamp);
     e.message(message);
+    e.eventId(eventId);
     e.additionalData(additionalData);
     e.sdbusplus::xyz::openbmc_project::Logging::server::Entry::resolved(
         resolved);

@@ -112,6 +112,15 @@ class Entry : public EntryIfaces
     bool resolved(bool value) override;
 
     using sdbusplus::xyz::openbmc_project::Logging::server::Entry::resolved;
+    
+    /** @brief Update enentId string of the error.
+     *  @param[in] value - Newly constructed eventId to be updated with the property
+     *  @returns New property value
+     */
+
+    std::string eventId(std::string value) override;
+
+    using sdbusplus::xyz::openbmc_project::Logging::server::Entry::eventId;
 
     /** @brief Delete this d-bus object.
      */
