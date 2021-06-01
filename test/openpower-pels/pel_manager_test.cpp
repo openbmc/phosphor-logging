@@ -290,6 +290,10 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
     EXPECT_EQ(pel.obmcLogID(), 33);
     EXPECT_EQ(pel.primarySRC().value()->asciiString(),
               "BD612030                        ");
+    // Check if the eventId creation is good
+    EXPECT_EQ(manager.getEventId(pel),
+              "BD612030 00000055 00000010 00000000 00000000 00000000 00000000 "
+              "00000000 00000000");
 
     // Remove it
     manager.erase(33);

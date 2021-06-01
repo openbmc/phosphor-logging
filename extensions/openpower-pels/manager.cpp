@@ -164,6 +164,7 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
 
         // Check if firmware should quiesce system due to error
         checkPelAndQuiesce(pel);
+        updateEventId(pel);
     }
     else
     {
@@ -360,6 +361,7 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
 
     // Check if firmware should quiesce system due to error
     checkPelAndQuiesce(pel);
+    updateEventId(pel);
 }
 
 sdbusplus::message::unix_fd Manager::getPEL(uint32_t pelID)
@@ -618,6 +620,42 @@ void Manager::checkPelAndQuiesce(std::unique_ptr<openpower::pels::PEL>& pel)
             "and callout is present");
 
         _logManager.quiesceOnError(pel->obmcLogID());
+    }
+}
+
+std::string Manager::getEventId(const openpower::pels::PEL& pel) const
+{
+    std::string str;
+    auto src = pel.primarySRC();
+    if (src)
+    {
+        const auto& hexwords = (*src)->hexwordData();
+
+        std::string refcode = (*src)->asciiString();
+        size_t pos = refcode.find_last_not_of(0x20);
+        if (pos != std::string::npos)
+        {
+            refcode.erase(pos + 1);
+        }
+        str = refcode;
+
+        for (auto& value : hexwords)
+        {
+            str += " ";
+            str += getNumberString("%08X", value);
+        }
+    }
+    return str;
+}
+
+void Manager::updateEventId(std::unique_ptr<openpower::pels::PEL>& pel)
+{
+    std::string eventIdStr = getEventId(*pel);
+
+    auto entryN = _logManager.entries.find(pel->obmcLogID());
+    if (entryN != _logManager.entries.end())
+    {
+        entryN->second->eventId(eventIdStr);
     }
 }
 

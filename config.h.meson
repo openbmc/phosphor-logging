@@ -33,6 +33,7 @@ static constexpr size_t ERROR_INFO_CAP = @error_info_cap@;
 
 static constexpr auto FIRST_CEREAL_CLASS_VERSION_WITH_FWLEVEL = "2";
 static constexpr auto FIRST_CEREAL_CLASS_VERSION_WITH_UPDATE_TS = "3";
-static constexpr size_t CLASS_VERSION = 3;
+static constexpr auto FIRST_CEREAL_CLASS_VERSION_WITH_EVENTID= "4";
+static constexpr size_t CLASS_VERSION = 4;
 
 // vim: ft=cpp
