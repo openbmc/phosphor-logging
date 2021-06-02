@@ -1,6 +1,6 @@
-systemd_system_unit_dir = dependency('systemd').get_pkgconfig_variable(
-    'systemdsystemunitdir',
-    define_variable: ['prefix', get_option('prefix')])
+systemd_system_unit_dir = dependency('systemd').get_variable(
+    pkgconfig: 'systemdsystemunitdir',
+    pkgconfig_define: ['prefix', get_option('prefix')])
 
 install_data(
     ['xyz.openbmc_project.Logging.service',
