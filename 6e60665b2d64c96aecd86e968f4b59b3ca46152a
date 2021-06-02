@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "45b06c13_46f1ea67",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-02T14:10:06Z",
+      "side": 1,
+      "message": "Looks like the XDECREF can handle nullptrs, so you don\u0027t need these if checks?",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 18
+      },
+      "revId": "6e60665b2d64c96aecd86e968f4b59b3ca46152a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c31dfebe_4b068513",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-02T14:10:06Z",
+      "side": 1,
+      "message": "not sure I really understand Py_INCREF.  why would you need to call it on pDict but not on pKey?",
+      "range": {
+        "startLine": 168,
+        "startChar": 8,
+        "endLine": 168,
+        "endChar": 25
+      },
+      "revId": "6e60665b2d64c96aecd86e968f4b59b3ca46152a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
