@@ -359,22 +359,22 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool critSysTerm,
             if (pel.primarySRC())
             {
                 val = pel.primarySRC().value()->asciiString();
-                listStr += "\t\t\"SRC\": \"" + trimEnd(val) + "\",\n";
+                listStr += "\t\t\"SRC\":         \"" + trimEnd(val) + "\",\n";
                 // Registry message
                 auto regVal = pel.primarySRC().value()->getErrorDetails(
                     registry, DetailLevel::message, true);
                 if (regVal)
                 {
                     val = regVal.value();
-                    listStr += "\t\t\"Message\": \"" + val + "\",\n";
+                    listStr += "\t\t\"Message\":     \"" + val + "\",\n";
                 }
             }
             else
             {
-                listStr += "\t\t\"SRC\": \"No SRC\",\n";
+                listStr += "\t\t\"SRC\":         \"No SRC\",\n";
             }
             // platformid
-            listStr += "\t\t\"PLID\": \"" +
+            listStr += "\t\t\"PLID\":        \"" +
                        getNumberString("0x%X", pel.privateHeader().plid()) +
                        "\",\n";
             // creatorid
@@ -382,11 +382,11 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool critSysTerm,
                 getNumberString("%c", pel.privateHeader().creatorID());
             val = pv::creatorIDs.count(creatorID) ? pv::creatorIDs.at(creatorID)
                                                   : "Unknown Creator ID";
-            listStr += "\t\t\"CreatorID\": \"" + val + "\",\n";
+            listStr += "\t\t\"CreatorID\":   \"" + val + "\",\n";
             // subsytem
             std::string subsystem = pv::getValue(pel.userHeader().subsystem(),
                                                  pel_values::subsystemValues);
-            listStr += "\t\t\"Subsystem\": \"" + subsystem + "\",\n";
+            listStr += "\t\t\"Subsystem\":   \"" + subsystem + "\",\n";
             // commit time
             sprintf(tmpValStr, "%02X/%02X/%02X%02X %02X:%02X:%02X",
                     pel.privateHeader().commitTimestamp().month,
@@ -401,9 +401,9 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool critSysTerm,
             // severity
             std::string severity = pv::getValue(pel.userHeader().severity(),
                                                 pel_values::severityValues);
-            listStr += "\t\t\"Sev\": \"" + severity + "\",\n ";
+            listStr += "\t\t\"Sev\":         \"" + severity + "\",\n ";
             // compID
-            listStr += "\t\t\"CompID\": \"" +
+            listStr += "\t\t\"CompID\":      \"" +
                        getNumberString(
                            "0x%X", pel.privateHeader().header().componentID) +
                        "\",\n ";
