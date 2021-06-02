@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d4787076_808b7d56",
+        "filename": "elog_serialize.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-02T13:41:08Z",
+      "side": 1,
+      "message": "What happens when this code is first started up on a system that already contains saved event logs?  It seems like it would read in the wrong things, since it is reading in an event ID that was never in the file?  I think you may need to add another version here.",
+      "revId": "b90b8ff5f05376d26dda7c787a4ab891cd64db5a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "82ee1c4e_19d69664",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-02T13:41:08Z",
+      "side": 1,
+      "message": "there\u0027s also the code path where the host sends down PELs.",
+      "revId": "b90b8ff5f05376d26dda7c787a4ab891cd64db5a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
