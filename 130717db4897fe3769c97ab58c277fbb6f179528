@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8fddbda2_1be0c368",
+        "filename": "extensions/openpower-pels/tools/peltool.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-03T19:44:09Z",
+      "side": 1,
+      "message": "Now that jsonInsert() is available, I think I\u0027ll switch to that to print these JSON object entries.",
+      "revId": "130717db4897fe3769c97ab58c277fbb6f179528",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
