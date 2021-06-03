@@ -125,6 +125,16 @@ elog_process_gen = custom_target('elog-process-metadata.cpp'.underscorify(),
     ],
 )
 
+# Install elog-gen.py and its template for others to use
+install_data('tools/elog-gen.py',
+    install_dir : get_option('datadir') / 'phosphor-logging/elog/tools'
+)
+
+install_data('tools/phosphor-logging/templates/elog-gen-template.mako.hpp',
+    install_dir : get_option('datadir') /
+        'phosphor-logging/elog/tools/phosphor-logging/templates'
+)
+
 subdir('phosphor-logging')
 
 log_manager_ext_sources = []
