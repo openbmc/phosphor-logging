@@ -20,6 +20,12 @@
 #include "manager.hpp"
 #include "pldm_interface.hpp"
 
+#include <phosphor-logging/log.hpp>
+
+#ifdef SBE_FFDC_SUPPORTED
+#include <libpdbg.h>
+#endif
+
 namespace openpower
 {
 namespace pels
@@ -50,6 +56,14 @@ void pelStartup(internal::Manager& logManager)
 #else
     manager = std::make_unique<Manager>(logManager, std::move(dataIface),
                                         std::move(logger));
+#endif
+
+#ifdef SBE_FFDC_SUPPORTED
+    if (!pdbg_targets_init(NULL))
+    {
+        log<level::ERR>("pdbg_targets_init failed");
+        throw std::runtime_error("pdbg target initialization failed");
+    }
 #endif
 }
 
