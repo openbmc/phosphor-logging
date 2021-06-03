@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ee98f1f0_551108b7",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000380
+      },
+      "writtenOn": "2021-06-03T08:38:22Z",
+      "side": 1,
+      "message": "That was my understanding as well until I hit lines 220-222 in the previous revision. Took me a while to realize those were the culprit for the segfaults I was getting. I\u0027m keeping it safe here.",
+      "parentUuid": "45b06c13_46f1ea67",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 18
+      },
+      "revId": "6e60665b2d64c96aecd86e968f4b59b3ca46152a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c31dfebe_4b068513",
         "filename": "extensions/openpower-pels/src.cpp",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2021-06-02T14:10:06Z",
       "side": 1,
       "message": "not sure I really understand Py_INCREF.  why would you need to call it on pDict but not on pKey?",
+      "range": {
+        "startLine": 168,
+        "startChar": 8,
+        "endLine": 168,
+        "endChar": 25
+      },
+      "revId": "6e60665b2d64c96aecd86e968f4b59b3ca46152a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b1543393_4d67b4ad",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000380
+      },
+      "writtenOn": "2021-06-03T08:38:22Z",
+      "side": 1,
+      "message": "pDict is a borrowed reference while pKey is a new reference (pKey is taken care of by keyPtr). I\u0027m following the best practices from https://pythonextensionpatterns.readthedocs.io/en/latest/refcount.html just to be on the safe side.",
+      "parentUuid": "c31dfebe_4b068513",
       "range": {
         "startLine": 168,
         "startChar": 8,
