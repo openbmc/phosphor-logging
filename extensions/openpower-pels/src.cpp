@@ -182,7 +182,7 @@ std::optional<std::string> getPythonJSON(std::vector<std::string>& hexwords,
                 const char* output = PyBytes_AS_STRING(pBytes);
                 try
                 {
-                    orderedJSON json = nlohmann::json::parse(output);
+                    orderedJSON json = orderedJSON::parse(output);
                     return prettyJSON(json);
                 }
                 catch (std::exception& e)
