@@ -642,4 +642,48 @@ following criteria:
 - not SeverityType::nonError
 - has a callout of any kind from the `FailingComponentType` structure
 
+## Self Boot Engine(SBE) First Failure Data Capture(FFDC) Support
+
+During SBE chip-op failure SBE creates FFDC with custom data format.
+SBE FFDC contains different packets, which include SBE internal failure related
+Trace and user data also Hardware procedure failure FFDC created by FAPI
+infrastructure. PEL infrastructure provides support to process SBE FFDC packets
+created by FAPI infrastructure during hardware procedure execution failures,
+also add callouts, user data section information based on FAPI processing
+in case non FAPI based failure, just keeps the raw FFDC data in the user section
+to support SBE parser plugins.
+
+
+CreatePELWithFFDCFiles D-Bus method on the `org.open_power.Logging.PEL`
+interface must be used when creating a new event log.
+
+To specify that an FFDC file contains SBE FFDC, the format value for that FFDC
+entry must be set to "custom", and the subtype field must be set to 0xCB:
+
+```
+using FFDC = std::tuple<CreateIface::FFDCFormat,
+                        uint8_t,
+                        uint8_t,
+                        sdbusplus::message::unix_fd>;
+
+FFDC ffdc{
+     CreateIface::FFDCFormat::custom,
+     0xCB, // SBE FFDC subtype
+     0x01, // SBE FFDC version, set to 0x01
+     fd};
+ ```
+
+"SRC6" Keyword in the additional data section should be populated with below.
+
+  - [0:15] chip position  (hex)
+  - [16:23] command class (hex)
+  - [24:31] command       (hex)
+
+e.g for GetSCOM
+
+   SRC6="0002A201"
+
+Note: "phal" build-time configure option should be "enabled" to enable this
+       feature.
+
 [1]: https://github.com/openbmc/docs/blob/master/designs/fail-boot-on-hw-error.md
