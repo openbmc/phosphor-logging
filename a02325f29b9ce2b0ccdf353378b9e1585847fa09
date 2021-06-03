@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fc980629_27f7220d",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-03T22:14:35Z",
+      "side": 1,
+      "message": "Are you going to be creating a new FFDC file that will get turned into a UserData section?  And also add data to the AdditionalData property that will also go into the UserData section?  If that\u0027s the case, then how about instead of dealing with AdditionalData at all, you just make another FFDC file with a JSON format, which will end up in a UserData section anyway",
+      "range": {
+        "startLine": 77,
+        "startChar": 7,
+        "endLine": 77,
+        "endChar": 53
+      },
+      "revId": "a02325f29b9ce2b0ccdf353378b9e1585847fa09",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
