@@ -29,6 +29,15 @@ else
     )
 endif
 
+extra_sources = []
+build_phal = get_option('phal').enabled()
+
+if build_phal
+    extra_sources += [
+        'sbe_ffdc_handler.cpp',
+    ]
+endif
+
 libpel_sources = files(
     'ascii_string.cpp',
     'bcd_time.cpp',
@@ -54,6 +63,7 @@ libpel_sources = files(
     'service_indicators.cpp',
     'severity.cpp',
     'user_header.cpp',
+    extra_sources,
 )
 
 libpel_deps = [
