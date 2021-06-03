@@ -53,6 +53,11 @@ openpower_pels = {
     'stream': {},
     'user_data': {},
     'user_header': {},
+    'temporary_file': {
+         'sources': [
+            '../../extensions/openpower-pels/temporary_file.cpp',
+        ],
+    },
 }
 
 # Build a common shared library for all openpower tests of all the widely

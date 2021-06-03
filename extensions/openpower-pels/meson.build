@@ -30,6 +30,7 @@ else
 endif
 
 extra_sources = []
+
 build_phal = get_option('phal').enabled()
 
 if build_phal
@@ -64,6 +65,7 @@ libpel_sources = files(
     'service_indicators.cpp',
     'severity.cpp',
     'user_header.cpp',
+    'temporary_file.cpp',
     extra_sources,
 )
 
