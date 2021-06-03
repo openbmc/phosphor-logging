@@ -28,6 +28,10 @@
 #include "stream.hpp"
 #include "user_data_formats.hpp"
 
+#ifdef SBE_FFDC_SUPPORTED
+#include "sbe_ffdc_handler.hpp"
+#endif
+
 #include <fmt/format.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -48,9 +52,33 @@ constexpr uint8_t jsonCalloutSubtype = 0xCA;
 
 PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
          phosphor::logging::Entry::Level severity,
-         const AdditionalData& additionalData, const PelFFDC& ffdcFiles,
+         const AdditionalData& additionalData, const PelFFDC& ffdcFilesIn,
          const DataInterfaceBase& dataIface)
 {
+    // No changes in input, for non SBE error related requests
+    PelFFDC ffdcFiles = ffdcFilesIn;
+
+#ifdef SBE_FFDC_SUPPORTED
+    // Add sbe ffdc processed data into ffdcfiles.
+    namespace sbe = openpower::pels::sbe;
+    auto processReq =
+        std::any_of(ffdcFiles.begin(), ffdcFiles.end(), [](const auto& file) {
+            return file.format == UserDataFormat::custom &&
+                   file.subType == sbe::sbeFFDCSubType;
+        });
+    // sbeFFDC can't be destroyed until the end of the PEL constructor
+    // because it needs to keep around the FFDC Files to be used below.
+    std::unique_ptr<sbe::SbeFFDC> sbeFFDCPtr;
+    if (processReq)
+    {
+        auto sbeFFDC =
+            std::make_unique<sbe::SbeFFDC>(additionalData, ffdcFilesIn);
+        const auto& sbeFFDCFiles = sbeFFDC->getSbeFFDC();
+        ffdcFiles.insert(ffdcFiles.end(), sbeFFDCFiles.begin(),
+                         sbeFFDCFiles.end());
+    }
+#endif
+
     std::map<std::string, std::vector<std::string>> debugData;
     nlohmann::json callouts;
 
