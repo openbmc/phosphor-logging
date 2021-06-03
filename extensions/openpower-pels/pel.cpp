@@ -23,10 +23,15 @@
 #include "log_id.hpp"
 #include "pel_rules.hpp"
 #include "pel_values.hpp"
+#include "sbe_ffdc_handler.hpp"
 #include "section_factory.hpp"
 #include "src.hpp"
 #include "stream.hpp"
 #include "user_data_formats.hpp"
+
+#ifdef SBE_FFDC_SUPPORTED
+#include "sbe_ffdc_handler.hpp"
+#endif
 
 #include <fmt/format.h>
 #include <sys/stat.h>
@@ -48,9 +53,36 @@ constexpr uint8_t jsonCalloutSubtype = 0xCA;
 
 PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
          phosphor::logging::Entry::Level severity,
-         const AdditionalData& additionalData, const PelFFDC& ffdcFiles,
+         const AdditionalData& additionalData, const PelFFDC& ffdcFilesIn,
          const DataInterfaceBase& dataIface)
 {
+
+    // No changes in input, for non SBE error related requests.
+    PelFFDC ffdcFiles = ffdcFilesIn;
+
+#ifdef SBE_FFDC_SUPPORTED
+    // Add sbe ffdc processed data into ffdcfiles.
+    namespace sbe = openpower::pels::sbe;
+    bool processReq = false;
+    for (const auto& file : ffdcFilesIn)
+    {
+        if ((file.format == UserDataFormat::custom) &&
+            (file.subType == sbe::sbeFFDCSubtype))
+        {
+            processReq = true;
+            break;
+        }
+    }
+    // Object required to define function scope.
+    // temp ffdc files are created as part of this additional processing
+    // This will help to delete files after PEL functionusage.
+    sbe::SbeFFDC sbeFfdc(additionalData, ffdcFilesIn);
+    if (processReq)
+    {
+        ffdcFiles = sbeFfdc.pelFFDC();
+    }
+#endif
+
     std::map<std::string, std::vector<std::string>> debugData;
     nlohmann::json callouts;
 
