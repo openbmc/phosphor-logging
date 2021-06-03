@@ -30,12 +30,18 @@ else
 endif
 
 extra_sources = []
+extra_dependencies = []
 
 build_phal = get_option('phal').enabled()
 
 if build_phal
     extra_sources += [
         'sbe_ffdc_handler.cpp',
+        'fapi_data_process.cpp',
+    ]
+    extra_dependencies += [
+        dependency('libdt-api'),
+        cpp.find_library('pdbg'),
     ]
     add_project_arguments('-DSBE_FFDC_SUPPORTED', language : ['c','cpp'])
 endif
@@ -75,6 +81,7 @@ libpel_deps = [
     sdbusplus_dep,
     sdeventplus_dep,
     pdi_dep,
+    extra_dependencies,
 ]
 
 libpel_lib = static_library(
@@ -94,8 +101,7 @@ libpel_dep = declare_dependency(
         sdbusplus_dep,
         sdeventplus_dep,
         pdi_dep,
-    ],
-
+    ]
 )
 
 log_manager_ext_deps += [
