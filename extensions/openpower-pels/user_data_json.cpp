@@ -128,7 +128,7 @@ std::string getCBORJSON(uint16_t componentID, uint8_t subType, uint8_t version,
         cborData.resize(data.size() - sizeof(pad) - pad);
     }
 
-    orderedJSON json = nlohmann::json::from_cbor(cborData);
+    orderedJSON json = orderedJSON::from_cbor(cborData);
 
     return prettyJSON(componentID, subType, version, json);
 }
@@ -207,7 +207,7 @@ std::optional<std::string>
         {
             std::string jsonString{data.begin(), data.begin() + data.size()};
 
-            orderedJSON json = nlohmann::json::parse(jsonString);
+            orderedJSON json = orderedJSON::parse(jsonString);
 
             return prettyJSON(componentID, subType, version, json);
         }
@@ -309,7 +309,7 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
                 const char* output = PyBytes_AS_STRING(pBytes);
                 try
                 {
-                    orderedJSON json = nlohmann::json::parse(output);
+                    orderedJSON json = orderedJSON::parse(output);
                     return prettyJSON(componentID, subType, version, json);
                 }
                 catch (std::exception& e)
