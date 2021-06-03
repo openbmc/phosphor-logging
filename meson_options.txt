@@ -26,3 +26,10 @@ option(
     value: 10,
     description: 'Cap on informational (and below) severity errors',
 )
+
+option(
+    'phal',
+    type: 'feature',
+    value: 'disabled',
+    description: 'Enable support for PHAL',
+)
