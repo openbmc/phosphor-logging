@@ -23,6 +23,7 @@
 #include "log_id.hpp"
 #include "pel_rules.hpp"
 #include "pel_values.hpp"
+#include "sbe_ffdc_handler.hpp"
 #include "section_factory.hpp"
 #include "src.hpp"
 #include "stream.hpp"
@@ -48,9 +49,35 @@ constexpr uint8_t jsonCalloutSubtype = 0xCA;
 
 PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
          phosphor::logging::Entry::Level severity,
-         const AdditionalData& additionalData, const PelFFDC& ffdcFiles,
+         const AdditionalData& additionalDataIn, const PelFFDC& ffdcFilesIn,
          const DataInterfaceBase& dataIface)
 {
+
+    // No changes in input, for non SBE error related requests.
+    PelFFDC ffdcFiles = ffdcFilesIn;
+    AdditionalData additionalData = additionalDataIn;
+
+// Add sbe ffdc processed data into  Additional data and ffdcfiles.
+#ifdef SBE_FFDC_SUPPORTED
+    namespace sbe = openpower::pels::sbe;
+    bool sbeFfdc = false;
+    for (const auto& file : ffdcFilesIn)
+    {
+        if ((file.format == UserDataFormat::custom) &&
+            (file.subType == sbe::sbeFFDCSubtype))
+        {
+            sbeFfdc = true;
+            break;
+        }
+    }
+    if (sbeFfdc)
+    {
+        sbe::SbeFFDC sbeFfdc(additionalDataIn, ffdcFilesIn);
+        ffdcFiles = sbeFfdc.pelFFDC();
+        additionalData = sbeFfdc.getAdditionalData();
+    }
+#endif
+
     std::map<std::string, std::vector<std::string>> debugData;
     nlohmann::json callouts;
 
