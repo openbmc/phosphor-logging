@@ -16,6 +16,10 @@
 
 #include "sbe_ffdc_handler.hpp"
 
+#include "fapi_data_process.hpp"
+#include "pel.hpp"
+#include "temporary_file.hpp"
+
 #include <fmt/format.h>
 
 #include <iostream>
@@ -71,6 +75,51 @@ SbeFFDC::SbeFFDC(const AdditionalData& aData, const PelFFDC& files) :
             // TODO Process SBE file.
         }
     }
+}
+
+void SbeFFDC::process(const sbeFfdcPacketType& ffdcPkt)
+{
+    using json = nlohmann::json;
+    FFDC ffdc;
+
+    libekb_get_sbe_ffdc(ffdc, ffdcPkt, procPos);
+
+    // To store callouts details in json format as per pel expectation.
+    json pelJSONFmtCalloutDataList;
+    pelJSONFmtCalloutDataList = json::array();
+
+    // To store other user data from ffdc.
+    openpower::pels::phal::FFDCData ffdcUserData;
+
+    // Get FFDC and required info to include in PEL
+    openpower::pels::phal::convertFAPItoPELformat(
+        ffdc, pelJSONFmtCalloutDataList, ffdcUserData);
+
+    auto calloutData = pelJSONFmtCalloutDataList.dump();
+    util::TemporaryFile ffdcFile(calloutData.c_str(), calloutData.size() + 1);
+
+    PelFFDCfile pf;
+    pf.format = openpower::pels::UserDataFormat::json;
+    pf.subType = openpower::pels::jsonCalloutSubtype;
+    pf.version = 0x01;
+    pf.fd = ffdcFile.getFd();
+    ffdcFiles.push_back(pf);
+
+    paths.push_back(ffdcFile.getPath());
+
+    std::string data;
+    for (auto& d : ffdcUserData)
+    {
+        data += d.first + " = " + d.second + "\n";
+    }
+    util::TemporaryFile pelDataFile(data.c_str(), data.size());
+    PelFFDCfile pdf;
+    pdf.format = openpower::pels::UserDataFormat::text;
+    pdf.version = 0x01;
+    pdf.fd = pelDataFile.getFd();
+    ffdcFiles.push_back(pdf);
+
+    paths.push_back(pelDataFile.getPath());
 }
 
 } // namespace sbe

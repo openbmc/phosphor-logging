@@ -3,6 +3,8 @@
 #include "additional_data.hpp"
 #include "pel.hpp"
 
+#include <libekb.H>
+
 //#include <memory>
 //#include <vector>
 
@@ -88,6 +90,7 @@ class SbeFFDC
     }
 
   private:
+    void process(const sbeFfdcPacketType& ffdcPkt);
     /**
      * @brief  Temporary files path information created as part of FFDC
      *         processing.
