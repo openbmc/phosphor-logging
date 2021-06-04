@@ -48,7 +48,6 @@ namespace pv = openpower::pels::pel_values;
 using namespace phosphor::logging;
 
 constexpr auto unknownValue = "Unknown";
-constexpr uint8_t jsonCalloutSubtype = 0xCA;
 
 PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
          phosphor::logging::Entry::Level severity,
