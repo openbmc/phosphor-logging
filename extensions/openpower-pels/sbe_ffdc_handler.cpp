@@ -16,6 +16,10 @@
 
 #include "sbe_ffdc_handler.hpp"
 
+#include "fapi_data_process.hpp"
+#include "pel.hpp"
+#include "temporary_file.hpp"
+
 #include <fmt/format.h>
 
 #include <phosphor-logging/log.hpp>
@@ -67,6 +71,67 @@ SbeFFDC::SbeFFDC(const AdditionalData& aData, const PelFFDC& files)
             // TODO Process SBE file.
         }
     }
+}
+
+void SbeFFDC::process(const sbeFfdcPacketType& ffdcPkt)
+{
+    using json = nlohmann::json;
+
+    // formated FFDC data structure after FFDC packet processing
+    FFDC ffdc;
+
+    try
+    {
+        // libekb provided wrapper function to convert SBE FFDC
+        // in to known ffdc structure.
+        libekb_get_sbe_ffdc(ffdc, ffdcPkt, procPos);
+    }
+    catch (...)
+    {
+        log<level::ERR>("libekb_get_sbe_ffdc failed, skipping ffdc processing");
+        return;
+    }
+
+    // To store callouts details in json format as per pel expectation.
+    json pelJSONFmtCalloutDataList;
+    pelJSONFmtCalloutDataList = json::array();
+
+    // To store other user data from FFDC.
+    openpower::pels::phal::FFDCData ffdcUserData;
+
+    // Get FFDC and required info to include in PEL
+    openpower::pels::phal::convertFAPItoPELformat(
+        ffdc, pelJSONFmtCalloutDataList, ffdcUserData);
+
+    // Get callout information and sore in to file.
+    auto calloutData = pelJSONFmtCalloutDataList.dump();
+    util::TemporaryFile ffdcFile(calloutData.c_str(), calloutData.size());
+
+    // Create json callout type pel FFDC file structre.
+    PelFFDCfile pf;
+    pf.format = openpower::pels::UserDataFormat::json;
+    pf.subType = openpower::pels::jsonCalloutSubtype;
+    pf.version = 0x01;
+    pf.fd = ffdcFile.getFd();
+    ffdcFiles.push_back(pf);
+
+    // save the file path to delete the file after usage.
+    paths.push_back(ffdcFile.getPath());
+
+    // Format ffdc user data and create new file.
+    std::string data;
+    for (auto& d : ffdcUserData)
+    {
+        data += d.first + " = " + d.second + "\n";
+    }
+    util::TemporaryFile pelDataFile(data.c_str(), data.size());
+    PelFFDCfile pdf;
+    pdf.format = openpower::pels::UserDataFormat::text;
+    pdf.version = 0x01;
+    pdf.fd = pelDataFile.getFd();
+    ffdcFiles.push_back(pdf);
+
+    paths.push_back(pelDataFile.getPath());
 }
 
 } // namespace sbe
