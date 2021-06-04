@@ -42,6 +42,7 @@ if build_phal
     extra_dependencies += [
         dependency('libdt-api'),
         cpp.find_library('pdbg'),
+        cpp.find_library('ekb'),
     ]
     add_project_arguments('-DSBE_FFDC_SUPPORTED', language : ['c','cpp'])
 endif

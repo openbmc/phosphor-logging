@@ -23,6 +23,7 @@
 #include <phosphor-logging/log.hpp>
 
 #ifdef SBE_FFDC_SUPPORTED
+#include <libekb.H>
 #include <libpdbg.h>
 #endif
 
@@ -63,6 +64,12 @@ void pelStartup(internal::Manager& logManager)
     {
         log<level::ERR>("pdbg_targets_init failed");
         throw std::runtime_error("pdbg target initialization failed");
+    }
+
+    if (libekb_init())
+    {
+        log<level::ERR>("libekb_init failed");
+        throw std::runtime_error("libekb initialization failed");
     }
 #endif
 }
