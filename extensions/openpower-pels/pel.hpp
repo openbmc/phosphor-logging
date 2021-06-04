@@ -30,6 +30,8 @@ struct PelFFDCfile
 
 using PelFFDC = std::vector<PelFFDCfile>;
 
+constexpr uint8_t jsonCalloutSubtype = 0xCA;
+
 /** @class PEL
  *
  * @brief This class represents a specific event log format referred to as a
