@@ -3,6 +3,8 @@
 #include "additional_data.hpp"
 #include "pel.hpp"
 
+#include <libekb.H>
+
 namespace openpower
 {
 namespace pels
@@ -86,6 +88,21 @@ class SbeFFDC
     }
 
   private:
+    /**
+     * @brief Helper function to process SBE FFDC packet.
+     * This function call libekb function to process the
+     * FFDC packet and convert in to known format for PEL
+     * specific file creation. This function also creates
+     * json callout file and text type file, which includes
+     * the addition debug data included in SBE FFDC packet.
+     *
+     * @param ffdcPkt  SBE FFDC packet
+     *
+     * Any failure during the process stops the function
+     * execution to support the raw SBE FFDC data based
+     * PEL creation.
+     */
+    void process(const sbeFfdcPacketType& ffdcPkt);
     /**
      * @brief  Temporary files path information created as part of FFDC
      *         processing.
