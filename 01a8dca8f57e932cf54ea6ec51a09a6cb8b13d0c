@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "4e0eb623_45224112",
+        "filename": "extensions/openpower-pels/entry_points.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-07T04:26:51Z",
+      "side": 1,
+      "message": "Do you want set log level and callback to push pdbg trace into journal or pdbg trace will push into journal ?\nI guess you traces are written into stdout file descriptor then journal will take care that.",
+      "revId": "01a8dca8f57e932cf54ea6ec51a09a6cb8b13d0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "35926a0c_94efb2f7",
         "filename": "extensions/openpower-pels/fapi_data_process.hpp",
         "patchSetId": 2
