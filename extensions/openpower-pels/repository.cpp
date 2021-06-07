@@ -18,6 +18,7 @@
 #include <sys/stat.h>
 
 #include <fstream>
+#include <iostream>
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/Common/File/error.hpp>
 
@@ -61,12 +62,21 @@ size_t getFileDiskSize(const std::filesystem::path& file)
 Repository::Repository(const std::filesystem::path& basePath, size_t repoSize,
                        size_t maxNumPELs) :
     _logPath(basePath / "logs"),
-    _maxRepoSize(repoSize), _maxNumPELs(maxNumPELs)
+    _maxRepoSize(repoSize), _maxNumPELs(maxNumPELs),
+    _archivePath(basePath / "logs" / "archive")
 {
     if (!fs::exists(_logPath))
     {
         fs::create_directories(_logPath);
     }
+
+    if (!fs::exists(_archivePath))
+    {
+        fs::create_directories(_archivePath);
+    }
+
+    // Initialize the size variable
+    _archiveSize = 0;
 
     restore();
 }
@@ -137,6 +147,12 @@ void Repository::restore()
                             entry("FILENAME=%s", dirEntry.path().c_str()),
                             entry("ERROR=%s", e.what()));
         }
+    }
+
+    // Get size of archive folder
+    for (auto& dirEntry : fs::directory_iterator(_archivePath))
+    {
+        _archiveSize += getFileDiskSize(dirEntry);
     }
 }
 
@@ -223,7 +239,26 @@ std::optional<Repository::LogID> Repository::remove(const LogID& id)
     log<level::DEBUG>("Removing PEL from repository",
                       entry("PEL_ID=0x%X", actualID.pelID.id),
                       entry("OBMC_LOG_ID=%d", actualID.obmcID.id));
-    fs::remove(pel->second.path);
+
+    if (fs::exists(pel->second.path))
+    {
+        // Check for existense of new archive folder
+        if (!fs::exists(_archivePath))
+        {
+            fs::create_directories(_archivePath);
+        }
+
+        // Extract filename from log file path to be moved
+        // and append to archive log path
+        auto fileName = _archivePath / pel->second.path.filename();
+
+        // Move log file to new archive path
+        fs::rename(pel->second.path, fileName);
+
+        // Updzte size of file
+        _archiveSize += getFileDiskSize(fileName);
+    }
+
     _pelAttributes.erase(pel);
 
     processDeleteCallbacks(actualID.pelID.id);
@@ -504,6 +539,18 @@ void Repository::updateRepoStats(const PELAttributes& pel, bool pelAdded)
 
 bool Repository::sizeWarning() const
 {
+    if ((_archiveSize > 0) && ((_sizes.total + _archiveSize) >
+                               ((_maxRepoSize * warningPercentage) / 100)))
+    {
+        std::string cmd = "rm " + _archivePath.string() + "/*_*";
+        auto rc = system(cmd.c_str());
+        if (rc)
+        {
+            log<level::ERR>("Repository::sizeWarning function:Could not delele "
+                            "files in archive");
+        }
+    }
+
     return (_sizes.total > (_maxRepoSize * warningPercentage / 100)) ||
            (_pelAttributes.size() > _maxNumPELs);
 }
