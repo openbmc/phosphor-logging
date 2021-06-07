@@ -25,6 +25,47 @@
     },
     {
       "key": {
+        "uuid": "149f30a3_71eb1800",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-07T07:11:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5ed4101_4fe1b056",
+      "range": {
+        "startLine": 645,
+        "startChar": 3,
+        "endLine": 645,
+        "endChar": 11
+      },
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9c47aa57_f14ab37f",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-07T07:11:11Z",
+      "side": 1,
+      "message": "Added Note at the end of this section. about build support",
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e44c7d1e_e722d17f",
         "filename": "extensions/openpower-pels/README.md",
         "patchSetId": 3
@@ -45,6 +86,30 @@
       "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4e5386d_e3b35a2e",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-07T07:11:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e44c7d1e_e722d17f",
+      "range": {
+        "startLine": 648,
+        "startChar": 18,
+        "endLine": 648,
+        "endChar": 26
+      },
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -94,6 +159,54 @@
     },
     {
       "key": {
+        "uuid": "21c4b4b7_1f03edbb",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-07T07:11:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b11224b2_eb85c53d",
+      "range": {
+        "startLine": 649,
+        "startChar": 0,
+        "endLine": 649,
+        "endChar": 5
+      },
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da51bd4b_67acd9bf",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-07T07:11:11Z",
+      "side": 1,
+      "message": "yes , this extension READ me is mainly for Openpower.",
+      "parentUuid": "36fe7d55_c51d4675",
+      "range": {
+        "startLine": 649,
+        "startChar": 68,
+        "endLine": 649,
+        "endChar": 72
+      },
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e030fe86_fc3e2315",
         "filename": "extensions/openpower-pels/README.md",
         "patchSetId": 3
@@ -114,6 +227,30 @@
       "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "751d7791_0c039bbd",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-07T07:11:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e030fe86_fc3e2315",
+      "range": {
+        "startLine": 653,
+        "startChar": 0,
+        "endLine": 653,
+        "endChar": 7
+      },
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -140,6 +277,30 @@
     },
     {
       "key": {
+        "uuid": "66b41ebb_4c688a91",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 656,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-07T07:11:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9dd0cfe4_db22d00a",
+      "range": {
+        "startLine": 656,
+        "startChar": 22,
+        "endLine": 656,
+        "endChar": 23
+      },
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "97e3024b_1b7428ff",
         "filename": "extensions/openpower-pels/README.md",
         "patchSetId": 3
@@ -151,6 +312,30 @@
       "writtenOn": "2021-06-07T04:04:15Z",
       "side": 1,
       "message": "is it only for SBE FFDC type? How is it guarantee that other Custom type can not use ? subtype list is documented anywhere?",
+      "range": {
+        "startLine": 660,
+        "startChar": 68,
+        "endLine": 660,
+        "endChar": 72
+      },
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "965d90a1_9501d59e",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 660,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-07T07:11:11Z",
+      "side": 1,
+      "message": "READ me only documented this . Long term we should move all custom types in common place.",
+      "parentUuid": "97e3024b_1b7428ff",
       "range": {
         "startLine": 660,
         "startChar": 68,
@@ -177,6 +362,24 @@
       "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9fed8d15_8a7b5725",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-07T07:11:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e2671b24_abdbe3ea",
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -220,6 +423,24 @@
     },
     {
       "key": {
+        "uuid": "d9133390_18c9a1ab",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-07T07:11:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b3eba2e_ffb19bfa",
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fef983dc_1097ae06",
         "filename": "extensions/openpower-pels/pel.cpp",
         "patchSetId": 3
@@ -234,6 +455,24 @@
       "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c0b54f4_a3ed93dc",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-07T07:11:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fef983dc_1097ae06",
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -260,6 +499,30 @@
     },
     {
       "key": {
+        "uuid": "4c74ec76_8ed5edb2",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-07T07:11:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2c0e507_64979785",
+      "range": {
+        "startLine": 78,
+        "startChar": 48,
+        "endLine": 78,
+        "endChar": 61
+      },
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "84a2397d_cd2c45e2",
         "filename": "extensions/openpower-pels/pel.cpp",
         "patchSetId": 3
@@ -271,6 +534,30 @@
       "writtenOn": "2021-06-04T14:44:44Z",
       "side": 1,
       "message": "you don\u0027t even need to create this if it isn\u0027t an SBE error.  Also, how about sbeFFDC?",
+      "range": {
+        "startLine": 79,
+        "startChar": 4,
+        "endLine": 79,
+        "endChar": 53
+      },
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5a078481_b2f3cabe",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-07T07:11:11Z",
+      "side": 1,
+      "message": "As i mentioned in the line 76 comments, need to define this function scope to delete the locally created files only after file usage.\n\nChanged to sbeFFDC,",
+      "parentUuid": "84a2397d_cd2c45e2",
       "range": {
         "startLine": 79,
         "startChar": 4,
@@ -300,6 +587,24 @@
     },
     {
       "key": {
+        "uuid": "5a78214b_b44ad28f",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-07T07:11:11Z",
+      "side": 1,
+      "message": "since ffdcFiles is constant, force to declare local copy and update. \nother than that modified the code as per comment.",
+      "parentUuid": "8f2b52d1_a7f42c61",
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a4edbfa4_10a5deee",
         "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
         "patchSetId": 3
@@ -311,6 +616,30 @@
       "writtenOn": "2021-06-07T04:04:15Z",
       "side": 1,
       "message": "Do we need to mention IBM licenece stuff? phosphor-logging repo using apache licence.\n// SPDX-License-Identifier: Apache-2.0\n\nI would do \"// SPDX-License-Identifier: Apache-2.0\" for new source file.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 3
+      },
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e97fd850_fba3eb2f",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-07T07:11:11Z",
+      "side": 1,
+      "message": "Followed the extension folder license header.\n \n@Matt can you please comment.",
+      "parentUuid": "a4edbfa4_10a5deee",
       "range": {
         "startLine": 1,
         "startChar": 0,
@@ -369,6 +698,30 @@
     },
     {
       "key": {
+        "uuid": "7f11e47c_cc7be78c",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-07T07:11:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ed14126_95ce1d19",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 17
+      },
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "25a89d43_bc202a8f",
         "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
         "patchSetId": 3
@@ -392,6 +745,30 @@
     },
     {
       "key": {
+        "uuid": "c748d622_2c4054cb",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-07T07:11:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "25a89d43_bc202a8f",
+      "range": {
+        "startLine": 41,
+        "startChar": 7,
+        "endLine": 41,
+        "endChar": 18
+      },
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8ca7af9b_2d7e40d1",
         "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
         "patchSetId": 3
@@ -403,6 +780,24 @@
       "writtenOn": "2021-06-04T14:44:44Z",
       "side": 1,
       "message": "this really has to stop the rest of the processing?",
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f7eb6a7b_3bd00f26",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-07T07:11:11Z",
+      "side": 1,
+      "message": "yes , processor index is the mandatory requirement FAPI based infrastructure processing.\nDirections used here is incase any failured occured during the data processing , stop processing and create error log with FFDC in hex format. Add journal log to incate there is failure. In the libekb processing function, additional data includes the fail info , if requitred.",
+      "parentUuid": "8ca7af9b_2d7e40d1",
       "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -423,6 +818,24 @@
       "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5411bf05_bdb5ca65",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-07T07:11:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09bb9619_b675140e",
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
