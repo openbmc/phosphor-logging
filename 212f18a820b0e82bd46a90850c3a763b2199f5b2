@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "34bd60ec_17fb26f6",
+        "filename": "extensions/openpower-pels/temporary_file.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-07T04:18:55Z",
+      "side": 1,
+      "message": "It will be good if you mentioned \"@note\" like \"This class wont delete file and its caller responsibility to delete.\n\nWhat about this to make this class even more generic ? \n    Get flag (isReqToDeleteFile) while in construction of class object and if flag is true delete in destruction of object else leave to caller to delete it.",
+      "revId": "212f18a820b0e82bd46a90850c3a763b2199f5b2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a5695c4_2e101c2c",
+        "filename": "extensions/openpower-pels/temporary_file.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-07T04:18:55Z",
+      "side": 1,
+      "message": "we want ? `delete` means disabling a specific constructor and `default` means compiler will generate for us.",
+      "range": {
+        "startLine": 31,
+        "startChar": 48,
+        "endLine": 31,
+        "endChar": 55
+      },
+      "revId": "212f18a820b0e82bd46a90850c3a763b2199f5b2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
