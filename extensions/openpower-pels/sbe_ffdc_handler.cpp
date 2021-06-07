@@ -20,6 +20,7 @@
 #include "pel.hpp"
 #include "temporary_file.hpp"
 
+#include <ekb/hwpf/fapi2/include/return_code_defs.H>
 #include <fmt/format.h>
 
 #include <phosphor-logging/log.hpp>
@@ -68,8 +69,84 @@ SbeFFDC::SbeFFDC(const AdditionalData& aData, const PelFFDC& files)
         if ((file.format == UserDataFormat::custom) &&
             (file.subType == sbeFFDCSubType))
         {
-            // TODO Process SBE file.
+            // Process SBE file.
+            parse(file.fd);
         }
+    }
+}
+
+void SbeFFDC::parse(int fd)
+{
+    log<level::INFO>(
+        fmt::format("SBE FFDC file fd:({}), skipping", fd).c_str());
+
+    uint32_t ffdcBufOffset = 0;
+    uint32_t pktCount = 0;
+    sbeFfdcPacketType ffdcPkt;
+
+    // get SBE FFDC data.
+    auto ffdcData = util::readFD(fd);
+    if (ffdcData.empty())
+    {
+        log<level::ERR>(
+            fmt::format("Empty SBE FFDC file fd:({}), skipping", fd).c_str());
+        return;
+    }
+
+    while ((ffdcBufOffset < ffdcData.size()) && (sbeMaxFfdcPackets != pktCount))
+    {
+        // Next un-extracted FFDC Packet
+        fapiFfdcBufType* ffdc =
+            (fapiFfdcBufType*)(ffdcData.data() + ffdcBufOffset);
+        auto magicBytes = ntohs(ffdc->magic_bytes);
+        auto lenWords = ntohs(ffdc->lengthinWords);
+        auto fapiRc = ntohl(ffdc->fapiRc);
+
+        auto msg = fmt::format("FFDC magic: {} length in words:{} Fapirc:{}",
+                               magicBytes, lenWords, fapiRc);
+        log<level::INFO>(msg.c_str());
+
+        if (magicBytes != ffdcMagicCode)
+        {
+            log<level::ERR>("Invalid FFDC magic code in Header: Skipping ");
+            return;
+        }
+        ffdcPkt.fapiRc = fapiRc;
+        // Not interested in the first 2 words (these are not ffdc)
+        auto pktLenWords = lenWords - (2 * ffdcPkgOneWord);
+        ffdcPkt.ffdcLengthInWords = pktLenWords;
+        if (pktLenWords)
+        {
+            // Memory freeing will be taking care by ffdcPkt structure
+            // destructor
+            ffdcPkt.ffdcData =
+                (uint32_t*)malloc((pktLenWords * sizeof(uint32_t)));
+            memcpy(ffdcPkt.ffdcData,
+                   (((uint32_t*)(ffdc)) +
+                    (2 * ffdcPkgOneWord)), // skip first 2 words
+                   (pktLenWords * sizeof(uint32_t)));
+        }
+        else
+        {
+            log<level::ERR>("FFDC packet size is zero skipping");
+            return;
+        }
+        fprintf(stderr, "fapirc : %x const: %x \n", ffdcPkt.fapiRc,
+                fapi2::FAPI2_RC_PLAT_ERR_SEE_DATA);
+
+        if (ffdcPkt.fapiRc != fapi2::FAPI2_RC_PLAT_ERR_SEE_DATA)
+        {
+            process(ffdcPkt);
+        }
+        ffdcBufOffset += ffdc->lengthinWords;
+        ++pktCount;
+    }
+    if (pktCount == sbeMaxFfdcPackets)
+    {
+        log<level::ERR>(fmt::format("Received more than the limit of ({})"
+                                    " FFDC packets, processing only ({})",
+                                    sbeMaxFfdcPackets, pktCount)
+                            .c_str());
     }
 }
 
