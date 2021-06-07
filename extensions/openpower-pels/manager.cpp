@@ -375,11 +375,15 @@ sdbusplus::message::unix_fd Manager::getPEL(uint32_t pelID)
     }
     catch (std::exception& e)
     {
+        // For testing - to b removed
+        printf("getPEL: Internal Failure \n");
         throw common_error::InternalFailure();
     }
 
     if (!fd)
     {
+        // For testing - to b removed
+        printf("getPEL: Invalid Argument \n");
         throw common_error::InvalidArgument();
     }
 

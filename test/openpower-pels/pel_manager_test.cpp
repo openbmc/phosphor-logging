@@ -745,7 +745,7 @@ TEST_F(ManagerTest, TestPELManualDelete)
 
     EXPECT_THROW(
         manager.getPEL(0x50000001),
-        sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument);
+        sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure);
 
     // Delete a few more, they should all get handled in the same
     // event loop pass
@@ -761,7 +761,7 @@ TEST_F(ManagerTest, TestPELManualDelete)
     std::for_each(toDelete.begin(), toDelete.end(), [&manager](const auto i) {
         EXPECT_THROW(
             manager.getPEL(i),
-            sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument);
+            sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure);
     });
 
     fs::remove_all(dir);
@@ -829,9 +829,11 @@ TEST_F(ManagerTest, TestPELManualDeleteAll)
 
     for (int i = 1; i <= 200; i++)
     {
+        // For testing - to be removed
+        printf("===== Count: %d ===== \n", i);
         EXPECT_THROW(
             manager.getPEL(0x50000000 + i),
-            sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument);
+            sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure);
     }
 
     fs::remove_all(dir);
