@@ -575,6 +575,11 @@ class Repository
      * @brief The ID of the most recently added PEL.
      */
     uint32_t _lastPelID = 0;
+
+    /**
+     * @brief The filesystem path to the archive PEL logs.
+     */
+    const std::filesystem::path _archivePath;
 };
 
 } // namespace pels
