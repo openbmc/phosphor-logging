@@ -2,6 +2,98 @@
   "comments": [
     {
       "key": {
+        "uuid": "b5ed4101_4fe1b056",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-07T04:04:15Z",
+      "side": 1,
+      "message": "- will be good for new comer if we added abbreviation?\n- Do we need to mention that sbe ffdc support will be based on phal build-time configure option ?",
+      "range": {
+        "startLine": 645,
+        "startChar": 3,
+        "endLine": 645,
+        "endChar": 11
+      },
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e44c7d1e_e722d17f",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-07T04:04:15Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 648,
+        "startChar": 18,
+        "endLine": 648,
+        "endChar": 26
+      },
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b11224b2_eb85c53d",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-07T04:04:15Z",
+      "side": 1,
+      "message": "Trace -\u003e trace ?",
+      "range": {
+        "startLine": 649,
+        "startChar": 0,
+        "endLine": 649,
+        "endChar": 5
+      },
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "36fe7d55_c51d4675",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-07T04:04:15Z",
+      "side": 1,
+      "message": "IBM terms?",
+      "range": {
+        "startLine": 649,
+        "startChar": 68,
+        "endLine": 649,
+        "endChar": 72
+      },
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e030fe86_fc3e2315",
         "filename": "extensions/openpower-pels/README.md",
         "patchSetId": 3
@@ -48,6 +140,29 @@
     },
     {
       "key": {
+        "uuid": "97e3024b_1b7428ff",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 660,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-07T04:04:15Z",
+      "side": 1,
+      "message": "is it only for SBE FFDC type? How is it guarantee that other Custom type can not use ? subtype list is documented anywhere?",
+      "range": {
+        "startLine": 660,
+        "startChar": 68,
+        "endLine": 660,
+        "endChar": 72
+      },
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e2671b24_abdbe3ea",
         "filename": "extensions/openpower-pels/README.md",
         "patchSetId": 3
@@ -65,6 +180,46 @@
     },
     {
       "key": {
+        "uuid": "3120d587_6370328e",
+        "filename": "extensions/openpower-pels/meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-07T04:04:15Z",
+      "side": 1,
+      "message": "what about `if get_option(\u0027phal\u0027).enabled()` ?",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 13
+      },
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b3eba2e_ffb19bfa",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-07T04:04:15Z",
+      "side": 1,
+      "message": "is it required here ? it included at LN 33 (in your patch) based on flag",
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fef983dc_1097ae06",
         "filename": "extensions/openpower-pels/pel.cpp",
         "patchSetId": 3
@@ -76,6 +231,29 @@
       "writtenOn": "2021-06-04T14:44:44Z",
       "side": 1,
       "message": "I think using std::any_of here would be cleaner:\n\nauto processReq \u003d std::any_of(ffdcFiles.begin(), ffdcFiles.end(), [] (const auto\u0026 file)\n{\n  return file.format \u003d\u003d custom \u0026\u0026 file.subType \u003d\u003d sbeFFDCSubType;\n});",
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2c0e507_64979785",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-07T04:04:15Z",
+      "side": 1,
+      "message": "missing space",
+      "range": {
+        "startLine": 78,
+        "startChar": 48,
+        "endLine": 78,
+        "endChar": 61
+      },
       "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -116,6 +294,75 @@
       "writtenOn": "2021-06-04T14:44:44Z",
       "side": 1,
       "message": "how about if pelFFDC() only returned the new SBE FFDCFiles?  Then you could just just call insert() on ffdcFiles to add them:\nconst auto\u0026 sbeFFDCFiles \u003d sbeFfdc.getSbeFFDC(); //return  a const reference\nffdcFiles.insert(ffdcFiles.end(), sbeFFDCFiles.begin(), sbeFFDCFiles.end());",
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a4edbfa4_10a5deee",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-07T04:04:15Z",
+      "side": 1,
+      "message": "Do we need to mention IBM licenece stuff? phosphor-logging repo using apache licence.\n// SPDX-License-Identifier: Apache-2.0\n\nI would do \"// SPDX-License-Identifier: Apache-2.0\" for new source file.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 3
+      },
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71866c5d_a149ad1c",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-07T04:04:15Z",
+      "side": 1,
+      "message": "is it required ?",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 14
+      },
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7ed14126_95ce1d19",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-07T04:04:15Z",
+      "side": 1,
+      "message": "is it required ?",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 17
+      },
       "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -173,6 +420,23 @@
       "writtenOn": "2021-06-04T14:44:44Z",
       "side": 1,
       "message": "these are needed in a future commit?  Otherwise can remove.",
+      "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2871c0f9_da40f971",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-07T04:04:15Z",
+      "side": 1,
+      "message": "new line ?",
       "revId": "f1e9d4861b8f93a5d0af689c1c0271252caa0365",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
