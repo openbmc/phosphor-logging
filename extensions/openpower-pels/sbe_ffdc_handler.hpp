@@ -15,6 +15,47 @@ namespace sbe
 // SBE FFDC sub type.
 constexpr uint8_t sbeFFDCSubType = 0xCB;
 
+/**
+ *   @brief FFDC Package structure and definitions based on SBE chip-op spec.
+ *
+ *   SBE FFDC Starts with a header word (Word 0) that has an unique magic
+ *   identifier code of 0xFFDC followed by the length of the FFDC package
+ *   including the header itself. Word 1 contains a sequence id ,
+ *   command-class and command fields.
+ *   The sequence id field is ignored on the BMC side.
+ *   Word 2 contains a 32 bit Return Code which acts like the key to the
+ *   contents of subsequent FFDC Data Words (0-N).
+ *
+ *   A FFDC package can typically contain debug data from either:
+ *    1. A failed hardware procedure (e.g. local variable values
+ *       at point of failure) or
+ *    2. SBE firmware (e.g. traces, attributes and other information).
+ *    ___________________________________________________________
+ *   |        |  Byte 0   |  Byte 1  |  Byte 2    |    Byte 3   |
+ *   |----------------------------------------------------------|
+ *   | Word 0 | Magic Bytes : 0xFFDC | Length in words (N+4)    |
+ *   | Word 1 | [Sequence ID]        | Command-Class | Command  |
+ *   | Word 2 |           Return Code 0..31                     |
+ *   | Word 3 |           FFDC Data – Word 0                    |
+ *   |  ...                                                     |
+ *   | Word N+3 |  FFDC Data – Word N                           |
+ *    -----------------------------------------------------------
+ **/
+
+constexpr uint32_t sbeMaxFfdcPackets = 20;
+constexpr uint32_t ffdcPkgOneWord = 1;
+const uint16_t ffdcMagicCode = 0xFFDC;
+
+typedef struct
+{
+    uint32_t magic_bytes : 16;
+    uint32_t lengthinWords : 16;
+    uint32_t seqId : 16;
+    uint32_t cmdClass : 8;
+    uint32_t cmd : 8;
+    uint32_t fapiRc;
+} __attribute__((packed)) fapiFfdcBufType;
+
 /** @class SbeFFDC
  *
  * @brief This class provides higher level interface to process SBE ffdc
@@ -89,6 +130,19 @@ class SbeFFDC
 
   private:
     /**
+     * @brief Helper function to parse SBE FFDC file.
+     *        parsing is based on the FFDC structure definition
+     *        define initially in this file.
+     *
+     * @param fd  SBE ffdc file descriptor
+     *
+     * Any failure during the process stops the function
+     * execution to support the raw SBE FFDC data based
+     * PEL creation.
+     */
+    void parse(int fd);
+
+    /**
      * @brief Helper function to process SBE FFDC packet.
      * This function call libekb function to process the
      * FFDC packet and convert in to known format for PEL
@@ -103,6 +157,7 @@ class SbeFFDC
      * PEL creation.
      */
     void process(const sbeFfdcPacketType& ffdcPkt);
+
     /**
      * @brief  Temporary files path information created as part of FFDC
      *         processing.
