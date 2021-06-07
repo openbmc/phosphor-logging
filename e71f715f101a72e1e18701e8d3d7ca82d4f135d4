@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bc7dd7f7_0342fb72",
+        "filename": "elog_entry.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-07T14:30:34Z",
+      "side": 1,
+      "message": "I think just:  if (value !\u003d current)\nwould be fine",
+      "range": {
+        "startLine": 48,
+        "startChar": 7,
+        "endLine": 48,
+        "endChar": 35
+      },
+      "revId": "e71f715f101a72e1e18701e8d3d7ca82d4f135d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b7f22287_dfe398e9",
+        "filename": "elog_entry.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-07T14:30:34Z",
+      "side": 1,
+      "message": "eventId",
+      "range": {
+        "startLine": 116,
+        "startChar": 22,
+        "endLine": 116,
+        "endChar": 30
+      },
+      "revId": "e71f715f101a72e1e18701e8d3d7ca82d4f135d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6814bc81_d5182746",
+        "filename": "elog_entry.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-07T14:30:34Z",
+      "side": 1,
+      "message": "maybe just:  The event ID",
+      "range": {
+        "startLine": 117,
+        "startChar": 26,
+        "endLine": 118,
+        "endChar": 15
+      },
+      "revId": "e71f715f101a72e1e18701e8d3d7ca82d4f135d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8a70740f_765e7abd",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-07T14:30:34Z",
+      "side": 1,
+      "message": "Did you move this on purpose?",
+      "revId": "e71f715f101a72e1e18701e8d3d7ca82d4f135d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1778ae3b_50ca94f4",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 625,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-07T14:30:34Z",
+      "side": 1,
+      "message": "Could you look into modifying a testcase to validate this?  Maybe\nTEST_F(ManagerTest, TestCreateWithMessageRegistry)\n\nI can\u0027t quite remember if the Entry objects work right in test.  If they don\u0027t, nevermind.",
+      "revId": "e71f715f101a72e1e18701e8d3d7ca82d4f135d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
