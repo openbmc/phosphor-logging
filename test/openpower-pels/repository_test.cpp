@@ -868,3 +868,95 @@ TEST_F(RepositoryTest, TestSizeWarningNumPELs)
 
     EXPECT_TRUE(repo.sizeWarning());
 }
+
+// Test existense of archive file
+TEST_F(RepositoryTest, TestArchiveFile)
+{
+    using pelID = Repository::LogID::Pel;
+    using obmcID = Repository::LogID::Obmc;
+
+    // Add and remove a PEL from the repo
+
+    Repository repo{repoPath};
+
+    fs::path archivePath = repoPath / "logs" / "archive";
+    EXPECT_TRUE(fs::exists(archivePath));
+
+    auto data = pelDataFactory(TestPELType::pelSimple);
+    auto pel = std::make_unique<PEL>(data, 1);
+
+    pel->assignID();
+    Repository::LogID id{pelID{pel->id()}, obmcID{pel->obmcLogID()}};
+
+    repo.add(pel);
+
+    auto path = repoPath / "logs" /
+                Repository::getPELFilename(pel->id(), pel->commitTime());
+    EXPECT_TRUE(fs::exists(path));
+
+    auto removedID = repo.remove(id);
+    ASSERT_TRUE(removedID);
+    EXPECT_EQ(*removedID, id);
+
+    archivePath /= Repository::getPELFilename(pel->id(), pel->commitTime());
+    EXPECT_TRUE(fs::exists(archivePath));
+
+    EXPECT_FALSE(repo.hasPEL(id));
+}
+
+// Test archive folder size with sizeWarning function
+TEST_F(RepositoryTest, TestArchiveSize)
+{
+    using pelID = Repository::LogID::Pel;
+    using obmcID = Repository::LogID::Obmc;
+
+    // Create repo with max PEL=500 and space=4096*100
+    Repository repo{repoPath, 100 * 4096, 500};
+
+    // Fill 94% (disk size for these is 4096)
+    for (uint32_t i = 1; i <= 94; i++)
+    {
+        auto data = pelFactory(i, 'O', 0x20, 0x8800, 500);
+        auto pel = std::make_unique<PEL>(data);
+        repo.add(pel);
+    }
+
+    // Add another PEL which makes 95% still ok
+    auto data = pelDataFactory(TestPELType::pelSimple);
+    auto pel = std::make_unique<PEL>(data, 1);
+    pel->assignID();
+    Repository::LogID id{pelID{pel->id()}, obmcID{pel->obmcLogID()}};
+    repo.add(pel);
+
+    // With 95% full expect no size warning
+    EXPECT_FALSE(repo.sizeWarning());
+
+    // Remove last created PEL
+    repo.remove(id);
+
+    // Repo is 94% full with one PEL in archive log
+    // Total repo size 95% full (including archive) still ok
+    EXPECT_FALSE(repo.sizeWarning());
+
+    // Confirm the repo size 94% full
+    const auto& sizes = repo.getSizeStats();
+    EXPECT_EQ(sizes.total, 4096 * 94);
+
+    // Make sure archive contain the one deleted file
+    fs::path archivePath = repoPath / "logs" / "archive";
+    archivePath /= Repository::getPELFilename(pel->id(), pel->commitTime());
+    EXPECT_TRUE(fs::exists(archivePath));
+
+    // Add another PEL which makes repo 95% full
+    data = pelDataFactory(TestPELType::pelSimple);
+    pel = std::make_unique<PEL>(data, 1);
+    pel->assignID();
+    Repository::LogID idx{pelID{pel->id()}, obmcID{pel->obmcLogID()}};
+    repo.add(pel);
+
+    // Repo with 95% full + one archive file becomes 96%
+    // which is greater than the warning
+    // expect archive file to be deleted to get repo size back to 95%
+    EXPECT_FALSE(repo.sizeWarning());
+    EXPECT_FALSE(fs::exists(archivePath));
+}

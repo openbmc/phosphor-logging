@@ -686,4 +686,16 @@ e.g for GetSCOM
 Note: "phal" build-time configure option should be "enabled" to enable this
        feature.
 
+## Deleted PELs moved to new archive folder under logs
+
+Every OBMC event log that is deleted its corresponding PEL is moved to
+archive folder. These archived PELs would be later available in BMC dump.
+
+Highlighted points are:
+- Deleted PEL logs would be available in archive folder under logs.
+- Archive folder size is tracked along with logs folder size under
+  sizeWarning() function and if combined size exceeds warning size
+  the PELs under archive folder are deleted.
+- Archived PEL logs can be viewed using peltool with flag --archive.
+
 [1]: https://github.com/openbmc/docs/blob/master/designs/fail-boot-on-hw-error.md

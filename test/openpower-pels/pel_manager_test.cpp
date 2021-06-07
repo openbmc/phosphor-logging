@@ -816,7 +816,7 @@ TEST_F(ManagerTest, TestPELManualDeleteAll)
 
     // Delete them all at once
     auto logPath = getPELRepoPath() / "logs";
-    std::string cmd = "rm " + logPath.string() + "/*";
+    std::string cmd = "rm " + logPath.string() + "/*_*";
 
     {
         auto rc = system(cmd.c_str());
