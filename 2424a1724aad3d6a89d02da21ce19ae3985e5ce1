@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "78c23a0c_33c80a69",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-07T19:02:07Z",
+      "side": 1,
+      "message": "?  I don\u0027t think this is skipping anything?",
+      "range": {
+        "startLine": 81,
+        "startChar": 44,
+        "endLine": 81,
+        "endChar": 52
+      },
+      "revId": "2424a1724aad3d6a89d02da21ce19ae3985e5ce1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4a3372f1_7959c2f9",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-07T19:02:07Z",
+      "side": 1,
+      "message": "was this just a debug printf?  you already printed fapirc above",
+      "range": {
+        "startLine": 134,
+        "startChar": 32,
+        "endLine": 134,
+        "endChar": 39
+      },
+      "revId": "2424a1724aad3d6a89d02da21ce19ae3985e5ce1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9f23513c_583f9b22",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-07T19:02:07Z",
+      "side": 1,
+      "message": "could you add a comment on the meaning of SEE_DATA - why it doesn\u0027t need to be processed?",
+      "revId": "2424a1724aad3d6a89d02da21ce19ae3985e5ce1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
