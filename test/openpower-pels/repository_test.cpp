@@ -868,3 +868,37 @@ TEST_F(RepositoryTest, TestSizeWarningNumPELs)
 
     EXPECT_TRUE(repo.sizeWarning());
 }
+
+TEST_F(RepositoryTest, ArchiveTest)
+{
+    using pelID = Repository::LogID::Pel;
+    using obmcID = Repository::LogID::Obmc;
+
+    // Add and remove a PEL from the repo
+
+    Repository repo{repoPath};
+
+    fs::path archivePath = repoPath / "logs" / "archive";
+    EXPECT_TRUE(fs::exists(archivePath));
+
+    auto data = pelDataFactory(TestPELType::pelSimple);
+    auto pel = std::make_unique<PEL>(data, 1);
+
+    pel->assignID();
+    Repository::LogID id{pelID{pel->id()}, obmcID{pel->obmcLogID()}};
+
+    repo.add(pel);
+
+    auto path = repoPath / "logs" /
+                Repository::getPELFilename(pel->id(), pel->commitTime());
+    EXPECT_TRUE(fs::exists(path));
+
+    auto removedID = repo.remove(id);
+    ASSERT_TRUE(removedID);
+    EXPECT_EQ(*removedID, id);
+
+    archivePath /= Repository::getPELFilename(pel->id(), pel->commitTime());
+    EXPECT_TRUE(fs::exists(archivePath));
+
+    EXPECT_FALSE(repo.hasPEL(id));
+}
