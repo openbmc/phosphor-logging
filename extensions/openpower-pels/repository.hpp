@@ -425,6 +425,17 @@ class Repository
         return _lastPelID;
     }
 
+    /**
+     * @brief Returns the path to the directory where the archive PEL
+     *        files are stored.
+     *
+     * @return std::filesystem::path - The directory path
+     */
+    const std::filesystem::path& repoArchivePath() const
+    {
+        return _archivePath;
+    }
+
   private:
     using PELUpdateFunc = std::function<void(PEL&)>;
 
@@ -575,6 +586,11 @@ class Repository
      * @brief The ID of the most recently added PEL.
      */
     uint32_t _lastPelID = 0;
+
+    /**
+     * @brief The filesystem path to the archive PEL logs.
+     */
+    const std::filesystem::path _archivePath;
 };
 
 } // namespace pels

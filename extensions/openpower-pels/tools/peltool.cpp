@@ -524,7 +524,8 @@ void printPELs(bool order, bool hidden, bool includeInfo, bool critSysTerm,
  * @param[in] hexDump - Boolean to print hexdump of PEL instead of JSON
  */
 void callFunctionOnPEL(const std::string& id, const PELFunc& func,
-                       bool useBMC = false, bool hexDump = false)
+                       bool useBMC = false, bool hexDump = false,
+                       bool archive = false)
 {
     std::string pelID{id};
     if (!useBMC)
@@ -539,7 +540,9 @@ void callFunctionOnPEL(const std::string& id, const PELFunc& func,
 
     bool found = false;
 
-    for (auto it = fs::directory_iterator(EXTENSION_PERSIST_DIR "/pels/logs");
+    for (auto it = (archive ?
+           fs::directory_iterator(EXTENSION_PERSIST_DIR "/pels/logs/archive") :
+           fs::directory_iterator(EXTENSION_PERSIST_DIR "/pels/logs"));
          it != fs::directory_iterator(); ++it)
     {
         // The PEL ID is part of the filename, so use that to find the PEL if
@@ -814,6 +817,7 @@ int main(int argc, char** argv)
     bool showPELCount = false;
     bool fullPEL = false;
     bool hexDump = false;
+    bool archive = false;
 
     app.set_help_flag("--help", "Print this help message and exit");
     app.add_option("--file", fileName, "Display a PEL using its Raw PEL file");
@@ -833,6 +837,8 @@ int main(int argc, char** argv)
     app.add_option("-s, --scrub", scrubFile,
                    "File containing SRC regular expressions to ignore");
     app.add_flag("-x", hexDump, "Display PEL(s) in hexdump instead of JSON");
+    app.add_flag("--archive", archive,
+                 "Display a PEL based on its ID from archive path");
 
     CLI11_PARSE(app, argc, argv);
 
@@ -862,11 +868,11 @@ int main(int argc, char** argv)
     }
     else if (!idPEL.empty())
     {
-        callFunctionOnPEL(idPEL, displayPEL, false, hexDump);
+        callFunctionOnPEL(idPEL, displayPEL, false, hexDump, archive);
     }
     else if (!bmcId.empty())
     {
-        callFunctionOnPEL(bmcId, displayPEL, true, hexDump);
+        callFunctionOnPEL(bmcId, displayPEL, true, hexDump, archive);
     }
     else if (fullPEL || listPEL)
     {
