@@ -211,6 +211,8 @@ void Repository::write(const PEL& pel, const fs::path& path)
 
 std::optional<Repository::LogID> Repository::remove(const LogID& id)
 {
+    std::string fileName;
+
     auto pel = findPEL(id);
     if (pel == _pelAttributes.end())
     {
@@ -223,7 +225,28 @@ std::optional<Repository::LogID> Repository::remove(const LogID& id)
     log<level::DEBUG>("Removing PEL from repository",
                       entry("PEL_ID=0x%X", actualID.pelID.id),
                       entry("OBMC_LOG_ID=%d", actualID.obmcID.id));
-    fs::remove(pel->second.path);
+
+    // Get new archive log path populated with log file path
+    _archLogPath = _logPath;
+
+    // Append new folder 'archive' to the path
+    _archLogPath /= "archive";
+
+    // Check for existense of new archive folder
+    if (!fs::exists(_archLogPath))
+    {
+        fs::create_directories(_archLogPath);
+    }
+
+    // Extract filename from log file path to be moved
+    fileName = fs::path(pel->second.path).filename();
+
+    // Append filename extracted above to archive log path
+    _archLogPath /= fileName;
+
+    // Move log file to new archive path
+    fs::rename(pel->second.path,_archLogPath);
+
     _pelAttributes.erase(pel);
 
     processDeleteCallbacks(actualID.pelID.id);
