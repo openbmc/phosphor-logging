@@ -289,7 +289,8 @@ template <typename T>
 std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool critSysTerm,
                        bool fullPEL, bool& foundPEL,
                        const std::optional<std::regex>& scrubRegex,
-                       const std::vector<std::string>& plugins, bool hexDump)
+                       const std::vector<std::string>& plugins, bool hexDump,
+                       bool archive)
 {
     std::size_t found;
     std::string val;
@@ -336,6 +337,10 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool critSysTerm,
             {
                 return listStr;
             }
+        }
+        if (!archive)
+        {
+            return listStr;
         }
         if (hexDump)
         {
@@ -450,13 +455,27 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool critSysTerm,
  */
 void printPELs(bool order, bool hidden, bool includeInfo, bool critSysTerm,
                bool fullPEL, const std::optional<std::regex>& scrubRegex,
-               bool hexDump)
+               bool hexDump, bool archive)
 {
     std::string listStr;
     std::map<uint32_t, BCDTime> PELs;
     std::vector<std::string> plugins;
     listStr = "{\n";
     for (auto it = fs::directory_iterator(pelLogDir());
+         it != fs::directory_iterator(); ++it)
+    {
+        if (!fs::is_regular_file((*it).path()))
+        {
+            continue;
+        }
+        else
+        {
+            PELs.emplace(fileNameToPELId((*it).path().filename()),
+                         fileNameToTimestamp((*it).path().filename()));
+        }
+    }
+
+    for (auto it = fs::directory_iterator(pelLogDir() + "/archive");
          it != fs::directory_iterator(); ++it)
     {
         if (!fs::is_regular_file((*it).path()))
@@ -476,10 +495,10 @@ void printPELs(bool order, bool hidden, bool includeInfo, bool critSysTerm,
         plugins = getPlugins();
     }
     auto buildJSON = [&listStr, &hidden, &includeInfo, &critSysTerm, &fullPEL,
-                      &foundPEL, &scrubRegex, &plugins,
-                      &hexDump](const auto& i) {
+                      &foundPEL, &scrubRegex, &plugins, &hexDump,
+                      &archive](const auto& i) {
         listStr += genPELJSON(i, hidden, includeInfo, critSysTerm, fullPEL,
-                              foundPEL, scrubRegex, plugins, hexDump);
+                              foundPEL, scrubRegex, plugins, hexDump, archive);
     };
     if (order)
     {
@@ -530,7 +549,8 @@ void printPELs(bool order, bool hidden, bool includeInfo, bool critSysTerm,
  * @param[in] hexDump - Boolean to print hexdump of PEL instead of JSON
  */
 void callFunctionOnPEL(const std::string& id, const PELFunc& func,
-                       bool useBMC = false, bool hexDump = false)
+                       bool useBMC = false, bool hexDump = false,
+                       bool archive = false)
 {
     std::string pelID{id};
     if (!useBMC)
@@ -545,7 +565,8 @@ void callFunctionOnPEL(const std::string& id, const PELFunc& func,
 
     bool found = false;
 
-    for (auto it = fs::directory_iterator(pelLogDir());
+    for (auto it = (archive ? fs::directory_iterator(pelLogDir() + "/archive")
+                            : fs::directory_iterator(pelLogDir()));
          it != fs::directory_iterator(); ++it)
     {
         // The PEL ID is part of the filename, so use that to find the PEL if
@@ -629,6 +650,10 @@ void deleteAllPELs()
 
     for (const auto& entry : fs::directory_iterator(pelLogDir()))
     {
+        if (!fs::is_regular_file(entry.path()))
+        {
+            continue;
+        }
         fs::remove(entry.path());
     }
 }
@@ -820,6 +845,7 @@ int main(int argc, char** argv)
     bool showPELCount = false;
     bool fullPEL = false;
     bool hexDump = false;
+    bool archive = false;
 
     app.set_help_flag("--help", "Print this help message and exit");
     app.add_option("--file", fileName, "Display a PEL using its Raw PEL file");
@@ -839,6 +865,8 @@ int main(int argc, char** argv)
     app.add_option("-s, --scrub", scrubFile,
                    "File containing SRC regular expressions to ignore");
     app.add_flag("-x", hexDump, "Display PEL(s) in hexdump instead of JSON");
+    app.add_flag("--archive", archive,
+                 "Display a PEL based on its ID from archive path");
 
     CLI11_PARSE(app, argc, argv);
 
@@ -868,11 +896,11 @@ int main(int argc, char** argv)
     }
     else if (!idPEL.empty())
     {
-        callFunctionOnPEL(idPEL, displayPEL, false, hexDump);
+        callFunctionOnPEL(idPEL, displayPEL, false, hexDump, archive);
     }
     else if (!bmcId.empty())
     {
-        callFunctionOnPEL(bmcId, displayPEL, true, hexDump);
+        callFunctionOnPEL(bmcId, displayPEL, true, hexDump, archive);
     }
     else if (fullPEL || listPEL)
     {
@@ -881,7 +909,7 @@ int main(int argc, char** argv)
             scrubRegex = genRegex(scrubFile);
         }
         printPELs(listPELDescOrd, hidden, includeInfo, critSysTerm, fullPEL,
-                  scrubRegex, hexDump);
+                  scrubRegex, hexDump, archive);
     }
     else if (showPELCount)
     {
