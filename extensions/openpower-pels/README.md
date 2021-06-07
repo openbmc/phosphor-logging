@@ -686,4 +686,19 @@ e.g for GetSCOM
 Note: "phal" build-time configure option should be "enabled" to enable this
        feature.
 
+## PEL Archiving
+
+When an OpenBMC event log that is deleted its corresponding PEL is moved to
+archive folder. These archived PELs would be later available in BMC dump.
+The archive path: /var/lib/phosphor-logging/extensions/pels/logs/archive.
+
+Highlighted points are:
+- PELs whose corresponding event logs have been deleted will be available
+  in archive folder under logs.
+- Archive folder size is tracked along with logs folder size under
+  sizeWarning() function and if combined size exceeds warning size
+  the PELs under archive folder will be deleted.
+- Archived PEL logs can be viewed using peltool with flag --archive.
+- If a PEL is deleted using peltool its not archived.
+
 [1]: https://github.com/openbmc/docs/blob/master/designs/fail-boot-on-hw-error.md
