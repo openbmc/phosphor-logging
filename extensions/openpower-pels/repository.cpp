@@ -61,11 +61,17 @@ size_t getFileDiskSize(const std::filesystem::path& file)
 Repository::Repository(const std::filesystem::path& basePath, size_t repoSize,
                        size_t maxNumPELs) :
     _logPath(basePath / "logs"),
-    _maxRepoSize(repoSize), _maxNumPELs(maxNumPELs)
+    _maxRepoSize(repoSize), _maxNumPELs(maxNumPELs),
+    _archivePath(basePath/ "logs" / "archive")
 {
     if (!fs::exists(_logPath))
     {
         fs::create_directories(_logPath);
+    }
+
+    if (!fs::exists(_archivePath))
+    {
+        fs::create_directories(_archivePath);
     }
 
     restore();
@@ -211,6 +217,8 @@ void Repository::write(const PEL& pel, const fs::path& path)
 
 std::optional<Repository::LogID> Repository::remove(const LogID& id)
 {
+    std::string fileName;
+
     auto pel = findPEL(id);
     if (pel == _pelAttributes.end())
     {
@@ -223,7 +231,23 @@ std::optional<Repository::LogID> Repository::remove(const LogID& id)
     log<level::DEBUG>("Removing PEL from repository",
                       entry("PEL_ID=0x%X", actualID.pelID.id),
                       entry("OBMC_LOG_ID=%d", actualID.obmcID.id));
-    fs::remove(pel->second.path);
+
+    if (fs::exists(pel->second.path))
+    {
+        // Check for existense of new archive folder
+        if (!fs::exists(_archivePath))
+        {
+            fs::create_directories(_archivePath);
+        }
+
+        // Extract filename from log file path to be moved
+        // and append to archive log path
+        auto fileName = _archivePath / fs::path(pel->second.path).filename();
+
+        // Move log file to new archive path
+        fs::rename(pel->second.path, fileName);
+    }
+
     _pelAttributes.erase(pel);
 
     processDeleteCallbacks(actualID.pelID.id);
