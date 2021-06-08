@@ -16,6 +16,24 @@
       "revId": "9880b4f36c13632d0e68969f8c5ca23a8b98049d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e61dd03_da6aa624",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-08T15:57:48Z",
+      "side": 1,
+      "message": "I got straightened out after a discussion.  sbeFFDC can\u0027t be destroyed until the end of the PEL constructor because it needs to keep around the FFDC Files to be used below.\n\nI think using a unique_ptr\u003csbeFFDC\u003e that is only crearted if processReq is true may alleviate my concern of always creating this object.",
+      "parentUuid": "bed261bb_de7f5f92",
+      "revId": "9880b4f36c13632d0e68969f8c5ca23a8b98049d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
