@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bed261bb_de7f5f92",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-08T15:10:45Z",
+      "side": 1,
+      "message": "i will continue the conversation from the earlier patch set here...\n\nif processReq was false, why would sbeFFDC have any temporary files to delete?",
+      "revId": "9880b4f36c13632d0e68969f8c5ca23a8b98049d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
