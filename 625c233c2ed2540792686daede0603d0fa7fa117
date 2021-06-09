@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "823eebe4_6d6457dd",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-09T03:42:59Z",
+      "side": 1,
+      "message": "Do we really need this trace in info level?\nIf something for debug purpose, please use DEBUG level.",
+      "range": {
+        "startLine": 80,
+        "startChar": 4,
+        "endLine": 81,
+        "endChar": 75
+      },
+      "revId": "625c233c2ed2540792686daede0603d0fa7fa117",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "640011cf_17fb478c",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-09T03:42:59Z",
+      "side": 1,
+      "message": "Please use c++ style casting.",
+      "range": {
+        "startLine": 100,
+        "startChar": 12,
+        "endLine": 100,
+        "endChar": 30
+      },
+      "revId": "625c233c2ed2540792686daede0603d0fa7fa117",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0596c33b_bdd3e3e3",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-09T03:42:59Z",
+      "side": 1,
+      "message": "You can use c++ style memory allocation so, that you can avoid type casting",
+      "range": {
+        "startLine": 123,
+        "startChar": 16,
+        "endLine": 123,
+        "endChar": 34
+      },
+      "revId": "625c233c2ed2540792686daede0603d0fa7fa117",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e936cc4c_e6efed47",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-09T03:42:59Z",
+      "side": 1,
+      "message": "please use c++ style casting",
+      "range": {
+        "startLine": 125,
+        "startChar": 21,
+        "endLine": 125,
+        "endChar": 32
+      },
+      "revId": "625c233c2ed2540792686daede0603d0fa7fa117",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f68202f0_512b8680",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-09T03:42:59Z",
+      "side": 1,
+      "message": "Looks you are using inside parse function, please move this into that function if scope limited to that function.",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 38
+      },
+      "revId": "625c233c2ed2540792686daede0603d0fa7fa117",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
