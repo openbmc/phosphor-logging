@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9ba52700_82541359",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-10T19:30:38Z",
+      "side": 1,
+      "message": "as I mentioned in the header, you can set this in the constructor.",
+      "range": {
+        "startLine": 229,
+        "startChar": 1,
+        "endLine": 230,
+        "endChar": 28
+      },
+      "revId": "e43866445c130fcf919d18ac6fc03565735f97e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "622c3e7e_aa2f78a8",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-10T19:30:38Z",
+      "side": 1,
+      "message": "none of this code would need to run if the PEL file isn\u0027t there, so you could do:\n\nif pel file exists:\n   create directory if necessary\n   auto fileName \u003d _archivePath / pel-\u003esecond.path.filename()\n   rename",
+      "revId": "e43866445c130fcf919d18ac6fc03565735f97e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "77c47808_c88173ec",
+        "filename": "extensions/openpower-pels/repository.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-10T19:30:38Z",
+      "side": 1,
+      "message": "I don\u0027t think this function is used?",
+      "revId": "e43866445c130fcf919d18ac6fc03565735f97e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d7c5fa04_38932c50",
+        "filename": "extensions/openpower-pels/repository.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-10T19:30:38Z",
+      "side": 1,
+      "message": "maybe just \u0027archivePath\u0027.  I always think of architecture when I see arch for some reason.\n\nAlso, you can just initialize this in the constructor like _logPath is, and then make it const.",
+      "range": {
+        "startLine": 593,
+        "startChar": 26,
+        "endLine": 593,
+        "endChar": 38
+      },
+      "revId": "e43866445c130fcf919d18ac6fc03565735f97e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a7f120a5_8c9f38aa",
+        "filename": "test/openpower-pels/pel_manager_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 815,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-10T19:30:38Z",
+      "side": 1,
+      "message": "why did you add this?",
+      "range": {
+        "startLine": 815,
+        "startChar": 26,
+        "endLine": 815,
+        "endChar": 30
+      },
+      "revId": "e43866445c130fcf919d18ac6fc03565735f97e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
