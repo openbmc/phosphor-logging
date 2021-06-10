@@ -42,6 +42,30 @@
     },
     {
       "key": {
+        "uuid": "b902914a_3d0158c3",
+        "filename": "elog_serialize.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-06-10T19:36:52Z",
+      "side": 1,
+      "message": "I will try that",
+      "parentUuid": "bb5383ae_9b9eb79f",
+      "range": {
+        "startLine": 32,
+        "startChar": 56,
+        "endLine": 32,
+        "endChar": 67
+      },
+      "revId": "3a0186aa3eb8a6921070b2799cd57b1d3a0395bb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "559c0e92_b2cde2d1",
         "filename": "extensions/openpower-pels/manager.cpp",
         "patchSetId": 6
@@ -76,6 +100,24 @@
       "writtenOn": "2021-06-10T19:17:16Z",
       "side": 1,
       "message": "I\u0027ve seen in PHYP SRCs where they have 2 words in the ascii string, separated by a space. I suspect they\u0027d still like to see that in the event ID.  Maybe you could trim all the trailing spaces instead of just stopping at the first one.",
+      "revId": "3a0186aa3eb8a6921070b2799cd57b1d3a0395bb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a9ef31fb_1776dce1",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-06-10T19:36:52Z",
+      "side": 1,
+      "message": "ok.. will change the logic",
+      "parentUuid": "c61e632e_e1f68401",
       "revId": "3a0186aa3eb8a6921070b2799cd57b1d3a0395bb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
