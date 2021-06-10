@@ -12,5 +12,6 @@ used.
 | 0x3000       | openpower-proc-control |
 | 0x3500       | Processor Errors that span repositories |
 | 0x4000       | openpower-vpd-parser |
+| 0xC100       | openpower-debug-collector |
 | 0xD100       | openpower-hardware-diags (attn-handler) |
 | 0xE500       | openpower-hardware-diags |
