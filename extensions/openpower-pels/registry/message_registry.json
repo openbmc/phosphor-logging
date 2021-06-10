@@ -2240,6 +2240,30 @@
                     "data."
                 ]
             }
+        },
+
+        {
+            "Name": "org.open_power.Host.Boot.Error.WatchdogTimeout",
+            "Subsystem": "cec_sp_hostboot_iface",
+
+            "SRC":
+            {
+                "ReasonCode": "0xC101",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "Host did not respond within the watchdog timeout interval",
+                "Message": "Host did not respond before the watchdog timeout interval expired",
+                "Notes": [
+                    "Host did not respond before the expiry of the watchdog timeout interval.",
+                    "Collecting hostboot dump."
+                ]
+            }
         }
+
     ]
 }
