@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "82088f5f_072a6ae7",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-10T18:24:41Z",
+      "side": 1,
+      "message": "it looks like remove() will throw an exception if the file isn\u0027t there, which would then get caught below, while skipping any remaining files in this loop.  It\u0027s a pretty unlikely case, but maybe you could just use the non-throwing version of this function, which takes a std::error_code\u0026 as the second argument, or catch inside the loop, and then I wouldn\u0027t worry about it ;)",
+      "revId": "5455a7406b40765f3245113be6eb38f583b7dc72",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
