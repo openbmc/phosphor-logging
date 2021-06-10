@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "67dc7246_858c8d6d",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-10T19:32:23Z",
+      "side": 1,
+      "message": "I think you could fairly easily make a testcase for this that checks for the file to get moved into the archive subdir.  The \u0027repoPath\u0027 global in repository_test.cpp will give you the base path to the repo, so you can use that to find the archive dir.",
+      "revId": "e43866445c130fcf919d18ac6fc03565735f97e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9ba52700_82541359",
         "filename": "extensions/openpower-pels/repository.cpp",
         "patchSetId": 4
