@@ -1,3 +1,4 @@
+option('libonly', type: 'boolean', description: 'Build library only')
 option('tests', type: 'feature', description: 'Build tests')
 option(
     'openpower-pel-extension',
