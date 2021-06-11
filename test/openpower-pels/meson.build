@@ -23,6 +23,7 @@ openpower_pels = {
     'pel_manager': {
         'sources': [
             '../../elog_entry.cpp',
+            '../../elog_meta.cpp',
             '../../elog_serialize.cpp',
             '../../extensions.cpp',
             '../../log_manager.cpp',
@@ -84,12 +85,12 @@ foreach t : openpower_pels.keys()
             openpower_pels.get(t).get('sources', []),
             link_with: [
                 openpower_test_lib,
-                libphosphor_logging,
             ],
             link_args: [ '-lpython' + python_ver ],
             dependencies: [
                 gtest_dep,
                 gmock_dep,
+                phosphor_logging_dep,
                 libpel_deps,
                 peltool_deps,
                 openpower_pels.get(t).get('deps', []),
