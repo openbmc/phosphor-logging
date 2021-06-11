@@ -5,38 +5,60 @@ project('phosphor-logging', 'cpp',
       'cpp_std=c++20',
       'warning_level=3',
       'werror=true',
+      'libonly=' + (meson.is_subproject() ? 'true' : 'false'),
       'tests=' + (meson.is_subproject() ? 'disabled' : 'auto'),
     ],
     version: '1.0.0',
 )
 
-cpp = meson.get_compiler('cpp')
-python_prog = find_program('python3')
+python_prog = find_program('python3', native: true)
+systemd_dep = dependency('systemd')
 
-# Get sdbusplus dependency.
 sdbusplus_dep = dependency('sdbusplus', required: false)
-if sdbusplus_dep.found()
-    sdbusplusplus_prog = find_program('sdbus++')
-    sdbuspp_gen_meson_prog = find_program('sdbus++-gen-meson')
-else
-    sdbusplus_proj = subproject('sdbusplus', required: true)
+sdbusplus_proj = dependency('', required: false)
+if not sdbusplus_dep.found() or sdbusplus_dep.type_name() != 'internal'
+    sdbusplus_proj = subproject('sdbusplus')
+endif
+if not sdbusplus_dep.found()
     sdbusplus_dep = sdbusplus_proj.get_variable('sdbusplus_dep')
-    sdbusplusplus_prog = sdbusplus_proj.get_variable('sdbusplusplus_prog')
-    sdbuspp_gen_meson_prog = sdbusplus_proj.get_variable(
-        'sdbuspp_gen_meson_prog'
-    )
 endif
 
-# Get PDI and sdeventplus dependency.
 pdi_vars = []
 if not get_option('openpower-pel-extension').disabled()
-    pdi_vars += [ 'data_org_open_power=true' ]
+    pdi_vars += ['data_org_open_power=true']
 endif
 pdi_dep = dependency(
     'phosphor-dbus-interfaces',
     fallback: ['phosphor-dbus-interfaces', 'phosphor_dbus_interfaces_dep'],
     default_options: pdi_vars,
 )
+
+# Find the installed YAML directory, either from a configure option or
+# by pulling it from the PDI dependency.
+yamldir = get_option('yamldir')
+if yamldir == ''
+    yamldir = pdi_dep.get_variable(pkgconfig: 'yamldir', internal: 'yamldir')
+endif
+
+subdir('config')
+subdir('tools')
+subdir('lib')
+
+if get_option('libonly')
+  subdir_done()
+endif
+
+cpp = meson.get_compiler('cpp')
+
+if sdbusplus_proj.found()
+    sdbusplusplus_prog = sdbusplus_proj.get_variable('sdbusplusplus_prog')
+    sdbuspp_gen_meson_prog = sdbusplus_proj.get_variable(
+        'sdbuspp_gen_meson_prog')
+else
+    sdbusplusplus_prog = find_program('sdbus++', native: true)
+    sdbuspp_gen_meson_prog = find_program('sdbus++-gen-meson', native: true)
+endif
+
 sdeventplus_dep = dependency(
     'sdeventplus',
     fallback: ['sdeventplus', 'sdeventplus_dep' ],
@@ -59,24 +81,6 @@ if not has_cereal
     assert(cereal_proj.found(), 'cereal is required')
     cereal_dep = cereal_proj.get_variable('cm_cereal_dep')
 endif
-
-# Find the installed YAML directory, either from a configure option or
-# by pulling it from the PDI dependency.
-yamldir = get_option('yamldir')
-if yamldir == ''
-    yamldir = pdi_dep.get_variable(pkgconfig: 'yamldir', internal: 'yamldir')
-endif
-
-# Create config.h with constants that use to come from autoconf.
-conf_data = configuration_data()
-conf_data.set('error_cap', get_option('error_cap'))
-conf_data.set('error_info_cap', get_option('error_info_cap'))
-
-configure_file(
-    input: 'config.h.meson',
-    output: 'config.h',
-    configuration: conf_data,
-)
 
 # Generate sdbus++ files.
 generated_sources = []
@@ -127,63 +131,16 @@ elog_process_gen = custom_target('elog-process-metadata.cpp'.underscorify(),
     ],
 )
 
-# Install elog-gen.py and its template for others to use
-install_data('tools/elog-gen.py',
-    install_dir : get_option('datadir') / 'phosphor-logging/elog/tools'
-)
-
-install_data('tools/phosphor-logging/templates/elog-gen-template.mako.hpp',
-    install_dir : get_option('datadir') /
-        'phosphor-logging/elog/tools/phosphor-logging/templates'
-)
-
-subdir('phosphor-logging')
-
 log_manager_ext_sources = []
 log_manager_ext_deps = []
 
 subdir('extensions')
 subdir('phosphor-rsyslog-config')
 
-# Build libphosphor-logging.
-libphosphor_logging = library(
-    'phosphor_logging',
-    files(
-        'elog.cpp',
-        'elog_meta.cpp',
-        'sdjournal.cpp',
-    ),
-    callouts_gen,
-    elog_errors_gen,
-    dependencies: [ sdbusplus_dep, pdi_dep, sdeventplus_dep ],
-    version: meson.project_version(),
-    install: true,
-)
-
-import('pkgconfig').generate(
-    libphosphor_logging,
-    name: meson.project_name(),
-    version: meson.project_version(),
-    requires: [
-        'libsystemd',
-        'phosphor-dbus-interfaces',
-        'sdbusplus',
-    ],
-    description: 'Phosphor logging utilities',
-)
-
-# Create dependency for use as subproject.
-phosphor_logging_dep = declare_dependency(
-    include_directories: include_directories('.'),
-    link_with: libphosphor_logging,
-    sources: [ callouts_gen, elog_errors_gen ],
-    dependencies: [ sdbusplus_dep, pdi_dep, sdeventplus_dep],
-)
-
 # Generate daemon.
 log_manager_sources = [
     generated_sources,
-    elog_errors_gen,
+    callouts_gen,
     elog_lookup_gen,
     elog_process_gen,
     files(
@@ -192,13 +149,14 @@ log_manager_sources = [
         'elog_serialize.cpp',
         'extensions.cpp',
         'log_manager.cpp',
-        'sdjournal.cpp',
         'util.cpp',
     )
 ]
 log_manager_deps = [
     cereal_dep,
+    conf_h_dep,
     pdi_dep,
+    phosphor_logging_dep,
     sdbusplus_dep,
     sdeventplus_dep,
 ]
@@ -207,7 +165,6 @@ executable('phosphor-log-manager',
     log_manager_ext_sources,
     'log_manager_main.cpp',
     include_directories: include_directories('gen'),
-    link_with: libphosphor_logging,
     dependencies: [
         log_manager_deps,
         log_manager_ext_deps,
@@ -217,20 +174,19 @@ executable('phosphor-log-manager',
 # Generate test executables which run in obmc env (qemu, real hardware).
 executable('logging-test',
     'logging_test.cpp',
-    link_with: libphosphor_logging,
     dependencies: [
-        elog_errors_dep,
         pdi_dep,
+        phosphor_logging_dep,
         sdbusplus_dep,
     ],
     install: true,
 )
 executable('callout-test',
     'callouts/callout_test.cpp',
-    link_with: libphosphor_logging,
     dependencies: [
-        elog_errors_dep,
+        conf_h_dep,
         pdi_dep,
+        phosphor_logging_dep,
         sdbusplus_dep,
         sdeventplus_dep,
     ],
