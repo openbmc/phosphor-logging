@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "f4787854_54cc918a",
+        "filename": "elog_entry.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-06-11T14:41:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2da21bf1_84fb2323",
+      "revId": "3a0186aa3eb8a6921070b2799cd57b1d3a0395bb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bb5383ae_9b9eb79f",
         "filename": "elog_serialize.cpp",
         "patchSetId": 6
@@ -66,6 +84,30 @@
     },
     {
       "key": {
+        "uuid": "6fa5cf2e_ad9121fc",
+        "filename": "elog_serialize.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-06-11T14:41:42Z",
+      "side": 1,
+      "message": "yes, looks like its all messed up if I have the value in the middle, moving it to the end fixed all the issues",
+      "parentUuid": "b902914a_3d0158c3",
+      "range": {
+        "startLine": 32,
+        "startChar": 56,
+        "endLine": 32,
+        "endChar": 67
+      },
+      "revId": "3a0186aa3eb8a6921070b2799cd57b1d3a0395bb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "559c0e92_b2cde2d1",
         "filename": "extensions/openpower-pels/manager.cpp",
         "patchSetId": 6
@@ -86,6 +128,30 @@
       "revId": "3a0186aa3eb8a6921070b2799cd57b1d3a0395bb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "05f55003_a6b807a9",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-06-11T14:41:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "559c0e92_b2cde2d1",
+      "range": {
+        "startLine": 632,
+        "startChar": 8,
+        "endLine": 632,
+        "endChar": 12
+      },
+      "revId": "3a0186aa3eb8a6921070b2799cd57b1d3a0395bb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -124,6 +190,24 @@
     },
     {
       "key": {
+        "uuid": "189ed48c_728e7d54",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-06-11T14:41:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9ef31fb_1776dce1",
+      "revId": "3a0186aa3eb8a6921070b2799cd57b1d3a0395bb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "975533ac_50df11c0",
         "filename": "extensions/openpower-pels/manager.hpp",
         "patchSetId": 6
@@ -138,6 +222,24 @@
       "revId": "3a0186aa3eb8a6921070b2799cd57b1d3a0395bb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6dd0ffb4_b3715bd6",
+        "filename": "extensions/openpower-pels/manager.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-06-11T14:41:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "975533ac_50df11c0",
+      "revId": "3a0186aa3eb8a6921070b2799cd57b1d3a0395bb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
