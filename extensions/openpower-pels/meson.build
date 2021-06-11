@@ -57,6 +57,7 @@ libpel_sources = files(
 )
 
 libpel_deps = [
+    conf_h_dep,
     libpldm_dep,
     nlohmann_json,
     sdbusplus_dep,
@@ -116,6 +117,7 @@ peltool_sources = files(
 
 peltool_deps = [
     CLI11_dep,
+    conf_h_dep,
     python_dep,
 ]
 
