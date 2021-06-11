@@ -269,6 +269,30 @@
       "revId": "e43866445c130fcf919d18ac6fc03565735f97e1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "199c2d31_b93eb4a8",
+        "filename": "test/openpower-pels/pel_manager_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 815,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-11T15:54:22Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "5a42c288_ab078090",
+      "range": {
+        "startLine": 815,
+        "startChar": 26,
+        "endLine": 815,
+        "endChar": 30
+      },
+      "revId": "e43866445c130fcf919d18ac6fc03565735f97e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
