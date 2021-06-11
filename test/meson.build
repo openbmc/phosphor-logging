@@ -44,11 +44,11 @@ foreach t : tests
             'common.cpp',
             log_manager_sources,
             '../phosphor-rsyslog-config/server-conf.cpp',
-            link_with: libphosphor_logging,
             dependencies: [
                 gmock_dep,
                 gtest_dep,
                 log_manager_deps,
+                phosphor_logging_dep,
             ],
             include_directories: include_directories('..', '../gen'),
         )
