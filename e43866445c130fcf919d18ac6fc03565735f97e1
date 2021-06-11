@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "642fa651_f47f97a3",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-11T15:48:23Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "67dc7246_858c8d6d",
+      "revId": "e43866445c130fcf919d18ac6fc03565735f97e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9ba52700_82541359",
         "filename": "extensions/openpower-pels/repository.cpp",
         "patchSetId": 4
@@ -30,6 +48,30 @@
       "writtenOn": "2021-06-10T19:30:38Z",
       "side": 1,
       "message": "as I mentioned in the header, you can set this in the constructor.",
+      "range": {
+        "startLine": 229,
+        "startChar": 1,
+        "endLine": 230,
+        "endChar": 28
+      },
+      "revId": "e43866445c130fcf919d18ac6fc03565735f97e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a9620d86_f92e66bc",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-11T15:48:23Z",
+      "side": 1,
+      "message": "yeah ok",
+      "parentUuid": "9ba52700_82541359",
       "range": {
         "startLine": 229,
         "startChar": 1,
@@ -59,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "f44ac075_cb9b172c",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-11T15:48:23Z",
+      "side": 1,
+      "message": "yeah right. will structure accordingly.",
+      "parentUuid": "622c3e7e_aa2f78a8",
+      "revId": "e43866445c130fcf919d18ac6fc03565735f97e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "77c47808_c88173ec",
         "filename": "extensions/openpower-pels/repository.hpp",
         "patchSetId": 4
@@ -70,6 +130,24 @@
       "writtenOn": "2021-06-10T19:30:38Z",
       "side": 1,
       "message": "I don\u0027t think this function is used?",
+      "revId": "e43866445c130fcf919d18ac6fc03565735f97e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2e298c7e_3bde790b",
+        "filename": "extensions/openpower-pels/repository.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-11T15:48:23Z",
+      "side": 1,
+      "message": "yeah not yet. I put this function as may be needed later. Will remove if no use case.",
+      "parentUuid": "77c47808_c88173ec",
       "revId": "e43866445c130fcf919d18ac6fc03565735f97e1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -99,6 +177,30 @@
     },
     {
       "key": {
+        "uuid": "0e917acf_99678890",
+        "filename": "extensions/openpower-pels/repository.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-11T15:48:23Z",
+      "side": 1,
+      "message": "ok will do",
+      "parentUuid": "d7c5fa04_38932c50",
+      "range": {
+        "startLine": 593,
+        "startChar": 26,
+        "endLine": 593,
+        "endChar": 38
+      },
+      "revId": "e43866445c130fcf919d18ac6fc03565735f97e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a7f120a5_8c9f38aa",
         "filename": "test/openpower-pels/pel_manager_test.cpp",
         "patchSetId": 4
@@ -110,6 +212,30 @@
       "writtenOn": "2021-06-10T19:30:38Z",
       "side": 1,
       "message": "why did you add this?",
+      "range": {
+        "startLine": 815,
+        "startChar": 26,
+        "endLine": 815,
+        "endChar": 30
+      },
+      "revId": "e43866445c130fcf919d18ac6fc03565735f97e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "99db2fa9_63d8b36f",
+        "filename": "test/openpower-pels/pel_manager_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 815,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-11T15:48:23Z",
+      "side": 1,
+      "message": "Else \u0027archive\u0027 folder wasn\u0027t getting deleted. Following error reported if \"-rf\" not used:\n../test/openpower-pels/pel_manager_test.cpp:820: Failure\nExpected equality of these values:\n  rc\n    Which is: 256\n  0\n[  FAILED  ] ManagerTest.TestPELManualDeleteAll (637 ms)",
+      "parentUuid": "a7f120a5_8c9f38aa",
       "range": {
         "startLine": 815,
         "startChar": 26,
