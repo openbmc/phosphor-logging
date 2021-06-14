@@ -228,7 +228,8 @@ const std::map<std::string, std::string> symbolicFRUs = {
     {"air_mover", "AIRMOVR"},         {"pgood_part", "PGDPART"},
     {"usb_pgood", "USBPGD"},          {"ambient_temp", "AMBTEMP"},
     {"ambient_temp_back", "AMBBACK"}, {"ambient_perf_loss", "AMBPERF"},
-    {"ac_module", "ACMODUL"}};
+    {"ac_module", "ACMODUL"},         {"fan_cable", "FANCBL"},
+    {"cable_continued", "CBLCONT"}};
 
 PELValues::const_iterator findByValue(uint32_t value, const PELValues& fields)
 {
