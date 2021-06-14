@@ -1767,6 +1767,52 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Fan.Error.FanControllerOffline",
+            "ComponentID": "0x2800",
+            "Subsystem": "power_fans",
+            "Severity": "critical_system_term",
+            "ActionFlags": ["service_action", "report", "call_home"],
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x76F3",
+                "Words6To9": {},
+                "PowerFault": true
+            },
+
+            "Callouts": [
+                {
+                    "System": "ibm,rainier",
+                    "CalloutList": [
+                        {"Priority": "high", "LocCode": "P0-C5"},
+                        {"Priority": "high", "LocCode": "P0-T12", "SymbolicFRUTrusted": "fan_cable"},
+                        {"Priority": "high", "LocCode": "P0-T17", "SymbolicFRUTrusted": "cable_continued"},
+                        {"Priority": "low", "LocCode": "P0"}
+                    ]
+                },
+                {
+                    "System": "ibm,everest",
+                    "CalloutList": [
+                        {"Priority": "high", "LocCode": "P0-C0"},
+                        {"Priority": "high", "LocCode": "P1"},
+                        {"Priority": "low", "LocCode": "P0"}
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "The fan controller device is offline",
+                "Message": "The fan controller is offline.  The system must be powered off.",
+                "Notes": [
+                    "The device that controls the fans is offline so the fan",
+                    "targets and speeds are unknown.  The system will be shut",
+                    "down to preserve thermal safety.  There may be an I2C",
+                    "or power problem with the device."
+                ]
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.Sensor.Threshold.Error.TemperaturePerfLossHigh",
             "Subsystem": "power",
             "ComponentID": "0x2800",
