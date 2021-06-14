@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "241c7f7c_595b5931",
+        "filename": "gen/xyz/openbmc_project/Logging/Internal/Manager/meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-14T15:24:00Z",
+      "side": 1,
+      "message": "what does this change have to do with the meson version?  Is project_source_root not available anymore?",
+      "range": {
+        "startLine": 4,
+        "startChar": 14,
+        "endLine": 4,
+        "endChar": 32
+      },
+      "revId": "0030c63fd33cca328070e00123ae21571a48dd90",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
