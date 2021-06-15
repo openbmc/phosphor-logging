@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fe0a3688_3dc8ee36",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-15T03:52:32Z",
+      "side": 1,
+      "message": "This IPL function performs actions which are required before the system power-off. Current scope is limited to processor power off. If the error is specific to proc hwp faiulure bettre move under 3500. that is specific to processor related failures.Or incase you want to make generic IPL function failure rename the errocide name.",
+      "range": {
+        "startLine": 402,
+        "startChar": 47,
+        "endLine": 402,
+        "endChar": 62
+      },
+      "revId": "c3de82ddc0798d9bf74a4cab727f4b1b92674d7a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8a81b6eb_cb565fb7",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-15T03:52:32Z",
+      "side": 1,
+      "message": "Severity can choose by user. , not to use default one.",
+      "range": {
+        "startLine": 405,
+        "startChar": 24,
+        "endLine": 405,
+        "endChar": 40
+      },
+      "revId": "c3de82ddc0798d9bf74a4cab727f4b1b92674d7a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
