@@ -33,3 +33,10 @@ option(
     value: 'disabled',
     description: 'Enable support for PHAL',
 )
+
+option(
+    'pdbg_dtb_path',
+    type: 'string',
+    value: '"/var/lib/phosphor-software-manager/pnor/rw/DEVTREE"',
+    description: 'Used to set BMC interested cec device tree'
+)
