@@ -22,6 +22,7 @@
 
 #include <ekb/hwpf/fapi2/include/return_code_defs.H>
 #include <fmt/format.h>
+#include <libpdbg.h>
 
 #include <new>
 #include <phosphor-logging/log.hpp>
@@ -160,13 +161,19 @@ void SbeFFDC::process(const sbeFfdcPacketType& ffdcPkt)
 
     try
     {
+        if (!pdbg_targets_init(NULL))
+        {
+            log<level::ERR>("pdbg_targets_init failed");
+            return;
+        }
+
         // libekb provided wrapper function to convert SBE FFDC
         // in to known ffdc structure.
         libekb_get_sbe_ffdc(ffdc, ffdcPkt, procPos);
     }
     catch (...)
     {
-        log<level::ERR>("libekb_get_sbe_ffdc failed, skipping ffdc processing");
+        log<level::ERR>("phal functions failed, skipping ffdc processing");
         return;
     }
 

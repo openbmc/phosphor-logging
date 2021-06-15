@@ -20,11 +20,12 @@
 #include "manager.hpp"
 #include "pldm_interface.hpp"
 
+#include <fmt/format.h>
+
 #include <phosphor-logging/log.hpp>
 
 #ifdef SBE_FFDC_SUPPORTED
 #include <libekb.H>
-#include <libpdbg.h>
 #endif
 
 namespace openpower
@@ -60,12 +61,14 @@ void pelStartup(internal::Manager& logManager)
 #endif
 
 #ifdef SBE_FFDC_SUPPORTED
-    if (!pdbg_targets_init(NULL))
+    if (setenv("PDBG_DTB", PDBG_DTB_PATH, 1))
     {
-        log<level::ERR>("pdbg_targets_init failed");
-        throw std::runtime_error("pdbg target initialization failed");
+        // Log message and continue,
+        // This is to  help continue creating PEL' in raw format.
+        log<level::ERR>(
+            fmt::format("Failed to set PDBG_DTB: ({})", strerror(errno))
+                .c_str());
     }
-
     if (libekb_init())
     {
         log<level::ERR>("libekb_init failed");
