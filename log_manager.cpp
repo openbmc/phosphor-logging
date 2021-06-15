@@ -723,9 +723,9 @@ void Manager::journalSync()
 
         // Let's wait until inotify reports an event
         struct pollfd fds = {
-            .fd = fd,
-            .events = POLLIN,
-            .revents = 0,
+            fd,
+            POLLIN,
+            0,
         };
         constexpr auto pollTimeout = 5; // 5 seconds
         rc = poll(&fds, 1, pollTimeout * 1000);
