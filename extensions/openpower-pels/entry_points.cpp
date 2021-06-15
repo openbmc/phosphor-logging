@@ -20,6 +20,8 @@
 #include "manager.hpp"
 #include "pldm_interface.hpp"
 
+#include <fmt/format.h>
+
 #include <phosphor-logging/log.hpp>
 
 #ifdef SBE_FFDC_SUPPORTED
@@ -60,6 +62,19 @@ void pelStartup(internal::Manager& logManager)
 #endif
 
 #ifdef SBE_FFDC_SUPPORTED
+    // PDBG_DTB environment variable set to CEC device tree path
+    static constexpr auto PDBG_DTB_PATH =
+        "/var/lib/phosphor-software-manager/pnor/rw/DEVTREE";
+
+    if (setenv("PDBG_DTB", PDBG_DTB_PATH, 1))
+    {
+        // Log message and continue,
+        // This is to help continue creating PEL in raw format.
+        log<level::ERR>(
+            fmt::format("Failed to set PDBG_DTB: ({})", strerror(errno))
+                .c_str());
+    }
+
     if (!pdbg_targets_init(NULL))
     {
         log<level::ERR>("pdbg_targets_init failed");
