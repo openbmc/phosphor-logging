@@ -41,6 +41,21 @@ bool Entry::resolved(bool value)
     return current;
 }
 
+std::string Entry::resolution(std::string value)
+{
+    auto current =
+        sdbusplus::xyz::openbmc_project::Logging::server::Entry::resolution();
+    if (value != current)
+    {
+        current =
+            sdbusplus::xyz::openbmc_project::Logging::server::Entry::resolution(
+                value);
+        serialize(*this);
+    }
+
+    return current;
+}
+
 sdbusplus::message::unix_fd Entry::getEntry()
 {
     FILE* fp = fopen(path().c_str(), "rb");
