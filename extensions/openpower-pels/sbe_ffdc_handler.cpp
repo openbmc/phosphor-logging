@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
-#include "sbe_ffdc_handler.hpp"
+extern "C" {
+#include <libpdbg.h>
+}
 
 #include "fapi_data_process.hpp"
 #include "pel.hpp"
+#include "sbe_ffdc_handler.hpp"
 #include "temporary_file.hpp"
 
 #include <ekb/hwpf/fapi2/include/return_code_defs.H>
@@ -157,6 +160,12 @@ void SbeFFDC::process(const sbeFfdcPacketType& ffdcPkt)
 
     // formated FFDC data structure after FFDC packet processing
     FFDC ffdc;
+
+    if (!pdbg_targets_init(NULL))
+    {
+        log<level::ERR>("pdbg_targets_init failed, skipping ffdc processing");
+        return;
+    }
 
     try
     {
