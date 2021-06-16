@@ -31,7 +31,7 @@ void save(Archive& a, const Entry& e, const std::uint32_t /*version*/)
 {
     a(e.id(), e.severity(), e.timestamp(), e.message(), e.additionalData(),
       e.associations(), e.resolved(), e.version(), e.updateTimestamp(),
-      e.eventId());
+      e.eventId(), e.resolution());
 }
 
 /** @brief Function required by Cereal to perform deserialization.
@@ -56,6 +56,7 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
     std::string fwVersion{};
     uint64_t updateTimestamp{};
     std::string eventId{};
+    std::string resolution{};
 
     if (version < std::stoul(FIRST_CEREAL_CLASS_VERSION_WITH_FWLEVEL))
     {
@@ -74,10 +75,15 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
         a(id, severity, timestamp, message, additionalData, associations,
           resolved, fwVersion, updateTimestamp);
     }
-    else
+    else if (version < std::stoul(FIRST_CEREAL_CLASS_VERSION_WITH_RESOLUTION))
     {
         a(id, severity, timestamp, message, additionalData, associations,
           resolved, fwVersion, updateTimestamp, eventId);
+    }
+    else
+    {
+        a(id, severity, timestamp, message, additionalData, associations,
+          resolved, fwVersion, updateTimestamp, eventId, resolution);
     }
 
     e.id(id);
@@ -93,6 +99,7 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
                   VersionPurpose::BMC);
     e.updateTimestamp(updateTimestamp);
     e.eventId(eventId);
+    e.resolution(resolution);
 }
 
 fs::path serialize(const Entry& e, const fs::path& dir)
