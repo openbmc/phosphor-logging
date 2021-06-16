@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0b377a55_0cdd4ca5",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-16T20:51:42Z",
+      "side": 1,
+      "message": "If there are no spaces in this string, the  erase would take an npos+1.  The erase() docs imply it may throw an exception.  If it isn\u0027t too much trouble, could you add a testcase for a 32 byte asciiString with no spaces?",
+      "revId": "d2e0d4a1b2af266d347f85d4aea968ce80b6a85d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
