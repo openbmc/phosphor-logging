@@ -172,6 +172,7 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
         // Check if firmware should quiesce system due to error
         checkPelAndQuiesce(pel);
         updateEventId(pel);
+        updateResolution(pel);
     }
     else
     {
@@ -369,6 +370,7 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
     // Check if firmware should quiesce system due to error
     checkPelAndQuiesce(pel);
     updateEventId(pel);
+    updateResolution(pel);
 }
 
 sdbusplus::message::unix_fd Manager::getPEL(uint32_t pelID)
@@ -663,6 +665,77 @@ void Manager::updateEventId(std::unique_ptr<openpower::pels::PEL>& pel)
     if (entryN != _logManager.entries.end())
     {
         entryN->second->eventId(eventIdStr);
+    }
+}
+
+std::string Manager::getResolution(const openpower::pels::PEL& pel) const
+{
+    std::string str;
+    std::string resolution;
+    auto src = pel.primarySRC();
+    if (src)
+    {
+        // First extract the callout pointer and then go through
+        const auto& callouts = (*src)->callouts();
+        namespace pv = openpower::pels::pel_values;
+        // All PELs dont have callout, check before parsing callout data
+        if (callouts)
+        {
+            const auto& entries = callouts->callouts();
+            // Entry starts with index 1
+            uint8_t index = 1;
+            for (auto& entry : entries)
+            {
+                if (entry->fruIdentity())
+                {
+                    resolution += std::to_string(index) + ". ";
+                    // Get priority and set the resolution string
+                    str = pv::getValue(entry->priority(),
+                                       pel_values::calloutPriorityValues, 1);
+                    str[0] = toupper(str[0]);
+                    resolution += "Priority: " + str;
+                    // Adding Location code to resolution
+                    if (!entry->locationCode().empty())
+                        resolution +=
+                            ", Location Code: " + entry->locationCode();
+                    if (entry->fruIdentity()->getPN().has_value())
+                    {
+                        resolution +=
+                            ", PN: " + entry->fruIdentity()->getPN().value();
+                    }
+                    if (entry->fruIdentity()->getSN().has_value())
+                    {
+                        resolution +=
+                            ", SN: " + entry->fruIdentity()->getSN().value();
+                    }
+                    if (entry->fruIdentity()->getCCIN().has_value())
+                    {
+                        resolution += ", CCIN: " +
+                                      entry->fruIdentity()->getCCIN().value();
+                    }
+                    // Add the maintenance procedure
+                    if (entry->fruIdentity()->getMaintProc().has_value())
+                    {
+                        resolution +=
+                            ", Procedure: " +
+                            entry->fruIdentity()->getMaintProc().value();
+                    }
+                }
+                resolution += "\n";
+                index++;
+            }
+        }
+    }
+    return resolution;
+}
+
+void Manager::updateResolution(std::unique_ptr<openpower::pels::PEL>& pel)
+{
+    std::string callouts = getResolution(*pel);
+    auto entryN = _logManager.entries.find(pel->obmcLogID());
+    if (entryN != _logManager.entries.end())
+    {
+        entryN->second->resolution(callouts);
     }
 }
 
