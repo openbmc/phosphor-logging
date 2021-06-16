@@ -22,6 +22,7 @@
 
 #include <ekb/hwpf/fapi2/include/return_code_defs.H>
 #include <fmt/format.h>
+#include <libpdbg.h>
 
 #include <new>
 #include <phosphor-logging/log.hpp>
@@ -157,6 +158,22 @@ void SbeFFDC::process(const sbeFfdcPacketType& ffdcPkt)
 
     // formated FFDC data structure after FFDC packet processing
     FFDC ffdc;
+
+    try
+    {
+        if (!pdbg_targets_init(NULL))
+        {
+            log<level::ERR>(
+                "pdbg_targets_init failed, skipping ffdc processing");
+            return;
+        }
+    }
+    catch (...)
+    {
+
+        log<level::ERR>("Exception from pdbg: target initialisation failed");
+        return;
+    }
 
     try
     {
