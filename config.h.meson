@@ -19,10 +19,11 @@
 #define OBJ_ENTRY "/xyz/openbmc_project/logging/entry"
 #define OBJ_INTERNAL "/xyz/openbmc_project/logging/internal/manager"
 #define OBJ_LOGGING "/xyz/openbmc_project/logging"
-#define RSYSLOG_SERVER_CONFIG_FILE "/etc/rsyslog.d/server.conf"
 #define SYSTEMD_BUSNAME "org.freedesktop.systemd1"
 #define SYSTEMD_INTERFACE "org.freedesktop.systemd1.Manager"
 #define SYSTEMD_PATH "/org/freedesktop/systemd1"
+
+#define RSYSLOG_SERVER_CONFIG_FILE "@rsyslog_server_conf@"
 
 extern const char *ERRLOG_PERSIST_PATH;
 extern const char *EXTENSION_PERSIST_DIR;
