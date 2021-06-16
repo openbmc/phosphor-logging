@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e7881de9_af9670eb",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-16T10:17:39Z",
+      "side": 1,
+      "message": "I think you need to use like below\n```\nextern \"C\"\n{\n#include \u003clibpdbg.h\u003e\n}\n```\nSince, libpdbg is \"C\" based library and we need to indicate the compiler like use C naming instead C++ naming.\nFYR: https://isocpp.org/wiki/faq/mixing-c-and-cpp#include-c-hdrs-nonsystem",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 20
+      },
+      "revId": "55e1fce9a132a1474cbc35b90d749a1540f9557f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa30cc80_f192cb8e",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-16T10:17:39Z",
+      "side": 1,
+      "message": "libdpdbg is \"C\" based library right ? Do we need try {} and  catch {} ?\n\nand I think, this API returning \"bool\" so, I think \"if\" block alone sufficient ?",
+      "range": {
+        "startLine": 164,
+        "startChar": 13,
+        "endLine": 164,
+        "endChar": 30
+      },
+      "revId": "55e1fce9a132a1474cbc35b90d749a1540f9557f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
