@@ -1094,13 +1094,25 @@ void SRC::addDevicePathCallouts(const AdditionalData& additionalData,
             }
         }
 
+        std::optional<std::string> locCode;
+
+        try
+        {
+            locCode = dataIface.expandLocationCode(callout.locationCode, 0);
+        }
+        catch (const std::exception& e)
+        {
+            auto msg = fmt::format("Unable to expand location code {}: {}",
+                                   callout.locationCode, e.what());
+            addDebugData(msg);
+        }
+
         try
         {
             auto inventoryPath = dataIface.getInventoryFromLocCode(
                 callout.locationCode, 0, false);
 
-            addInventoryCallout(inventoryPath, priority, std::nullopt,
-                                dataIface);
+            addInventoryCallout(inventoryPath, priority, locCode, dataIface);
         }
         catch (const std::exception& e)
         {

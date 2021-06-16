@@ -834,9 +834,8 @@ TEST_F(PELTest, CreateWithDevCalloutsTest)
         .Times(2)
         .WillRepeatedly(Return(names));
 
-    EXPECT_CALL(dataIface,
-                getLocationCode(
-                    "/xyz/openbmc_project/inventory/chassis/motherboard/cpu0"))
+    EXPECT_CALL(dataIface, expandLocationCode("P1", 0))
+        .Times(1)
         .WillOnce(Return("UXXX-P1"));
 
     EXPECT_CALL(dataIface, getInventoryFromLocCode("P1", 0, false))

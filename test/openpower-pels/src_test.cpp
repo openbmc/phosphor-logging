@@ -865,19 +865,15 @@ TEST_F(SRCTest, DevicePathCalloutTest)
         .WillRepeatedly(
             Return("/xyz/openbmc_project/inventory/chassis/motherboard/bmc"));
 
-    EXPECT_CALL(dataIface,
-                getLocationCode(
-                    "/xyz/openbmc_project/inventory/chassis/motherboard/cpu0"))
+    EXPECT_CALL(dataIface, expandLocationCode("P1-C40", 0))
         .Times(3)
         .WillRepeatedly(Return("Ufcs-P1-C40"));
-    EXPECT_CALL(
-        dataIface,
-        getLocationCode("/xyz/openbmc_project/inventory/chassis/motherboard"))
+
+    EXPECT_CALL(dataIface, expandLocationCode("P1", 0))
         .Times(3)
         .WillRepeatedly(Return("Ufcs-P1"));
-    EXPECT_CALL(dataIface,
-                getLocationCode(
-                    "/xyz/openbmc_project/inventory/chassis/motherboard/bmc"))
+
+    EXPECT_CALL(dataIface, expandLocationCode("P1-C15", 0))
         .Times(3)
         .WillRepeatedly(Return("Ufcs-P1-C15"));
 

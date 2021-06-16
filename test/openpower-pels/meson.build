@@ -2,6 +2,7 @@ openpower_pels = {
     'additional_data': {},
     'ascii_string': {},
     'bcd_time': {},
+    'data_interface': {},
     'device_callouts': {},
     'event_logger': {},
     'extended_user_data': {},
