@@ -48,6 +48,54 @@
     },
     {
       "key": {
+        "uuid": "71344984_15bea23d",
+        "filename": "extensions/openpower-pels/entry_points.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-16T13:22:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f10480f0_3859446a",
+      "range": {
+        "startLine": 68,
+        "startChar": 49,
+        "endLine": 68,
+        "endChar": 50
+      },
+      "revId": "8ac4b03e939884a0e261c61c3d4a6fcdc3cced5d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2f9a7c19_fde40934",
+        "filename": "extensions/openpower-pels/entry_points.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-16T13:22:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "afebee9e_254eb73c",
+      "range": {
+        "startLine": 68,
+        "startChar": 22,
+        "endLine": 68,
+        "endChar": 23
+      },
+      "revId": "8ac4b03e939884a0e261c61c3d4a6fcdc3cced5d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9c3bf3bd_b8dd25aa",
         "filename": "meson_options.txt",
         "patchSetId": 2
@@ -59,6 +107,30 @@
       "writtenOn": "2021-06-16T10:04:28Z",
       "side": 1,
       "message": "can we use phal_device_tree_path?",
+      "range": {
+        "startLine": 38,
+        "startChar": 5,
+        "endLine": 38,
+        "endChar": 18
+      },
+      "revId": "8ac4b03e939884a0e261c61c3d4a6fcdc3cced5d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "afdef90d_a6119b06",
+        "filename": "meson_options.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-16T13:22:05Z",
+      "side": 1,
+      "message": "environment varibale name is PDBG_DTB",
+      "parentUuid": "9c3bf3bd_b8dd25aa",
       "range": {
         "startLine": 38,
         "startChar": 5,
@@ -91,6 +163,30 @@
       "revId": "8ac4b03e939884a0e261c61c3d4a6fcdc3cced5d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eae6d7dd_5a9b163c",
+        "filename": "meson_options.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-16T13:22:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8862c03a_256a92a3",
+      "range": {
+        "startLine": 41,
+        "startChar": 18,
+        "endLine": 41,
+        "endChar": 60
+      },
+      "revId": "8ac4b03e939884a0e261c61c3d4a6fcdc3cced5d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
