@@ -35,8 +35,10 @@ const std::string createdBy = "Created by";
  * @return std::string - the value
  * @param[in] uint8_t - field to get value for
  * @param[in] PELValues - lookup table
+ * @param[in] uint8_t - position in the pel_values table to read
  */
-std::string getValue(const uint8_t field, const pel_values::PELValues& values);
+std::string getValue(const uint8_t field, const pel_values::PELValues& values,
+                     const uint8_t position = pel_values::descriptionPos);
 
 /**
  * @brief Helper function to get value vector from lookup tables.

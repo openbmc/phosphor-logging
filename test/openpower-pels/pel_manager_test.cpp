@@ -231,6 +231,14 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
             {
                 "ReasonCode": "0x2030"
             },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {"Priority": "high", "Procedure": "bmc_code"},
+                        {"Priority": "medium", "SymbolicFRU": "service_docs"}
+                    ]
+                }
+            ],
             "Documentation":
             {
                 "Description": "A PGOOD Fault",
@@ -294,6 +302,10 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
     EXPECT_EQ(manager.getEventId(pel),
               "BD612030 00000055 00000010 00000000 00000000 00000000 00000000 "
               "00000000 00000000");
+    // Check if resolution property creation is good
+    EXPECT_EQ(manager.getResolution(pel),
+              "1. Priority: High, Procedure: BMCSP02\n2. Priority: Medium, PN: "
+              "SVCDOCS\n");
 
     // Remove it
     manager.erase(33);
