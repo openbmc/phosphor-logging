@@ -209,6 +209,12 @@ class Manager : public PELInterface
      * @return std::vector<uint8_t> - The contained PEL data
      */
     static std::vector<uint8_t> eselToRawData(const std::string& esel);
+    /**
+     * @brief Generate event ID from the PEL
+     *
+     * @param[in] pel - The PEL to use
+     */
+    std::string getCallouts(const openpower::pels::PEL& pel) const;
 
   private:
     /**
@@ -335,6 +341,16 @@ class Manager : public PELInterface
      * @param[in] obmcLogID - The OpenBMC entry log ID
      */
     void setEntryPath(uint32_t obmcLogID);
+
+    /**
+     * @brief Update eventId D-bus property for this error log
+     *
+     * Update the eventId property of D-bus with SRC and hexwords from the
+     * PEL created
+     *
+     * @param[in] pel - The PEL to use
+     */
+    void updateResolution(std::unique_ptr<openpower::pels::PEL>& pel);
 
     /**
      * @brief Reference to phosphor-logging's Manager class

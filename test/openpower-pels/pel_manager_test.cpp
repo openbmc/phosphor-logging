@@ -231,6 +231,14 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
             {
                 "ReasonCode": "0x2030"
             },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {"Priority": "high", "Procedure": "bmc_code"},
+                        {"Priority": "medium", "SymbolicFRU": "service_docs"}
+                    ]
+                }
+            ],
             "Documentation":
             {
                 "Description": "A PGOOD Fault",
@@ -290,6 +298,10 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
     EXPECT_EQ(pel.obmcLogID(), 33);
     EXPECT_EQ(pel.primarySRC().value()->asciiString(),
               "BD612030                        ");
+    // Check if the eventId creation is good
+    EXPECT_EQ(manager.getCallouts(pel),
+              "1. Priority: High, Procedure: BMCSP02\n2. Priority: Medium, PN: "
+              "SVCDOCS\n");
 
     // Remove it
     manager.erase(33);
