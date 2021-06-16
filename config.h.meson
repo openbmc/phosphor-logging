@@ -25,16 +25,17 @@
 
 #define RSYSLOG_SERVER_CONFIG_FILE "@rsyslog_server_conf@"
 
-extern const char *ERRLOG_PERSIST_PATH;
-extern const char *EXTENSION_PERSIST_DIR;
+extern const char* ERRLOG_PERSIST_PATH;
+extern const char* EXTENSION_PERSIST_DIR;
 extern const bool IS_UNIT_TEST;
 
-static constexpr size_t ERROR_CAP = @error_cap@;
-static constexpr size_t ERROR_INFO_CAP = @error_info_cap@;
+static constexpr size_t ERROR_CAP = @error_cap @;
+static constexpr size_t ERROR_INFO_CAP = @error_info_cap @;
 
 static constexpr auto FIRST_CEREAL_CLASS_VERSION_WITH_FWLEVEL = "2";
 static constexpr auto FIRST_CEREAL_CLASS_VERSION_WITH_UPDATE_TS = "3";
-static constexpr auto FIRST_CEREAL_CLASS_VERSION_WITH_EVENTID= "4";
-static constexpr size_t CLASS_VERSION = 4;
+static constexpr auto FIRST_CEREAL_CLASS_VERSION_WITH_EVENTID = "4";
+static constexpr auto FIRST_CEREAL_CLASS_VERSION_WITH_RESOLUTION = "5";
+static constexpr size_t CLASS_VERSION = 5;
 
 // vim: ft=cpp

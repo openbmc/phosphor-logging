@@ -120,6 +120,13 @@ class Entry : public EntryIfaces
     std::string eventId(std::string value) override;
 
     using sdbusplus::xyz::openbmc_project::Logging::server::Entry::eventId;
+    /** @brief Update resolution string of the error.
+     *  @param[in] value - The resolution
+     *  @returns New property value
+     */
+    std::string resolution(std::string value) override;
+
+    using sdbusplus::xyz::openbmc_project::Logging::server::Entry::resolution;
 
     /** @brief Delete this d-bus object.
      */
