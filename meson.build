@@ -71,6 +71,7 @@ endif
 conf_data = configuration_data()
 conf_data.set('error_cap', get_option('error_cap'))
 conf_data.set('error_info_cap', get_option('error_info_cap'))
+conf_data.set('rsyslog_server_conf', get_option('rsyslog_server_conf'))
 
 configure_file(
     input: 'config.h.meson',

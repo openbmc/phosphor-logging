@@ -33,3 +33,10 @@ option(
     value: 'disabled',
     description: 'Enable support for PHAL',
 )
+
+option(
+    'rsyslog_server_conf',
+    type: 'string',
+    value: '/etc/rsyslog.d/server.conf',
+    description: 'Path to rsyslog server conf file',
+)
