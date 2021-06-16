@@ -85,6 +85,23 @@ using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
 using sdbusplus::exception::SdBusError;
 using namespace phosphor::logging;
 
+std::pair<std::string, std::string>
+    DataInterfaceBase::extractConnectorFromLocCode(
+        const std::string& locationCode)
+{
+    auto base = locationCode;
+    std::string connector{};
+
+    auto pos = base.find("-T");
+    if (pos != std::string::npos)
+    {
+        connector = base.substr(pos);
+        base = base.substr(0, pos);
+    }
+
+    return {base, connector};
+}
+
 DataInterface::DataInterface(sdbusplus::bus::bus& bus) : _bus(bus)
 {
     readBMCFWVersion();
@@ -414,17 +431,27 @@ std::string
 std::string DataInterface::expandLocationCode(const std::string& locationCode,
                                               uint16_t /*node*/) const
 {
+    // Location codes for connectors are the location code of the FRU they are
+    // on, plus a '-Tx' segment.  Remove this last segment before expanding it
+    // and then add it back in afterwards.  This way, the connector doesn't have
+    // to be in the model just so that it can be expanded.
+    auto [baseLoc, connectorLoc] = extractConnectorFromLocCode(locationCode);
+
     auto method =
         _bus.new_method_call(service_name::vpdManager, object_path::vpdManager,
                              interface::vpdManager, "GetExpandedLocationCode");
 
-    method.append(addLocationCodePrefix(locationCode),
-                  static_cast<uint16_t>(0));
+    method.append(addLocationCodePrefix(baseLoc), static_cast<uint16_t>(0));
 
     auto reply = _bus.call(method);
 
     std::string expandedLocationCode;
     reply.read(expandedLocationCode);
+
+    if (!connectorLoc.empty())
+    {
+        expandedLocationCode += connectorLoc;
+    }
 
     return expandedLocationCode;
 }
@@ -436,17 +463,23 @@ std::string
     std::string methodName = expanded ? "GetFRUsByExpandedLocationCode"
                                       : "GetFRUsByUnexpandedLocationCode";
 
+    // Remove the connector segment, if present, so that this method call
+    // returns an inventory path that getHWCalloutFields() can be used with.
+    // (The serial number, etc, aren't stored on the connector in the
+    // inventory, and may not even be modeled.)
+    auto [baseLoc, connectorLoc] = extractConnectorFromLocCode(locationCode);
+
     auto method =
         _bus.new_method_call(service_name::vpdManager, object_path::vpdManager,
                              interface::vpdManager, methodName.c_str());
 
     if (expanded)
     {
-        method.append(locationCode);
+        method.append(baseLoc);
     }
     else
     {
-        method.append(addLocationCodePrefix(locationCode), node);
+        method.append(addLocationCodePrefix(baseLoc), node);
     }
 
     auto reply = _bus.call(method);

@@ -302,6 +302,23 @@ class DataInterfaceBase
      */
     virtual bool getQuiesceOnError() const = 0;
 
+    /**
+     * @brief Split location code into base and connector segments
+     *
+     * A location code that ends in '-Tx', where 'x' is a number,
+     * represents a connector, such as a USB cable connector.
+     *
+     * This function splits the passed in location code into a
+     * base and connector segment.  e.g.:
+     *   P0-T1 -> ['P0', '-T1']
+     *   P0 -> ['P0', '']
+     *
+     * @param[in] locationCode - location code to split
+     * @return pair<string, string> - The base and connector segments
+     */
+    static std::pair<std::string, std::string>
+        extractConnectorFromLocCode(const std::string& locationCode);
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
