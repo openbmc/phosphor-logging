@@ -1,0 +1,147 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dadf5ba6_45fce0d2",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-16T21:51:46Z",
+      "side": 1,
+      "message": "this is already a fs::path, so you don\u0027t really need to wrap it in fs::path( )",
+      "range": {
+        "startLine": 243,
+        "startChar": 60,
+        "endLine": 243,
+        "endChar": 64
+      },
+      "revId": "2f63b5af01838fdaa41c8849ca8366877b042539",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4ecdd034_00ac34f1",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-16T21:51:46Z",
+      "side": 1,
+      "message": "I\u0027m a little worried about having to do this on thousands of archived PELs every time this is called when adding/creating a new PEL in case it is slow.\n\nI think I would feel better if we got some performance numbers how long this takes for a few thousand PELs, using the std::chrono functions for measurement.  Can create them just by putting \u0027busctl call ... Logging.Create... \u0027 in a loop in a shell script.\n\nThere a few examples out in other BMC code on how to get durations.  One of them I found is https://grok.openbmc.org/xref/openbmc/phosphor-pid-control/pid/zone.cpp?r\u003d55ccad65#315",
+      "revId": "2f63b5af01838fdaa41c8849ca8366877b042539",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "37f256d9_061f81b3",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 534,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-16T21:51:46Z",
+      "side": 1,
+      "message": "when we are tracking the PEL sizes, we use stat() to tell us how much space it takes up on disk.  So you can just use the getFileDiskSize() function from up above in this file.",
+      "range": {
+        "startLine": 534,
+        "startChar": 24,
+        "endLine": 534,
+        "endChar": 37
+      },
+      "revId": "2f63b5af01838fdaa41c8849ca8366877b042539",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9773f78a_c93987d1",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-16T21:51:46Z",
+      "side": 1,
+      "message": "I think we want this to be:  if the size of the archive plus the size of all the PELs is greater than the max repo warning.\n\nSo:\n\nif (sizes.total + archiveSize) \u003e (_maxRepoSize * ...)",
+      "range": {
+        "startLine": 538,
+        "startChar": 1,
+        "endLine": 539,
+        "endChar": 69
+      },
+      "revId": "2f63b5af01838fdaa41c8849ca8366877b042539",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6eb38f3f_cf51f165",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-16T21:51:46Z",
+      "side": 1,
+      "message": "You may as well just combine this all into 1 string so that it\u0027s easy to read in the journal.",
+      "range": {
+        "startLine": 545,
+        "startChar": 29,
+        "endLine": 546,
+        "endChar": 75
+      },
+      "revId": "2f63b5af01838fdaa41c8849ca8366877b042539",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e56df5d5_b8ca9b67",
+        "filename": "extensions/openpower-pels/tools/peltool.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-16T21:51:46Z",
+      "side": 1,
+      "message": "why did you change the loop here?",
+      "revId": "2f63b5af01838fdaa41c8849ca8366877b042539",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "faa202e4_f4668a6e",
+        "filename": "extensions/openpower-pels/tools/peltool.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 887,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-16T21:51:46Z",
+      "side": 1,
+      "message": "I think you\u0027ll also have to support the list option, otherwise I\u0027m not sure how anyone would know an archived PEL ID.  Then also update the --archive help text above.",
+      "revId": "2f63b5af01838fdaa41c8849ca8366877b042539",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
