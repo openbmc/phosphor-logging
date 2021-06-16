@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f10480f0_3859446a",
+        "filename": "extensions/openpower-pels/entry_points.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-16T10:04:28Z",
+      "side": 1,
+      "message": "required?",
+      "range": {
+        "startLine": 68,
+        "startChar": 49,
+        "endLine": 68,
+        "endChar": 50
+      },
+      "revId": "8ac4b03e939884a0e261c61c3d4a6fcdc3cced5d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "afebee9e_254eb73c",
+        "filename": "extensions/openpower-pels/entry_points.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-16T10:04:28Z",
+      "side": 1,
+      "message": "extra space",
+      "range": {
+        "startLine": 68,
+        "startChar": 22,
+        "endLine": 68,
+        "endChar": 23
+      },
+      "revId": "8ac4b03e939884a0e261c61c3d4a6fcdc3cced5d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9c3bf3bd_b8dd25aa",
+        "filename": "meson_options.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-16T10:04:28Z",
+      "side": 1,
+      "message": "can we use phal_device_tree_path?",
+      "range": {
+        "startLine": 38,
+        "startChar": 5,
+        "endLine": 38,
+        "endChar": 18
+      },
+      "revId": "8ac4b03e939884a0e261c61c3d4a6fcdc3cced5d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8862c03a_256a92a3",
+        "filename": "meson_options.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-16T10:04:28Z",
+      "side": 1,
+      "message": "Used to set BMC interested cec device tree ?",
+      "range": {
+        "startLine": 41,
+        "startChar": 18,
+        "endLine": 41,
+        "endChar": 60
+      },
+      "revId": "8ac4b03e939884a0e261c61c3d4a6fcdc3cced5d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
