@@ -16,6 +16,23 @@
       "revId": "d2e0d4a1b2af266d347f85d4aea968ce80b6a85d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2196812a_9ccafd54",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-16T20:52:59Z",
+      "side": 1,
+      "message": "or, you could just check for npos before doing the erase",
+      "revId": "d2e0d4a1b2af266d347f85d4aea968ce80b6a85d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
