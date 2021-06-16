@@ -26,7 +26,6 @@
 
 #ifdef SBE_FFDC_SUPPORTED
 #include <libekb.H>
-#include <libpdbg.h>
 #endif
 
 namespace openpower
@@ -69,12 +68,6 @@ void pelStartup(internal::Manager& logManager)
         log<level::ERR>(
             fmt::format("Failed to set PDBG_DTB: ({})", strerror(errno))
                 .c_str());
-    }
-
-    if (!pdbg_targets_init(NULL))
-    {
-        log<level::ERR>("pdbg_targets_init failed");
-        throw std::runtime_error("pdbg target initialization failed");
     }
 
     if (libekb_init())
