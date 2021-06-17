@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "73848e09_dfe98dfb",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-17T19:43:44Z",
+      "side": 1,
+      "message": "I was thinking maybe you can make _archiveSize a class member, and put this loop into the restore() function to get the current size of the archive on startup, and then have line 538 in the remove() function after you move the PEL into the archive. then it will be an up to date size, and then in this function you can just use _archiveSize in the check on 548",
+      "revId": "018269e463890a5504ee881b3c91fa89f57cc8fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
