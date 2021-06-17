@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "64c68fbc_aa603e22",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-17T18:12:04Z",
+      "side": 1,
+      "message": "Can you add a \u0027PEL: \u0027 prefix to this commit message?  I\u0027m trying to do that for all PEL related commits.",
+      "revId": "c3de82ddc0798d9bf74a4cab727f4b1b92674d7a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fe0a3688_3dc8ee36",
         "filename": "extensions/openpower-pels/registry/message_registry.json",
         "patchSetId": 4
