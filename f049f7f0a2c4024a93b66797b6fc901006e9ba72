@@ -46,6 +46,30 @@
       "revId": "f049f7f0a2c4024a93b66797b6fc901006e9ba72",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a62fda33_fbdfd9a3",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-06-17T05:17:08Z",
+      "side": 1,
+      "message": "For current generation systems this path is constant. Added suuport future systems incase want to diffrent path. One of the direction i proposed earlier was to keet systemd global env settings , which will help all the services to access this env. Since this is consumed only phal enabled services, recomented service level enablement. \nUpdated patch set to use hardcode path now , and later we can relook , incase any use case for automating this.",
+      "parentUuid": "63ab0f38_0dff99bc",
+      "range": {
+        "startLine": 74,
+        "startChar": 15,
+        "endLine": 74,
+        "endChar": 28
+      },
+      "revId": "f049f7f0a2c4024a93b66797b6fc901006e9ba72",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
