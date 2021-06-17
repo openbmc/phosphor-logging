@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "107381ae_5394e0da",
+        "filename": "config.h.meson",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-06-17T15:07:44Z",
+      "side": 1,
+      "message": "I will bump it to 5 hen the yaml is approved",
+      "range": {
+        "startLine": 40,
+        "startChar": 65,
+        "endLine": 40,
+        "endChar": 66
+      },
+      "revId": "75fc10ae5c20a338fc2a1334e94bd090daa4327a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
