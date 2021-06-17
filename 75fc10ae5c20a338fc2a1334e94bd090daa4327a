@@ -22,6 +22,29 @@
       "revId": "75fc10ae5c20a338fc2a1334e94bd090daa4327a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "651a23b7_e11aaf64",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-17T17:43:26Z",
+      "side": 1,
+      "message": "how about \u0027getResolution\u0027 since it\u0027s returning a pretty specific format?",
+      "range": {
+        "startLine": 626,
+        "startChar": 21,
+        "endLine": 626,
+        "endChar": 32
+      },
+      "revId": "75fc10ae5c20a338fc2a1334e94bd090daa4327a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
