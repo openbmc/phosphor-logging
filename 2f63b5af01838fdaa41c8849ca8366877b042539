@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "dedcb295_aa05d392",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-17T12:33:37Z",
+      "side": 1,
+      "message": "yeah ok",
+      "parentUuid": "dadf5ba6_45fce0d2",
+      "range": {
+        "startLine": 243,
+        "startChar": 60,
+        "endLine": 243,
+        "endChar": 64
+      },
+      "revId": "2f63b5af01838fdaa41c8849ca8366877b042539",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4ecdd034_00ac34f1",
         "filename": "extensions/openpower-pels/repository.cpp",
         "patchSetId": 13
@@ -42,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "c73efef0_08fc3a8c",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-17T12:33:37Z",
+      "side": 1,
+      "message": "Yeah ok. I tried to do some performance numbers (code changes included in next patch) with about 2000 logs under archive path:\nroot@rain104bmc:~# ls /var/lib/phosphor-logging/extensions/pels/logs/archive/ | wc -l\n2000\nJun 16 15:04:30 rain104bmc phosphor-log-manager[11118]: Duration to calculate size of archived files (in secs): 0.0432783",
+      "parentUuid": "4ecdd034_00ac34f1",
+      "revId": "2f63b5af01838fdaa41c8849ca8366877b042539",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "37f256d9_061f81b3",
         "filename": "extensions/openpower-pels/repository.cpp",
         "patchSetId": 13
@@ -53,6 +95,30 @@
       "writtenOn": "2021-06-16T21:51:46Z",
       "side": 1,
       "message": "when we are tracking the PEL sizes, we use stat() to tell us how much space it takes up on disk.  So you can just use the getFileDiskSize() function from up above in this file.",
+      "range": {
+        "startLine": 534,
+        "startChar": 24,
+        "endLine": 534,
+        "endChar": 37
+      },
+      "revId": "2f63b5af01838fdaa41c8849ca8366877b042539",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e04f028c_0bc490a1",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 534,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-17T12:33:37Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "37f256d9_061f81b3",
       "range": {
         "startLine": 534,
         "startChar": 24,
@@ -88,6 +154,30 @@
     },
     {
       "key": {
+        "uuid": "94f0a9f3_b92398b0",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-17T12:33:37Z",
+      "side": 1,
+      "message": "yeah you are right I did it wrongly.",
+      "parentUuid": "9773f78a_c93987d1",
+      "range": {
+        "startLine": 538,
+        "startChar": 1,
+        "endLine": 539,
+        "endChar": 69
+      },
+      "revId": "2f63b5af01838fdaa41c8849ca8366877b042539",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6eb38f3f_cf51f165",
         "filename": "extensions/openpower-pels/repository.cpp",
         "patchSetId": 13
@@ -99,6 +189,30 @@
       "writtenOn": "2021-06-16T21:51:46Z",
       "side": 1,
       "message": "You may as well just combine this all into 1 string so that it\u0027s easy to read in the journal.",
+      "range": {
+        "startLine": 545,
+        "startChar": 29,
+        "endLine": 546,
+        "endChar": 75
+      },
+      "revId": "2f63b5af01838fdaa41c8849ca8366877b042539",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6d3871ce_74179fc3",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-17T12:33:37Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "6eb38f3f_cf51f165",
       "range": {
         "startLine": 545,
         "startChar": 29,
@@ -128,6 +242,24 @@
     },
     {
       "key": {
+        "uuid": "da9f9da2_1761418a",
+        "filename": "extensions/openpower-pels/tools/peltool.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-17T12:33:37Z",
+      "side": 1,
+      "message": "No particular reason thought it would be more readable. Yeah reverted to original.",
+      "parentUuid": "e56df5d5_b8ca9b67",
+      "revId": "2f63b5af01838fdaa41c8849ca8366877b042539",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "faa202e4_f4668a6e",
         "filename": "extensions/openpower-pels/tools/peltool.cpp",
         "patchSetId": 13
@@ -139,6 +271,24 @@
       "writtenOn": "2021-06-16T21:51:46Z",
       "side": 1,
       "message": "I think you\u0027ll also have to support the list option, otherwise I\u0027m not sure how anyone would know an archived PEL ID.  Then also update the --archive help text above.",
+      "revId": "2f63b5af01838fdaa41c8849ca8366877b042539",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e43d524c_42f23779",
+        "filename": "extensions/openpower-pels/tools/peltool.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 887,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-17T12:33:37Z",
+      "side": 1,
+      "message": "List option ok.\nWhere to update --archive help text?",
+      "parentUuid": "faa202e4_f4668a6e",
       "revId": "2f63b5af01838fdaa41c8849ca8366877b042539",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
