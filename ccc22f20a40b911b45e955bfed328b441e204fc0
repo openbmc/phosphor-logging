@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2aea0f31_d1ed8b55",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-18T18:53:22Z",
+      "side": 1,
+      "message": "still need?",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 19
+      },
+      "revId": "ccc22f20a40b911b45e955bfed328b441e204fc0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "67d4a1c3_ede181c7",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-18T18:53:22Z",
+      "side": 1,
+      "message": "spelling.\nalso, I\u0027d take a single comment that just says you\u0027re moving the file to the archive directory.",
+      "range": {
+        "startLine": 255,
+        "startChar": 11,
+        "endLine": 255,
+        "endChar": 18
+      },
+      "revId": "ccc22f20a40b911b45e955bfed328b441e204fc0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a0408bdc_f7ac814b",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-18T18:53:22Z",
+      "side": 1,
+      "message": "How about an INFO trace here that says you are deleting the archived files",
+      "revId": "ccc22f20a40b911b45e955bfed328b441e204fc0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "64d8361b_ed690a83",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-18T18:53:22Z",
+      "side": 1,
+      "message": "spelling.",
+      "range": {
+        "startLine": 546,
+        "startChar": 72,
+        "endLine": 546,
+        "endChar": 79
+      },
+      "revId": "ccc22f20a40b911b45e955bfed328b441e204fc0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "df514eb4_8e5b3580",
+        "filename": "test/openpower-pels/repository_test.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 908,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-18T18:53:22Z",
+      "side": 1,
+      "message": "nice testcase!",
+      "revId": "ccc22f20a40b911b45e955bfed328b441e204fc0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
