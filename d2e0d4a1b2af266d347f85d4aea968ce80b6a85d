@@ -33,6 +33,24 @@
       "revId": "d2e0d4a1b2af266d347f85d4aea968ce80b6a85d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4eefba74_00066ec1",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-06-18T16:51:44Z",
+      "side": 1,
+      "message": "Since we do the +1 we are safe and we will not see any exception. But if the 32 characters are filled then we will have npos+1 i.e., -1+1 \u003d0 and the entire refcode is deleted. So having a check for npos is better. Thanks for catching it in review",
+      "parentUuid": "2196812a_9ccafd54",
+      "revId": "d2e0d4a1b2af266d347f85d4aea968ce80b6a85d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
