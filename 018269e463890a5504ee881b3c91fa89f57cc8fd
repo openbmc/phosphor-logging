@@ -16,6 +16,24 @@
       "revId": "018269e463890a5504ee881b3c91fa89f57cc8fd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3bd99eeb_3ae2d6c8",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-18T11:42:42Z",
+      "side": 1,
+      "message": "Yeah was thinking on similar lines where to put the _archiveSize that always get updated on startup. Will check this out.",
+      "parentUuid": "73848e09_dfe98dfb",
+      "revId": "018269e463890a5504ee881b3c91fa89f57cc8fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
