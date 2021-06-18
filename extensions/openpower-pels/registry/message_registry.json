@@ -2,6 +2,47 @@
     "PELs":
     [
         {
+             "Name": "xyz.openbmc_project.Fan.Presence.Error.GPIODeviceUnavailable",
+             "Subsystem": "power_fans",
+             "ComponentID": "0x2800",
+             "Severity": "unrecoverable_redundancy_loss",
+             "ActionFlags": ["service_action", "report", "call_home"],
+
+             "SRC": {
+                 "Type": "11",
+                 "ReasonCode": "0x76F4",
+                 "Words6To9": {}
+             },
+
+             "Callouts": [
+                 {
+                     "System" : "ibm,rainier",
+                     "CalloutList": [
+                         {"Priority": "high", "LocCode": "P0-C5"},
+                         {"Priority": "medium_group_a", "LocCode": "P0-T12","SymbolicFRUTrusted": "fan_cable"},
+                         {"Priority": "medium_group_a", "LocCode": "P0-T17","SymbolicFRUTrusted": "cable_continued"},
+                         {"Priority": "low", "LocCode": "P0"}
+                     ]
+                 },
+                 {
+                     "System" : "ibm,everest",
+                     "CalloutList": [
+                         {"Priority": "high", "LocCode": "P0-C0"},
+                         {"Priority": "medium", "LocCode": "P1"},
+                         {"Priority": "low", "LocCode": "P0"}
+                     ]
+                 }
+             ],
+
+             "Documentation": {
+                 "Description": "Fan GPIO sensors not present",
+                 "Message": "Fan GPIO sensors not present",
+                 "Notes": [
+                     "The device that reports fan presence is not functioning."
+                 ]
+             }
+        },
+        {
             "Name": "xyz.openbmc_project.Common.Error.Timeout",
             "Subsystem": "bmc_firmware",
 
