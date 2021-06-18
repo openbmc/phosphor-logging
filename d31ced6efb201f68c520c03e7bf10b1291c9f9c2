@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1fb2ff50_1b6a46e4",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-18T13:53:08Z",
+      "side": 1,
+      "message": "you can do it in the hpp, like _lastPELID was.",
+      "parentUuid": "6d3b0a28_a29a83c4",
+      "revId": "d31ced6efb201f68c520c03e7bf10b1291c9f9c2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f3208a18_e5ccdc5e",
         "filename": "extensions/openpower-pels/repository.cpp",
         "patchSetId": 15
@@ -30,6 +48,24 @@
       "writtenOn": "2021-06-18T12:04:10Z",
       "side": 1,
       "message": "I\u0027m seeing size of archive folder increasing by 4K for every PEL deleted and moved to archive as follows. Is it expected?\n\nJun 17 14:18:26 rain104bmc phosphor-log-manager[2430]: Created PEL 0x5000f663 (BMC ID 11) with SRC 110076F2\nJun 17 14:18:26 rain104bmc phosphor-log-manager[2430]: Archive size: 12288\nJun 17 14:12:49 rain104bmc phosphor-log-manager[2336]: Created PEL 0x5000f662 (BMC ID 11) with SRC 110076F2\nJun 17 14:12:49 rain104bmc phosphor-log-manager[2336]: Archive size: 8192\nJun 17 11:22:56 rain104bmc phosphor-log-manager[2178]: Created PEL 0x5000f661 (BMC ID 10) with SRC 110076F2\nJun 17 11:22:56 rain104bmc phosphor-log-manager[2178]: Archive size: 8192\nJun 17 11:18:21 rain104bmc phosphor-log-manager[2178]: Archive size: 8192\nJun 17 11:18:21 rain104bmc phosphor-log-manager[2178]: Created PEL 0x5000f660 (BMC ID 9) with SRC 110076F2\nJun 17 11:16:08 rain104bmc phosphor-log-manager[2125]: Created PEL 0x5000f65f (BMC ID 8) with SRC 110076F2\nJun 17 11:16:08 rain104bmc phosphor-log-manager[2125]: Archive size: 8192\nJun 17 10:57:18 rain104bmc phosphor-log-manager[2125]: Archive size: 4096\nJun 17 10:57:18 rain104bmc phosphor-log-manager[2125]: Created PEL 0x5000f65e (BMC ID 7) with SRC 110076F2\nJun 17 10:54:37 rain104bmc phosphor-log-manager[2125]: Created PEL 0x5000f65d (BMC ID 6) with SRC 110076F2\nJun 17 10:54:37 rain104bmc phosphor-log-manager[2125]: Archive size: 0",
+      "revId": "d31ced6efb201f68c520c03e7bf10b1291c9f9c2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c478ea54_2249b0fa",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-18T13:53:08Z",
+      "side": 1,
+      "message": "Yea, that\u0027s the block size on disk.",
+      "parentUuid": "f3208a18_e5ccdc5e",
       "revId": "d31ced6efb201f68c520c03e7bf10b1291c9f9c2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
