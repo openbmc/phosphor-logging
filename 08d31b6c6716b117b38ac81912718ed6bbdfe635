@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "cb2920da_757dbc62",
+        "filename": "extensions/openpower-pels/tools/peltool.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 854,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-21T16:48:12Z",
+      "side": 1,
+      "message": "yeah ok",
+      "parentUuid": "91176073_d9b72521",
+      "range": {
+        "startLine": 854,
+        "startChar": 9,
+        "endLine": 854,
+        "endChar": 72
+      },
+      "revId": "08d31b6c6716b117b38ac81912718ed6bbdfe635",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ccf7796a_ee1cd51a",
         "filename": "extensions/openpower-pels/tools/peltool.cpp",
         "patchSetId": 17
@@ -42,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "f2609ea1_4eb5ef92",
+        "filename": "extensions/openpower-pels/tools/peltool.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 905,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-21T16:48:12Z",
+      "side": 1,
+      "message": "basically never we would have a case to display all PELs incl. archive. If no archive flag, display regular PELs else with archive flag display only archived PELs",
+      "parentUuid": "ccf7796a_ee1cd51a",
+      "revId": "08d31b6c6716b117b38ac81912718ed6bbdfe635",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8b0a1c55_6be03039",
         "filename": "extensions/openpower-pels/tools/peltool.cpp",
         "patchSetId": 17
@@ -53,6 +95,30 @@
       "writtenOn": "2021-06-21T16:01:10Z",
       "side": 1,
       "message": "you can remove this, since --archive was used.",
+      "range": {
+        "startLine": 909,
+        "startChar": 10,
+        "endLine": 909,
+        "endChar": 55
+      },
+      "revId": "08d31b6c6716b117b38ac81912718ed6bbdfe635",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e610d59d_5b0f79cf",
+        "filename": "extensions/openpower-pels/tools/peltool.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 909,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-21T16:48:12Z",
+      "side": 1,
+      "message": "Refer comment above",
+      "parentUuid": "8b0a1c55_6be03039",
       "range": {
         "startLine": 909,
         "startChar": 10,
