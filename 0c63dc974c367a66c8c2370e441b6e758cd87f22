@@ -177,6 +177,30 @@
       "revId": "0c63dc974c367a66c8c2370e441b6e758cd87f22",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "14e4bce3_e753f752",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-06-22T15:30:58Z",
+      "side": 1,
+      "message": "Thanks, got the pain point. \nI will change that",
+      "parentUuid": "ccc60371_7332c877",
+      "range": {
+        "startLine": 417,
+        "startChar": 52,
+        "endLine": 417,
+        "endChar": 64
+      },
+      "revId": "0c63dc974c367a66c8c2370e441b6e758cd87f22",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
