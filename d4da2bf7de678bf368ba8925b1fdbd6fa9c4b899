@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "28f90b64_ba761e85",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 1788,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2021-06-22T15:36:45Z",
+      "side": 1,
+      "message": "can we make the cable medium priority, so they don\u0027t think it\u0027s required to replace the cable and the bmc card for the first step?",
+      "revId": "d4da2bf7de678bf368ba8925b1fdbd6fa9c4b899",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "afe38fab_26433187",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 1797,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2021-06-22T15:36:45Z",
+      "side": 1,
+      "message": "can we make the P1 backplane medium priority, so they don\u0027t think it\u0027s required to replace it at the same time as the bmc?",
+      "revId": "d4da2bf7de678bf368ba8925b1fdbd6fa9c4b899",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
