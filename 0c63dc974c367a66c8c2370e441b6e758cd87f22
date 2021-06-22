@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "892b8ef9_6dc59523",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-22T13:48:58Z",
+      "side": 1,
+      "message": "can you add more here?  I usually don\u0027t allow 1 line commit messages",
+      "revId": "0c63dc974c367a66c8c2370e441b6e758cd87f22",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "435f931b_7aa03f2f",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-22T13:48:58Z",
+      "side": 1,
+      "message": "Just curious, is this a procedure name?  What is it that\u0027s running that failed?",
+      "range": {
+        "startLine": 417,
+        "startChar": 52,
+        "endLine": 417,
+        "endChar": 64
+      },
+      "revId": "0c63dc974c367a66c8c2370e441b6e758cd87f22",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
