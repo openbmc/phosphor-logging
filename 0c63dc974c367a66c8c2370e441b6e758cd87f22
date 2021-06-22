@@ -153,6 +153,30 @@
       "revId": "0c63dc974c367a66c8c2370e441b6e758cd87f22",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ccc60371_7332c877",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-22T15:21:40Z",
+      "side": 1,
+      "message": "Just some hint about what the context is would be helpful.  From an outsider looking at it, \u0027pre-poweroff\u0027 by itself is just really vague if all they have is that text.\n\neven just \u0027PHAL pre-poweroff operations\u0027 would more specific.",
+      "parentUuid": "efd97174_cf525f5a",
+      "range": {
+        "startLine": 417,
+        "startChar": 52,
+        "endLine": 417,
+        "endChar": 64
+      },
+      "revId": "0c63dc974c367a66c8c2370e441b6e758cd87f22",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
