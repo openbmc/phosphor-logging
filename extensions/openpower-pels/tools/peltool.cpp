@@ -84,7 +84,7 @@ BCDTime fileNameToTimestamp(const std::string& fileName)
     {
         try
         {
-            tmp.yearMSB = std::stoi(token.substr(i, 2), 0, 16);
+            tmp.yearMSB = std::stoul(token.substr(i, 2), 0, 16);
         }
         catch (std::exception& err)
         {
@@ -93,7 +93,7 @@ BCDTime fileNameToTimestamp(const std::string& fileName)
         i += 2;
         try
         {
-            tmp.yearLSB = std::stoi(token.substr(i, 2), 0, 16);
+            tmp.yearLSB = std::stoul(token.substr(i, 2), 0, 16);
         }
         catch (std::exception& err)
         {
@@ -102,7 +102,7 @@ BCDTime fileNameToTimestamp(const std::string& fileName)
         i += 2;
         try
         {
-            tmp.month = std::stoi(token.substr(i, 2), 0, 16);
+            tmp.month = std::stoul(token.substr(i, 2), 0, 16);
         }
         catch (std::exception& err)
         {
@@ -111,7 +111,7 @@ BCDTime fileNameToTimestamp(const std::string& fileName)
         i += 2;
         try
         {
-            tmp.day = std::stoi(token.substr(i, 2), 0, 16);
+            tmp.day = std::stoul(token.substr(i, 2), 0, 16);
         }
         catch (std::exception& err)
         {
@@ -120,7 +120,7 @@ BCDTime fileNameToTimestamp(const std::string& fileName)
         i += 2;
         try
         {
-            tmp.hour = std::stoi(token.substr(i, 2), 0, 16);
+            tmp.hour = std::stoul(token.substr(i, 2), 0, 16);
         }
         catch (std::exception& err)
         {
@@ -129,7 +129,7 @@ BCDTime fileNameToTimestamp(const std::string& fileName)
         i += 2;
         try
         {
-            tmp.minutes = std::stoi(token.substr(i, 2), 0, 16);
+            tmp.minutes = std::stoul(token.substr(i, 2), 0, 16);
         }
         catch (std::exception& err)
         {
@@ -138,7 +138,7 @@ BCDTime fileNameToTimestamp(const std::string& fileName)
         i += 2;
         try
         {
-            tmp.seconds = std::stoi(token.substr(i, 2), 0, 16);
+            tmp.seconds = std::stoul(token.substr(i, 2), 0, 16);
         }
         catch (std::exception& err)
         {
@@ -147,7 +147,7 @@ BCDTime fileNameToTimestamp(const std::string& fileName)
         i += 2;
         try
         {
-            tmp.hundredths = std::stoi(token.substr(i, 2), 0, 16);
+            tmp.hundredths = std::stoul(token.substr(i, 2), 0, 16);
         }
         catch (std::exception& err)
         {
@@ -167,7 +167,7 @@ uint32_t fileNameToPELId(const std::string& fileName)
     uint32_t num = 0;
     try
     {
-        num = std::stoi(fileName.substr(fileName.find("_") + 1), 0, 16);
+        num = std::stoul(fileName.substr(fileName.find("_") + 1), 0, 16);
     }
     catch (std::exception& err)
     {
