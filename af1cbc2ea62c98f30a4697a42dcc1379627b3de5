@@ -16,6 +16,24 @@
       "revId": "af1cbc2ea62c98f30a4697a42dcc1379627b3de5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eafccfe6_7b0d8c2e",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-23T18:58:41Z",
+      "side": 1,
+      "message": "I wasn\u0027t thinking so, but I\u0027ll look into it.  I imagine there\u0027s a location code spec somewhere.",
+      "parentUuid": "32c771ad_5f1c037c",
+      "revId": "af1cbc2ea62c98f30a4697a42dcc1379627b3de5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
