@@ -230,6 +230,18 @@ class Manager : public PELInterface
      */
     uint32_t getPelIdFromObmcLogId(uint32_t obmcLogId) override;
 
+    /** @brief Implementation for GetObmcLogIdFromPelId
+     *
+     *  Returns the OpenBMC event log id based on the given PEL id (aka
+     *  Entry ID (EID)).
+     *
+     *  @param[in] pelId - The PEL id to retrieve the OpenBMC event log id.
+     *
+     *  @return uint32_t - The OpenBMC event log id of the PEL.
+     *                     Throw "InvalidArgument" if not found.
+     */
+    uint32_t getObmcLogIdFromPelId(uint32_t pelId) override;
+
   private:
     /**
      * @brief Adds a received raw PEL to the PEL repository

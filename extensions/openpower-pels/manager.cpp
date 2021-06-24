@@ -686,5 +686,18 @@ uint32_t Manager::getPelIdFromObmcLogId(uint32_t obmcLogId)
     }
 }
 
+uint32_t Manager::getObmcLogIdFromPelId(uint32_t pelId)
+{
+    Repository::LogID id{Repository::LogID::Pel(pelId)};
+    if (auto logId = _repo.getLogID(id); !logId.has_value())
+    {
+        throw common_error::InvalidArgument();
+    }
+    else
+    {
+        return logId->obmcID.id;
+    }
+}
+
 } // namespace pels
 } // namespace openpower
