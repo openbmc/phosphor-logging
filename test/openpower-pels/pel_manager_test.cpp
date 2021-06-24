@@ -459,6 +459,12 @@ TEST_F(ManagerTest, TestDBusMethods)
     EXPECT_THROW(
         manager.getPELIdFromBMCLogId(pel.obmcLogID() + 1),
         sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument);
+
+    // GetBMCLogIdFromPELId
+    EXPECT_EQ(pel.obmcLogID(), manager.getBMCLogIdFromPELId(pel.id()));
+    EXPECT_THROW(
+        manager.getBMCLogIdFromPELId(pel.id() + 1),
+        sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument);
 }
 
 // An ESEL from the wild
