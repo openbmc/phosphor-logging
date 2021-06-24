@@ -218,6 +218,19 @@ class Manager : public PELInterface
      */
     std::string getEventId(const openpower::pels::PEL& pel) const;
 
+    /** @brief Implementation for GetPELIdFromBMCLogId
+     *
+     *  Returns the PEL Id (aka Entry ID (EID)) based on the given
+     *  BMC event log id.
+     *
+     *  @param[in] bmcLogId - The BMC event log id of the PEL to retrieve
+     *                        the PEL id.
+     *
+     *  @return uint32_t - The Id of the PEL.
+     *                     Throw "InvalidArgument" if not found.
+     */
+    uint32_t getPELIdFromBMCLogId(uint32_t bmcLogId) override;
+
   private:
     /**
      * @brief Adds a received raw PEL to the PEL repository
