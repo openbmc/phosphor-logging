@@ -648,5 +648,18 @@ uint32_t Manager::getEIDFromOBMCID(uint32_t obmcLogID)
     }
 }
 
+uint32_t Manager::getOBMCIDFromEID(uint32_t entryID)
+{
+    Repository::LogID id{Repository::LogID::Pel(entryID)};
+    if (auto logID = _repo.getLogID(id); !logID.has_value())
+    {
+        throw common_error::InvalidArgument();
+    }
+    else
+    {
+        return logID->obmcID.id;
+    }
+}
+
 } // namespace pels
 } // namespace openpower
