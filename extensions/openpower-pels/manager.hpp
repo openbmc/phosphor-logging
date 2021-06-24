@@ -210,6 +210,19 @@ class Manager : public PELInterface
      */
     static std::vector<uint8_t> eselToRawData(const std::string& esel);
 
+    /** @brief Implementation for GetPelIdFromObmcLogId
+     *
+     *  Returns the PEL Id (aka Entry ID (EID)) based on the given
+     *  OpenBMC event log id.
+     *
+     *  @param[in] obmcLogId - The OpenBMC event log id of the PEL to
+     *                         retrieve the the PEL id.
+     *
+     *  @return uint32_t - The Id of the PEL.
+     *                     Throw "InvalidArgument" if not found.
+     */
+    uint32_t getPelIdFromObmcLogId(uint32_t obmcLogId) override;
+
   private:
     /**
      * @brief Adds a received raw PEL to the PEL repository
