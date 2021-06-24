@@ -960,3 +960,54 @@ TEST_F(RepositoryTest, TestArchiveSize)
     EXPECT_FALSE(repo.sizeWarning());
     EXPECT_FALSE(fs::exists(archivePath));
 }
+
+TEST_F(RepositoryTest, GetLogIDFoundTC)
+{
+    // Add and Check the created LogId
+
+    Repository repo{repoPath};
+    auto data = pelDataFactory(TestPELType::pelSimple);
+    auto pel = std::make_unique<PEL>(data, 1);
+
+    pel->assignID();
+
+    repo.add(pel);
+
+    // Getting by PEL Id
+    Repository::LogID idWithPelId{Repository::LogID::Pel(pel->id())};
+    auto logID = repo.getLogID(idWithPelId);
+    ASSERT_TRUE(logID.has_value());
+    EXPECT_EQ(logID->obmcID.id, pel->id());
+    EXPECT_EQ(logID->pelID.id, pel->obmcLogID());
+
+    // Getting by OBMC Event Log Id
+    Repository::LogID idWithObmcLogId{
+        Repository::LogID::Obmc(pel->obmcLogID())};
+    logID = repo.getLogID(idWithObmcLogId);
+    ASSERT_TRUE(logID.has_value());
+    EXPECT_EQ(logID->obmcID.id, pel->id());
+    EXPECT_EQ(logID->pelID.id, pel->obmcLogID());
+}
+
+TEST_F(RepositoryTest, GetLogIDNotFoundTC)
+{
+    // Add and Check the created LogId
+
+    Repository repo{repoPath};
+    auto data = pelDataFactory(TestPELType::pelSimple);
+    auto pel = std::make_unique<PEL>(data, 1);
+
+    pel->assignID();
+
+    repo.add(pel);
+
+    // Getting by invaild PEL Id
+    Repository::LogID idWithPelId{Repository::LogID::Pel(0xFFFFFFFF)};
+    auto logID = repo.getLogID(idWithPelId);
+    ASSERT_TRUE(!logID.has_value());
+
+    // Getting by invaild OBMC Event Log ID
+    Repository::LogID idWithObmcLogId{Repository::LogID::Obmc(0xFFFFFFFF)};
+    logID = repo.getLogID(idWithObmcLogId);
+    ASSERT_TRUE(!logID.has_value());
+}
