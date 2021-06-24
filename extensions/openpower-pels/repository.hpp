@@ -425,6 +425,26 @@ class Repository
         return _lastPelID;
     }
 
+    /**
+     * @brief Get the LogID based on the given ObmcLogId or PelId.
+     *
+     * @param[in] id - The ID to find the LogID.
+     *
+     * @return The LogID or an empty optional if not found.
+     *
+     * @note The returned LogID is the fully filled in LogID, i.e.
+     * it has both the PEL and OpenBMC Log IDs, unlike the passed in LogID
+     * which can just have one or the other.
+     */
+    std::optional<LogID> getLogID(const LogID& id) const
+    {
+        if (auto logID = findPEL(id); logID != _pelAttributes.end())
+        {
+            return logID->first;
+        }
+        return std::nullopt;
+    }
+
   private:
     using PELUpdateFunc = std::function<void(PEL&)>;
 
