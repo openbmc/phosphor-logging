@@ -701,5 +701,18 @@ void Manager::setServiceProviderNotifyFlag(uint32_t obmcLogID)
     }
 }
 
+uint32_t Manager::getPELIdFromBMCLogId(uint32_t bmcLogId)
+{
+    Repository::LogID id{Repository::LogID::Obmc(bmcLogId)};
+    if (auto logId = _repo.getLogID(id); !logId.has_value())
+    {
+        throw common_error::InvalidArgument();
+    }
+    else
+    {
+        return logId->pelID.id;
+    }
+}
+
 } // namespace pels
 } // namespace openpower
