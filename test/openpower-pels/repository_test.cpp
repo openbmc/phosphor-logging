@@ -868,3 +868,53 @@ TEST_F(RepositoryTest, TestSizeWarningNumPELs)
 
     EXPECT_TRUE(repo.sizeWarning());
 }
+
+TEST_F(RepositoryTest, GetLogIDFoundTC)
+{
+    // Add and Check the created LogId
+
+    Repository repo{repoPath};
+    auto data = pelDataFactory(TestPELType::pelSimple);
+    auto pel = std::make_unique<PEL>(data, 1);
+
+    pel->assignID();
+
+    repo.add(pel);
+
+    // Getting by Entry ID
+    Repository::LogID idWithEID{Repository::LogID::Pel(pel->id())};
+    auto logID = repo.getLogID(idWithEID);
+    ASSERT_TRUE(logID.has_value());
+    EXPECT_EQ(logID->obmcID.id, pel->obmcLogID());
+    EXPECT_EQ(logID->pelID.id, pel->id());
+
+    // Getting by OBMC Event ID
+    Repository::LogID idWithOBMCID{Repository::LogID::Obmc(pel->obmcLogID())};
+    logID = repo.getLogID(idWithOBMCID);
+    ASSERT_TRUE(logID.has_value());
+    EXPECT_EQ(logID->obmcID.id, pel->obmcLogID());
+    EXPECT_EQ(logID->pelID.id, pel->id());
+}
+
+TEST_F(RepositoryTest, GetLogIDNotFoundTC)
+{
+    // Add and Check the created LogId
+
+    Repository repo{repoPath};
+    auto data = pelDataFactory(TestPELType::pelSimple);
+    auto pel = std::make_unique<PEL>(data, 1);
+
+    pel->assignID();
+
+    repo.add(pel);
+
+    // Getting by invaild Entry ID
+    Repository::LogID idWithEID{Repository::LogID::Pel(0xFFFFFFFF)};
+    auto logID = repo.getLogID(idWithEID);
+    ASSERT_TRUE(!logID.has_value());
+
+    // Getting by invaild OBMC Event ID
+    Repository::LogID idWithOBMCID{Repository::LogID::Obmc(0xFFFFFFFF)};
+    logID = repo.getLogID(idWithOBMCID);
+    ASSERT_TRUE(!logID.has_value());
+}
