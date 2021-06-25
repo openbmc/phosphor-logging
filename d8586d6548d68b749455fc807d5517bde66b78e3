@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b57bc79c_c434df23",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 20
+      },
+      "lineNbr": 692,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-25T15:14:39Z",
+      "side": 1,
+      "message": "will be available in a BMC dump",
+      "range": {
+        "startLine": 692,
+        "startChar": 36,
+        "endLine": 692,
+        "endChar": 73
+      },
+      "revId": "d8586d6548d68b749455fc807d5517bde66b78e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "69e804b3_f0d9c0ce",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 20
+      },
+      "lineNbr": 692,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-25T15:14:39Z",
+      "side": 1,
+      "message": "\u0027an archive folder\u0027.",
+      "revId": "d8586d6548d68b749455fc807d5517bde66b78e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "372e6797_5ebdfaf1",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 20
+      },
+      "lineNbr": 697,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-25T15:14:39Z",
+      "side": 1,
+      "message": "in the archive folder.",
+      "range": {
+        "startLine": 697,
+        "startChar": 2,
+        "endLine": 697,
+        "endChar": 31
+      },
+      "revId": "d8586d6548d68b749455fc807d5517bde66b78e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ca9d3711_4106c9ee",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 20
+      },
+      "lineNbr": 699,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-25T15:14:39Z",
+      "side": 1,
+      "message": "can remove",
+      "range": {
+        "startLine": 698,
+        "startChar": 61,
+        "endLine": 699,
+        "endChar": 25
+      },
+      "revId": "d8586d6548d68b749455fc807d5517bde66b78e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e656f5a7_1bfa4117",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 20
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-06-25T15:14:39Z",
+      "side": 1,
+      "message": "all archived PELs",
+      "range": {
+        "startLine": 700,
+        "startChar": 2,
+        "endLine": 700,
+        "endChar": 31
+      },
+      "revId": "d8586d6548d68b749455fc807d5517bde66b78e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
