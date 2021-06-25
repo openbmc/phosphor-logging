@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "76effe49_c2585826",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 19
+      },
+      "lineNbr": 689,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-25T09:00:45Z",
+      "side": 1,
+      "message": "Agree",
+      "parentUuid": "f4f801ee_fbb25420",
+      "range": {
+        "startLine": 689,
+        "startChar": 3,
+        "endLine": 689,
+        "endChar": 54
+      },
+      "revId": "d03763057d8b608f8b368a168c5053865042d8c8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "757fe16f_27bfc619",
         "filename": "extensions/openpower-pels/README.md",
         "patchSetId": 19
@@ -36,6 +60,30 @@
       "writtenOn": "2021-06-24T21:52:40Z",
       "side": 1,
       "message": "how about:  When an OpenBMC event log is deleted ...",
+      "range": {
+        "startLine": 691,
+        "startChar": 1,
+        "endLine": 691,
+        "endChar": 36
+      },
+      "revId": "d03763057d8b608f8b368a168c5053865042d8c8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0bad20b1_cdcfce4d",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 19
+      },
+      "lineNbr": 691,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-25T09:00:45Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "757fe16f_27bfc619",
       "range": {
         "startLine": 691,
         "startChar": 1,
@@ -65,6 +113,24 @@
     },
     {
       "key": {
+        "uuid": "9aa97383_d214ed71",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 19
+      },
+      "lineNbr": 692,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-25T09:00:45Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "bb999de7_2d540b3a",
+      "revId": "d03763057d8b608f8b368a168c5053865042d8c8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "55aa3066_566674ee",
         "filename": "extensions/openpower-pels/README.md",
         "patchSetId": 19
@@ -76,6 +142,30 @@
       "writtenOn": "2021-06-24T21:52:40Z",
       "side": 1,
       "message": "again probably better to specify:  PELs whose corresponding event logs have been deleted will be available..",
+      "range": {
+        "startLine": 695,
+        "startChar": 2,
+        "endLine": 695,
+        "endChar": 18
+      },
+      "revId": "d03763057d8b608f8b368a168c5053865042d8c8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98986cdf_9baa46ba",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 19
+      },
+      "lineNbr": 695,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-25T09:00:45Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "55aa3066_566674ee",
       "range": {
         "startLine": 695,
         "startChar": 2,
@@ -105,6 +195,24 @@
     },
     {
       "key": {
+        "uuid": "8d8825c4_de176815",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 19
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-25T09:00:45Z",
+      "side": 1,
+      "message": "yeah good point.",
+      "parentUuid": "fb1dc3b6_0ce8a432",
+      "revId": "d03763057d8b608f8b368a168c5053865042d8c8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c1d2e7b0_338b83c0",
         "filename": "extensions/openpower-pels/tools/peltool.cpp",
         "patchSetId": 19
@@ -116,6 +224,30 @@
       "writtenOn": "2021-06-24T21:52:40Z",
       "side": 1,
       "message": "sorry, just noticed this one - I don\u0027t think the archive check is needed here?",
+      "range": {
+        "startLine": 888,
+        "startChar": 31,
+        "endLine": 888,
+        "endChar": 42
+      },
+      "revId": "d03763057d8b608f8b368a168c5053865042d8c8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d41c4b3b_722a00c6",
+        "filename": "extensions/openpower-pels/tools/peltool.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 888,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-06-25T09:00:45Z",
+      "side": 1,
+      "message": "yeah archive would never be passed alone as its always going to be passed coupled with list or full PEL. Will remove the check.",
+      "parentUuid": "c1d2e7b0_338b83c0",
       "range": {
         "startLine": 888,
         "startChar": 31,
