@@ -57,6 +57,30 @@
       "revId": "2c8ee689f5813fcffe91a873b0cd09e8ba189439",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9202ba09_489f1b7f",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 685,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2021-07-06T21:34:38Z",
+      "side": 1,
+      "message": "Looks like inventory call out.  This is an improvement over the FSP behavior.",
+      "parentUuid": "b5e91e19_19dd3eb0",
+      "range": {
+        "startLine": 681,
+        "startChar": 0,
+        "endLine": 685,
+        "endChar": 14
+      },
+      "revId": "2c8ee689f5813fcffe91a873b0cd09e8ba189439",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
