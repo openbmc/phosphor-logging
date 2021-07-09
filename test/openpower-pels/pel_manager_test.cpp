@@ -24,6 +24,7 @@
 #include <xyz/openbmc_project/Common/error.hpp>
 
 #include <gtest/gtest.h>
+// test
 
 using namespace openpower::pels;
 namespace fs = std::filesystem;
