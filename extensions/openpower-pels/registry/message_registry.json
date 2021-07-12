@@ -1003,6 +1003,55 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.State.Shutdown.Power.Error.Regulator",
+            "Subsystem": "power_control_hw",
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x2602",
+                "Words6To9": {},
+                "PowerFault": true
+            },
+
+            "Callouts": [
+                {
+                    "System": "ibm,rainier",
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "LocCode": "P0-C5"
+                        },
+                        {
+                            "Priority": "medium",
+                            "LocCode": "P0"
+                        }
+                    ]
+                },
+                {
+                    "System": "ibm,everest",
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "LocCode": "P0-C59"
+                        },
+                        {
+                            "Priority": "medium",
+                            "LocCode": "P0"
+                        }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "A power off was issued because a regulator for standby power faulted",
+                "Message": "A power off was issued because a regulator for standby power faulted",
+                "Notes": [
+                ]
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.Power.Error.PowerSequencerPGOODFault",
             "Subsystem": "power_sequencer",
             "ComponentID": "0x2700",
