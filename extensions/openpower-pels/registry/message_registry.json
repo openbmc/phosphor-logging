@@ -424,6 +424,30 @@
         },
 
         {
+            "Name": "org.open_power.PHAL.Error.devtreeSync",
+            "Subsystem": "cec_hardware",
+            "ComponentID": "0x3000",
+            "Severity": "unrecoverable",
+
+            "SRC":
+            {
+                "ReasonCode": "0x3003",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "Failure occurred during PHAL devtree sync ",
+                "Message": "Failure occurred during PHAL devtree sync",
+                "Notes": [
+                    "The journal should contain more information"
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.Processor.Error.SbeChipOpFailure",
             "Subsystem": "processor_chip",
             "ComponentID": "0x3500",
