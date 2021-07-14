@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "99778058_68e684fe",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-14T21:31:36Z",
+      "side": 1,
+      "message": "there\u0027s a constant you can use for this in pel_values.hpp.",
+      "range": {
+        "startLine": 694,
+        "startChar": 74,
+        "endLine": 694,
+        "endChar": 75
+      },
+      "revId": "195ce4bc61ffd2348960947d5ea634736edf54e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "893d29eb_afb71fce",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-14T21:31:36Z",
+      "side": 1,
+      "message": "In the spec it looks like its possible to have the location code but nothing else in the callout.  So maybe that should go first up above line 689 so it won\u0027t get skipped if no FRU identity section.",
+      "range": {
+        "startLine": 698,
+        "startChar": 0,
+        "endLine": 700,
+        "endChar": 72
+      },
+      "revId": "195ce4bc61ffd2348960947d5ea634736edf54e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
