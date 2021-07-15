@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "33913816_8fbcd886",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-07-15T03:16:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99778058_68e684fe",
+      "range": {
+        "startLine": 694,
+        "startChar": 74,
+        "endLine": 694,
+        "endChar": 75
+      },
+      "revId": "195ce4bc61ffd2348960947d5ea634736edf54e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "893d29eb_afb71fce",
         "filename": "extensions/openpower-pels/manager.cpp",
         "patchSetId": 8
@@ -36,6 +60,30 @@
       "writtenOn": "2021-07-14T21:31:36Z",
       "side": 1,
       "message": "In the spec it looks like its possible to have the location code but nothing else in the callout.  So maybe that should go first up above line 689 so it won\u0027t get skipped if no FRU identity section.",
+      "range": {
+        "startLine": 698,
+        "startChar": 0,
+        "endLine": 700,
+        "endChar": 72
+      },
+      "revId": "195ce4bc61ffd2348960947d5ea634736edf54e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a177b2cf_7e45bcd1",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-07-15T03:16:24Z",
+      "side": 1,
+      "message": "I saw this from this link https://ibm.ent.box.com/notes/791481299908 that the location code is second field \nI am not sure which spec are you referring to?\nFrom the above link I see this...\n\"Resolution\": \"1. Priority: High, Location Code: U78DB.ND0.WZS0008-P0-C23, FN: 02CM285, SN: YH30A003S12K, CCIN: 2E32 2. Priority: High, Location Code: U78DB.ND0.WZS0008-P0-C24, FN: 02CM285, SN: YH30A001S94K, CCIN: 2E32 3. Priority: Medium, Name: AIRMOVR, Location Code: U78DB.ND0.WZS0008-P0-C5\"",
+      "parentUuid": "893d29eb_afb71fce",
       "range": {
         "startLine": 698,
         "startChar": 0,
