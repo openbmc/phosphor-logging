@@ -336,4 +336,22 @@ TEST(ServiceIndicatorsTest, ActivateTest)
 
         lightPath.activate(pel);
     }
+
+    // Test setCriticalAssociation
+    {
+        MockDataInterface dataIface;
+        service_indicators::LightPath lightPath{dataIface};
+
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("U42", 0, true))
+            .WillOnce(Return("/system/chassis/processor"));
+
+        EXPECT_CALL(dataIface,
+                    setCriticalAssociation("/system/chassis/processor"))
+            .Times(1);
+
+        auto data = pelFactory(1, 'O', 0x20, 0xA400, 500);
+        PEL pel{data};
+
+        lightPath.activate(pel);
+    }
 }
