@@ -22,7 +22,9 @@
 #include <fmt/format.h>
 
 #include <fstream>
+#include <iostream>
 #include <phosphor-logging/log.hpp>
+#include <vector>
 #include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
 
 namespace openpower
@@ -36,6 +38,7 @@ constexpr auto objectMapper = "xyz.openbmc_project.ObjectMapper";
 constexpr auto vpdManager = "com.ibm.VPD.Manager";
 constexpr auto ledGroupManager = "xyz.openbmc_project.LED.GroupManager";
 constexpr auto logSetting = "xyz.openbmc_project.Settings";
+constexpr auto invManager = "xyz.openbmc_project.Inventory.Manager";
 } // namespace service_name
 
 namespace object_path
@@ -79,6 +82,7 @@ constexpr auto ledGroup = "xyz.openbmc_project.Led.Group";
 constexpr auto operationalStatus =
     "xyz.openbmc_project.State.Decorator.OperationalStatus";
 constexpr auto logSetting = "xyz.openbmc_project.Logging.Settings";
+constexpr auto association = "xyz.openbmc_project.Association.Definitions";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
@@ -526,6 +530,62 @@ void DataInterface::setFunctional(const std::string& objectPath,
 
     method.append(interface::operationalStatus, "Functional", variant);
     _bus.call(method);
+}
+
+void DataInterface::setCriticalAssociation(const std::string& objectPath) const
+{
+    DBusValue getAssociationValue;
+    bool associationFound = false;
+
+    std::vector<std::tuple<std::string, std::string, std::string>>
+        newAssociationEntry;
+    newAssociationEntry.push_back(
+        std::tuple<std::string, std::string, std::string>(
+            "health_rollup", "critical",
+            "/xyz/openbmc_project/inventory/system/chassis"));
+
+    DBusValue addAssociationEntry =
+        std::vector<std::tuple<std::string, std::string, std::string>>(
+            newAssociationEntry);
+
+    auto service = getService(objectPath, interface::association);
+
+    getProperty(service, objectPath, interface::association, "Associations",
+                getAssociationValue);
+
+    auto getVal = std::get<
+        std::vector<std::tuple<std::string, std::string, std::string>>>(
+        getAssociationValue);
+
+    auto addVal = std::get<
+        std::vector<std::tuple<std::string, std::string, std::string>>>(
+        addAssociationEntry);
+
+    for (const auto& i : getVal)
+    {
+        if ((std::get<0>(i) == std::get<0>(addVal[0])) &&
+            (std::get<1>(i) == std::get<1>(addVal[0])) &&
+            (std::get<2>(i) == std::get<2>(addVal[0])))
+        {
+            associationFound = true;
+            break;
+        }
+    }
+
+    if (!associationFound)
+    {
+        getVal.push_back(newAssociationEntry[0]);
+        DBusValue setAssociationValue =
+            std::vector<std::tuple<std::string, std::string, std::string>>(
+                getVal);
+
+        auto method = _bus.new_method_call(service.c_str(), objectPath.c_str(),
+                                           interface::dbusProperty, "Set");
+
+        method.append(interface::association, "Associations",
+                      setAssociationValue);
+        _bus.call(method);
+    }
 }
 
 std::vector<std::string> DataInterface::getSystemNames() const

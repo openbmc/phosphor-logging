@@ -18,6 +18,7 @@
 #include <fmt/format.h>
 
 #include <bitset>
+#include <iostream>
 #include <phosphor-logging/log.hpp>
 
 namespace openpower::pels::service_indicators
@@ -80,6 +81,7 @@ void LightPath::activate(const PEL& pel)
             if (!paths.empty())
             {
                 setNotFunctional(paths);
+                createCriticalAssociation(paths);
                 sai = false;
             }
         }
@@ -237,6 +239,26 @@ void LightPath::setNotFunctional(
             log<level::INFO>(
                 fmt::format("Could not write Functional property on {} ({})",
                             path, e.what())
+                    .c_str());
+        }
+    }
+}
+
+void LightPath::createCriticalAssociation(
+    const std::vector<std::string>& inventoryPaths) const
+{
+    for (const auto& path : inventoryPaths)
+    {
+        try
+        {
+            _dataIface.setCriticalAssociation(path);
+        }
+        catch (const std::exception& e)
+        {
+            log<level::INFO>(
+                fmt::format(
+                    "Could not set critical association on object path {} ({})",
+                    path, e.what())
                     .c_str());
         }
     }
