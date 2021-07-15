@@ -25,6 +25,7 @@ extern "C" {
 
 #include <ekb/hwpf/fapi2/include/return_code_defs.H>
 #include <fmt/format.h>
+#include <libekb.H>
 
 #include <new>
 #include <phosphor-logging/log.hpp>
@@ -164,6 +165,12 @@ void SbeFFDC::process(const sbeFfdcPacketType& ffdcPkt)
     if (!pdbg_targets_init(NULL))
     {
         log<level::ERR>("pdbg_targets_init failed, skipping ffdc processing");
+        return;
+    }
+
+    if (libekb_init())
+    {
+        log<level::ERR>("libekb_init failed, skipping ffdc processing");
         return;
     }
 
