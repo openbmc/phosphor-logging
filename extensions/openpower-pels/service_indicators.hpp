@@ -145,6 +145,15 @@ class LightPath : public Policy
     void setNotFunctional(const std::vector<std::string>& inventoryPaths) const;
 
     /**
+     * @brief Sets the critical association on the passed in
+     *        inventory paths.
+     *
+     * @param[in] inventoryPaths - The inventory D-Bus paths
+     */
+    void createCriticalAssociation(
+        const std::vector<std::string>& inventoryPaths) const;
+
+    /**
      * @brief Checks if the callout priority is one that the policy
      *        may turn on an LED for.
      *

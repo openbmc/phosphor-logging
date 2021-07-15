@@ -274,6 +274,10 @@ TEST(ServiceIndicatorsTest, ActivateTest)
                     setFunctional("/system/chassis/processor", false))
             .Times(1);
 
+        EXPECT_CALL(dataIface,
+                    setCriticalAssociation("/system/chassis/processor"))
+            .Times(1);
+
         auto data = pelFactory(1, 'O', 0x20, 0xA400, 500);
         PEL pel{data};
 
@@ -329,6 +333,24 @@ TEST(ServiceIndicatorsTest, ActivateTest)
 
         EXPECT_CALL(dataIface,
                     setFunctional("/system/chassis/processor", false))
+            .WillOnce(Throw(std::runtime_error("Fail")));
+
+        auto data = pelFactory(1, 'O', 0x20, 0xA400, 500);
+        PEL pel{data};
+
+        lightPath.activate(pel);
+    }
+
+    // Test setCriticalAssociation fail
+    {
+        MockDataInterface dataIface;
+        service_indicators::LightPath lightPath{dataIface};
+
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("U42", 0, true))
+            .WillOnce(Return("/system/chassis/processor"));
+
+        EXPECT_CALL(dataIface,
+                    setCriticalAssociation("/system/chassis/processor"))
             .WillOnce(Throw(std::runtime_error("Fail")));
 
         auto data = pelFactory(1, 'O', 0x20, 0xA400, 500);

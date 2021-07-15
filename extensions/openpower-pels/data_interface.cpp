@@ -79,6 +79,7 @@ constexpr auto ledGroup = "xyz.openbmc_project.Led.Group";
 constexpr auto operationalStatus =
     "xyz.openbmc_project.State.Decorator.OperationalStatus";
 constexpr auto logSetting = "xyz.openbmc_project.Logging.Settings";
+constexpr auto association = "xyz.openbmc_project.Association.Definitions";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
@@ -526,6 +527,39 @@ void DataInterface::setFunctional(const std::string& objectPath,
 
     method.append(interface::operationalStatus, "Functional", variant);
     _bus.call(method);
+}
+
+using AssociationTuple = std::tuple<std::string, std::string, std::string>;
+using AssociationsProperty = std::vector<AssociationTuple>;
+
+void DataInterface::setCriticalAssociation(const std::string& objectPath) const
+{
+    DBusValue getAssociationValue;
+
+    auto service = getService(objectPath, interface::association);
+
+    getProperty(service, objectPath, interface::association, "Associations",
+                getAssociationValue);
+
+    auto association = std::get<AssociationsProperty>(getAssociationValue);
+
+    AssociationTuple critAssociation{
+        "health_rollup", "critical",
+        "/xyz/openbmc_project/inventory/system/chassis"};
+
+    if (std::find(association.begin(), association.end(), critAssociation) ==
+        association.end())
+    {
+        association.push_back(critAssociation);
+        DBusValue setAssociationValue = association;
+
+        auto method = _bus.new_method_call(service.c_str(), objectPath.c_str(),
+                                           interface::dbusProperty, "Set");
+
+        method.append(interface::association, "Associations",
+                      setAssociationValue);
+        _bus.call(method);
+    }
 }
 
 std::vector<std::string> DataInterface::getSystemNames() const
