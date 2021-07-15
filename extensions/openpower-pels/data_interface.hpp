@@ -296,6 +296,14 @@ class DataInterfaceBase
                                bool functional) const = 0;
 
     /**
+     * @brief Sets the critical association on the D-Bus object.
+     *
+     * @param[in] objectPath - The D-Bus object path
+     */
+    virtual void
+        setCriticalAssociation(const std::string& objectPath) const = 0;
+
+    /**
      * @brief Returns the manufacturing QuiesceOnError property
      *
      * @return bool - Manufacturing QuiesceOnError property
@@ -577,6 +585,13 @@ class DataInterface : public DataInterfaceBase
      */
     void setFunctional(const std::string& objectPath,
                        bool functional) const override;
+
+    /**
+     * @brief Sets the critical association on the D-Bus object.
+     *
+     * @param[in] objectPath - The D-Bus object path
+     */
+    void setCriticalAssociation(const std::string& objectPath) const override;
 
     /**
      * @brief Returns the manufacturing QuiesceOnError property
