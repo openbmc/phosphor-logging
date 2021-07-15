@@ -34,6 +34,24 @@
       "revId": "3441c67118f65a91df341265db707cfc92adfcc5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9765fc6f_8af24f79",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 897,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-15T21:16:15Z",
+      "side": 1,
+      "message": "Since this is displayed with peltool, which may be used by service personnel in the field, I think a more specific Message would be useful.  That is, unless Shawn is going to use this error with his voltage regulator faults as well.",
+      "parentUuid": "1556451b_b8f90b57",
+      "revId": "3441c67118f65a91df341265db707cfc92adfcc5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
