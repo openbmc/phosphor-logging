@@ -1,11 +1,15 @@
 systemd_system_unit_dir = dependency('systemd').get_variable(
     pkgconfig: 'systemdsystemunitdir')
 
-install_data(
-    ['xyz.openbmc_project.Logging.service',
-     'xyz.openbmc_project.Syslog.Config.service'],
-    install_dir: systemd_system_unit_dir,
-)
+install_unit = get_option('install_unit').enabled()
+
+if install_unit
+    install_data(
+        ['xyz.openbmc_project.Logging.service',
+         'xyz.openbmc_project.Syslog.Config.service'],
+        install_dir: systemd_system_unit_dir,
+    )
+endif
 
 install_data(
     'busconfig/phosphor-logging.conf',

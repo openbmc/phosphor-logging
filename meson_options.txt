@@ -40,3 +40,10 @@ option(
     value: '/etc/rsyslog.d/server.conf',
     description: 'Path to rsyslog server conf file',
 )
+
+option(
+    'install_unit',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Install systemd unit file',
+)
