@@ -337,8 +337,10 @@ void Manager::onEntryResolve(sdbusplus::message::message& msg)
 
 void Manager::checkAndQuiesceHost()
 {
+    using Host = sdbusplus::xyz::openbmc_project::State::server::Host;
+
     // First check host state
-    std::variant<std::string> property;
+    std::variant<Host::HostState> property;
 
     auto method = this->busLog.new_method_call(
         "xyz.openbmc_project.State.Host", "/xyz/openbmc_project/state/host0",
@@ -363,17 +365,8 @@ void Manager::checkAndQuiesceHost()
         return;
     }
 
-    std::string hostState = std::get<std::string>(property);
-
-    // If host state is empty, do nothing
-    if (hostState.empty())
-    {
-        return;
-    }
-
-    using Host = sdbusplus::xyz::openbmc_project::State::server::Host;
-    auto state = Host::convertHostStateFromString(hostState);
-    if (state != Host::HostState::Running)
+    auto hostState = std::get<Host::HostState>(property);
+    if (hostState != Host::HostState::Running)
     {
         return;
     }
