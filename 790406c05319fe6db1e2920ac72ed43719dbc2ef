@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e48ef3ca_96a37b86",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 857,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2021-07-19T20:20:37Z",
+      "side": 1,
+      "message": "I noticed on a previous POWER system, the subsystem value for a 0x2602 \"Standby Regulator Fault\" was EPUB_POWER_SUBSYS/0x60.  I think this corresponds to the message registry Subsystem value \"power\".\n\nShould that be used here too, or was this changed for OpenBMC?",
+      "range": {
+        "startLine": 857,
+        "startChar": 26,
+        "endLine": 857,
+        "endChar": 42
+      },
+      "revId": "790406c05319fe6db1e2920ac72ed43719dbc2ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e92804db_77a031f6",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2021-07-19T20:20:37Z",
+      "side": 1,
+      "message": "This is \"Enterprise BMC slot\".  So the regulator on Rainier is on the BMC itself and not the Nisqually?  Or is this just covering the case where the regulator is OK, the comm path from the BMC could be broken, and it is easier/cheaper to replace the BMC first?",
+      "range": {
+        "startLine": 872,
+        "startChar": 40,
+        "endLine": 872,
+        "endChar": 45
+      },
+      "revId": "790406c05319fe6db1e2920ac72ed43719dbc2ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "03727d25_61e187df",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 885,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2021-07-19T20:20:37Z",
+      "side": 1,
+      "message": "This is the Reist SYS IO, Standby pluggable VRM.  So on Everest, the standby VRM you are monitoring is on a pluggable VRM and is not mounted directly on the backplane?",
+      "range": {
+        "startLine": 885,
+        "startChar": 40,
+        "endLine": 885,
+        "endChar": 46
+      },
+      "revId": "790406c05319fe6db1e2920ac72ed43719dbc2ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
