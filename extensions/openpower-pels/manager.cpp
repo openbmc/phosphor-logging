@@ -116,6 +116,9 @@ void Manager::addRawPEL(const std::string& rawPelPath, uint32_t obmcLogID)
         file.close();
 
         addPEL(data, obmcLogID);
+
+        std::error_code ec;
+        fs::remove(rawPelPath, ec);
     }
     else
     {
