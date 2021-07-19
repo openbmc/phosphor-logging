@@ -52,6 +52,24 @@
       "revId": "3441c67118f65a91df341265db707cfc92adfcc5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bcdad67e_1c155ac8",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 897,
+      "author": {
+        "id": 1000369
+      },
+      "writtenOn": "2021-07-19T15:02:52Z",
+      "side": 1,
+      "message": "Can add \"standby\" - is this a BMC standby regulator or a host standby regulator?",
+      "parentUuid": "9765fc6f_8af24f79",
+      "revId": "3441c67118f65a91df341265db707cfc92adfcc5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
