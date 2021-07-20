@@ -472,6 +472,33 @@
         },
 
         {
+            "Name": "org.open_power.PHAL.Error.HostRunning",
+            "Subsystem": "cec_sp_hostboot_iface",
+            "ComponentID": "0x3000",
+
+            "SRC":
+            {
+                "ReasonCode": "0x3005",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "Host did not respond to BMC after a BMC reset",
+                "Message": "Host did not respond to BMC after a BMC reset but hardware indicates it is running",
+                "Notes": [
+                    "System will be left in its current state to ensure host ",
+                    "is not unexpectedly taken down. There is most likely an ",
+                    "issue in the software or hardware communication path ",
+                    "between the BMC and the Host firmware.",
+                    "A BMC dump will be collected with relevant FFDC."
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.Processor.Error.SbeChipOpFailure",
             "Subsystem": "processor_chip",
             "ComponentID": "0x3500",
