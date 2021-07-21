@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "38d2b09e_9abbce98",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-21T13:41:46Z",
+      "side": 1,
+      "message": "Can you describe here that you\u0027re doing this for the items in callouts that need their service indicators turned on in the service indicator code, and that the other association endpoint is the chassis so it can be used for health rollup?",
+      "revId": "42bc672ea586b1c03a064de0cc938c25e8cc160e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d8e5b707_3634a0b9",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-21T13:41:46Z",
+      "side": 1,
+      "message": "looks like this can be removed, since you\u0027re (correctly) using getService to get the service name.",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 68
+      },
+      "revId": "42bc672ea586b1c03a064de0cc938c25e8cc160e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "02716392_876c0f1a",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-21T13:41:46Z",
+      "side": 1,
+      "message": "At the top of this function you can just do a:\nusing AssociationTuple \u003d std::tuple\u003cstd::string, std::string, std::string\u003e;\nusing AssociationsProperty \u003d std::vector\u003cAssocationTuple\u003e;\n\nThen you can use those below instead of having to type out the whole definition each time.",
+      "range": {
+        "startLine": 538,
+        "startChar": 3,
+        "endLine": 538,
+        "endChar": 65
+      },
+      "revId": "42bc672ea586b1c03a064de0cc938c25e8cc160e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0cf33de9_fcafe5c6",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-21T13:41:46Z",
+      "side": 1,
+      "message": "I think you can simplify this code some, like:\n\ngetProperty(..., getAssocationValue);\n\nauto associations \u003d std::get\u003cAssociationsProperty\u003e(getAssocationsValue);\n\nAssociationTuple critAssociation{\"health_rollup\", ...};\n\n\nif (std::find(associations.begin(), associations.end(), critAssociation) \u003d\u003d associations.end())\n{\n    associations.push_back(newAssociation);\n\n     // write property...\n}",
+      "revId": "42bc672ea586b1c03a064de0cc938c25e8cc160e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d4f309f_00909475",
+        "filename": "test/openpower-pels/mocks.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-21T13:41:46Z",
+      "side": 1,
+      "message": "in service_indicators_test.cpp there\u0027s some testcases where you can add EXPECT_CALLs for this.",
+      "revId": "42bc672ea586b1c03a064de0cc938c25e8cc160e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
