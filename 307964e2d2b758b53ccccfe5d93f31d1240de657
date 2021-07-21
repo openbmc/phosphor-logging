@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f4122c54_15a44dea",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-21T15:46:21Z",
+      "side": 1,
+      "message": "You should be able to just use _archivePath here.",
+      "range": {
+        "startLine": 542,
+        "startChar": 56,
+        "endLine": 542,
+        "endChar": 63
+      },
+      "revId": "307964e2d2b758b53ccccfe5d93f31d1240de657",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db2f3ae6_e73f8de3",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-21T15:46:21Z",
+      "side": 1,
+      "message": "remove_all will remove a directory tree. I think you can just use remove() to remove a file.  Also, it will throw if the delete under the covers fails.  While unlikely, I\u0027d feel a little better if you used the version that doesn\u0027t throw:\n\nstd::error_code ec;\nfs::remove(entry.path(), ec);",
+      "revId": "307964e2d2b758b53ccccfe5d93f31d1240de657",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2038df53_72b7545d",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-21T15:46:21Z",
+      "side": 1,
+      "message": "and as we discussed, need to set archive size back to 0",
+      "revId": "307964e2d2b758b53ccccfe5d93f31d1240de657",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
