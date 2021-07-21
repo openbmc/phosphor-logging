@@ -530,20 +530,33 @@ void Repository::updateRepoStats(const PELAttributes& pel, bool pelAdded)
     }
 }
 
-bool Repository::sizeWarning() const
+bool Repository::sizeWarning()
 {
+    std::error_code ec;
+    bool errorFlag = false;
+
     if ((_archiveSize > 0) && ((_sizes.total + _archiveSize) >
                                ((_maxRepoSize * warningPercentage) / 100)))
     {
         log<level::INFO>(
             "Repository::sizeWarning function:Deleting the files in archive");
 
-        std::string cmd = "rm " + _archivePath.string() + "/*_*";
-        auto rc = system(cmd.c_str());
-        if (rc)
+        for (const auto& entry : fs::directory_iterator(_archivePath))
         {
-            log<level::ERR>("Repository::sizeWarning function:Could not delete "
-                            "files in archive");
+            fs::remove(entry.path(), ec);
+            if (!ec)
+            {
+                log<level::ERR>(
+                    "Repository::sizeWarning function:Could not delete "
+                    "files in archive");
+                errorFlag = true;
+                break;
+            }
+        }
+
+        if (!errorFlag)
+        {
+            _archiveSize = 0;
         }
     }
 
