@@ -538,12 +538,10 @@ bool Repository::sizeWarning() const
         log<level::INFO>(
             "Repository::sizeWarning function:Deleting the files in archive");
 
-        std::string cmd = "rm " + _archivePath.string() + "/*_*";
-        auto rc = system(cmd.c_str());
-        if (rc)
+        std::string dirPath = _archivePath.string();
+        for (const auto& entry : fs::directory_iterator(dirPath))
         {
-            log<level::ERR>("Repository::sizeWarning function:Could not delete "
-                            "files in archive");
+            fs::remove_all(entry.path());
         }
     }
 
