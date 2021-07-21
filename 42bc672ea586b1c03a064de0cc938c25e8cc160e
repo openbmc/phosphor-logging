@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "cbd4bf8f_49aa4f5d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-07-21T15:29:29Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "38d2b09e_9abbce98",
+      "revId": "42bc672ea586b1c03a064de0cc938c25e8cc160e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d8e5b707_3634a0b9",
         "filename": "extensions/openpower-pels/data_interface.cpp",
         "patchSetId": 3
@@ -30,6 +48,30 @@
       "writtenOn": "2021-07-21T13:41:46Z",
       "side": 1,
       "message": "looks like this can be removed, since you\u0027re (correctly) using getService to get the service name.",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 68
+      },
+      "revId": "42bc672ea586b1c03a064de0cc938c25e8cc160e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "583aad68_715abb23",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-07-21T15:29:29Z",
+      "side": 1,
+      "message": "Yeah right. Actually I was using it earlier but when I modified the code it wasn\u0027t no longer required.",
+      "parentUuid": "d8e5b707_3634a0b9",
       "range": {
         "startLine": 39,
         "startChar": 0,
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "1c1f61fd_358a0481",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-07-21T15:29:29Z",
+      "side": 1,
+      "message": "Thanks Matt for this suggestion. Will do.",
+      "parentUuid": "02716392_876c0f1a",
+      "range": {
+        "startLine": 538,
+        "startChar": 3,
+        "endLine": 538,
+        "endChar": 65
+      },
+      "revId": "42bc672ea586b1c03a064de0cc938c25e8cc160e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0cf33de9_fcafe5c6",
         "filename": "extensions/openpower-pels/data_interface.cpp",
         "patchSetId": 3
@@ -82,6 +148,24 @@
     },
     {
       "key": {
+        "uuid": "d692a99a_d8d538e2",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-07-21T15:29:29Z",
+      "side": 1,
+      "message": "Based on comment above will look into it",
+      "parentUuid": "0cf33de9_fcafe5c6",
+      "revId": "42bc672ea586b1c03a064de0cc938c25e8cc160e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9d4f309f_00909475",
         "filename": "test/openpower-pels/mocks.hpp",
         "patchSetId": 3
@@ -93,6 +177,24 @@
       "writtenOn": "2021-07-21T13:41:46Z",
       "side": 1,
       "message": "in service_indicators_test.cpp there\u0027s some testcases where you can add EXPECT_CALLs for this.",
+      "revId": "42bc672ea586b1c03a064de0cc938c25e8cc160e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "52729b18_e612097e",
+        "filename": "test/openpower-pels/mocks.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-07-21T15:29:29Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "9d4f309f_00909475",
       "revId": "42bc672ea586b1c03a064de0cc938c25e8cc160e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
