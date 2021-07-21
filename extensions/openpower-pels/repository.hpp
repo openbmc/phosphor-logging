@@ -370,7 +370,7 @@ class Repository
      *
      * @return bool - true if repo is > 95% full or too many PELs
      */
-    bool sizeWarning() const;
+    bool sizeWarning();
 
     /**
      * @brief Deletes PELs to bring the repository size down
