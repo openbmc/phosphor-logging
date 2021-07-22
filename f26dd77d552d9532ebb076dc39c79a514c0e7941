@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a39e5727_e9172c05",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-22T15:17:06Z",
+      "side": 1,
+      "message": "the documentation on operator bool says:\nChecks if the error value is valid, i.e. non-zero. \n\ndoesn\u0027t that mean that if it\u0027s true then there is an error?",
+      "revId": "f26dd77d552d9532ebb076dc39c79a514c0e7941",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7f2017b3_301551be",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 550,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-22T15:17:06Z",
+      "side": 1,
+      "message": "since you\u0027re putting something in the journal, you may as well put in what file it couldn\u0027t delete:\n\nlog\u003clevel::ERR\u003e(\"Could not delete a file in PEL archive\",\n                entry(\"FILENAME\u003d%s\", entry.path().c_str()));",
+      "range": {
+        "startLine": 550,
+        "startChar": 21,
+        "endLine": 550,
+        "endChar": 27
+      },
+      "revId": "f26dd77d552d9532ebb076dc39c79a514c0e7941",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
