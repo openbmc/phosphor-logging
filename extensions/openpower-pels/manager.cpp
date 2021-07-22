@@ -94,6 +94,7 @@ void Manager::create(const std::string& message, uint32_t obmcLogID,
 
     setEntryPath(obmcLogID);
     setServiceProviderNotifyFlag(obmcLogID);
+    updateHiddenFlag(obmcLogID);
 }
 
 void Manager::addRawPEL(const std::string& rawPelPath, uint32_t obmcLogID)
@@ -168,6 +169,11 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
             log<level::ERR>("Unable to add PEL to Repository",
                             entry("PEL_ID=0x%X", pel->id()));
         }
+        
+        // Create map entry to update PEL Entry attributes
+        auto path = std::string(OBJ_ENTRY) + '/' + std::to_string(obmcLogID);
+        auto pelEntry = std::make_unique<sdbusplus::org::open_power::Logging::PEL::server::Entry>( _logManager.getBus(), path.c_str());
+        _PELEntry.insert(std::make_pair(path, std::move(pelEntry)));
 
         // Check if firmware should quiesce system due to error
         checkPelAndQuiesce(pel);
@@ -265,7 +271,9 @@ std::vector<uint8_t> Manager::eselToRawData(const std::string& esel)
 void Manager::erase(uint32_t obmcLogID)
 {
     Repository::LogID id{Repository::LogID::Obmc(obmcLogID)};
-
+    
+    auto path = std::string(OBJ_ENTRY) + '/' + std::to_string(obmcLogID);
+    _PELEntry.erase(path);
     _repo.remove(id);
 }
 
@@ -366,6 +374,11 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
     // Activate any resulting service indicators if necessary
     auto policy = service_indicators::getPolicy(*_dataIface);
     policy->activate(*pel);
+    
+    // Create map entry to update PEL Entry attributes
+    auto path = std::string(OBJ_ENTRY) + '/' + std::to_string(obmcLogID);
+    auto pelEntry = std::make_unique<sdbusplus::org::open_power::Logging::PEL::server::Entry>( _logManager.getBus(), path.c_str());
+    _PELEntry.insert(std::make_pair(path, std::move(pelEntry)));
 
     // Check if firmware should quiesce system due to error
     checkPelAndQuiesce(pel);
@@ -776,6 +789,25 @@ void Manager::setServiceProviderNotifyFlag(uint32_t obmcLogID)
                 entry->second->serviceProviderNotify(false);
             }
         }
+    }
+}
+
+void Manager::updateHiddenFlag(uint32_t obmcLogID)
+{    
+    auto path = std::string(OBJ_ENTRY) + '/' + std::to_string(obmcLogID);    
+    std::unique_ptr<sdbusplus::org::open_power::Logging::PEL::server::Entry>& PELEntry =  _PELEntry[path];    
+    Repository::LogID id{Repository::LogID::Obmc(obmcLogID)};
+    if (auto attributes = _repo.getPELAttributes(id); attributes)
+    {
+        auto& attr = attributes.value().get();    
+        if (attr.actionFlags.test(hiddenFlagBit))
+        {
+            PELEntry->hidden(true);
+        }
+        else
+        {
+            PELEntry->hidden(false);
+        }    
     }
 }
 
