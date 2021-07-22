@@ -188,6 +188,7 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
         checkPelAndQuiesce(pel);
         updateEventId(pel);
         updateResolution(pel);
+        createPELEntry(obmcLogID);
     }
     else
     {
@@ -281,6 +282,8 @@ void Manager::erase(uint32_t obmcLogID)
 {
     Repository::LogID id{Repository::LogID::Obmc(obmcLogID)};
 
+    auto path = std::string(OBJ_ENTRY) + '/' + std::to_string(obmcLogID);
+    _pelEntries.erase(path);
     _repo.remove(id);
 }
 
@@ -386,6 +389,7 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
     checkPelAndQuiesce(pel);
     updateEventId(pel);
     updateResolution(pel);
+    createPELEntry(obmcLogID);
 }
 
 sdbusplus::message::unix_fd Manager::getPEL(uint32_t pelID)
@@ -782,15 +786,31 @@ void Manager::setServiceProviderNotifyFlag(uint32_t obmcLogID)
         auto entry = _logManager.entries.find(obmcLogID);
         if (entry != _logManager.entries.end())
         {
-            if (attr.actionFlags.test(callHomeFlagBit))
-            {
-                entry->second->serviceProviderNotify(true);
-            }
-            else
-            {
-                entry->second->serviceProviderNotify(false);
-            }
+            entry->second->serviceProviderNotify(
+                attr.actionFlags.test(callHomeFlagBit));
         }
+    }
+}
+
+void Manager::createPELEntry(uint32_t obmcLogID)
+{
+    std::map<std::string, PropertiesVariant> varData;
+    Repository::LogID id{Repository::LogID::Obmc(obmcLogID)};
+    if (auto attributes = _repo.getPELAttributes(id); attributes)
+    {
+        namespace pv = openpower::pels::pel_values;
+        auto& attr = attributes.value().get();
+        varData.emplace(std::string("Hidden"),
+                        attr.actionFlags.test(hiddenFlagBit));
+        varData.emplace(
+            std::string("Subsystem"),
+            pv::getValue(attr.subsystem, pel_values::subsystemValues));
+        // Path to create PELEntry Interface is same as PEL
+        auto path = std::string(OBJ_ENTRY) + '/' + std::to_string(obmcLogID);
+        // Create Interface for PELEntry and set properties
+        auto pelEntry = std::make_unique<PELEntry>(_logManager.getBus(),
+                                                   path.c_str(), varData);
+        _pelEntries.emplace(std::move(path), std::move(pelEntry));
     }
 }
 
