@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "3e0349c3_0379a38c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-22T15:32:54Z",
+      "side": 1,
+      "message": "can you describe what the fix is here?  I tend to avoid 1 line commit messages.",
+      "revId": "f26dd77d552d9532ebb076dc39c79a514c0e7941",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a39e5727_e9172c05",
         "filename": "extensions/openpower-pels/repository.cpp",
         "patchSetId": 4
