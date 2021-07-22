@@ -11,6 +11,7 @@
 #include "registry.hpp"
 #include "repository.hpp"
 
+#include <org/open_power/Logging/PEL/Entry/server.hpp>
 #include <org/open_power/Logging/PEL/server.hpp>
 #include <sdbusplus/server.hpp>
 #include <sdeventplus/event.hpp>
@@ -24,6 +25,9 @@ namespace pels
 
 using PELInterface = sdbusplus::server::object::object<
     sdbusplus::org::open_power::Logging::server::PEL>;
+
+using PELEntry = sdbusplus::org::open_power::Logging::PEL::server::Entry;
+using PropertiesVariant = PELEntry::PropertiesVariant;
 
 /**
  * @brief PEL manager object
@@ -59,6 +63,8 @@ class Manager : public PELInterface
         {
             setEntryPath(entry.first);
             setServiceProviderNotifyFlag(entry.first);
+            // Create PELEntry interface and setup properties with their values
+            createPELEntry(entry.first);
         }
         setupPELDeleteWatch();
     }
@@ -387,6 +393,14 @@ class Manager : public PELInterface
     void setEntryPath(uint32_t obmcLogID);
 
     /**
+     * @brief Update the hidden attribute on PEL entry interface based on
+     *        the hidden Action flag
+     *
+     * @param[in] obmcLogID - The OpenBMC entry log ID
+     */
+    void updateHiddenFlag(uint32_t obmcLogID);
+
+    /**
      * @brief Sets the serviceProviderNotify D-bus property of PEL.
      *
      * @param[in] obmcLogID - The OpenBMC entry log ID
@@ -401,6 +415,16 @@ class Manager : public PELInterface
      * @param[in] pel - The PEL to use
      */
     void updateResolution(std::unique_ptr<openpower::pels::PEL>& pel);
+
+    /**
+     * @brief Create PELEntry Interface with supported properties
+     *
+     * Create PELEntry Interface and update all the properties which are
+     * supported
+     *
+     * @param[in] obmcLogID - The OpenBMC entry log ID
+     */
+    void createPELEntry(uint32_t obmcLogID);
 
     /**
      * @brief Reference to phosphor-logging's Manager class
@@ -432,6 +456,15 @@ class Manager : public PELInterface
      * @brief The API the PEL sections use to gather data
      */
     std::unique_ptr<DataInterfaceBase> _dataIface;
+
+    /**
+     * @brief The msp used to keep track of PEL entry pointer associated with
+     *        event log.
+     */
+    std::map<std::string,
+             std::unique_ptr<
+                 sdbusplus::org::open_power::Logging::PEL::server::Entry>>
+        _pelEntries;
 
     /**
      * @brief The HostNotifier object used for telling the
