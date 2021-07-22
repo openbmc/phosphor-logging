@@ -169,6 +169,30 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
                             entry("PEL_ID=0x%X", pel->id()));
         }
 
+        // Create map entry to update PEL Entry attributes
+        PropertiesVariant propVal;
+        Repository::LogID id{Repository::LogID::Obmc(obmcLogID)};
+        if (auto attributes = _repo.getPELAttributes(id); attributes)
+        {
+            auto& attr = attributes.value().get();
+            if (attr.actionFlags.test(hiddenFlagBit))
+            {
+                propVal = true;
+            }
+            else
+            {
+                propVal = false;
+            }
+        }
+
+        std::map<std::string, PropertiesVariant> varData;
+        varData.emplace(std::string("Hidden"), std::move(propVal));
+
+        auto path = std::string(OBJ_ENTRY) + '/' + std::to_string(obmcLogID);
+        auto pelEntry = std::make_unique<PELEntry>(_logManager.getBus(),
+                                                   path.c_str(), varData);
+        _pelEntries.emplace(std::move(path), std::move(pelEntry));
+
         // Check if firmware should quiesce system due to error
         checkPelAndQuiesce(pel);
         updateEventId(pel);
@@ -266,6 +290,8 @@ void Manager::erase(uint32_t obmcLogID)
 {
     Repository::LogID id{Repository::LogID::Obmc(obmcLogID)};
 
+    auto path = std::string(OBJ_ENTRY) + '/' + std::to_string(obmcLogID);
+    _pelEntries.erase(path);
     _repo.remove(id);
 }
 
@@ -366,6 +392,29 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
     // Activate any resulting service indicators if necessary
     auto policy = service_indicators::getPolicy(*_dataIface);
     policy->activate(*pel);
+
+    // Create map entry to update PEL Entry attributes
+    PropertiesVariant propVal;
+    Repository::LogID id{Repository::LogID::Obmc(obmcLogID)};
+    if (auto attributes = _repo.getPELAttributes(id); attributes)
+    {
+        auto& attr = attributes.value().get();
+        if (attr.actionFlags.test(hiddenFlagBit))
+        {
+            propVal = true;
+        }
+        else
+        {
+            propVal = false;
+        }
+    }
+
+    std::map<std::string, PropertiesVariant> varData;
+    varData.emplace(std::string("Hidden"), std::move(propVal));
+    auto path = std::string(OBJ_ENTRY) + '/' + std::to_string(obmcLogID);
+    auto pelEntry =
+        std::make_unique<PELEntry>(_logManager.getBus(), path.c_str(), varData);
+    _pelEntries.emplace(std::move(path), std::move(pelEntry));
 
     // Check if firmware should quiesce system due to error
     checkPelAndQuiesce(pel);
