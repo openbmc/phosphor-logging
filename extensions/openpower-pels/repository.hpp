@@ -29,6 +29,7 @@ class Repository
         std::filesystem::path path;
         size_t sizeOnDisk;
         uint8_t creator;
+        uint8_t subsystem;
         uint8_t severity;
         std::bitset<16> actionFlags;
         TransmissionState hostState;
@@ -37,11 +38,13 @@ class Repository
         PELAttributes() = delete;
 
         PELAttributes(const std::filesystem::path& p, size_t size,
-                      uint8_t creator, uint8_t sev, uint16_t flags,
-                      TransmissionState hostState, TransmissionState hmcState) :
+                      uint8_t creator, uint8_t subsystem, uint8_t sev,
+                      uint16_t flags, TransmissionState hostState,
+                      TransmissionState hmcState) :
             path(p),
-            sizeOnDisk(size), creator(creator), severity(sev),
-            actionFlags(flags), hostState(hostState), hmcState(hmcState)
+            sizeOnDisk(size), creator(creator), subsystem(subsystem),
+            severity(sev), actionFlags(flags), hostState(hostState),
+            hmcState(hmcState)
         {
         }
     };
