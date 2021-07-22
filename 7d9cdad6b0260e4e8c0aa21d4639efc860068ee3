@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "f8218c0f_12cc4aca",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 547,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-07-22T10:32:23Z",
+      "side": 1,
+      "message": "It returns true if successful else false.\nhttps://en.cppreference.com/w/cpp/filesystem/remove",
+      "parentUuid": "1232a5ab_3e98864d",
+      "range": {
+        "startLine": 547,
+        "startChar": 15,
+        "endLine": 547,
+        "endChar": 17
+      },
+      "revId": "7d9cdad6b0260e4e8c0aa21d4639efc860068ee3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "03c92d74_a3e4757e",
         "filename": "extensions/openpower-pels/repository.cpp",
         "patchSetId": 3
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "9fb1db3a_830f7dbb",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-07-22T10:32:23Z",
+      "side": 1,
+      "message": "Based on your next comment will remove it.",
+      "parentUuid": "03c92d74_a3e4757e",
+      "range": {
+        "startLine": 553,
+        "startChar": 15,
+        "endLine": 553,
+        "endChar": 22
+      },
+      "revId": "7d9cdad6b0260e4e8c0aa21d4639efc860068ee3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "33f4fb71_26e8ab66",
         "filename": "extensions/openpower-pels/repository.cpp",
         "patchSetId": 3
@@ -59,6 +107,30 @@
       "writtenOn": "2021-07-21T18:56:31Z",
       "side": 1,
       "message": "I wouldn\u0027t worry about this part. I\u0027d expect we\u0027ll always be able to delete files, but for whatever reason if we can\u0027t (maybe someone made read only file in there?) I just don\u0027t want it to throw an exception and crash.",
+      "range": {
+        "startLine": 557,
+        "startChar": 7,
+        "endLine": 557,
+        "endChar": 23
+      },
+      "revId": "7d9cdad6b0260e4e8c0aa21d4639efc860068ee3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "108e20c4_1d508c54",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-07-22T10:32:23Z",
+      "side": 1,
+      "message": "yeah ok",
+      "parentUuid": "33f4fb71_26e8ab66",
       "range": {
         "startLine": 557,
         "startChar": 7,
