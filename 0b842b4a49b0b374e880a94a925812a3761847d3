@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "071903b3_e33e5a1c",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-23T14:44:02Z",
+      "side": 1,
+      "message": "oh, right, one would think I would know that since I wrote it ;)",
+      "parentUuid": "09e2ecfd_54adb438",
+      "revId": "0b842b4a49b0b374e880a94a925812a3761847d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c76da82a_2b7e7137",
         "filename": "extensions/openpower-pels/manager.hpp",
         "patchSetId": 2
