@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "b4271c2d_407dd37a",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-23T13:57:26Z",
+      "side": 1,
+      "message": "We don\u0027t need to make it complicated, all I really want is to not throw an exception if for some reason fs::remove were to fail.  As far as I\u0027m concerned, you can remove the if (ec) check completely.",
+      "parentUuid": "c1982db2_73dcd0f1",
+      "revId": "f26dd77d552d9532ebb076dc39c79a514c0e7941",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7f2017b3_301551be",
         "filename": "extensions/openpower-pels/repository.cpp",
         "patchSetId": 4
