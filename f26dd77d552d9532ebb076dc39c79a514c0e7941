@@ -108,6 +108,24 @@
     },
     {
       "key": {
+        "uuid": "356316da_513e7de0",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-23T14:18:42Z",
+      "side": 1,
+      "message": "I wrote the following test program:\n\n    std::ofstream file {\"test.txt\"};\n    file.close();\n\n    std::error_code ec;\n    std::filesystem::remove(\"test.txt\", ec);\n    if (!ec)\n    {\n        printf(\"delete failed?\\n\");\n    }\n    else\n    {\n        printf(\"ec is true\\n\");\n    }\n\nand when it runs, it successfully deletes test.txt and prints:\n$ ./a.out\ndelete failed?\n\nwhich still implies that !ec is a good thing, not a bad thing",
+      "parentUuid": "7a20a021_79090586",
+      "revId": "f26dd77d552d9532ebb076dc39c79a514c0e7941",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7f2017b3_301551be",
         "filename": "extensions/openpower-pels/repository.cpp",
         "patchSetId": 4
