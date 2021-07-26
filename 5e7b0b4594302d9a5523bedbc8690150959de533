@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "37fbf48e_41bd5118",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-26T16:05:57Z",
+      "side": 1,
+      "message": "on line 544 association was already defined to be an AssociationsProperty.",
+      "range": {
+        "startLine": 554,
+        "startChar": 40,
+        "endLine": 554,
+        "endChar": 60
+      },
+      "revId": "5e7b0b4594302d9a5523bedbc8690150959de533",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "65313310_b7f1d2fe",
+        "filename": "test/openpower-pels/service_indicators_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-26T16:05:57Z",
+      "side": 1,
+      "message": "Instead of having this just to check the function was called, you can just add the EXPECT_CALL up around line 273 where setFunctional also has an EXPECT_CALL.\n\nAnd I guess since there is a testcase where setFunctional is made to fail, maybe you can just change this one to have setCriticalAssociationFail.",
+      "revId": "5e7b0b4594302d9a5523bedbc8690150959de533",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
