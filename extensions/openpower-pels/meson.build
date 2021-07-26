@@ -31,6 +31,7 @@ endif
 
 extra_sources = []
 extra_dependencies = []
+extra_args = []
 
 build_phal = get_option('phal').enabled()
 
@@ -44,7 +45,12 @@ if build_phal
         cpp.find_library('pdbg'),
         cpp.find_library('ekb'),
     ]
-    add_project_arguments('-DSBE_FFDC_SUPPORTED', language : ['c','cpp'])
+    extra_args += [
+        '-DSBE_FFDC_SUPPORTED',
+    ]
+    log_manager_ext_args += [
+        '-DSBE_FFDC_SUPPORTED',
+    ]
 endif
 
 libpel_sources = files(
@@ -91,6 +97,7 @@ libpel_lib = static_library(
     libpel_sources,
     'paths.cpp', # paths is separate because it is overridden during test.
     include_directories: include_directories('../..', '../../gen'),
+    cpp_args: extra_args,
     dependencies: libpel_deps,
 )
 

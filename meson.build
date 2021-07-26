@@ -133,6 +133,7 @@ elog_process_gen = custom_target('elog-process-metadata.cpp'.underscorify(),
 
 log_manager_ext_sources = []
 log_manager_ext_deps = []
+log_manager_ext_args = []
 
 subdir('extensions')
 subdir('phosphor-rsyslog-config')
@@ -165,6 +166,7 @@ executable('phosphor-log-manager',
     log_manager_ext_sources,
     'log_manager_main.cpp',
     include_directories: include_directories('gen'),
+    cpp_args: log_manager_ext_args,
     dependencies: [
         log_manager_deps,
         log_manager_ext_deps,
