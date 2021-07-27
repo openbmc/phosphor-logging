@@ -23,6 +23,10 @@ if not sdbusplus_dep.found()
     sdbusplus_dep = sdbusplus_proj.get_variable('sdbusplus_dep')
 endif
 
+if get_option('phal').enabled()
+    add_project_arguments('-DSBE_FFDC_SUPPORTED', language : ['cpp'])
+endif
+
 pdi_vars = []
 if not get_option('openpower-pel-extension').disabled()
     pdi_vars += ['data_org_open_power=true']
