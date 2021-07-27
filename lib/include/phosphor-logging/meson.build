@@ -16,9 +16,19 @@ phosphor_logging_gen += custom_target(
 
 install_headers(
     'elog.hpp',
+    'lg2.hpp',
     'log.hpp',
     'sdjournal.hpp',
     subdir: 'phosphor-logging',
+)
+
+install_headers(
+    'lg2/concepts.hpp',
+    'lg2/conversion.hpp',
+    'lg2/flags.hpp',
+    'lg2/level.hpp',
+    'lg2/logger.hpp',
+    subdir: 'phosphor-logging/lg2',
 )
 
 install_headers(
