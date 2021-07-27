@@ -88,6 +88,29 @@
     },
     {
       "key": {
+        "uuid": "5ae362b8_b2f1c33f",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 802,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-27T19:18:26Z",
+      "side": 1,
+      "message": "you can use auto here if you want",
+      "range": {
+        "startLine": 802,
+        "startChar": 4,
+        "endLine": 802,
+        "endChar": 76
+      },
+      "revId": "8fa87e7cf515c5ccdb0ed9a2fe4d292aa0e1acbc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d3eb9ce9_59a2bc62",
         "filename": "extensions/openpower-pels/manager.hpp",
         "patchSetId": 1
@@ -120,6 +143,24 @@
       "revId": "8fa87e7cf515c5ccdb0ed9a2fe4d292aa0e1acbc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b859ef28_fd837807",
+        "filename": "extensions/openpower-pels/manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-27T19:18:26Z",
+      "side": 1,
+      "message": "sounds good",
+      "parentUuid": "c30508b2_13a0d55e",
+      "revId": "8fa87e7cf515c5ccdb0ed9a2fe4d292aa0e1acbc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
