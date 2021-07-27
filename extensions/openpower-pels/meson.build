@@ -89,6 +89,7 @@ libpel_deps = [
     sdbusplus_dep,
     sdeventplus_dep,
     pdi_dep,
+    phosphor_logging_dep,
     extra_dependencies,
 ]
 
@@ -98,7 +99,9 @@ libpel_lib = static_library(
     'paths.cpp', # paths is separate because it is overridden during test.
     include_directories: include_directories('../..', '../../gen'),
     cpp_args: extra_args,
-    dependencies: libpel_deps,
+    dependencies: [
+        libpel_deps,
+    ]
 )
 
 libpel_dep = declare_dependency(
@@ -110,6 +113,7 @@ libpel_dep = declare_dependency(
         sdbusplus_dep,
         sdeventplus_dep,
         pdi_dep,
+        phosphor_logging_dep,
     ]
 )
 
