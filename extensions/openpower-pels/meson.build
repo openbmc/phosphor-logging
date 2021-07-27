@@ -44,7 +44,6 @@ if build_phal
         cpp.find_library('pdbg'),
         cpp.find_library('ekb'),
     ]
-    add_project_arguments('-DSBE_FFDC_SUPPORTED', language : ['c','cpp'])
 endif
 
 libpel_sources = files(
@@ -90,12 +89,12 @@ libpel_lib = static_library(
     'pel',
     libpel_sources,
     'paths.cpp', # paths is separate because it is overridden during test.
-    include_directories: include_directories('../..', '../../gen'),
+    include_directories: include_directories('../..', '../../gen', '../../lib/include/'),
     dependencies: libpel_deps,
 )
 
 libpel_dep = declare_dependency(
-    include_directories: include_directories('.'),
+    include_directories: include_directories('.', '../../lib/include/'),
     link_with: libpel_lib,
     dependencies: [
         libpldm_dep,
