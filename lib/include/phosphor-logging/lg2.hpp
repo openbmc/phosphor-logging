@@ -1,0 +1,108 @@
+#pragma once
+
+#if __cplusplus < 202002L
+static_assert(false, "phosphor-logging lg2 requires C++20");
+#else
+
+#include <phosphor-logging/lg2/concepts.hpp>
+#include <phosphor-logging/lg2/conversion.hpp>
+#include <phosphor-logging/lg2/flags.hpp>
+#include <phosphor-logging/lg2/level.hpp>
+#include <source_location>
+#include <string_view>
+
+namespace lg2
+{
+/** Implementation of the structured logging `lg2::log` interface. */
+template <level S = level::debug, details::any_but<std::source_location>... Ts>
+struct log
+{
+    /** log with a custom source_location.
+     *
+     *  @param[in] s - The custom source location.
+     *  @param[in] msg - The message to log.
+     *  @param[in] ts - The rest of the arguments.
+     */
+    explicit log(const std::source_location& s, const std::string_view& msg,
+                 Ts&&... ts)
+    {
+        details::log_conversion::start(S, s, msg, std::forward<Ts>(ts)...);
+    }
+
+    /** default log (source_location is determined by calling location).
+     *
+     *  @param[in] msg - The message to log.
+     *  @param[in] ts - The rest of the arguments.
+     *  @param[in] s - The derived source_location.
+     */
+    explicit log(
+        const std::string_view& msg, Ts&&... ts,
+        const std::source_location& s = std::source_location::current()) :
+        log(s, msg, std::forward<Ts>(ts)...)
+    {
+    }
+
+    // Give a nicer compile error if someone tries to log without a message.
+    log() = delete;
+};
+
+// Deducation guides to help the compiler out...
+
+template <level S = level::debug, typename... Ts>
+explicit log(const std::string_view&, Ts&&...) -> log<S, Ts...>;
+
+template <level S = level::debug, typename... Ts>
+explicit log(const std::source_location&, const std::string_view&, Ts&&...)
+    -> log<S, Ts...>;
+
+/** Macro to define aliases for lg2::level(...) -> lg2::log<level>(...)
+ *
+ *  Creates a simple inherited structure and corresponding deduction guides.
+ */
+#define PHOSPHOR_LOG2_DECLARE_LEVEL(levelval)                                  \
+    template <typename... Ts>                                                  \
+    struct levelval : public log<level::levelval, Ts...>                       \
+    {                                                                          \
+        using log<level::levelval, Ts...>::log;                                \
+    };                                                                         \
+                                                                               \
+    template <typename... Ts>                                                  \
+    explicit levelval(const std::string_view&, Ts&&...) -> levelval<Ts...>;    \
+                                                                               \
+    template <typename... Ts>                                                  \
+    explicit levelval(const std::source_location&, const std::string_view&,    \
+                      Ts&&...)                                                 \
+        ->levelval<Ts...>
+
+// Enumerate the aliases for each log level.
+PHOSPHOR_LOG2_DECLARE_LEVEL(emergency);
+PHOSPHOR_LOG2_DECLARE_LEVEL(alert);
+PHOSPHOR_LOG2_DECLARE_LEVEL(critical);
+PHOSPHOR_LOG2_DECLARE_LEVEL(error);
+PHOSPHOR_LOG2_DECLARE_LEVEL(warning);
+PHOSPHOR_LOG2_DECLARE_LEVEL(notice);
+PHOSPHOR_LOG2_DECLARE_LEVEL(info);
+PHOSPHOR_LOG2_DECLARE_LEVEL(debug);
+
+#undef PHOSPHOR_LOG2_DECLARE_LEVEL
+
+/** Handy scope-level `using` to get the necessary bits of lg2. */
+#define PHOSPHOR_LOG2_USING                                                    \
+    using lg2::log;                                                            \
+    using lg2::emergency;                                                      \
+    using lg2::alert;                                                          \
+    using lg2::critical;                                                       \
+    using lg2::error;                                                          \
+    using lg2::warning;                                                        \
+    using lg2::notice;                                                         \
+    using lg2::info;                                                           \
+    using lg2::debug
+
+/** Scope-level `using` to get the everything, incluing format flags. */
+#define PHOSPHOR_LOG2_USING_WITH_FLAGS                                         \
+    PHOSPHOR_LOG2_USING;                                                       \
+    PHOSPHOR_LOG2_USING_FLAGS
+
+} // namespace lg2
+
+#endif
