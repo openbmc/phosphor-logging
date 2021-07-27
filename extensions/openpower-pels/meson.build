@@ -96,13 +96,13 @@ libpel_lib = static_library(
     'pel',
     libpel_sources,
     'paths.cpp', # paths is separate because it is overridden during test.
-    include_directories: include_directories('../..', '../../gen'),
+    include_directories: include_directories('../..', '../../gen', '../../lib/include/'),
     cpp_args: extra_args,
     dependencies: libpel_deps,
 )
 
 libpel_dep = declare_dependency(
-    include_directories: include_directories('.'),
+    include_directories: include_directories('.', '../../lib/include/'),
     link_with: libpel_lib,
     dependencies: [
         libpldm_dep,
