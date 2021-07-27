@@ -11,15 +11,10 @@ logging.
 * [Boot Fail on Hardware Errors](#boot-fail-on-hardware-errors)
 
 ## To Build
-```
 To build this package, do the following steps:
 
-    1. ./bootstrap.sh
-    2. ./configure ${CONFIGURE_FLAGS}
-    3. make
-
-To clean the repository run `./bootstrap.sh clean`.
-```
+1. meson builddir
+2. ninja -c builddir
 
 ## Event Logs
 OpenBMC event logs are a collection of D-Bus interfaces owned by
