@@ -84,7 +84,7 @@ Format flags can be OR'd together as necessary: `primary | hex | field32`.
 
 The APIs can handle (and format appropriately) any data of the following
 types: signed or unsigned integers, floating point numbers, booleans, strings
-(C-strings, std::strings, or std::string_views), and pointers.
+(C-strings, std::strings, or std::string_views), sdbusplus enums, and pointers.
 
 The APIs also perform compile-time analysis of the arguments to give descriptive
 error messages for incorrect parameters or format flags.  Some examples are:
