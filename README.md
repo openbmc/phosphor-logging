@@ -4,6 +4,7 @@ logging.
 
 ## Table Of Contents
 * [Building](#to-build)
+* [Structured Logging](#structured-logging)
 * [Event Logs](#event-logs)
 * [Application Specific Error YAML](#adding-application-specific-error-yaml)
 * [Event Log Extensions](#event-log-extensions)
@@ -15,6 +16,14 @@ To build this package, do the following steps:
 
 1. meson builddir
 2. ninja -c builddir
+
+## Structured Logging
+phosphor-logging provides APIs to add program logging information to the
+systemd-journal and it is preferred that this logging data is formatted in
+a structured manner (using the facilities provided by the APIs).
+
+See [Structured Logging](./docs/structured-logging.md) for more details on
+this API.
 
 ## Event Logs
 OpenBMC event logs are a collection of D-Bus interfaces owned by
