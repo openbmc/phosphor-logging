@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "a8afdd20_2add4468",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-07-28T15:30:45Z",
+      "side": 1,
+      "message": "Sure.",
+      "parentUuid": "67cb64cd_c8a7b399",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 67
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2aff27cd_e06afaf6",
         "filename": "docs/structured-logging.md",
         "patchSetId": 1
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "c104ffc6_58cb3526",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-07-28T15:30:45Z",
+      "side": 1,
+      "message": "As in what the log levels are or how they should be used?  We haven\u0027t previously defined how they should be used, but I think the syslog man page does give a description.  I could reference or duplicate their \"meaning\" for various log levels if you like.",
+      "parentUuid": "2aff27cd_e06afaf6",
+      "range": {
+        "startLine": 41,
+        "startChar": 8,
+        "endLine": 41,
+        "endChar": 36
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b45372c1_62df249f",
         "filename": "docs/structured-logging.md",
         "patchSetId": 1
@@ -59,6 +107,24 @@
       "writtenOn": "2021-07-28T12:35:23Z",
       "side": 1,
       "message": "Anyway to put the formatted data in different parts of the string? Something like this:\n\nlg2::level(\"Error talking to\", \"TAG0\", \"value\", \"error code is\", \"TAG1\", lg2::hex, 2);",
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7496781a_f5371d35",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-07-28T15:30:45Z",
+      "side": 1,
+      "message": "I have no intention to support that, no.  The example you gave is nearly impossible to disambiguate at compile-time and any kind of formatting support like that would be a significant increase in code-size generated.  (The lg2 code is actually more compact than log right now, but both of them are mostly just shifting values onto a stack.  What you\u0027re proposing would require building strings in the caller-context.)\n\nI think the string you would have liked this to generate was something like:\n\n  \"Error talking to {value} error code is {0x2}\" (but without the {}\u0027s).\n\nThe implementation that is done would transform as follows:\n\n  lg2::error(\"Error talking to entity.\", \"ENTITY\", lg2::primary, \"value\", \"ERRNO\", lg2::primary | lg2::hex, 2);\n\n  \"Error talking to entity. ENTITY\u003dvalue ERRNO\u003d0x2\"\n\nThese two contain the same information.  The second is not significantly less usable for a human, is structured, and has very little code overhead.",
+      "parentUuid": "b45372c1_62df249f",
       "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -253,6 +319,30 @@
     },
     {
       "key": {
+        "uuid": "ba6cd255_0909b264",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-07-28T15:30:45Z",
+      "side": 1,
+      "message": "It could.  I don\u0027t intend to do that right now.",
+      "parentUuid": "59793802_70d5be69",
+      "range": {
+        "startLine": 110,
+        "startChar": 64,
+        "endLine": 112,
+        "endChar": 43
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a44f2377_277b592b",
         "filename": "docs/structured-logging.md",
         "patchSetId": 1
@@ -276,6 +366,30 @@
     },
     {
       "key": {
+        "uuid": "bec83578_bb3ebb02",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-07-28T15:30:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a44f2377_277b592b",
+      "range": {
+        "startLine": 114,
+        "startChar": 1,
+        "endLine": 114,
+        "endChar": 24
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0b555666_4b2d01f8",
         "filename": "docs/structured-logging.md",
         "patchSetId": 1
@@ -287,6 +401,30 @@
       "writtenOn": "2021-07-28T11:03:16Z",
       "side": 1,
       "message": "Does this mean that the message became \"free-form\" but with metadata, which duplicates parameters?",
+      "range": {
+        "startLine": 126,
+        "startChar": 24,
+        "endLine": 128,
+        "endChar": 10
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "00b24cb9_4069e7a2",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-07-28T15:30:45Z",
+      "side": 1,
+      "message": "I gave a reply to Andrew with an example but will include one in this section.\n\n  lg2::error(\"Error talking to entity.\", \"ENTITY\", lg2::primary, \"value\", \"ERRNO\", lg2::primary | lg2::hex, 2);\n\n  \"Error talking to entity. ENTITY\u003dvalue ERRNO\u003d0x2\"",
+      "parentUuid": "0b555666_4b2d01f8",
       "range": {
         "startLine": 126,
         "startChar": 24,
