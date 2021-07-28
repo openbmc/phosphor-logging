@@ -46,6 +46,47 @@
       "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c64f011_3ec0b84e",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-07-28T02:35:22Z",
+      "side": 1,
+      "message": "Yup, I figured it by checking the code. But it could be better to make it clear here.",
+      "parentUuid": "54007cf5_f649b639",
+      "range": {
+        "startLine": 76,
+        "startChar": 2,
+        "endLine": 76,
+        "endChar": 43
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bcb21722_8e9e6846",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-07-28T02:35:22Z",
+      "side": 1,
+      "message": "Usually one prints logs and expect all the information could be shown by default (e.g. journalctl) without extra argument (e.g. -o json-pretty)\n\nThis is an opt-in flag to indicate the metadata should be printed in the message, and is not used by default.\nIs it better to default to use this flag and add an opt-out flag to not print the meta?\nOr possibly we could just remove this flag and always make \"primary\", so that it\u0027s easier to use.",
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
