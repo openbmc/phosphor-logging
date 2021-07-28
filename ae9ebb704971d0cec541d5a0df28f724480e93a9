@@ -96,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "fd474e06_50b22dc1",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000879
+      },
+      "writtenOn": "2021-07-28T15:58:38Z",
+      "side": 1,
+      "message": "I think, reference to loglevel would be enough, just to define that we use the levels according this recommendations.\nOther thing I also thought is how the log levels works under the hood, e.g. how to enable debug messages to be printed.",
+      "parentUuid": "c104ffc6_58cb3526",
+      "range": {
+        "startLine": 41,
+        "startChar": 8,
+        "endLine": 41,
+        "endChar": 36
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b45372c1_62df249f",
         "filename": "docs/structured-logging.md",
         "patchSetId": 1
@@ -425,6 +449,30 @@
       "side": 1,
       "message": "I gave a reply to Andrew with an example but will include one in this section.\n\n  lg2::error(\"Error talking to entity.\", \"ENTITY\", lg2::primary, \"value\", \"ERRNO\", lg2::primary | lg2::hex, 2);\n\n  \"Error talking to entity. ENTITY\u003dvalue ERRNO\u003d0x2\"",
       "parentUuid": "0b555666_4b2d01f8",
+      "range": {
+        "startLine": 126,
+        "startChar": 24,
+        "endLine": 128,
+        "endChar": 10
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d917637e_cfe6cb77",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000879
+      },
+      "writtenOn": "2021-07-28T15:58:38Z",
+      "side": 1,
+      "message": "Am I right that now this \"value\" stored twice: as metadata and as part of the message? I believe this should be mentioned in description of \"primary\" option to explicitly point that this will affect log size.",
+      "parentUuid": "00b24cb9_4069e7a2",
       "range": {
         "startLine": 126,
         "startChar": 24,
