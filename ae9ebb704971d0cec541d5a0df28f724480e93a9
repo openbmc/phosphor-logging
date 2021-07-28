@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "a9286514_b1d975cb",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-07-28T02:48:49Z",
+      "side": 1,
+      "message": "Will do (in a future patch set).  I probably won\u0027t push up a new patch set immediately in order to gather additional feedback on this whole sequence without contributing to additional noise.",
+      "parentUuid": "3c64f011_3ec0b84e",
+      "range": {
+        "startLine": 76,
+        "startChar": 2,
+        "endLine": 76,
+        "endChar": 43
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bcb21722_8e9e6846",
         "filename": "docs/structured-logging.md",
         "patchSetId": 1
@@ -84,6 +108,24 @@
       "writtenOn": "2021-07-28T02:35:22Z",
       "side": 1,
       "message": "Usually one prints logs and expect all the information could be shown by default (e.g. journalctl) without extra argument (e.g. -o json-pretty)\n\nThis is an opt-in flag to indicate the metadata should be printed in the message, and is not used by default.\nIs it better to default to use this flag and add an opt-out flag to not print the meta?\nOr possibly we could just remove this flag and always make \"primary\", so that it\u0027s easier to use.",
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9901387f_b0f901bb",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-07-28T02:48:49Z",
+      "side": 1,
+      "message": "I expect this to be one area of contention that I\u0027d like feedback on.  It would be simple, from a code perspective, to make \u0027primary\u0027 the default.  \n\nMy expectation is that most of the time humans don\u0027t actually need ALL of the data and I\u0027d like developers to think a little bit about which fields are really needed rather than just duplicating everything in the message.\n\nI could be swayed with overwhelming feedback that this is not worth the effort.  On the surface it seems kind of pointless though to use the journal if we\u0027re just putting everything into a syslog-style message.",
+      "parentUuid": "bcb21722_8e9e6846",
       "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
