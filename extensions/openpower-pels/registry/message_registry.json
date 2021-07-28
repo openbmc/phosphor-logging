@@ -1493,6 +1493,55 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Power.Regulators.Error.PhaseFault.N",
+            "Subsystem": "power",
+            "Severity": "predictive_redundancy_loss",
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x2700",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Voltage regulator phase fault detected; device now at redundancy level N (no redundant phases)",
+                "Message": "Voltage regulator phase fault detected; device now at redundancy level N (no redundant phases)",
+                "Notes": [
+                    "CALLOUT_INVENTORY_PATH should be specified in the ",
+                    "AdditionalData property of the event log so that ",
+                    "the device is called out but not the communication path."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Power.Regulators.Error.PhaseFault.NPlus1",
+            "Subsystem": "power",
+            "Severity": "non_error",
+            "MfgSeverity": "predictive_redundancy_loss",
+            "ActionFlags": ["report"],
+            "MfgActionFlags": ["service_action", "report", "call_home"],
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x2701",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Voltage regulator phase fault detected; device now at redundancy level N+1 (one redundant phase)",
+                "Message": "Voltage regulator phase fault detected; device now at redundancy level N+1 (one redundant phase)",
+                "Notes": [
+                    "CALLOUT_INVENTORY_PATH should be specified in the ",
+                    "AdditionalData property of the event log so that ",
+                    "the device is called out but not the communication path."
+                ]
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.Power.Regulators.Error.WriteVerification",
             "Subsystem": "power",
             "ComponentID": "0x2700",
