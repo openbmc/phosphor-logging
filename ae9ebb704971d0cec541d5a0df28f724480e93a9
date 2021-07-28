@@ -155,6 +155,24 @@
     },
     {
       "key": {
+        "uuid": "b03c256d_cb979518",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-07-28T23:27:32Z",
+      "side": 1,
+      "message": "This is roughly what I\u0027m talking about in my feedback on the list. How I\u0027d like to use this is:\n\n lg2::error(\"Error talking to {ENTITY} error code is {ERRNO}\", \"ENTITY\", value, \"ERRNO\", 2);\n\nThat is, we pass a format string to lg2::error(), and lg2::error() interpolates the structured values passed into the format string. If the format string doesn\u0027t contain specifiers for particular structured values they\u0027re simply omitted. The journal is sent the rendered string as MESSAGE, along with the structured values.",
+      "parentUuid": "7496781a_f5371d35",
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b05392e4_2fac908c",
         "filename": "docs/structured-logging.md",
         "patchSetId": 1
