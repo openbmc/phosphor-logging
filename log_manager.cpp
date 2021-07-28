@@ -23,18 +23,18 @@
 #include <future>
 #include <iostream>
 #include <map>
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/vtable.hpp>
 #include <set>
 #include <string>
 #include <vector>
 #include <xyz/openbmc_project/State/Host/server.hpp>
 
-using namespace phosphor::logging;
 using namespace std::chrono;
 using sdbusplus::exception::SdBusError;
-extern const std::map<metadata::Metadata,
-                      std::function<metadata::associations::Type>>
+extern const std::map<
+    phosphor::logging::metadata::Metadata,
+    std::function<phosphor::logging::metadata::associations::Type>>
     meta;
 
 namespace phosphor
@@ -105,9 +105,8 @@ void Manager::_commit(uint64_t transactionId [[maybe_unused]],
         int rc = sd_journal_open(&j, SD_JOURNAL_LOCAL_ONLY);
         if (rc < 0)
         {
-            logging::log<logging::level::ERR>(
-                "Failed to open journal",
-                logging::entry("DESCRIPTION=%s", strerror(-rc)));
+            lg2::error("Failed to open journal: {ERROR}", "ERROR",
+                       strerror(-rc));
             return;
         }
 
@@ -186,9 +185,8 @@ void Manager::_commit(uint64_t transactionId [[maybe_unused]],
             // Not all the metadata variables were found in the journal.
             for (auto& metaVarStr : metalist)
             {
-                logging::log<logging::level::INFO>(
-                    "Failed to find metadata",
-                    logging::entry("META_FIELD=%s", metaVarStr.c_str()));
+                lg2::info("Failed to find metadata: {META_FIELD}", "META_FIELD",
+                          metaVarStr);
             }
         }
 
@@ -281,8 +279,8 @@ bool Manager::isQuiesceOnErrorEnabled()
     }
     catch (const SdBusError& e)
     {
-        log<level::ERR>("Error reading QuiesceOnHwError property",
-                        entry("ERROR=%s", e.what()));
+        lg2::error("Error reading QuiesceOnHwError property: {ERROR}", "ERROR",
+                   e);
         throw;
     }
 
@@ -360,8 +358,8 @@ void Manager::checkAndQuiesceHost()
         // The boot block object will still be created and the associations to
         // find the log will be present. Don't want a dependency with
         // phosphor-state-manager service
-        log<level::INFO>("Error reading QuiesceOnHwError property",
-                         entry("ERROR=%s", e.what()));
+        lg2::info("Error reading QuiesceOnHwError property: {ERROR}", "ERROR",
+                  e);
         return;
     }
 
@@ -390,13 +388,12 @@ void Manager::quiesceOnError(const uint32_t entryId)
     if (it != this->blockingErrors.end())
     {
         // Already recorded so just return
-        logging::log<logging::level::DEBUG>(
+        lg2::debug(
             "QuiesceOnError set and callout present but entry already logged");
         return;
     }
 
-    logging::log<logging::level::INFO>(
-        "QuiesceOnError set and callout present");
+    lg2::info("QuiesceOnError set and callout present");
 
     auto blockPath =
         std::string(OBJ_LOGGING) + "/block" + std::to_string(entryId);
@@ -439,8 +436,9 @@ void Manager::doExtensionLogCreate(const Entry& entry, const FFDCEntries& ffdc)
         }
         catch (std::exception& e)
         {
-            log<level::ERR>("An extension's create function threw an exception",
-                            phosphor::logging::entry("ERROR=%s", e.what()));
+            lg2::error(
+                "An extension's create function threw an exception: {ERROR}",
+                "ERROR", e);
         }
     }
 }
@@ -506,10 +504,9 @@ void Manager::erase(uint32_t entryId)
             }
             catch (std::exception& e)
             {
-                log<level::ERR>(
-                    "An extension's deleteProhibited function threw "
-                    "an exception",
-                    entry("ERROR=%s", e.what()));
+                lg2::error("An extension's deleteProhibited function threw an "
+                           "exception: {ERROR}",
+                           "ERROR", e);
             }
         }
 
@@ -545,16 +542,15 @@ void Manager::erase(uint32_t entryId)
             }
             catch (std::exception& e)
             {
-                log<level::ERR>("An extension's delete function threw an "
-                                "exception",
-                                entry("ERROR=%s", e.what()));
+                lg2::error("An extension's delete function threw an exception: "
+                           "{ERROR}",
+                           "ERROR", e);
             }
         }
     }
     else
     {
-        logging::log<level::ERR>("Invalid entry ID to delete",
-                                 logging::entry("ID=%d", entryId));
+        lg2::error("Invalid entry ID ({ID}) to delete", "ID", entryId);
     }
 }
 
@@ -598,11 +594,10 @@ void Manager::restore()
             }
             else
             {
-                logging::log<logging::level::ERR>(
+                lg2::error(
                     "Failed in sanity check while restoring error entry. "
-                    "Ignoring error entry",
-                    logging::entry("ID_NUM=%d", idNum),
-                    logging::entry("ENTRY_ID=%d", e->id()));
+                    "Ignoring error entry {ID_NUM}/{ENTRY_ID}.",
+                    "ID_NUM", idNum, "ENTRY_ID", e->id());
             }
         }
     }
@@ -647,9 +642,9 @@ void Manager::journalSync()
             // If the synced file doesn't exist, a sync request will create it.
             if (errno != ENOENT)
             {
-                log<level::ERR>("Failed to open journal synced file",
-                                entry("FILENAME=%s", syncedPath),
-                                entry("ERRNO=%d", errno));
+                lg2::error(
+                    "Failed to open journal synced file {FILENAME}: {ERROR}",
+                    "FILENAME", syncedPath, "ERROR", strerror(errno));
                 return;
             }
         }
@@ -680,7 +675,7 @@ void Manager::journalSync()
             bus.call(method);
             if (method.is_method_error())
             {
-                log<level::ERR>("Failed to kill journal service");
+                lg2::error("Failed to kill journal service");
                 break;
             }
 
@@ -695,8 +690,8 @@ void Manager::journalSync()
             fd = inotify_init1(IN_NONBLOCK | IN_CLOEXEC);
             if (fd < 0)
             {
-                log<level::ERR>("Failed to create inotify watch",
-                                entry("ERRNO=%d", errno));
+                lg2::error("Failed to create inotify watch: {ERROR}", "ERROR",
+                           strerror(errno));
                 return;
             }
 
@@ -705,9 +700,8 @@ void Manager::journalSync()
                                    IN_MOVED_TO | IN_DONT_FOLLOW | IN_ONLYDIR);
             if (wd < 0)
             {
-                log<level::ERR>("Failed to watch journal directory",
-                                entry("PATH=%s", JOURNAL_RUN_PATH),
-                                entry("ERRNO=%d", errno));
+                lg2::error("Failed to watch journal directory: {PATH}: {ERROR}",
+                           "PATH", JOURNAL_RUN_PATH, "ERROR", strerror(errno));
                 close(fd);
                 return;
             }
@@ -724,16 +718,16 @@ void Manager::journalSync()
         rc = poll(&fds, 1, pollTimeout * 1000);
         if (rc < 0)
         {
-            log<level::ERR>("Failed to add event", entry("ERRNO=%d", errno),
-                            entry("ERR=%s", strerror(-rc)));
+            lg2::error("Failed to add event: {ERROR}", "ERROR",
+                       strerror(errno));
             inotify_rm_watch(fd, wd);
             close(fd);
             return;
         }
         else if (rc == 0)
         {
-            log<level::INFO>("Poll timeout, no new journal synced data",
-                             entry("TIMEOUT=%d", pollTimeout));
+            lg2::info("Poll timeout ({TIMEOUT}), no new journal synced data",
+                      "TIMEOUT", pollTimeout);
             break;
         }
 
@@ -764,7 +758,7 @@ std::string Manager::readFWVersion()
 
     if (!version)
     {
-        log<level::ERR>("Unable to read BMC firmware version");
+        lg2::error("Unable to read BMC firmware version");
     }
 
     return version.value_or("");
