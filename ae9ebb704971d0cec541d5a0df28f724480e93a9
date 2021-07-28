@@ -48,6 +48,23 @@
     },
     {
       "key": {
+        "uuid": "b45372c1_62df249f",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-07-28T12:35:23Z",
+      "side": 1,
+      "message": "Anyway to put the formatted data in different parts of the string? Something like this:\n\nlg2::level(\"Error talking to\", \"TAG0\", \"value\", \"error code is\", \"TAG1\", lg2::hex, 2);",
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b05392e4_2fac908c",
         "filename": "docs/structured-logging.md",
         "patchSetId": 1
@@ -190,6 +207,23 @@
       "side": 1,
       "message": "Well, most cases syslog-style message much more useful for humans. Having this we should think about what information is optional.\nTo be honest, the journalctl\u0027s UX is not so great and requesting metadata became ugly work which I want to avoid as much as possible (I mean, it is not so easy to get required log entry with `journalctl --output\u003dverbose`).",
       "parentUuid": "9901387f_b0f901bb",
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d7a7c98d_deac3cd4",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-07-28T12:35:23Z",
+      "side": 1,
+      "message": "I\u0027d vote this be the default and people can opt out. In pretty much every case I\u0027m looking at the journal, I\u0027d like to see this data.",
       "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
