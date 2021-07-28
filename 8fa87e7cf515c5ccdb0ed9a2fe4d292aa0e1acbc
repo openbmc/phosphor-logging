@@ -135,6 +135,23 @@
     },
     {
       "key": {
+        "uuid": "66af9604_58e88945",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-28T19:41:01Z",
+      "side": 1,
+      "message": "what if the subsystem isn\u0027t found?",
+      "revId": "8fa87e7cf515c5ccdb0ed9a2fe4d292aa0e1acbc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d3eb9ce9_59a2bc62",
         "filename": "extensions/openpower-pels/manager.hpp",
         "patchSetId": 1
