@@ -16,6 +16,24 @@
       "revId": "aec304fb7b6b8cce458f81b51d69252f59fcc3e5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d05be2ba_413e16ae",
+        "filename": "lib/include/phosphor-logging/lg2.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-07-28T02:43:14Z",
+      "side": 1,
+      "message": "Yes, both cause the static_assert but GCC throws a mountain of errors if I change the #else to an #endif.  It is almost 120 lines of errors to sift through to find this static_assert.",
+      "parentUuid": "24c70494_fd4c5ee6",
+      "revId": "aec304fb7b6b8cce458f81b51d69252f59fcc3e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
