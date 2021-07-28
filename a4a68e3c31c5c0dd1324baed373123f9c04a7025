@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "191a0bf3_c3b55272",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-28T18:45:43Z",
+      "side": 1,
+      "message": "there is some future work where we\u0027ll need to know the HMC Ack status (transmission state in UserHeader) of a PEL from an interfacesAdded signal over in bmcweb.  So that means when the interface is added, the property already needs to be set.  When that code is added, it would pretty much be the same as this one, a new dbus property on this interface, and then it gets set based on the value in the PEL.\n\nHowever as you have it now, the interfacesAdded signal would get sent and all the properties would be at their defaults.\n\nThis Entry class does have another constructor where you can pass in a map of the property values to start with:\n\n        /** @brief Constructor to initialize the object from a map of    \n         *         properties.    \n         *    \n         *  @param[in] bus - Bus to attach to.    \n         *  @param[in] path - Path to attach at.    \n         *  @param[in] vals - Map of property name to value for initialization.    \n         */    \n        Entry(bus::bus\u0026 bus, const char* path,    \n                     const std::map\u003cstd::string, PropertiesVariant\u003e\u0026 vals,    \n                     bool skipSignal \u003d false);   \n\nso I think it may be better to use that to set the hidden property, and then you can remove updateHiddenFlag()",
+      "revId": "a4a68e3c31c5c0dd1324baed373123f9c04a7025",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5212adc1_5b993aa2",
+        "filename": "extensions/openpower-pels/manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-28T18:45:43Z",
+      "side": 1,
+      "message": "I guess I like \u0027_pelEntries\u0027 better.",
+      "range": {
+        "startLine": 459,
+        "startChar": 8,
+        "endLine": 459,
+        "endChar": 13
+      },
+      "revId": "a4a68e3c31c5c0dd1324baed373123f9c04a7025",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
