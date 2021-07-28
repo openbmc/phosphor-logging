@@ -485,6 +485,30 @@
     },
     {
       "key": {
+        "uuid": "271ed5ad_e0192f7b",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-07-28T16:05:24Z",
+      "side": 1,
+      "message": "Yes.  Good point.  And that\u0027s partially why ideally not everything is in `primary`.\n\nMy opinion is we want other machines to be able to use the journal-metadata, because there is no parsing and ambiguity, but we want humans to be able to use the message.  So there has to be enough in the message for what a human most-likely needs at a cursory investigation.",
+      "parentUuid": "d917637e_cfe6cb77",
+      "range": {
+        "startLine": 126,
+        "startChar": 24,
+        "endLine": 128,
+        "endChar": 10
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b64f7111_52fc4545",
         "filename": "docs/structured-logging.md",
         "patchSetId": 1
