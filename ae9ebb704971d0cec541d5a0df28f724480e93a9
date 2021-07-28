@@ -2,6 +2,52 @@
   "comments": [
     {
       "key": {
+        "uuid": "67cb64cd_c8a7b399",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000879
+      },
+      "writtenOn": "2021-07-28T11:03:16Z",
+      "side": 1,
+      "message": "Could you add couple examples that will illustrate the benefit and show where structured logging have benefits against free-form.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 67
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2aff27cd_e06afaf6",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000879
+      },
+      "writtenOn": "2021-07-28T11:03:16Z",
+      "side": 1,
+      "message": "I think it is also worth to add to this document separate section about log levels usage.",
+      "range": {
+        "startLine": 41,
+        "startChar": 8,
+        "endLine": 41,
+        "endChar": 36
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b05392e4_2fac908c",
         "filename": "docs/structured-logging.md",
         "patchSetId": 1
@@ -126,6 +172,110 @@
       "side": 1,
       "message": "I expect this to be one area of contention that I\u0027d like feedback on.  It would be simple, from a code perspective, to make \u0027primary\u0027 the default.  \n\nMy expectation is that most of the time humans don\u0027t actually need ALL of the data and I\u0027d like developers to think a little bit about which fields are really needed rather than just duplicating everything in the message.\n\nI could be swayed with overwhelming feedback that this is not worth the effort.  On the surface it seems kind of pointless though to use the journal if we\u0027re just putting everything into a syslog-style message.",
       "parentUuid": "bcb21722_8e9e6846",
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c7c2843e_e0c46c00",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000879
+      },
+      "writtenOn": "2021-07-28T11:03:16Z",
+      "side": 1,
+      "message": "Well, most cases syslog-style message much more useful for humans. Having this we should think about what information is optional.\nTo be honest, the journalctl\u0027s UX is not so great and requesting metadata became ugly work which I want to avoid as much as possible (I mean, it is not so easy to get required log entry with `journalctl --output\u003dverbose`).",
+      "parentUuid": "9901387f_b0f901bb",
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "59793802_70d5be69",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000879
+      },
+      "writtenOn": "2021-07-28T11:03:16Z",
+      "side": 1,
+      "message": "Can it be also implemented for old API?",
+      "range": {
+        "startLine": 110,
+        "startChar": 64,
+        "endLine": 112,
+        "endChar": 43
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a44f2377_277b592b",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000879
+      },
+      "writtenOn": "2021-07-28T11:03:16Z",
+      "side": 1,
+      "message": "Please, add here some examples of how message with \"primary\" parameter looks like.",
+      "range": {
+        "startLine": 114,
+        "startChar": 1,
+        "endLine": 114,
+        "endChar": 24
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0b555666_4b2d01f8",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000879
+      },
+      "writtenOn": "2021-07-28T11:03:16Z",
+      "side": 1,
+      "message": "Does this mean that the message became \"free-form\" but with metadata, which duplicates parameters?",
+      "range": {
+        "startLine": 126,
+        "startChar": 24,
+        "endLine": 128,
+        "endChar": 10
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b64f7111_52fc4545",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000879
+      },
+      "writtenOn": "2021-07-28T11:03:16Z",
+      "side": 1,
+      "message": "Once you put such statement, you also should add some recommendation on what should not be \"primary\" and why.",
       "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
