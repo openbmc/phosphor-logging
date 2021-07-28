@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "24c70494_fd4c5ee6",
+        "filename": "lib/include/phosphor-logging/lg2.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-07-28T02:28:32Z",
+      "side": 1,
+      "message": "Could use #endif here.\nIf the compiler does not support C++20, it will assert anyway.",
+      "revId": "aec304fb7b6b8cce458f81b51d69252f59fcc3e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
