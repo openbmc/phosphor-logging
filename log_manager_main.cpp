@@ -4,6 +4,7 @@
 #include "log_manager.hpp"
 
 #include <filesystem>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/manager.hpp>
 #include <sdeventplus/event.hpp>
@@ -12,6 +13,8 @@
 
 int main(int /*argc*/, char* /*argv*/[])
 {
+    PHOSPHOR_LOG2_USING_WITH_FLAGS;
+
     auto bus = sdbusplus::bus::new_default();
     auto event = sdeventplus::Event::get_default();
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
@@ -39,9 +42,8 @@ int main(int /*argc*/, char* /*argv*/[])
         }
         catch (std::exception& e)
         {
-            phosphor::logging::log<phosphor::logging::level::ERR>(
-                "An extension's startup function threw an exception",
-                phosphor::logging::entry("ERROR=%s", e.what()));
+            error("An extension's startup function threw an exception", "ERROR",
+                  primary, e.what());
         }
     }
 
