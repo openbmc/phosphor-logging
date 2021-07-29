@@ -70,6 +70,24 @@
       "revId": "aec304fb7b6b8cce458f81b51d69252f59fcc3e5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "165737dc_416172a3",
+        "filename": "lib/include/phosphor-logging/lg2.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-07-29T02:52:48Z",
+      "side": 1,
+      "message": "Ack\n\nThen it is really better to use `#else` here.",
+      "parentUuid": "b034996e_0025f95c",
+      "revId": "aec304fb7b6b8cce458f81b51d69252f59fcc3e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
