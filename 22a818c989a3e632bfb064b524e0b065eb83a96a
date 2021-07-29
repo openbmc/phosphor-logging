@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8988ca37_a3932843",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-29T15:21:08Z",
+      "side": 1,
+      "message": "this sure pulls a lot of common words into the global namespace, like \u0027error\u0027, so probably not a best practice to do globally.",
+      "revId": "22a818c989a3e632bfb064b524e0b065eb83a96a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
