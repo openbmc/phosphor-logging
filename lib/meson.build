@@ -11,7 +11,7 @@ phosphor_logging_deps = [
 ]
 
 phosphor_logging_lib = library(
-    'phosphor-logging',
+    'phosphor_logging',
     'elog.cpp',
     'sdjournal.cpp',
     phosphor_logging_gen,
@@ -34,6 +34,7 @@ endforeach
 
 import('pkgconfig').generate(
     phosphor_logging_lib,
+    name: 'phosphor-logging',
     version: meson.project_version(),
     requires: phosphor_logging_reqs,
     description: 'Phosphor logging utilities',
