@@ -11,7 +11,7 @@ phosphor_logging_deps = [
 ]
 
 phosphor_logging_lib = library(
-    'phosphor-logging',
+    'phosphor_logging',
     'elog.cpp',
     'sdjournal.cpp',
     phosphor_logging_gen,
