@@ -16,6 +16,24 @@
       "revId": "22a818c989a3e632bfb064b524e0b065eb83a96a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0051773e_1f637bd3",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-07-29T16:34:10Z",
+      "side": 1,
+      "message": "I agree in a header.  In a source file I think it can be up to the file owner to decide.\n\nAs you see here I just replaced the existing \u0027using namespace phosphor::logging\u0027 with the equivalent from lg2.  (lg2 is actually finer grained than phosphor::logging because it is explicit about what names are included.)  But, yes, \u0027error\u0027 is the main one that is potentially problematic.  When I was porting phosphor-virtual-sensors I had to change a few cases of \u0027error\u0027 being used as a variable name to avoid the ambiguity.\n\nIf you prefer these to all be \u0027lg2::error\u0027, \u0027lg2::info\u0027, etc. in this file I\u0027ll make it happen.",
+      "parentUuid": "8988ca37_a3932843",
+      "revId": "22a818c989a3e632bfb064b524e0b065eb83a96a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
