@@ -495,6 +495,30 @@
     },
     {
       "key": {
+        "uuid": "227f153c_e5013432",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2021-07-30T15:29:34Z",
+      "side": 1,
+      "message": "Just to confirm:  Will the journal output be mirrored to the TTY in the case where an application is started by systemd?",
+      "parentUuid": "ba6cd255_0909b264",
+      "range": {
+        "startLine": 110,
+        "startChar": 64,
+        "endLine": 112,
+        "endChar": 43
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a44f2377_277b592b",
         "filename": "docs/structured-logging.md",
         "patchSetId": 1
