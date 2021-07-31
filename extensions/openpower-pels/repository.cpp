@@ -734,5 +734,17 @@ void Repository::removePELs(IsOverLimitFunc& isOverLimit,
     }
 }
 
+void Repository::archivePEL(const PEL& pel)
+{
+    if (pel.valid())
+    {
+        auto path = _archivePath / getPELFilename(pel.id(), pel.commitTime());
+
+        write(pel, path);
+
+        _archiveSize += getFileDiskSize(path);
+    }
+}
+
 } // namespace pels
 } // namespace openpower
