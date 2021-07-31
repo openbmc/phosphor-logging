@@ -445,6 +445,13 @@ class Repository
         return std::nullopt;
     }
 
+    /**
+     * @brief Move the PEL to archive folder
+     *
+     * @param[in] pel - The PEL data
+     */
+    void archivePEL(std::unique_ptr<PEL>& pel);
+
   private:
     using PELUpdateFunc = std::function<void(PEL&)>;
 

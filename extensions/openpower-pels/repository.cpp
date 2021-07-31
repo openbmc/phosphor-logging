@@ -734,5 +734,17 @@ void Repository::removePELs(IsOverLimitFunc& isOverLimit,
     }
 }
 
+void Repository::archivePEL(std::unique_ptr<PEL>& pel)
+{
+    if (pel->valid())
+    {
+        auto path = _archivePath / getPELFilename(pel->id(), pel->commitTime());
+
+        write(*(pel.get()), path);
+
+        _archiveSize += getFileDiskSize(path);
+    }
+}
+
 } // namespace pels
 } // namespace openpower
