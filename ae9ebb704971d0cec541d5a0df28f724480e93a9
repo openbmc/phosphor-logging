@@ -519,6 +519,30 @@
     },
     {
       "key": {
+        "uuid": "584c5e02_3f4e486d",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-07-31T16:11:51Z",
+      "side": 1,
+      "message": "No.  \n\nWhen an application is started by systemd, all stdout/stderr is caught by systemd and the process doesn\u0027t have a TTY.  systemd routes all this to the journal already so there is not any point in us duplicating it to stderr as well.\n\nSimilarly, there is no way for the application to get to the launching console (which may or may not still exist).  I don\u0027t think we want all logging to end up on the serial console in these cases, which maybe we could find, because it would probably slow the BMC down to a crawl and would be super frustrating for anyone actually using the console.",
+      "parentUuid": "227f153c_e5013432",
+      "range": {
+        "startLine": 110,
+        "startChar": 64,
+        "endLine": 112,
+        "endChar": 43
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a44f2377_277b592b",
         "filename": "docs/structured-logging.md",
         "patchSetId": 1
