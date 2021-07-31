@@ -18,6 +18,7 @@
 #include <sys/stat.h>
 
 #include <fstream>
+#include <iostream>
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/Common/File/error.hpp>
 
@@ -41,7 +42,7 @@ constexpr size_t warningPercentage = 95;
  *
  * @return size_t The disk space the file uses
  */
-size_t getFileDiskSize(const std::filesystem::path& file)
+size_t Repository::getFileDiskSize(const std::filesystem::path& file)
 {
     constexpr size_t statBlockSize = 512;
     struct stat statData;
