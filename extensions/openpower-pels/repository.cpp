@@ -16,6 +16,7 @@
 #include "repository.hpp"
 
 #include <sys/stat.h>
+#include <iostream>
 
 #include <fstream>
 #include <phosphor-logging/log.hpp>
@@ -88,6 +89,7 @@ void Repository::restore()
                 continue;
             }
 
+            std::cout << "Restore-1: " << dirEntry.path() << std::endl;
             std::ifstream file{dirEntry.path()};
             std::vector<uint8_t> data{std::istreambuf_iterator<char>(file),
                                       std::istreambuf_iterator<char>()};
@@ -123,6 +125,7 @@ void Repository::restore()
 
                 using pelID = LogID::Pel;
                 using obmcID = LogID::Obmc;
+                std::cout << "Restore-2: " << pel.id() << "," << pel.obmcLogID() << std::endl;
                 _pelAttributes.emplace(
                     LogID(pelID(pel.id()), obmcID(pel.obmcLogID())),
                     attributes);
@@ -168,6 +171,7 @@ void Repository::add(std::unique_ptr<PEL>& pel)
 
     auto path = _logPath / getPELFilename(pel->id(), pel->commitTime());
 
+    std::cout << "add-1: " << path << std::endl;
     write(*(pel.get()), path);
 
     PELAttributes attributes{path,
@@ -180,6 +184,15 @@ void Repository::add(std::unique_ptr<PEL>& pel)
 
     using pelID = LogID::Pel;
     using obmcID = LogID::Obmc;
+    std::cout << "add-2: " << pel->id() << "," << pel->obmcLogID() << std::endl;
+    //Repository::LogID id{Repository::LogID::Pel(pel->id())};
+    LogID id{LogID::Pel(pel->id())};
+    auto pl = findPEL(id);
+    if (pl == _pelAttributes.end())
+    {
+        std::cout << "add-5: "  << "Not found" << std::endl;
+        //return std::nullopt;
+    }
     _pelAttributes.emplace(LogID(pelID(pel->id()), obmcID(pel->obmcLogID())),
                            attributes);
 

@@ -137,6 +137,38 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
         {
             pel->assignID();
         }
+        else
+        {
+            const Repository::LogID id{Repository::LogID::Pel(pel->id())};
+            //auto pl = _repo.findPEL(id);
+            //if (pl == _pelAttributes.end())
+            //{
+            //    std::cout << "add-5: "  << "Not found" << std::endl;
+            //}
+            auto result = _repo.hasPEL(id);
+            if (result)
+            {
+                auto ti = pel->commitTime();
+                std::cout << "Manager: " << ti.c_str() << "," << id <<std::endl;
+            
+                //PEL found
+                //if (fs::exists(pel.second.path.c_str()))
+                //{
+                    // Check for existense of new archive folder
+                //    if (!fs::exists(_archivePath))
+                //    {
+                //        fs::create_directories(_archivePath);
+                //    }
+                    
+                    // Move log file to archive folder
+                 //   auto fileName = _archivePath / pel->second.path.filename();
+                 //   fs::rename(pel->second.path, fileName);
+                    
+                    // Update size of file
+                 //   _archiveSize += getFileDiskSize(fileName);
+                }
+            }
+        }
 
         // PELs created by others still need this field set by us.
         pel->setCommitTime();
