@@ -973,3 +973,66 @@ TEST_F(ManagerTest, TestServiceIndicators)
                        associations);
     }
 }
+
+// Test for duplicate PELs moved to archive folder
+TEST_F(ManagerTest, TestDuplicatePEL)
+{
+    sdeventplus::Event e{sdEvent};
+    size_t count = 0;
+
+    std::unique_ptr<DataInterfaceBase> dataIface =
+        std::make_unique<MockDataInterface>();
+
+    openpower::pels::Manager manager{
+        logManager, std::move(dataIface),
+        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
+                  std::placeholders::_2, std::placeholders::_3)};
+
+    for (auto& f :
+         fs::directory_iterator(getPELRepoPath() / "logs" / "archive"))
+    {
+        if (fs::is_regular_file(f.path()))
+        {
+            count++;
+        }
+    }
+
+    // Get count of PELin the repository
+    EXPECT_EQ(countPELsInRepo(), 0);
+    EXPECT_EQ(count, 0);
+
+    // Add a PEL with a callout as if hostboot added it
+    for (int i = 0; i < 2; i++)
+    {
+        // This hostboot PEL has a single hardware callout in it.
+        auto data = pelFactory(1, 'B', 0x20, 0xA400, 500);
+
+        fs::path pelFilename = makeTempDir() / "rawpel";
+        std::ofstream pelFile{pelFilename};
+        pelFile.write(reinterpret_cast<const char*>(data.data()), data.size());
+        pelFile.close();
+
+        std::string adItem = "RAWPEL=" + pelFilename.string();
+        std::vector<std::string> additionalData{adItem};
+        std::vector<std::string> associations;
+
+        manager.create("error message", 42, 0,
+                       phosphor::logging::Entry::Level::Error, additionalData,
+                       associations);
+
+        e.run(std::chrono::milliseconds(1));
+    }
+
+    count = 0;
+    for (auto& f :
+         fs::directory_iterator(getPELRepoPath() / "logs" / "archive"))
+    {
+        if (fs::is_regular_file(f.path()))
+        {
+            count++;
+        }
+    }
+
+    // Get count of PELin the archive directtory
+    EXPECT_EQ(count, 1);
+}

@@ -127,7 +127,6 @@ void Manager::addRawPEL(const std::string& rawPelPath, uint32_t obmcLogID)
 
 void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
 {
-
     auto pel = std::make_unique<openpower::pels::PEL>(pelData, obmcLogID);
     if (pel->valid())
     {
@@ -136,6 +135,25 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
             static_cast<uint8_t>(CreatorID::hostboot))
         {
             pel->assignID();
+        }
+        else
+        {
+            const Repository::LogID id{Repository::LogID::Pel(pel->id())};
+            auto result = _repo.hasPEL(id);
+            if (result)
+            {
+                log<level::WARNING>(
+                    fmt::format("Duplicate HostBoot PEL Id {:#X} found; "
+                                "moving it to archive folder",
+                                pel->id())
+                        .c_str());
+
+                auto pelFile =
+                    _repo.getPELFilename(pel->id(), pel->commitTime());
+
+                _repo.archiveFile(pelFile);
+                return;
+            }
         }
 
         // PELs created by others still need this field set by us.
