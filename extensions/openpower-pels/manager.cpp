@@ -127,6 +127,7 @@ void Manager::addRawPEL(const std::string& rawPelPath, uint32_t obmcLogID)
 
 void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
 {
+    bool hbDupPELfound = false;
 
     auto pel = std::make_unique<openpower::pels::PEL>(pelData, obmcLogID);
     if (pel->valid())
@@ -137,42 +138,79 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
         {
             pel->assignID();
         }
-
-        // PELs created by others still need this field set by us.
-        pel->setCommitTime();
-
-        // Update System Info to Extended User Data
-        pel->updateSysInfoInExtendedUserDataSection(*_dataIface);
-
-        try
+        else
         {
-            log<level::DEBUG>(
-                fmt::format("Adding external PEL {:#x} (BMC ID {}) to repo",
-                            pel->id(), obmcLogID)
-                    .c_str());
-
-            _repo.add(pel);
-
-            if (_repo.sizeWarning())
+            const Repository::LogID id{Repository::LogID::Pel(pel->id())};
+            auto result = _repo.hasPEL(id);
+            if (result)
             {
-                scheduleRepoPrune();
+                hbDupPELfound = true;
+
+                log<level::WARNING>(
+                    fmt::format("Duplicate HostBoot PEL Id {:#X} found; "
+                                "moving it to archive folder",
+                                pel->id())
+                        .c_str());
+
+                auto pelFilePath =
+                    _repo.repoPath() /
+                    _repo.getPELFilename(pel->id(), pel->commitTime());
+
+                // Check for existense of archive folder
+                if (!fs::exists(_repo.archivePath()))
+                {
+                    fs::create_directories(_repo.archivePath());
+                }
+
+                // Move log file to archive folder
+                auto fileName =
+                    _repo.archivePath() /
+                    _repo.getPELFilename(pel->id(), pel->commitTime());
+                fs::rename(pelFilePath, fileName);
+
+                // Update size of archive folder
+                _repo.archiveSize(fileName);
+            }
+        }
+
+        if (!hbDupPELfound)
+        {
+            // PELs created by others still need this field set by us.
+            pel->setCommitTime();
+
+            // Update System Info to Extended User Data
+            pel->updateSysInfoInExtendedUserDataSection(*_dataIface);
+
+            try
+            {
+                log<level::DEBUG>(
+                    fmt::format("Adding external PEL {:#x} (BMC ID {}) to repo",
+                                pel->id(), obmcLogID)
+                        .c_str());
+
+                _repo.add(pel);
+
+                if (_repo.sizeWarning())
+                {
+                    scheduleRepoPrune();
+                }
+
+                // Activate any resulting service indicators if necessary
+                auto policy = service_indicators::getPolicy(*_dataIface);
+                policy->activate(*pel);
+            }
+            catch (std::exception& e)
+            {
+                // Probably a full or r/o filesystem, not much we can do.
+                log<level::ERR>("Unable to add PEL to Repository",
+                                entry("PEL_ID=0x%X", pel->id()));
             }
 
-            // Activate any resulting service indicators if necessary
-            auto policy = service_indicators::getPolicy(*_dataIface);
-            policy->activate(*pel);
+            // Check if firmware should quiesce system due to error
+            checkPelAndQuiesce(pel);
+            updateEventId(pel);
+            updateResolution(pel);
         }
-        catch (std::exception& e)
-        {
-            // Probably a full or r/o filesystem, not much we can do.
-            log<level::ERR>("Unable to add PEL to Repository",
-                            entry("PEL_ID=0x%X", pel->id()));
-        }
-
-        // Check if firmware should quiesce system due to error
-        checkPelAndQuiesce(pel);
-        updateEventId(pel);
-        updateResolution(pel);
     }
     else
     {
