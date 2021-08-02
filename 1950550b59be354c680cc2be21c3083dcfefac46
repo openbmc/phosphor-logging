@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "349ef665_d5c05bf4",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-08-02T15:11:02Z",
+      "side": 1,
+      "message": "Will remove this",
+      "revId": "1950550b59be354c680cc2be21c3083dcfefac46",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
