@@ -7,6 +7,7 @@
 #include <phosphor-logging/lg2/concepts.hpp>
 #include <phosphor-logging/lg2/conversion.hpp>
 #include <phosphor-logging/lg2/flags.hpp>
+#include <phosphor-logging/lg2/header.hpp>
 #include <phosphor-logging/lg2/level.hpp>
 #include <source_location>
 #include <string_view>
@@ -24,9 +25,11 @@ struct log
      *  @param[in] ts - The rest of the arguments.
      */
     explicit log(const std::source_location& s, const std::string_view& msg,
-                 Ts&&... ts)
+                 details::header_str_conversion_t<Ts&&>... ts)
     {
-        details::log_conversion::start(S, s, msg, std::forward<Ts>(ts)...);
+        details::log_conversion::start(
+            S, s, msg,
+            std::forward<details::header_str_conversion_t<Ts&&>>(ts)...);
     }
 
     /** default log (source_location is determined by calling location).
@@ -36,9 +39,10 @@ struct log
      *  @param[in] s - The derived source_location.
      */
     explicit log(
-        const std::string_view& msg, Ts&&... ts,
+        const std::string_view& msg,
+        details::header_str_conversion_t<Ts&&>... ts,
         const std::source_location& s = std::source_location::current()) :
-        log(s, msg, std::forward<Ts>(ts)...)
+        log(s, msg, std::forward<details::header_str_conversion_t<Ts&&>>(ts)...)
     {
     }
 
