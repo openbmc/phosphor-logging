@@ -3,6 +3,7 @@
 #include <concepts>
 #include <cstddef>
 #include <phosphor-logging/lg2/flags.hpp>
+#include <phosphor-logging/lg2/header.hpp>
 #include <phosphor-logging/lg2/level.hpp>
 #include <phosphor-logging/lg2/logger.hpp>
 #include <sdbusplus/message/native_types.hpp>
@@ -280,11 +281,14 @@ class log_conversion
     }
 
     /** Handle conversion of a { Header, Flags, Value } argument set. */
-    template <typename... Ts, std::convertible_to<const char*> H,
-              log_flags... Fs, typename V, typename... Ss>
-    static void step(std::tuple<Ts...>&& ts, H&& h, log_flag<Fs...> f, V&& v,
-                     Ss&&... ss)
+    template <typename... Ts, log_flags... Fs, typename V, typename... Ss>
+    static void step(std::tuple<Ts...>&& ts, const header_str& h,
+                     log_flag<Fs...> f, V&& v, Ss&&... ss)
     {
+        static_assert(!std::is_same_v<header_str, std::decay_t<V>>,
+                      "Found header_str as value; suggest using std::string to "
+                      "avoid unintended conversion.");
+
         // These two if conditions are similar, except that one calls 'done'
         // since Ss is empty and the other calls the next 'step'.
 
@@ -295,22 +299,24 @@ class log_conversion
 
         if constexpr (sizeof...(Ss) == 0)
         {
-            apply_done(std::tuple_cat(std::move(ts),
-                                      log_convert(std::forward<H>(h), f, v)));
+            apply_done(
+                std::tuple_cat(std::move(ts), log_convert(h.data(), f, v)));
         }
         else
         {
-            step(std::tuple_cat(std::move(ts),
-                                log_convert(std::forward<H>(h), f, v)),
+            step(std::tuple_cat(std::move(ts), log_convert(h.data(), f, v)),
                  std::forward<Ss>(ss)...);
         }
     }
 
     /** Handle conversion of a { Header, Value } argument set. */
-    template <typename... Ts, std::convertible_to<const char*> H, typename V,
-              typename... Ss>
-    static void step(std::tuple<Ts...>&& ts, H&& h, V&& v, Ss&&... ss)
+    template <typename... Ts, typename V, typename... Ss>
+    static void step(std::tuple<Ts...>&& ts, const header_str& h, V&& v,
+                     Ss&&... ss)
     {
+        static_assert(!std::is_same_v<header_str, std::decay_t<V>>,
+                      "Found header_str as value; suggest using std::string to "
+                      "avoid unintended conversion.");
         // These two if conditions are similar, except that one calls 'done'
         // since Ss is empty and the other calls the next 'step'.
 
@@ -321,33 +327,32 @@ class log_conversion
 
         if constexpr (sizeof...(Ss) == 0)
         {
-            apply_done(
-                std::tuple_cat(std::move(ts), log_convert(std::forward<H>(h),
-                                                          log_flag<>{}, v)));
+            apply_done(std::tuple_cat(std::move(ts),
+                                      log_convert(h.data(), log_flag<>{}, v)));
         }
         else
         {
-            step(std::tuple_cat(std::move(ts), log_convert(std::forward<H>(h),
-                                                           log_flag<>{}, v)),
+            step(std::tuple_cat(std::move(ts),
+                                log_convert(h.data(), log_flag<>{}, v)),
                  std::forward<Ss>(ss)...);
         }
     }
 
     /** Finding a non-string as the first argument of a 2 or 3 argument set
      *  is an error (missing HEADER field). */
-    template <typename... Ts, any_but<const char*> H, typename... Ss>
+    template <typename... Ts, not_constexpr_string H, typename... Ss>
     static void step(std::tuple<Ts...>&&, H, Ss&&...)
     {
-        static_assert(std::is_same_v<const char*, H>,
+        static_assert(std::is_same_v<header_str, H>,
                       "Found value without expected header field.");
     }
 
     /** Finding a free string at the end is an error (found HEADER but no data).
      */
-    template <typename... Ts, std::convertible_to<const char*> H>
-    static void step(std::tuple<Ts...>&&, H)
+    template <typename... Ts>
+    static void step(std::tuple<Ts...>&&, header_str)
     {
-        static_assert(!std::is_convertible_v<const char*, H>,
+        static_assert(!std::is_same_v<header_str, header_str>,
                       "Found header field without expected data.");
     }
 
