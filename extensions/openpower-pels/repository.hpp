@@ -220,6 +220,15 @@ class Repository
     std::optional<std::vector<uint8_t>> getPELData(const LogID& id);
 
     /**
+     * @brief Returns the size of file in disk.
+     *
+     @param[in] file - The file to get the size of
+     *
+     * @return size_t The disk space the file uses
+     */
+    size_t getFileDiskSize(const std::filesystem::path& file);
+
+    /**
      * @brief Get a file descriptor to the PEL data
      *
      * @param[in] id - The ID to get the FD for
@@ -443,6 +452,29 @@ class Repository
             return logID->first;
         }
         return std::nullopt;
+    }
+
+    /**
+     * @brief Returns the path to the archive directory where the deleted
+     *        PEL files are stored.
+     *
+     * @return std::filesystem::path - The archive directory path
+     */
+    const std::filesystem::path& archivePath() const
+    {
+        return _archivePath;
+    }
+
+    /**
+     * @brief Returns the updated size of archive directory
+     *
+     * @param[in] path - The file path to use
+     *
+     * @return std::filesystem::path - The archive directory path
+     */
+    uint64_t archiveSize(const std::filesystem::path& file)
+    {
+        return (_archiveSize += getFileDiskSize(file));
     }
 
   private:
