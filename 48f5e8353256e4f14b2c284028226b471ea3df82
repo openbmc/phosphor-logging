@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e005fe34_96d35c08",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-03T17:24:27Z",
+      "side": 1,
+      "message": "Are you suggesting this should go into the \u0027docs\u0027 repository or just that there are elements of that template that could be useful here?  \n\nThis was intended to be more of a \"this is how the API works\" since not even the original API was documented, but I understand that there are design elements of any API proposal.",
+      "parentUuid": "457ba1ce_30b190cc",
+      "revId": "48f5e8353256e4f14b2c284028226b471ea3df82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b028dae4_375788b9",
         "filename": "docs/structured-logging.md",
         "patchSetId": 3
@@ -30,6 +48,24 @@
       "writtenOn": "2021-08-03T17:08:24Z",
       "side": 1,
       "message": "One other important reason for the existing journald code is that we\u0027re not writing the full string to the journal on every entry, which saves a significant amount of space.  I don\u0027t really see mention of how the backend of this is going to work, but we should make sure that we have an accounting for that so we don\u0027t lose the ability to store many records.",
+      "revId": "48f5e8353256e4f14b2c284028226b471ea3df82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "02cb6a22_f4c25656",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-03T17:24:27Z",
+      "side": 1,
+      "message": "\u003e One other important reason for the existing journald code is that we\u0027re not writing the full string to the journal on every entry\n\nI don\u0027t know what you mean by this.  We do write the entire message and all the key-value pairs to the journal today.  The only addition is that rather than using external formatting libraries people can natively append additional data into their message.  For someone using `{fmt}` already today this is no worse from a journal size perspective.",
+      "parentUuid": "b028dae4_375788b9",
       "revId": "48f5e8353256e4f14b2c284028226b471ea3df82",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -59,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "6d1e459c_ebd3918d",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-03T17:24:27Z",
+      "side": 1,
+      "message": "I don\u0027t know how this affects Redfish.  There were already format flags in logging.  All journald content is, by nature, a string.  If there are particular bits of data being picked out today in a particular Redfish-friendly format, I don\u0027t think there is any change, is there?",
+      "parentUuid": "e19ecbb1_9ef00c0e",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 34
+      },
+      "revId": "48f5e8353256e4f14b2c284028226b471ea3df82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "81857f6f_582198d1",
         "filename": "docs/structured-logging.md",
         "patchSetId": 3
@@ -76,6 +136,24 @@
     },
     {
       "key": {
+        "uuid": "07034388_ada4c087",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-03T17:24:27Z",
+      "side": 1,
+      "message": "These are separate from formatting flags on a message string (of which I\u0027ve not implemented any), which is what `{fmt}` provides.  These are formatting of the keys.  If we were to attempt to leverage `{fmt}` here we\u0027d end up N `{fmt}` calls at the call-site, rather than delegate them to the backend.",
+      "parentUuid": "81857f6f_582198d1",
+      "revId": "48f5e8353256e4f14b2c284028226b471ea3df82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0af91ab6_df18a3d8",
         "filename": "docs/structured-logging.md",
         "patchSetId": 3
@@ -87,6 +165,30 @@
       "writtenOn": "2021-08-03T17:08:24Z",
       "side": 1,
       "message": "aren\u0027t periods allowed as well?",
+      "range": {
+        "startLine": 138,
+        "startChar": 65,
+        "endLine": 139,
+        "endChar": 63
+      },
+      "revId": "48f5e8353256e4f14b2c284028226b471ea3df82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71a464e1_3a3d1c21",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-03T17:24:27Z",
+      "side": 1,
+      "message": "No.\n\n\u003e The variable name must be in uppercase and consist only of characters, numbers and underscores, and may not begin with an underscore. (All assignments that do not follow this syntax will be ignored.)",
+      "parentUuid": "0af91ab6_df18a3d8",
       "range": {
         "startLine": 138,
         "startChar": 65,
