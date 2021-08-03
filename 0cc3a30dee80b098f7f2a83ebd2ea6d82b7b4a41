@@ -39,6 +39,48 @@
       "revId": "0cc3a30dee80b098f7f2a83ebd2ea6d82b7b4a41",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7db24b9c_d082bdeb",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-08-03T09:40:49Z",
+      "side": 1,
+      "message": "Actually I thought of it but then gone by this function returning void i.e. no return expected.",
+      "parentUuid": "f937643b_aa9ed338",
+      "revId": "0cc3a30dee80b098f7f2a83ebd2ea6d82b7b4a41",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a3bb418_db689a31",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-08-03T09:40:49Z",
+      "side": 1,
+      "message": "yeah ok would be better to have all parked in repo itself",
+      "parentUuid": "47176412_987b13b9",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 172,
+        "endChar": 44
+      },
+      "revId": "0cc3a30dee80b098f7f2a83ebd2ea6d82b7b4a41",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
