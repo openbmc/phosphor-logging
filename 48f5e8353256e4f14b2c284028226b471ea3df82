@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "457ba1ce_30b190cc",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-08-03T17:08:24Z",
+      "side": 1,
+      "message": "This kind of feels like a design, but doesn\u0027t really use the design template.  Some things like \"other designs considered\" would be helpful from that format.  I suspect there are other things that are useful too.",
+      "revId": "48f5e8353256e4f14b2c284028226b471ea3df82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b028dae4_375788b9",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-08-03T17:08:24Z",
+      "side": 1,
+      "message": "One other important reason for the existing journald code is that we\u0027re not writing the full string to the journal on every entry, which saves a significant amount of space.  I don\u0027t really see mention of how the backend of this is going to work, but we should make sure that we have an accounting for that so we don\u0027t lose the ability to store many records.",
+      "revId": "48f5e8353256e4f14b2c284028226b471ea3df82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e19ecbb1_9ef00c0e",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-08-03T17:08:24Z",
+      "side": 1,
+      "message": "We should double check this is compatible with redfish, without having to do heroics (ie converting binary string data back into an int).  I\u0027m not sure that hex encodings are supported in Redfish, so we should probably make sure that in the underlying data, we\u0027re writing as an int.",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 34
+      },
+      "revId": "48f5e8353256e4f14b2c284028226b471ea3df82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "81857f6f_582198d1",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-08-03T17:08:24Z",
+      "side": 1,
+      "message": "A slightly meta question: why are we defining these ourselves?  Could we not just use what something like fmt already provides and documents?  Hopefully that means that when std::format lands, we could just switch to that entirely.",
+      "revId": "48f5e8353256e4f14b2c284028226b471ea3df82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0af91ab6_df18a3d8",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-08-03T17:08:24Z",
+      "side": 1,
+      "message": "aren\u0027t periods allowed as well?",
+      "range": {
+        "startLine": 138,
+        "startChar": 65,
+        "endLine": 139,
+        "endChar": 63
+      },
+      "revId": "48f5e8353256e4f14b2c284028226b471ea3df82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
