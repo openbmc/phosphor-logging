@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "b9ee5601_9099bf41",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-03T00:13:36Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "6f7230c6_8dad8404",
+      "range": {
+        "startLine": 15,
+        "startChar": 21,
+        "endLine": 18,
+        "endChar": 73
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a3956f7a_b0635241",
         "filename": "docs/structured-logging.md",
         "patchSetId": 1
@@ -36,6 +60,24 @@
       "writtenOn": "2021-07-29T15:21:42Z",
       "side": 1,
       "message": "I don\u0027t see any \u0027structured logging\u0027 in the journal message output on my fedora install. And to me it looks like all of the important info is in the message itself, like bad return codes and IP addresses.  So I don\u0027t think this is a linux wide design point?",
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9f4439b2_12895499",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-03T00:13:36Z",
+      "side": 1,
+      "message": "This is a systemd design point.  Linux in general has a history of just using syslog and not being structured.  An example from systemd on my system:\n\n```\n    MESSAGE\u003dtracker-extract.service: Scheduled restart job, restart counter is at 1.\n    N_RESTARTS\u003d1\n```",
+      "parentUuid": "a3956f7a_b0635241",
       "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -86,6 +128,30 @@
       "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad4aeaa4_00d28ca0",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-03T00:13:36Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a8afdd20_2add4468",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 67
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -160,6 +226,30 @@
     },
     {
       "key": {
+        "uuid": "17d30eea_8de08156",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-03T00:13:36Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "fd474e06_50b22dc1",
+      "range": {
+        "startLine": 41,
+        "startChar": 8,
+        "endLine": 41,
+        "endChar": 36
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b45372c1_62df249f",
         "filename": "docs/structured-logging.md",
         "patchSetId": 1
@@ -231,6 +321,24 @@
     },
     {
       "key": {
+        "uuid": "2be08c63_bee9b4c9",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-03T00:13:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "491eee4e_298b2b4f",
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2dbef1da_c2ef13f7",
         "filename": "docs/structured-logging.md",
         "patchSetId": 1
@@ -245,6 +353,24 @@
       "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "73403f76_59b36d3d",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-03T00:13:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2dbef1da_c2ef13f7",
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -343,6 +469,30 @@
     },
     {
       "key": {
+        "uuid": "2bb69391_949bcf1f",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-03T00:13:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9286514_b1d975cb",
+      "range": {
+        "startLine": 76,
+        "startChar": 2,
+        "endLine": 76,
+        "endChar": 43
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bcb21722_8e9e6846",
         "filename": "docs/structured-logging.md",
         "patchSetId": 1
@@ -431,6 +581,42 @@
     },
     {
       "key": {
+        "uuid": "5d3ff2e1_2b0e01d6",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-03T00:13:36Z",
+      "side": 1,
+      "message": "I\u0027ve changed things to use the {fmt}-style message generation proposed by Andrew J.",
+      "parentUuid": "c7c2843e_e0c46c00",
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8dde3f28_6b9b66cb",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-03T00:13:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8d56085a_0cb1d335",
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3f691d89_49552dfb",
         "filename": "docs/structured-logging.md",
         "patchSetId": 1
@@ -442,6 +628,24 @@
       "writtenOn": "2021-07-29T15:21:42Z",
       "side": 1,
       "message": "maybe I missed this, but a key that isn\u0027t capitalized will still just silently be dropped if it is indented for that non-MESSAGE area?  I wish there would be a way to catch that in a compile.",
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cc8b6c5a_9280a933",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-03T00:13:36Z",
+      "side": 1,
+      "message": "I\u0027ve figured out how to make this work.",
+      "parentUuid": "3f691d89_49552dfb",
       "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -590,6 +794,30 @@
     },
     {
       "key": {
+        "uuid": "9f10306c_54ee5597",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-03T00:13:36Z",
+      "side": 1,
+      "message": "This format key is now removed in favor of {fmt}-style proposal.",
+      "parentUuid": "bec83578_bb3ebb02",
+      "range": {
+        "startLine": 114,
+        "startChar": 1,
+        "endLine": 114,
+        "endChar": 24
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0b555666_4b2d01f8",
         "filename": "docs/structured-logging.md",
         "patchSetId": 1
@@ -685,6 +913,30 @@
     },
     {
       "key": {
+        "uuid": "388f4409_935ded15",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-03T00:13:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "271ed5ad_e0192f7b",
+      "range": {
+        "startLine": 126,
+        "startChar": 24,
+        "endLine": 128,
+        "endChar": 10
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b64f7111_52fc4545",
         "filename": "docs/structured-logging.md",
         "patchSetId": 1
@@ -696,6 +948,24 @@
       "writtenOn": "2021-07-28T11:03:16Z",
       "side": 1,
       "message": "Once you put such statement, you also should add some recommendation on what should not be \"primary\" and why.",
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db9d623e_a9a70719",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-03T00:13:36Z",
+      "side": 1,
+      "message": "Removed section.",
+      "parentUuid": "b64f7111_52fc4545",
       "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
