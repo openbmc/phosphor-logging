@@ -16,6 +16,24 @@
       "revId": "e6842fe19a5ed767f237568be1f3ce72fc18c750",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "39df783b_18992511",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-08-03T16:37:29Z",
+      "side": 1,
+      "message": "hasPEL(id) is checking for incoming PEL id already existing or not in repo. If not then it goes ahead in process to move this PEL into archive. Is this incoming PEL would be present under _logPath? The incoming PEL is added to repo later in code as-in line no. 172. Pls correct me?",
+      "parentUuid": "3b091bdb_2a01b463",
+      "revId": "e6842fe19a5ed767f237568be1f3ce72fc18c750",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
