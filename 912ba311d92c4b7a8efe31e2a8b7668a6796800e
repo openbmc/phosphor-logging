@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1de2d31e_2f36ff96",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-08-05T15:57:37Z",
+      "side": 1,
+      "message": "exactly what I had in mind!",
+      "revId": "912ba311d92c4b7a8efe31e2a8b7668a6796800e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
