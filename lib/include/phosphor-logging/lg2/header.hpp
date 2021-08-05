@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <phosphor-logging/lg2/concepts.hpp>
 #include <string_view>
 
@@ -33,6 +34,15 @@ struct header_str
             report_error(
                 "journald requires header may only contain underscore, "
                 "uppercase letters, or numbers ([_A-Z0-9]).");
+        }
+
+        constexpr std::array reserved{
+            "CODE_FILE",   "CODE_FUNC", "CODE_LINE",
+            "LOG2_FMTMSG", "MESSAGE",   "PRIORITY",
+        };
+        if (std::ranges::find(reserved, value) != std::end(reserved))
+        {
+            report_error("Header name is reserved.");
         }
     }
 
