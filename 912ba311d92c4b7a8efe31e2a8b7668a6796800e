@@ -42,6 +42,30 @@
     },
     {
       "key": {
+        "uuid": "1aa0d84b_257829af",
+        "filename": "extensions/openpower-pels/repository.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-08-06T07:34:36Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "c918e43c_2f8ee5a5",
+      "range": {
+        "startLine": 449,
+        "startChar": 14,
+        "endLine": 449,
+        "endChar": 26
+      },
+      "revId": "912ba311d92c4b7a8efe31e2a8b7668a6796800e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0a20ab9c_b3f6759d",
         "filename": "extensions/openpower-pels/repository.hpp",
         "patchSetId": 7
@@ -53,6 +77,30 @@
       "writtenOn": "2021-08-05T16:18:04Z",
       "side": 1,
       "message": "you can just pass in the PEL reference directly, so: const PEL\u0026\n\nthen you can do:  archivePEL(*pel); if pel is the unique_ptr",
+      "range": {
+        "startLine": 453,
+        "startChar": 20,
+        "endLine": 453,
+        "endChar": 41
+      },
+      "revId": "912ba311d92c4b7a8efe31e2a8b7668a6796800e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c8130a5_3934b08f",
+        "filename": "extensions/openpower-pels/repository.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-08-06T07:34:36Z",
+      "side": 1,
+      "message": "yeah can do that. Any issue with existing code if we try to make it unique_ptr? could there be possibility that pointer may not be unique as its the duplicate id coming down?",
+      "parentUuid": "0a20ab9c_b3f6759d",
       "range": {
         "startLine": 453,
         "startChar": 20,
