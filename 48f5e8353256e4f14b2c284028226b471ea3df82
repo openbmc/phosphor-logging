@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "bddf591f_6eeecc05",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-06T05:41:23Z",
+      "side": 1,
+      "message": "I\u0027ve attempted to add some of the \"other designs considered\" based on comments in this review and on Discord to a Q/A style section at the end of the doc.",
+      "parentUuid": "e005fe34_96d35c08",
+      "revId": "48f5e8353256e4f14b2c284028226b471ea3df82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b028dae4_375788b9",
         "filename": "docs/structured-logging.md",
         "patchSetId": 3
@@ -69,6 +87,24 @@
       "revId": "48f5e8353256e4f14b2c284028226b471ea3df82",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7ed63975_0aa4b366",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-06T05:41:23Z",
+      "side": 1,
+      "message": "I have added a Q/A about this to the doc.",
+      "parentUuid": "02cb6a22_f4c25656",
+      "revId": "48f5e8353256e4f14b2c284028226b471ea3df82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -154,6 +190,24 @@
     },
     {
       "key": {
+        "uuid": "09aa6dfc_851d8a22",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-06T05:41:23Z",
+      "side": 1,
+      "message": "I\u0027ve added more details on this design decision to the doc.",
+      "parentUuid": "07034388_ada4c087",
+      "revId": "48f5e8353256e4f14b2c284028226b471ea3df82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0af91ab6_df18a3d8",
         "filename": "docs/structured-logging.md",
         "patchSetId": 3
@@ -198,6 +252,30 @@
       "revId": "48f5e8353256e4f14b2c284028226b471ea3df82",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c822560_137a2f3e",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-06T05:41:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "71a464e1_3a3d1c21",
+      "range": {
+        "startLine": 138,
+        "startChar": 65,
+        "endLine": 139,
+        "endChar": 63
+      },
+      "revId": "48f5e8353256e4f14b2c284028226b471ea3df82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
