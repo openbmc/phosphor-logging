@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ae01304d_71e3fbf4",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000188
+      },
+      "writtenOn": "2021-08-09T08:10:57Z",
+      "side": 1,
+      "message": "This doesn\u0027t really explain why it\u0027s not used for structuring the entries though. I think it would be much simpler and give us more formatting flexibility to use an existing formatter like fmtlib / std::format instead of inventing our own syntax that is vaguely likey a limited iostream. It seems like it would be perfectly acceptable to have format strings per entry() and then have the upper layer that allows emplacing their values in the format string.",
+      "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "25002cbd_e7589972",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1000188
+      },
+      "writtenOn": "2021-08-09T08:10:57Z",
+      "side": 1,
+      "message": "It would actually be really nice to have these things, sometimes you want specific formatting for numeric output.",
+      "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4455eb73_2a28f871",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000188
+      },
+      "writtenOn": "2021-08-09T08:10:57Z",
+      "side": 1,
+      "message": "This doesn\u0027t really seem true, you could use a single buffer for all of the entry()\u0027s and the overhead is mostly based on the number of entires which is similar to the proposal. fmtlib provides compile time formatting checks that you could use.",
+      "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
