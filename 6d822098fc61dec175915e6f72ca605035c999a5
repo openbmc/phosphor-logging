@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "a792304b_130910e8",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-10T01:31:24Z",
+      "side": 1,
+      "message": "\u003e This doesn\u0027t really explain why it\u0027s not used for structuring the entries though.\n\nCorrect.  I addressed that in the following Qs, didn\u0027t I?\n\n\u003e It seems like it would be perfectly acceptable to have format strings per entry() and then have the upper layer that allows emplacing their values in the format string.\n\nMaybe.  I think I covered this by the paragraph in line 222 and 253.\n\nI think there is a fundamental disagreement with you on the ergonomics of the \u0027entry\u0027 syntax from before.  I\u0027ve heard from many people that they absolutely hated how verbose it was and some of them said that it was one of the primary reasons they avoided using phosphor-logging.  I don\u0027t know how to reconcile all the view-points here.",
+      "parentUuid": "ae01304d_71e3fbf4",
+      "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "25002cbd_e7589972",
         "filename": "docs/structured-logging.md",
         "patchSetId": 4
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "8ee72f45_9e1bb0bf",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-10T01:31:24Z",
+      "side": 1,
+      "message": "My argument is that it would be \"nice\" but unnecessary.  Can you point to cases where it is really important for our structured data to have fine-grained numerical formatting?",
+      "parentUuid": "25002cbd_e7589972",
+      "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4455eb73_2a28f871",
         "filename": "docs/structured-logging.md",
         "patchSetId": 4
@@ -47,6 +83,24 @@
       "writtenOn": "2021-08-09T08:10:57Z",
       "side": 1,
       "message": "This doesn\u0027t really seem true, you could use a single buffer for all of the entry()\u0027s and the overhead is mostly based on the number of entires which is similar to the proposal. fmtlib provides compile time formatting checks that you could use.",
+      "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b2191fc_799ce6d1",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-10T01:31:24Z",
+      "side": 1,
+      "message": "This seems like you are suggesting that we only format the unstructured message portion and not the journal metadata.  Maybe I understand you wrong.\n\nIf we want to format the journal metadata it would require N calls to `{fmt}` somewhere.  Can you point out which parts of the paragraph don\u0027t seem accurate.",
+      "parentUuid": "4455eb73_2a28f871",
       "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
