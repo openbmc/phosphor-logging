@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "39255b79_fa56eec9",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-08-10T21:59:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa14eb0e_90f9fe5f",
+      "revId": "aafa836ed9f27bf24ce2a9e4d9dd377f02f7652a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c8f721fe_dd05ef14",
         "filename": "extensions/openpower-pels/manager.hpp",
         "patchSetId": 6
@@ -39,6 +57,30 @@
       "revId": "aafa836ed9f27bf24ce2a9e4d9dd377f02f7652a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56a0ac25_02145e1c",
+        "filename": "extensions/openpower-pels/manager.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-08-10T21:59:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8f721fe_dd05ef14",
+      "range": {
+        "startLine": 72,
+        "startChar": 15,
+        "endLine": 79,
+        "endChar": 17
+      },
+      "revId": "aafa836ed9f27bf24ce2a9e4d9dd377f02f7652a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
