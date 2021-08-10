@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "11fd8f65_67631876",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-10T10:18:27Z",
+      "side": 1,
+      "message": "Also, I don\u0027t think there is anything that would preclude you from using `{fmt}` in the structured entry data itself, without me explicitly adding support for it.  Instead of `lg2::hex, 0x1` you could do `fmt::format(\"{:#x}\", 0x1)` if you prefer the utility of that, right?  I added the hex/bin formatting because I believe they cover the vast majority of the desired formatting cases.\n\nA rudimentary attempted grep/sed/sort/uniq to find all the \"entry\" formats used today yields only ones that are covered by the formatting I added:\n\n%#02x\n0x%02x\n0x%02X\n0x%04x\n0x%04X\n0x%08X\n0x%0X\n0x%hx\n0x%s\n0x%x\n0x%X\n %d\n%d\n%d_0x%x\n%d\\n\n%f\nFILE_NAME: %s\"\n%i\n%ld\n%llu\n%lu\n%lu\\n\nPERCENT:%d\"\n% PRIu32\n%PRIu64\n% PRIu8\nRETURN_CODE:%d\"\n %s\n%s\n%s\\n\n%s_%x\n%u\n%uz\n%x\n%x:%x\n%zu\n\nConversely, I looked through all the fmt calls and saw the vast majority of them are simple position indicators.  The only ones with format specifiers are:\n\n{:02X}\n{:#x}\n{:02x}\n{:04X}\n{:04x}\n\nThe code-base seems to back up my statement here: \"less consistent structured data with essentially no additional benefits.\"  Because, if there were a benefit to more detailed formatting, someone would have attempted to use it, right?",
+      "parentUuid": "8ee72f45_9e1bb0bf",
+      "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4455eb73_2a28f871",
         "filename": "docs/structured-logging.md",
         "patchSetId": 4
