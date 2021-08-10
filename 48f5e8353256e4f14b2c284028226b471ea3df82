@@ -155,6 +155,30 @@
     },
     {
       "key": {
+        "uuid": "3c79ff2e_a00df52f",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-08-10T18:06:40Z",
+      "side": 1,
+      "message": "Discussed with Patrick offline.  This is for trace/printf style logging, not for eventing, so Redfish doesn\u0027t apply.",
+      "parentUuid": "6d1e459c_ebd3918d",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 34
+      },
+      "revId": "48f5e8353256e4f14b2c284028226b471ea3df82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "81857f6f_582198d1",
         "filename": "docs/structured-logging.md",
         "patchSetId": 3
@@ -202,6 +226,24 @@
       "side": 1,
       "message": "I\u0027ve added more details on this design decision to the doc.",
       "parentUuid": "07034388_ada4c087",
+      "revId": "48f5e8353256e4f14b2c284028226b471ea3df82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "581b26a6_d95dea9e",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-08-10T18:06:40Z",
+      "side": 1,
+      "message": "Will read.",
+      "parentUuid": "09aa6dfc_851d8a22",
       "revId": "48f5e8353256e4f14b2c284028226b471ea3df82",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
