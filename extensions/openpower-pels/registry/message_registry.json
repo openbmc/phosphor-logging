@@ -652,21 +652,6 @@
                 "SymptomIDFields": [ "SRCWord6", "SRCWord7", "SRCWord8" ],
                 "Words6To9":
                 {
-                    "6":
-                    {
-                        "Description": "[0:15] chip model, [16:23] reserved, [24:31] chip EC level",
-                        "AdditionalDataPropSource": "SRC6"
-                    },
-                    "7":
-                    {
-                        "Description": "[0:15] chip position, [16:23] unused, [24:31] signature attn type",
-                        "AdditionalDataPropSource": "SRC7"
-                    },
-                    "8":
-                    {
-                        "Description": "[0:15] signature ID, [16:23] signature instance, [24:31] signature bit position",
-                        "AdditionalDataPropSource": "SRC8"
-                    }
                 }
             },
 
@@ -689,21 +674,6 @@
                 "SymptomIDFields": [ "SRCWord6", "SRCWord7", "SRCWord8" ],
                 "Words6To9":
                 {
-                    "6":
-                    {
-                        "Description": "[0:15] chip model, [16:23] reserved, [24:31] chip EC level",
-                        "AdditionalDataPropSource": "SRC6"
-                    },
-                    "7":
-                    {
-                        "Description": "[0:15] chip position, [16:23] unused, [24:31] signature attn type",
-                        "AdditionalDataPropSource": "SRC7"
-                    },
-                    "8":
-                    {
-                        "Description": "[0:15] signature ID, [16:23] signature instance, [24:31] signature bit position",
-                        "AdditionalDataPropSource": "SRC8"
-                    }
                 }
             },
 
