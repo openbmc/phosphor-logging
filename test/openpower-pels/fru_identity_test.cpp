@@ -160,7 +160,7 @@ TEST(FRUIdentityTest, CreateHardwareCalloutTest)
 TEST(FRUIdentityTest, CreateProcedureCalloutTest)
 {
     {
-        FRUIdentity fru{"no_vpd_for_fru"};
+        FRUIdentity fru{"bmc_code"};
 
         EXPECT_EQ(fru.flattenedSize(), 12);
         EXPECT_EQ(fru.type(), 0x4944);

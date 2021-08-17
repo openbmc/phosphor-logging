@@ -878,12 +878,24 @@ void SRC::addInventoryCallout(const std::string& inventoryPath,
                           ": " + e.what();
         addDebugData(msg);
 
-        callout = std::make_unique<src::Callout>(CalloutPriority::high,
-                                                 "no_vpd_for_fru");
+        // Don't add a callout in this case, because:
+        // 1) With how the inventory is primed, there is no case where
+        //    a location code is expected to be missing.  This implies
+        //    the caller is passing in something invalid.
+        // 2) The addDebugData call above will put the passed in path into
+        //    a user data section that can be seen by development for debug.
+        // 3) Even if we wanted to do a 'no_vpd_for_fru' sort of maint.
+        //    procedure, we don't have a good way to indicate to the user
+        //    anything about the intended callout (they won't see user data).
+        // 4) Creating a new standalone event log for this problem isn't
+        //    possible from inside a PEL section.
     }
 
-    createCalloutsObject();
-    _callouts->addCallout(std::move(callout));
+    if (callout)
+    {
+        createCalloutsObject();
+        _callouts->addCallout(std::move(callout));
+    }
 }
 
 std::vector<message::RegistryCallout>
