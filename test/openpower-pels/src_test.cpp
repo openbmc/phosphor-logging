@@ -393,7 +393,7 @@ TEST_F(SRCTest, InventoryCalloutTest)
 }
 
 // Test that when the location code can't be obtained that
-// a procedure callout is used.
+// no callout is added.
 TEST_F(SRCTest, InventoryCalloutNoLocCodeTest)
 {
     message::Entry entry;
@@ -420,20 +420,7 @@ TEST_F(SRCTest, InventoryCalloutNoLocCodeTest)
     SRC src{entry, ad, dataIface};
     EXPECT_TRUE(src.valid());
 
-    ASSERT_TRUE(src.callouts());
-
-    EXPECT_EQ(src.callouts()->callouts().size(), 1);
-
-    auto& callout = src.callouts()->callouts().front();
-    EXPECT_EQ(callout->locationCodeSize(), 0);
-    EXPECT_EQ(callout->priority(), 'H');
-
-    auto& fru = callout->fruIdentity();
-
-    EXPECT_EQ(fru->getMaintProc().value(), "BMCSP01");
-    EXPECT_FALSE(fru->getPN());
-    EXPECT_FALSE(fru->getSN());
-    EXPECT_FALSE(fru->getCCIN());
+    ASSERT_FALSE(src.callouts());
 
     // flatten and unflatten
     std::vector<uint8_t> data;
@@ -443,8 +430,7 @@ TEST_F(SRCTest, InventoryCalloutNoLocCodeTest)
     stream.offset(0);
     SRC newSRC{stream};
     EXPECT_TRUE(newSRC.valid());
-    ASSERT_TRUE(src.callouts());
-    EXPECT_EQ(src.callouts()->callouts().size(), 1);
+    ASSERT_FALSE(src.callouts());
 }
 
 // Test that when the VPD can't be obtained that
@@ -519,7 +505,7 @@ TEST_F(SRCTest, RegistryCalloutTest)
                 },
                 {
                     "Priority": "medium",
-                    "Procedure": "no_vpd_for_fru"
+                    "Procedure": "bmc_code"
                 }
             ]
         },

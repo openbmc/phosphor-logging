@@ -399,7 +399,7 @@ TEST_F(RegistryTest, TestGetCallouts)
             [
                 {
                     "Priority": "medium",
-                    "Procedure": "no_vpd_for_fru"
+                    "Procedure": "bmc_code"
                 },
                 {
                     "Priority": "low",
@@ -444,7 +444,7 @@ TEST_F(RegistryTest, TestGetCallouts)
         EXPECT_EQ(callouts.size(), 2);
         EXPECT_EQ(callouts[0].priority, "medium");
         EXPECT_EQ(callouts[0].locCode, "");
-        EXPECT_EQ(callouts[0].procedure, "no_vpd_for_fru");
+        EXPECT_EQ(callouts[0].procedure, "bmc_code");
         EXPECT_EQ(callouts[0].symbolicFRU, "");
         EXPECT_EQ(callouts[1].priority, "low");
         EXPECT_EQ(callouts[1].locCode, "P3-C8");
@@ -557,7 +557,7 @@ TEST_F(RegistryTest, TestGetCallouts)
                                 },
                                 {
                                     "Priority": "low",
-                                    "Procedure": "no_vpd_for_fru",
+                                    "Procedure": "bmc_code",
                                     "CalloutType": "config_procedure"
                                 }
                             ]
@@ -612,7 +612,7 @@ TEST_F(RegistryTest, TestGetCallouts)
             EXPECT_EQ(callouts[1].symbolicFRUTrusted, "");
             EXPECT_EQ(callouts[2].priority, "low");
             EXPECT_EQ(callouts[2].locCode, "");
-            EXPECT_EQ(callouts[2].procedure, "no_vpd_for_fru");
+            EXPECT_EQ(callouts[2].procedure, "bmc_code");
             EXPECT_EQ(callouts[2].symbolicFRU, "");
             EXPECT_EQ(callouts[2].symbolicFRUTrusted, "");
 
