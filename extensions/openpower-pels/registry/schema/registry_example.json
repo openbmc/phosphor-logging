@@ -63,7 +63,7 @@
                                 [
                                     {
                                         "Priority": "high",
-                                        "Procedure": "no_vpd_for_fru"
+                                        "Procedure": "bmc_code"
                                     }
                                 ]
                             }
