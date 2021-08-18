@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "24b013ce_58c53240",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-08-18T16:59:27Z",
+      "side": 1,
+      "message": "Is this driven from some spec change or we just do it to support 4 characters?",
+      "range": {
+        "startLine": 7,
+        "startChar": 5,
+        "endLine": 7,
+        "endChar": 46
+      },
+      "revId": "74a86b78138efc2e5110576368e9a8cb0a4d99ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
