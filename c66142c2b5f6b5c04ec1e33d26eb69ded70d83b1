@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "660ba669_6bc3b9b7",
+        "filename": "extensions/openpower-pels/pel_values.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-08-18T16:22:33Z",
+      "side": 1,
+      "message": "your error uses the external environment 0xa0 value up above, so this one isn\u0027t needed.",
+      "range": {
+        "startLine": 127,
+        "startChar": 4,
+        "endLine": 127,
+        "endChar": 35
+      },
+      "revId": "c66142c2b5f6b5c04ec1e33d26eb69ded70d83b1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "adf31317_bf39b4ae",
+        "filename": "extensions/openpower-pels/pel_values.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-08-18T16:22:33Z",
+      "side": 1,
+      "message": "there\u0027s a hidden requirement that these need to be 7 characters.  looks like the previous generation used \"ALTTUDE\" so I\u0027d go with that here too.",
+      "range": {
+        "startLine": 233,
+        "startChar": 52,
+        "endLine": 233,
+        "endChar": 60
+      },
+      "revId": "c66142c2b5f6b5c04ec1e33d26eb69ded70d83b1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eb5c50d1_7e3869b4",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2005,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-08-18T16:22:33Z",
+      "side": 1,
+      "message": "Though it won\u0027t be alphabetical, could you move these down to below the 0x2809 error so it will be ordered by reason code?",
+      "revId": "c66142c2b5f6b5c04ec1e33d26eb69ded70d83b1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "08cb2a57_7e59fdf1",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2020,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-08-18T16:22:33Z",
+      "side": 1,
+      "message": "altitude",
+      "range": {
+        "startLine": 2020,
+        "startChar": 65,
+        "endLine": 2020,
+        "endChar": 76
+      },
+      "revId": "c66142c2b5f6b5c04ec1e33d26eb69ded70d83b1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
