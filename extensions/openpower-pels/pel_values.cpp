@@ -123,7 +123,8 @@ const PELValues subsystemValues = {
     {0xA1, "input_power_source", "Input Power Source (ac)"},
     {0xA2, "ambient_temp", "Room Ambient Temperature"},
     {0xA3, "user_error", "User Error"},
-    {0xA4, "corrosion", "Corrosion"}};
+    {0xA4, "corrosion", "Corrosion"},
+    {0xA5, "altitude", "Altitude"}};
 
 /**
  * The possible values for the severity field in the User Header.
@@ -229,7 +230,7 @@ const std::map<std::string, std::string> symbolicFRUs = {
     {"usb_pgood", "USBPGD"},          {"ambient_temp", "AMBTEMP"},
     {"ambient_temp_back", "AMBBACK"}, {"ambient_perf_loss", "AMBPERF"},
     {"ac_module", "ACMODUL"},         {"fan_cable", "FANCBL"},
-    {"cable_continued", "CBLCONT"}};
+    {"cable_continued", "CBLCONT"},   {"altitude", "ALTITUDE"}};
 
 PELValues::const_iterator findByValue(uint32_t value, const PELValues& fields)
 {

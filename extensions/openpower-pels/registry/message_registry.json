@@ -2002,6 +2002,67 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Sensor.Threshold.Error.AltitudeWarningHigh",
+            "Subsystem": "ext_env",
+            "ComponentID": "0x2800",
+            "Severity": "predictive",
+            "ActionFlags": ["service_action", "report"],
+
+            "SRC": {
+                "ReasonCode": "0x280A",
+                "Words6To9": {}
+            },
+
+            "CalloutsUsingAD": {
+                "ADName": "SENSOR_NAME",
+                "CalloutsWithTheirADValues": [
+                    {
+                        "ADValue": "/xyz/openbmc_project/sensors/temperature/Altitude",
+                        "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "SymbolicFRU": "altitude" }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+
+            "Documentation": {
+                "Description": "An altitude sensor exceeded its warning threshold.",
+                "Message": "An altitude sensor exceeded its warning threshold.",
+                "Notes": [
+                    "The virtual altitude sensor crossed its warning threshold value",
+                    " and a symbolic FRU will be added."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Sensor.Threshold.Error.AltitudeWarningHighClear",
+            "Subsystem": "ext_env",
+            "ComponentID": "0x2800",
+            "Severity": "non_error",
+            "ActionFlags": ["report"],
+            "EventType": "env_normal",
+
+            "SRC": {
+                "ReasonCode": "0x280B",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "An altitude sensor it under its warning threshold.",
+                "Message": "An altitude sensor is under its warning threshold.",
+                "Notes": [
+                    "The virtual altitude sensor is under its warning threshold value",
+                    " and a symbolic FRU will be added."
+                ]
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.Sensor.Threshold.Error.TemperaturePerfLossHigh",
             "Subsystem": "power",
             "ComponentID": "0x2800",
