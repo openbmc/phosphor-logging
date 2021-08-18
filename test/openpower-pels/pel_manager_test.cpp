@@ -304,7 +304,7 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
               "00000000 00000000");
     // Check if resolution property creation is good
     EXPECT_EQ(manager.getResolution(pel),
-              "1. Priority: High, Procedure: BMCSP01\n2. Priority: Medium, PN: "
+              "1. Priority: High, Procedure: BMC0001\n2. Priority: Medium, PN: "
               "SVCDOCS\n");
 
     // Remove it

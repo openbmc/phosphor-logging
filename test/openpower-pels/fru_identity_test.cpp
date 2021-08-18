@@ -165,7 +165,7 @@ TEST(FRUIdentityTest, CreateProcedureCalloutTest)
         EXPECT_EQ(fru.flattenedSize(), 12);
         EXPECT_EQ(fru.type(), 0x4944);
         EXPECT_EQ(fru.failingComponentType(), FRUIdentity::maintenanceProc);
-        EXPECT_EQ(fru.getMaintProc().value(), "BMCSP01");
+        EXPECT_EQ(fru.getMaintProc().value(), "BMC0001");
         EXPECT_FALSE(fru.getPN());
         EXPECT_FALSE(fru.getCCIN());
         EXPECT_FALSE(fru.getSN());
@@ -183,7 +183,7 @@ TEST(FRUIdentityTest, CreateProcedureCalloutTest)
         EXPECT_EQ(newFRU.flattenedSize(), 12);
         EXPECT_EQ(newFRU.type(), 0x4944);
         EXPECT_EQ(newFRU.failingComponentType(), FRUIdentity::maintenanceProc);
-        EXPECT_EQ(newFRU.getMaintProc().value(), "BMCSP01");
+        EXPECT_EQ(newFRU.getMaintProc().value(), "BMC0001");
         EXPECT_FALSE(newFRU.getPN());
         EXPECT_FALSE(newFRU.getCCIN());
         EXPECT_FALSE(newFRU.getSN());
@@ -204,8 +204,8 @@ TEST(FRUIdentityTest, CreateProcedureCalloutTest)
 
     {
         // Raw maintenance procedure
-        FRUIdentity fru{"BMCSPXXLONG", CalloutValueType::raw};
-        EXPECT_EQ(fru.getMaintProc().value(), "BMCSPXX");
+        FRUIdentity fru{"BMCXXXXLONG", CalloutValueType::raw};
+        EXPECT_EQ(fru.getMaintProc().value(), "BMCXXXX");
     }
 }
 
