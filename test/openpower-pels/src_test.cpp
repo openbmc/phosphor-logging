@@ -567,7 +567,7 @@ TEST_F(SRCTest, RegistryCalloutTest)
         EXPECT_FALSE(fru1->getCCIN());
 
         auto& fru2 = callouts[1]->fruIdentity();
-        EXPECT_EQ(fru2->getMaintProc().value(), "BMCSP01");
+        EXPECT_EQ(fru2->getMaintProc().value(), "BMC0001");
         EXPECT_EQ(fru2->failingComponentType(),
                   src::FRUIdentity::maintenanceProc);
         EXPECT_FALSE(fru2->getPN());

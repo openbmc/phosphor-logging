@@ -324,7 +324,7 @@ TEST(CalloutTest, TestProcedureCallout)
     EXPECT_EQ(callout.locationCodeSize(), 0);
 
     auto& fru = callout.fruIdentity();
-    EXPECT_EQ(fru->getMaintProc().value(), "BMCSP01");
+    EXPECT_EQ(fru->getMaintProc().value(), "BMC0001");
 
     // flatten/unflatten
     std::vector<uint8_t> data;
@@ -348,10 +348,10 @@ TEST(CalloutTest, TestProcedureCallout)
 
     // Use raw procedure value
 
-    Callout rawCallout{CalloutPriority::medium, "BMCSPXX",
+    Callout rawCallout{CalloutPriority::medium, "BMCXXXX",
                        CalloutValueType::raw};
     auto& rawFRU = rawCallout.fruIdentity();
-    EXPECT_EQ(rawFRU->getMaintProc().value(), "BMCSPXX");
+    EXPECT_EQ(rawFRU->getMaintProc().value(), "BMCXXXX");
 }
 
 // Create a callout object by passing in the symbolic FRU to add.

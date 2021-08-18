@@ -217,7 +217,7 @@ const PELValues calloutPriorityValues = {
  *        to their actual names.
  */
 const std::map<std::string, std::string> maintenanceProcedures = {
-    {"bmc_code", "BMCSP01"}};
+    {"bmc_code", "BMC0001"}};
 
 /**
  * @brief Map of the registry names for the symbolic FRUs to their
