@@ -22,6 +22,7 @@
 #include <fmt/format.h>
 
 #include <fstream>
+#include <iostream>
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
 
@@ -54,6 +55,7 @@ constexpr auto enableHostPELs =
     "/xyz/openbmc_project/logging/send_event_logs_to_host";
 constexpr auto vpdManager = "/com/ibm/VPD/Manager";
 constexpr auto logSetting = "/xyz/openbmc_project/logging/settings";
+constexpr auto hmcstate = "/xyz/openbmc_project/logging/entry";
 } // namespace object_path
 
 namespace interface
@@ -80,6 +82,7 @@ constexpr auto operationalStatus =
     "xyz.openbmc_project.State.Decorator.OperationalStatus";
 constexpr auto logSetting = "xyz.openbmc_project.Logging.Settings";
 constexpr auto association = "xyz.openbmc_project.Association.Definitions";
+constexpr auto hmcstate = "org.open_power.Logging.PEL.Entry";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
@@ -101,6 +104,18 @@ std::pair<std::string, std::string>
     }
 
     return {base, connector};
+}
+void DataInterface::addPropertyCallback(std::string objectPath,
+                                        std::string interface,
+                                        std::string property)
+{
+
+    // Watch the host PEL enable property
+    _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
+        _bus, objectPath, interface, property, *this,
+        [this](const auto& value) {
+            std::cerr << "======> In this property path\n";
+        }));
 }
 
 DataInterface::DataInterface(sdbusplus::bus::bus& bus) : _bus(bus)

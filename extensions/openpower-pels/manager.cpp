@@ -808,12 +808,21 @@ void Manager::createPELEntry(uint32_t obmcLogID)
         varData.emplace(
             std::string("Subsystem"),
             pv::getValue(attr.subsystem, pel_values::subsystemValues));
+
+        varData.emplace(std::string("ManagementSystemAck"),
+                        attr.hmcstate == Transmissionstate::acked));
+
         // Path to create PELEntry Interface is same as PEL
         auto path = std::string(OBJ_ENTRY) + '/' + std::to_string(obmcLogID);
         // Create Interface for PELEntry and set properties
         auto pelEntry = std::make_unique<PELEntry>(_logManager.getBus(),
                                                    path.c_str(), varData);
         _pelEntries.emplace(std::move(path), std::move(pelEntry));
+
+        static_cast<DataInterface*>(_dataIface.get())
+            ->addPropertyCallback(
+                std::string(OBJ_ENTRY) + '/' + std::to_string(obmcLogID),
+                "org.open_power.Logging.PEL.Entry", "ManagementSystemAck");
     }
 }
 

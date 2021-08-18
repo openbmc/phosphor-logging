@@ -470,6 +470,14 @@ class DataInterface : public DataInterfaceBase
     void getProperty(const std::string& service, const std::string& objectPath,
                      const std::string& interface, const std::string& property,
                      DBusValue& value) const;
+
+    int getPropertiesSize(void) const
+    {
+        return _properties.size();
+    }
+
+    void addPropertyCallback(std::string objectPath, std::string interface,
+                             std::string property);
     /**
      * @brief Returns the machine Type/Model
      *
