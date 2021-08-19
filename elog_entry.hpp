@@ -69,20 +69,20 @@ class Entry : public EntryIfaces
         EntryIfaces(bus, path.c_str(), true),
         parent(parent)
     {
-        id(idErr);
-        severity(severityErr);
-        timestamp(timestampErr);
-        updateTimestamp(timestampErr);
-        message(std::move(msgErr));
-        additionalData(std::move(additionalDataErr));
-        associations(std::move(objects));
+        id(idErr, true);
+        severity(severityErr, true);
+        timestamp(timestampErr, true);
+        updateTimestamp(timestampErr, true);
+        message(std::move(msgErr), true);
+        additionalData(std::move(additionalDataErr), true);
+        associations(std::move(objects), true);
         // Store a copy of associations in case we need to recreate
         assocs = associations();
-        sdbusplus::xyz::openbmc_project::Logging::server::Entry::resolved(
-            false);
+        sdbusplus::xyz::openbmc_project::Logging::server::Entry::resolved(false,
+                                                                          true);
 
-        version(fwVersion);
-        purpose(VersionPurpose::BMC);
+        version(fwVersion, true);
+        purpose(VersionPurpose::BMC, true);
 
         // Emit deferred signal.
         this->emit_object_added();
@@ -101,7 +101,7 @@ class Entry : public EntryIfaces
         EntryIfaces(bus, path.c_str(), true),
         parent(parent)
     {
-        id(entryId);
+        id(entryId, true);
     };
 
     /** @brief Set resolution status of the error.

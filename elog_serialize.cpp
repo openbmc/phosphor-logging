@@ -86,20 +86,21 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
           resolved, fwVersion, updateTimestamp, eventId, resolution);
     }
 
-    e.id(id);
-    e.severity(severity);
-    e.timestamp(timestamp);
-    e.message(message);
-    e.additionalData(additionalData);
+    e.id(id, true);
+    e.severity(severity, true);
+    e.timestamp(timestamp, true);
+    e.message(message, true);
+    e.additionalData(additionalData, true);
     e.sdbusplus::xyz::openbmc_project::Logging::server::Entry::resolved(
-        resolved);
-    e.associations(associations);
-    e.version(fwVersion);
+        resolved, true);
+    e.associations(associations, true);
+    e.version(fwVersion, true);
     e.purpose(sdbusplus::xyz::openbmc_project::Software::server::Version::
-                  VersionPurpose::BMC);
-    e.updateTimestamp(updateTimestamp);
-    e.eventId(eventId);
-    e.resolution(resolution);
+                  VersionPurpose::BMC,
+              true);
+    e.updateTimestamp(updateTimestamp, true);
+    e.eventId(eventId, true);
+    e.resolution(resolution, true);
 }
 
 fs::path serialize(const Entry& e, const fs::path& dir)
