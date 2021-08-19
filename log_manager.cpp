@@ -582,7 +582,7 @@ void Manager::restore()
             // validate the restored error entry id
             if (sanity(static_cast<uint32_t>(idNum), e->id()))
             {
-                e->path(file.path());
+                e->path(file.path(), true);
                 e->emit_object_added();
                 if (e->severity() >= Entry::sevLowerLimit)
                 {
