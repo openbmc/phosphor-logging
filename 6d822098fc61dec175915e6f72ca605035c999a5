@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "07118fa8_150024f9",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-08-20T18:24:05Z",
+      "side": 1,
+      "message": "ok makes sense showing both, if any other comments come in, please update, otherwise I\u0027m fine.",
+      "parentUuid": "f4d00814_54c06aff",
+      "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ae01304d_71e3fbf4",
         "filename": "docs/structured-logging.md",
         "patchSetId": 4
