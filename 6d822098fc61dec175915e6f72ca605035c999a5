@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "f4d00814_54c06aff",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-20T16:38:41Z",
+      "side": 1,
+      "message": "True.  I can do a minor update here before this is merged to put {TAG0} somewhere other than at the end.  I purposefully didn\u0027t want to put TAG1 in the message to show that you can have some in and some out.",
+      "parentUuid": "997aea41_ad942423",
+      "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ae01304d_71e3fbf4",
         "filename": "docs/structured-logging.md",
         "patchSetId": 4
