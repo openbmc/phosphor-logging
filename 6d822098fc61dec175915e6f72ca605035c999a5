@@ -73,6 +73,29 @@
     },
     {
       "key": {
+        "uuid": "99fd7b5f_b1d5ee00",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2021-08-23T18:43:53Z",
+      "side": 1,
+      "message": "Should this just be \u0027report\u0027?",
+      "range": {
+        "startLine": 29,
+        "startChar": 30,
+        "endLine": 29,
+        "endChar": 38
+      },
+      "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "997aea41_ad942423",
         "filename": "docs/structured-logging.md",
         "patchSetId": 4
@@ -120,6 +143,29 @@
       "side": 1,
       "message": "ok makes sense showing both, if any other comments come in, please update, otherwise I\u0027m fine.",
       "parentUuid": "f4d00814_54c06aff",
+      "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6014720f_17eef412",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2021-08-23T18:43:53Z",
+      "side": 1,
+      "message": "typo: that",
+      "range": {
+        "startLine": 144,
+        "startChar": 9,
+        "endLine": 144,
+        "endChar": 13
+      },
       "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -243,6 +289,29 @@
       "side": 1,
       "message": "This seems like you are suggesting that we only format the unstructured message portion and not the journal metadata.  Maybe I understand you wrong.\n\nIf we want to format the journal metadata it would require N calls to `{fmt}` somewhere.  Can you point out which parts of the paragraph don\u0027t seem accurate.",
       "parentUuid": "4455eb73_2a28f871",
+      "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c8b53880_a8af0841",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2021-08-23T18:43:53Z",
+      "side": 1,
+      "message": "if we do?",
+      "range": {
+        "startLine": 244,
+        "startChar": 15,
+        "endLine": 244,
+        "endChar": 20
+      },
       "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true

@@ -747,6 +747,30 @@
     },
     {
       "key": {
+        "uuid": "693b1372_4708378f",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2021-08-23T18:43:53Z",
+      "side": 1,
+      "message": "I agree and was concerned that the mirroring statement implied that it would be mirrored in the systemd start-up case which we don\u0027t want.  Thanks!",
+      "parentUuid": "584c5e02_3f4e486d",
+      "range": {
+        "startLine": 110,
+        "startChar": 64,
+        "endLine": 112,
+        "endChar": 43
+      },
+      "revId": "ae9ebb704971d0cec541d5a0df28f724480e93a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a44f2377_277b592b",
         "filename": "docs/structured-logging.md",
         "patchSetId": 1
