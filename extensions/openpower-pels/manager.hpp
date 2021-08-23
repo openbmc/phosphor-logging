@@ -26,9 +26,6 @@ namespace pels
 using PELInterface = sdbusplus::server::object::object<
     sdbusplus::org::open_power::Logging::server::PEL>;
 
-using PELEntry = sdbusplus::org::open_power::Logging::PEL::server::Entry;
-using PropertiesVariant = PELEntry::PropertiesVariant;
-
 /**
  * @brief PEL manager object
  */
