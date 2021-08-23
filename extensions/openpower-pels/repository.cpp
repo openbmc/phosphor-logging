@@ -415,9 +415,9 @@ void Repository::setPELHostTransState(uint32_t pelID, TransmissionState state)
     }
 }
 
-void Repository::setPELHMCTransState(uint32_t pelID, TransmissionState state)
+void Repository::setPELHMCTransState(uint32_t obmcID, TransmissionState state)
 {
-    LogID id{LogID::Pel{pelID}};
+    LogID id{LogID::Obmc{obmcID}};
     auto attr = std::find_if(_pelAttributes.begin(), _pelAttributes.end(),
                              [&id](const auto& a) { return a.first == id; });
 

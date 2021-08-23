@@ -128,6 +128,7 @@ log_manager_ext_sources += files(
     'extended_user_data.cpp',
     'host_notifier.cpp',
     'manager.cpp',
+    'pel_entry.cpp',
     'pldm_interface.cpp',
     'repository.cpp',
     'src.cpp',
