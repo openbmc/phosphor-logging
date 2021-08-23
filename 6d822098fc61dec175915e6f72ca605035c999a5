@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "bb762f6f_b12d7fe8",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-23T21:05:54Z",
+      "side": 1,
+      "message": "\u003e yea, preferred is fine.\n\nDone.\n\n\u003e You\u0027re saying that ... won\u0027t work?\n\nI was mis-remembering which parts were required to be compile-time strings.  The code examples you showed should work.\n\nI hope we don\u0027t have anyone purposefully doing that.  I\u0027ve tried to make the structured logging as easy as it would be to use `strstream` or `fmt` but I guess we can leave that debate elsewhere.",
+      "parentUuid": "d972d0ad_bdffa8f2",
+      "range": {
+        "startLine": 22,
+        "startChar": 19,
+        "endLine": 23,
+        "endChar": 19
+      },
+      "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "99fd7b5f_b1d5ee00",
         "filename": "docs/structured-logging.md",
         "patchSetId": 4
@@ -93,6 +117,30 @@
       "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c276b331_709a7638",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-23T21:05:54Z",
+      "side": 1,
+      "message": "I think that \"issues\" is the spurious word here.  I\u0027ll fix the grammar.",
+      "parentUuid": "99fd7b5f_b1d5ee00",
+      "range": {
+        "startLine": 29,
+        "startChar": 30,
+        "endLine": 29,
+        "endChar": 38
+      },
+      "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -149,6 +197,24 @@
     },
     {
       "key": {
+        "uuid": "f5c69dba_2c792f9f",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-23T21:05:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07118fa8_150024f9",
+      "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6014720f_17eef412",
         "filename": "docs/structured-logging.md",
         "patchSetId": 4
@@ -169,6 +235,30 @@
       "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6f9e4c2f_2443b82b",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-23T21:05:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6014720f_17eef412",
+      "range": {
+        "startLine": 144,
+        "startChar": 9,
+        "endLine": 144,
+        "endChar": 13
+      },
+      "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -315,6 +405,30 @@
       "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "40903316_2b34a922",
+        "filename": "docs/structured-logging.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-23T21:05:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8b53880_a8af0841",
+      "range": {
+        "startLine": 244,
+        "startChar": 15,
+        "endLine": 244,
+        "endChar": 20
+      },
+      "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
