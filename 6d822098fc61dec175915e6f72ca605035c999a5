@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "d972d0ad_bdffa8f2",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-08-23T17:49:40Z",
+      "side": 1,
+      "message": "yea, preferred is fine.\n\nYou\u0027re saying that\n   std::string msg{\"hello world\"};\n   info(msg);\n   info(msg.str());\n\nwon\u0027t work?\nThat\u0027s fine, I just missed it.",
+      "parentUuid": "932f4591_d585ff72",
+      "range": {
+        "startLine": 22,
+        "startChar": 19,
+        "endLine": 23,
+        "endChar": 19
+      },
+      "revId": "6d822098fc61dec175915e6f72ca605035c999a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "997aea41_ad942423",
         "filename": "docs/structured-logging.md",
         "patchSetId": 4
