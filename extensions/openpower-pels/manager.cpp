@@ -18,6 +18,7 @@
 #include "additional_data.hpp"
 #include "json_utils.hpp"
 #include "pel.hpp"
+#include "pel_entry.hpp"
 #include "service_indicators.hpp"
 
 #include <fmt/format.h>
@@ -808,11 +809,16 @@ void Manager::createPELEntry(uint32_t obmcLogID)
         varData.emplace(
             std::string("Subsystem"),
             pv::getValue(attr.subsystem, pel_values::subsystemValues));
+
+        varData.emplace(
+            std::string("ManagementSystemAck"),
+            (attr.hmcState == TransmissionState::acked ? true : false));
+
         // Path to create PELEntry Interface is same as PEL
         auto path = std::string(OBJ_ENTRY) + '/' + std::to_string(obmcLogID);
         // Create Interface for PELEntry and set properties
-        auto pelEntry = std::make_unique<PELEntry>(_logManager.getBus(),
-                                                   path.c_str(), varData);
+        auto pelEntry = std::make_unique<PELEntry>(_logManager.getBus(), path,
+                                                   varData, obmcLogID, &_repo);
         _pelEntries.emplace(std::move(path), std::move(pelEntry));
     }
 }
