@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "f907d812_7fe756ea",
+        "filename": "extensions/openpower-pels/meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-08-23T16:30:01Z",
+      "side": 1,
+      "message": "Can you put this below so list is alphabetical?",
+      "revId": "b870bcbcad6f0a2d8cf05661d3e6f2c930358657",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2997bdc1_84bb31c8",
         "filename": "extensions/openpower-pels/pel_entry.hpp",
         "patchSetId": 3
@@ -31,6 +48,23 @@
       "side": 1,
       "message": "I think it plays as a placeholder. We already have 3 properties in this Interface and I guess we might have some more along the way",
       "parentUuid": "2997bdc1_84bb31c8",
+      "revId": "b870bcbcad6f0a2d8cf05661d3e6f2c930358657",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa049017_fc2eca07",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-08-23T16:30:01Z",
+      "side": 1,
+      "message": "There\u0027s code in host_notifier.cpp that relies on this being the PEL ID",
       "revId": "b870bcbcad6f0a2d8cf05661d3e6f2c930358657",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
