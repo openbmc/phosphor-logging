@@ -230,11 +230,18 @@ std::optional<std::string> UserHeader::getJSON() const
         pv::getValuesBitwise(_actionFlags, pel_values::actionFlagsValues);
 
     std::string hostState{"Invalid"};
+    std::string hmcState{"Invalid"};
     auto iter = pv::transmissionStates.find(
         static_cast<TransmissionState>(hostTransmissionState()));
     if (iter != pv::transmissionStates.end())
     {
         hostState = iter->second;
+    }
+    auto iter1 = pv::transmissionStates.find(
+        static_cast<TransmissionState>(hmcTransmissionState()));
+    if (iter1 != pv::transmissionStates.end())
+    {
+        hmcState = iter1->second;
     }
 
     std::string uh;
@@ -248,6 +255,7 @@ std::optional<std::string> UserHeader::getJSON() const
     jsonInsert(uh, "Event Type", eventType, 1);
     jsonInsertArray(uh, "Action Flags", actionFlags, 1);
     jsonInsert(uh, "Host Transmission", hostState, 1);
+    jsonInsert(uh, "HMC Transmission", hmcState, 1);
     uh.erase(uh.size() - 2);
     return uh;
 }
