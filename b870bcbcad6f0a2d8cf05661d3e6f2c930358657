@@ -16,6 +16,24 @@
       "revId": "b870bcbcad6f0a2d8cf05661d3e6f2c930358657",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "68db9b82_999c0417",
+        "filename": "extensions/openpower-pels/pel_entry.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-08-23T14:10:28Z",
+      "side": 1,
+      "message": "I think it plays as a placeholder. We already have 3 properties in this Interface and I guess we might have some more along the way",
+      "parentUuid": "2997bdc1_84bb31c8",
+      "revId": "b870bcbcad6f0a2d8cf05661d3e6f2c930358657",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
