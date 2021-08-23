@@ -86,6 +86,24 @@
       "revId": "b870bcbcad6f0a2d8cf05661d3e6f2c930358657",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d6d6c825_a995d112",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-08-23T17:57:29Z",
+      "side": 1,
+      "message": "may be we should just keep PelID for host and ObmcId for hmc? I was trying to test this part and I see that our repo uses ObmcId and that is what we store in the DS.",
+      "parentUuid": "fcdecc82_c9f39aba",
+      "revId": "b870bcbcad6f0a2d8cf05661d3e6f2c930358657",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
