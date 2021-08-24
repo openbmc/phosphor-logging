@@ -80,6 +80,8 @@ constexpr auto operationalStatus =
     "xyz.openbmc_project.State.Decorator.OperationalStatus";
 constexpr auto logSetting = "xyz.openbmc_project.Logging.Settings";
 constexpr auto association = "xyz.openbmc_project.Association.Definitions";
+constexpr auto dumpEntry = "xyz.openbmc_project.Dump.Entry";
+constexpr auto dumpProgress = "xyz.openbmc_project.Common.Progress";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
@@ -616,6 +618,48 @@ bool DataInterface::getQuiesceOnError() const
     }
 
     return ret;
+}
+
+bool DataInterface::checkDumpStatus(const std::string& type) const
+{
+    DBusSubTree subtree;
+
+    auto method = _bus.new_method_call(service_name::objectMapper,
+                                       object_path::objectMapper,
+                                       interface::objectMapper, "GetSubTree");
+    method.append(std::string{"/"}, 0,
+                  std::vector<std::string>{interface::dumpEntry});
+    auto reply = _bus.call(method);
+
+    reply.read(subtree);
+
+    if (!subtree.empty())
+    {
+        for (const auto& [path, serviceInfo] : subtree)
+        {
+            const auto& service = serviceInfo.begin()->first;
+            if (path.find(type) != std::string::npos)
+            {
+                DBusValue value, progress;
+
+                // Check for valid dump to be available if following
+                // conditions are met for the dump entry path -
+                // Offloaded == false and Status == Completed
+                getProperty(service, path, interface::dumpEntry, "Offloaded",
+                            value);
+                getProperty(service, path, interface::dumpProgress, "Status",
+                            progress);
+                auto offload = std::get<bool>(value);
+                auto status = std::get<std::string>(progress);
+                if (!offload && (status.find("Completed") != std::string::npos))
+                {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
 }
 
 } // namespace pels
