@@ -47,6 +47,7 @@ class MockDataInterface : public DataInterfaceBase
     MOCK_METHOD(bool, getQuiesceOnError, (), (const override));
     MOCK_METHOD(void, setCriticalAssociation, (const std::string&),
                 (const override));
+    MOCK_METHOD(bool, checkDumpStatus, (const std::string&), (const override));
 
     void changeHostState(bool newState)
     {

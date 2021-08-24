@@ -1321,3 +1321,61 @@ TEST_F(SRCTest, InventoryCalloutTestPriority)
     EXPECT_EQ(callout->locationCode(), "UTMS-P1");
     EXPECT_EQ(callout->priority(), 'M');
 }
+
+// Test for bmc & platform dump status bits
+TEST_F(SRCTest, PlatformDumpStatusCheck)
+{
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+    entry.src.powerFault = false;
+
+    AdditionalData ad;
+    NiceMock<MockDataInterface> dataIface;
+
+    {
+        EXPECT_CALL(dataIface, checkDumpStatus("bmc"))
+            .WillOnce(Return(true));
+        EXPECT_CALL(dataIface, checkDumpStatus("resource"))
+            .WillOnce(Return(false));
+        EXPECT_CALL(dataIface, checkDumpStatus("system"))
+            .WillOnce(Return(false));
+
+        SRC src{entry, ad, dataIface};
+        EXPECT_TRUE(src.valid());
+
+        const auto& hexwords = src.hexwordData();
+        EXPECT_EQ(0x00080055, hexwords[0]);
+    }
+
+    {
+        EXPECT_CALL(dataIface, checkDumpStatus("bmc"))
+            .WillOnce(Return(false));
+        EXPECT_CALL(dataIface, checkDumpStatus("resource"))
+            .WillOnce(Return(true));
+        EXPECT_CALL(dataIface, checkDumpStatus("system"))
+            .WillOnce(Return(false));
+
+        SRC src{entry, ad, dataIface};
+        EXPECT_TRUE(src.valid());
+
+        const auto& hexwords = src.hexwordData();
+        EXPECT_EQ(0x00000255, hexwords[0]);
+    }
+
+    {
+        EXPECT_CALL(dataIface, checkDumpStatus("bmc"))
+            .WillOnce(Return(false));
+        EXPECT_CALL(dataIface, checkDumpStatus("resource"))
+            .WillOnce(Return(false));
+        EXPECT_CALL(dataIface, checkDumpStatus("system"))
+            .WillOnce(Return(true));
+
+        SRC src{entry, ad, dataIface};
+        EXPECT_TRUE(src.valid());
+
+        const auto& hexwords = src.hexwordData();
+        EXPECT_EQ(0x00000455, hexwords[0]);
+    }
+}
