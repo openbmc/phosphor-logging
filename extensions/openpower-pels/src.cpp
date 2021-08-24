@@ -348,11 +348,12 @@ SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
     //   M: Partition dump status = 0
     //   I: System boot state = TODO
     //   G: Partition Boot type = 0
-    //   V: BMC dump status = TODO
+    //   V: BMC dump status
     //   E: Platform boot mode = 0 (side = temporary, speed = fast)
-    //   P: Platform dump status = TODO
+    //   P: Platform dump status
     //  FF: SRC format, set below
 
+    setDumpStatus(dataIface);
     setBMCFormat();
     setBMCPosition();
     setMotherboardCCIN(dataIface);
@@ -1389,6 +1390,45 @@ std::vector<src::MRU::MRUCallout>
     }
 
     return mrus;
+}
+
+void SRC::setDumpStatus(const DataInterfaceBase& dataIface)
+{
+    auto status = false;
+
+    try
+    {
+        std::string dumpType = "bmc";
+        status = dataIface.checkDumpStatus(dumpType);
+        if (status)
+        {
+            // For bmc set bit 0 of nibble [4-7] bits of byte -1 SP
+            // dump
+            _hexData[0] |= (0x1 << 19);
+        }
+
+        dumpType = "resource";
+        status = dataIface.checkDumpStatus(dumpType);
+        if (status)
+        {
+            // For resource set bit 2 of nibble [4-7] bits of byte -2 Hypervisor
+            // dump
+            _hexData[0] |= (0x1 << 9);
+        }
+
+        dumpType = "system";
+        status = dataIface.checkDumpStatus(dumpType);
+        if (status)
+        {
+            // For system set bit 1 of nibble [4-7] bits of byte -2 Hardware
+            // dump
+            _hexData[0] |= (0x1 << 10);
+        }
+    }
+    catch (const std::exception& e)
+    {
+        //Exception - may be no dump interface on dbus
+    }
 }
 
 } // namespace pels
