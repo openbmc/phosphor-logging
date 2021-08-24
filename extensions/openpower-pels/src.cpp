@@ -353,6 +353,7 @@ SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
     //   P: Platform dump status = TODO
     //  FF: SRC format, set below
 
+    setDumpStatus(dataIface);
     setBMCFormat();
     setBMCPosition();
     setMotherboardCCIN(dataIface);
@@ -1389,6 +1390,36 @@ std::vector<src::MRU::MRUCallout>
     }
 
     return mrus;
+}
+
+void SRC::setDumpStatus(const DataInterfaceBase& dataIface)
+{
+    auto status = false;
+
+    try
+    {
+        std::string plat = "resource";
+        status = dataIface.checkDumpStatus(plat);
+        if (status)
+        {
+            // For resource set bit 2 of nibble [4-7] bits of byte -2 Hypervisor
+            // dump
+            _hexData[0] |= (0x1 << 9);
+        }
+
+        plat = "system";
+        status = dataIface.checkDumpStatus(plat);
+        if (status)
+        {
+            // For system set bit 1 of nibble [4-7] bits of byte -2 Hardeare
+            // dump
+            _hexData[0] |= (0x1 << 10);
+        }
+    }
+    catch (const std::exception& e)
+    {
+        log<level::WARNING>("No Dump entry interface on dbus");
+    }
 }
 
 } // namespace pels

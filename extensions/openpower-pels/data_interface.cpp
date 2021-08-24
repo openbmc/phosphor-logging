@@ -80,6 +80,8 @@ constexpr auto operationalStatus =
     "xyz.openbmc_project.State.Decorator.OperationalStatus";
 constexpr auto logSetting = "xyz.openbmc_project.Logging.Settings";
 constexpr auto association = "xyz.openbmc_project.Association.Definitions";
+constexpr auto dumpEntry = "xyz.openbmc_project.Dump.Entry";
+constexpr auto dumpProgress = "xyz.openbmc_project.Common.Progress";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
@@ -616,6 +618,46 @@ bool DataInterface::getQuiesceOnError() const
     }
 
     return ret;
+}
+
+bool DataInterface::checkDumpStatus(const std::string& plat) const
+{
+    DBusSubTree subtree;
+
+    auto method = _bus.new_method_call(service_name::objectMapper,
+                                       object_path::objectMapper,
+                                       interface::objectMapper, "GetSubTree");
+    method.append(std::string{"/"}, 0,
+                  std::vector<std::string>{interface::dumpEntry});
+    auto reply = _bus.call(method);
+
+    reply.read(subtree);
+
+    if (subtree.empty())
+    {
+        throw std::runtime_error("Dump entry interface not on D-Bus");
+    }
+
+    for (const auto& [path, serviceInfo] : subtree)
+    {
+        const auto& service = serviceInfo.begin()->first;
+        if (path.find(plat) != std::string::npos)
+        {
+            DBusValue status, value;
+            getProperty(service, path, interface::dumpEntry, "Offloaded",
+                        value);
+            getProperty(service, path, interface::dumpProgress, "Status",
+                        status);
+            auto s = std::get<bool>(value);
+            auto t = std::get<std::string>(status);
+            if (!s && (t.find("Completed") != std::string::npos))
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 } // namespace pels
