@@ -167,6 +167,11 @@ TEST_F(PELTest, CreateFromRegistryTest)
     NiceMock<MockDataInterface> dataIface;
     PelFFDC ffdc;
 
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+        .WillRepeatedly(Return(std::vector<bool>{false, false, false}));
+
     PEL pel{regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
             ad,       ffdc, dataIface};
 
@@ -241,6 +246,11 @@ TEST_F(PELTest, CreateTooBigADTest)
     std::vector<std::string> data{bigAD};
     AdditionalData ad{data};
     NiceMock<MockDataInterface> dataIface;
+
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+        .WillOnce(Return(std::vector<bool>{false, false, false}));
 
     PEL pel{regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
             ad,       ffdc, dataIface};
@@ -762,6 +772,11 @@ TEST_F(PELTest, CreateWithFFDCTest)
     ffdc.emplace_back(std::move(getCustomFFDC(dir, customData)));
     ffdc.emplace_back(std::move(getCustomFFDC(dir, hugeCustomData)));
 
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+        .WillOnce(Return(std::vector<bool>{false, false, false}));
+
     PEL pel{regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
             ad,       ffdc, dataIface};
 
@@ -848,6 +863,11 @@ TEST_F(PELTest, CreateWithDevCalloutsTest)
             "/xyz/openbmc_project/inventory/chassis/motherboard/cpu0", _, _, _))
         .WillOnce(DoAll(SetArgReferee<1>("1234567"), SetArgReferee<2>("CCCC"),
                         SetArgReferee<3>("123456789ABC")));
+
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+        .WillRepeatedly(Return(std::vector<bool>{false, false, false}));
 
     auto dataPath = getPELReadOnlyDataPath();
     std::ofstream file{dataPath / "systemA_dev_callouts.json"};
@@ -986,6 +1006,11 @@ TEST_F(PELTest, CreateWithJSONCalloutsTest)
         .Times(1)
         .WillOnce(DoAll(SetArgReferee<1>("1234567"), SetArgReferee<2>("CCCC"),
                         SetArgReferee<3>("123456789ABC")));
+
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+        .WillOnce(Return(std::vector<bool>{false, false, false}));
 
     message::Entry regEntry;
     regEntry.name = "test";

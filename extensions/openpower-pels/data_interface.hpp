@@ -327,6 +327,14 @@ class DataInterfaceBase
     static std::pair<std::string, std::string>
         extractConnectorFromLocCode(const std::string& locationCode);
 
+    /**
+     * @brief Returns the dump status
+     *
+     * @return bool dump status
+     */
+    virtual std::vector<bool>
+        checkDumpStatus(const std::vector<std::string>& type) const = 0;
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
@@ -599,6 +607,16 @@ class DataInterface : public DataInterfaceBase
      * @return bool - Manufacturing QuiesceOnError property
      */
     bool getQuiesceOnError() const override;
+
+    /**
+     * @brief Returns the dump status
+     *
+     * @param[in] type - The dump type to check for
+     *
+     * @return bool dump status
+     */
+    std::vector<bool>
+        checkDumpStatus(const std::vector<std::string>& type) const override;
 
   private:
     /**
