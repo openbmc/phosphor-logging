@@ -348,11 +348,12 @@ SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
     //   M: Partition dump status = 0
     //   I: System boot state = TODO
     //   G: Partition Boot type = 0
-    //   V: BMC dump status = TODO
+    //   V: BMC dump status
     //   E: Platform boot mode = 0 (side = temporary, speed = fast)
-    //   P: Platform dump status = TODO
+    //   P: Platform dump status
     //  FF: SRC format, set below
 
+    setDumpStatus(dataIface);
     setBMCFormat();
     setBMCPosition();
     setMotherboardCCIN(dataIface);
@@ -878,12 +879,24 @@ void SRC::addInventoryCallout(const std::string& inventoryPath,
                           ": " + e.what();
         addDebugData(msg);
 
-        callout = std::make_unique<src::Callout>(CalloutPriority::high,
-                                                 "no_vpd_for_fru");
+        // Don't add a callout in this case, because:
+        // 1) With how the inventory is primed, there is no case where
+        //    a location code is expected to be missing.  This implies
+        //    the caller is passing in something invalid.
+        // 2) The addDebugData call above will put the passed in path into
+        //    a user data section that can be seen by development for debug.
+        // 3) Even if we wanted to do a 'no_vpd_for_fru' sort of maint.
+        //    procedure, we don't have a good way to indicate to the user
+        //    anything about the intended callout (they won't see user data).
+        // 4) Creating a new standalone event log for this problem isn't
+        //    possible from inside a PEL section.
     }
 
-    createCalloutsObject();
-    _callouts->addCallout(std::move(callout));
+    if (callout)
+    {
+        createCalloutsObject();
+        _callouts->addCallout(std::move(callout));
+    }
 }
 
 std::vector<message::RegistryCallout>
@@ -1389,6 +1402,29 @@ std::vector<src::MRU::MRUCallout>
     }
 
     return mrus;
+}
+
+void SRC::setDumpStatus(const DataInterfaceBase& dataIface)
+{
+    std::vector<bool> dumpStatus{false, false, false};
+
+    try
+    {
+        std::vector<std::string> dumpType = {"bmc/entry", "resource/entry",
+                                             "system/entry"};
+        dumpStatus = dataIface.checkDumpStatus(dumpType);
+
+        // For bmc      - set bit 0 of nibble [4-7] bits of byte-1 SP dump
+        // For resource - set bit 2 of nibble [4-7] bits of byte-2 Hypervisor
+        // For system   - set bit 1 of nibble [4-7] bits of byte-2 HW dump
+        _hexData[0] |= ((dumpStatus[0] << 19) | (dumpStatus[1] << 9) |
+                        (dumpStatus[2] << 10));
+    }
+    catch (const std::exception& e)
+    {
+        // Exception - may be no dump interface on dbus or getProperty
+        // failed
+    }
 }
 
 } // namespace pels

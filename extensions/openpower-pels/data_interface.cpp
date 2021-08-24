@@ -25,6 +25,8 @@
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
 
+#include "iterator"
+
 namespace openpower
 {
 namespace pels
@@ -80,6 +82,8 @@ constexpr auto operationalStatus =
     "xyz.openbmc_project.State.Decorator.OperationalStatus";
 constexpr auto logSetting = "xyz.openbmc_project.Logging.Settings";
 constexpr auto association = "xyz.openbmc_project.Association.Definitions";
+constexpr auto dumpEntry = "xyz.openbmc_project.Dump.Entry";
+constexpr auto dumpProgress = "xyz.openbmc_project.Common.Progress";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
@@ -616,6 +620,82 @@ bool DataInterface::getQuiesceOnError() const
     }
 
     return ret;
+}
+
+std::vector<bool>
+    DataInterface::checkDumpStatus(const std::vector<std::string>& type) const
+{
+    DBusSubTree subtree;
+    std::vector<bool> result;
+    uint8_t typeCnt = 0;
+
+    // Get dump type return status initialized to false
+    for (std::vector<std::string>::const_iterator it = type.begin();
+         it != type.end(); it++)
+    {
+        result.push_back(false);
+        typeCnt++;
+    }
+
+    // Query GetSubTree for the availability of dump interface
+    auto method = _bus.new_method_call(service_name::objectMapper,
+                                       object_path::objectMapper,
+                                       interface::objectMapper, "GetSubTree");
+    method.append(std::string{"/"}, 0,
+                  std::vector<std::string>{interface::dumpEntry});
+    auto reply = _bus.call(method);
+
+    reply.read(subtree);
+
+    if (!subtree.empty())
+    {
+        std::vector<bool>::iterator itDumpStatus = result.begin();
+        uint8_t count = 0;
+        for (const auto& [path, serviceInfo] : subtree)
+        {
+            const auto& service = serviceInfo.begin()->first;
+            // Check for dump type on the object path
+            for (std::vector<std::string>::const_iterator it = type.begin();
+                 it != type.end(); it++)
+            {
+                if (path.find(*it) != std::string::npos)
+                {
+                    DBusValue value, progress;
+
+                    // If dump type status is already available go for next path
+                    if (*itDumpStatus == true)
+                    {
+                        break;
+                    }
+
+                    // Check for valid dump to be available if following
+                    // conditions are met for the dump entry path -
+                    // Offloaded == false and Status == Completed
+                    getProperty(service, path, interface::dumpEntry,
+                                "Offloaded", value);
+                    getProperty(service, path, interface::dumpProgress,
+                                "Status", progress);
+                    auto offload = std::get<bool>(value);
+                    auto status = std::get<std::string>(progress);
+                    if (!offload &&
+                        (status.find("Completed") != std::string::npos))
+                    {
+                        *itDumpStatus = true;
+                        count++;
+                        if (count >= typeCnt)
+                        {
+                            return result;
+                        }
+                        break;
+                    }
+                }
+                itDumpStatus++;
+            }
+            itDumpStatus = result.begin();
+        }
+    }
+
+    return result;
 }
 
 } // namespace pels

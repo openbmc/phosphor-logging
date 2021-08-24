@@ -206,6 +206,11 @@ TEST_F(SRCTest, CreateTestNoCallouts)
 
     EXPECT_CALL(dataIface, getMotherboardCCIN).WillOnce(Return("ABCD"));
 
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+        .WillOnce(Return(std::vector<bool>{false, false, false}));
+
     SRC src{entry, ad, dataIface};
 
     EXPECT_TRUE(src.valid());
@@ -269,6 +274,11 @@ TEST_F(SRCTest, PowerFaultTest)
     AdditionalData ad{adData};
     NiceMock<MockDataInterface> dataIface;
 
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+        .WillOnce(Return(std::vector<bool>{false, false, false}));
+
     SRC src{entry, ad, dataIface};
 
     EXPECT_TRUE(src.valid());
@@ -288,6 +298,11 @@ TEST_F(SRCTest, BadCCINTest)
     std::vector<std::string> adData{};
     AdditionalData ad{adData};
     NiceMock<MockDataInterface> dataIface;
+
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+        .WillRepeatedly(Return(std::vector<bool>{false, false, false}));
 
     // First it isn't a number, then it is too long,
     // then it is empty.
@@ -331,6 +346,11 @@ TEST_F(SRCTest, MessageSubstitutionTest)
     AdditionalData ad{adData};
     NiceMock<MockDataInterface> dataIface;
 
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+        .WillOnce(Return(std::vector<bool>{false, false, false}));
+
     SRC src{*entry, ad, dataIface};
     EXPECT_TRUE(src.valid());
 
@@ -361,6 +381,11 @@ TEST_F(SRCTest, InventoryCalloutTest)
         .Times(1)
         .WillOnce(DoAll(SetArgReferee<1>("1234567"), SetArgReferee<2>("CCCC"),
                         SetArgReferee<3>("123456789ABC")));
+
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+        .WillOnce(Return(std::vector<bool>{false, false, false}));
 
     SRC src{entry, ad, dataIface};
     EXPECT_TRUE(src.valid());
@@ -393,7 +418,7 @@ TEST_F(SRCTest, InventoryCalloutTest)
 }
 
 // Test that when the location code can't be obtained that
-// a procedure callout is used.
+// no callout is added.
 TEST_F(SRCTest, InventoryCalloutNoLocCodeTest)
 {
     message::Entry entry;
@@ -415,25 +440,17 @@ TEST_F(SRCTest, InventoryCalloutNoLocCodeTest)
         .Times(1)
         .WillOnce(InvokeWithoutArgs(func));
 
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+        .WillOnce(Return(std::vector<bool>{false, false, false}));
+
     EXPECT_CALL(dataIface, getHWCalloutFields(_, _, _, _)).Times(0);
 
     SRC src{entry, ad, dataIface};
     EXPECT_TRUE(src.valid());
 
-    ASSERT_TRUE(src.callouts());
-
-    EXPECT_EQ(src.callouts()->callouts().size(), 1);
-
-    auto& callout = src.callouts()->callouts().front();
-    EXPECT_EQ(callout->locationCodeSize(), 0);
-    EXPECT_EQ(callout->priority(), 'H');
-
-    auto& fru = callout->fruIdentity();
-
-    EXPECT_EQ(fru->getMaintProc().value(), "BMCSP01");
-    EXPECT_FALSE(fru->getPN());
-    EXPECT_FALSE(fru->getSN());
-    EXPECT_FALSE(fru->getCCIN());
+    ASSERT_FALSE(src.callouts());
 
     // flatten and unflatten
     std::vector<uint8_t> data;
@@ -443,8 +460,7 @@ TEST_F(SRCTest, InventoryCalloutNoLocCodeTest)
     stream.offset(0);
     SRC newSRC{stream};
     EXPECT_TRUE(newSRC.valid());
-    ASSERT_TRUE(src.callouts());
-    EXPECT_EQ(src.callouts()->callouts().size(), 1);
+    ASSERT_FALSE(src.callouts());
 }
 
 // Test that when the VPD can't be obtained that
@@ -470,6 +486,11 @@ TEST_F(SRCTest, InventoryCalloutNoVPDTest)
     EXPECT_CALL(dataIface, getHWCalloutFields("motherboard", _, _, _))
         .Times(1)
         .WillOnce(InvokeWithoutArgs(func));
+
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+        .WillOnce(Return(std::vector<bool>{false, false, false}));
 
     SRC src{entry, ad, dataIface};
     EXPECT_TRUE(src.valid());
@@ -519,7 +540,7 @@ TEST_F(SRCTest, RegistryCalloutTest)
                 },
                 {
                     "Priority": "medium",
-                    "Procedure": "no_vpd_for_fru"
+                    "Procedure": "bmc_code"
                 }
             ]
         },
@@ -562,6 +583,11 @@ TEST_F(SRCTest, RegistryCalloutTest)
 
         EXPECT_CALL(dataIface, getSystemNames).WillOnce(Return(names));
 
+        std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                          "system/entry"};
+        EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+            .WillOnce(Return(std::vector<bool>{false, false, false}));
+
         SRC src{entry, ad, dataIface};
 
         auto& callouts = src.callouts()->callouts();
@@ -581,7 +607,7 @@ TEST_F(SRCTest, RegistryCalloutTest)
         EXPECT_FALSE(fru1->getCCIN());
 
         auto& fru2 = callouts[1]->fruIdentity();
-        EXPECT_EQ(fru2->getMaintProc().value(), "BMCSP01");
+        EXPECT_EQ(fru2->getMaintProc().value(), "BMC0001");
         EXPECT_EQ(fru2->failingComponentType(),
                   src::FRUIdentity::maintenanceProc);
         EXPECT_FALSE(fru2->getPN());
@@ -598,6 +624,11 @@ TEST_F(SRCTest, RegistryCalloutTest)
 
         EXPECT_CALL(dataIface, expandLocationCode).WillOnce(Return("P0-C8"));
         EXPECT_CALL(dataIface, getSystemNames).WillOnce(Return(names));
+
+        std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                          "system/entry"};
+        EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+            .WillOnce(Return(std::vector<bool>{false, false, false}));
 
         SRC src{entry, ad, dataIface};
 
@@ -633,6 +664,11 @@ TEST_F(SRCTest, RegistryCalloutTest)
         AdditionalData ad;
         NiceMock<MockDataInterface> dataIface;
         std::vector<std::string> names{"systemC"};
+
+        std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                          "system/entry"};
+        EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+            .WillOnce(Return(std::vector<bool>{false, false, false}));
 
         EXPECT_CALL(dataIface, getSystemNames).WillOnce(Return(names));
 
@@ -730,6 +766,11 @@ TEST_F(SRCTest, SymbolicFRUWithInvPathTest)
         NiceMock<MockDataInterface> dataIface;
         std::vector<std::string> names{"systemA"};
 
+        std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                          "system/entry"};
+        EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+            .WillOnce(Return(std::vector<bool>{false, false, false}));
+
         EXPECT_CALL(dataIface, getSystemNames).WillOnce(Return(names));
 
         EXPECT_CALL(dataIface, getLocationCode("motherboard"))
@@ -782,6 +823,11 @@ TEST_F(SRCTest, SymbolicFRUWithInvPathTest)
         AdditionalData ad;
         NiceMock<MockDataInterface> dataIface;
         std::vector<std::string> names{"systemA"};
+
+        std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                          "system/entry"};
+        EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+            .WillOnce(Return(std::vector<bool>{false, false, false}));
 
         EXPECT_CALL(dataIface, getSystemNames).WillOnce(Return(names));
 
@@ -845,6 +891,11 @@ TEST_F(SRCTest, DevicePathCalloutTest)
 
     NiceMock<MockDataInterface> dataIface;
     std::vector<std::string> names{"systemA"};
+
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+        .WillRepeatedly(Return(std::vector<bool>{false, false, false}));
 
     EXPECT_CALL(dataIface, getSystemNames)
         .Times(5)
@@ -1056,6 +1107,11 @@ TEST_F(SRCTest, JsonCalloutsTest)
     AdditionalData ad;
     NiceMock<MockDataInterface> dataIface;
 
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+        .WillOnce(Return(std::vector<bool>{false, false, false}));
+
     // Callout 0 mock calls
     {
         EXPECT_CALL(dataIface, expandLocationCode("P0-C1", 0))
@@ -1221,6 +1277,11 @@ TEST_F(SRCTest, JsonBadCalloutsTest)
     AdditionalData ad;
     NiceMock<MockDataInterface> dataIface;
 
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+        .WillRepeatedly(Return(std::vector<bool>{false, false, false}));
+
     // Callout 0 mock calls
     // Expand location code will fail, so the unexpanded location
     // code should show up in the callout instead.
@@ -1301,6 +1362,11 @@ TEST_F(SRCTest, InventoryCalloutTestPriority)
     AdditionalData ad{adData};
     NiceMock<MockDataInterface> dataIface;
 
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+        .WillOnce(Return(std::vector<bool>{false, false, false}));
+
     EXPECT_CALL(dataIface, getLocationCode("motherboard"))
         .WillOnce(Return("UTMS-P1"));
 
@@ -1320,4 +1386,63 @@ TEST_F(SRCTest, InventoryCalloutTestPriority)
 
     EXPECT_EQ(callout->locationCode(), "UTMS-P1");
     EXPECT_EQ(callout->priority(), 'M');
+}
+
+// Test for bmc & platform dump status bits
+TEST_F(SRCTest, DumpStatusBitsCheck)
+{
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+    entry.src.powerFault = false;
+
+    AdditionalData ad;
+    NiceMock<MockDataInterface> dataIface;
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+
+    {
+        EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+            .WillOnce(Return(std::vector<bool>{true, false, false}));
+
+        SRC src{entry, ad, dataIface};
+        EXPECT_TRUE(src.valid());
+
+        const auto& hexwords = src.hexwordData();
+        EXPECT_EQ(0x00080055, hexwords[0]);
+    }
+
+    {
+        EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+            .WillOnce(Return(std::vector<bool>{false, true, false}));
+
+        SRC src{entry, ad, dataIface};
+        EXPECT_TRUE(src.valid());
+
+        const auto& hexwords = src.hexwordData();
+        EXPECT_EQ(0x00000255, hexwords[0]);
+    }
+
+    {
+        EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+            .WillOnce(Return(std::vector<bool>{false, false, true}));
+
+        SRC src{entry, ad, dataIface};
+        EXPECT_TRUE(src.valid());
+
+        const auto& hexwords = src.hexwordData();
+        EXPECT_EQ(0x00000455, hexwords[0]);
+    }
+
+    {
+        EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+            .WillOnce(Return(std::vector<bool>{true, true, true}));
+
+        SRC src{entry, ad, dataIface};
+        EXPECT_TRUE(src.valid());
+
+        const auto& hexwords = src.hexwordData();
+        EXPECT_EQ(0x00080655, hexwords[0]);
+    }
 }
