@@ -273,6 +273,14 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
     std::unique_ptr<DataInterfaceBase> dataIface =
         std::make_unique<MockDataInterface>();
 
+    MockDataInterface* mockIface =
+        reinterpret_cast<MockDataInterface*>(dataIface.get());
+
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(*mockIface, checkDumpStatus(dumpType))
+        .WillRepeatedly(Return(std::vector<bool>{false, false, false}));
+
     openpower::pels::Manager manager{
         logManager, std::move(dataIface),
         std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
@@ -873,6 +881,11 @@ TEST_F(ManagerTest, TestServiceIndicators)
 
     MockDataInterface* mockIface =
         reinterpret_cast<MockDataInterface*>(dataIface.get());
+
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(*mockIface, checkDumpStatus(dumpType))
+        .WillRepeatedly(Return(std::vector<bool>{false, false, false}));
 
     openpower::pels::Manager manager{
         logManager, std::move(dataIface),
