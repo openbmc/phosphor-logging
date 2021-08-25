@@ -73,6 +73,24 @@
     },
     {
       "key": {
+        "uuid": "33945c3d_22cad982",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 657,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-08-25T18:22:17Z",
+      "side": 1,
+      "message": "yea, you can just use a for loop:\nfor (const auto\u0026 [path, serviceInfo] : subtree)",
+      "parentUuid": "7d697292_8ac20c85",
+      "revId": "3d325fe0d006f1b383e7297ba74b9c6ede7d078b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "366d2c7f_08cca87c",
         "filename": "extensions/openpower-pels/src.cpp",
         "patchSetId": 2
