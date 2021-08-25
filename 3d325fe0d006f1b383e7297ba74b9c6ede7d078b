@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "39b37735_2b0f0213",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 657,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-08-25T15:02:07Z",
+      "side": 1,
+      "message": "This is what I was ref to ask earlier.\nsay we have following entries and we go traversing in sequence:\n/xyz/openbmc_project/dump/bmc/entry/1\n/xyz/openbmc_project/dump/bmc/entry/2\n\nThen reading from any of the path above that could give us the dump status is good enough and we need not to further traverse as other paths may also be showing of the same dump status??",
+      "parentUuid": "6f515512_bd62c685",
+      "revId": "3d325fe0d006f1b383e7297ba74b9c6ede7d078b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "366d2c7f_08cca87c",
         "filename": "extensions/openpower-pels/src.cpp",
         "patchSetId": 2
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "47b4466b_e5c19e32",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1400,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-08-25T15:02:07Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "366d2c7f_08cca87c",
+      "revId": "3d325fe0d006f1b383e7297ba74b9c6ede7d078b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a375959a_7240c391",
         "filename": "extensions/openpower-pels/src.cpp",
         "patchSetId": 2
@@ -47,6 +83,24 @@
       "writtenOn": "2021-08-24T16:42:47Z",
       "side": 1,
       "message": "The src testcase should have a good spot to check these values",
+      "revId": "3d325fe0d006f1b383e7297ba74b9c6ede7d078b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2fd47f59_ea736492",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1405,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-08-25T15:02:07Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "a375959a_7240c391",
       "revId": "3d325fe0d006f1b383e7297ba74b9c6ede7d078b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
