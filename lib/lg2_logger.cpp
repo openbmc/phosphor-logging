@@ -143,13 +143,11 @@ static auto extra_output_method =
     isatty(fileno(stderr)) ? cerr_extra_output : noop_extra_output;
 
 // Do_log implementation.
-void do_log(level l, const std::source_location& s, const char* m, size_t count,
-            ...)
+void do_log(level l, const std::source_location& s, const char* m, ...)
 {
     using namespace std::string_literals;
 
-    const size_t entries = count + static_locs;
-    std::vector<std::string> strings{entries};
+    std::vector<std::string> strings{static_locs};
 
     std::string message{m};
 
@@ -162,11 +160,16 @@ void do_log(level l, const std::source_location& s, const char* m, size_t count,
 
     // Handle all the va_list args.
     std::va_list args;
-    va_start(args, count);
-    for (size_t i = static_locs; i < entries; ++i)
+    va_start(args, m);
+    while (true)
     {
         // Get the header out.
-        std::string h = va_arg(args, const char*);
+        auto h_ptr = va_arg(args, const char*);
+        if (h_ptr == nullptr)
+        {
+            break;
+        }
+        std::string h{h_ptr};
 
         // Get the format flag.
         auto f = va_arg(args, uint64_t);
@@ -204,7 +207,7 @@ void do_log(level l, const std::source_location& s, const char* m, size_t count,
         }
 
         // Create the field for this value.
-        strings[i] = h + '=' + value;
+        strings.emplace_back(h + '=' + value);
 
         // Check for {HEADER} in the message and replace with value.
         auto h_brace = '{' + h + '}';
@@ -225,7 +228,7 @@ void do_log(level l, const std::source_location& s, const char* m, size_t count,
     });
 
     // Output the iovec.
-    sd_journal_sendv(iov.data(), entries);
+    sd_journal_sendv(iov.data(), strings.size());
     extra_output_method(l, s, message);
 }
 

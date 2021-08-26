@@ -253,7 +253,7 @@ class log_conversion
     static void done(level l, const std::source_location& s, const char* m,
                      Ts&&... ts)
     {
-        do_log(l, s, m, sizeof...(Ts) / 3, std::forward<Ts>(ts)...);
+        do_log(l, s, m, std::forward<Ts>(ts)..., nullptr);
     }
 
     /** Apply the tuple from the end of 'step' into done.
