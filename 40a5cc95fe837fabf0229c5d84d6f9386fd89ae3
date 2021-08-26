@@ -19,6 +19,52 @@
     },
     {
       "key": {
+        "uuid": "2bf13e64_43699c21",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-08-26T18:14:20Z",
+      "side": 1,
+      "message": "how about \u0027type\u0027 here instead.  \u0027resource\u0027 can\u0027t really be considered a platform.",
+      "range": {
+        "startLine": 617,
+        "startChar": 44,
+        "endLine": 617,
+        "endChar": 48
+      },
+      "revId": "40a5cc95fe837fabf0229c5d84d6f9386fd89ae3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cd53fd31_c3bfcf7b",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-08-26T18:14:20Z",
+      "side": 1,
+      "message": "can remove this TODO now.",
+      "range": {
+        "startLine": 353,
+        "startChar": 33,
+        "endLine": 353,
+        "endChar": 39
+      },
+      "revId": "40a5cc95fe837fabf0229c5d84d6f9386fd89ae3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bc6a7487_2ffe652d",
         "filename": "extensions/openpower-pels/src.cpp",
         "patchSetId": 3
@@ -35,6 +81,29 @@
         "startChar": 68,
         "endLine": 1414,
         "endChar": 76
+      },
+      "revId": "40a5cc95fe837fabf0229c5d84d6f9386fd89ae3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2018cac8_25f61dea",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1421,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-08-26T18:14:20Z",
+      "side": 1,
+      "message": "better to remove this.  Not having dumps is a good thing, so we don\u0027t want  to print warnings in that case.",
+      "range": {
+        "startLine": 1420,
+        "startChar": 5,
+        "endLine": 1421,
+        "endChar": 63
       },
       "revId": "40a5cc95fe837fabf0229c5d84d6f9386fd89ae3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
