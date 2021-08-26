@@ -179,20 +179,22 @@ static auto log_convert(const char* h, log_flag<Fs...> f, V&& v)
     prohibit(f, signed_val);
     prohibit(f, unsigned_val);
 
+    // Utiilty to handle conversion to a 'const char*' depending on V:
+    //  - 'const char*' and similar use static cast.
+    //  - 'std::string' and 'std::string_view' use data() function.
+    auto str_data = [](V&& v) {
+        if constexpr (std::is_same_v<const char*, std::decay_t<V>>)
+        {
+            return static_cast<const char*>(v);
+        }
+        else
+        {
+            return v.data();
+        }
+    };
+
     // Add 'str' flag, force to 'const char*' for variadic passing.
-    //
-    // It may appear unsafe that we are using a temporary string_view object
-    // for conversion, but it is a safe and consise way to do this conversion.
-    //  - (const char*) goes through string_view, but data() returns the
-    //    original pointer.
-    //  - (string_view) makes a duplicate temporary pointing to the same
-    //    original data pointer.
-    //  - (string) uses a temporary string_view to return a pointer to the
-    //    original std::string v.data().
-    // Without this pass-through-string_view, we would need some additional
-    // template magic to differentiate between types requiring direct pointer
-    // passing vs v.data() to obtain the underlying pointer.
-    return std::make_tuple(h, (f | str).value, std::string_view{v}.data());
+    return std::make_tuple(h, (f | str).value, str_data(std::forward<V>(v)));
 }
 
 /** Logging conversion for pointer-types. */
@@ -248,8 +250,8 @@ class log_conversion
     /** Conversion and validation is complete.  Pass along to the final
      *  do_log variadic function. */
     template <typename... Ts>
-    static void done(level l, const std::source_location& s,
-                     const std::string_view& m, Ts&&... ts)
+    static void done(level l, const std::source_location& s, const char* m,
+                     Ts&&... ts)
     {
         do_log(l, s, m, sizeof...(Ts) / 3, std::forward<Ts>(ts)...);
     }
@@ -360,8 +362,8 @@ class log_conversion
     /** Start processing a sequence of arguments to `lg2::log` using `step` or
      * `done`. */
     template <typename... Ts>
-    static void start(level l, const std::source_location& s,
-                      const std::string_view& msg, Ts&&... ts)
+    static void start(level l, const std::source_location& s, const char* msg,
+                      Ts&&... ts)
     {
         // If there are no arguments (ie. just a message), then skip processing
         // and call `done` directly.

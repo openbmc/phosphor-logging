@@ -143,8 +143,8 @@ static auto extra_output_method =
     isatty(fileno(stderr)) ? cerr_extra_output : noop_extra_output;
 
 // Do_log implementation.
-void do_log(level l, const std::source_location& s, const std::string_view& m,
-            size_t count, ...)
+void do_log(level l, const std::source_location& s, const char* m, size_t count,
+            ...)
 {
     using namespace std::string_literals;
 
@@ -154,7 +154,7 @@ void do_log(level l, const std::source_location& s, const std::string_view& m,
     std::string message{m};
 
     // Assign all the static fields.
-    strings[pos_fmtmsg] = "LOG2_FMTMSG="s + m.data();
+    strings[pos_fmtmsg] = "LOG2_FMTMSG="s + m;
     strings[pos_prio] = "PRIORITY="s + std::to_string(static_cast<uint64_t>(l));
     strings[pos_file] = "CODE_FILE="s + s.file_name();
     strings[pos_line] = "CODE_LINE="s + std::to_string(s.line());
