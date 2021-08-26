@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d51f7737_c581835d",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-08-26T17:22:42Z",
+      "side": 1,
+      "message": "why do you need to test for Offloaded? method just says status of dump.. may be some comment on logic would help",
+      "revId": "40a5cc95fe837fabf0229c5d84d6f9386fd89ae3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bc6a7487_2ffe652d",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1414,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-08-26T17:22:42Z",
+      "side": 1,
+      "message": "nit:typo",
+      "range": {
+        "startLine": 1414,
+        "startChar": 68,
+        "endLine": 1414,
+        "endChar": 76
+      },
+      "revId": "40a5cc95fe837fabf0229c5d84d6f9386fd89ae3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
