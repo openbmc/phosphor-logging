@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <array>
 #include <phosphor-logging/lg2/concepts.hpp>
 #include <string_view>
