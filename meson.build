@@ -79,7 +79,7 @@ if not has_cereal
         options: cereal_opts,
         required: false)
     assert(cereal_proj.found(), 'cereal is required')
-    cereal_dep = cereal_proj.get_variable('cm_cereal_dep')
+    cereal_dep = cereal_proj.dependency('cereal')
 endif
 
 # Generate sdbus++ files.
