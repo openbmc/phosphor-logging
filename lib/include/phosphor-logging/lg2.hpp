@@ -10,7 +10,6 @@
 #include <phosphor-logging/lg2/header.hpp>
 #include <phosphor-logging/lg2/level.hpp>
 #include <source_location>
-#include <string_view>
 
 namespace lg2
 {
@@ -24,7 +23,7 @@ struct log
      *  @param[in] msg - The message to log.
      *  @param[in] ts - The rest of the arguments.
      */
-    explicit log(const std::source_location& s, const std::string_view& msg,
+    explicit log(const std::source_location& s, const char* msg,
                  details::header_str_conversion_t<Ts&&>... ts)
     {
         details::log_conversion::start(
@@ -39,8 +38,7 @@ struct log
      *  @param[in] s - The derived source_location.
      */
     explicit log(
-        const std::string_view& msg,
-        details::header_str_conversion_t<Ts&&>... ts,
+        const char* msg, details::header_str_conversion_t<Ts&&>... ts,
         const std::source_location& s = std::source_location::current()) :
         log(s, msg, std::forward<details::header_str_conversion_t<Ts&&>>(ts)...)
     {
@@ -53,10 +51,10 @@ struct log
 // Deducation guides to help the compiler out...
 
 template <level S = level::debug, typename... Ts>
-explicit log(const std::string_view&, Ts&&...) -> log<S, Ts...>;
+explicit log(const char*, Ts&&...) -> log<S, Ts...>;
 
 template <level S = level::debug, typename... Ts>
-explicit log(const std::source_location&, const std::string_view&, Ts&&...)
+explicit log(const std::source_location&, const char*, Ts&&...)
     -> log<S, Ts...>;
 
 /** Macro to define aliases for lg2::level(...) -> lg2::log<level>(...)
@@ -71,11 +69,10 @@ explicit log(const std::source_location&, const std::string_view&, Ts&&...)
     };                                                                         \
                                                                                \
     template <typename... Ts>                                                  \
-    explicit levelval(const std::string_view&, Ts&&...) -> levelval<Ts...>;    \
+    explicit levelval(const char*, Ts&&...) -> levelval<Ts...>;                \
                                                                                \
     template <typename... Ts>                                                  \
-    explicit levelval(const std::source_location&, const std::string_view&,    \
-                      Ts&&...)                                                 \
+    explicit levelval(const std::source_location&, const char*, Ts&&...)       \
         ->levelval<Ts...>
 
 // Enumerate the aliases for each log level.
