@@ -1,0 +1,10 @@
+Code-Review+2: Matt Spinler <spinler@us.ibm.com>
+Code-Review+1: Andrew Jeffery <andrew@aj.id.au>
+Code-Review+1: Andrei Kartashev <a.kartashev@yadro.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Ok-To-Test+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: Matt Spinler <spinler@us.ibm.com>
+Submitted-at: Thu, 26 Aug 2021 13:06:09 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-logging/+/45310
+Project: openbmc/phosphor-logging
+Branch: refs/heads/master
