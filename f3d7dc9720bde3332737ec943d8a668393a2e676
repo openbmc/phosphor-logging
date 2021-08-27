@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "0b31e28b_540a5af3",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 652,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-08-27T14:02:15Z",
+      "side": 1,
+      "message": "maybe use \u0027offloaded\u0027 here, or at least \u0027o\u0027.  \u0027s\u0027 sounds like Status, but Status is \u0027t\u0027 ;)  and same for t.",
+      "range": {
+        "startLine": 652,
+        "startChar": 21,
+        "endLine": 652,
+        "endChar": 22
+      },
+      "revId": "f3d7dc9720bde3332737ec943d8a668393a2e676",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e38d3b31_7c2913db",
         "filename": "extensions/openpower-pels/src.cpp",
         "patchSetId": 5
@@ -31,6 +54,24 @@
       "side": 1,
       "message": "You mean dbus call itself can throw exception as-in my earlier patch I was throwing exception when subtree returned was empty?? \nDoes function checkDumpStatus() in latest patch looks fine (I have removed throwing exception)?",
       "parentUuid": "e38d3b31_7c2913db",
+      "revId": "f3d7dc9720bde3332737ec943d8a668393a2e676",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9ccfe15c_2b5a9b05",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1400,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-08-27T14:02:15Z",
+      "side": 1,
+      "message": "right, _bus.call(method) can throw.  also the getProperty calls.",
+      "parentUuid": "86da0ca3_d2e5004d",
       "revId": "f3d7dc9720bde3332737ec943d8a668393a2e676",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
