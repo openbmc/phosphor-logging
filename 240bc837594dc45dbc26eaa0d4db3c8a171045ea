@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "45624713_1a88537d",
+        "filename": "lib/include/phosphor-logging/lg2.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-08-27T13:14:10Z",
+      "side": 1,
+      "message": "This would preclude someone from using a string as a log message?",
+      "revId": "240bc837594dc45dbc26eaa0d4db3c8a171045ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
