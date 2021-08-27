@@ -70,6 +70,30 @@
       "revId": "d1f76a241f3ac73d8609590b8d29af1a787348ec",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4f0b5dd0_9e80fef1",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-08-27T13:57:58Z",
+      "side": 1,
+      "message": "What\u0027s there is fine with me.",
+      "parentUuid": "93a267b1_2ce5ddcf",
+      "range": {
+        "startLine": 476,
+        "startChar": 0,
+        "endLine": 477,
+        "endChar": 36
+      },
+      "revId": "d1f76a241f3ac73d8609590b8d29af1a787348ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
