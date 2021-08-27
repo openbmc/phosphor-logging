@@ -2,6 +2,7 @@
 
 #include <concepts>
 #include <cstddef>
+#include <filesystem>
 #include <phosphor-logging/lg2/flags.hpp>
 #include <phosphor-logging/lg2/header.hpp>
 #include <phosphor-logging/lg2/level.hpp>
@@ -25,7 +26,9 @@ namespace lg2::details
  */
 template <typename T>
 concept string_like_type =
-    std::constructible_from<std::string_view, T> && !std::same_as<nullptr_t, T>;
+    (std::constructible_from<std::string_view, T> ||
+     std::same_as<std::filesystem::path,
+                  std::decay_t<T>>)&&!std::same_as<nullptr_t, T>;
 
 /** Concept to determine if an item acts like a pointer.
  *
@@ -181,12 +184,18 @@ static auto log_convert(const char* h, log_flag<Fs...> f, V&& v)
 
     // Utiilty to handle conversion to a 'const char*' depending on V:
     //  - 'const char*' and similar use static cast.
+    //  - 'std::filesystem::path' use c_str() function.
     //  - 'std::string' and 'std::string_view' use data() function.
     auto str_data = [](V&& v) {
         if constexpr (std::is_same_v<const char*, std::decay_t<V>> ||
                       std::is_same_v<char*, std::decay_t<V>>)
         {
             return static_cast<const char*>(v);
+        }
+        else if constexpr (std::is_same_v<std::filesystem::path,
+                                          std::decay_t<V>>)
+        {
+            return v.c_str();
         }
         else
         {
