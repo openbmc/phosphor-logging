@@ -16,6 +16,24 @@
       "revId": "f3d7dc9720bde3332737ec943d8a668393a2e676",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86da0ca3_d2e5004d",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1400,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-08-27T13:56:56Z",
+      "side": 1,
+      "message": "You mean dbus call itself can throw exception as-in my earlier patch I was throwing exception when subtree returned was empty?? \nDoes function checkDumpStatus() in latest patch looks fine (I have removed throwing exception)?",
+      "parentUuid": "e38d3b31_7c2913db",
+      "revId": "f3d7dc9720bde3332737ec943d8a668393a2e676",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
