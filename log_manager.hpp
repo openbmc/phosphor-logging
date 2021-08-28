@@ -369,7 +369,7 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
 
     /** @brief Delete all d-bus objects.
      */
-    void deleteAll()
+    void deleteAll() override
     {
         manager.eraseAll();
     }
