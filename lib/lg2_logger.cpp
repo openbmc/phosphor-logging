@@ -125,13 +125,13 @@ static constexpr size_t pos_func = 5;
 static constexpr size_t static_locs = pos_func + 1;
 
 /** No-op output of a message. */
-static void noop_extra_output(level, const std::source_location&,
+static void noop_extra_output(level, const lg2::source_location&,
                               const std::string&)
 {
 }
 
 /** std::cerr output of a message. */
-static void cerr_extra_output(level l, const std::source_location& s,
+static void cerr_extra_output(level l, const lg2::source_location& s,
                               const std::string& m)
 {
     std::cerr << s.file_name() << ":" << s.line() << ":" << s.function_name()
@@ -143,7 +143,7 @@ static auto extra_output_method =
     isatty(fileno(stderr)) ? cerr_extra_output : noop_extra_output;
 
 // Do_log implementation.
-void do_log(level l, const std::source_location& s, const char* m, ...)
+void do_log(level l, const lg2::source_location& s, const char* m, ...)
 {
     using namespace std::string_literals;
 
