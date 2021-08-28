@@ -168,7 +168,7 @@ static auto log_convert(const char* h, log_flag<Fs...> f, V v)
 
 /** Logging conversion for string-likes. */
 template <log_flags... Fs, string_like_type V>
-static auto log_convert(const char* h, log_flag<Fs...> f, V&& v)
+static auto log_convert(const char* h, log_flag<Fs...> f, const V& v)
 {
     // Compile-time checks for valid formatting flags.
     prohibit(f, bin);
@@ -186,7 +186,7 @@ static auto log_convert(const char* h, log_flag<Fs...> f, V&& v)
     //  - 'const char*' and similar use static cast.
     //  - 'std::filesystem::path' use c_str() function.
     //  - 'std::string' and 'std::string_view' use data() function.
-    auto str_data = [](V&& v) {
+    auto str_data = [](const V& v) {
         if constexpr (std::is_same_v<const char*, std::decay_t<V>> ||
                       std::is_same_v<char*, std::decay_t<V>>)
         {
@@ -204,7 +204,7 @@ static auto log_convert(const char* h, log_flag<Fs...> f, V&& v)
     };
 
     // Add 'str' flag, force to 'const char*' for variadic passing.
-    return std::make_tuple(h, (f | str).value, str_data(std::forward<V>(v)));
+    return std::make_tuple(h, (f | str).value, str_data(v));
 }
 
 /** Logging conversion for pointer-types. */
@@ -263,7 +263,7 @@ class log_conversion
     static void done(level l, const lg2::source_location& s, const char* m,
                      Ts&&... ts)
     {
-        do_log(l, s, m, std::forward<Ts>(ts)..., nullptr);
+        do_log(l, s, m, ts..., nullptr);
     }
 
     /** Apply the tuple from the end of 'step' into done.
@@ -317,7 +317,7 @@ class log_conversion
         else
         {
             step(std::tuple_cat(std::move(ts), log_convert(h.data(), f, v)),
-                 std::forward<Ss>(ss)...);
+                 ss...);
         }
     }
 
@@ -346,7 +346,7 @@ class log_conversion
         {
             step(std::tuple_cat(std::move(ts),
                                 log_convert(h.data(), log_flag<>{}, v)),
-                 std::forward<Ss>(ss)...);
+                 ss...);
         }
     }
 
@@ -384,7 +384,7 @@ class log_conversion
         // Handle all the Ts by recursively calling 'step'.
         else
         {
-            step(std::forward_as_tuple(l, s, msg), std::forward<Ts>(ts)...);
+            step(std::forward_as_tuple(l, s, msg), ts...);
         }
     }
 };
