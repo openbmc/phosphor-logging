@@ -364,7 +364,7 @@ class log_conversion
     template <typename... Ts>
     static void step(std::tuple<Ts...>&&, header_str)
     {
-        static_assert(!std::is_same_v<header_str, header_str>,
+        static_assert(std::is_same_v<std::tuple<Ts...>, header_str>,
                       "Found header field without expected data.");
     }
 
