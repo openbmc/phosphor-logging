@@ -121,7 +121,7 @@ std::string Server::address(std::string value)
         }
 
         writeConfig(value, port(), configFilePath.c_str());
-        result = std::move(NetworkClient::address(value));
+        result = NetworkClient::address(value);
     }
     catch (const InvalidArgument& e)
     {
