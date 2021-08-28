@@ -27,6 +27,7 @@
 #include <sdbusplus/vtable.hpp>
 #include <set>
 #include <string>
+#include <string_view>
 #include <vector>
 #include <xyz/openbmc_project/State/Host/server.hpp>
 
@@ -91,12 +92,12 @@ void Manager::_commit(uint64_t transactionId [[maybe_unused]],
     // operations.  Just skip over them.
     if (!IS_UNIT_TEST)
     {
-        constexpr const auto transactionIdVar = "TRANSACTION_ID";
+        static constexpr auto transactionIdVar =
+            std::string_view{"TRANSACTION_ID"};
         // Length of 'TRANSACTION_ID' string.
-        constexpr const auto transactionIdVarSize =
-            std::strlen(transactionIdVar);
+        static constexpr auto transactionIdVarSize = transactionIdVar.size();
         // Length of 'TRANSACTION_ID=' string.
-        constexpr const auto transactionIdVarOffset = transactionIdVarSize + 1;
+        static constexpr auto transactionIdVarOffset = transactionIdVarSize + 1;
 
         // Flush all the pending log messages into the journal
         journalSync();
@@ -130,8 +131,8 @@ void Manager::_commit(uint64_t transactionId [[maybe_unused]],
             size_t length = 0;
 
             // Look for the transaction id metadata variable
-            rc = sd_journal_get_data(j, transactionIdVar, (const void**)&data,
-                                     &length);
+            rc = sd_journal_get_data(j, transactionIdVar.data(),
+                                     (const void**)&data, &length);
             if (rc < 0)
             {
                 // This journal entry does not have the TRANSACTION_ID
