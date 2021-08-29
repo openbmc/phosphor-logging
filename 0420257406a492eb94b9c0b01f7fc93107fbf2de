@@ -16,6 +16,24 @@
       "revId": "0420257406a492eb94b9c0b01f7fc93107fbf2de",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ccaf88b8_db3f1e46",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1430,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-08-29T13:43:34Z",
+      "side": 1,
+      "message": "No exception was reported. The GetSubTree in this case, look for \u0027any\u0027 dump entry interface available on DBus \u0027irrespective\u0027 of dump type. If found, it would do further processing of finding out dump type next and applying getProperty on it. If no dump entry interface found it just returns. I checked dump behaviour as follows:\n- system having no dump entry at all\n- system having atleast one dump entry of requested type (bmc)\n- system having atleast one dump (Hostboot) entry but not of requested type (bmc,resource,system)\nIn all above cases, no exception and pel was created successfully.\n\nIn the process found a bug as well :)\nSystem having Hostboot dump entries alone, set the bmc dump bit in SRC as \"bmc\" name was appearing in the hostboot object path:\n/xyz/openbmc_project/dump/hostboot/entry/1\nIts fixed in next patch.",
+      "parentUuid": "b57b5e7f_92ae6971",
+      "revId": "0420257406a492eb94b9c0b01f7fc93107fbf2de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
