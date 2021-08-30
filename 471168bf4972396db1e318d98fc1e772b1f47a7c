@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "bafa523c_9604a419",
+        "filename": "extensions/openpower-pels/pel_entry.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-08-30T13:26:49Z",
+      "side": 1,
+      "message": "here you can call Repository::getLogID(), giving the constructor that takes an OBMC ID.  it will pass back a logID with the PEL ID, which you canthen use in setpelhmcstate",
+      "range": {
+        "startLine": 19,
+        "startChar": 11,
+        "endLine": 19,
+        "endChar": 23
+      },
+      "revId": "471168bf4972396db1e318d98fc1e772b1f47a7c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b3477d20_32b0ac52",
         "filename": "extensions/openpower-pels/repository.cpp",
         "patchSetId": 5
