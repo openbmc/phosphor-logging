@@ -1,0 +1,153 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "117781a2_1ff35906",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-09-01T21:19:39Z",
+      "side": 1,
+      "message": "this should be \u003citerator\u003e  (if you truly need it?)",
+      "revId": "36f36d936b58a4dcd4599d7e7294063b386ab440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9bc3214e_e326028a",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-09-01T21:19:39Z",
+      "side": 1,
+      "message": "i would have been OK with you hardcoding the dump types in this function if you wanted.",
+      "revId": "36f36d936b58a4dcd4599d7e7294063b386ab440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dff44a3d_b12bb2cc",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 638,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-09-01T21:19:39Z",
+      "side": 1,
+      "message": "there is a vector constructor where you can initialize it to default values:\n\nvector\u003cbool\u003e result(type.size(), false);\ntypeCnt \u003d type.size()  // or just use type.size() in the code below.",
+      "range": {
+        "startLine": 629,
+        "startChar": 0,
+        "endLine": 638,
+        "endChar": 5
+      },
+      "revId": "36f36d936b58a4dcd4599d7e7294063b386ab440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6031dda0_30f3c33d",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 651,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-09-01T21:19:39Z",
+      "side": 1,
+      "message": "you can save an indent level by inverting the check:\n\nif subtree.empty())\n  return result;\n\n...",
+      "range": {
+        "startLine": 650,
+        "startChar": 0,
+        "endLine": 651,
+        "endChar": 5
+      },
+      "revId": "36f36d936b58a4dcd4599d7e7294063b386ab440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ce03f06_c98ca29c",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-09-01T21:19:39Z",
+      "side": 1,
+      "message": "auto\n\nor, this is reads a little easier:\n\nfor (const auto\u0026 type : types)",
+      "range": {
+        "startLine": 658,
+        "startChar": 17,
+        "endLine": 658,
+        "endChar": 57
+      },
+      "revId": "36f36d936b58a4dcd4599d7e7294063b386ab440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5d550556_116d6662",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-09-01T21:19:39Z",
+      "side": 1,
+      "message": "this isn\u0027t really needed",
+      "range": {
+        "startLine": 666,
+        "startChar": 37,
+        "endLine": 666,
+        "endChar": 45
+      },
+      "revId": "36f36d936b58a4dcd4599d7e7294063b386ab440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6ae78c3b_25e88476",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 688,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-09-01T21:19:39Z",
+      "side": 1,
+      "message": "I can\u0027t quite figure out the reason you need this check?",
+      "range": {
+        "startLine": 685,
+        "startChar": 0,
+        "endLine": 688,
+        "endChar": 25
+      },
+      "revId": "36f36d936b58a4dcd4599d7e7294063b386ab440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
