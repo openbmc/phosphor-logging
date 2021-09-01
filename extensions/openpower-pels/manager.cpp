@@ -804,8 +804,19 @@ void Manager::createPELEntry(uint32_t obmcLogID)
     {
         namespace pv = openpower::pels::pel_values;
         auto& attr = attributes.value().get();
-        varData.emplace(std::string("Hidden"),
-                        attr.actionFlags.test(hiddenFlagBit));
+
+        // get the hidden flag values
+        auto sevType = static_cast<SeverityType>(attr.severity & 0xF0);
+        auto isHidden = true;
+        if (((sevType != SeverityType::nonError) &&
+             attr.actionFlags.test(reportFlagBit) &&
+             !attr.actionFlags.test(hiddenFlagBit)) ||
+            ((sevType == SeverityType::nonError) &&
+             attr.actionFlags.test(serviceActionFlagBit)))
+        {
+            isHidden = false;
+        }
+        varData.emplace(std::string("Hidden"), isHidden);
         varData.emplace(
             std::string("Subsystem"),
             pv::getValue(attr.subsystem, pel_values::subsystemValues));
