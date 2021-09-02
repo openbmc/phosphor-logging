@@ -83,7 +83,6 @@ constexpr auto association = "xyz.openbmc_project.Association.Definitions";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
-using sdbusplus::exception::SdBusError;
 using namespace phosphor::logging;
 
 std::pair<std::string, std::string>

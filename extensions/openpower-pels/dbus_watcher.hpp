@@ -7,7 +7,6 @@
 namespace openpower::pels
 {
 
-using sdbusplus::exception::SdBusError;
 namespace match_rules = sdbusplus::bus::match::rules;
 
 /**
@@ -120,7 +119,7 @@ class PropertyWatcher : public DBusWatcher
         {
             read(dataIface, service);
         }
-        catch (const SdBusError& e)
+        catch (const sdbusplus::exception::exception& e)
         {
             // Path doesn't exist now
         }
@@ -300,7 +299,7 @@ class InterfaceWatcher : public DBusWatcher
         {
             read(dataIface);
         }
-        catch (const SdBusError& e)
+        catch (const sdbusplus::exception::exception& e)
         {
             // Path doesn't exist now
         }
