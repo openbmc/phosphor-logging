@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "57599f48_aa8cd81e",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-09-02T15:25:31Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "117781a2_1ff35906",
+      "revId": "36f36d936b58a4dcd4599d7e7294063b386ab440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9bc3214e_e326028a",
         "filename": "extensions/openpower-pels/data_interface.cpp",
         "patchSetId": 13
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "0627c9f1_24cbb0cd",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-09-02T15:25:31Z",
+      "side": 1,
+      "message": "Actually I didn\u0027t wanted to hardcode stuffs here and tried to make this function seamless to absorb any new dump type if any, added in future.",
+      "parentUuid": "9bc3214e_e326028a",
+      "revId": "36f36d936b58a4dcd4599d7e7294063b386ab440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "dff44a3d_b12bb2cc",
         "filename": "extensions/openpower-pels/data_interface.cpp",
         "patchSetId": 13
@@ -47,6 +83,30 @@
       "writtenOn": "2021-09-01T21:19:39Z",
       "side": 1,
       "message": "there is a vector constructor where you can initialize it to default values:\n\nvector\u003cbool\u003e result(type.size(), false);\ntypeCnt \u003d type.size()  // or just use type.size() in the code below.",
+      "range": {
+        "startLine": 629,
+        "startChar": 0,
+        "endLine": 638,
+        "endChar": 5
+      },
+      "revId": "36f36d936b58a4dcd4599d7e7294063b386ab440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f714ae6d_8013c1b2",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 638,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-09-02T15:25:31Z",
+      "side": 1,
+      "message": "Yeah this would be nice. Thanks for pointing out.",
+      "parentUuid": "dff44a3d_b12bb2cc",
       "range": {
         "startLine": 629,
         "startChar": 0,
@@ -82,6 +142,30 @@
     },
     {
       "key": {
+        "uuid": "ae67379e_105cde68",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 651,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-09-02T15:25:31Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "6031dda0_30f3c33d",
+      "range": {
+        "startLine": 650,
+        "startChar": 0,
+        "endLine": 651,
+        "endChar": 5
+      },
+      "revId": "36f36d936b58a4dcd4599d7e7294063b386ab440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1ce03f06_c98ca29c",
         "filename": "extensions/openpower-pels/data_interface.cpp",
         "patchSetId": 13
@@ -93,6 +177,30 @@
       "writtenOn": "2021-09-01T21:19:39Z",
       "side": 1,
       "message": "auto\n\nor, this is reads a little easier:\n\nfor (const auto\u0026 type : types)",
+      "range": {
+        "startLine": 658,
+        "startChar": 17,
+        "endLine": 658,
+        "endChar": 57
+      },
+      "revId": "36f36d936b58a4dcd4599d7e7294063b386ab440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86e01c0d_1fd0c91e",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-09-02T15:25:31Z",
+      "side": 1,
+      "message": "Yeah ok",
+      "parentUuid": "1ce03f06_c98ca29c",
       "range": {
         "startLine": 658,
         "startChar": 17,
@@ -128,6 +236,30 @@
     },
     {
       "key": {
+        "uuid": "3af4aca5_7af89e2e",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-09-02T15:25:31Z",
+      "side": 1,
+      "message": "This is the case when dump status bit of particular dump type is already updated from a object path available. Do we really need to traverse remaining paths of same dump type still?",
+      "parentUuid": "5d550556_116d6662",
+      "range": {
+        "startLine": 666,
+        "startChar": 37,
+        "endLine": 666,
+        "endChar": 45
+      },
+      "revId": "36f36d936b58a4dcd4599d7e7294063b386ab440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6ae78c3b_25e88476",
         "filename": "extensions/openpower-pels/data_interface.cpp",
         "patchSetId": 13
@@ -139,6 +271,30 @@
       "writtenOn": "2021-09-01T21:19:39Z",
       "side": 1,
       "message": "I can\u0027t quite figure out the reason you need this check?",
+      "range": {
+        "startLine": 685,
+        "startChar": 0,
+        "endLine": 688,
+        "endChar": 25
+      },
+      "revId": "36f36d936b58a4dcd4599d7e7294063b386ab440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4164a01_b65a8cdc",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 688,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-09-02T15:25:31Z",
+      "side": 1,
+      "message": "This is the case in continuation of comment in line no. 666. If the dump status bits of all dump types are already updated, do we still continue with remaining available paths? Take for instance:\nroot@rain135c:~# busctl tree xyz.openbmc_project.Dump.Manager\n└─/xyz\n  └─/xyz/openbmc_project\n    └─/xyz/openbmc_project/dump\n      ├─/xyz/openbmc_project/dump/bmc\n      │ └─/xyz/openbmc_project/dump/bmc/entry\n      │   ├─/xyz/openbmc_project/dump/bmc/entry/10\n      │   ├─/xyz/openbmc_project/dump/bmc/entry/11\n      │   ├─/xyz/openbmc_project/dump/bmc/entry/12\n      ├─/xyz/openbmc_project/dump/hardware\n      ├─/xyz/openbmc_project/dump/hostboot\n      │ └─/xyz/openbmc_project/dump/hostboot/entry\n      │   ├─/xyz/openbmc_project/dump/hostboot/entry/1\n      │   ├─/xyz/openbmc_project/dump/hostboot/entry/2\n      │   ├─/xyz/openbmc_project/dump/hostboot/entry/3\n      ├─/xyz/openbmc_project/dump/internal\n      │ └─/xyz/openbmc_project/dump/internal/manager\n      ├─/xyz/openbmc_project/dump/resource\n      │   ├─/xyz/openbmc_project/dump/resource/entry/20\n      │   ├─/xyz/openbmc_project/dump/resource/entry/21\n      │   ├─/xyz/openbmc_project/dump/resource/entry/22\n      └─/xyz/openbmc_project/dump/system\n      │   ├─/xyz/openbmc_project/dump/system/entry/30\n      │   ├─/xyz/openbmc_project/dump/system/entry/31\n      │   ├─/xyz/openbmc_project/dump/system/entry/32\n      │   ├─/xyz/openbmc_project/dump/system/entry/33\n      │   ├─/xyz/openbmc_project/dump/system/entry/34\n\nwith above, dump status bit of types of bmc,resource \u0026 system will already be updated with paths:\n├─/xyz/openbmc_project/dump/bmc/entry/10\n├─/xyz/openbmc_project/dump/resource/entry/20\n├─/xyz/openbmc_project/dump/system/entry/30",
+      "parentUuid": "6ae78c3b_25e88476",
       "range": {
         "startLine": 685,
         "startChar": 0,
