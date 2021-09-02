@@ -32,7 +32,6 @@
 #include <xyz/openbmc_project/State/Host/server.hpp>
 
 using namespace std::chrono;
-using sdbusplus::exception::SdBusError;
 extern const std::map<
     phosphor::logging::metadata::Metadata,
     std::function<phosphor::logging::metadata::associations::Type>>
@@ -278,7 +277,7 @@ bool Manager::isQuiesceOnErrorEnabled()
         auto reply = this->busLog.call(method);
         reply.read(property);
     }
-    catch (const SdBusError& e)
+    catch (const sdbusplus::exception::exception& e)
     {
         lg2::error("Error reading QuiesceOnHwError property: {ERROR}", "ERROR",
                    e);
@@ -352,7 +351,7 @@ void Manager::checkAndQuiesceHost()
         auto reply = this->busLog.call(method);
         reply.read(property);
     }
-    catch (const SdBusError& e)
+    catch (const sdbusplus::exception::exception& e)
     {
         // Quiescing the host is a "best effort" type function. If unable to
         // read the host state or it comes back empty, just return.

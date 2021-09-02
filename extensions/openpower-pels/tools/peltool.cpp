@@ -38,7 +38,6 @@
 namespace fs = std::filesystem;
 using namespace phosphor::logging;
 using namespace openpower::pels;
-using sdbusplus::exception::SdBusError;
 namespace file_error = sdbusplus::xyz::openbmc_project::Common::File::Error;
 namespace message = openpower::pels::message;
 namespace pv = openpower::pels::pel_values;
