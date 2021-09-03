@@ -133,19 +133,24 @@ struct ${error_type}
     using metadata_types = std::tuple<${meta_string}>;
 
     % if example_yaml:
-    const char* name() const noexcept
+    const char* name() const noexcept override
     {
         return errName;
     }
 
-    const char* description() const noexcept
+    const char* description() const noexcept override
     {
         return errDesc;
     }
 
-    const char* what() const noexcept
+    const char* what() const noexcept override
     {
         return errName;
+    }
+
+    int get_errno() const noexcept override
+    {
+        return EIO;
     }
     % endif
 };
