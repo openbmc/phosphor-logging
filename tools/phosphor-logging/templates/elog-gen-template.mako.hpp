@@ -4,12 +4,12 @@
 // See elog-gen.py for more details
 #pragma once
 
+#include <phosphor-logging/elog.hpp>
+#include <phosphor-logging/log.hpp>
+#include <sdbusplus/exception.hpp>
 #include <string>
 #include <tuple>
 #include <type_traits>
-#include <sdbusplus/exception.hpp>
-#include <phosphor-logging/log.hpp>
-#include <phosphor-logging/elog.hpp>
 
 <% exceptions = [] %>\
 % for name in errors:
@@ -32,11 +32,10 @@
 namespace ${s}
 {
     % endfor
-    struct ${exception_name};
+struct ${exception_name};
     % for s in reversed(ns):
 } // namespace ${s}
     % endfor
-
 % endfor
 
 namespace phosphor
@@ -81,7 +80,7 @@ struct ${b}
 };
     % endfor
 
-}  // namespace _${classname}
+} // namespace _${classname}
 <%
     example_yaml = False
     if("example.xyz.openbmc_project" in name):
@@ -131,8 +130,8 @@ struct ${error_type}
     using ${b.split("::").pop()} = ${b};
     % endfor
     using metadata_types = std::tuple<${meta_string}>;
-
     % if example_yaml:
+
     const char* name() const noexcept override
     {
         return errName;
@@ -172,7 +171,7 @@ struct ${error_type}
         phosphor_type = sdbusplus_type.replace("sdbusplus::", "")
         phosphor_type = phosphor_type.replace("Error::", "")
 %>\
-
+\
 % if sdbusplus_type != phosphor_type:
 namespace details
 {
@@ -183,7 +182,7 @@ struct map_exception_type<${sdbusplus_type}>
     using type = ${phosphor_type};
 };
 
-}
+} // namespace details
 %endif
 
     % endfor
