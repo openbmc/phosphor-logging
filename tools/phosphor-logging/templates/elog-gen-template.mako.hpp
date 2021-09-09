@@ -22,7 +22,7 @@
         exceptions.append(exception)
 %>\
 % endfor
-% for exception in set(exceptions):
+% for exception in sorted(set(exceptions)):
 <%
     ns = exception.split("::")
     exception_name = ns[-1]
