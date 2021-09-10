@@ -12,7 +12,7 @@ concept any_but = (... && !std::convertible_to<T, Ss>);
 
 /** Determine if a type might be a constexpr string: (const char (&)[N]) */
 template <typename T>
-concept maybe_constexpr_string = std::is_array_v<std::remove_cvref_t<T>>&&
+concept maybe_constexpr_string = std::is_array_v<std::remove_cvref_t<T>> &&
     std::same_as<const char*, std::decay_t<T>>;
 
 /** Determine if a type is certainly not a constexpr string. */
