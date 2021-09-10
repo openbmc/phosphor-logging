@@ -499,6 +499,31 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.State.Error.HostNotRunning",
+            "Subsystem": "cec_sp_hostboot_iface",
+            "ComponentID": "0x3400",
+            "SRC":
+            {
+                "ReasonCode": "0x3401",
+                "Words6To9":
+                {
+                }
+            },
+            "Documentation":
+            {
+                "Description": "Host was booting or booted before BMC reset but is now unresponsive",
+                "Message": "Host did not respond to BMC after a BMC reset but it was booting or booted prior to the BMC reboot",
+                "Notes": [
+                    "System will follow recovery policy, resulting in this ",
+                    "error and most likely a a reboot of the host. The issue ",
+                    "is most likely the result of the BMC rebooting while the ",
+                    "host was booting and in a state where it still needed ",
+                    "the BMC to complete its boot."
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.Processor.Error.SbeChipOpFailure",
             "Subsystem": "processor_chip",
             "ComponentID": "0x3500",
