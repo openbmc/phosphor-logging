@@ -1427,5 +1427,53 @@ void SRC::setDumpStatus(const DataInterfaceBase& dataIface)
     }
 }
 
+std::vector<uint8_t> SRC::getSrcStruct()
+{
+    std::vector<uint8_t> data;
+    Stream stream{data};
+
+    //------ Ref section 4.3 in PEL doc---
+    //------ SRC Structure 40 bytes-------
+    // Byte-0 | Byte-1 | Byte-2 | Byte-3 |
+    // -----------------------------------
+    //   02   |   08   |   00   |   09   | ==> Header
+    //   00   |   00   |   00   |   48   | ==> Header
+    //   00   |   00   |   00   |   00   | ==> Hex data word-2
+    //   00   |   00   |   00   |   00   | ==> Hex data word-3
+    //   00   |   00   |   00   |   00   | ==> Hex data word-4
+    //   20   |   00   |   00   |   00   | ==> Hex data word-5
+    //   00   |   00   |   00   |   00   | ==> Hex data word-6
+    //   00   |   00   |   00   |   00   | ==> Hex data word-7
+    //   00   |   00   |   00   |   00   | ==> Hex data word-8
+    //   00   |   00   |   00   |   00   | ==> Hex data word-9
+    // -----------------------------------
+    //   ASCII string - 8 bytes          |
+    // -----------------------------------
+    //   ASCII space NULL - 24 bytes     |
+    // -----------------------------------
+    //_size = Base SRC struct: 8 byte header + hex data section + ASCII string
+
+    uint8_t flags = ((_flags & postOPPanel) | postOPPanel);
+
+    // Get the terminate bit set in hex word 5
+    setTerminateBit();
+
+    stream << _version << flags << _reserved1B << _wordCount << _reserved2B
+           << _size;
+
+    for (auto& word : _hexData)
+    {
+        stream << word;
+    }
+
+    auto asciiSRC = asciiString();
+    for (auto& ascSRC : asciiSRC)
+    {
+        stream << ascSRC;
+    }
+
+    return data;
+}
+
 } // namespace pels
 } // namespace openpower

@@ -1035,3 +1035,54 @@ TEST_F(ManagerTest, TestDuplicatePEL)
     EXPECT_EQ(countPELsInRepo(), 1);
     EXPECT_EQ(count, 1);
 }
+
+// Test display for pel with system termination severity
+TEST_F(ManagerTest, TestDisplayWithPELSevTerminate)
+{
+    sdeventplus::Event e{sdEvent};
+
+    std::unique_ptr<DataInterfaceBase> dataIface =
+        std::make_unique<MockDataInterface>();
+
+    MockDataInterface* mockIface =
+        reinterpret_cast<MockDataInterface*>(dataIface.get());
+
+    EXPECT_CALL(*mockIface, createProgressSRC).Times(1);
+
+    openpower::pels::Manager manager{
+        logManager, std::move(dataIface),
+        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
+                  std::placeholders::_2, std::placeholders::_3)};
+
+    // This BMC PEL has severity set to system termination.
+    auto data = pelFactory(1, 'O', 0x51, 0xA400, 500);
+
+    fs::path pelFilename = makeTempDir() / "rawpel";
+    std::ofstream pelFile{pelFilename};
+    pelFile.write(reinterpret_cast<const char*>(data.data()), data.size());
+    pelFile.close();
+
+    std::string adItem = "RAWPEL=" + pelFilename.string();
+    std::vector<std::string> additionalData{adItem};
+    std::vector<std::string> associations;
+
+    manager.create("error message", 42, 0,
+                   phosphor::logging::Entry::Level::Error, additionalData,
+                   associations);
+
+    e.run(std::chrono::milliseconds(1));
+
+    // Ensure a PEL was created in the repository
+    auto pelData = findAnyPELInRepo();
+    ASSERT_TRUE(pelData);
+
+    auto getPELData = readPELFile(*pelData);
+    PEL pel(*getPELData);
+
+    // Spot check it.  Other testcases cover the details.
+    EXPECT_TRUE(pel.valid());
+
+    // Check for terminate bit set
+    auto& hexwords = pel.primarySRC().value()->hexwordData();
+    EXPECT_EQ(hexwords[3] & 0x20000000, 0x20000000);
+}
