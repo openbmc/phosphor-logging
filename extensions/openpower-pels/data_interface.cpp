@@ -38,6 +38,7 @@ constexpr auto vpdManager = "com.ibm.VPD.Manager";
 constexpr auto ledGroupManager = "xyz.openbmc_project.LED.GroupManager";
 constexpr auto logSetting = "xyz.openbmc_project.Settings";
 constexpr auto hwIsolation = "org.open_power.HardwareIsolation";
+constexpr auto bootRawProgress = "xyz.openbmc_project.State.Boot.Raw";
 } // namespace service_name
 
 namespace object_path
@@ -57,6 +58,7 @@ constexpr auto enableHostPELs =
 constexpr auto vpdManager = "/com/ibm/VPD/Manager";
 constexpr auto logSetting = "/xyz/openbmc_project/logging/settings";
 constexpr auto hwIsolation = "/xyz/openbmc_project/hardware_isolation";
+constexpr auto bootRawSetting = "/xyz/openbmc_project/state/boot/raw0";
 } // namespace object_path
 
 namespace interface
@@ -86,6 +88,7 @@ constexpr auto association = "xyz.openbmc_project.Association.Definitions";
 constexpr auto dumpEntry = "xyz.openbmc_project.Dump.Entry";
 constexpr auto dumpProgress = "xyz.openbmc_project.Common.Progress";
 constexpr auto hwIsolationCreate = "org.open_power.HardwareIsolation.Create";
+constexpr auto bootRawProgress = "xyz.openbmc_project.State.Boot.Raw";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
@@ -724,6 +727,20 @@ void DataInterface::createGuardRecord(const std::vector<uint8_t>& binPath,
                     .c_str());
         }
     }
+}
+
+void DataInterface::createProgressSRC(
+    const uint64_t& priSRC, const std::vector<uint8_t>& srcStruct) const
+{
+    DBusValue variant = std::make_tuple(priSRC, srcStruct);
+
+    auto method = _bus.new_method_call(service_name::bootRawProgress,
+                                       object_path::bootRawSetting,
+                                       interface::dbusProperty, "Set");
+
+    method.append(interface::bootRawProgress, "Value", variant);
+
+    _bus.call(method);
 }
 } // namespace pels
 } // namespace openpower
