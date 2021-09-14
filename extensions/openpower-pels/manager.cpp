@@ -163,6 +163,9 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
         // Update System Info to Extended User Data
         pel->updateSysInfoInExtendedUserDataSection(*_dataIface);
 
+        // Check for severity 0x51 and update boot progress SRC
+        updateProgressSRC(pel);
+
         try
         {
             log<level::DEBUG>(
@@ -384,6 +387,9 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
         }
         log<level::INFO>(msg.c_str());
     }
+
+    // Check for severity 0x51 and update boot progress SRC
+    updateProgressSRC(pel);
 
     // Activate any resulting service indicators if necessary
     auto policy = service_indicators::getPolicy(*_dataIface);
@@ -857,6 +863,72 @@ uint32_t Manager::getBMCLogIdFromPELId(uint32_t pelId)
     else
     {
         return logId->obmcID.id;
+    }
+}
+
+void Manager::updateProgressSRC(
+    std::unique_ptr<openpower::pels::PEL>& pel) const
+{
+    // Check for pel severity of type - 0x51 = critical error, system
+    // termination
+    if (pel->userHeader().severity() == 0x51)
+    {
+        auto src = pel->primarySRC();
+        if (src)
+        {
+            //------ Ref section 4.3 in PEL doc---
+            //------ SRC Structure 40 bytes-------
+            // Byte-0 | Byte-1 | Byte-2 | Byte-3 |
+            // -----------------------------------
+            //   02   |   08   |   00   |   09   | ==> Header
+            //   00   |   00   |   00   |   48   | ==> Header
+            //   00   |   00   |   00   |   00   | ==> Hex data word-2
+            //   00   |   00   |   00   |   00   | ==> Hex data word-3
+            //   00   |   00   |   00   |   00   | ==> Hex data word-4
+            //   20   |   00   |   00   |   00   | ==> Hex data word-5
+            //   00   |   00   |   00   |   00   | ==> Hex data word-6
+            //   00   |   00   |   00   |   00   | ==> Hex data word-7
+            //   00   |   00   |   00   |   00   | ==> Hex data word-8
+            //   00   |   00   |   00   |   00   | ==> Hex data word-9
+            // -----------------------------------
+            //   ASCII string - 8 bytes          |
+            // -----------------------------------
+            //   ASCII space NULL - 24 bytes     |
+            // -----------------------------------
+
+            std::vector<uint8_t> vecSRC{
+                0x02, 0x08, 0x00, 0x09, 0x00, 0x00, 0x00, 0x48, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+            std::string asciiSRC = (*src)->asciiString();
+            std::vector<uint8_t> vecASCII(asciiSRC.begin(), asciiSRC.end());
+
+            std::vector<uint8_t> vecFiller{0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                           0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                           0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                           0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+            std::vector<uint8_t> src;
+            src.insert(src.end(), vecSRC.begin(), vecSRC.end());
+            src.insert(src.end(), vecASCII.begin(), vecASCII.end());
+            src.insert(src.end(), vecFiller.begin(), vecFiller.end());
+
+            uint64_t time64 =
+                std::chrono::duration_cast<std::chrono::microseconds>(
+                    std::chrono::high_resolution_clock::now()
+                        .time_since_epoch())
+                    .count();
+            try
+            {
+                _dataIface->createProgressSRC(time64, src);
+            }
+            catch (std::exception& e)
+            {
+                // Exception - may be no boot progress interface on dbus
+            }
+        }
     }
 }
 
