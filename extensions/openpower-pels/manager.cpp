@@ -163,6 +163,25 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
         // Update System Info to Extended User Data
         pel->updateSysInfoInExtendedUserDataSection(*_dataIface);
 
+        // Check for pel severity of type - 0x51 = critical error, system
+        // termination
+        if (pel->userHeader().severity() == 0x51)
+        {
+            auto src = pel->primarySRC();
+            if (src)
+            {
+                (*src)->setTerminateBit();
+                std::string asciiSRC = (*src)->asciiString();
+                std::vector<uint8_t> vecSRC(asciiSRC.begin(), asciiSRC.end());
+                uint64_t time64 =
+                    std::chrono::duration_cast<std::chrono::microseconds>(
+                        std::chrono::high_resolution_clock::now()
+                            .time_since_epoch())
+                        .count();
+                _dataIface->addSRCToProgressSRC(time64, vecSRC);
+            }
+        }
+
         try
         {
             log<level::DEBUG>(

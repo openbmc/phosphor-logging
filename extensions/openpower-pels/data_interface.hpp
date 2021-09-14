@@ -335,6 +335,16 @@ class DataInterfaceBase
     virtual std::vector<bool>
         checkDumpStatus(const std::vector<std::string>& type) const = 0;
 
+    /**
+     * @brief Add SRC to Progress SRC property on the boot progress
+     *        interface on a D-Bus object.
+     *
+     * @param[in] time - The pel commit time
+     * @param[in] src - The pel src value
+     */
+    virtual void addSRCToProgressSRC(const uint64_t& time,
+                                     const std::vector<uint8_t>& src) const = 0;
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
@@ -617,6 +627,16 @@ class DataInterface : public DataInterfaceBase
      */
     std::vector<bool>
         checkDumpStatus(const std::vector<std::string>& type) const override;
+
+    /**
+     * @brief Add SRC to Progress SRC property on the boot progress
+     *        interface on a D-Bus object.
+     *
+     * @param[in] time - The pel commit time
+     * @param[in] src - The pel src value
+     */
+    void addSRCToProgressSRC(const uint64_t& time,
+                             const std::vector<uint8_t>& src) const override;
 
   private:
     /**

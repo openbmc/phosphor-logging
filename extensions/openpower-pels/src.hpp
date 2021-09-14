@@ -63,6 +63,7 @@ class SRC : public Section
      */
     enum class ErrorStatusFlags
     {
+        terminate_fw_err = 0x20000000,
         deconfigured = 0x02000000,
         guarded = 0x01000000
     };
@@ -280,6 +281,14 @@ class SRC : public Section
      * @return bool - If created by the BMC or not
      */
     bool isBMCSRC() const;
+
+    /**
+     * @brief Set the terminate bit in hex data word 3.
+     */
+    void setTerminateBit()
+    {
+        setErrorStatusFlag(ErrorStatusFlags::terminate_fw_err);
+    }
 
   private:
     /**
