@@ -49,6 +49,8 @@ class MockDataInterface : public DataInterfaceBase
                 (const override));
     MOCK_METHOD(std::vector<bool>, checkDumpStatus,
                 (const std::vector<std::string>&), (const override));
+    MOCK_METHOD(void, setDisplay, (const std::string&, const std::string&),
+                (const override));
 
     void changeHostState(bool newState)
     {
