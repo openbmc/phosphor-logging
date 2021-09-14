@@ -356,6 +356,17 @@ class DataInterfaceBase
                                    const std::string& type,
                                    const std::string& logPath) const = 0;
 
+    /**
+     * @brief Create Progress SRC property on the boot progress
+     *        interface on a D-Bus object.
+     *
+     * @param[in] priSRC - Primary SRC value (e.g. BD8D1001)
+     * @param[in] srcStruct - Full SRC base structure
+     */
+    virtual void
+        createProgressSRC(const uint64_t& priSRC,
+                          const std::vector<uint8_t>& srcStruct) const = 0;
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
@@ -654,6 +665,17 @@ class DataInterface : public DataInterfaceBase
     void createGuardRecord(const std::vector<uint8_t>& binPath,
                            const std::string& type,
                            const std::string& logPath) const override;
+
+    /**
+     * @brief Create Progress SRC property on the boot progress
+     *        interface on a D-Bus object.
+     *
+     * @param[in] priSRC - Primary SRC value
+     * @param[in] srcStruct - Full SRC base structure
+     */
+    void
+        createProgressSRC(const uint64_t& priSRC,
+                          const std::vector<uint8_t>& srcStruct) const override;
 
   private:
     /**

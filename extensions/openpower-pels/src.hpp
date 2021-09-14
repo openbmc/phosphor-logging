@@ -53,6 +53,7 @@ class SRC : public Section
         additionalSections = 0x01,
         powerFaultEvent = 0x02,
         hypDumpInit = 0x04,
+        postOPPanel = 0x08,
         i5OSServiceEventBit = 0x10,
         virtualProgressSRC = 0x80
     };
@@ -63,6 +64,7 @@ class SRC : public Section
      */
     enum class ErrorStatusFlags
     {
+        terminateFwErr = 0x20000000,
         deconfigured = 0x02000000,
         guarded = 0x01000000
     };
@@ -280,6 +282,22 @@ class SRC : public Section
      * @return bool - If created by the BMC or not
      */
     bool isBMCSRC() const;
+
+    /**
+     * @brief Set the terminate bit in hex data word 3.
+     */
+    void setTerminateBit()
+    {
+        setErrorStatusFlag(ErrorStatusFlags::terminateFwErr);
+    }
+
+    /**
+     * @brief Get the SRC structure to pass on to the boot progress dbus
+     * interface.
+     *
+     * @return std::vector<uint8_t> - SRC struct data
+     */
+    std::vector<uint8_t> getSrcStruct();
 
   private:
     /**

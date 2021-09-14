@@ -54,6 +54,9 @@ class MockDataInterface : public DataInterfaceBase
                 (const std::vector<uint8_t>&, const std::string&,
                  const std::string&),
                 (const override));
+    MOCK_METHOD(void, createProgressSRC,
+                (const uint64_t&, const std::vector<uint8_t>&),
+                (const override));
 
     void changeHostState(bool newState)
     {
