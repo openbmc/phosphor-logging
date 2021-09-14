@@ -163,6 +163,9 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
         // Update System Info to Extended User Data
         pel->updateSysInfoInExtendedUserDataSection(*_dataIface);
 
+        // Check for severity 0x51 and update boot progress SRC
+        updateProgressSRC(pel);
+
         try
         {
             log<level::DEBUG>(
@@ -384,6 +387,9 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
         }
         log<level::INFO>(msg.c_str());
     }
+
+    // Check for severity 0x51 and update boot progress SRC
+    updateProgressSRC(pel);
 
     // Activate any resulting service indicators if necessary
     auto policy = service_indicators::getPolicy(*_dataIface);
@@ -857,6 +863,37 @@ uint32_t Manager::getBMCLogIdFromPELId(uint32_t pelId)
     else
     {
         return logId->obmcID.id;
+    }
+}
+
+void Manager::updateProgressSRC(
+    std::unique_ptr<openpower::pels::PEL>& pel) const
+{
+    // Check for pel severity of type - 0x51 = critical error, system
+    // termination
+    if (pel->userHeader().severity() == 0x51)
+    {
+        auto src = pel->primarySRC();
+        if (src)
+        {
+            std::vector<uint8_t> asciiSRC = (*src)->getSrcStruct();
+            uint64_t srcRefCode = 0;
+
+            // Read bytes from offset [40-47] e.g. BD8D1001
+            for (int i = 0; i < 8; i++)
+            {
+                srcRefCode |= (static_cast<uint64_t>(asciiSRC[40 + i]) << (8 * i));
+            }
+
+            try
+            {
+                _dataIface->createProgressSRC(srcRefCode, asciiSRC);
+            }
+            catch (std::exception& e)
+            {
+                // Exception - may be no boot progress interface on dbus
+            }
+        }
     }
 }
 

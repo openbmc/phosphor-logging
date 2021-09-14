@@ -37,6 +37,7 @@ constexpr auto objectMapper = "xyz.openbmc_project.ObjectMapper";
 constexpr auto vpdManager = "com.ibm.VPD.Manager";
 constexpr auto ledGroupManager = "xyz.openbmc_project.LED.GroupManager";
 constexpr auto logSetting = "xyz.openbmc_project.Settings";
+constexpr auto bootRawProgress = "xyz.openbmc_project.State.Boot.Raw";
 } // namespace service_name
 
 namespace object_path
@@ -55,6 +56,7 @@ constexpr auto enableHostPELs =
     "/xyz/openbmc_project/logging/send_event_logs_to_host";
 constexpr auto vpdManager = "/com/ibm/VPD/Manager";
 constexpr auto logSetting = "/xyz/openbmc_project/logging/settings";
+constexpr auto bootRawSetting = "/xyz/openbmc_project/state/boot/raw0";
 } // namespace object_path
 
 namespace interface
@@ -83,6 +85,7 @@ constexpr auto logSetting = "xyz.openbmc_project.Logging.Settings";
 constexpr auto association = "xyz.openbmc_project.Association.Definitions";
 constexpr auto dumpEntry = "xyz.openbmc_project.Dump.Entry";
 constexpr auto dumpProgress = "xyz.openbmc_project.Common.Progress";
+constexpr auto bootRawProgress = "xyz.openbmc_project.State.Boot.Raw";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
@@ -688,5 +691,18 @@ std::vector<bool>
     return result;
 }
 
+void DataInterface::createProgressSRC(const uint64_t& priSRC,
+                                      const std::vector<uint8_t>& srcStruct) const
+{
+    DBusValue variant = std::make_tuple(priSRC, srcStruct);
+
+    auto method = _bus.new_method_call(service_name::bootRawProgress,
+                                       object_path::bootRawSetting,
+                                       interface::dbusProperty, "Set");
+
+    method.append(interface::bootRawProgress, "Value", variant);
+
+    _bus.call(method);
+}
 } // namespace pels
 } // namespace openpower
