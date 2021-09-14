@@ -120,6 +120,13 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
     auto ud = util::makeSysInfoUserDataSection(additionalData, dataIface);
     addUserDataSection(std::move(ud));
 
+    //  Check for pel severity of type - 0x51 = critical error, system
+    //  termination and update terminate bit in SRC for pels other then hostboot
+    if (_ph->creatorID() != static_cast<uint8_t>(CreatorID::hostboot))
+    {
+        updateTerminateBitInSRCSection();
+    }
+
     // Create a UserData section from AdditionalData.
     if (!additionalData.empty())
     {
@@ -558,6 +565,21 @@ void PEL::updateSysInfoInExtendedUserDataSection(
                 extUserData->updateDataSection(subType, componentId,
                                                ud->data());
             }
+        }
+    }
+}
+
+void PEL::updateTerminateBitInSRCSection() const
+{
+    //  Check for pel severity of type - 0x51 = critical error, system
+    //  termination
+    if (_uh->severity() == 0x51)
+    {
+        // Get the primary SRC section
+        auto pSRC = primarySRC();
+        if (pSRC)
+        {
+            (*pSRC)->setTerminateBit();
         }
     }
 }
