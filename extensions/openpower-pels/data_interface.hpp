@@ -346,6 +346,7 @@ class DataInterfaceBase
         checkDumpStatus(const std::vector<std::string>& type) const = 0;
 
     /**
+<<<<<<< HEAD
      * @brief Create guard record
      *
      *  @param[in] binPath: phal devtree binary path used as key
@@ -355,6 +356,17 @@ class DataInterfaceBase
     virtual void createGuardRecord(const std::vector<uint8_t>& binPath,
                                    const std::string& type,
                                    const std::string& logPath) const = 0;
+=======
+     * @brief Create Progress SRC property on the boot progress
+     *        interface on a D-Bus object.
+     *
+     * @param[in] priSRC - Primary SRC value (e.g. BD8D1001)
+     * @param[in] srcStruct - Full SRC base structure
+     */
+    virtual void
+        createProgressSRC(const uint64_t& priSRC,
+                          const std::vector<uint8_t>& srcStruct) const = 0;
+>>>>>>> PEL: Write terminating SRC to the progress SRC
 
   protected:
     /**
@@ -654,6 +666,17 @@ class DataInterface : public DataInterfaceBase
     void createGuardRecord(const std::vector<uint8_t>& binPath,
                            const std::string& type,
                            const std::string& logPath) const override;
+
+    /**
+     * @brief Create Progress SRC property on the boot progress
+     *        interface on a D-Bus object.
+     *
+     * @param[in] priSRC - Primary SRC value
+     * @param[in] srcStruct - Full SRC base structure
+     */
+    void
+        createProgressSRC(const uint64_t& priSRC,
+                          const std::vector<uint8_t>& srcStruct) const override;
 
   private:
     /**

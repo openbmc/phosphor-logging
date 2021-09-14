@@ -375,6 +375,12 @@ class PEL
     nlohmann::json getCalloutJSON(const PelFFDC& ffdcFiles);
 
     /**
+     * @brief Update terminate bit in primary SRC section to this PEL object is
+     * severity set to 0x51 = critical error, system termination
+     */
+    void updateTerminateBitInSRCSection();
+
+    /**
      * @brief The PEL Private Header section
      */
     std::unique_ptr<PrivateHeader> _ph;
