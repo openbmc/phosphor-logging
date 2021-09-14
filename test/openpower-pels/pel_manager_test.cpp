@@ -1035,3 +1035,76 @@ TEST_F(ManagerTest, TestDuplicatePEL)
     EXPECT_EQ(countPELsInRepo(), 1);
     EXPECT_EQ(count, 1);
 }
+
+// Test termination bit set for pel with critical system termination severity
+TEST_F(ManagerTest, TestTerminateBitWithPELSevCriticalSysTerminate)
+{
+    const auto registry = R"(
+{
+    "PELs":
+    [
+        {
+            "Name": "xyz.openbmc_project.Error.Test",
+            "Subsystem": "power_supply",
+            "Severity": "critical_system_term",
+            "ActionFlags": ["service_action", "report"],
+            "SRC":
+            {
+                "ReasonCode": "0x2030"
+            },
+            "Documentation":
+            {
+                "Description": "A PGOOD Fault",
+                "Message": "PS had a PGOOD Fault"
+            }
+        }
+    ]
+}
+)";
+
+    auto path = getPELReadOnlyDataPath();
+    fs::create_directories(path);
+    path /= "message_registry.json";
+
+    std::ofstream registryFile{path};
+    registryFile << registry;
+    registryFile.close();
+
+    std::unique_ptr<DataInterfaceBase> dataIface =
+        std::make_unique<MockDataInterface>();
+
+    MockDataInterface* mockIface =
+        reinterpret_cast<MockDataInterface*>(dataIface.get());
+
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(*mockIface, checkDumpStatus(dumpType))
+        .WillRepeatedly(Return(std::vector<bool>{false, false, false}));
+
+    openpower::pels::Manager manager{
+        logManager, std::move(dataIface),
+        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
+                  std::placeholders::_2, std::placeholders::_3)};
+
+    std::vector<std::string> additionalData{"FOO=BAR"};
+    std::vector<std::string> associations;
+
+    // Create the event log to create the PEL from.
+    manager.create("xyz.openbmc_project.Error.Test", 33, 0,
+                   phosphor::logging::Entry::Level::Error, additionalData,
+                   associations);
+
+    // Ensure a PEL was created in the repository
+    auto pelData = findAnyPELInRepo();
+    ASSERT_TRUE(pelData);
+
+    auto getPELData = readPELFile(*pelData);
+    PEL pel(*getPELData);
+
+    // Spot check it.  Other testcases cover the details.
+    EXPECT_TRUE(pel.valid());
+
+    // Check for terminate bit set
+    auto& hexwords = pel.primarySRC().value()->hexwordData();
+    EXPECT_EQ(hexwords[3] & 0x20000000, 0x20000000);
+}

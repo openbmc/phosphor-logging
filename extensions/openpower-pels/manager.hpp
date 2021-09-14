@@ -253,6 +253,13 @@ class Manager : public PELInterface
      */
     uint32_t getBMCLogIdFromPELId(uint32_t pelId) override;
 
+    /**
+     * @brief Update boot progress SRC based on severity 0x51, critical error
+     *
+     * @param[in] pel - The PEL to use
+     */
+    void updateProgressSRC(std::unique_ptr<openpower::pels::PEL>& pel) const;
+
   private:
     /**
      * @brief Adds a received raw PEL to the PEL repository
