@@ -302,6 +302,12 @@ class PEL
     void updateSysInfoInExtendedUserDataSection(
         const DataInterfaceBase& dataIface);
 
+    /**
+     * @brief Update terminate bit in primary SRC section to this PEL object is
+     * severity set to 0x51 = critical error, system termination
+     */
+    void updateTerminateBitInSRCSection() const;
+
   private:
     /**
      * @brief Builds the section objects from a PEL data buffer
