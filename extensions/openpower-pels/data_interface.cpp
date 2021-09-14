@@ -37,6 +37,7 @@ constexpr auto objectMapper = "xyz.openbmc_project.ObjectMapper";
 constexpr auto vpdManager = "com.ibm.VPD.Manager";
 constexpr auto ledGroupManager = "xyz.openbmc_project.LED.GroupManager";
 constexpr auto logSetting = "xyz.openbmc_project.Settings";
+constexpr auto panelSetting = "com.ibm.PanelApp";
 } // namespace service_name
 
 namespace object_path
@@ -55,6 +56,7 @@ constexpr auto enableHostPELs =
     "/xyz/openbmc_project/logging/send_event_logs_to_host";
 constexpr auto vpdManager = "/com/ibm/VPD/Manager";
 constexpr auto logSetting = "/xyz/openbmc_project/logging/settings";
+constexpr auto panelSetting = "/com/ibm/panel_app";
 } // namespace object_path
 
 namespace interface
@@ -83,6 +85,7 @@ constexpr auto logSetting = "xyz.openbmc_project.Logging.Settings";
 constexpr auto association = "xyz.openbmc_project.Association.Definitions";
 constexpr auto dumpEntry = "xyz.openbmc_project.Dump.Entry";
 constexpr auto dumpProgress = "xyz.openbmc_project.Common.Progress";
+constexpr auto panel = "com.ibm.panel";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
@@ -687,5 +690,15 @@ std::vector<bool>
     return result;
 }
 
+void DataInterface::setDisplay(const std::string& display1,
+                               const std::string& display2) const
+{
+    auto method = _bus.new_method_call(service_name::panelSetting,
+                                       object_path::panelSetting,
+                                       interface::panel, "Display");
+
+    method.append(display1, display2);
+    _bus.call(method);
+}
 } // namespace pels
 } // namespace openpower

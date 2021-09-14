@@ -335,6 +335,15 @@ class DataInterfaceBase
     virtual std::vector<bool>
         checkDumpStatus(const std::vector<std::string>& type) const = 0;
 
+    /**
+     * @brief Sets the Display property on the Panel
+     *        interface on a D-Bus object.
+     *
+     * @param[in] displayText - The text to be displayed on panel
+     */
+    virtual void setDisplay(const std::string& display1,
+                            const std::string& display2) const = 0;
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
@@ -617,6 +626,15 @@ class DataInterface : public DataInterfaceBase
      */
     std::vector<bool>
         checkDumpStatus(const std::vector<std::string>& type) const override;
+
+    /**
+     * @brief Sets the Display property on the Panel
+     *        interface on a D-Bus object.
+     *
+     * @param[in] displayText - The text to be displayed on panel
+     */
+    void setDisplay(const std::string& display1,
+                    const std::string& display2) const override;
 
   private:
     /**
