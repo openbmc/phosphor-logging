@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "d35e4458_5a5d238f",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-09-17T10:47:19Z",
+      "side": 1,
+      "message": "panel app don\u0027t have any rules and doesn\u0027t sanitizes the input. It just takes in strings and send out to panel for display.",
+      "parentUuid": "708695af_50305b5f",
+      "revId": "e2e8f7ca9ced9a47cd65c57b9a7bc5d1310c3863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "dafdfd05_8defbb47",
         "filename": "extensions/openpower-pels/manager.cpp",
         "patchSetId": 1
@@ -30,6 +48,30 @@
       "writtenOn": "2021-09-16T17:56:00Z",
       "side": 1,
       "message": "does this need to be 16 bytes of spaces?",
+      "range": {
+        "startLine": 174,
+        "startChar": 48,
+        "endLine": 174,
+        "endChar": 51
+      },
+      "revId": "e2e8f7ca9ced9a47cd65c57b9a7bc5d1310c3863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "51bac5b0_87b37f17",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-09-17T10:47:19Z",
+      "side": 1,
+      "message": "No not needed. Either or both of the lines can be empty. Here is the tested output:\nL1 : BD8D1001                        \nL2 :",
+      "parentUuid": "dafdfd05_8defbb47",
       "range": {
         "startLine": 174,
         "startChar": 48,
