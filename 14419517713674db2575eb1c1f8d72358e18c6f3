@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fb9b7135_572135e6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-09-17T15:12:35Z",
+      "side": 1,
+      "message": "Can you add a bit more description here?  Like what the change is and why you\u0027re doing it (because the Message will already have a colon)",
+      "revId": "14419517713674db2575eb1c1f8d72358e18c6f3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d55022df_348a177b",
+        "filename": "extensions/openpower-pels/pel_values.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-09-17T15:12:35Z",
+      "side": 1,
+      "message": "maybe also remove these \u0027subsystem strings\u0027 so we don\u0027t see it again in the message?",
+      "range": {
+        "startLine": 32,
+        "startChar": 35,
+        "endLine": 32,
+        "endChar": 44
+      },
+      "revId": "14419517713674db2575eb1c1f8d72358e18c6f3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a0630500_a36d3723",
+        "filename": "extensions/openpower-pels/pel_values.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-09-17T15:12:35Z",
+      "side": 1,
+      "message": "maybe add a space before the \u0027-\u0027",
+      "range": {
+        "startLine": 63,
+        "startChar": 36,
+        "endLine": 63,
+        "endChar": 37
+      },
+      "revId": "14419517713674db2575eb1c1f8d72358e18c6f3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
