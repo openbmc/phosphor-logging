@@ -31,7 +31,7 @@ TEST(PELFieldsTest, TestFindFields)
     ASSERT_NE(s, subsystemValues.end());
     EXPECT_EQ(0x58, std::get<fieldValuePos>(*s));
     EXPECT_STREQ("cec_clocks", std::get<registryNamePos>(*s));
-    EXPECT_STREQ("CEC Hardware: Clock", std::get<descriptionPos>(*s));
+    EXPECT_STREQ("CEC Hardware - Clock", std::get<descriptionPos>(*s));
 
     s = findByValue(0xFF, subsystemValues);
     EXPECT_EQ(s, subsystemValues.end());
