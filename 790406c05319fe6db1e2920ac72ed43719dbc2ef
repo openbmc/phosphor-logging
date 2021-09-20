@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "6b843122_7ff0ca0b",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 857,
+      "author": {
+        "id": 1000369
+      },
+      "writtenOn": "2021-09-20T22:10:25Z",
+      "side": 1,
+      "message": "I presented this in power thermal team Slack channel the general feel was that either was fine and there were not strong opinions either way. I chose to keep this as 0x62, \"power control hardware\", since regulators are hardware that control power.",
+      "parentUuid": "e48ef3ca_96a37b86",
+      "range": {
+        "startLine": 857,
+        "startChar": 26,
+        "endLine": 857,
+        "endChar": 42
+      },
+      "revId": "790406c05319fe6db1e2920ac72ed43719dbc2ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e92804db_77a031f6",
         "filename": "extensions/openpower-pels/registry/message_registry.json",
         "patchSetId": 2
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "6b6aa833_72d5e073",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 1000369
+      },
+      "writtenOn": "2021-09-20T22:10:25Z",
+      "side": 1,
+      "message": "These callouts were presented to the hardware team in email conversation regarding this feature - we asked if they were OK with these callouts and priorities - they did not request/recommend any changes to these callouts and priorities. If we still have concerns we can run them by the hardware team again.",
+      "parentUuid": "e92804db_77a031f6",
+      "range": {
+        "startLine": 872,
+        "startChar": 40,
+        "endLine": 872,
+        "endChar": 45
+      },
+      "revId": "790406c05319fe6db1e2920ac72ed43719dbc2ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "03727d25_61e187df",
         "filename": "extensions/openpower-pels/registry/message_registry.json",
         "patchSetId": 2
@@ -59,6 +107,30 @@
       "writtenOn": "2021-07-19T20:20:37Z",
       "side": 1,
       "message": "This is the Reist SYS IO, Standby pluggable VRM.  So on Everest, the standby VRM you are monitoring is on a pluggable VRM and is not mounted directly on the backplane?",
+      "range": {
+        "startLine": 885,
+        "startChar": 40,
+        "endLine": 885,
+        "endChar": 46
+      },
+      "revId": "790406c05319fe6db1e2920ac72ed43719dbc2ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98db0cc0_11539a43",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 885,
+      "author": {
+        "id": 1000369
+      },
+      "writtenOn": "2021-09-20T22:10:25Z",
+      "side": 1,
+      "message": "Same as previous response (above) and specifically for this callout the hardware team did responded: \"Actually, for Everest, there are two Reist VRMs ... The one that supplies 3.3V Standby is P0-C59.\" To which we made a change from the original proposal we gave them for callouts/priorities.",
+      "parentUuid": "03727d25_61e187df",
       "range": {
         "startLine": 885,
         "startChar": 40,
