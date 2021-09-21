@@ -195,6 +195,16 @@ class DataInterfaceBase
     }
 
     /**
+     * @brief Returns the Boot state
+     *
+     * @return std::string - The Boot state property value
+     */
+    virtual std::string getBootState() const
+    {
+        return _bootState;
+    }
+
+    /**
      * @brief Returns the motherboard CCIN
      *
      * @return std::string The motherboard CCIN
@@ -420,6 +430,11 @@ class DataInterfaceBase
      * @brief The host state property
      */
     std::string _hostState;
+
+    /**
+     * @brief The boot state property
+     */
+    std::string _bootState;
 };
 
 /**
