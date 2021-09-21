@@ -670,6 +670,7 @@ void addStatesToJSON(nlohmann::json& json, const DataInterfaceBase& dataIface)
     json["BMCState"] = lastSegment('.', dataIface.getBMCState());
     json["ChassisState"] = lastSegment('.', dataIface.getChassisState());
     json["HostState"] = lastSegment('.', dataIface.getHostState());
+    json["BootState"] = lastSegment('.', dataIface.getBootState());
 }
 
 std::unique_ptr<UserData>

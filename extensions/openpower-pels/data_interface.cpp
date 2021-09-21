@@ -115,6 +115,7 @@ DataInterface::DataInterface(sdbusplus::bus::bus& bus) : _bus(bus)
     _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
         bus, object_path::hostState, interface::bootProgress, "BootProgress",
         *this, [this](const auto& value) {
+            this->_bootState = std::get<std::string>(value);
             auto status = Progress::convertProgressStagesFromString(
                 std::get<std::string>(value));
 
