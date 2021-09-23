@@ -255,7 +255,13 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
                                          uint8_t creatorID)
 {
     PyObject *pName, *pModule, *pDict, *pFunc, *pArgs, *pData, *pResult,
-        *pBytes, *eType, *eValue, *eTraceback, *pKey;
+        *pBytes, *eType, *eValue, *eTraceback, *pKey, *syspath, *curDir;
+    syspath = PySys_GetObject("path");
+    Py_INCREF(syspath);
+    curDir = PyUnicode_FromString(".");
+    std::unique_ptr<PyObject, decltype(&pyDecRef)> curDirPtr(curDir, &pyDecRef);
+    PyList_Insert(syspath, 0, curDir);
+    Py_DECREF(syspath);
     std::string pErrStr;
     std::string module = getNumberString("%c", tolower(creatorID)) +
                          getNumberString("%04x", componentID);
