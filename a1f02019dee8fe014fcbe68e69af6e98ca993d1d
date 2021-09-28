@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a4c6748b_4446a14b",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-09-28T17:50:12Z",
+      "side": 1,
+      "message": "If I look at an existing Progress SRC:\n\n\t\t\t\t3906934546556272963,\n\t\t\t\t[\n\t\t\t\t\t2,\n\t\t\t\t\t1,\n\t\t\t\t\t0,\n\t\t\t\t\t2,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t160,\n\t\t\t\t\t3,\n\t\t\t\t\t208,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\t67,\n\t\t\t\t\t65,\n\t\t\t\t\t48,\n ...\n\nWe can see that the ASCII string (the 67,65,48 or \"CA0\" doesn\u0027t start the structure, there\u0027s like 40 bytes of other SRC fields before it, which matches the spec.  Those also need to be used here.",
+      "revId": "a1f02019dee8fe014fcbe68e69af6e98ca993d1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
