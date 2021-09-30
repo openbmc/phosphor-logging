@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "344f98b5_d60b96d6",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-09-30T19:59:58Z",
+      "side": 1,
+      "message": "The SRC class already has data members for each of these fields, for example https://github.com/openbmc/phosphor-logging/blob/master/extensions/openpower-pels/src.hpp#L531 starts with the version all the way through the other header fields to the hex data words to the ascii string.\n\nAnd if you look at the flatten() function: https://github.com/openbmc/phosphor-logging/blob/master/extensions/openpower-pels/src.cpp#L285\nit shows how to serialize them all into a buffer.\n\nI think you could then make a function very similar to flatten, but with just what you need:\n\nvector SRC::getSrcStruct()\n{\n   vector data;\n   Stream stream{data}\n   stream \u003c\u003c header \u003c\u003c version \u003c\u003c flags \u003c\u003c reserved1b \u003c\u003c wordCount \u003c\u003c reserved2b \u003c\u003c size;\n\n    for (auto\u0026 word : _hexData)\n    {\n        stream \u003c\u003c word;\n    }\n    asciiString-\u003eflatten(stream);\n\n    return data\n}",
+      "revId": "5359734fb5404258287f5959ff30d1ba917dbf7d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
