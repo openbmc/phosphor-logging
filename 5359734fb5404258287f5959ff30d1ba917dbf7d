@@ -16,6 +16,24 @@
       "revId": "5359734fb5404258287f5959ff30d1ba917dbf7d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d26fa225_9162ff3d",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-10-04T11:37:40Z",
+      "side": 1,
+      "message": "yeah actually I saw the SRC class but then thought as the data set needed is not that huge and as I would need to pick and choose the values to insert so why not directly use the needed values instead but then yeah values to be hard-coded which we should also try to avoid as far as possible.",
+      "parentUuid": "344f98b5_d60b96d6",
+      "revId": "5359734fb5404258287f5959ff30d1ba917dbf7d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
