@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c9dd7a64_3fbcfd94",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-05T18:48:07Z",
+      "side": 1,
+      "message": "you can use the primarySRC() function (line 298) to do this.",
+      "range": {
+        "startLine": 580,
+        "startChar": 7,
+        "endLine": 589,
+        "endChar": 42
+      },
+      "revId": "715f0ac0aaeb1bcffc557d1498f17c5525b4efb3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4184dac5_3ba0e068",
+        "filename": "extensions/openpower-pels/pel.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-05T18:48:07Z",
+      "side": 1,
+      "message": "this can be private.",
+      "revId": "715f0ac0aaeb1bcffc557d1498f17c5525b4efb3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "27222e01_f3e47f44",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1456,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-05T18:48:07Z",
+      "side": 1,
+      "message": "I\u0027m not entirely sure on what the use of this flag is really for, but this seems as good as any!\n\nI think you can simplify it to:  flags \u003d _flags | postOPPanel",
+      "range": {
+        "startLine": 1456,
+        "startChar": 31,
+        "endLine": 1456,
+        "endChar": 42
+      },
+      "revId": "715f0ac0aaeb1bcffc557d1498f17c5525b4efb3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fdfdb524_4bbf1b0b",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1459,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-05T18:48:07Z",
+      "side": 1,
+      "message": "this would already have been set when the PEL was created.",
+      "revId": "715f0ac0aaeb1bcffc557d1498f17c5525b4efb3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "403d2c8f_4d15b5c1",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1473,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-05T18:48:07Z",
+      "side": 1,
+      "message": "you can just use:\n _asciiString-\u003eflatten(stream);",
+      "range": {
+        "startLine": 1469,
+        "startChar": 3,
+        "endLine": 1473,
+        "endChar": 5
+      },
+      "revId": "715f0ac0aaeb1bcffc557d1498f17c5525b4efb3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
