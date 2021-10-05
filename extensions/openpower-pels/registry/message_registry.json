@@ -2472,6 +2472,71 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Sensor.Threshold.Error.VoltageCriticalLow",
+            "Subsystem": "cec_tod",
+            "ComponentID": "0x2800",
+            "Severity": "predictive",
+            "ActionFlags": ["service_action", "report"],
+
+            "SRC": {
+                "ReasonCode": "0x280C",
+                "Words6To9": {}
+            },
+
+            "CalloutsUsingAD": {
+                "ADName": "SENSOR_NAME",
+                "CalloutsWithTheirADValues": [
+                    {
+                        "ADValue": "/xyz/openbmc_project/sensors/voltage/Battery_Voltage",
+                        "Callouts": [
+                            {
+                                "System": "ibm,rainier",
+                                "CalloutList": [
+                                    {
+                                        "Priority": "high",
+                                        "LocCode": "E0"
+                                    }
+                                ]
+                            },
+                            {
+                                "System": "ibm,everest",
+                                "CalloutList": [
+                                    {
+                                        "Priority": "high",
+                                        "LocCode": "P0-C0-E0"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+
+            "Documentation": {
+                "Description": "A voltage sensor went below its critical low threshold.",
+                "Message": "A voltage sensor went below its critical low threshold."
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Sensor.Threshold.Error.BatteryCriticalLowClear",
+            "Subsystem": "cec_tod",
+            "ComponentID": "0x2800",
+            "Severity": "non_error",
+            "ActionFlags": ["report"],
+
+            "SRC": {
+                "ReasonCode": "0x280D",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "A voltage sensor is over its critical low threshold.",
+                "Message": "A voltage sensor is over its critical low threshold."
+            }
+        },
+
+        {
             "Name": "com.ibm.VPD.Error.InvalidEepromPath",
             "Subsystem": "cec_vpd",
             "ComponentID": "0x4000",
