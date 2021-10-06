@@ -16,6 +16,24 @@
       "revId": "03e3d6e10308fe8f4034386b874dcb85c10444f7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2b7ad40_b8a00717",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2497,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-06T14:24:25Z",
+      "side": 1,
+      "message": "good catch, that should be EO off the planar, so P0-E0",
+      "parentUuid": "ecf961d9_80855050",
+      "revId": "03e3d6e10308fe8f4034386b874dcb85c10444f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
