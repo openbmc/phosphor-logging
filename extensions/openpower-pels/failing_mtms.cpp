@@ -49,7 +49,7 @@ FailingMTMS::FailingMTMS(Stream& pel)
         unflatten(pel);
         validate();
     }
-    catch (std::exception& e)
+    catch (const std::exception& e)
     {
         log<level::ERR>("Cannot unflatten failing MTM section",
                         entry("ERROR=%s", e.what()));

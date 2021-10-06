@@ -105,7 +105,7 @@ void Repository::restore()
                     {
                         write(pel, dirEntry.path());
                     }
-                    catch (std::exception& e)
+                    catch (const std::exception& e)
                     {
                         log<level::ERR>(
                             "Failed to save PEL after updating host state",
@@ -138,7 +138,7 @@ void Repository::restore()
                 fs::remove(dirEntry.path());
             }
         }
-        catch (std::exception& e)
+        catch (const std::exception& e)
         {
             log<level::ERR>("Hit exception while restoring PEL File",
                             entry("FILENAME=%s", dirEntry.path().c_str()),
@@ -334,7 +334,7 @@ void Repository::for_each(ForEachFunc func) const
                 break;
             }
         }
-        catch (std::exception& e)
+        catch (const std::exception& e)
         {
             log<level::ERR>("Repository::for_each function exception",
                             entry("ERROR=%s", e.what()));
@@ -350,7 +350,7 @@ void Repository::processAddCallbacks(const PEL& pel) const
         {
             func(pel);
         }
-        catch (std::exception& e)
+        catch (const std::exception& e)
         {
             log<level::ERR>("PEL Repository add callback exception",
                             entry("NAME=%s", name.c_str()),
@@ -367,7 +367,7 @@ void Repository::processDeleteCallbacks(uint32_t id) const
         {
             func(id);
         }
-        catch (std::exception& e)
+        catch (const std::exception& e)
         {
             log<level::ERR>("PEL Repository delete callback exception",
                             entry("NAME=%s", name.c_str()),
@@ -406,7 +406,7 @@ void Repository::setPELHostTransState(uint32_t pelID, TransmissionState state)
 
             attr->second.hostState = state;
         }
-        catch (std::exception& e)
+        catch (const std::exception& e)
         {
             log<level::ERR>("Unable to update PEL host transmission state",
                             entry("PATH=%s", attr->second.path.c_str()),
@@ -433,7 +433,7 @@ void Repository::setPELHMCTransState(uint32_t pelID, TransmissionState state)
 
             attr->second.hmcState = state;
         }
-        catch (std::exception& e)
+        catch (const std::exception& e)
         {
             log<level::ERR>("Unable to update PEL HMC transmission state",
                             entry("PATH=%s", attr->second.path.c_str()),

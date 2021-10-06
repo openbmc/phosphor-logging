@@ -434,7 +434,7 @@ void Manager::doExtensionLogCreate(const Entry& entry, const FFDCEntries& ffdc)
             create(entry.message(), entry.id(), entry.timestamp(),
                    entry.severity(), entry.additionalData(), assocs, ffdc);
         }
-        catch (std::exception& e)
+        catch (const std::exception& e)
         {
             lg2::error(
                 "An extension's create function threw an exception: {ERROR}",
@@ -502,7 +502,7 @@ void Manager::erase(uint32_t entryId)
                     return;
                 }
             }
-            catch (std::exception& e)
+            catch (const std::exception& e)
             {
                 lg2::error("An extension's deleteProhibited function threw an "
                            "exception: {ERROR}",
@@ -540,7 +540,7 @@ void Manager::erase(uint32_t entryId)
             {
                 remove(entryId);
             }
-            catch (std::exception& e)
+            catch (const std::exception& e)
             {
                 lg2::error("An extension's delete function threw an exception: "
                            "{ERROR}",

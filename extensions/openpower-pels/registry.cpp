@@ -694,7 +694,7 @@ std::optional<Entry> Registry::lookup(const std::string& name, LookupType type,
 
             return entry;
         }
-        catch (std::exception& e)
+        catch (const std::exception& e)
         {
             log<level::ERR>("Found invalid message registry field",
                             entry("ERROR=%s", e.what()));
@@ -726,7 +726,7 @@ std::optional<nlohmann::json>
     {
         registry = nlohmann::json::parse(file);
     }
-    catch (std::exception& e)
+    catch (const std::exception& e)
     {
         log<level::ERR>("Error parsing message registry JSON",
                         entry("JSON_ERROR=%s", e.what()));

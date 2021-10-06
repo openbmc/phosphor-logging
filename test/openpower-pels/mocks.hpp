@@ -182,7 +182,7 @@ class MockHostInterface : public HostInterface
                 std::bind(callback, std::placeholders::_1,
                           std::placeholders::_2, std::placeholders::_3));
         }
-        catch (std::exception& e)
+        catch (const std::exception& e)
         {
             ADD_FAILURE() << "Event exception: " << e.what();
             close(fd);

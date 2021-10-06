@@ -344,7 +344,7 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
                         return prettyJSON(componentID, subType, version, json);
                     }
                 }
-                catch (std::exception& e)
+                catch (const std::exception& e)
                 {
                     log<level::ERR>("Bad JSON from parser",
                                     entry("ERROR=%s", e.what()),
@@ -414,7 +414,7 @@ std::optional<std::string> getJSON(uint16_t componentID, uint8_t subType,
                                  creatorID);
         }
     }
-    catch (std::exception& e)
+    catch (const std::exception& e)
     {
         log<level::ERR>("Failed parsing UserData", entry("ERROR=%s", e.what()),
                         entry("COMP_ID=0x%X", componentID),

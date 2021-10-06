@@ -85,7 +85,7 @@ BCDTime fileNameToTimestamp(const std::string& fileName)
         {
             tmp.yearMSB = std::stoul(token.substr(i, 2), 0, 16);
         }
-        catch (std::exception& err)
+        catch (const std::exception& err)
         {
             std::cout << "Conversion failure: " << err.what() << std::endl;
         }
@@ -94,7 +94,7 @@ BCDTime fileNameToTimestamp(const std::string& fileName)
         {
             tmp.yearLSB = std::stoul(token.substr(i, 2), 0, 16);
         }
-        catch (std::exception& err)
+        catch (const std::exception& err)
         {
             std::cout << "Conversion failure: " << err.what() << std::endl;
         }
@@ -103,7 +103,7 @@ BCDTime fileNameToTimestamp(const std::string& fileName)
         {
             tmp.month = std::stoul(token.substr(i, 2), 0, 16);
         }
-        catch (std::exception& err)
+        catch (const std::exception& err)
         {
             std::cout << "Conversion failure: " << err.what() << std::endl;
         }
@@ -112,7 +112,7 @@ BCDTime fileNameToTimestamp(const std::string& fileName)
         {
             tmp.day = std::stoul(token.substr(i, 2), 0, 16);
         }
-        catch (std::exception& err)
+        catch (const std::exception& err)
         {
             std::cout << "Conversion failure: " << err.what() << std::endl;
         }
@@ -121,7 +121,7 @@ BCDTime fileNameToTimestamp(const std::string& fileName)
         {
             tmp.hour = std::stoul(token.substr(i, 2), 0, 16);
         }
-        catch (std::exception& err)
+        catch (const std::exception& err)
         {
             std::cout << "Conversion failure: " << err.what() << std::endl;
         }
@@ -130,7 +130,7 @@ BCDTime fileNameToTimestamp(const std::string& fileName)
         {
             tmp.minutes = std::stoul(token.substr(i, 2), 0, 16);
         }
-        catch (std::exception& err)
+        catch (const std::exception& err)
         {
             std::cout << "Conversion failure: " << err.what() << std::endl;
         }
@@ -139,7 +139,7 @@ BCDTime fileNameToTimestamp(const std::string& fileName)
         {
             tmp.seconds = std::stoul(token.substr(i, 2), 0, 16);
         }
-        catch (std::exception& err)
+        catch (const std::exception& err)
         {
             std::cout << "Conversion failure: " << err.what() << std::endl;
         }
@@ -148,7 +148,7 @@ BCDTime fileNameToTimestamp(const std::string& fileName)
         {
             tmp.hundredths = std::stoul(token.substr(i, 2), 0, 16);
         }
-        catch (std::exception& err)
+        catch (const std::exception& err)
         {
             std::cout << "Conversion failure: " << err.what() << std::endl;
         }
@@ -168,7 +168,7 @@ uint32_t fileNameToPELId(const std::string& fileName)
     {
         num = std::stoul(fileName.substr(fileName.find("_") + 1), 0, 16);
     }
-    catch (std::exception& err)
+    catch (const std::exception& err)
     {
         std::cout << "Conversion failure: " << err.what() << std::endl;
     }
@@ -428,7 +428,7 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool critSysTerm,
             foundPEL = true;
         }
     }
-    catch (std::exception& e)
+    catch (const std::exception& e)
     {
         log<level::ERR>("Hit exception while reading PEL File",
                         entry("FILENAME=%s", fileName.c_str()),
@@ -575,7 +575,7 @@ void callFunctionOnPEL(const std::string& id, const PELFunc& func,
                         func(pel, hexDump);
                         break;
                     }
-                    catch (std::exception& e)
+                    catch (const std::exception& e)
                     {
                         std::cerr << " Internal function threw an exception: "
                                   << e.what() << "\n";
@@ -755,7 +755,7 @@ std::regex genRegex(std::string& scrubFile)
         std::regex scrubRegex(pattern, std::regex::icase);
         return scrubRegex;
     }
-    catch (std::regex_error& e)
+    catch (const std::regex_error& e)
     {
         if (e.code() == std::regex_constants::error_collate)
             std::cerr << "Invalid collating element request\n";

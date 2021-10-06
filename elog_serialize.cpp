@@ -125,7 +125,7 @@ bool deserialize(const fs::path& path, Entry& e)
         }
         return false;
     }
-    catch (cereal::Exception& e)
+    catch (const cereal::Exception& e)
     {
         log<level::ERR>(e.what());
         fs::remove(path);

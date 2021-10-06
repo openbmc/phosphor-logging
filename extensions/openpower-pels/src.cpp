@@ -218,7 +218,7 @@ std::optional<std::string> getPythonJSON(std::vector<std::string>& hexwords,
                         return prettyJSON(json);
                     }
                 }
-                catch (std::exception& e)
+                catch (const std::exception& e)
                 {
                     log<level::ERR>("Bad JSON from parser",
                                     entry("ERROR=%s", e.what()),
@@ -420,7 +420,7 @@ void SRC::setMotherboardCCIN(const DataInterfaceBase& dataIface)
             ccin = std::stoi(ccinString, 0, 16);
         }
     }
-    catch (std::exception& e)
+    catch (const std::exception& e)
     {
         log<level::WARNING>("Could not convert motherboard CCIN to a number",
                             entry("CCIN=%s", ccinString.c_str()));
@@ -953,7 +953,7 @@ void SRC::addRegistryCallouts(
             }
         }
     }
-    catch (std::exception& e)
+    catch (const std::exception& e)
     {
         std::string msg =
             "Error parsing PEL message registry callout JSON: "s + e.what();

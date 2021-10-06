@@ -105,7 +105,7 @@ int elog_test()
             example::xyz::openbmc_project::Example::Elog::TestErrorTwo::
                 DEV_NAME("test case 3"));
     }
-    catch (example::xyz::openbmc_project::Example::Elog::TestErrorOne& e)
+    catch (const example::xyz::openbmc_project::Example::Elog::TestErrorOne& e)
     {
         std::cout << "elog exception caught: " << e.what() << std::endl;
     }
@@ -152,7 +152,7 @@ int elog_test()
             TestErrorTwo::DEV_ADDR(0xDEADDEAD), TestErrorTwo::DEV_ID(100),
             TestErrorTwo::DEV_NAME("test case 4"));
     }
-    catch (sdbusplus::exception_t& e)
+    catch (const sdbusplus::exception_t& e)
     {
         std::cout << "elog exception caught: " << e.what() << std::endl;
     }
@@ -211,7 +211,9 @@ void commitError(const char* text)
                 example::xyz::openbmc_project::Example::Elog::AutoTestSimple::
                     STRING("FOO"));
         }
-        catch (example::xyz::openbmc_project::Example::Elog::AutoTestSimple& e)
+        catch (
+            const example::xyz::openbmc_project::Example::Elog::AutoTestSimple&
+                e)
         {
             std::cout << "elog exception caught: " << e.what() << std::endl;
             commit(e.name());

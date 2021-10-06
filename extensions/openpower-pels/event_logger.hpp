@@ -140,7 +140,7 @@ class EventLogger
             _creator(std::get<msgPos>(event), std::get<levelPos>(event),
                      std::get<adPos>(event).getData());
         }
-        catch (std::exception& e)
+        catch (const std::exception& e)
         {
             phosphor::logging::log<phosphor::logging::level::ERR>(
                 "EventLogger's create function threw an exception",

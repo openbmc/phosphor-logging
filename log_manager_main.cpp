@@ -40,7 +40,7 @@ int main(int /*argc*/, char* /*argv*/[])
         {
             startup(iMgr);
         }
-        catch (std::exception& e)
+        catch (const std::exception& e)
         {
             error("An extension's startup function threw an exception: {ERROR}",
                   "ERROR", e);

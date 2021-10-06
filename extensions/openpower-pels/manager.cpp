@@ -181,7 +181,7 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
             auto policy = service_indicators::getPolicy(*_dataIface);
             policy->activate(*pel);
         }
-        catch (std::exception& e)
+        catch (const std::exception& e)
         {
             // Probably a full or r/o filesystem, not much we can do.
             log<level::ERR>("Unable to add PEL to Repository",
@@ -236,7 +236,7 @@ void Manager::addESELPEL(const std::string& esel, uint32_t obmcLogID)
     {
         data = std::move(eselToRawData(esel));
     }
-    catch (std::exception& e)
+    catch (const std::exception& e)
     {
         // Try to add it below anyway, so it follows the usual bad data path.
         log<level::ERR>("Problems converting ESEL string to a byte vector");
@@ -407,7 +407,7 @@ sdbusplus::message::unix_fd Manager::getPEL(uint32_t pelID)
     {
         fd = _repo.getPELFD(id);
     }
-    catch (std::exception& e)
+    catch (const std::exception& e)
     {
         throw common_error::InternalFailure();
     }
@@ -446,7 +446,7 @@ std::vector<uint8_t> Manager::getPELFromOBMCID(uint32_t obmcLogID)
     {
         data = _repo.getPELData(id);
     }
-    catch (std::exception& e)
+    catch (const std::exception& e)
     {
         throw common_error::InternalFailure();
     }

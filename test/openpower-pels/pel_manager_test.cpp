@@ -719,7 +719,9 @@ TEST_F(ManagerTest, TestPruning)
             manager.getPEL(0x50000012 + i);
         }
     }
-    catch (sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument& e)
+    catch (
+        const sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument&
+            e)
     {
         ADD_FAILURE() << "PELs should have all been found";
     }

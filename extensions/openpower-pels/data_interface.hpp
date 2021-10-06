@@ -362,7 +362,7 @@ class DataInterfaceBase
                 {
                     func(_hostUp);
                 }
-                catch (std::exception& e)
+                catch (const std::exception& e)
                 {
                     using namespace phosphor::logging;
                     log<level::ERR>("A host state change callback threw "

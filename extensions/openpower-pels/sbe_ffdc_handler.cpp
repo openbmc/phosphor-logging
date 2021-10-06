@@ -56,7 +56,7 @@ SbeFFDC::SbeFFDC(const AdditionalData& aData, const PelFFDC& files)
     {
         procPos = std::stoi((src6.value()).substr(0, 4));
     }
-    catch (std::exception& err)
+    catch (const std::exception& err)
     {
         log<level::ERR>(
             fmt::format("Conversion failure errormsg({})", err.what()).c_str());
