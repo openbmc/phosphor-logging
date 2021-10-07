@@ -143,7 +143,13 @@ void SbeFFDC::parse(int fd)
         {
             process(ffdcPkt);
         }
-        ffdcBufOffset += ffdc->lengthinWords;
+        else
+        {
+            log<level::INFO>("SBE FFDC: Internal FFDC packet");
+        }
+
+        // Update Buffer offset in Bytes
+        ffdcBufOffset += lenWords * sizeof(uint32_t);
         ++pktCount;
     }
     if (pktCount == sbeMaxFfdcPackets)
