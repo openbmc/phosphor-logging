@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "36b47088_bca1bab3",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-10-07T10:37:52Z",
+      "side": 1,
+      "message": "Yeah ok",
+      "parentUuid": "c9dd7a64_3fbcfd94",
+      "range": {
+        "startLine": 580,
+        "startChar": 7,
+        "endLine": 589,
+        "endChar": 42
+      },
+      "revId": "715f0ac0aaeb1bcffc557d1498f17c5525b4efb3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4184dac5_3ba0e068",
         "filename": "extensions/openpower-pels/pel.hpp",
         "patchSetId": 6
@@ -36,6 +60,24 @@
       "writtenOn": "2021-10-05T18:48:07Z",
       "side": 1,
       "message": "this can be private.",
+      "revId": "715f0ac0aaeb1bcffc557d1498f17c5525b4efb3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5835210_7c1d4930",
+        "filename": "extensions/openpower-pels/pel.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-10-07T10:37:52Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "4184dac5_3ba0e068",
       "revId": "715f0ac0aaeb1bcffc557d1498f17c5525b4efb3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "ba292f26_4467674b",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1456,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-10-07T10:37:52Z",
+      "side": 1,
+      "message": "The reason for performing \"\u0026\" operation is to ensure all other bits of flag is \"reset\" before setting bit for OP Panel",
+      "parentUuid": "27222e01_f3e47f44",
+      "range": {
+        "startLine": 1456,
+        "startChar": 31,
+        "endLine": 1456,
+        "endChar": 42
+      },
+      "revId": "715f0ac0aaeb1bcffc557d1498f17c5525b4efb3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fdfdb524_4bbf1b0b",
         "filename": "extensions/openpower-pels/src.cpp",
         "patchSetId": 6
@@ -82,6 +148,24 @@
     },
     {
       "key": {
+        "uuid": "ea2107e8_63e52cea",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1459,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-10-07T10:37:52Z",
+      "side": 1,
+      "message": "Ok so not needed again here",
+      "parentUuid": "fdfdb524_4bbf1b0b",
+      "revId": "715f0ac0aaeb1bcffc557d1498f17c5525b4efb3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "403d2c8f_4d15b5c1",
         "filename": "extensions/openpower-pels/src.cpp",
         "patchSetId": 6
@@ -93,6 +177,30 @@
       "writtenOn": "2021-10-05T18:48:07Z",
       "side": 1,
       "message": "you can just use:\n _asciiString-\u003eflatten(stream);",
+      "range": {
+        "startLine": 1469,
+        "startChar": 3,
+        "endLine": 1473,
+        "endChar": 5
+      },
+      "revId": "715f0ac0aaeb1bcffc557d1498f17c5525b4efb3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a61f9d0d_ef9e656a",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1473,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-10-07T10:37:52Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "403d2c8f_4d15b5c1",
       "range": {
         "startLine": 1469,
         "startChar": 3,
