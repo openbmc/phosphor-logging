@@ -1,0 +1,153 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "abc6372d_64cbdd62",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 697,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-07T19:32:31Z",
+      "side": 1,
+      "message": "that\u0027s such a weird signature that it\u0027s a tuple instead of just 2 standalone arguments, but I see it\u0027s a (tay) so that is indeed what it is.",
+      "revId": "cdc1ec0cc6bc5ee853f151fd464cc020d513342a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "460c298b_3260f209",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-07T19:32:31Z",
+      "side": 1,
+      "message": "spelling",
+      "range": {
+        "startLine": 353,
+        "startChar": 41,
+        "endLine": 353,
+        "endChar": 49
+      },
+      "revId": "cdc1ec0cc6bc5ee853f151fd464cc020d513342a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ef7fbed5_32fdd0bc",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-07T19:32:31Z",
+      "side": 1,
+      "message": "it\u0027s fine to pass uint64_t by value, but this is fine too.",
+      "range": {
+        "startLine": 356,
+        "startChar": 26,
+        "endLine": 356,
+        "endChar": 41
+      },
+      "revId": "cdc1ec0cc6bc5ee853f151fd464cc020d513342a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d31a312_b4e32d87",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-07T19:32:31Z",
+      "side": 1,
+      "message": "\u0027secondary SRC\u0027 has a meaning in the PEL, it means a second SRC section in a PEL, used as sort of a callstack trace.  How about here just \u0027srcStruct\u0027.",
+      "range": {
+        "startLine": 357,
+        "startChar": 54,
+        "endLine": 357,
+        "endChar": 60
+      },
+      "revId": "cdc1ec0cc6bc5ee853f151fd464cc020d513342a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6a592deb_25fb5d8e",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 885,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-07T19:32:31Z",
+      "side": 1,
+      "message": "C style casts are frowned up in C++ code. Instead, you can use static_cast\u003cuint64_t\u003e()",
+      "range": {
+        "startLine": 885,
+        "startChar": 31,
+        "endLine": 885,
+        "endChar": 41
+      },
+      "revId": "cdc1ec0cc6bc5ee853f151fd464cc020d513342a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b11d7f6f_a3cfcb3b",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-07T19:32:31Z",
+      "side": 1,
+      "message": "thinking about this some more...\n\nThis path is used when a PEL is unflattened from a file. I can\u0027t think of a reason the PEL wouldn\u0027t previously have had this bit set, since we would have already set it in the constructor up above.  So I think you can remove this.",
+      "revId": "cdc1ec0cc6bc5ee853f151fd464cc020d513342a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "85375da3_c473a3e4",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1456,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-07T19:32:31Z",
+      "side": 1,
+      "message": "you can just OR in the bit here as we discussed.",
+      "range": {
+        "startLine": 1456,
+        "startChar": 21,
+        "endLine": 1456,
+        "endChar": 44
+      },
+      "revId": "cdc1ec0cc6bc5ee853f151fd464cc020d513342a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
