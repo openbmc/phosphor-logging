@@ -781,18 +781,22 @@ void Manager::setEntryPath(uint32_t obmcLogID)
     }
 }
 
+// TODO uncomment and fix when PDI changes are done
 void Manager::setServiceProviderNotifyFlag(uint32_t obmcLogID)
 {
     Repository::LogID id{Repository::LogID::Obmc(obmcLogID)};
-    if (auto attributes = _repo.getPELAttributes(id); attributes)
+   if (auto attributes = _repo.getPELAttributes(id); attributes)
     {
-        auto& attr = attributes.value().get();
-        auto entry = _logManager.entries.find(obmcLogID);
-        if (entry != _logManager.entries.end())
-        {
-            entry->second->serviceProviderNotify(
-                attr.actionFlags.test(callHomeFlagBit));
-        }
+// Uncomment and fix when PDI changes are approved for 
+// 47683: PEL: Convert ServiceProviderNotify to enum
+// https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-dbus-interfaces/+/47683
+//        auto& attr = attributes.value().get();
+//        auto entry = _logManager.entries.find(obmcLogID);
+//        if (entry != _logManager.entries.end())
+//        {
+//            entry->second->serviceProviderNotify(
+//                attr.actionFlags.test(callHomeFlagBit));
+//        }
     }
 }
 
