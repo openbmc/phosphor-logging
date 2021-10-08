@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "43cceed1_e6d8877b",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 697,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-10-08T09:07:27Z",
+      "side": 1,
+      "message": "yeah agree",
+      "parentUuid": "abc6372d_64cbdd62",
+      "revId": "cdc1ec0cc6bc5ee853f151fd464cc020d513342a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "460c298b_3260f209",
         "filename": "extensions/openpower-pels/data_interface.hpp",
         "patchSetId": 7
@@ -30,6 +48,30 @@
       "writtenOn": "2021-10-07T19:32:31Z",
       "side": 1,
       "message": "spelling",
+      "range": {
+        "startLine": 353,
+        "startChar": 41,
+        "endLine": 353,
+        "endChar": 49
+      },
+      "revId": "cdc1ec0cc6bc5ee853f151fd464cc020d513342a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56b69412_33e53d3e",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-10-08T09:07:27Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "460c298b_3260f209",
       "range": {
         "startLine": 353,
         "startChar": 41,
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "61183913_7371a65a",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-10-08T09:07:27Z",
+      "side": 1,
+      "message": "yeah ok",
+      "parentUuid": "ef7fbed5_32fdd0bc",
+      "range": {
+        "startLine": 356,
+        "startChar": 26,
+        "endLine": 356,
+        "endChar": 41
+      },
+      "revId": "cdc1ec0cc6bc5ee853f151fd464cc020d513342a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9d31a312_b4e32d87",
         "filename": "extensions/openpower-pels/data_interface.hpp",
         "patchSetId": 7
@@ -76,6 +142,30 @@
       "writtenOn": "2021-10-07T19:32:31Z",
       "side": 1,
       "message": "\u0027secondary SRC\u0027 has a meaning in the PEL, it means a second SRC section in a PEL, used as sort of a callstack trace.  How about here just \u0027srcStruct\u0027.",
+      "range": {
+        "startLine": 357,
+        "startChar": 54,
+        "endLine": 357,
+        "endChar": 60
+      },
+      "revId": "cdc1ec0cc6bc5ee853f151fd464cc020d513342a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d58da00f_6fc4eb0e",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-10-08T09:07:27Z",
+      "side": 1,
+      "message": "Ah ok. I was going by definition used by pldm. Will update.",
+      "parentUuid": "9d31a312_b4e32d87",
       "range": {
         "startLine": 357,
         "startChar": 54,
@@ -111,6 +201,30 @@
     },
     {
       "key": {
+        "uuid": "5efb46ad_920750b3",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 885,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-10-08T09:07:27Z",
+      "side": 1,
+      "message": "I keep mixing both :(",
+      "parentUuid": "6a592deb_25fb5d8e",
+      "range": {
+        "startLine": 885,
+        "startChar": 31,
+        "endLine": 885,
+        "endChar": 41
+      },
+      "revId": "cdc1ec0cc6bc5ee853f151fd464cc020d513342a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b11d7f6f_a3cfcb3b",
         "filename": "extensions/openpower-pels/pel.cpp",
         "patchSetId": 7
@@ -128,6 +242,24 @@
     },
     {
       "key": {
+        "uuid": "cc588b0e_05a7f2fa",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-10-08T09:07:27Z",
+      "side": 1,
+      "message": "yeah ok",
+      "parentUuid": "b11d7f6f_a3cfcb3b",
+      "revId": "cdc1ec0cc6bc5ee853f151fd464cc020d513342a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "85375da3_c473a3e4",
         "filename": "extensions/openpower-pels/src.cpp",
         "patchSetId": 7
@@ -139,6 +271,30 @@
       "writtenOn": "2021-10-07T19:32:31Z",
       "side": 1,
       "message": "you can just OR in the bit here as we discussed.",
+      "range": {
+        "startLine": 1456,
+        "startChar": 21,
+        "endLine": 1456,
+        "endChar": 44
+      },
+      "revId": "cdc1ec0cc6bc5ee853f151fd464cc020d513342a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0ccbcb6a_d6b9752b",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1456,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-10-08T09:07:27Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "85375da3_c473a3e4",
       "range": {
         "startLine": 1456,
         "startChar": 21,
