@@ -260,6 +260,24 @@
     },
     {
       "key": {
+        "uuid": "fc247a1c_a39f1d39",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-10-08T11:02:47Z",
+      "side": 1,
+      "message": "This being removed is causing unit test to fail as it was creating pel thru RAWPEL way to check for terminate bit set. I tried to do following way but don\u0027t see terminate bit getting set. Any pointers?\n\nauto data \u003d pelFactory(1, \u0027O\u0027, 0x51, 0xA400, 500);\nPEL pel(data);\nEXPECT_TRUE(pel.valid());\nauto\u0026 hexwords \u003d pel.primarySRC().value()-\u003ehexwordData();\nEXPECT_EQ(hexwords[3] \u0026 0x20000000, 0x20000000);",
+      "parentUuid": "cc588b0e_05a7f2fa",
+      "revId": "cdc1ec0cc6bc5ee853f151fd464cc020d513342a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "85375da3_c473a3e4",
         "filename": "extensions/openpower-pels/src.cpp",
         "patchSetId": 7
