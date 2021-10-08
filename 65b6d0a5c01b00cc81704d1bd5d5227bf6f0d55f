@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "85146108_31d79225",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 790,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-10-08T17:34:26Z",
+      "side": 1,
+      "message": "I don\u0027t want to block the entire function, since it will give me some link errors and wants me to block more code.",
+      "revId": "65b6d0a5c01b00cc81704d1bd5d5227bf6f0d55f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
