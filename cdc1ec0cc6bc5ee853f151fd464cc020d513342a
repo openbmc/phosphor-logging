@@ -278,6 +278,24 @@
     },
     {
       "key": {
+        "uuid": "982d2602_c0e09d0e",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-11T14:17:27Z",
+      "side": 1,
+      "message": "I think you\u0027ll need to build the PEL using the message registry.  If you search for registry in that testcase file you\u0027ll see other examples of doing that.",
+      "parentUuid": "fc247a1c_a39f1d39",
+      "revId": "cdc1ec0cc6bc5ee853f151fd464cc020d513342a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "85375da3_c473a3e4",
         "filename": "extensions/openpower-pels/src.cpp",
         "patchSetId": 7
