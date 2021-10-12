@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "d0f8a7c0_75ec0687",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 698,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-10-12T08:11:53Z",
+      "side": 1,
+      "message": "yeah agree",
+      "parentUuid": "0d751d56_1e61c050",
+      "revId": "f980b196c96bf14683fb0585806c537e9619c685",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b41f5bd4_426a828a",
         "filename": "test/openpower-pels/pel_manager_test.cpp",
         "patchSetId": 10
@@ -76,6 +94,30 @@
       "writtenOn": "2021-10-11T22:20:57Z",
       "side": 1,
       "message": "may as well remove this entry since it\u0027s unused.",
+      "range": {
+        "startLine": 1069,
+        "startChar": 0,
+        "endLine": 1081,
+        "endChar": 9
+      },
+      "revId": "f980b196c96bf14683fb0585806c537e9619c685",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8ef8a6bf_9578bc76",
+        "filename": "test/openpower-pels/pel_manager_test.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1081,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-10-12T08:11:53Z",
+      "side": 1,
+      "message": "Will try to minimise as much",
+      "parentUuid": "bed8430a_ab1c2243",
       "range": {
         "startLine": 1069,
         "startChar": 0,
