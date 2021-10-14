@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ef81c555_e9d39c98",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-14T18:37:36Z",
+      "side": 1,
+      "message": "I need to think about one more thing here.\n\nI saw in the lab that if hostboot crashes they create a PEL with a 0x51 severity, but then the BMC sees that and just reboots and tries again. How this code is now, there would be a progress SRC because of that PEL, but no SRC on the panel because hostboot didn\u0027t set the terminate bit, and the IPL would keep going anyway.\n\nMaybe it would be better to be consistent and switch this severity check to check for the terminate bit instead...",
+      "revId": "812c83463b1ed6fc0be8fe7d9eb43213211cdf71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
