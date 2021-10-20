@@ -353,6 +353,9 @@ SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
     //   P: Platform dump status
     //  FF: SRC format, set below
 
+    // Set progress code during ipl
+    _hexData[2] = dataIface.getProgressCode();
+
     setDumpStatus(dataIface);
     setBMCFormat();
     setBMCPosition();
