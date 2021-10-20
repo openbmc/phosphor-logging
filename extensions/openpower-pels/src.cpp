@@ -347,6 +347,7 @@ SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
     //   P: Platform dump status
     //  FF: SRC format, set below
 
+    setProgressCode(dataIface);
     setDumpStatus(dataIface);
     setBMCFormat();
     setBMCPosition();
@@ -1505,6 +1506,57 @@ std::vector<uint8_t> SRC::getSrcStruct()
     _asciiString->flatten(stream);
 
     return data;
+}
+
+void SRC::setProgressCode(const DataInterfaceBase& dataIface)
+{
+    std::vector<uint8_t> progressSRC;
+
+    try
+    {
+        progressSRC = dataIface.getRawProgressSRC();
+    }
+    catch (const std::exception& e)
+    {
+        log<level::ERR>(
+            fmt::format("Error getting progress code: {}", e.what()).c_str());
+        return;
+    }
+
+    _hexData[2] = getProgressCode(progressSRC);
+}
+
+uint32_t SRC::getProgressCode(std::vector<uint8_t>& rawProgressSRC)
+{
+    uint32_t progressCode = 0;
+
+    // A valid progress SRC is at least 72 bytes
+    if (rawProgressSRC.size() < 72)
+    {
+        return progressCode;
+    }
+
+    try
+    {
+        // The ASCII string field in progress SRCs starts at offset 40.
+        // Take the first 8 characters to put in the uint32:
+        //   "CC009189" -> 0xCC009189
+        Stream stream{rawProgressSRC, 40};
+        src::AsciiString aString{stream};
+        auto progressCodeString = aString.get().substr(0, 8);
+
+        if (std::all_of(progressCodeString.begin(), progressCodeString.end(),
+                        [](char c) {
+                            return std::isxdigit(static_cast<unsigned char>(c));
+                        }))
+        {
+            progressCode = std::stoul(progressCodeString, nullptr, 16);
+        }
+    }
+    catch (const std::exception& e)
+    {}
+
+    return progressCode;
 }
 
 } // namespace pels
