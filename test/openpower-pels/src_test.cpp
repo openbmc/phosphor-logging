@@ -1461,3 +1461,101 @@ TEST_F(SRCTest, TestPELSubsystem)
 
     EXPECT_EQ(src.asciiString(), "BD20ABCD                        ");
 }
+
+void setAsciiString(std::vector<uint8_t>& src, const std::string& value)
+{
+    assert(40 + value.size() <= src.size());
+
+    for (size_t i = 0; i < value.size(); i++)
+    {
+        src[40 + i] = value[i];
+    }
+}
+
+TEST_F(SRCTest, TestGetProgressCode)
+{
+    {
+        // A real SRC with CC009184
+        std::vector<uint8_t> src{
+            2,  8,   0,  9,   0,   0,  0,  72, 0,  0,  0,  224, 0,  0,  0,
+            0,  204, 0,  145, 132, 0,  0,  0,  0,  0,  0,  0,   0,  0,  0,
+            0,  0,   0,  0,   0,   0,  0,  0,  0,  0,  67, 67,  48, 48, 57,
+            49, 56,  52, 32,  32,  32, 32, 32, 32, 32, 32, 32,  32, 32, 32,
+            32, 32,  32, 32,  32,  32, 32, 32, 32, 32, 32, 32};
+
+        EXPECT_EQ(SRC::getProgressCode(src), 0xCC009184);
+    }
+
+    {
+        // A real SRC with STANDBY
+        std::vector<uint8_t> src{
+            2,  0,  0,  1,  0,  0,  0,  72, 0,  0,  0,  0,  0,  0,  0,
+            0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+            0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  83, 84, 65, 78, 68,
+            66, 89, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+            32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32};
+
+        EXPECT_EQ(SRC::getProgressCode(src), 0);
+    }
+
+    {
+        // A real SRC with CC009184, but 1 byte too short
+        std::vector<uint8_t> src{
+            2,  8,   0,  9,   0,   0,  0,  72, 0,  0,  0,  224, 0,  0,  0,
+            0,  204, 0,  145, 132, 0,  0,  0,  0,  0,  0,  0,   0,  0,  0,
+            0,  0,   0,  0,   0,   0,  0,  0,  0,  0,  67, 67,  48, 48, 57,
+            49, 56,  52, 32,  32,  32, 32, 32, 32, 32, 32, 32,  32, 32, 32,
+            32, 32,  32, 32,  32,  32, 32, 32, 32, 32, 32, 32};
+        src.resize(71);
+        EXPECT_EQ(SRC::getProgressCode(src), 0);
+    }
+
+    {
+        // A few different ones
+        const std::map<std::string, uint32_t> progressCodes{
+            {"12345678", 0x12345678}, {"ABCDEF00", 0xABCDEF00},
+            {"abcdef00", 0xABCDEF00}, {"X1234567", 0},
+            {"1234567X", 0},          {"1       ", 0}};
+
+        std::vector<uint8_t> src(72, 0x0);
+
+        for (const auto& [code, expected] : progressCodes)
+        {
+            setAsciiString(src, code);
+            EXPECT_EQ(SRC::getProgressCode(src), expected);
+        }
+
+        // empty
+        src.clear();
+        EXPECT_EQ(SRC::getProgressCode(src), 0);
+    }
+}
+
+// Test progress is in right SRC hex data field
+TEST_F(SRCTest, TestProgressCodeField)
+{
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+
+    AdditionalData ad;
+    NiceMock<MockDataInterface> dataIface;
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+        .WillOnce(Return(std::vector<bool>{false, false, false}));
+    EXPECT_CALL(dataIface, getRawProgressSRC())
+        .WillOnce(Return(std::vector<uint8_t>{
+            2,  8,   0,  9,   0,   0,  0,  72, 0,  0,  0,  224, 0,  0,  0,
+            0,  204, 0,  145, 132, 0,  0,  0,  0,  0,  0,  0,   0,  0,  0,
+            0,  0,   0,  0,   0,   0,  0,  0,  0,  0,  67, 67,  48, 48, 57,
+            49, 56,  52, 32,  32,  32, 32, 32, 32, 32, 32, 32,  32, 32, 32,
+            32, 32,  32, 32,  32,  32, 32, 32, 32, 32, 32, 32}));
+
+    SRC src{entry, ad, dataIface};
+    EXPECT_TRUE(src.valid());
+
+    // Verify that the hex vlue is set at the right hexword
+    EXPECT_EQ(src.hexwordData()[2], 0xCC009184);
+}
