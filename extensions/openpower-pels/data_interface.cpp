@@ -44,8 +44,8 @@ constexpr auto vpdManager = "com.ibm.VPD.Manager";
 constexpr auto ledGroupManager = "xyz.openbmc_project.LED.GroupManager";
 constexpr auto logSetting = "xyz.openbmc_project.Settings";
 constexpr auto hwIsolation = "org.open_power.HardwareIsolation";
-constexpr auto bootRawProgress = "xyz.openbmc_project.State.Boot.Raw";
 constexpr auto biosConfigMgr = "xyz.openbmc_project.BIOSConfigManager";
+constexpr auto bootRawProgress = "xyz.openbmc_project.State.Boot.Raw";
 } // namespace service_name
 
 namespace object_path
@@ -67,6 +67,7 @@ constexpr auto logSetting = "/xyz/openbmc_project/logging/settings";
 constexpr auto hwIsolation = "/xyz/openbmc_project/hardware_isolation";
 constexpr auto bootRawSetting = "/xyz/openbmc_project/state/boot/raw0";
 constexpr auto biosConfigMgr = "/xyz/openbmc_project/bios_config/manager";
+constexpr auto bootRawProgress = "/xyz/openbmc_project/state/boot/raw0";
 } // namespace object_path
 
 namespace interface
@@ -96,10 +97,10 @@ constexpr auto associationDef = "xyz.openbmc_project.Association.Definitions";
 constexpr auto dumpEntry = "xyz.openbmc_project.Dump.Entry";
 constexpr auto dumpProgress = "xyz.openbmc_project.Common.Progress";
 constexpr auto hwIsolationCreate = "org.open_power.HardwareIsolation.Create";
-constexpr auto bootRawProgress = "xyz.openbmc_project.State.Boot.Raw";
 constexpr auto hwIsolationEntry = "xyz.openbmc_project.HardwareIsolation.Entry";
 constexpr auto association = "xyz.openbmc_project.Association";
 constexpr auto biosConfigMgr = "xyz.openbmc_project.BIOSConfig.Manager";
+constexpr auto bootRawProgress = "xyz.openbmc_project.State.Boot.Raw";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
@@ -769,7 +770,7 @@ void DataInterface::createProgressSRC(
     DBusValue variant = std::make_tuple(priSRC, srcStruct);
 
     auto method = _bus.new_method_call(service_name::bootRawProgress,
-                                       object_path::bootRawSetting,
+                                       object_path::bootRawProgress,
                                        interface::dbusProperty, "Set");
 
     method.append(interface::bootRawProgress, "Value", variant);
@@ -868,5 +869,18 @@ std::vector<uint32_t> DataInterface::getLogIDWithHwIsolation() const
     }
     return ids;
 }
+
+std::vector<uint8_t> DataInterface::getRawProgressSRC(void) const
+{
+    using RawProgressProperty = std::tuple<uint64_t, std::vector<uint8_t>>;
+
+    DBusValue value;
+    getProperty(service_name::bootRawProgress, object_path::bootRawProgress,
+                interface::bootRawProgress, "Value", value);
+
+    const auto& rawProgress = std::get<RawProgressProperty>(value);
+    return std::get<1>(rawProgress);
+}
+
 } // namespace pels
 } // namespace openpower

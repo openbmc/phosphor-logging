@@ -462,6 +462,14 @@ class DataInterfaceBase
      */
     virtual std::vector<uint32_t> getLogIDWithHwIsolation() const = 0;
 
+    /**
+     * @brief Returns the latest raw progress SRC from the State.Boot.Raw
+     *        D-Bus interface.
+     *
+     * @return std::vector<uint8_t> - The progress SRC bytes
+     */
+    virtual std::vector<uint8_t> getRawProgressSRC() const = 0;
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
@@ -779,6 +787,14 @@ class DataInterface : public DataInterfaceBase
      * @return std::vector<uint32_t> - The list of log ids
      */
     std::vector<uint32_t> getLogIDWithHwIsolation() const override;
+
+    /**
+     * @brief Returns the latest raw progress SRC from the State.Boot.Raw
+     *        D-Bus interface.
+     *
+     * @return std::vector<uint8_t>: The progress SRC bytes
+     */
+    std::vector<uint8_t> getRawProgressSRC() const override;
 
   private:
     /**
