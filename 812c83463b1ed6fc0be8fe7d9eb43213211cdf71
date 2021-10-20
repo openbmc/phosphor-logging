@@ -70,6 +70,24 @@
       "revId": "812c83463b1ed6fc0be8fe7d9eb43213211cdf71",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7bc5e29a_ea894ca4",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-20T22:08:10Z",
+      "side": 1,
+      "message": "That is probably Ok, you can go ahead and put that up.\n\nWhat I guess I\u0027d like to know is what is the difference to the panel between a progress SRC, which they watch for, and a terminating SRC, which they also will soon watch for.  If we post a progress SRC for a BMC terminating SRC, and also they detection a termination by watching for a terminating PEL on d-bus, do they race to make it to the display?",
+      "parentUuid": "7b668f16_aef0b7f6",
+      "revId": "812c83463b1ed6fc0be8fe7d9eb43213211cdf71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
