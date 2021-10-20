@@ -37,6 +37,7 @@ constexpr auto objectMapper = "xyz.openbmc_project.ObjectMapper";
 constexpr auto vpdManager = "com.ibm.VPD.Manager";
 constexpr auto ledGroupManager = "xyz.openbmc_project.LED.GroupManager";
 constexpr auto logSetting = "xyz.openbmc_project.Settings";
+constexpr auto bootRawProgress = "xyz.openbmc_project.State.Boot.Raw";
 } // namespace service_name
 
 namespace object_path
@@ -55,6 +56,7 @@ constexpr auto enableHostPELs =
     "/xyz/openbmc_project/logging/send_event_logs_to_host";
 constexpr auto vpdManager = "/com/ibm/VPD/Manager";
 constexpr auto logSetting = "/xyz/openbmc_project/logging/settings";
+constexpr auto bootRawProgress = "/xyz/openbmc_project/state/boot/raw0";
 } // namespace object_path
 
 namespace interface
@@ -83,6 +85,7 @@ constexpr auto logSetting = "xyz.openbmc_project.Logging.Settings";
 constexpr auto association = "xyz.openbmc_project.Association.Definitions";
 constexpr auto dumpEntry = "xyz.openbmc_project.Dump.Entry";
 constexpr auto dumpProgress = "xyz.openbmc_project.Common.Progress";
+constexpr auto bootRawProgress = "xyz.openbmc_project.State.Boot.Raw";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
@@ -686,6 +689,51 @@ std::vector<bool>
     }
 
     return result;
+}
+
+using RawProgressProperty = std::tuple<uint64_t, std::vector<uint8_t>>;
+
+uint32_t DataInterface::getProgressCode(void) const
+{
+    uint32_t progressCode = 0;
+    std::vector<uint8_t> progressCodeBytes;
+
+    DBusValue value;
+    getProperty(service_name::bootRawProgress, object_path::bootRawProgress,
+                interface::bootRawProgress, "Value", value);
+
+    auto rawProgress = std::get<RawProgressProperty>(value);
+
+    progressCodeBytes = std::get<1>(rawProgress);
+
+    // The Interface may not have updates before OS loads. So, check to see if
+    // there is any progress code before processing it
+    if (progressCodeBytes.size() == 0)
+    {
+        return progressCode;
+    }
+
+    // Read bytes from offset [40-47] of bootRawProgress Interface
+    std::array<char, 8> progressCodeArray{};
+    for (int count = 0; count < 8; ++count)
+    {
+        // Convert raw bytes to char
+        sprintf((progressCodeArray.data()) + count, "%c",
+                progressCodeBytes[40 + count]);
+    }
+    std::string progressCodeString{progressCodeArray.data()};
+
+    try
+    {
+        progressCode = std::stoul(progressCodeString, nullptr, 16);
+    }
+    catch (const std::exception& e)
+    {
+        // If there is an exception then we know that system booted, no need of
+        // any special checking here.
+    }
+
+    return progressCode;
 }
 
 } // namespace pels

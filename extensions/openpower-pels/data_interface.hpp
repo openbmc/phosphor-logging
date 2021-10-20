@@ -345,6 +345,13 @@ class DataInterfaceBase
     virtual std::vector<bool>
         checkDumpStatus(const std::vector<std::string>& type) const = 0;
 
+    /**
+     * @brief Returns progress code
+     *
+     * @return uint32_t 4 byte hex value of progress code
+     */
+    virtual uint32_t getProgressCode() const = 0;
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
@@ -632,6 +639,13 @@ class DataInterface : public DataInterfaceBase
      */
     std::vector<bool>
         checkDumpStatus(const std::vector<std::string>& type) const override;
+
+    /**
+     * @brief Returns progress code
+     *
+     * @return uint32_t 4 byte hex value of progress code
+     */
+    virtual uint32_t getProgressCode() const override;
 
   private:
     /**
