@@ -1446,3 +1446,27 @@ TEST_F(SRCTest, DumpStatusBitsCheck)
         EXPECT_EQ(0x00080655, hexwords[0]);
     }
 }
+
+// Test for Progress Code function
+TEST_F(SRCTest, ProgressCodeCheck)
+{
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+    entry.src.powerFault = false;
+
+    AdditionalData ad;
+    NiceMock<MockDataInterface> dataIface;
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+        .WillOnce(Return(std::vector<bool>{false, false, false}));
+    EXPECT_CALL(dataIface, getProgressCode()).WillOnce(Return(0xabcd1234));
+
+    SRC src{entry, ad, dataIface};
+    EXPECT_TRUE(src.valid());
+
+    // Verify that the hex vlue is set at the right hexword
+    EXPECT_EQ(0xabcd1234, src.hexwordData()[2]);
+}
