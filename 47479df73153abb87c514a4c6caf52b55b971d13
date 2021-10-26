@@ -1,0 +1,118 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "942026dc_b02cd788",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-26T21:14:43Z",
+      "side": 1,
+      "message": "This is a PHYP error, so I don\u0027t think your code would have even filled this in?",
+      "range": {
+        "startLine": 19,
+        "startChar": 3,
+        "endLine": 22,
+        "endChar": 59
+      },
+      "revId": "47479df73153abb87c514a4c6caf52b55b971d13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e2839c36_3d80b3e2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-26T21:14:43Z",
+      "side": 1,
+      "message": "if you power on far enough so there is a valid progress SRC on the panel, and then power off, does it get cleared?",
+      "revId": "47479df73153abb87c514a4c6caf52b55b971d13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ed8ba48d_857b9a1e",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 698,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-26T21:14:43Z",
+      "side": 1,
+      "message": "there is a isHostUp() function you can use to not even make the d-bus call if PHYP is at standby or further.",
+      "revId": "47479df73153abb87c514a4c6caf52b55b971d13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a253d6db_e8a5fe24",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 716,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-26T21:14:43Z",
+      "side": 1,
+      "message": "maybe mention this is where the ASCII string field of the SRC starts.",
+      "revId": "47479df73153abb87c514a4c6caf52b55b971d13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c876b8f3_7ea93208",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 722,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-26T21:14:43Z",
+      "side": 1,
+      "message": "I would feel better if you did bounds checking on this before indexing in this far :)",
+      "range": {
+        "startLine": 722,
+        "startChar": 16,
+        "endLine": 722,
+        "endChar": 46
+      },
+      "revId": "47479df73153abb87c514a4c6caf52b55b971d13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "463fa561_fe5f0907",
+        "filename": "test/openpower-pels/mocks.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-26T21:14:43Z",
+      "side": 1,
+      "message": "could you also find an existing SRC testcase and just add an EXPECT_CALL into it and check this field is set properly?  That way in the future it\u0027s easy to catch if someone breaks it.",
+      "revId": "47479df73153abb87c514a4c6caf52b55b971d13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
