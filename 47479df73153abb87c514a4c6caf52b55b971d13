@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "7d666964_b5d98206",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-10-26T22:21:54Z",
+      "side": 1,
+      "message": "The hex-word 4 is me filling it from the Raw interface. This is the testcase to make sure it is showing it up in PEL. If I don\u0027t have my changes then the hex word 4 is all 0\u0027s. I am booting to Phyp to get some RAW value in the interface and then inject error using busctl and verify that the error log has the value",
+      "parentUuid": "942026dc_b02cd788",
+      "range": {
+        "startLine": 19,
+        "startChar": 3,
+        "endLine": 22,
+        "endChar": 59
+      },
+      "revId": "47479df73153abb87c514a4c6caf52b55b971d13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e2839c36_3d80b3e2",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -36,6 +60,24 @@
       "writtenOn": "2021-10-26T21:14:43Z",
       "side": 1,
       "message": "if you power on far enough so there is a valid progress SRC on the panel, and then power off, does it get cleared?",
+      "revId": "47479df73153abb87c514a4c6caf52b55b971d13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4a5ad5f7_9119cd8f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-10-26T22:21:54Z",
+      "side": 1,
+      "message": "I do not have any updates to Op-panel. I have not checked what shows up in op-panel. This code is just filling the hex-word4 with the progress code during IPL. when IPL is done the PEL has 0 in word 4 according to error log PLDD",
+      "parentUuid": "e2839c36_3d80b3e2",
       "revId": "47479df73153abb87c514a4c6caf52b55b971d13",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -87,6 +129,30 @@
       "writtenOn": "2021-10-26T21:14:43Z",
       "side": 1,
       "message": "I would feel better if you did bounds checking on this before indexing in this far :)",
+      "range": {
+        "startLine": 722,
+        "startChar": 16,
+        "endLine": 722,
+        "endChar": 46
+      },
+      "revId": "47479df73153abb87c514a4c6caf52b55b971d13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "61547119_f76d43e7",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 722,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-10-26T22:21:54Z",
+      "side": 1,
+      "message": "I am checking in line number 711. When someone writes to the RAW interfaces it is always 72 bytes. I can put a try block around this if you want?",
+      "parentUuid": "c876b8f3_7ea93208",
       "range": {
         "startLine": 722,
         "startChar": 16,
