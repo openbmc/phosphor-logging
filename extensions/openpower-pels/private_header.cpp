@@ -93,7 +93,7 @@ std::optional<std::string> PrivateHeader::getJSON() const
     std::string phCreateTStr(tmpPhVal);
     sprintf(tmpPhVal, "%02X/%02X/%02X%02X %02X:%02X:%02X",
             _commitTimestamp.month, _commitTimestamp.day,
-            _createTimestamp.yearMSB, _commitTimestamp.yearLSB,
+            _commitTimestamp.yearMSB, _commitTimestamp.yearLSB,
             _commitTimestamp.hour, _commitTimestamp.minutes,
             _commitTimestamp.seconds);
     std::string phCommitTStr(tmpPhVal);
