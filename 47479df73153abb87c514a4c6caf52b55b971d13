@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "034b0b39_119c860b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-27T13:31:21Z",
+      "side": 1,
+      "message": "This is a PHYP SRC though, how would you have created it?",
+      "parentUuid": "7d666964_b5d98206",
+      "range": {
+        "startLine": 19,
+        "startChar": 3,
+        "endLine": 22,
+        "endChar": 59
+      },
+      "revId": "47479df73153abb87c514a4c6caf52b55b971d13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e2839c36_3d80b3e2",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -78,6 +102,24 @@
       "side": 1,
       "message": "I do not have any updates to Op-panel. I have not checked what shows up in op-panel. This code is just filling the hex-word4 with the progress code during IPL. when IPL is done the PEL has 0 in word 4 according to error log PLDD",
       "parentUuid": "e2839c36_3d80b3e2",
+      "revId": "47479df73153abb87c514a4c6caf52b55b971d13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b76d2155_71621456",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-27T13:31:21Z",
+      "side": 1,
+      "message": "sorry, s/panel/progress code/.\n\nWhat I want to be sure of is that if there was a valid progress code, and then the system is powered off and we create an error with power off that we don\u0027t use that leftover one.   Could you maybe find the code that manages the progress codes and see if it watches for a power off to clear them?",
+      "parentUuid": "4a5ad5f7_9119cd8f",
       "revId": "47479df73153abb87c514a4c6caf52b55b971d13",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -153,6 +195,30 @@
       "side": 1,
       "message": "I am checking in line number 711. When someone writes to the RAW interfaces it is always 72 bytes. I can put a try block around this if you want?",
       "parentUuid": "c876b8f3_7ea93208",
+      "range": {
+        "startLine": 722,
+        "startChar": 16,
+        "endLine": 722,
+        "endChar": 46
+      },
+      "revId": "47479df73153abb87c514a4c6caf52b55b971d13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eb07c0b6_ec90f513",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 722,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-10-27T13:31:21Z",
+      "side": 1,
+      "message": "On 711 maybe you can just add in a:  OR progressCodesBytes.size \u003c \u003cwhatever\u003e",
+      "parentUuid": "61547119_f76d43e7",
       "range": {
         "startLine": 722,
         "startChar": 16,
