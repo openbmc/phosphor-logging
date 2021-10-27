@@ -22,6 +22,30 @@
       "revId": "9bc2a4b67de7f00eed82fd95a0aa1ef3cfa49e9d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2c6798d7_3ea51427",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2021-10-27T08:51:18Z",
+      "side": 1,
+      "message": "Ok. In that case (once this check is removed) isn\u0027t this commit is good then? updateTerminateBitInSRCSection() would be called only for BMC PELs and not for others.",
+      "parentUuid": "551ed8eb_b78d1e50",
+      "range": {
+        "startLine": 125,
+        "startChar": 2,
+        "endLine": 125,
+        "endChar": 70
+      },
+      "revId": "9bc2a4b67de7f00eed82fd95a0aa1ef3cfa49e9d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
