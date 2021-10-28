@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "ac91f267_e40a59d4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-10-28T14:25:51Z",
+      "side": 1,
+      "message": "This is one of the errors logged form Phyp and I checked the hex word to see what word 4 was. This error showed p in simics. I also tested in HW",
+      "parentUuid": "034b0b39_119c860b",
+      "range": {
+        "startLine": 19,
+        "startChar": 3,
+        "endLine": 22,
+        "endChar": 59
+      },
+      "revId": "47479df73153abb87c514a4c6caf52b55b971d13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e2839c36_3d80b3e2",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -126,6 +150,24 @@
     },
     {
       "key": {
+        "uuid": "782f6810_4d2ab724",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-10-28T14:25:51Z",
+      "side": 1,
+      "message": "I tested by powering off and see that there is some residual progress code in the RAW interface but that does not show up in the error log. I used busctl to inject error and dont see any residual bytes in log\n....\n    \"Valid Word Count\":         \"0x09\",\n    \"Reference Code\":           \"BD8D1001\",\n    \"Hex Word 2\":               \"00080455\",\n    \"Hex Word 3\":               \"2E2D0010\",\n    \"Hex Word 4\":               \"00000000\",\n    \"Hex Word 5\":               \"00000000\",\n    \"Hex Word 6\":               \"00000005\",\n    \"Hex Word 7\":               \"00000000\",\n    \"Hex Word 8\":               \"00000000\",\n    \"Hex Word 9\":               \"00000000\"\n...",
+      "parentUuid": "b76d2155_71621456",
+      "revId": "47479df73153abb87c514a4c6caf52b55b971d13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ed8ba48d_857b9a1e",
         "filename": "extensions/openpower-pels/data_interface.cpp",
         "patchSetId": 2
@@ -143,6 +185,24 @@
     },
     {
       "key": {
+        "uuid": "a3d525d3_663d722b",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 698,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-10-28T14:25:51Z",
+      "side": 1,
+      "message": "if I use this function then I dont get any progress codes in the error logs. I dont need to use it in this case and error log comes good",
+      "parentUuid": "ed8ba48d_857b9a1e",
+      "revId": "47479df73153abb87c514a4c6caf52b55b971d13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a253d6db_e8a5fe24",
         "filename": "extensions/openpower-pels/data_interface.cpp",
         "patchSetId": 2
@@ -157,6 +217,24 @@
       "revId": "47479df73153abb87c514a4c6caf52b55b971d13",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b4606919_44237acf",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 716,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-10-28T14:25:51Z",
+      "side": 1,
+      "message": "this location just has the Progress code and the SRC starts at offset 1 after the size field",
+      "parentUuid": "a253d6db_e8a5fe24",
+      "revId": "47479df73153abb87c514a4c6caf52b55b971d13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -228,6 +306,30 @@
       "revId": "47479df73153abb87c514a4c6caf52b55b971d13",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "408328c3_d7fe7109",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 722,
+      "author": {
+        "id": 1001063
+      },
+      "writtenOn": "2021-10-28T14:25:51Z",
+      "side": 1,
+      "message": "Makes sense.. I will add the size check to make sure we don\u0027t access it out of bounds",
+      "parentUuid": "eb07c0b6_ec90f513",
+      "range": {
+        "startLine": 722,
+        "startChar": 16,
+        "endLine": 722,
+        "endChar": 46
+      },
+      "revId": "47479df73153abb87c514a4c6caf52b55b971d13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
