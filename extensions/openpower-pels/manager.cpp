@@ -134,6 +134,9 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
     auto pel = std::make_unique<openpower::pels::PEL>(pelData, obmcLogID);
     if (pel->valid())
     {
+        // PELs created by others still need this field set by us.
+        pel->setCommitTime();
+
         // Assign Id other than to Hostbot PEL
         if ((pel->privateHeader()).creatorID() !=
             static_cast<uint8_t>(CreatorID::hostboot))
@@ -156,9 +159,6 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
                 return;
             }
         }
-
-        // PELs created by others still need this field set by us.
-        pel->setCommitTime();
 
         // Update System Info to Extended User Data
         pel->updateSysInfoInExtendedUserDataSection(*_dataIface);
