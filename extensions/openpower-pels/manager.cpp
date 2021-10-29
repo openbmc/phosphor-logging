@@ -150,7 +150,10 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
                     fmt::format("Duplicate HostBoot PEL Id {:#X} found; "
                                 "moving it to archive folder",
                                 pel->id())
-                        .c_str());
+                    .c_str());
+
+                // PELs created by others still need this field set by us.
+                pel->setCommitTime();
 
                 _repo.archivePEL(*pel);
                 return;
