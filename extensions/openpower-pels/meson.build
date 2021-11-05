@@ -46,10 +46,10 @@ if build_phal
         cpp.find_library('ekb'),
     ]
     extra_args += [
-        '-DSBE_FFDC_SUPPORTED',
+        '-DPEL_ENABLE_PHAL',
     ]
     log_manager_ext_args += [
-        '-DSBE_FFDC_SUPPORTED',
+        '-DPEL_ENABLE_PHAL',
     ]
 endif
 

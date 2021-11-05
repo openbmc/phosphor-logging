@@ -56,7 +56,7 @@ void pelStartup(internal::Manager& logManager)
                                         std::move(logger));
 #endif
 
-#ifdef SBE_FFDC_SUPPORTED
+#ifdef PEL_ENABLE_PHAL
     // PDBG_DTB environment variable set to CEC device tree path
     static constexpr auto PDBG_DTB_PATH =
         "/var/lib/phosphor-software-manager/pnor/rw/DEVTREE";
