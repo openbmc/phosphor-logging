@@ -37,6 +37,7 @@ constexpr auto objectMapper = "xyz.openbmc_project.ObjectMapper";
 constexpr auto vpdManager = "com.ibm.VPD.Manager";
 constexpr auto ledGroupManager = "xyz.openbmc_project.LED.GroupManager";
 constexpr auto logSetting = "xyz.openbmc_project.Settings";
+constexpr auto hwIsolation = "org.open_power.HardwareIsolation";
 } // namespace service_name
 
 namespace object_path
@@ -55,6 +56,7 @@ constexpr auto enableHostPELs =
     "/xyz/openbmc_project/logging/send_event_logs_to_host";
 constexpr auto vpdManager = "/com/ibm/VPD/Manager";
 constexpr auto logSetting = "/xyz/openbmc_project/logging/settings";
+constexpr auto hwIsolation = "/xyz/openbmc_project/hardware_isolation";
 } // namespace object_path
 
 namespace interface
@@ -83,6 +85,7 @@ constexpr auto logSetting = "xyz.openbmc_project.Logging.Settings";
 constexpr auto association = "xyz.openbmc_project.Association.Definitions";
 constexpr auto dumpEntry = "xyz.openbmc_project.Dump.Entry";
 constexpr auto dumpProgress = "xyz.openbmc_project.Common.Progress";
+constexpr auto hwIsolationCreate = "org.open_power.HardwareIsolation.Create";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
@@ -688,5 +691,39 @@ std::vector<bool>
     return result;
 }
 
+void DataInterface::createGuardRecord(const std::vector<uint8_t>& binPath,
+                                      const std::string& type,
+                                      const std::string& logPath) const
+{
+    try
+    {
+        auto method = _bus.new_method_call(
+            service_name::hwIsolation, object_path::hwIsolation,
+            interface::hwIsolationCreate, "CreateWithEntityPath");
+        method.append(binPath, type, sdbusplus::message::object_path(logPath));
+        // Note: hw isolation "CreateWithEntityPath" got dependency on logging
+        // api's. Making d-bus call no reply type to avoid cyclic dependency.
+        // Added minimal timeout to catch initial failures.
+        // Need to revisit this design later to avoid cyclic dependency.
+        constexpr auto dbusTimeout = 100000; // in micro seconds
+        _bus.call_noreply(method, dbusTimeout);
+    }
+
+    catch (const sdbusplus::exception::exception& e)
+    {
+        std::string errName = e.name();
+        // SD_BUS_ERROR_TIMEOUT error is expected, due to PEL api dependency
+        // mentioned above. Ignoring the error.
+        if (errName != SD_BUS_ERROR_TIMEOUT)
+        {
+            log<level::ERR>(
+                fmt::format("GUARD D-Bus call exception"
+                            "OBJPATH={}, INTERFACE={}, EXCEPTION={}",
+                            object_path::hwIsolation,
+                            interface::hwIsolationCreate, e.what())
+                    .c_str());
+        }
+    }
+}
 } // namespace pels
 } // namespace openpower
