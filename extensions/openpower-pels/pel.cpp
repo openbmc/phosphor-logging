@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "config.h"
+
 #include "pel.hpp"
 
 #include "bcd_time.hpp"
@@ -29,6 +31,7 @@
 #include "user_data_formats.hpp"
 
 #ifdef PEL_ENABLE_PHAL
+#include "phal_service_actions.hpp"
 #include "sbe_ffdc_handler.hpp"
 #endif
 
@@ -153,6 +156,11 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
 
         addUserDataSection(std::move(ud));
     }
+
+#ifdef PEL_ENABLE_PHAL
+    auto path = std::string(OBJ_ENTRY) + '/' + std::to_string(obmcLogID);
+    openpower::pels::phal::createServiceActions(callouts, path, dataIface);
+#endif
 
     // Store in the PEL any important debug data created while
     // building the PEL sections.
