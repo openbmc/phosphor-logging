@@ -345,6 +345,17 @@ class DataInterfaceBase
     virtual std::vector<bool>
         checkDumpStatus(const std::vector<std::string>& type) const = 0;
 
+    /**
+     * @brief Create guard record
+     *
+     *  @param[in] binPath: phal devtree binary path used as key
+     *  @param[in] type: Guard type
+     *  @param[in] logPath: error log entry object path
+     */
+    virtual void createGuardRecord(const std::vector<uint8_t> binPath,
+                                   const std::string& type,
+                                   const std::string& logPath) const = 0;
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
@@ -632,6 +643,17 @@ class DataInterface : public DataInterfaceBase
      */
     std::vector<bool>
         checkDumpStatus(const std::vector<std::string>& type) const override;
+
+    /**
+     * @brief Create guard record
+     *
+     *  @param[in] binPath: phal devtree binary path used as key
+     *  @param[in] type: Guard type
+     *  @param[in] logPath: error log entry object path
+     */
+    void createGuardRecord(const std::vector<uint8_t> binPath,
+                           const std::string& type,
+                           const std::string& logPath) const override;
 
   private:
     /**
