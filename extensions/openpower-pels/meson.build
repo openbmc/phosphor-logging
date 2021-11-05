@@ -39,6 +39,7 @@ if build_phal
     extra_sources += [
         'sbe_ffdc_handler.cpp',
         'fapi_data_process.cpp',
+        'phal_service_actions.cpp',
     ]
     extra_dependencies += [
         dependency('libdt-api'),
