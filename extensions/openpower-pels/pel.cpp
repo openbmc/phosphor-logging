@@ -28,7 +28,7 @@
 #include "stream.hpp"
 #include "user_data_formats.hpp"
 
-#ifdef SBE_FFDC_SUPPORTED
+#ifdef PEL_ENABLE_PHAL
 #include "sbe_ffdc_handler.hpp"
 #endif
 
@@ -57,7 +57,7 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
     // No changes in input, for non SBE error related requests
     PelFFDC ffdcFiles = ffdcFilesIn;
 
-#ifdef SBE_FFDC_SUPPORTED
+#ifdef PEL_ENABLE_PHAL
     // Add sbe ffdc processed data into ffdcfiles.
     namespace sbe = openpower::pels::sbe;
     auto processReq =
