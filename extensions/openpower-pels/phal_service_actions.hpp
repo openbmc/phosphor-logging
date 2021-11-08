@@ -11,7 +11,6 @@ namespace pels
 {
 namespace phal
 {
-
 using EntrySeverity =
     sdbusplus::xyz::openbmc_project::HardwareIsolation::server::Entry::Type;
 

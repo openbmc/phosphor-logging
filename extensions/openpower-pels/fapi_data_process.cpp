@@ -3,6 +3,7 @@ extern "C" {
 }
 
 #include "fapi_data_process.hpp"
+#include "phal_service_actions.hpp"
 
 #include <attributes_info.H>
 #include <fmt/format.h>
@@ -343,6 +344,8 @@ void convertFAPItoPELformat(FFDC& ffdc, json& pelJSONFmtCalloutDataList,
                 }
                 jsonCalloutData["Deconfigured"] = cdg_tgt.deconfigure;
                 jsonCalloutData["Guarded"] = cdg_tgt.guard;
+                jsonCalloutData["GuardType"] = cdg_tgt.guard_type;
+                jsonCalloutData["EntityPath"] = cdg_tgt.target_entity_path;
 
                 pelJSONFmtCalloutDataList.emplace_back(jsonCalloutData);
             });
