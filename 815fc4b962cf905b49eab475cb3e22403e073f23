@@ -45,6 +45,46 @@
       "revId": "815fc4b962cf905b49eab475cb3e22403e073f23",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "73e22784_e2da112e",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-11-08T21:53:51Z",
+      "side": 1,
+      "message": "still use { } here please",
+      "revId": "815fc4b962cf905b49eab475cb3e22403e073f23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6608df92_e34afe54",
+        "filename": "extensions/openpower-pels/phal_service_actions.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-11-08T21:53:51Z",
+      "side": 1,
+      "message": "I see \u0027gard\u0027 used a few times in this file instead of \u0027guard\u0027.  I think \u0027gard\u0027 was dropped in openbmc?",
+      "range": {
+        "startLine": 21,
+        "startChar": 13,
+        "endLine": 21,
+        "endChar": 19
+      },
+      "revId": "815fc4b962cf905b49eab475cb3e22403e073f23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
