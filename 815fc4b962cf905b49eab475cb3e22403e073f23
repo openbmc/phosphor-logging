@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a33d1769_25a53069",
+        "filename": "extensions/openpower-pels/fapi_data_process.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 1000359
+      },
+      "writtenOn": "2021-11-08T15:41:58Z",
+      "side": 1,
+      "message": "Same comments as here: https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-logging/+/48683/1/extensions/openpower-pels/phal_service_actions.cpp",
+      "range": {
+        "startLine": 349,
+        "startChar": 33,
+        "endLine": 349,
+        "endChar": 42
+      },
+      "revId": "815fc4b962cf905b49eab475cb3e22403e073f23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ed201d87_9573e0a3",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000359
+      },
+      "writtenOn": "2021-11-08T15:41:58Z",
+      "side": 1,
+      "message": "Do we need these legacy FSP prefixes? Also, do we really need two types that mean the same thing?",
+      "range": {
+        "startLine": 18,
+        "startChar": 22,
+        "endLine": 18,
+        "endChar": 27
+      },
+      "revId": "815fc4b962cf905b49eab475cb3e22403e073f23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
