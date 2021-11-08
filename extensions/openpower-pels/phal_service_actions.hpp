@@ -11,6 +11,23 @@ namespace pels
 {
 namespace phal
 {
+using EntrySeverity =
+    sdbusplus::xyz::openbmc_project::HardwareIsolation::server::Entry::Type;
+
+/**
+ * @brief Helper function to get EntrySeverity based on
+ *        the given GardType
+ *
+ * @param[in] gardType openpower gard type
+ *
+ * @return EntrySeverity on success
+ * Empty optional on failure
+ *
+ * @note This function will return EntrySeverity::Warning
+ * if the given GardType is not found in conversion switch block
+ */
+
+EntrySeverity getEntrySeverityType(const std::string& gardType);
 
 using GuardType =
     sdbusplus::xyz::openbmc_project::HardwareIsolation::server::Entry::Type;

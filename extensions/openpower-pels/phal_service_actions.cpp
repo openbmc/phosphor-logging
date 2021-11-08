@@ -13,6 +13,28 @@ namespace phal
 {
 using namespace phosphor::logging;
 
+EntrySeverity getEntrySeverityType(const std::string& gardType)
+{
+    if ((gardType == "GARD_Unrecoverable") || (gardType == "GARD_Fatal"))
+        return EntrySeverity::Critical;
+
+    else if (gardType == "GARD_User_Manual")
+        return EntrySeverity::Manual;
+
+    else if (gardType == "GARD_Predictive")
+        return EntrySeverity::Warning;
+
+    else
+    {
+        log<level::ERR>(
+            fmt::format("GUARD: Unsupported GardType [{}] was given ",
+                        "to get the hardware isolation entry severity type",
+                        gardType.c_str())
+                .c_str());
+    }
+    return EntrySeverity::Warning;
+}
+
 void createServiceActions(const nlohmann::json& jsonCallouts,
                           const std::string& path,
                           const DataInterfaceBase& dataIface)
