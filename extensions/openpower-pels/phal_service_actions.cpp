@@ -2,6 +2,7 @@
 
 #include <attributes_info.H>
 #include <fmt/format.h>
+#include <libphal.H>
 
 #include <phosphor-logging/log.hpp>
 
@@ -49,10 +50,12 @@ std::optional<EntrySeverity> getEntrySeverityType(const std::string& guardType)
 
 void createServiceActions(const nlohmann::json& jsonCallouts,
                           const std::string& path,
-                          const DataInterfaceBase& dataIface)
+                          const DataInterfaceBase& dataIface,
+                          const uint32_t plid)
 {
     // Create Guard records.
     createGuardRecords(jsonCallouts, path, dataIface);
+    createDeconfigRecords(jsonCallouts, plid);
 }
 
 void createGuardRecords(const nlohmann::json& jsonCallouts,
@@ -134,6 +137,62 @@ void createGuardRecords(const nlohmann::json& jsonCallouts,
     }
 }
 
+void createDeconfigRecords(const nlohmann::json& jsonCallouts,
+                           const uint32_t plid)
+{
+    using namespace openpower::phal::pdbg;
+
+    if (jsonCallouts.empty())
+    {
+        return;
+    }
+
+    if (!jsonCallouts.is_array())
+    {
+        log<level::ERR>("Deconfig: Callout JSON isn't an array");
+        return;
+    }
+    for (const auto& _callout : jsonCallouts)
+    {
+        try
+        {
+            // Check Callout data conatains Guarded requests.
+            if (!_callout.contains("Deconfigured"))
+            {
+                continue;
+            }
+
+            if (!_callout.contains("EntityPath"))
+            {
+                log<level::ERR>(
+                    "Deconfig: Callout data missing EntityPath information");
+                continue;
+            }
+            using EntityPath = std::vector<uint8_t>;
+            auto entityPath = _callout.at("EntityPath").get<EntityPath>();
+            log<level::INFO>("Deconfig: adding deconfigure record");
+            // convert to libphal required format.
+            ATTR_PHYS_BIN_PATH_Type physBinPath;
+            std::copy(entityPath.begin(), entityPath.end(), physBinPath);
+            // libphal api to deconfigure the target
+            if (!pdbg_targets_init(NULL))
+            {
+                log<level::ERR>("pdbg_targets_init failed, skipping deconfig "
+                                "record update");
+                return;
+            }
+            openpower::phal::pdbg::deconfigureTgt(physBinPath, plid);
+        }
+        catch (const std::exception& e)
+        {
+            log<level::INFO>(
+                fmt::format(
+                    "Deconfig: Failed to create records, exception:({})",
+                    e.what())
+                    .c_str());
+        }
+    }
+}
 } // namespace phal
 } // namespace pels
 } // namespace openpower
