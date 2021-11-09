@@ -21,10 +21,12 @@ using EntrySeverity =
  * @param[in] jsonCallouts - The array of JSON callouts, or an empty object.
  * @param[in] path - The BMC error log object path
  * @param[in] dataIface - The DataInterface object
+ * @param[in] plid -  the PLID
  */
 void createServiceActions(const nlohmann::json& jsonCallouts,
                           const std::string& path,
-                          const DataInterfaceBase& dataIface);
+                          const DataInterfaceBase& dataIface,
+                          const uint32_t plid);
 } // namespace phal
 } // namespace pels
 } // namespace openpower
