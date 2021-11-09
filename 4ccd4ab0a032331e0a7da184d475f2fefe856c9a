@@ -22,6 +22,30 @@
       "revId": "4ccd4ab0a032331e0a7da184d475f2fefe856c9a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5be3fa62_7a3e5773",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-11-09T12:56:42Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d90495a0_57bf0cc9",
+      "range": {
+        "startLine": 694,
+        "startChar": 72,
+        "endLine": 694,
+        "endChar": 73
+      },
+      "revId": "4ccd4ab0a032331e0a7da184d475f2fefe856c9a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
