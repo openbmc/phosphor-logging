@@ -45,6 +45,7 @@ if build_phal
         dependency('libdt-api'),
         cpp.find_library('pdbg'),
         cpp.find_library('ekb'),
+        cpp.find_library('phal'),
     ]
     extra_args += [
         '-DPEL_ENABLE_PHAL',

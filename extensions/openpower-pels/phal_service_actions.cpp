@@ -2,6 +2,7 @@
 
 #include <attributes_info.H>
 #include <fmt/format.h>
+#include <libphal.H>
 
 #include <phosphor-logging/log.hpp>
 
@@ -139,13 +140,87 @@ void createGuardRecords(const nlohmann::json& jsonCallouts,
     }
 }
 
+/**
+ * @brief Helper function to create deconfig records.
+ *
+ * User need to fill the JSON callouts array with below keywords/data
+ * "EntityPath": entity path of the hardware from the PHAL device tree.
+ * "Deconfigured": boolean, true to create deconfigure records.
+ *
+ * libphal api is used for creating deconfigure records, which includes
+ * update HWAS_STATE attribute to non functional with PLID information.
+ *
+ * @param[in] jsonCallouts - The array of JSON callouts, or an empty object.
+ * @param[in] plid - PLID value
+ */
+void createDeconfigRecords(const nlohmann::json& jsonCallouts,
+                           const uint32_t plid)
+{
+    using namespace openpower::phal::pdbg;
+
+    if (jsonCallouts.empty())
+    {
+        return;
+    }
+
+    if (!jsonCallouts.is_array())
+    {
+        log<level::ERR>("Deconfig: Callout JSON isn't an array");
+        return;
+    }
+    for (const auto& _callout : jsonCallouts)
+    {
+        try
+        {
+            // Check Callout data conatains Guarded requests.
+            if (!_callout.contains("Deconfigured"))
+            {
+                continue;
+            }
+
+            if (!_callout.contains("EntityPath"))
+            {
+                log<level::ERR>(
+                    "Deconfig: Callout data missing EntityPath information");
+                continue;
+            }
+            using EntityPath = std::vector<uint8_t>;
+            auto entityPath = _callout.at("EntityPath").get<EntityPath>();
+            log<level::INFO>("Deconfig: adding deconfigure record");
+            // convert to libphal required format.
+            ATTR_PHYS_BIN_PATH_Type physBinPath;
+            std::copy(entityPath.begin(), entityPath.end(), physBinPath);
+            // libphal api to deconfigure the target
+            if (!pdbg_targets_init(NULL))
+            {
+                log<level::ERR>("pdbg_targets_init failed, skipping deconfig "
+                                "record update");
+                return;
+            }
+            openpower::phal::pdbg::deconfigureTgt(physBinPath, plid);
+        }
+        catch (const std::exception& e)
+        {
+            log<level::INFO>(
+                fmt::format(
+                    "Deconfig: Failed to create records, exception:({})",
+                    e.what())
+                    .c_str());
+        }
+    }
+}
+
 void createServiceActions(const nlohmann::json& jsonCallouts,
                           const std::string& path,
-                          const DataInterfaceBase& dataIface)
+                          const DataInterfaceBase& dataIface,
+                          const uint32_t plid)
 {
     // Create Guard records.
     createGuardRecords(jsonCallouts, path, dataIface);
+    // Create Deconfigure records.
+    createDeconfigRecords(jsonCallouts, plid);
 }
+
 } // namespace phal
 } // namespace pels
 } // namespace openpower
