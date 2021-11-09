@@ -159,7 +159,8 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
 
 #ifdef PEL_ENABLE_PHAL
     auto path = std::string(OBJ_ENTRY) + '/' + std::to_string(obmcLogID);
-    openpower::pels::phal::createServiceActions(callouts, path, dataIface);
+    openpower::pels::phal::createServiceActions(callouts, path, dataIface,
+                                                plid());
 #endif
 
     // Store in the PEL any important debug data created while
