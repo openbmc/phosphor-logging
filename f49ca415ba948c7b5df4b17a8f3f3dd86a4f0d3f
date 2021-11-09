@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0cd2fd69_c3123a9e",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000359
+      },
+      "writtenOn": "2021-11-09T15:51:19Z",
+      "side": 1,
+      "message": "severity",
+      "range": {
+        "startLine": 115,
+        "startChar": 40,
+        "endLine": 115,
+        "endChar": 47
+      },
+      "revId": "f49ca415ba948c7b5df4b17a8f3f3dd86a4f0d3f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
