@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "01ce9175_1851e753",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-11-09T13:02:12Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0aa457e7_6ce812bb",
+      "revId": "fdeaf4e4a8b6ad2ff7285afdbbb268cff8006e36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3b929a7e_30e07239",
         "filename": "extensions/openpower-pels/phal_service_actions.cpp",
         "patchSetId": 1
@@ -30,6 +48,30 @@
       "writtenOn": "2021-11-08T15:11:00Z",
       "side": 1,
       "message": "Since this is printed out in the PEL. I suggest \"Entity Path\".",
+      "range": {
+        "startLine": 49,
+        "startChar": 36,
+        "endLine": 49,
+        "endChar": 46
+      },
+      "revId": "fdeaf4e4a8b6ad2ff7285afdbbb268cff8006e36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0d99c0a7_fe8c01ca",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-11-09T13:02:12Z",
+      "side": 1,
+      "message": "changed to EntityPath",
+      "parentUuid": "3b929a7e_30e07239",
       "range": {
         "startLine": 49,
         "startChar": 36,
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "e40d5c2d_e0160e50",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-11-09T13:02:12Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "56013ece_e3b8c371",
+      "range": {
+        "startLine": 65,
+        "startChar": 57,
+        "endLine": 65,
+        "endChar": 65
+      },
+      "revId": "fdeaf4e4a8b6ad2ff7285afdbbb268cff8006e36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "811e4a08_2f4f3af3",
         "filename": "extensions/openpower-pels/phal_service_actions.cpp",
         "patchSetId": 1
@@ -76,6 +142,30 @@
       "writtenOn": "2021-11-08T15:11:00Z",
       "side": 1,
       "message": "Same here. I suggest \"Guard Type\".",
+      "range": {
+        "startLine": 69,
+        "startChar": 36,
+        "endLine": 69,
+        "endChar": 45
+      },
+      "revId": "fdeaf4e4a8b6ad2ff7285afdbbb268cff8006e36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a4c85b46_aed6b5f1",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-11-09T13:02:12Z",
+      "side": 1,
+      "message": "Changed to GuardType",
+      "parentUuid": "811e4a08_2f4f3af3",
       "range": {
         "startLine": 69,
         "startChar": 36,
