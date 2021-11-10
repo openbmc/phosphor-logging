@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "91b91a1e_7b4e462a",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-11-10T10:44:05Z",
+      "side": 1,
+      "message": "Json doeosn\u0027t support enum type also currently hwp api\u0027s provides string type  data. .",
+      "parentUuid": "9d69d3d5_5cd08aa0",
+      "range": {
+        "startLine": 25,
+        "startChar": 56,
+        "endLine": 25,
+        "endChar": 69
+      },
+      "revId": "f49ca415ba948c7b5df4b17a8f3f3dd86a4f0d3f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3cb9505c_70858c20",
         "filename": "extensions/openpower-pels/phal_service_actions.cpp",
         "patchSetId": 3
@@ -36,6 +60,24 @@
       "writtenOn": "2021-11-10T06:12:48Z",
       "side": 1,
       "message": "do you intend to add more here?",
+      "revId": "f49ca415ba948c7b5df4b17a8f3f3dd86a4f0d3f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dda5f483_4373b009",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-11-10T10:44:05Z",
+      "side": 1,
+      "message": "yes , necxt patch am adding new one.",
+      "parentUuid": "3cb9505c_70858c20",
       "revId": "f49ca415ba948c7b5df4b17a8f3f3dd86a4f0d3f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "27bc9df4_b98222e6",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-11-10T10:44:05Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "87b0dd19_bcecd820",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 59
+      },
+      "revId": "f49ca415ba948c7b5df4b17a8f3f3dd86a4f0d3f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cab26328_572120b5",
         "filename": "extensions/openpower-pels/phal_service_actions.cpp",
         "patchSetId": 3
@@ -88,6 +154,30 @@
     },
     {
       "key": {
+        "uuid": "ee0baf14_f41c6a0b",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-11-10T10:44:05Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "cab26328_572120b5",
+      "range": {
+        "startLine": 100,
+        "startChar": 43,
+        "endLine": 100,
+        "endChar": 46
+      },
+      "revId": "f49ca415ba948c7b5df4b17a8f3f3dd86a4f0d3f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0cd2fd69_c3123a9e",
         "filename": "extensions/openpower-pels/phal_service_actions.cpp",
         "patchSetId": 3
@@ -108,6 +198,30 @@
       "revId": "f49ca415ba948c7b5df4b17a8f3f3dd86a4f0d3f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f751716f_33680190",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-11-10T10:44:05Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0cd2fd69_c3123a9e",
+      "range": {
+        "startLine": 115,
+        "startChar": 40,
+        "endLine": 115,
+        "endChar": 47
+      },
+      "revId": "f49ca415ba948c7b5df4b17a8f3f3dd86a4f0d3f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
