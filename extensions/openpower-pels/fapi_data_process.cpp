@@ -118,27 +118,6 @@ int pdbgCallbackToGetTgtReqAttrsVal(struct pdbg_target* target,
         return requireAttrNotFound;
     }
 
-    if (targetInfo->deconfigure)
-    {
-        ATTR_HWAS_STATE_Type hwasState;
-        if (DT_GET_PROP(ATTR_HWAS_STATE, target, hwasState))
-        {
-            log<level::ERR>("Could not read HWAS_STATE attribute");
-            return requireAttrNotFound;
-        }
-
-        log<level::INFO>(fmt::format("Marking target({}) as Non-Functional",
-                                     targetInfo->physDevPath)
-                             .c_str());
-        hwasState.functional = 0;
-
-        if (DT_SET_PROP(ATTR_HWAS_STATE, target, hwasState))
-        {
-            log<level::ERR>("Could not write HWAS_STATE attribute");
-            return requireAttrNotFound;
-        }
-    }
-
     return requireAttrFound;
 }
 
