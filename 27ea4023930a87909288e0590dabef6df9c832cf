@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a7bcf086_b4718988",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 706,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-11-11T22:56:47Z",
+      "side": 1,
+      "message": "I don\u0027t think I follow what you mean here.",
+      "range": {
+        "startLine": 706,
+        "startChar": 5,
+        "endLine": 706,
+        "endChar": 59
+      },
+      "revId": "27ea4023930a87909288e0590dabef6df9c832cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
