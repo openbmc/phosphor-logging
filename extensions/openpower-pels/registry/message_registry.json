@@ -1808,9 +1808,10 @@
         },
 
         {
-            "Name": "xyz.openbmc_project.Power.Error.PowerOnFailure",
+            "Name": "xyz.openbmc_project.Power.Error.PowerOnTimeout",
             "Subsystem": "power_sequencer",
             "ComponentID": "0x2700",
+            "Severity": "critical",
 
             "SRC": {
                 "Type": "11",
@@ -1827,8 +1828,36 @@
             ],
 
             "Documentation": {
-                "Description": "System power failed to turn on",
-                "Message": "System power failed to turn on",
+                "Description": "System power failed to turn on within timeout period",
+                "Message": "System power failed to turn on within timeout period",
+                "Notes": [
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Power.Error.PowerOffTimeout",
+            "Subsystem": "power_sequencer",
+            "ComponentID": "0x2700",
+            "Severity": "critical",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0xD008",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "LocCode": "P0" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "System power failed to turn off within timeout period",
+                "Message": "System power failed to turn off within timeout period",
                 "Notes": [
                 ]
             }
