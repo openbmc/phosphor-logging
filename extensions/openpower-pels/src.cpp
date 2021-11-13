@@ -554,7 +554,7 @@ std::optional<std::string>
                             argSourceVals.size())
                     {
                         message.append(getNumberString(
-                            "0x%X", argSourceVals[wordIndex - 1]));
+                            "0x%08X", argSourceVals[wordIndex - 1]));
                     }
                     else
                     {
