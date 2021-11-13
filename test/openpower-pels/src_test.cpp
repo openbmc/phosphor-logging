@@ -356,9 +356,9 @@ TEST_F(SRCTest, MessageSubstitutionTest)
 
     auto errorDetails = src.getErrorDetails(registry, DetailLevel::message);
     ASSERT_TRUE(errorDetails);
-    EXPECT_EQ(
-        errorDetails.value(),
-        "Comp 0x1 failed 0x4 times over 0x1E secs with ErrorCode 0x1ABCDEF");
+    EXPECT_EQ(errorDetails.value(),
+              "Comp 0x00000001 failed 0x00000004 times over 0x0000001E secs "
+              "with ErrorCode 0x01ABCDEF");
 }
 // Test that an inventory path callout string is
 // converted into the appropriate FRU callout.
