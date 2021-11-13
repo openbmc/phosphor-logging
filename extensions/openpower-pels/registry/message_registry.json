@@ -759,6 +759,18 @@
                 "SymptomIDFields": [ "SRCWord6", "SRCWord7", "SRCWord8" ],
                 "Words6To9":
                 {
+                    "6":
+                    {
+                        "AdditionalDataPropSource": "SRC6"
+                    },
+                    "7":
+                    {
+                        "AdditionalDataPropSource": "SRC7"
+                    },
+                    "8":
+                    {
+                        "AdditionalDataPropSource": "SRC8"
+                    }
                 }
             },
 
@@ -766,7 +778,7 @@
             {
                 "Description": "A system checkstop attention has occurred",
                 "MessageArgSources" : [ "SRCWord6", "SRCWord7", "SRCWord8" ],
-                "Message": "hw-diags signature: %1 %2 %3"
+                "Message": "Error Signature: %1 %2 %3"
             }
         },
 
@@ -781,6 +793,18 @@
                 "SymptomIDFields": [ "SRCWord6", "SRCWord7", "SRCWord8" ],
                 "Words6To9":
                 {
+                    "6":
+                    {
+                        "AdditionalDataPropSource": "SRC6"
+                    },
+                    "7":
+                    {
+                        "AdditionalDataPropSource": "SRC7"
+                    },
+                    "8":
+                    {
+                        "AdditionalDataPropSource": "SRC8"
+                    }
                 }
             },
 
@@ -788,7 +812,7 @@
             {
                 "Description": "A hardware attention requiring service has occurred",
                 "MessageArgSources" : [ "SRCWord6", "SRCWord7", "SRCWord8" ],
-                "Message": "hw-diags signature: %1 %2 %3"
+                "Message": "Error Signature: %1 %2 %3"
             }
         },
 
