@@ -221,8 +221,13 @@ std::optional<std::map<SRC::WordNum, SRC::AdditionalDataField>>
         }
 
         auto attributes = word.value();
+
+        // Use an empty string for the description if it does not exist.
+        auto itr = attributes.find("Description");
+        std::string desc = (attributes.end() != itr) ? *itr : "";
+
         std::tuple<std::string, std::string> adPropSourceDesc(
-            attributes["AdditionalDataPropSource"], attributes["Description"]);
+            attributes["AdditionalDataPropSource"], desc);
         hexwordFields[wordNum] = std::move(adPropSourceDesc);
     }
 

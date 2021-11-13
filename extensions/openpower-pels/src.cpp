@@ -496,13 +496,22 @@ std::optional<std::string> SRC::getErrorDetails(message::Registry& registry,
                     adFields = entry->src.hexwordADFields.value();
                 for (const auto& hexwordMap : adFields)
                 {
-                    std::vector<std::string> valueDescr;
-                    valueDescr.push_back(getNumberString(
+                    auto srcValue = getNumberString(
                         "0x%X",
-                        _hexData[getWordIndexFromWordNum(hexwordMap.first)]));
-                    valueDescr.push_back(std::get<1>(hexwordMap.second));
-                    jsonInsertArray(errorOut, std::get<0>(hexwordMap.second),
-                                    valueDescr, 2);
+                        _hexData[getWordIndexFromWordNum(hexwordMap.first)]);
+
+                    auto srcKey = std::get<0>(hexwordMap.second);
+                    auto srcDesc = std::get<1>(hexwordMap.second);
+
+                    // Only include this hex word in the error details if the
+                    // description exists.
+                    if (!srcDesc.empty())
+                    {
+                        std::vector<std::string> valueDescr;
+                        valueDescr.push_back(srcValue);
+                        valueDescr.push_back(srcDesc);
+                        jsonInsertArray(errorOut, srcKey, valueDescr, 2);
+                    }
                 }
             }
             errorOut.erase(errorOut.size() - 2);
