@@ -219,7 +219,9 @@ const PELValues calloutPriorityValues = {
 const std::map<std::string, std::string> maintenanceProcedures = {
     {"bmc_code", "BMC0001"},
     // Isolation not possible, please contact your next level of support
-    {"lvl_support", "BMC0002"}};
+    {"lvl_support", "BMC0002"},
+    // Problem is in SBE code, upgrade your firmware
+    {"sbe_code", "BMC0003"}};
 
 /**
  * @brief Map of the registry names for the symbolic FRUs to their
