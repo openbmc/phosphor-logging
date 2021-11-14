@@ -134,8 +134,64 @@ static void noop_extra_output(level, const lg2::source_location&,
 static void cerr_extra_output(level l, const lg2::source_location& s,
                               const std::string& m)
 {
-    std::cerr << s.file_name() << ":" << s.line() << ":" << s.function_name()
-              << "|<" << static_cast<uint64_t>(l) << "> " << m << std::endl;
+    static const char* format = []() {
+        const char* f = getenv("LG2_FORMAT");
+        if (nullptr == f)
+        {
+            f = "<%l> %m";
+        }
+        return f;
+    }();
+
+    while (*format)
+    {
+        if (*format != '%')
+        {
+            std::cerr << *format;
+            ++format;
+            continue;
+        }
+
+        ++format;
+        switch (*format)
+        {
+            case '%':
+            case '\0':
+                std::cerr << '%';
+                break;
+
+            case 'f':
+                std::cerr << s.function_name();
+                break;
+
+            case 'F':
+                std::cerr << s.file_name();
+                break;
+
+            case 'l':
+                std::cerr << static_cast<uint64_t>(l);
+                break;
+
+            case 'L':
+                std::cerr << s.line();
+                break;
+
+            case 'm':
+                std::cerr << m;
+                break;
+
+            default:
+                std::cerr << '%' << *format;
+                break;
+        }
+
+        if (*format != '\0')
+        {
+            ++format;
+        }
+    }
+
+    std::cerr << std::endl;
 }
 
 // Use the cerr output method if we are on a TTY.
