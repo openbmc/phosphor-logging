@@ -154,8 +154,20 @@ The code that enables compile-time header checking imposes two constraints:
 
 When running an application or daemon on a console or SSH session, it might
 not be obvious that the application is writing to the journal.  The `lg2` APIs
-detect if the application is running on a TTY and additionally mirror the
-information sent to the journal to the TTY.
+detect if the application is running on a TTY and additionally log to the TTY.
+
+The format of information sent to the TTY can be adjusted by setting the
+desired format string in the `LG2_FORMAT` environment variable.  Supported
+fields are:
+
+- `%%` : a `'%'` literal
+- `%f` : the logging function's name
+- `%F` : the logging function's file
+- `%l` : the log level as an integer
+- `%L` : the logging function's line number
+- `%m` : the lg2 message
+
+The default format is `"<%l> %m"`.
 
 ### Why a new API?
 
