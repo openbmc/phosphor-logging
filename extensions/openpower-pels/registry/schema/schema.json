@@ -451,7 +451,7 @@
         {
             "description": "The maintenance procedure callout.",
             "type": "string",
-            "enum": ["bmc_code"]
+            "enum": ["bmc_code", "power_overcurrent"]
         },
 
         "useInventoryLocCode":
