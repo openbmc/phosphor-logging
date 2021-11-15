@@ -223,7 +223,9 @@ const std::map<std::string, std::string> maintenanceProcedures = {
     // Problem is in SBE code, upgrade your firmware
     {"sbe_code", "BMC0003"},
     // Problem is somewhere in the FSI bus path
-    {"fsi_path", "BMC0004"}};
+    {"fsi_path", "BMC0004"},
+    // Problem is over-current PSU fault
+    {"power_overcurrent", "BMC0005"}};
 
 /**
  * @brief Map of the registry names for the symbolic FRUs to their
