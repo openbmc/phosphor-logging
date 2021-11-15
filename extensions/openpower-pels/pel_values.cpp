@@ -221,7 +221,9 @@ const std::map<std::string, std::string> maintenanceProcedures = {
     // Isolation not possible, please contact your next level of support
     {"lvl_support", "BMC0002"},
     // Problem is in SBE code, upgrade your firmware
-    {"sbe_code", "BMC0003"}};
+    {"sbe_code", "BMC0003"},
+    // Problem is somewhere in the FSI bus path
+    {"fsi_path", "BMC0004"}};
 
 /**
  * @brief Map of the registry names for the symbolic FRUs to their
