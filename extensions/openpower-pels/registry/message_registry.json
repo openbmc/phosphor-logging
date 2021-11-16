@@ -967,6 +967,33 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Power.PowerSupply.Error.IoutOCFault",
+            "Subsystem": "power_supply",
+            "Severity": "unrecoverable_redundancy_loss",
+            "ActionFlags": ["service_action", "report", "call_home"],
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x1B01",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "power_overcurrent" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "Power Supply output over-current power fault",
+                "Message": "A power supply has indicated an output over-current condition."
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.State.Shutdown.Power.Error.Blackout",
             "Subsystem": "power",
             "ActionFlags": [ "report", "service_action" ],
