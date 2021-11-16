@@ -226,8 +226,6 @@ def get_elog_data(i_elog_yaml,
                 break
 
         if match is None:
-            print("Error - Did not find error named %s in %s" % (
-                error['name'], i_elog_meta_yaml))
             continue
 
         error_lvl[fullname] = match.get('level', 'ERR')
