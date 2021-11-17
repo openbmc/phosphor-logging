@@ -105,6 +105,10 @@ int pdbgCallbackToGetTgtReqAttrsVal(struct pdbg_target* target,
         return continueTgtTraversal;
     }
 
+    // Found Target, now collect the required attributes associated to the
+    // target. Incase of any attribute read failure, initialize the data with
+    // default value.
+
     try
     {
         // Get location code information
@@ -121,14 +125,17 @@ int pdbgCallbackToGetTgtReqAttrsVal(struct pdbg_target* target,
 
     if (DT_GET_PROP(ATTR_PHYS_DEV_PATH, target, targetInfo->physDevPath))
     {
-        log<level::ERR>("Could not read PHYS_DEV_PATH attribute");
-        return requireAttrNotFound;
+        log<level::ERR>(
+            fmt::format("Could not read({}) PHYS_DEV_PATH attribute",
+                        pdbg_target_path(target))
+                .c_str());
     }
 
     if (DT_GET_PROP(ATTR_MRU_ID, target, targetInfo->mruId))
     {
-        log<level::ERR>("Could not read MRU_ID attribute");
-        return requireAttrNotFound;
+        log<level::ERR>(fmt::format("Could not read({}) ATTR_MRU_ID attribute",
+                                    pdbg_target_path(target))
+                            .c_str());
     }
 
     return requireAttrFound;
