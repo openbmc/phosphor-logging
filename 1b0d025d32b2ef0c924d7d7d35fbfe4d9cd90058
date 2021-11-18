@@ -16,6 +16,24 @@
       "revId": "1b0d025d32b2ef0c924d7d7d35fbfe4d9cd90058",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c7f4af55_5a4d2474",
+        "filename": "extensions/openpower-pels/pel_values.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1000085
+      },
+      "writtenOn": "2021-11-18T22:58:54Z",
+      "side": 1,
+      "message": "I was wondering about that, the BMC0001 did not have a comment, so I let it go without a comment. I suppose I can add one.",
+      "parentUuid": "041f9802_fca2db12",
+      "revId": "1b0d025d32b2ef0c924d7d7d35fbfe4d9cd90058",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
