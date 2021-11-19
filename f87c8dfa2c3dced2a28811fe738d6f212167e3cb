@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "90ee2d9e_6a72c537",
+        "filename": "extensions/openpower-pels/log_id.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-11-19T15:27:44Z",
+      "side": 1,
+      "message": "For now I would prefer to just have this done once, on application startup.  So maybe a call from the Repository constructor.  \n\nThe danger in deleting this at any point is if we already have say a PEL with an ID of 0x500000001, and then at some point later it gets corrupted, the file would get deleted and we\u0027d start back over at 500000001 again and overwrite the previous one.  Right now the case is handled because if the file isn\u0027t readable it starts generating random number PEL IDs.\n\nIn summary, make a function in this file, call it from the Repo constructor, and if the file is corrupt trace it and delete it.",
+      "revId": "f87c8dfa2c3dced2a28811fe738d6f212167e3cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7aa6a67b_370fd4c8",
+        "filename": "extensions/openpower-pels/log_id.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-11-19T15:27:44Z",
+      "side": 1,
+      "message": "Since we use the \u003c\u003c and \u003e\u003e operators to read and write to the file, that actually stores the values as ascii, for example 0x1A23 gets stored as:\n\nhexdump -C pelID\n00000000  36 36 39 31    |6691|\n00000004\n\n\nThe case we want to check for is binary zeros\n\nlike this:\n$ hexdump -C pelID\n00000000  00 00 00 00 00                                    |.....|\n00000005",
+      "revId": "f87c8dfa2c3dced2a28811fe738d6f212167e3cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
