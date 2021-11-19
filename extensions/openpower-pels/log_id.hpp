@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 
 namespace openpower
 {
@@ -42,6 +43,12 @@ uint32_t getTimeBasedLogID();
  * @return uint32_t - The log ID
  */
 uint32_t generatePELID();
+
+/**
+ * @brief Check for file containing zero data.
+ *
+ */
+void checkFileForZeroData(const std::string& filename);
 
 } // namespace pels
 } // namespace openpower
