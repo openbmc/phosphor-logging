@@ -20,6 +20,7 @@
 
 #include <chrono>
 #include <filesystem>
+#include <fstream>
 #include <thread>
 
 #include <gtest/gtest.h>
@@ -57,4 +58,40 @@ TEST(LogIdTest, IDTest)
     EXPECT_EQ(generatePELID(), 0x50000003);
 
     fs::remove_all(fs::path{backingFile}.parent_path());
+}
+
+TEST(LogIdTest, PELIDTest)
+{
+    // Get PEL ID file updated with binary zeros
+    auto backingFile = getPELIDFile();
+    std::ofstream wf{backingFile, std::ios::binary};
+    char id = '\0';
+    for (int i = 0; i < 4; i++)
+    {
+        wf.write(&id, sizeof(id));
+    }
+    wf.close();
+
+    // Expect existing PEL ID file to be deleted and
+    // new PEL ID regenerated
+    EXPECT_EQ(generatePELID(), 0x50000001);
+    EXPECT_EQ(generatePELID(), 0x50000002);
+    EXPECT_EQ(generatePELID(), 0x50000003);
+    EXPECT_EQ(generatePELID(), 0x50000004);
+    EXPECT_EQ(generatePELID(), 0x50000005);
+
+    // Get PEL ID file updated with binary zeros again
+    std::ofstream fw{backingFile, std::ios::binary};
+    for (int i = 0; i < 4; i++)
+    {
+        fw.write(&id, sizeof(id));
+    }
+    fw.close();
+
+    // This time PEL IDs are random generated
+    EXPECT_NE(generatePELID(), 0x50000001);
+    EXPECT_NE(generatePELID(), 0x50000002);
+    EXPECT_NE(generatePELID(), 0x50000003);
+    EXPECT_NE(generatePELID(), 0x50000004);
+    EXPECT_NE(generatePELID(), 0x50000005);
 }
