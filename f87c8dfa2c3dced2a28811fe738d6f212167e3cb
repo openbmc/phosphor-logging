@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "daf86667_d51a75e5",
+        "filename": "extensions/openpower-pels/log_id.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-11-19T18:05:21Z",
+      "side": 1,
+      "message": "yea, that could be.  this would be a good opportunity for a testcase in log_id_test.cpp.",
+      "parentUuid": "eb34025e_3661f0e1",
+      "revId": "f87c8dfa2c3dced2a28811fe738d6f212167e3cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7aa6a67b_370fd4c8",
         "filename": "extensions/openpower-pels/log_id.cpp",
         "patchSetId": 1
