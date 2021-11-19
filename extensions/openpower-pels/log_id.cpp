@@ -64,6 +64,7 @@ uint32_t generatePELID()
     if (idFilename.empty())
     {
         idFilename = getPELIDFile();
+        checkFileForZeroData(idFilename);
     }
 
     uint32_t id = 0;
@@ -108,5 +109,19 @@ uint32_t generatePELID()
     return detail::addLogIDPrefix(id);
 }
 
+void checkFileForZeroData(std::string filename)
+{
+    if (fs::exists(filename))
+    {
+        uint32_t id = 0;
+
+        std::ifstream rf{filename};
+        rf >> id;
+        if (id == 0)
+        {
+            fs::remove(filename);
+        }
+    }
+}
 } // namespace pels
 } // namespace openpower
