@@ -134,7 +134,7 @@ static void noop_extra_output(level, const lg2::source_location&,
 static void cerr_extra_output(level l, const lg2::source_location& s,
                               const std::string& m)
 {
-    static const char* format = []() {
+    static const char* const defaultFormat = []() {
         const char* f = getenv("LG2_FORMAT");
         if (nullptr == f)
         {
@@ -142,6 +142,8 @@ static void cerr_extra_output(level l, const lg2::source_location& s,
         }
         return f;
     }();
+
+    const char* format = defaultFormat;
 
     while (*format)
     {
