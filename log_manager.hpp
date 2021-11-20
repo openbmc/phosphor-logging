@@ -254,9 +254,12 @@ class Manager : public details::ServerObject<details::ManagerIface>
      *  @param[in] additionalData - list of metadata (in key=value format)
      *  @param[out] objects - list of error's association objects
      */
-    void processMetadata(const std::string& errorName,
-                         const std::vector<std::string>& additionalData,
-                         AssociationList& objects) const;
+    std::vector<std::string> processMetadata(
+        const std::string& errorName, std::vector<std::string>& additionalData,
+        std::map<std::string,
+                 const std::function<std::string(Entry&, std::string&)>> const&
+            fnMap,
+        AssociationList& objects) const;
 
     /** @brief Synchronize unwritten journal messages to disk.
      *  @details This is the same implementation as the systemd command
