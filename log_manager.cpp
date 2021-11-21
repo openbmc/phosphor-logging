@@ -37,6 +37,9 @@ extern const std::map<
     std::function<phosphor::logging::metadata::associations::Type>>
     meta;
 
+constexpr auto FQPN_PREFIX = "xyz.openbmc_project.Logging.Entry.";
+constexpr auto FQPN_DELIM = "=";
+
 namespace phosphor
 {
 namespace logging
@@ -195,6 +198,26 @@ void Manager::_commit(uint64_t transactionId [[maybe_unused]],
     createEntry(errMsg, errLvl, additionalData);
 }
 
+void callFQPNsMethods(
+    std::vector<std::string> const& fqpns, std::unique_ptr<Entry> const& entry,
+    std::map<std::string,
+             const std::function<std::string(Entry&, std::string&)>> const&
+        fnMap)
+{
+    auto* e = entry.get();
+
+    for (const auto& s : fqpns)
+    {
+        auto key = s.substr(0, s.find(FQPN_DELIM));
+        auto val = s.substr(s.find(FQPN_DELIM) + 1, s.length());
+        auto it = fnMap.find(key);
+        if (it != fnMap.end())
+        {
+            (it->second)(*e, val);
+        }
+    }
+}
+
 void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
                           std::vector<std::string> additionalData,
                           const FFDCEntries& ffdc)
@@ -232,13 +255,27 @@ void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
     auto objPath = std::string(OBJ_ENTRY) + '/' + std::to_string(entryId);
 
     AssociationList objects{};
-    processMetadata(errMsg, additionalData, objects);
+
+    std::map<std::string,
+             const std::function<std::string(Entry&, std::string&)>>
+        fnMap;
+    fnMap.insert(std::make_pair(
+        std::string(FQPN_PREFIX) + "Resolution",
+        [](Entry& entry, std::string& s) { return entry.resolution(s); }));
+    fnMap.insert(std::make_pair(
+        std::string(FQPN_PREFIX) + "EventId",
+        [](Entry& entry, std::string& s) { return entry.eventId(s); }));
+
+    auto foundFQPNs = processMetadata(errMsg, additionalData, fnMap, objects);
 
     auto e = std::make_unique<Entry>(busLog, objPath, entryId,
                                      ms, // Milliseconds since 1970
                                      errLvl, std::move(errMsg),
                                      std::move(additionalData),
                                      std::move(objects), fwVersion, *this);
+
+    callFQPNsMethods(foundFQPNs, e, fnMap);
+
     auto path = serialize(*e);
     e->path(path);
 
@@ -443,18 +480,28 @@ void Manager::doExtensionLogCreate(const Entry& entry, const FFDCEntries& ffdc)
     }
 }
 
-void Manager::processMetadata(const std::string& /*errorName*/,
-                              const std::vector<std::string>& additionalData,
-                              AssociationList& objects) const
+std::vector<std::string> Manager::processMetadata(
+    const std::string& /*errorName*/, std::vector<std::string>& additionalData,
+    std::map<std::string,
+             const std::function<std::string(Entry&, std::string&)>> const&
+        fnMap,
+    AssociationList& objects) const
 {
     // additionalData is a list of "metadata=value"
     constexpr auto separator = '=';
+    std::vector<std::string> seenFQPNs;
     for (const auto& entryItem : additionalData)
     {
         auto found = entryItem.find(separator);
         if (std::string::npos != found)
         {
             auto metadata = entryItem.substr(0, found);
+
+            if (fnMap.count(metadata) > 0)
+            {
+                seenFQPNs.push_back(entryItem);
+            }
+
             auto iter = meta.find(metadata);
             if (meta.end() != iter)
             {
@@ -462,6 +509,14 @@ void Manager::processMetadata(const std::string& /*errorName*/,
             }
         }
     }
+    const std::vector<std::string>& v = seenFQPNs;
+    auto isFQPN = [&](std::string& s) {
+        return std::find(v.begin(), v.end(), s) != v.end();
+    };
+    additionalData.erase(
+        std::remove_if(additionalData.begin(), additionalData.end(), isFQPN),
+        additionalData.end());
+    return seenFQPNs;
 }
 
 void Manager::checkAndRemoveBlockingError(uint32_t entryId)
