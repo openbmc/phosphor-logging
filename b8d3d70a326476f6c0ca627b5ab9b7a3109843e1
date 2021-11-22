@@ -2,6 +2,40 @@
   "comments": [
     {
       "key": {
+        "uuid": "f699f82e_1da72a4b",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-11-22T17:05:07Z",
+      "side": 1,
+      "message": "Please use `Entry::interface` for this.",
+      "revId": "b8d3d70a326476f6c0ca627b5ab9b7a3109843e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "82f2c834_7db4ad26",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-11-22T17:05:07Z",
+      "side": 1,
+      "message": "Can you use split for this to transpose a list of \"key\u003ddata\" -\u003e map\u003ckey, data\u003e?  This repository uses C++20, so you can use these functions rather than coding your own.\n\nhttps://en.cppreference.com/w/cpp/ranges/split_view",
+      "revId": "b8d3d70a326476f6c0ca627b5ab9b7a3109843e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "17b6ad49_38486931",
         "filename": "log_manager.cpp",
         "patchSetId": 1
@@ -13,6 +47,52 @@
       "writtenOn": "2021-11-21T09:32:15Z",
       "side": 1,
       "message": "We should also update the logging D-Bus interface to describe FQPNs.",
+      "revId": "b8d3d70a326476f6c0ca627b5ab9b7a3109843e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0ba99e38_97a045d7",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-11-22T17:05:07Z",
+      "side": 1,
+      "message": "I would suggest we make a minor change to sdbusplus\u0027 generator to accept either the short-name or the FQPN in the set/getPropertyByName calls.  You might also need to make a minor change to setPropertyByName to return boolean.",
+      "range": {
+        "startLine": 263,
+        "startChar": 8,
+        "endLine": 263,
+        "endChar": 48
+      },
+      "revId": "b8d3d70a326476f6c0ca627b5ab9b7a3109843e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1dfc779_0ef3fe4c",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-11-22T17:05:07Z",
+      "side": 1,
+      "message": "If you change setPropertyByName to return a boolean, I think it will be much simpler to filter out all the unhandled property names.  (Again, suggest looking at ranges because I think the majority of this code becomes almost a 1 liner with C++20 ranges to transform, call the property update, and filter down to just the unhandled properties.",
+      "range": {
+        "startLine": 512,
+        "startChar": 0,
+        "endLine": 519,
+        "endChar": 21
+      },
       "revId": "b8d3d70a326476f6c0ca627b5ab9b7a3109843e1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
