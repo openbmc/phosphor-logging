@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "facacc6d_c1ee4b9e",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1001273
+      },
+      "writtenOn": "2021-11-23T22:36:49Z",
+      "side": 1,
+      "message": "I am struggling to figure out a way to do this in a way that is simpler than the current implementation. My thinking is we have to iterate through the vector and split each \"k\u003dv\" entry by \"\u003d\" and then update a new map such that map[k] \u003d v. Also, to extract k and v from the split, a construct such as \"for (const std::string_view word : std::views::split(words, delim))\" would be required, which would just require another for loop for the implementation. Maybe I am thinking about this the wrong way. Some clarification would be appreciated.",
+      "parentUuid": "82f2c834_7db4ad26",
+      "revId": "b8d3d70a326476f6c0ca627b5ab9b7a3109843e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "17b6ad49_38486931",
         "filename": "log_manager.cpp",
         "patchSetId": 1
