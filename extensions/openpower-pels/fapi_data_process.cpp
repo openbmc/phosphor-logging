@@ -190,6 +190,23 @@ static std::string getPelPriority(const std::string& phalPriority)
     return it->second;
 }
 
+static void addPlanarCallout(json& jsonCalloutDataList,
+            std::string priority)
+{
+    log<level::INFO>("addPlanarCallout");
+
+    json jsonCalloutData;
+
+    // Inventory path for planar
+    jsonCalloutData["InventoryPath"] =
+        "/xyz/openbmc_project/inventory/system/chassis/motherboard";
+    jsonCalloutData["Deconfigured"] = false;
+    jsonCalloutData["Guarded"] = false;
+    jsonCalloutData["Priority"] = priority;
+
+    jsonCalloutDataList.emplace_back(jsonCalloutData);
+}
+
 void convertFAPItoPELformat(FFDC& ffdc, json& pelJSONFmtCalloutDataList,
                             FFDCData& ffdcUserData)
 {
@@ -246,6 +263,15 @@ void convertFAPItoPELformat(FFDC& ffdc, json& pelJSONFmtCalloutDataList,
                 ffdcUserData.emplace_back(
                     std::string(keyPrefix.str()).append("CLK_POS"),
                     std::to_string(hwCallout.clkPos));
+
+                pelAdditionalData.emplace_back(
+                    std::string(keyPrefix.str()).append("IS_PLANAR"),
+                    std::to_string(hwCallout.isPlanarCallout));
+
+                if(hwCallout.isPlanarCallout){
+                    addPlanarCallout(jsonCalloutDataList,
+                        pelPriority);
+                }
 
                 json jsonCalloutData;
                 jsonCalloutData["LocationCode"] = locationCode;
