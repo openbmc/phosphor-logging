@@ -210,6 +210,30 @@ static std::string getPelPriority(const std::string& phalPriority)
     return it->second;
 }
 
+/**
+ * @brief addPlanarCallout
+ *
+ * This function will add a json for planar callout in the input json list.
+ * The caller can pass this json list into createErrorPEL to apply the callout.
+ *
+ * @param[in,out] jsonCalloutDataList - json list where callout json will be
+ *                  emplaced
+ * @param[in] priority - string indicating priority.
+ */
+static void addPlanarCallout(json& jsonCalloutDataList, std::string priority)
+{
+    json jsonCalloutData;
+
+    // Inventory path for planar
+    jsonCalloutData["InventoryPath"] =
+        "/xyz/openbmc_project/inventory/system/chassis/motherboard";
+    jsonCalloutData["Deconfigured"] = false;
+    jsonCalloutData["Guarded"] = false;
+    jsonCalloutData["Priority"] = priority;
+
+    jsonCalloutDataList.emplace_back(jsonCalloutData);
+}
+
 void convertFAPItoPELformat(FFDC& ffdc, json& pelJSONFmtCalloutDataList,
                             FFDCData& ffdcUserData)
 {
@@ -266,6 +290,18 @@ void convertFAPItoPELformat(FFDC& ffdc, json& pelJSONFmtCalloutDataList,
                 ffdcUserData.emplace_back(
                     std::string(keyPrefix.str()).append("CLK_POS"),
                     std::to_string(hwCallout.clkPos));
+
+                ffdcUserData.emplace_back(
+                    std::string(keyPrefix.str()).append("IS_PLANAR"),
+                    std::to_string(hwCallout.isPlanarCallout));
+
+                std::string pelPriority =
+                    getPelPriority(hwCallout.callout_priority);
+
+                if (hwCallout.isPlanarCallout)
+                {
+                    addPlanarCallout(pelJSONFmtCalloutDataList, pelPriority);
+                }
             });
 
         // Adding CDG (callout, deconfigure and guard) targets details
