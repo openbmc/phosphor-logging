@@ -190,6 +190,23 @@ static std::string getPelPriority(const std::string& phalPriority)
     return it->second;
 }
 
+static void addPlanarCalloutForClockError(json& jsonCalloutDataList,
+            std::string priority)
+{
+    log<level::INFO>("addPlanarCalloutForClockError");
+
+    json jsonCalloutData;
+
+    // Inventory path for planar
+    jsonCalloutData["InventoryPath"] =
+        "/xyz/openbmc_project/inventory/system/chassis/motherboard";
+    jsonCalloutData["Deconfigured"] = false;
+    jsonCalloutData["Guarded"] = false;
+    jsonCalloutData["Priority"] = priority;
+
+    jsonCalloutDataList.emplace_back(jsonCalloutData);
+}
+
 void convertFAPItoPELformat(FFDC& ffdc, json& pelJSONFmtCalloutDataList,
                             FFDCData& ffdcUserData)
 {
@@ -247,11 +264,22 @@ void convertFAPItoPELformat(FFDC& ffdc, json& pelJSONFmtCalloutDataList,
                     std::string(keyPrefix.str()).append("CLK_POS"),
                     std::to_string(hwCallout.clkPos));
 
+                if(hwCallout.isPlanarCallout){
+                    addPlanarCalloutForClockError(jsonCalloutDataList,
+                        pelPriority);
+                }
+
                 json jsonCalloutData;
                 jsonCalloutData["LocationCode"] = locationCode;
                 std::string pelPriority =
                     getPelPriority(hwCallout.callout_priority);
                 jsonCalloutData["Priority"] = pelPriority;
+
+                if(hwCallout.gardRefTarget){
+                    jsonCalloutData["Deconfigured"] = true;
+                    jsonCalloutData["Guarded"] = true;
+                    jsonCalloutData["GuardType"] = "GARD_Predictive";
+                }
 
                 if (targetInfo.mruId != 0)
                 {
