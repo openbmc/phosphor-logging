@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "45396e0f_6a35a427",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 994,
+      "author": {
+        "id": 1000085
+      },
+      "writtenOn": "2021-11-29T22:42:44Z",
+      "side": 1,
+      "message": "I am not so sure it makes sense to resolve the conflict with this here, seems out of order.",
+      "range": {
+        "startLine": 969,
+        "startChar": 0,
+        "endLine": 994,
+        "endChar": 10
+      },
+      "revId": "d99faf6033488410e904e13502fe0f4cc4cf01a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
