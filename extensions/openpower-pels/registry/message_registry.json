@@ -523,6 +523,30 @@
         },
 
         {
+            "Name": "org.open_power.PHAL.Error.devtreeReinit",
+            "Subsystem": "cec_hardware",
+            "ComponentID": "0x3000",
+            "Severity": "unrecoverable",
+
+            "SRC":
+            {
+                "ReasonCode": "0x3006",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "Failure re-initializing BMC to Host data structure",
+                "Message": "Failure occurred during re-initializing BMC to Host data structure",
+                "Notes": [
+                    "The journal should contain more information"
+                ]
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.State.Error.HostNotRunning",
             "Subsystem": "cec_sp_hostboot_iface",
             "ComponentID": "0x3400",
