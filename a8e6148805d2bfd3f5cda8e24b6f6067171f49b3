@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fefeeefb_60a1b37d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-11-29T21:02:45Z",
+      "side": 1,
+      "message": "spelling",
+      "range": {
+        "startLine": 9,
+        "startChar": 12,
+        "endLine": 9,
+        "endChar": 20
+      },
+      "revId": "a8e6148805d2bfd3f5cda8e24b6f6067171f49b3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d9fc2cc1_810aa3f8",
+        "filename": "extensions/openpower-pels/fapi_data_process.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-11-29T21:02:45Z",
+      "side": 1,
+      "message": "If you want to keep this, can you make it a regular sentence, like: Found clock error, adding planar callout",
+      "range": {
+        "startLine": 196,
+        "startChar": 20,
+        "endLine": 196,
+        "endChar": 54
+      },
+      "revId": "a8e6148805d2bfd3f5cda8e24b6f6067171f49b3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
