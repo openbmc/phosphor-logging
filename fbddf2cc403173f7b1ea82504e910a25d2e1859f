@@ -16,6 +16,24 @@
       "revId": "fbddf2cc403173f7b1ea82504e910a25d2e1859f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b739e286_40800a59",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-11-30T06:59:33Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3dab4615_c1c1ff20",
+      "revId": "fbddf2cc403173f7b1ea82504e910a25d2e1859f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
