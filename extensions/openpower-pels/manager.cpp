@@ -836,6 +836,7 @@ void Manager::createPELEntry(uint32_t obmcLogID)
         // Create Interface for PELEntry and set properties
         auto pelEntry = std::make_unique<PELEntry>(_logManager.getBus(), path,
                                                    varData, obmcLogID, &_repo);
+        pelEntry->emit_added();
         _pelEntries.emplace(std::move(path), std::move(pelEntry));
     }
 }
