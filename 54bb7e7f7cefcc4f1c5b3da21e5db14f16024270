@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "175b1197_34367cd6",
+        "filename": "extensions/openpower-pels/fapi_data_process.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1000567
+      },
+      "writtenOn": "2021-12-01T07:06:53Z",
+      "side": 1,
+      "message": "i think we have to remove these codes.\nNo need to callout the reference target implicitly.\nIf this is needed, then it would be there in CDG list",
+      "range": {
+        "startLine": 275,
+        "startChar": 0,
+        "endLine": 289,
+        "endChar": 72
+      },
+      "revId": "54bb7e7f7cefcc4f1c5b3da21e5db14f16024270",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
