@@ -1027,6 +1027,36 @@
         },
 
         {
+           "Name": "xyz.openbmc_project.Power.PowerSupply.Error.PSKillFault",
+            "Subsystem": "power_supply",
+            "Severity": "unrecoverable",
+            "ActionFlags": ["service_action", "report", "call_home"],
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x2500",
+                "Words6To9": {},
+                "PowerFault": true
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "power_overcurrent" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "A power supply fault is potentially preventing the power supply from allowing the system to power on.",
+                "Message": "Power supply PSKill_fault",
+                "Notes": [
+                ]
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.Power.Error.Shutdown",
             "Subsystem": "power_sequencer",
             "ComponentID": "0x2700",
