@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "609fda39_943ef1f5",
+        "filename": "extensions/openpower-pels/pel_values.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000387
+      },
+      "writtenOn": "2021-12-02T15:01:11Z",
+      "side": 1,
+      "message": "\"lid_switch\"?",
+      "range": {
+        "startLine": 241,
+        "startChar": 6,
+        "endLine": 241,
+        "endChar": 13
+      },
+      "revId": "fe414301d7ce6dffdc7621fc3fd0d25b3718f947",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
