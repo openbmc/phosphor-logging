@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "ff01f167_b8f5f225",
+        "filename": "extensions/openpower-pels/pel_values.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000085
+      },
+      "writtenOn": "2021-12-04T00:08:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb94f5ac_7f5ebe14",
+      "range": {
+        "startLine": 241,
+        "startChar": 6,
+        "endLine": 241,
+        "endChar": 13
+      },
+      "revId": "fe414301d7ce6dffdc7621fc3fd0d25b3718f947",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f46ad237_556bfd63",
         "filename": "extensions/openpower-pels/registry/message_registry.json",
         "patchSetId": 1
@@ -108,6 +132,24 @@
     },
     {
       "key": {
+        "uuid": "f22f6c5e_06b66ec0",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 1054,
+      "author": {
+        "id": 1000085
+      },
+      "writtenOn": "2021-12-04T00:08:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12ef29ed_29fe07f2",
+      "revId": "fe414301d7ce6dffdc7621fc3fd0d25b3718f947",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fe08801e_270aa26f",
         "filename": "extensions/openpower-pels/registry/schema/schema.json",
         "patchSetId": 1
@@ -140,6 +182,24 @@
       "revId": "fe414301d7ce6dffdc7621fc3fd0d25b3718f947",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aea8c4c4_63cf7a9b",
+        "filename": "extensions/openpower-pels/registry/schema/schema.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 1000085
+      },
+      "writtenOn": "2021-12-04T00:08:49Z",
+      "side": 1,
+      "message": "I referenced LDSWTCH in the commit message, but no need to add it here, as we are not specifically calling it out in the PEL. The BMC0005 procedure should reference it.",
+      "parentUuid": "7de58966_2dab65a6",
+      "revId": "fe414301d7ce6dffdc7621fc3fd0d25b3718f947",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
