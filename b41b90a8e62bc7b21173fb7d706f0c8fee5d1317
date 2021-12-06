@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c03e9de0_fffacabb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-12-06T12:08:08Z",
+      "side": 1,
+      "message": "Need a legal-ish name here and not unix-user.  You might be missing your `git config` for user.fullname.\n\nThis likely hasn\u0027t been added because CI testing has not ran on it.  CI testing has not ran because you\u0027re not in one of the CI groups.  You\u0027re not in one of the CI groups because, likely, you or your company have not filled out a CLA.",
+      "revId": "b41b90a8e62bc7b21173fb7d706f0c8fee5d1317",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
