@@ -499,6 +499,30 @@
         },
 
         {
+            "Name": "org.open_power.HardwareIsolation.Error",
+            "Subsystem": "cec_hardware_isolation",
+            "ComponentID": "0x3100",
+
+            "SRC":
+            {
+                "ReasonCode": "0x3101",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "Failure occured during hardware isolation operations",
+                "Message": "Failure occured during hardware isolation operations",
+                "Notes": [
+                    "Severity needs to be set based on needs for this registry.",
+                    "Debug traces will be captured in AdditionalData section"
+                ]
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.State.Error.HostNotRunning",
             "Subsystem": "cec_sp_hostboot_iface",
             "ComponentID": "0x3400",

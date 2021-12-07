@@ -10,6 +10,7 @@ used.
 | 0x2700       | phosphor-power |
 | 0x2800       | phosphor-fan-presence |
 | 0x3000       | openpower-proc-control |
+| 0x3100       | openpower-hw-isolation |
 | 0x3400       | phosphor-state-manager |
 | 0x3500       | Processor Errors that span repositories |
 | 0x4000       | openpower-vpd-parser |
