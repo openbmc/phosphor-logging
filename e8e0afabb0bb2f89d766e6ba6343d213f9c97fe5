@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4ce8d049_33fea531",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-12-07T15:00:38Z",
+      "side": 1,
+      "message": "Better to split into two commits here  adding new compoent id cerateing new registery?",
+      "revId": "e8e0afabb0bb2f89d766e6ba6343d213f9c97fe5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
