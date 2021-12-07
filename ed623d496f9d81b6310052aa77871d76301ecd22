@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0460f9e1_d26a824f",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 2824,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-12-07T15:52:36Z",
+      "side": 1,
+      "message": "It seems like there should be a callout for this, maybe a maintenance procedure.",
+      "revId": "ed623d496f9d81b6310052aa77871d76301ecd22",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "63a17ac9_39131cf2",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 2832,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-12-07T15:52:36Z",
+      "side": 1,
+      "message": "I few tabs and extra spaces around here.",
+      "revId": "ed623d496f9d81b6310052aa77871d76301ecd22",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
