@@ -865,6 +865,40 @@
         },
 
         {
+            "Name": "org.open_power.HwDiags.Error.Informational",
+            "Subsystem": "cec_hardware",
+            "ActionFlags": [ "hidden", "dont_report" ],
+
+            "SRC":
+            {
+                "ReasonCode": "0xE512",
+                "SymptomIDFields": [ "SRCWord6", "SRCWord7", "SRCWord8" ],
+                "Words6To9":
+                {
+                    "6":
+                    {
+                        "AdditionalDataPropSource": "SRC6"
+                    },
+                    "7":
+                    {
+                        "AdditionalDataPropSource": "SRC7"
+                    },
+                    "8":
+                    {
+                        "AdditionalDataPropSource": "SRC8"
+                    }
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "Manual analysis was initiated via the command line. FFDC only.",
+                "MessageArgSources" : [ "SRCWord6", "SRCWord7", "SRCWord8" ],
+                "Message": "Error Signature: %1 %2 %3"
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.Power.PowerSupply.Error.InputFault",
             "Subsystem": "power_supply",
             "Severity": "unrecoverable_redundancy_loss",
