@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e11804a4_bb602bab",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 2824,
+      "author": {
+        "id": 1000338
+      },
+      "writtenOn": "2021-12-08T14:45:06Z",
+      "side": 1,
+      "message": "I suppose we could just callout the planar here (the system VPD was unrecognizable)",
+      "parentUuid": "0460f9e1_d26a824f",
+      "revId": "ed623d496f9d81b6310052aa77871d76301ecd22",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "63a17ac9_39131cf2",
         "filename": "extensions/openpower-pels/registry/message_registry.json",
         "patchSetId": 2
