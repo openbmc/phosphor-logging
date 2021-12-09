@@ -1,0 +1,11 @@
+Code-Review+2: Matt Spinler <spinler@us.ibm.com>
+Code-Review+1: Caleb N. Palmer <cnpalmer@us.ibm.com>
+Code-Review+1: Ben Tyner <ben.tyner@ibm.com>
+Code-Review+1: Austin Cui <austinfcui@gmail.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Ok-To-Test+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: Zane Shelley <zshelle@us.ibm.com>
+Submitted-at: Thu, 09 Dec 2021 20:01:53 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-logging/+/49476
+Project: openbmc/phosphor-logging
+Branch: refs/heads/master
