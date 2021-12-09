@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "0914aeb3_40019d1b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-12-09T20:03:05Z",
+      "side": 1,
+      "message": "you can leave off the \u0027phosphor-logging:\u0027 since it\u0027s just the repo name.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 18
+      },
+      "revId": "b8d3d70a326476f6c0ca627b5ab9b7a3109843e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f699f82e_1da72a4b",
         "filename": "log_manager.cpp",
         "patchSetId": 1
@@ -147,6 +170,23 @@
         "endLine": 519,
         "endChar": 21
       },
+      "revId": "b8d3d70a326476f6c0ca627b5ab9b7a3109843e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1f280273_9694b530",
+        "filename": "log_manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-12-09T20:03:05Z",
+      "side": 1,
+      "message": "would need a @param[in] fnMap",
       "revId": "b8d3d70a326476f6c0ca627b5ab9b7a3109843e1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
