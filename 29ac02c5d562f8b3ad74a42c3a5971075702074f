@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a3683aa9_6c0b7378",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-12-14T09:06:13Z",
+      "side": 1,
+      "message": "Please include \"PEL\" as a prefix. \nwe are following that rule for PEL specific patches.",
+      "revId": "29ac02c5d562f8b3ad74a42c3a5971075702074f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5bde43fd_7e769f73",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-12-14T09:06:13Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 9,
+        "startChar": 12,
+        "endLine": 9,
+        "endChar": 19
+      },
+      "revId": "29ac02c5d562f8b3ad74a42c3a5971075702074f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "44b49bf5_84b39604",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-12-14T09:06:13Z",
+      "side": 1,
+      "message": "No need here and also added the wrong patch details.\n\nUsually, we can add the patch details if that is dependency or for reference but, op-proc-control patch is not related to this change.",
+      "range": {
+        "startLine": 10,
+        "startChar": 4,
+        "endLine": 11,
+        "endChar": 36
+      },
+      "revId": "29ac02c5d562f8b3ad74a42c3a5971075702074f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "30b8f01b_ee6dae03",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-12-14T09:06:13Z",
+      "side": 1,
+      "message": "JS: no need here and also added wrong patch details.\n\nOr mention which variable you are using from that patch and why.",
+      "range": {
+        "startLine": 14,
+        "startChar": 4,
+        "endLine": 15,
+        "endChar": 52
+      },
+      "revId": "29ac02c5d562f8b3ad74a42c3a5971075702074f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "122dfb86_1e69cb71",
+        "filename": "extensions/openpower-pels/fapi_data_process.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-12-14T09:06:13Z",
+      "side": 1,
+      "message": "const std::string\u0026?",
+      "range": {
+        "startLine": 223,
+        "startChar": 56,
+        "endLine": 223,
+        "endChar": 67
+      },
+      "revId": "29ac02c5d562f8b3ad74a42c3a5971075702074f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6f37a2ab_7e812334",
+        "filename": "extensions/openpower-pels/fapi_data_process.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-12-14T09:06:13Z",
+      "side": 1,
+      "message": "CALLOUT_PLANAR?",
+      "range": {
+        "startLine": 295,
+        "startChar": 57,
+        "endLine": 295,
+        "endChar": 66
+      },
+      "revId": "29ac02c5d562f8b3ad74a42c3a5971075702074f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c7ba6c24_2bd02fb0",
+        "filename": "extensions/openpower-pels/fapi_data_process.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2021-12-14T09:06:13Z",
+      "side": 1,
+      "message": "\"(hwCallout.isPlanarCallout \u003d\u003d true ? \"true\" : \"false\"));\"?",
+      "range": {
+        "startLine": 296,
+        "startChar": 20,
+        "endLine": 296,
+        "endChar": 63
+      },
+      "revId": "29ac02c5d562f8b3ad74a42c3a5971075702074f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
