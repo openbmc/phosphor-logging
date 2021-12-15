@@ -76,7 +76,7 @@ constexpr auto invMotherboard =
     "xyz.openbmc_project.Inventory.Item.Board.Motherboard";
 constexpr auto viniRecordVPD = "com.ibm.ipzvpd.VINI";
 constexpr auto vsbpRecordVPD = "com.ibm.ipzvpd.VSBP";
-constexpr auto locCode = "com.ibm.ipzvpd.Location";
+constexpr auto locCode = "xyz.openbmc_project.Inventory.Decorator.LocationCode";
 constexpr auto compatible =
     "xyz.openbmc_project.Configuration.IBMCompatibleSystem";
 constexpr auto vpdManager = "com.ibm.VPD.Manager";
