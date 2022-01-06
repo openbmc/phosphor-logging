@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a89e795a_c297ba0d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-01-06T22:29:37Z",
+      "side": 1,
+      "message": "I forgot to mention it before, but could you add the new keyword to the list of ones we can pass in to the README at https://github.com/openbmc/phosphor-logging/blob/master/extensions/openpower-pels/README.md#additionaldata-keywords?",
+      "revId": "03da542b92df030dbbff24fb678e55976945e251",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "581fefb9_c78348d0",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-01-06T22:29:37Z",
+      "side": 1,
+      "message": "same comments as I put in the userheader file",
+      "range": {
+        "startLine": 370,
+        "startChar": 41,
+        "endLine": 370,
+        "endChar": 50
+      },
+      "revId": "03da542b92df030dbbff24fb678e55976945e251",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8db00846_804bf268",
+        "filename": "extensions/openpower-pels/user_header.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-01-06T22:29:37Z",
+      "side": 1,
+      "message": "since you already checked that ss isn\u0027t std::nullopt (the if check above)  you don\u0027t need the value_or(), which would return \"\" if it was nullopt.\n\nso you can just do stoul(*ss, ...)",
+      "range": {
+        "startLine": 65,
+        "startChar": 41,
+        "endLine": 65,
+        "endChar": 56
+      },
+      "revId": "03da542b92df030dbbff24fb678e55976945e251",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66353957_dfd0411f",
+        "filename": "extensions/openpower-pels/user_header.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-01-06T22:29:37Z",
+      "side": 1,
+      "message": "could you also print what the invalid value was in this trace?  maybe with fmt::format",
+      "revId": "03da542b92df030dbbff24fb678e55976945e251",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
