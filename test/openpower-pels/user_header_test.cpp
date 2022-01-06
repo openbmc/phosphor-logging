@@ -308,3 +308,24 @@ TEST(UserHeaderTest, UseEventLogQuiesceOnErrorTest)
     EXPECT_EQ(uh.severity(), 0x20);
     EXPECT_EQ(uh.actionFlags(), 0xF000);
 }
+
+// Test that the PEL Subsystem omes from the event log if any
+TEST(UserHeaderTest, UseEventLogPELSubsystem)
+{
+    using namespace openpower::pels::message;
+    Entry regEntry;
+
+    regEntry.name = "test";
+    regEntry.subsystem = 5;
+    regEntry.actionFlags = 0xC000;
+    regEntry.eventType = 1;
+    regEntry.eventScope = 2;
+
+    MockDataInterface dataIface;
+    std::vector<std::string> adData{"PEL_SUBSYSTEM=0x25"};
+    AdditionalData ad{adData};
+
+    UserHeader uh(regEntry, phosphor::logging::Entry::Level::Critical, ad,
+                  dataIface);
+    ASSERT_EQ(uh.subsystem(), 0x25);
+}
