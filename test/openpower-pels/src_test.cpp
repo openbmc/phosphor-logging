@@ -1446,3 +1446,31 @@ TEST_F(SRCTest, DumpStatusBitsCheck)
         EXPECT_EQ(0x00080655, hexwords[0]);
     }
 }
+
+// Test SRC with additional data - PEL_SUBSYSTEM
+TEST_F(SRCTest, TestPELSubsystem)
+{
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+    entry.src.powerFault = true;
+
+    // Values for the SRC words pointed to above
+    std::vector<std::string> adData{"PEL_SUBSYSTEM=0x20"};
+    AdditionalData ad{adData};
+    NiceMock<MockDataInterface> dataIface;
+
+    EXPECT_CALL(dataIface, getMotherboardCCIN).WillOnce(Return("ABCD"));
+
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+        .WillOnce(Return(std::vector<bool>{false, false, false}));
+
+    SRC src{entry, ad, dataIface};
+
+    EXPECT_TRUE(src.valid());
+
+    EXPECT_EQ(src.asciiString(), "BD20ABCD                        ");
+}

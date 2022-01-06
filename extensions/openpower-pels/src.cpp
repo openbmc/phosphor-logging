@@ -363,6 +363,26 @@ SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
 
     _asciiString = std::make_unique<src::AsciiString>(regEntry);
 
+    // Check for additional data - PEL_SUBSYSTEM
+    auto ss = additionalData.getValue("PEL_SUBSYSTEM");
+    if (ss)
+    {
+        auto eventSubsystem = std::stoul(*ss, NULL, 16);
+        std::string subsystem =
+            pv::getValue(eventSubsystem, pel_values::subsystemValues);
+        if (subsystem == "invalid")
+        {
+            log<level::WARNING>(
+                fmt::format("SRC: Invalid SubSystem value:{:#X}",
+                            eventSubsystem)
+                    .c_str());
+        }
+        else
+        {
+            _asciiString->setByte(2, eventSubsystem);
+        }
+    }
+
     addCallouts(regEntry, additionalData, jsonCallouts, dataIface);
 
     _size = baseSRCSize;

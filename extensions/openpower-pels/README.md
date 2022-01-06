@@ -120,6 +120,13 @@ details](#passing-callouts-in-with-the-additionaldata-property)
 This is used to pass in an I2C bus and address to create callouts from.  See
 [here for details](#passing-callouts-in-with-the-additionaldata-property)
 
+#### PEL_SUBSYSTEM
+This keyword is used to pass in the subsystem that should be associated with
+this event log. The syntax is:
+PEL_SUBSYSTEM=<subsystem value in hex>
+e.g.
+PEL_SUBSYSTEM=0x20
+
 ### FFDC Intended For UserData PEL sections
 
 When one needs to add FFDC into the PEL UserData sections, the

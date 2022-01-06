@@ -20,6 +20,8 @@
 #include "pel_values.hpp"
 #include "severity.hpp"
 
+#include <fmt/format.h>
+
 #include <iostream>
 #include <phosphor-logging/log.hpp>
 
@@ -57,6 +59,25 @@ UserHeader::UserHeader(const message::Entry& entry,
     _header.componentID = static_cast<uint16_t>(ComponentID::phosphorLogging);
 
     _eventSubsystem = entry.subsystem;
+
+    // Check for additional data - PEL_SUBSYSTEM
+    auto ss = additionalData.getValue("PEL_SUBSYSTEM");
+    if (ss)
+    {
+        auto eventSubsystem = std::stoul(*ss, NULL, 16);
+        std::string subsystem =
+            pv::getValue(eventSubsystem, pel_values::subsystemValues);
+        if (subsystem == "invalid")
+        {
+            log<level::WARNING>(
+                fmt::format("UH: Invalid SubSystem value:{:#X}", eventSubsystem)
+                    .c_str());
+        }
+        else
+        {
+            _eventSubsystem = eventSubsystem;
+        }
+    }
 
     _eventScope = entry.eventScope.value_or(
         static_cast<uint8_t>(EventScope::entirePlatform));
