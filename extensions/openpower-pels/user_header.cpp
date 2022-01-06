@@ -58,6 +58,23 @@ UserHeader::UserHeader(const message::Entry& entry,
 
     _eventSubsystem = entry.subsystem;
 
+    // Check for additional data - PEL_SUBSYSTEM
+    auto ss = additionalData.getValue("PEL_SUBSYSTEM");
+    if (ss)
+    {
+        auto eventSubsystem = std::stoul(ss.value_or(""), NULL, 16);
+        std::string subsystem =
+            pv::getValue(eventSubsystem, pel_values::subsystemValues);
+        if (subsystem == "invalid")
+        {
+            log<level::WARNING>("UH: Invalid SubSystem value");
+        }
+        else
+        {
+            _eventSubsystem = eventSubsystem;
+        }
+    }
+
     _eventScope = entry.eventScope.value_or(
         static_cast<uint8_t>(EventScope::entirePlatform));
 

@@ -72,7 +72,6 @@ class AsciiString
      */
     std::string get() const;
 
-  private:
     /**
      * @brief Converts a byte of raw data to 2 characters
      *        and writes it to the offset.
@@ -91,6 +90,7 @@ class AsciiString
      */
     void setByte(size_t offset, uint8_t value);
 
+  private:
     /**
      * @brief The ASCII string itself
      */
