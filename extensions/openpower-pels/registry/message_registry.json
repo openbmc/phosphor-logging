@@ -2803,6 +2803,94 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Sensor.Threshold.Error.TemperatureWarningLow",
+            "Subsystem": "power",
+            "ComponentID": "0x2800",
+            "Severity": "predictive",
+            "ActionFlags": ["service_action", "report"],
+
+            "SRC": {
+                "ReasonCode": "0x280E",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "A temperature sensor is under its low warning threshold.",
+                "Message": "A temperature sensor is under its low warning threshold.",
+                "Notes": [
+                    "A temperature sensor crossed its low warning threshold value",
+                    "CALLOUT_INVENTORY_PATH will be passed in to add a FRU callout."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Sensor.Threshold.Error.TemperatureWarningLowClear",
+            "Subsystem": "power",
+            "ComponentID": "0x2800",
+            "Severity": "non_error",
+            "ActionFlags": ["report"],
+            "EventType": "env_normal",
+
+            "SRC": {
+                "ReasonCode": "0x280F",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "A temperature sensor is above its low warning threshold.",
+                "Message": "A temperature sensor is above its low warning threshold.",
+                "Notes": [
+                    "A temperature sensor crossed above its low warning threshold value."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Sensor.Threshold.Error.TemperatureCriticalLow",
+            "Subsystem": "power",
+            "ComponentID": "0x2800",
+            "Severity": "predictive",
+            "ActionFlags": ["service_action", "report"],
+
+            "SRC": {
+                "ReasonCode": "0x2810",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "A temperature sensor is under its low critical threshold.",
+                "Message": "A temperature sensor is under its low critical threshold.",
+                "Notes": [
+                    "A temperature sensor crossed its low critical threshold value",
+                    "CALLOUT_INVENTORY_PATH will be passed in to add a FRU callout."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Sensor.Threshold.Error.TemperatureCriticalLowClear",
+            "Subsystem": "power",
+            "ComponentID": "0x2800",
+            "Severity": "non_error",
+            "ActionFlags": ["report"],
+            "EventType": "env_normal",
+
+            "SRC": {
+                "ReasonCode": "0x2811",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "A temperature sensor is over its low critical threshold.",
+                "Message": "A temperature sensor is over its low critical threshold.",
+                "Notes": [
+                    "A temperature sensor crossed above its critical threshold value"
+                ]
+            }
+        },
+
+        {
             "Name": "com.ibm.VPD.Error.InvalidEepromPath",
             "Subsystem": "cec_vpd",
             "ComponentID": "0x4000",
