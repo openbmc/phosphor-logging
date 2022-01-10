@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "067e3940_286c8191",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2022-01-10T12:47:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a89e795a_c297ba0d",
+      "revId": "03da542b92df030dbbff24fb678e55976945e251",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "581fefb9_c78348d0",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-01-06T22:29:37Z",
       "side": 1,
       "message": "same comments as I put in the userheader file",
+      "range": {
+        "startLine": 370,
+        "startChar": 41,
+        "endLine": 370,
+        "endChar": 50
+      },
+      "revId": "03da542b92df030dbbff24fb678e55976945e251",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11fae5db_b456f295",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2022-01-10T12:47:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "581fefb9_c78348d0",
       "range": {
         "startLine": 370,
         "startChar": 41,
@@ -66,6 +108,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "413278c9_824b0b9d",
+        "filename": "extensions/openpower-pels/user_header.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2022-01-10T12:47:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8db00846_804bf268",
+      "range": {
+        "startLine": 65,
+        "startChar": 41,
+        "endLine": 65,
+        "endChar": 56
+      },
+      "revId": "03da542b92df030dbbff24fb678e55976945e251",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "66353957_dfd0411f",
         "filename": "extensions/openpower-pels/user_header.cpp",
         "patchSetId": 1
@@ -77,6 +143,24 @@
       "writtenOn": "2022-01-06T22:29:37Z",
       "side": 1,
       "message": "could you also print what the invalid value was in this trace?  maybe with fmt::format",
+      "revId": "03da542b92df030dbbff24fb678e55976945e251",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41c4b319_cc65eac4",
+        "filename": "extensions/openpower-pels/user_header.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2022-01-10T12:47:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66353957_dfd0411f",
       "revId": "03da542b92df030dbbff24fb678e55976945e251",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
