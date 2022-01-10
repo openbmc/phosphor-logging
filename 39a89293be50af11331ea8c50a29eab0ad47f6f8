@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ebdd31b_f128b41a",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2817,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2022-01-10T16:34:00Z",
+      "side": 1,
+      "message": "any reason to not do this here like we do for high temps?:\n \n            \"CalloutsUsingAD\": {\n                \"ADName\": \"SENSOR_NAME\",\n                \"CalloutsWithTheirADValues\": [\n                    {\n                        \"ADValue\": \"/xyz/openbmc_project/sensors/temperature/Ambient_Virtual_Temp\",\n                        \"Callouts\": [\n                            {\n                                \"CalloutList\": [\n                                    { \"Priority\": \"high\", \"SymbolicFRU\": \"ambient_temp\" }\n                                ]\n                            }\n                        ]\n                    }\n                ]\n            },",
+      "revId": "39a89293be50af11331ea8c50a29eab0ad47f6f8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
