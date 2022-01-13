@@ -187,7 +187,7 @@
                      "partition_firmware", "slic_firmware", "spcn_firmware",
                      "bulk_power_firmware_side_a", "hmc_code_firmware",
                      "bulk_power_firmware_side_b", "virtual_sp", "hostboot",
-                     "occ",
+                     "occ", "epub_firmware_sp",
 
                      "software", "os_software", "xpf_software", "app_software",
 
