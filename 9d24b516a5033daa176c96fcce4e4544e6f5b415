@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "375e3c53_7417815a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-01-13T16:22:44Z",
+      "side": 1,
+      "message": "nit: spelling",
+      "range": {
+        "startLine": 9,
+        "startChar": 4,
+        "endLine": 9,
+        "endChar": 12
+      },
+      "revId": "9d24b516a5033daa176c96fcce4e4544e6f5b415",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c37c937_57c4b1b2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-01-13T16:22:44Z",
+      "side": 1,
+      "message": "spelling",
+      "range": {
+        "startLine": 11,
+        "startChar": 27,
+        "endLine": 11,
+        "endChar": 38
+      },
+      "revId": "9d24b516a5033daa176c96fcce4e4544e6f5b415",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfc6fbd0_09c320e2",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2984,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-01-13T16:22:44Z",
+      "side": 1,
+      "message": "These will all need a Callouts section, which is where we tell the customer what they\u0027d need to fix to resolve the error.\n\nAdriana, the FSP requivalents just called out FSP code?\n\nThat can be done with:\n\n            \"Callouts\": [\n                {\n                    \"CalloutList\": [\n                        { \"Priority\": \"high\", \"Procedure\": \"bmc_code\" }\n                    ]\n                }\n            ],\n\nThere\u0027s some examples that do this in the file already.",
+      "revId": "9d24b516a5033daa176c96fcce4e4544e6f5b415",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
