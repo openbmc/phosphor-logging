@@ -2968,6 +2968,114 @@
                     "Collecting hostboot dump."
                 ]
             }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Software.Manager.DownloadManagerFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3600",
+            "SRC":
+            {
+                "ReasonCode": "0x3601",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
+            "Documentation":
+            {
+                "Description": "Error occurred during image download.",
+                "Message": "Error occurred during image download."
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Software.Manager.VersionFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3600",
+            "SRC":
+            {
+                "ReasonCode": "0x3602",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
+            "Documentation":
+            {
+                "Description": "Error occurred during MANIFEST file reading.",
+                "Message": "Error occurred during MANIFEST file reading."
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Software.Image.SignatureVerifyFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3600",
+            "SRC":
+            {
+                "ReasonCode": "0x3603",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
+            "Documentation":
+            {
+                "Description": "Unsuccessful signature vaildation.",
+                "Message": "Unsuccessful signature vaildation."
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Software.Updater.ActivationFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3600",
+            "SRC":
+            {
+                "ReasonCode": "0x3604",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
+            "Documentation":
+            {
+                "Description": "Error occurred during image activation.",
+                "Message": "Error occurred during image activation."
+            }
         }
 
     ]
