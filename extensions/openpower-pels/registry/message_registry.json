@@ -2968,6 +2968,195 @@
                     "Collecting hostboot dump."
                 ]
             }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Software.Version.Error.Incompatible",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3600",
+            "SRC":
+            {
+                "ReasonCode": "0x3601",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
+            "Documentation":
+            {
+                "Description": "A system component has a software version that is incompatible.",
+                "Message": "A system component has a software version that is incompatible."
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Software.Version.Error.AlreadyExists",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3600",
+            "SRC":
+            {
+                "ReasonCode": "0x3602",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
+            "Documentation":
+            {
+                "Description": "This image version already exists on the device.",
+                "Message": "This image version already exists on the device."
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Software.Image.Error.UnTarFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3600",
+            "SRC":
+            {
+                "ReasonCode": "0x3603",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
+            "Documentation":
+            {
+                "Description": "An error occurred during untar.",
+                "Message": "An error occurred during untar."
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Software.Image.Error.ManifestFileFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3600",
+            "SRC":
+            {
+                "ReasonCode": "0x3604",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
+            "Documentation":
+            {
+                "Description": "An error when reading the Manifest file..",
+                "Message": "An error when reading the Manifest file.."
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Software.Image.Error.InternalFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3600",
+            "SRC":
+            {
+                "ReasonCode": "0x3605",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
+            "Documentation":
+            {
+                "Description": "The operation failed internally during processing the image.",
+                "Message": "The operation failed internally during processing the image."
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Software.Image.Error.ImageFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3600",
+            "SRC":
+            {
+                "ReasonCode": "0x3606",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
+            "Documentation":
+            {
+                "Description": "An error occurred processing the image.",
+                "Message": "An error occurred processing the image."
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Software.Image.Error.BusyFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3600",
+            "SRC":
+            {
+                "ReasonCode": "0x3607",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
+            "Documentation":
+            {
+                "Description": "The device is busy during the update.",
+                "Message": "The device is busy during the update."
+            }
         }
 
     ]
