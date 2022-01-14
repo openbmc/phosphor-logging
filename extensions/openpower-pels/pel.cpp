@@ -21,6 +21,7 @@
 #include "extended_user_data.hpp"
 #include "extended_user_header.hpp"
 #include "failing_mtms.hpp"
+#include "fru_identity.hpp"
 #include "json_utils.hpp"
 #include "log_id.hpp"
 #include "pel_rules.hpp"
@@ -506,7 +507,7 @@ nlohmann::json PEL::getCalloutJSON(const PelFFDC& ffdcFiles)
     return callouts;
 }
 
-bool PEL::isCalloutPresent() const
+bool PEL::isHwCalloutPresent() const
 {
     auto pSRC = primarySRC();
     if (!pSRC)
@@ -522,7 +523,8 @@ bool PEL::isCalloutPresent() const
             if (((*i).fruIdentity()))
             {
                 auto& fruId = (*i).fruIdentity();
-                if ((*fruId).failingComponentType() != 0)
+                if ((*fruId).failingComponentType() ==
+                    src::FRUIdentity::hardwareFRU)
                 {
                     calloutPresent = true;
                     break;

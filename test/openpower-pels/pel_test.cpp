@@ -209,7 +209,7 @@ TEST_F(PELTest, CreateFromRegistryTest)
     EXPECT_EQ(mtmsCount, 1);
     EXPECT_EQ(euhCount, 1);
     EXPECT_EQ(udCount, 2); // AD section and sysInfo section
-    ASSERT_FALSE(pel.isCalloutPresent());
+    ASSERT_FALSE(pel.isHwCalloutPresent());
 
     {
         // The same thing, but without the action flags specified
@@ -894,7 +894,7 @@ TEST_F(PELTest, CreateWithDevCalloutsTest)
         ASSERT_TRUE(pel.primarySRC().value()->callouts());
         auto& callouts = pel.primarySRC().value()->callouts()->callouts();
         ASSERT_EQ(callouts.size(), 1);
-        ASSERT_TRUE(pel.isCalloutPresent());
+        ASSERT_TRUE(pel.isHwCalloutPresent());
 
         EXPECT_EQ(callouts[0]->priority(), 'H');
         EXPECT_EQ(callouts[0]->locationCode(), "UXXX-P1");
@@ -1031,6 +1031,7 @@ TEST_F(PELTest, CreateWithJSONCalloutsTest)
     ASSERT_TRUE(pel.primarySRC().value()->callouts());
     const auto& callouts = pel.primarySRC().value()->callouts()->callouts();
     ASSERT_EQ(callouts.size(), 2);
+    ASSERT_TRUE(pel.isHwCalloutPresent());
 
     {
         EXPECT_EQ(callouts[0]->priority(), 'H');
@@ -1050,6 +1051,65 @@ TEST_F(PELTest, CreateWithJSONCalloutsTest)
         EXPECT_EQ(fru->getMaintProc().value(), "PROCEDU");
         EXPECT_EQ(fru->failingComponentType(),
                   src::FRUIdentity::maintenanceProc);
+    }
+    fs::remove_all(dir);
+}
+
+// Test PELs with symblic FRU callout.
+TEST_F(PELTest, CreateWithJSONSymblicCalloutTest)
+{
+    PelFFDCfile ffdcFile;
+    ffdcFile.format = UserDataFormat::json;
+    ffdcFile.subType = 0xCA; // Callout JSON
+    ffdcFile.version = 1;
+
+    // Write these callouts to a JSON file and pass it into
+    // the PEL as an FFDC file.
+    auto inputJSON = R"([
+        {
+            "Priority": "M",
+            "Procedure": "SVCDOCS"
+        }
+    ])"_json;
+
+    auto s = inputJSON.dump();
+    std::vector<uint8_t> data{s.begin(), s.end()};
+    auto dir = makeTempDir();
+    ffdcFile.fd = writeFileAndGetFD(dir, data);
+
+    PelFFDC ffdc;
+    ffdc.push_back(std::move(ffdcFile));
+
+    AdditionalData ad;
+    NiceMock<MockDataInterface> dataIface;
+
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+        .WillRepeatedly(Return(std::vector<bool>{false, false, false}));
+
+    message::Entry regEntry;
+    regEntry.name = "test";
+    regEntry.subsystem = 5;
+    regEntry.actionFlags = 0xC000;
+    regEntry.src.type = 0xBD;
+    regEntry.src.reasonCode = 0x1234;
+
+    PEL pel{regEntry, 42,   5,        phosphor::logging::Entry::Level::Error,
+            ad,       ffdc, dataIface};
+
+    ASSERT_TRUE(pel.valid());
+    ASSERT_TRUE(pel.primarySRC().value()->callouts());
+    const auto& callouts = pel.primarySRC().value()->callouts()->callouts();
+    ASSERT_EQ(callouts.size(), 1);
+    ASSERT_FALSE(pel.isHwCalloutPresent());
+
+    {
+        EXPECT_EQ(callouts[0]->priority(), 'M');
+        EXPECT_EQ(callouts[0]->locationCode(), "");
+
+        auto& fru = callouts[0]->fruIdentity();
+        EXPECT_EQ(fru->getMaintProc().value(), "SVCDOCS");
     }
     fs::remove_all(dir);
 }
