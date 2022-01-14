@@ -651,7 +651,7 @@ void Manager::checkPelAndQuiesce(std::unique_ptr<openpower::pels::PEL>& pel)
     }
 
     // Now check if it has any type of callout
-    if (pel->isCalloutPresent())
+    if (pel->isHwCalloutPresent())
     {
         log<level::INFO>(
             "QuiesceOnHwError enabled, PEL severity not nonError or recovered, "

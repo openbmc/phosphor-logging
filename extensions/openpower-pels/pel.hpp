@@ -287,11 +287,11 @@ class PEL
     }
 
     /**
-     * @brief Returns true if any callout is present in the primary SRC
+     * @brief Returns true if a hardware callout is present in the primary SRC
      *
-     * @return true if callout present, false otherwise
+     * @return true if hardware callout present, false otherwise
      */
-    bool isCalloutPresent() const;
+    bool isHwCalloutPresent() const;
 
     /**
      * @brief Updates the system info data into HB extended user
