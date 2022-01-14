@@ -141,6 +141,13 @@ DataInterface::DataInterface(sdbusplus::bus::bus& bus) : _bus(bus)
     _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
         bus, object_path::enableHostPELs, interface::enable, "Enabled", *this,
         [this](const auto& value) {
+            if (std::get<bool>(value) != this->_sendPELsToHost)
+            {
+                log<level::INFO>(
+                    fmt::format("The send PELs to host setting changed to {}",
+                                std::get<bool>(value))
+                        .c_str());
+            }
             this->_sendPELsToHost = std::get<bool>(value);
         }));
 
