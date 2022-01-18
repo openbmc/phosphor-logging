@@ -85,6 +85,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "34e420c8_d357d332",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-01-18T15:39:49Z",
+      "side": 1,
+      "message": "oh sorry, not commit, link:\nhttps://lore.kernel.org/openbmc/6a83328d-c9d8-e387-6647-0595b9e73e88@linux.vnet.ibm.com/t/#openbmc-users",
+      "parentUuid": "d9374390_7d2090f0",
+      "revId": "9916c3fede4cec890a44a36f795187d6de58b52e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "74a1fdf5_06080e9a",
         "filename": "log_manager.cpp",
         "patchSetId": 2
