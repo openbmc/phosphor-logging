@@ -579,7 +579,6 @@ void Manager::restore()
             if (sanity(static_cast<uint32_t>(idNum), e->id()))
             {
                 e->path(file.path(), true);
-                e->emit_object_added();
                 if (e->severity() >= Entry::sevLowerLimit)
                 {
                     infoErrors.push_back(idNum);
