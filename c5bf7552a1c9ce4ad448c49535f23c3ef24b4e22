@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abe97347_d685aa50",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000382
+      },
+      "writtenOn": "2022-01-18T15:26:39Z",
+      "side": 1,
+      "message": "I think its not necessary to mention about the events here. \nYou may say that this will re-generate the InterfaceAdded signal for the pre-existing dbus objects and may mislead the consumer to think that these error entries are freshly created after the BMC reboot",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 18
+      },
+      "revId": "c5bf7552a1c9ce4ad448c49535f23c3ef24b4e22",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
