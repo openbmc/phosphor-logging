@@ -114,11 +114,12 @@
 
                 "Description": {"$ref": "#/definitions/docDescription" },
 
-                "Notes": {"$ref": "#/definitions/docNotes" }
+                "CustomerDesc": {"$ref": "#/definitions/docCustomerDesc" },
 
+                "Notes": {"$ref": "#/definitions/docNotes" }
             },
             "additionalProperties": false,
-            "required": ["Message", "Description"]
+            "required": ["Message", "Description", "CustomerDesc"]
         },
 
         "srcType":
@@ -324,6 +325,12 @@
         "docDescription":
         {
             "description": "This is a higher level description of the error.  It is required by the Redfish schema to generate a Redfish message entry, but is not used in Redfish or PEL output.",
+            "type": "string"
+        },
+
+        "docCustomerDesc":
+        {
+            "description": "This is a customer facing description of the error.  It should not contain any internal names or terms.",
             "type": "string"
         },
 

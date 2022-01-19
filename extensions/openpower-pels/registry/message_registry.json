@@ -22,6 +22,7 @@
             "Documentation":
             {
                 "Description": "This is a generic timeout error",
+                "CustomerDesc": "This is a generic timeout error",
                 "Message": "An operation timed out",
                 "Notes": [
                     "The journal should contain more information"
@@ -45,6 +46,7 @@
             "Documentation":
             {
                 "Description": "BMC code had a generic internal failure",
+                "CustomerDesc": "BMC code had a generic internal failure",
                 "Message": "An application had an internal failure",
                 "Notes": [
                     "The journal should contain more information"
@@ -68,6 +70,7 @@
             "Documentation":
             {
                 "Description": "BMC code was given an invalid argument",
+                "CustomerDesc": "BMC code was given an invalid argument",
                 "Message": "Code was given an invalid argument",
                 "Notes": [
                     "The journal should contain more information"
@@ -90,6 +93,7 @@
             "Documentation":
             {
                 "Description": "An operation failed due to insufficient permission",
+                "CustomerDesc": "An operation failed due to insufficient permission",
                 "Message": "An operation failed due to unsufficient permission",
                 "Notes": [
                     "The journal should contain more information"
@@ -113,6 +117,7 @@
             "Documentation":
             {
                 "Description": "An operation failed because it isn't allowed",
+                "CustomerDesc": "An operation failed because it isn't allowed",
                 "Message": "An operation failed because it isn't allowed",
                 "Notes": [
                     "The journal should contain more information"
@@ -136,6 +141,7 @@
             "Documentation":
             {
                 "Description": "The server's CA certificate has not been provided",
+                "CustomerDesc": "The server's CA certificate has not been provided",
                 "Message": "The server's CA certificate has not been provided"
             }
         },
@@ -160,6 +166,7 @@
             "Documentation":
             {
                 "Description": "Sensor device read failure",
+                "CustomerDesc": "Sensor device read failure",
                 "Message": "There was a failure when reading a sensor device",
                 "Notes": [
                     "The severity is set by the creator.",
@@ -189,6 +196,7 @@
             "Documentation":
             {
                 "Description": "Device read failure",
+                "CustomerDesc": "Device read failure",
                 "Message": "There was a failure when reading a hardware device",
                 "Notes": [
                     "The severity is set by the creator.",
@@ -218,6 +226,7 @@
             "Documentation":
             {
                 "Description": "Device write failure",
+                "CustomerDesc": "Device write failure",
                 "Message": "There was a failure when writing to a hardware device",
                 "Notes": [
                     "The severity is set by the creator.",
@@ -247,6 +256,7 @@
             "Documentation":
             {
                 "Description": "Device write failure",
+                "CustomerDesc": "Device write failure",
                 "Message": "There was a failure when writing to a hardware device",
                 "Notes": [
                     "The severity is set by the creator.",
@@ -277,6 +287,7 @@
             "Documentation":
             {
                 "Description": "The BMC sent the host a malformed PEL",
+                "CustomerDesc": "The BMC sent the host a malformed PEL",
                 "Message": "The BMC sent the host a malformed PEL",
                 "Notes": [
                     "The host firmware rejected that PEL."
@@ -315,6 +326,7 @@
             "Documentation":
             {
                 "Description": "The host sent the BMC an invalid PEL",
+                "CustomerDesc": "The host sent the BMC an invalid PEL",
                 "Message": "The host sent the BMC an invalid PEL",
                 "Notes": [
                 ]
@@ -346,6 +358,7 @@
             "Documentation":
             {
                 "Description": "An error for testing",
+                "CustomerDesc": "An error for testing",
                 "Message": "This is a test error"
             }
         },
@@ -365,6 +378,7 @@
             "Documentation":
             {
                 "Description": "This entry is used when no other matching entry is found",
+                "CustomerDesc": "This entry is used when no other matching entry is found",
                 "Message": "Unknown (Original event not in message registry)",
                 "Notes": [
                     "This is used when the actual error name isn't found in ",
@@ -397,6 +411,7 @@
             "Documentation":
             {
                 "Description": "Failure occured during boot process",
+                "CustomerDesc": "Failure occured during boot process",
                 "Message": "Failure occured during boot process",
                 "Notes": [
                     "Debug traces will be captured in AdditionalData section"
@@ -420,6 +435,7 @@
             "Documentation":
             {
                 "Description": "Failure occurred during PHAL pre-poweroff operations",
+                "CustomerDesc": "Failure occurred during PHAL pre-poweroff operations",
                 "Message": "Failure occurred during PHAL pre-poweroff operations",
                 "Notes": [
                     "Severity needs to be set based on needs for this registry.",
@@ -446,6 +462,7 @@
             "Documentation":
             {
                 "Description": "Failure occurred during PHAL devtree sync ",
+                "CustomerDesc": "Failure occurred during PHAL devtree sync ",
                 "Message": "Failure occurred during PHAL devtree sync",
                 "Notes": [
                     "The journal should contain more information"
@@ -470,6 +487,7 @@
             "Documentation":
             {
                 "Description": "Failure occurred during PHAL devtree backup ",
+                "CustomerDesc": "Failure occurred during PHAL devtree backup ",
                 "Message": "Failure occurred during PHAL devtree backup",
                 "Notes": [
                     "The journal should contain more information"
@@ -493,6 +511,7 @@
             "Documentation":
             {
                 "Description": "Host did not respond to BMC after a BMC reset",
+                "CustomerDesc": "Host did not respond to BMC after a BMC reset",
                 "Message": "Host did not respond to BMC after a BMC reset but hardware indicates it is running",
                 "Notes": [
                     "System will be left in its current state to ensure host ",
@@ -521,6 +540,7 @@
             "Documentation":
             {
                 "Description": "Failure re-initializing BMC to Host data structure",
+                "CustomerDesc": "Failure re-initializing BMC to Host data structure",
                 "Message": "Failure occurred during re-initializing BMC to Host data structure",
                 "Notes": [
                     "The journal should contain more information"
@@ -544,6 +564,7 @@
             "Documentation":
             {
                 "Description": "Failure occured during hardware isolation operations",
+                "CustomerDesc": "Failure occured during hardware isolation operations",
                 "Message": "Failure occured during hardware isolation operations",
                 "Notes": [
                     "Severity needs to be set based on needs for this registry.",
@@ -566,6 +587,7 @@
             "Documentation":
             {
                 "Description": "Host was booting or booted before BMC reset but is now unresponsive",
+                "CustomerDesc": "Host was booting or booted before BMC reset but is now unresponsive",
                 "Message": "Host did not respond to BMC after a BMC reset but it was booting or booted prior to the BMC reboot",
                 "Notes": [
                     "System will follow recovery policy, resulting in this ",
@@ -598,6 +620,7 @@
             "Documentation":
             {
                 "Description": "chipop failure with SBE provided FFDC",
+                "CustomerDesc": "chipop failure with SBE provided FFDC",
                 "Message": "chipop request failure reported by SBE",
                 "Notes": [
                     "The severity is set by the creator.",
@@ -629,6 +652,7 @@
             "Documentation":
             {
                 "Description": "SBE chipop timeout",
+                "CustomerDesc": "SBE chipop timeout",
                 "Message": "chipop timeout reported during SBE communication",
                 "Notes": [
                     "The severity is set by the creator.",
@@ -663,6 +687,7 @@
             "Documentation":
             {
                 "Description": "The SBE on this processor is not in a state where chipOps can be issued",
+                "CustomerDesc": "The SBE on this processor is not in a state where chipOps can be issued",
                 "Message": "SBE Chipop is not allowed due to invalid SBE state ",
                 "Notes": [
                     "The severity is set by the creator."
@@ -691,6 +716,7 @@
             "Documentation":
             {
                 "Description": "Boot failure with SBE provided FFDC",
+                "CustomerDesc": "Boot failure with SBE provided FFDC",
                 "Message": "Boot failure reported by SBE",
                 "Notes": [
                     "The severity is set by the creator.",
@@ -717,6 +743,7 @@
             "Documentation":
             {
                 "Description": "SBE Boot timeout",
+                "CustomerDesc": "SBE Boot timeout",
                 "Message": "timeout reported during SBE boot process",
                 "Notes": [
                     "The severity is set by the creator.",
@@ -742,6 +769,7 @@
             "Documentation":
             {
                 "Description": "Status shows TI special attention active",
+                "CustomerDesc": "Status shows TI special attention active",
                 "Message": "TI special attention detected",
                 "Notes": [
                     "This entry is for any TI special attention event ",
@@ -770,6 +798,7 @@
             "Documentation":
             {
                 "Description": "The attention handler encountered an error",
+                "CustomerDesc": "The attention handler encountered an error",
                 "MessageArgSources" : ["SRCWord6"],
                 "Message": "Attention handler error %1",
                 "Notes": [
@@ -794,6 +823,7 @@
             "Documentation":
             {
                 "Description": "Status shows SBE vital attention active",
+                "CustomerDesc": "Status shows SBE vital attention active",
                 "Message": "SBE vital attention detected",
                 "Notes": [
                     "This entry is for any SBE vital attention event ",
@@ -831,6 +861,7 @@
             "Documentation":
             {
                 "Description": "A system checkstop attention has occurred",
+                "CustomerDesc": "A system checkstop attention has occurred",
                 "MessageArgSources" : [ "SRCWord6", "SRCWord7", "SRCWord8" ],
                 "Message": "Error Signature: %1 %2 %3"
             }
@@ -865,6 +896,7 @@
             "Documentation":
             {
                 "Description": "A hardware attention requiring service has occurred",
+                "CustomerDesc": "A hardware attention requiring service has occurred",
                 "MessageArgSources" : [ "SRCWord6", "SRCWord7", "SRCWord8" ],
                 "Message": "Error Signature: %1 %2 %3"
             }
@@ -899,6 +931,7 @@
             "Documentation":
             {
                 "Description": "Manual analysis was initiated via the command line. FFDC only.",
+                "CustomerDesc": "Manual analysis was initiated via the command line. FFDC only.",
                 "MessageArgSources" : [ "SRCWord6", "SRCWord7", "SRCWord8" ],
                 "Message": "Error Signature: %1 %2 %3"
             }
@@ -927,6 +960,7 @@
 
             "Documentation": {
                 "Description": "Power Supply input power fault",
+                "CustomerDesc": "Power Supply input power fault",
                 "Message": "A power supply has indicated an input or under voltage condition.",
                 "Notes": [
                     "Check the power supply cabling and/or input power ",
@@ -957,6 +991,7 @@
 
             "Documentation": {
                 "Description": "Power Supply power fault",
+                "CustomerDesc": "Power Supply power fault",
                 "Message": "The power supply detected a fault condition, see AdditionalData for further details.",
                 "Notes": [
                     "The power supply reporting the fault should be called ",
@@ -982,6 +1017,7 @@
 
             "Documentation": {
                 "Description": "Power Supply non-power fault",
+                "CustomerDesc": "Power Supply non-power fault",
                 "Message": "A communication failure occurred talking to the power supply",
                 "Notes": [
                     "Communication problems with the power supply could be ",
@@ -1019,6 +1055,7 @@
 
             "Documentation": {
                 "Description": "Power Supply is missing",
+                "CustomerDesc": "Power Supply is missing",
                 "Message": "A power supply that should be present is missing",
                 "Notes": [
                     "The CalloutList should use the PWRSPLY symbolic FRU ",
@@ -1044,6 +1081,7 @@
 
             "Documentation": {
                 "Description": "Power Supply configuration is not supported",
+                "CustomerDesc": "Power Supply configuration is not supported",
                 "Message": "The power supply configuration is not supported",
                 "Notes": [
                     "The combination of power supplies detected in the ",
@@ -1069,6 +1107,7 @@
 
             "Documentation": {
                 "Description": "Power Supply fan fault",
+                "CustomerDesc": "Power Supply fan fault",
                 "Message": "A power supply indicated a fan fault has occurred",
                 "Notes": [
                     "The power supply reporting the fault should be called ",
@@ -1102,6 +1141,7 @@
 
             "Documentation": {
                 "Description": "Power Supply output over-current power fault",
+                "CustomerDesc": "Power Supply output over-current power fault",
                 "Message": "A power supply has indicated an output over-current condition."
             }
         },
@@ -1131,6 +1171,7 @@
 
             "Documentation": {
                 "Description": "Input power was lost while the system was powered on.",
+                "CustomerDesc": "Input power was lost while the system was powered on.",
                 "Message": "Input power was lost while the system was powered on.",
                 "Notes": [
                     "Input power was lost while system powered on.",
@@ -1163,6 +1204,7 @@
 
             "Documentation": {
                 "Description": "A power supply fault is potentially preventing the power supply from allowing the system to power on.",
+                "CustomerDesc": "A power supply fault is potentially preventing the power supply from allowing the system to power on.",
                 "Message": "Power supply PSKill_fault",
                 "Notes": [
                 ]
@@ -1190,6 +1232,7 @@
 
             "Documentation": {
                 "Description": "A power off was issued because a power fault was detected",
+                "CustomerDesc": "A power off was issued because a power fault was detected",
                 "Message": "A power off was issued because a power fault was detected",
                 "Notes": [
                 ]
@@ -1239,6 +1282,7 @@
 
             "Documentation": {
                 "Description": "A power off was issued because a regulator for standby power faulted",
+                "CustomerDesc": "A power off was issued because a regulator for standby power faulted",
                 "Message": "A power off was issued because a regulator for standby power faulted",
                 "Notes": [
                 ]
@@ -1550,6 +1594,7 @@
 
             "Documentation": {
                 "Description": "The power sequencer chip detected a PGOOD fault",
+                "CustomerDesc": "The power sequencer chip detected a PGOOD fault",
                 "Message": "The power sequencer chip detected a PGOOD fault",
                 "Notes": [
                 ]
@@ -1806,6 +1851,7 @@
 
             "Documentation": {
                 "Description": "The power sequencer chip detected a voltage fault",
+                "CustomerDesc": "The power sequencer chip detected a voltage fault",
                 "Message": "The power sequencer chip detected a voltage fault",
                 "Notes": [
                 ]
@@ -1826,6 +1872,7 @@
 
             "Documentation": {
                 "Description": "Voltage regulator phase fault detected; device now at redundancy level N (no redundant phases)",
+                "CustomerDesc": "Voltage regulator phase fault detected; device now at redundancy level N (no redundant phases)",
                 "Message": "Voltage regulator phase fault detected; device now at redundancy level N (no redundant phases)",
                 "Notes": [
                     "CALLOUT_INVENTORY_PATH should be specified in the ",
@@ -1852,6 +1899,7 @@
 
             "Documentation": {
                 "Description": "Voltage regulator phase fault detected; device now at redundancy level N+1 (one redundant phase)",
+                "CustomerDesc": "Voltage regulator phase fault detected; device now at redundancy level N+1 (one redundant phase)",
                 "Message": "Voltage regulator phase fault detected; device now at redundancy level N+1 (one redundant phase)",
                 "Notes": [
                     "CALLOUT_INVENTORY_PATH should be specified in the ",
@@ -1874,6 +1922,7 @@
 
             "Documentation": {
                 "Description": "A write verification error occurred on a device",
+                "CustomerDesc": "A write verification error occurred on a device",
                 "Message": "A write verification error occurred on a device",
                 "Notes": [
                     "This error occurs when a device register is written, ",
@@ -1909,6 +1958,7 @@
 
             "Documentation": {
                 "Description": "A regulators configuration file error occurred",
+                "CustomerDesc": "A regulators configuration file error occurred",
                 "Message": "A regulators configuration file error occurred",
                 "Notes": [
                     "The regulators configuration file could not be found, ",
@@ -1940,6 +1990,7 @@
 
             "Documentation": {
                 "Description": "A critical regulators configuration file error occurred",
+                "CustomerDesc": "A critical regulators configuration file error occurred",
                 "Message": "A critical regulators configuration file error occurred",
                 "Notes": [
                     "The regulators configuration file could not be found, ",
@@ -1971,6 +2022,7 @@
 
             "Documentation": {
                 "Description": "The power sequencer chip detected a fault",
+                "CustomerDesc": "The power sequencer chip detected a fault",
                 "Message": "The power sequencer chip detected a fault",
                 "Notes": [
                 ]
@@ -1999,6 +2051,7 @@
 
             "Documentation": {
                 "Description": "System power failed to turn on within timeout period",
+                "CustomerDesc": "System power failed to turn on within timeout period",
                 "Message": "System power failed to turn on within timeout period",
                 "Notes": [
                 ]
@@ -2027,6 +2080,7 @@
 
             "Documentation": {
                 "Description": "System power failed to turn off within timeout period",
+                "CustomerDesc": "System power failed to turn off within timeout period",
                 "Message": "System power failed to turn off within timeout period",
                 "Notes": [
                 ]
@@ -2054,6 +2108,7 @@
 
             "Documentation": {
                 "Description": "An internal firmware error occurred",
+                "CustomerDesc": "An internal firmware error occurred",
                 "Message": "An internal firmware error occurred",
                 "Notes": [
                     "The error details must be provided in the AdditionalData ",
@@ -2075,6 +2130,7 @@
 
             "Documentation": {
                 "Description": "An I2C error occurred communicating with a device",
+                "CustomerDesc": "An I2C error occurred communicating with a device",
                 "Message": "An I2C error occurred communicating with a device",
                 "Notes": [
                     "The device should be identified using the ",
@@ -2099,6 +2155,7 @@
 
             "Documentation": {
                 "Description": "A PMBus error occurred on a device",
+                "CustomerDesc": "A PMBus error occurred on a device",
                 "Message": "A PMBus error occurred on a device",
                 "Notes": [
                     "This error occurs when the I2C communication was ",
@@ -2131,6 +2188,7 @@
 
             "Documentation": {
                 "Description": "A firmware inter-process communication (D-Bus) error occurred",
+                "CustomerDesc": "A firmware inter-process communication (D-Bus) error occurred",
                 "Message": "A firmware inter-process communication (D-Bus) error occurred"
             }
         },
@@ -2148,6 +2206,7 @@
 
             "Documentation": {
                 "Description": "Fan rotor fault",
+                "CustomerDesc": "Fan rotor fault",
                 "Message": "Fan rotor fault",
                 "Notes": [
                     "This error occurs when a fan rotor has been faulted for a ",
@@ -2206,6 +2265,7 @@
 
             "Documentation": {
                 "Description": "A fan is missing",
+                "CustomerDesc": "A fan is missing",
                 "Message": "A fan is missing",
                 "Notes": [
                     "This error occurs when a fan has been missing for a ",
@@ -2250,6 +2310,7 @@
 
             "Documentation": {
                 "Description": "Presence detect methods for the same fan disagree",
+                "CustomerDesc": "Presence detect methods for the same fan disagree",
                 "Message": "Presence detect methods for the same fan disagree",
                 "Notes": [
                     "This error occurs when there is more than one way to detect",
@@ -2298,6 +2359,7 @@
 
             "Documentation": {
                 "Description": "The fan controller device is offline",
+                "CustomerDesc": "The fan controller device is offline",
                 "Message": "The fan controller is offline.  The system must be powered off.",
                 "Notes": [
                     "The device that controls the fans is offline so the fan",
@@ -2343,6 +2405,7 @@
 
              "Documentation": {
                  "Description": "Fan GPIO sensors not present",
+                 "CustomerDesc": "Fan GPIO sensors not present",
                  "Message": "Fan GPIO sensors not present",
                  "Notes": [
                      "The device that reports fan presence is not functioning."
@@ -2380,6 +2443,7 @@
 
             "Documentation": {
                 "Description": "A temperature sensor exceeded its performance loss threshold.",
+                "CustomerDesc": "A temperature sensor exceeded its performance loss threshold.",
                 "Message": "A temperature sensor exceeded its performance loss threshold.",
                 "Notes": [
                     "A temperature sensor crossed its performance loss threshold value",
@@ -2421,6 +2485,7 @@
 
             "Documentation": {
                 "Description": "A temperature sensor is under its performance loss threshold.",
+                "CustomerDesc": "A temperature sensor is under its performance loss threshold.",
                 "Message": "A temperature sensor is under its performance loss threshold.",
                 "Notes": [
                     "A temperature sensor crossed under its performance loss threshold value",
@@ -2459,6 +2524,7 @@
 
             "Documentation": {
                 "Description": "A temperature sensor exceeded its warning threshold.",
+                "CustomerDesc": "A temperature sensor exceeded its warning threshold.",
                 "Message": "A temperature sensor exceeded its warning threshold.",
                 "Notes": [
                     "A temperature sensor crossed its warning threshold value",
@@ -2500,6 +2566,7 @@
 
             "Documentation": {
                 "Description": "A temperature sensor is under its warning threshold.",
+                "CustomerDesc": "A temperature sensor is under its warning threshold.",
                 "Message": "A temperature sensor is under its warning threshold.",
                 "Notes": [
                     "A temperature sensor crossed under its warning threshold value",
@@ -2538,6 +2605,7 @@
 
             "Documentation": {
                 "Description": "A temperature sensor exceeded its critical threshold.",
+                "CustomerDesc": "A temperature sensor exceeded its critical threshold.",
                 "Message": "A temperature sensor exceeded its critical threshold.",
                 "Notes": [
                     "A temperature sensor crossed its critical threshold value",
@@ -2579,6 +2647,7 @@
 
             "Documentation": {
                 "Description": "A temperature sensor is under its critical threshold.",
+                "CustomerDesc": "A temperature sensor is under its critical threshold.",
                 "Message": "A temperature sensor is under its critical threshold.",
                 "Notes": [
                     "A temperature sensor crossed under its critical threshold value",
@@ -2612,6 +2681,7 @@
 
             "Documentation": {
                 "Description": "The ambient temperature passed the EPOW3 limit.",
+                "CustomerDesc": "The ambient temperature passed the EPOW3 limit.",
                 "Message": "The ambient temperature passed the EPOW3 limit. The system will shut down if temp doesn't decrease.",
                 "Notes": [
                     "This error occurs when the ambient temperature surpassed",
@@ -2646,6 +2716,7 @@
 
             "Documentation": {
                 "Description": "The ambient temperature is back under the EPOW3 limit.",
+                "CustomerDesc": "The ambient temperature is back under the EPOW3 limit.",
                 "Message": "The ambient temperature is back under the EPOW3 limit."
             }
         },
@@ -2674,6 +2745,7 @@
 
             "Documentation": {
                 "Description": "The ambient temperature passed the EPOW4 limit.",
+                "CustomerDesc": "The ambient temperature passed the EPOW4 limit.",
                 "Message": "The ambient temperature passed the EPOW4 limit. The system will shut down",
                 "Notes": [
                     "This error occurs when the ambient temperature surpassed",
@@ -2712,6 +2784,7 @@
 
             "Documentation": {
                 "Description": "An altitude sensor exceeded its warning threshold.",
+                "CustomerDesc": "An altitude sensor exceeded its warning threshold.",
                 "Message": "An altitude sensor exceeded its warning threshold.",
                 "Notes": [
                     "The virtual altitude sensor crossed its warning threshold value",
@@ -2735,6 +2808,7 @@
 
             "Documentation": {
                 "Description": "An altitude sensor is under its warning threshold.",
+                "CustomerDesc": "An altitude sensor is under its warning threshold.",
                 "Message": "An altitude sensor is under its warning threshold.",
                 "Notes": [
                     "The virtual altitude sensor is under its warning threshold value",
@@ -2786,6 +2860,7 @@
 
             "Documentation": {
                 "Description": "A voltage sensor went below its critical low threshold.",
+                "CustomerDesc": "A voltage sensor went below its critical low threshold.",
                 "Message": "A voltage sensor went below its critical low threshold."
             }
         },
@@ -2804,6 +2879,7 @@
 
             "Documentation": {
                 "Description": "A voltage sensor is over its critical low threshold.",
+                "CustomerDesc": "A voltage sensor is over its critical low threshold.",
                 "Message": "A voltage sensor is over its critical low threshold."
             }
         },
@@ -2822,6 +2898,7 @@
 
             "Documentation": {
                 "Description": "A temperature sensor is under its low warning threshold.",
+                "CustomerDesc": "A temperature sensor is under its low warning threshold.",
                 "Message": "A temperature sensor is under its low warning threshold.",
                 "Notes": [
                     "A temperature sensor crossed its low warning threshold value",
@@ -2845,6 +2922,7 @@
 
             "Documentation": {
                 "Description": "A temperature sensor is above its low warning threshold.",
+                "CustomerDesc": "A temperature sensor is above its low warning threshold.",
                 "Message": "A temperature sensor is above its low warning threshold.",
                 "Notes": [
                     "A temperature sensor crossed above its low warning threshold value."
@@ -2866,6 +2944,7 @@
 
             "Documentation": {
                 "Description": "A temperature sensor is under its low critical threshold.",
+                "CustomerDesc": "A temperature sensor is under its low critical threshold.",
                 "Message": "A temperature sensor is under its low critical threshold.",
                 "Notes": [
                     "A temperature sensor crossed its low critical threshold value",
@@ -2889,6 +2968,7 @@
 
             "Documentation": {
                 "Description": "A temperature sensor is over its low critical threshold.",
+                "CustomerDesc": "A temperature sensor is over its low critical threshold.",
                 "Message": "A temperature sensor is over its low critical threshold.",
                 "Notes": [
                     "A temperature sensor crossed above its critical threshold value"
@@ -2915,6 +2995,7 @@
 
             "Documentation": {
                 "Description": "A path access error ocurred",
+                "CustomerDesc": "A path access error ocurred",
                 "Message": "An EEPROM path access error occurred.",
                 "Notes": [
                     "This error occurs when parser is unable to access",
@@ -2938,6 +3019,7 @@
 
             "Documentation": {
                 "Description": "Invalid VPD data.",
+                "CustomerDesc": "Invalid VPD data.",
                 "Message": "A VPD data exception occurred.",
                 "Notes": [
                     "This error occurs when VPD data is found to be",
@@ -2962,6 +3044,7 @@
 
             "Documentation": {
                 "Description": "Invalid VPD ecc data.",
+                "CustomerDesc": "Invalid VPD ecc data.",
                 "Message": "A VPD ecc exception occurred.",
                 "Notes": [
                     "This error occurs when VPD ecc check fails for the FRU.",
@@ -2985,6 +3068,7 @@
 
             "Documentation": {
                 "Description": "Invalid Json",
+                "CustomerDesc": "Invalid Json",
                 "Message": "A Json failure occurred.",
                 "Notes": [
                     "This error occurs when parser fails to access",
@@ -3009,6 +3093,7 @@
 
             "Documentation": {
                 "Description": "System VPD restore failed",
+                "CustomerDesc": "System VPD restore failed",
                 "Message": "A system VPD restoration error occurred.",
                 "Notes": [
                     "This error occurs when restoring of system VPD fails.",
@@ -3032,6 +3117,7 @@
 
             "Documentation": {
                 "Description": "Dbus exception",
+                "CustomerDesc": "Dbus exception",
                 "Message": "A Dbus internal error occurred.",
                 "Notes": [
                     "This error occurs when Dbus operation fails.",
@@ -3063,6 +3149,7 @@
 
             "Documentation": {
                 "Description": "Unknown System Type",
+                "CustomerDesc": "Unknown System Type",
                 "Message": "System type not supported in DTB table.",
                 "Notes": [
                     "System type comes from combination of HW and IM value of system VPD.",
@@ -3087,6 +3174,7 @@
             "Documentation":
             {
                 "Description": "Host did not respond within the watchdog timeout interval",
+                "CustomerDesc": "Host did not respond within the watchdog timeout interval",
                 "Message": "Host did not respond before the watchdog timeout interval expired",
                 "Notes": [
                     "Host did not respond before the expiry of the watchdog timeout interval.",

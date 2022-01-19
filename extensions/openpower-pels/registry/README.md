@@ -243,10 +243,19 @@ SRC word 7 for %2.
 ```
 
 #### Description
-A short description of the error.  This is required by the Redfish schema to generate a Redfish message entry, but is not used in Redfish or PEL output.
+A short description of the error.  This is required by the Redfish schema to
+generate a Redfish message entry, but is not used in Redfish or PEL output.
 
 ```
 "Description": "A power fault"
+```
+
+#### CustomerDesc
+A customer facing description of the error.  It should not contain any
+internal names or terms.
+
+```
+"CustomerDesc": "Firmware encountered an internal error."
 ```
 
 #### Notes

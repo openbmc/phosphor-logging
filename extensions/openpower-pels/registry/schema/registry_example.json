@@ -25,6 +25,7 @@
             {
                 "Description": "A PGOOD Fault",
                 "Message": "PS %1 had a PGOOD Fault",
+                "CustomerDesc": "A power supply error occurred",
                 "MessageArgSources":
                 [
                     "SRCWord6"
