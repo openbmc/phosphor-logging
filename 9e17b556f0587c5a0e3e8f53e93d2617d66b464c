@@ -16,6 +16,23 @@
       "message": "Looks good. I\u0027ll re-review the ones added by our team and send patches as needed to change those, if at all.",
       "revId": "9e17b556f0587c5a0e3e8f53e93d2617d66b464c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d90b7ac4_36f02bf5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-01-20T14:44:47Z",
+      "side": 1,
+      "message": "Another idea is to just use the existing Description field for the customer facing one.  I guess I could go either way.",
+      "revId": "9e17b556f0587c5a0e3e8f53e93d2617d66b464c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
