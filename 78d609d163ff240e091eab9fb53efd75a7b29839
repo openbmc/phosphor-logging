@@ -16,6 +16,24 @@
       "message": "I believe these strings need to match an actual error, such as \"xyz.openbmc_project.Software.Version.Error.Incompatible\" from https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Software/Version.errors.yaml or \"xyz.openbmc_project.Software.ImageError.UnTarFailure\" from https://github.com/openbmc/phosphor-bmc-code-mgmt/blob/master/xyz/openbmc_project/Software/Image.errors.yaml",
       "revId": "78d609d163ff240e091eab9fb53efd75a7b29839",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f331db9e_71150b1a",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 2974,
+      "author": {
+        "id": 1001179
+      },
+      "writtenOn": "2022-01-20T16:05:28Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "9cd05cf1_de5146a9",
+      "revId": "78d609d163ff240e091eab9fb53efd75a7b29839",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
