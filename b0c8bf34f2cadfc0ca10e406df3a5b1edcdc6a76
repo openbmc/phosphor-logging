@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "533f07d2_f09e4e00",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000085
+      },
+      "writtenOn": "2022-01-20T17:40:09Z",
+      "side": 1,
+      "message": "There are some concerns over using trusted location code for this error.\n",
+      "revId": "b0c8bf34f2cadfc0ca10e406df3a5b1edcdc6a76",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
