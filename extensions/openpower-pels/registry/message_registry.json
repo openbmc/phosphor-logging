@@ -920,7 +920,11 @@
             "Callouts": [
                 {
                     "CalloutList": [
-                        { "Priority": "high", "SymbolicFRU": "pwrsply" }
+                        {
+                            "Priority": "high",
+                            "SymbolicFRUTrusted": "pwrsply",
+                            "UseInventoryLocCode": true
+                        }
                     ]
                 }
             ],
@@ -929,15 +933,10 @@
                 "Description": "Power Supply input power fault",
                 "Message": "A power supply has indicated an input or under voltage condition.",
                 "Notes": [
-                    "Check the power supply cabling and/or input power ",
-                    "source. The PWRSPLY procedure is used rather than ",
-                    "calling out a location code, as typically these faults ",
-                    "are related to the supplied power, the cable, or the ",
-                    "cable connectors. If the input fault resolves down to an ",
-                    "issue with the power supply itself, the power supply ",
-                    "indicating this input fault should be called out. Add the ",
-                    "CALLOUT_INVENTORY_PATH to the additional data, and set the",
-                    "CALLOUT_PRIORITY to something other than high."
+                    "The CalloutList should use the PWRSPLY symbolic FRU ",
+                    "with the trusted location code property.  The ",
+                    "location code in this callout is obtained from ",
+                    "the passed in CALLOUT_INVENTORY_PATH value."
                 ]
             }
         },
