@@ -16,6 +16,23 @@
       "message": "There are some concerns over using trusted location code for this error.\n",
       "revId": "b0c8bf34f2cadfc0ca10e406df3a5b1edcdc6a76",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ba46bab_e4a82483",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000085
+      },
+      "writtenOn": "2022-01-20T17:49:43Z",
+      "side": 1,
+      "message": "So, basically we want the call out for 110015F0 to be PWRSPLY, we include the location code so the person trying to address the problem knows which power supply to check.\n\nWe do NOT want to use trusted location code. We want the SAI turned on, not the power supply LED, as we want to make sure they follow the procedure rather than replacing a power supply. An unplugged power supply, faulty PDU, or bad power from the grid is not a problem with the power supply, it is a problem with the input power. If all that checks out, the procedure would THEN indicate to replace the power supply.",
+      "revId": "b0c8bf34f2cadfc0ca10e406df3a5b1edcdc6a76",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
