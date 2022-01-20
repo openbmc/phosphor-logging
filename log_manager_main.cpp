@@ -32,8 +32,6 @@ int main(int /*argc*/, char* /*argv*/[])
     // Recreate error d-bus objects from persisted errors.
     iMgr.restore();
 
-    bus.request_name(BUSNAME_LOGGING);
-
     for (auto& startup : phosphor::logging::Extensions::getStartupFunctions())
     {
         try
@@ -46,6 +44,8 @@ int main(int /*argc*/, char* /*argv*/[])
                   "ERROR", e);
         }
     }
+
+    bus.request_name(BUSNAME_LOGGING);
 
     return event.loop();
 }
