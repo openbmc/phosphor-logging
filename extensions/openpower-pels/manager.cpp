@@ -769,7 +769,7 @@ void Manager::updateResolution(std::unique_ptr<openpower::pels::PEL>& pel)
     auto entryN = _logManager.entries.find(pel->obmcLogID());
     if (entryN != _logManager.entries.end())
     {
-        entryN->second->resolution(callouts);
+        entryN->second->resolution(callouts, true);
     }
 }
 
@@ -782,7 +782,7 @@ void Manager::setEntryPath(uint32_t obmcLogID)
         auto entry = _logManager.entries.find(obmcLogID);
         if (entry != _logManager.entries.end())
         {
-            entry->second->path(attr.path);
+            entry->second->path(attr.path, true);
         }
     }
 }
@@ -797,12 +797,12 @@ void Manager::setServiceProviderNotifyFlag(uint32_t obmcLogID)
         if (entry != _logManager.entries.end())
         {
             entry->second->serviceProviderNotify(
-                attr.actionFlags.test(callHomeFlagBit));
+                attr.actionFlags.test(callHomeFlagBit), true);
         }
     }
 }
 
-void Manager::createPELEntry(uint32_t obmcLogID)
+void Manager::createPELEntry(uint32_t obmcLogID, bool emitIaSignal)
 {
     std::map<std::string, PropertiesVariant> varData;
     Repository::LogID id{Repository::LogID::Obmc(obmcLogID)};
@@ -836,7 +836,10 @@ void Manager::createPELEntry(uint32_t obmcLogID)
         // Create Interface for PELEntry and set properties
         auto pelEntry = std::make_unique<PELEntry>(_logManager.getBus(), path,
                                                    varData, obmcLogID, &_repo);
-        pelEntry->emit_added();
+        if (emitIaSignal)
+        {
+            pelEntry->emit_added();
+        }
         _pelEntries.emplace(std::move(path), std::move(pelEntry));
     }
 }
