@@ -33,7 +33,7 @@ class PELEntry : public PELEntryIface
     PELEntry(sdbusplus::bus::bus& bus, const std::string& path,
              const std::map<std::string, PropertiesVariant>& prop, uint32_t id,
              Repository* repo) :
-        PELEntryIface(bus, path.c_str(), prop),
+        PELEntryIface(bus, path.c_str(), prop, true),
         _obmcId(id), _repo(repo)
     {
     }
