@@ -61,7 +61,7 @@ class Manager : public PELInterface
             setEntryPath(entry.first);
             setServiceProviderNotifyFlag(entry.first);
             // Create PELEntry interface and setup properties with their values
-            createPELEntry(entry.first);
+            createPELEntry(entry.first, true);
         }
         setupPELDeleteWatch();
     }
@@ -419,8 +419,10 @@ class Manager : public PELInterface
      * supported
      *
      * @param[in] obmcLogID - The OpenBMC entry log ID
+     * @param[in] skipIaSignal - If The InterfacesAdded signal should be
+     *                           skipped after creating the interfaces.
      */
-    void createPELEntry(uint32_t obmcLogID);
+    void createPELEntry(uint32_t obmcLogID, bool skipIaSignal = false);
 
     /**
      * @brief Reference to phosphor-logging's Manager class
