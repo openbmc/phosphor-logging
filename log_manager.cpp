@@ -234,13 +234,13 @@ void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
     AssociationList objects{};
     processMetadata(errMsg, additionalData, objects);
 
-    auto e = std::make_unique<Entry>(busLog, objPath, entryId,
-                                     ms, // Milliseconds since 1970
-                                     errLvl, std::move(errMsg),
-                                     std::move(additionalData),
-                                     std::move(objects), fwVersion, *this);
-    auto path = serialize(*e);
-    e->path(path);
+    auto e = std::make_unique<Entry>(
+        busLog, objPath, entryId,
+        ms, // Milliseconds since 1970
+        errLvl, std::move(errMsg), std::move(additionalData),
+        std::move(objects), fwVersion, getEntrySerializePath(entryId), *this);
+
+    serialize(*e);
 
     if (isQuiesceOnErrorEnabled() && isCalloutPresent(*e))
     {
