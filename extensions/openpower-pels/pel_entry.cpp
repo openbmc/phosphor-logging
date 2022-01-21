@@ -1,6 +1,5 @@
 #include "pel_entry.hpp"
 
-#include <iostream>
 #include <xyz/openbmc_project/Common/error.hpp>
 
 namespace openpower
