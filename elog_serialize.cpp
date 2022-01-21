@@ -103,9 +103,14 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
     e.resolution(resolution, true);
 }
 
+fs::path getEntrySerializePath(uint32_t id, const fs::path& dir)
+{
+    return dir / std::to_string(id);
+}
+
 fs::path serialize(const Entry& e, const fs::path& dir)
 {
-    auto path = dir / std::to_string(e.id());
+    auto path = getEntrySerializePath(e.id(), dir);
     std::ofstream os(path.c_str(), std::ios::binary);
     cereal::BinaryOutputArchive oarchive(os);
     oarchive(e);

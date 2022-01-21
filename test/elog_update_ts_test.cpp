@@ -48,6 +48,7 @@ TEST(TestUpdateTS, testChangeResolved)
     uint64_t timestamp{100};
     std::string message{"test error"};
     std::string fwLevel{"level42"};
+    std::string path{"/tmp/99"};
     std::vector<std::string> testData{"additional", "data"};
     phosphor::logging::AssociationList associations{};
 
@@ -60,6 +61,7 @@ TEST(TestUpdateTS, testChangeResolved)
                std::move(testData),
                std::move(associations),
                fwLevel,
+               path,
                manager};
 
     EXPECT_EQ(elog.timestamp(), elog.updateTimestamp());
