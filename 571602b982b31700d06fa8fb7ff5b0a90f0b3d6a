@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16f6693d_d382cd4a",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-01-21T20:46:09Z",
+      "side": 1,
+      "message": "commit message says to not emit signals on resolution, but this is true, doesn\u0027t that indicate to emit a signal?",
+      "range": {
+        "startLine": 772,
+        "startChar": 45,
+        "endLine": 772,
+        "endChar": 49
+      },
+      "revId": "571602b982b31700d06fa8fb7ff5b0a90f0b3d6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
