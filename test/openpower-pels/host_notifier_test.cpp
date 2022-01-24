@@ -300,7 +300,7 @@ TEST_F(HostNotifierTest, TestSendCmd)
 
     dataIface.changeHostState(true);
 
-    runEvents(sdEvent, 1);
+    runEvents(sdEvent, 2);
 
     // It was sent up
     EXPECT_EQ(mockHostIface->numCmdsProcessed(), 1);
@@ -355,7 +355,7 @@ TEST_F(HostNotifierTest, TestStartAfterHostUp)
     HostNotifier notifier{repo, dataIface, std::move(hostIface)};
 
     // It should start sending PELs right away
-    runEvents(sdEvent, 2);
+    runEvents(sdEvent, 3);
 
     EXPECT_EQ(mockHostIface->numCmdsProcessed(), 2);
     EXPECT_EQ(notifier.queueSize(), 0);
@@ -466,7 +466,7 @@ TEST_F(HostNotifierTest, TestCancelCmd)
     EXPECT_EQ(notifier.queueSize(), 1);
 
     // Dispatch it
-    runEvents(sdEvent, 1);
+    runEvents(sdEvent, 2);
 
     // It was sent and off the queue
     EXPECT_EQ(notifier.queueSize(), 0);
@@ -505,7 +505,7 @@ TEST_F(HostNotifierTest, TestPowerCycleAndAcks)
 
     dataIface.changeHostState(true);
 
-    runEvents(sdEvent, 2);
+    runEvents(sdEvent, 3);
 
     // The were both sent.
     EXPECT_EQ(mockHostIface->numCmdsProcessed(), 2);
@@ -518,7 +518,7 @@ TEST_F(HostNotifierTest, TestPowerCycleAndAcks)
 
     // Power back on and send them again
     dataIface.changeHostState(true);
-    runEvents(sdEvent, 2);
+    runEvents(sdEvent, 3);
 
     EXPECT_EQ(mockHostIface->numCmdsProcessed(), 4);
     EXPECT_EQ(notifier.queueSize(), 0);

@@ -146,6 +146,17 @@ class MockHostInterface : public HostInterface
     }
 
     /**
+     * @brief Returns the amount of time to wait after the host is up
+     *        before sending commands.
+     *
+     * @return milliseconds - The amount of time to wait
+     */
+    virtual std::chrono::milliseconds getHostUpDelay() const override
+    {
+        return std::chrono::milliseconds(0);
+    }
+
+    /**
      * @brief Returns the number of commands processed
      */
     size_t numCmdsProcessed() const
