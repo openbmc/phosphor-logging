@@ -26,6 +26,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "44e4bd2d_a7e37666",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2022-01-24T21:52:37Z",
+      "side": 1,
+      "message": "This should describe that the list of log ids are unresolved, so something like \"Get the list of unresolved OpenBMC event...\" or \"log ids that are not resolved and have...\"",
+      "revId": "44002dba6d2f2cf291a284fb91e3c5ded3276aea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abb8527d_613e9399",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2022-01-24T21:52:37Z",
+      "side": 1,
+      "message": "Could we make this call inside _repo.prune() to avoid adding a requirement to pass a vector to it?",
+      "revId": "44002dba6d2f2cf291a284fb91e3c5ded3276aea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "37036757_91d7daa8",
         "filename": "test/openpower-pels/repository_test.cpp",
         "patchSetId": 1
