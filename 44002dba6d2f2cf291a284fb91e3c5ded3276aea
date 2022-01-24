@@ -26,6 +26,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c4a6f8d3_f852b78c",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-01-24T22:41:27Z",
+      "side": 1,
+      "message": "how about change this one to associationDef, and then the one below just call \u0027association\u0027.",
+      "revId": "44002dba6d2f2cf291a284fb91e3c5ded3276aea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e8f0283_84ec8574",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 795,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-01-24T22:41:27Z",
+      "side": 1,
+      "message": "if (!logPath.empty()) is a little better",
+      "range": {
+        "startLine": 795,
+        "startChar": 28,
+        "endLine": 795,
+        "endChar": 42
+      },
+      "revId": "44002dba6d2f2cf291a284fb91e3c5ded3276aea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "44e4bd2d_a7e37666",
         "filename": "extensions/openpower-pels/data_interface.hpp",
         "patchSetId": 1
@@ -60,6 +100,70 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "812e89d5_3276a239",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-01-24T22:41:27Z",
+      "side": 1,
+      "message": "Would have to pass const DataInterfaceBase\u0026 instead, but that should be OK too.",
+      "parentUuid": "abb8527d_613e9399",
+      "revId": "44002dba6d2f2cf291a284fb91e3c5ded3276aea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c99d9c4_2bce696a",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 721,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-01-24T22:41:27Z",
+      "side": 1,
+      "message": "you can simplify a bit with std::find:\n\nstd::find(idsWithHwIsoEntry.begin(). idsWithHwIsoEntry.end(), removedID)",
+      "range": {
+        "startLine": 721,
+        "startChar": 31,
+        "endLine": 721,
+        "endChar": 44
+      },
+      "revId": "44002dba6d2f2cf291a284fb91e3c5ded3276aea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0f4c9a2_f5f32d8f",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 726,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-01-24T22:41:27Z",
+      "side": 1,
+      "message": "it seems like this might cause you to skip one?  I think you can just leave it out and keep the continue.",
+      "range": {
+        "startLine": 726,
+        "startChar": 19,
+        "endLine": 726,
+        "endChar": 25
+      },
+      "revId": "44002dba6d2f2cf291a284fb91e3c5ded3276aea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "37036757_91d7daa8",
         "filename": "test/openpower-pels/repository_test.cpp",
         "patchSetId": 1
@@ -77,6 +181,23 @@
         "endLine": 18,
         "endChar": 20
       },
+      "revId": "44002dba6d2f2cf291a284fb91e3c5ded3276aea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d1f8d47_3c70a0b6",
+        "filename": "test/openpower-pels/repository_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1051,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-01-24T22:41:27Z",
+      "side": 1,
+      "message": "don\u0027t you need an EXPECT_CALL somewhere to force the getHwIDs... call to return the list?",
       "revId": "44002dba6d2f2cf291a284fb91e3c5ded3276aea",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
