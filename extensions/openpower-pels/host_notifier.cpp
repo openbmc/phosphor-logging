@@ -33,7 +33,10 @@ HostNotifier::HostNotifier(Repository& repo, DataInterfaceBase& dataIface,
                 std::bind(std::mem_fn(&HostNotifier::retryTimerExpired), this)),
     _hostFullTimer(
         _hostIface->getEvent(),
-        std::bind(std::mem_fn(&HostNotifier::hostFullTimerExpired), this))
+        std::bind(std::mem_fn(&HostNotifier::hostFullTimerExpired), this)),
+    _hostUpTimer(
+        _hostIface->getEvent(),
+        std::bind(std::mem_fn(&HostNotifier::hostUpTimerExpired), this))
 {
     // Subscribe to be told about new PELs.
     _repo.subscribeToAdds(subscriptionName,
@@ -64,7 +67,8 @@ HostNotifier::HostNotifier(Repository& repo, DataInterfaceBase& dataIface,
     // Start sending logs if the host is running
     if (!_pelQueue.empty() && _dataIface.isHostUp())
     {
-        doNewLogNotify();
+        log<level::DEBUG>("Host is already up at startup");
+        _hostUpTimer.restartOnce(_hostIface->getHostUpDelay());
     }
 }
 
@@ -72,6 +76,12 @@ HostNotifier::~HostNotifier()
 {
     _repo.unsubscribeFromAdds(subscriptionName);
     _dataIface.unsubscribeFromHostStateChange(subscriptionName);
+}
+
+void HostNotifier::hostUpTimerExpired()
+{
+    log<level::DEBUG>("Host up timer expired");
+    doNewLogNotify();
 }
 
 bool HostNotifier::addPELToQueue(const PEL& pel)
@@ -172,8 +182,8 @@ void HostNotifier::newLogCallback(const PEL& pel)
 
     _pelQueue.push_back(pel.id());
 
-    // Notify shouldn't happen if host is down or full
-    if (!_dataIface.isHostUp() || _hostFull)
+    // Notify shouldn't happen if host is down, not up long enough, or full
+    if (!_dataIface.isHostUp() || _hostFull || _hostUpTimer.isEnabled())
     {
         return;
     }
@@ -321,8 +331,7 @@ void HostNotifier::hostStateChange(bool hostUp)
     if (hostUp && !_pelQueue.empty())
     {
         log<level::DEBUG>("Host state change to on");
-
-        doNewLogNotify();
+        _hostUpTimer.restartOnce(_hostIface->getHostUpDelay());
     }
     else if (!hostUp)
     {
@@ -343,6 +352,11 @@ void HostNotifier::hostStateChange(bool hostUp)
         if (_hostFullTimer.isEnabled())
         {
             _hostFullTimer.setEnabled(false);
+        }
+
+        if (_hostUpTimer.isEnabled())
+        {
+            _hostUpTimer.setEnabled(false);
         }
     }
 }

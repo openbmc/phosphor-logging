@@ -110,6 +110,19 @@ class HostInterface
         return _defaultHostFullRetryDelay;
     }
 
+    /**
+     * @brief Returns the amount of time to wait after the host is up
+     *        before sending commands.
+     *
+     * In this class to help with mocking.
+     *
+     * @return milliseconds - The amount of time to wait
+     */
+    virtual std::chrono::milliseconds getHostUpDelay() const
+    {
+        return _defaultHostUpDelay;
+    }
+
     using ResponseFunction = std::function<void(ResponseStatus)>;
 
     /**
@@ -226,6 +239,12 @@ class HostInterface
      *        was full before sending the PEL again.
      */
     const std::chrono::milliseconds _defaultHostFullRetryDelay{60000};
+
+    /**
+     * @brief The default amount of time to wait after the host is up
+     *        before sending up the PELs.
+     */
+    const std::chrono::milliseconds _defaultHostUpDelay{60000};
 };
 
 } // namespace pels
