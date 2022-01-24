@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "678e757a_923192e1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2022-01-24T20:50:23Z",
+      "side": 1,
+      "message": "Might want to update the .clang-format to catch these in the future: https://github.com/openbmc/docs/commit/2f52b0a3e45749c0474e5215ed6d21efeb39c443",
+      "revId": "89a401725fdd346abfdbc602155489b9ab59088f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
