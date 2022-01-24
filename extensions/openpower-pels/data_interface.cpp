@@ -22,6 +22,7 @@
 #include <fmt/format.h>
 
 #include <fstream>
+#include <iostream>
 #include <iterator>
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
@@ -89,6 +90,8 @@ constexpr auto dumpEntry = "xyz.openbmc_project.Dump.Entry";
 constexpr auto dumpProgress = "xyz.openbmc_project.Common.Progress";
 constexpr auto hwIsolationCreate = "org.open_power.HardwareIsolation.Create";
 constexpr auto bootRawProgress = "xyz.openbmc_project.State.Boot.Raw";
+constexpr auto hwIsolationEntry = "xyz.openbmc_project.HardwareIsolation.Entry";
+constexpr auto associationHwIsolation = "xyz.openbmc_project.Association";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
@@ -741,6 +744,68 @@ void DataInterface::createProgressSRC(
     method.append(interface::bootRawProgress, "Value", variant);
 
     _bus.call(method);
+}
+
+std::vector<uint32_t> DataInterface::getLogIDWithHwIsolation() const
+{
+    std::vector<std::string> association = {"xyz.openbmc_project.Association"};
+    std::string hwErrorLog = "/isolated_hw_errorlog";
+    DBusPathList paths;
+    std::vector<uint32_t> ids;
+
+    // Get all latest mapper associations
+    paths = getPaths(association);
+    for (auto& path : paths)
+    {
+        // Look for object path with hardware isolation entry if any
+        size_t pos = path.find(hwErrorLog);
+        if (pos != std::string::npos)
+        {
+            // Get the object path
+            std::string ph = path;
+            ph.erase(pos, hwErrorLog.length());
+            auto service = getService(ph, interface::hwIsolationEntry);
+            if (!service.empty())
+            {
+                bool status;
+                DBusValue value;
+
+                // Read the Resolved property from object path
+                getProperty(service, ph, interface::hwIsolationEntry,
+                            "Resolved", value);
+
+                status = std::get<bool>(value);
+
+                // If the entry isn't resolved
+                if (!status)
+                {
+                    auto service =
+                        getService(path, interface::associationHwIsolation);
+                    if (!service.empty())
+                    {
+                        DBusValue value;
+
+                        // Read Endpoints property
+                        getProperty(service, path,
+                                    interface::associationHwIsolation,
+                                    "endpoints", value);
+
+                        auto logPath =
+                            std::get<std::vector<std::string>>(value);
+                        if (logPath.size())
+                        {
+                            // Get OpenBMC event log Id
+                            uint32_t id = stoi(logPath[0].substr(
+                                logPath[0].find_last_of('/') + 1));
+                            ids.push_back(id);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return ids;
 }
 } // namespace pels
 } // namespace openpower
