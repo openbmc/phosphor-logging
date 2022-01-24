@@ -84,11 +84,13 @@ constexpr auto ledGroup = "xyz.openbmc_project.Led.Group";
 constexpr auto operationalStatus =
     "xyz.openbmc_project.State.Decorator.OperationalStatus";
 constexpr auto logSetting = "xyz.openbmc_project.Logging.Settings";
-constexpr auto association = "xyz.openbmc_project.Association.Definitions";
+constexpr auto associationDef = "xyz.openbmc_project.Association.Definitions";
 constexpr auto dumpEntry = "xyz.openbmc_project.Dump.Entry";
 constexpr auto dumpProgress = "xyz.openbmc_project.Common.Progress";
 constexpr auto hwIsolationCreate = "org.open_power.HardwareIsolation.Create";
 constexpr auto bootRawProgress = "xyz.openbmc_project.State.Boot.Raw";
+constexpr auto hwIsolationEntry = "xyz.openbmc_project.HardwareIsolation.Entry";
+constexpr auto association = "xyz.openbmc_project.Association";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
@@ -545,9 +547,9 @@ void DataInterface::setCriticalAssociation(const std::string& objectPath) const
 {
     DBusValue getAssociationValue;
 
-    auto service = getService(objectPath, interface::association);
+    auto service = getService(objectPath, interface::associationDef);
 
-    getProperty(service, objectPath, interface::association, "Associations",
+    getProperty(service, objectPath, interface::associationDef, "Associations",
                 getAssociationValue);
 
     auto association = std::get<AssociationsProperty>(getAssociationValue);
@@ -565,7 +567,7 @@ void DataInterface::setCriticalAssociation(const std::string& objectPath) const
         auto method = _bus.new_method_call(service.c_str(), objectPath.c_str(),
                                            interface::dbusProperty, "Set");
 
-        method.append(interface::association, "Associations",
+        method.append(interface::associationDef, "Associations",
                       setAssociationValue);
         _bus.call(method);
     }
@@ -741,6 +743,97 @@ void DataInterface::createProgressSRC(
     method.append(interface::bootRawProgress, "Value", variant);
 
     _bus.call(method);
+}
+
+std::vector<uint32_t> DataInterface::getLogIDWithHwIsolation() const
+{
+    std::vector<std::string> association = {"xyz.openbmc_project.Association"};
+    std::string hwErrorLog = "/isolated_hw_errorlog";
+    std::string errorLog = "/error_log";
+    DBusPathList paths;
+    std::vector<uint32_t> ids;
+
+    // Get all latest mapper associations
+    paths = getPaths(association);
+    for (auto& path : paths)
+    {
+        // Look for object path with hardware isolation entry if any
+        size_t pos = path.find(hwErrorLog);
+        if (pos != std::string::npos)
+        {
+            // Get the object path
+            std::string ph = path;
+            ph.erase(pos, hwErrorLog.length());
+            auto service = getService(ph, interface::hwIsolationEntry);
+            if (!service.empty())
+            {
+                bool status;
+                DBusValue value;
+
+                // Read the Resolved property from object path
+                getProperty(service, ph, interface::hwIsolationEntry,
+                            "Resolved", value);
+
+                status = std::get<bool>(value);
+
+                // If the entry isn't resolved
+                if (!status)
+                {
+                    auto service = getService(path, interface::association);
+                    if (!service.empty())
+                    {
+                        DBusValue value;
+
+                        // Read Endpoints property
+                        getProperty(service, path, interface::association,
+                                    "endpoints", value);
+
+                        auto logPath =
+                            std::get<std::vector<std::string>>(value);
+                        if (!logPath.empty())
+                        {
+                            // Get OpenBMC event log Id
+                            uint32_t id = stoi(logPath[0].substr(
+                                logPath[0].find_last_of('/') + 1));
+                            ids.push_back(id);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Look for object path with error_log entry if any
+        pos = path.find(errorLog);
+        if (pos != std::string::npos)
+        {
+            auto service = getService(path, interface::association);
+            if (!service.empty())
+            {
+                DBusValue value;
+
+                // Read Endpoints property
+                getProperty(service, path, interface::association, "endpoints",
+                            value);
+
+                auto logPath = std::get<std::vector<std::string>>(value);
+                if (!logPath.empty())
+                {
+                    // Get OpenBMC event log Id
+                    uint32_t id = stoi(
+                        logPath[0].substr(logPath[0].find_last_of('/') + 1));
+                    ids.push_back(id);
+                }
+            }
+        }
+    }
+
+    if (ids.size() > 1)
+    {
+        // remove duplicates to have only unique ids
+        std::sort(ids.begin(), ids.end());
+        ids.erase(std::unique(ids.begin(), ids.end()), ids.end());
+    }
+    return ids;
 }
 } // namespace pels
 } // namespace openpower
