@@ -57,6 +57,8 @@ class MockDataInterface : public DataInterfaceBase
     MOCK_METHOD(void, createProgressSRC,
                 (const uint64_t&, const std::vector<uint8_t>&),
                 (const override));
+    MOCK_METHOD(std::vector<uint32_t>, getLogIDWithHwIsolation, (),
+                (const override));
 
     void changeHostState(bool newState)
     {

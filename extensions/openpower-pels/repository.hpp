@@ -402,10 +402,12 @@ class Repository
      *   Pass 3: only delete PHYP sent PELs
      *   Pass 4: delete all PELs
      *
+     * @param[in] ids - The OpenBMC event log Ids with hardware isolation entry.
+     *
      * @return std::vector<uint32_t> - The OpenBMC event log IDs of
      *                                 the PELs that were deleted.
      */
-    std::vector<uint32_t> prune();
+    std::vector<uint32_t> prune(const std::vector<uint32_t>& idsWithHwIsoEntry);
 
     /**
      * @brief Returns the path to the directory where the PEL
@@ -558,11 +560,14 @@ class Repository
      *                           removed.
      * @param[in] isPELType - The bool(const PELAttributes&) function
      *                         used to select the PELs to operate on.
+     * @param[in] ids - The OpenBMC event log Ids with hardware isolation
+     *                   entry.
      *
      * @param[out] removedBMCLogIDs - The OpenBMC event log IDs of the
      *                                removed PELs.
      */
     void removePELs(IsOverLimitFunc& isOverLimit, IsPELTypeFunc& isPELType,
+                    const std::vector<uint32_t>& idsWithHwIsoEntry,
                     std::vector<uint32_t>& removedBMCLogIDs);
     /**
      * @brief The filesystem path to the PEL logs.

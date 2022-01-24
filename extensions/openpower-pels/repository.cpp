@@ -582,7 +582,8 @@ std::vector<Repository::AttributesReference>
     return attributes;
 }
 
-std::vector<uint32_t> Repository::prune()
+std::vector<uint32_t>
+    Repository::prune(const std::vector<uint32_t>& idsWithHwIsoEntry)
 {
     std::vector<uint32_t> obmcLogIDs;
     std::string msg = "Pruning PEL repository that takes up " +
@@ -650,16 +651,19 @@ std::vector<uint32_t> Repository::prune()
 
     // Check all 4 categories, which will result in at most 90%
     // usage (15 + 30 + 15 + 30).
-    removePELs(overBMCInfoLimit, isBMCInfo, obmcLogIDs);
-    removePELs(overBMCNonInfoLimit, isBMCNonInfo, obmcLogIDs);
-    removePELs(overNonBMCInfoLimit, isNonBMCInfo, obmcLogIDs);
-    removePELs(overNonBMCNonInfoLimit, isNonBMCNonInfo, obmcLogIDs);
+    removePELs(overBMCInfoLimit, isBMCInfo, idsWithHwIsoEntry, obmcLogIDs);
+    removePELs(overBMCNonInfoLimit, isBMCNonInfo, idsWithHwIsoEntry,
+               obmcLogIDs);
+    removePELs(overNonBMCInfoLimit, isNonBMCInfo, idsWithHwIsoEntry,
+               obmcLogIDs);
+    removePELs(overNonBMCNonInfoLimit, isNonBMCNonInfo, idsWithHwIsoEntry,
+               obmcLogIDs);
 
     // After the above pruning check if there are still too many PELs,
     // which can happen depending on PEL sizes.
     if (_pelAttributes.size() > _maxNumPELs)
     {
-        removePELs(tooManyPELsLimit, isAnyPEL, obmcLogIDs);
+        removePELs(tooManyPELsLimit, isAnyPEL, idsWithHwIsoEntry, obmcLogIDs);
     }
 
     if (!obmcLogIDs.empty())
@@ -674,6 +678,7 @@ std::vector<uint32_t> Repository::prune()
 
 void Repository::removePELs(IsOverLimitFunc& isOverLimit,
                             IsPELTypeFunc& isPELType,
+                            const std::vector<uint32_t>& idsWithHwIsoEntry,
                             std::vector<uint32_t>& removedBMCLogIDs)
 {
     if (!isOverLimit())
@@ -712,6 +717,15 @@ void Repository::removePELs(IsOverLimitFunc& isOverLimit,
             if (isPELType(pel.second) && stateCheck(pel.second))
             {
                 auto removedID = pel.first.obmcID.id;
+
+                auto idFound = std::find(idsWithHwIsoEntry.begin(),
+                                         idsWithHwIsoEntry.end(), removedID);
+                if (idFound != idsWithHwIsoEntry.end())
+                {
+                    ++it;
+                    continue;
+                }
+
                 remove(pel.first);
 
                 removedBMCLogIDs.push_back(removedID);
