@@ -367,6 +367,14 @@ class DataInterfaceBase
         createProgressSRC(const uint64_t& priSRC,
                           const std::vector<uint8_t>& srcStruct) const = 0;
 
+    /**
+     * @brief Get the list of unresolved OpenBMC event log ids that have an
+     * associated hardware isolation entry.
+     *
+     * @return std::vector<uint32_t> - The list of log ids
+     */
+    virtual std::vector<uint32_t> getLogIDWithHwIsolation() const = 0;
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
@@ -676,6 +684,14 @@ class DataInterface : public DataInterfaceBase
     void
         createProgressSRC(const uint64_t& priSRC,
                           const std::vector<uint8_t>& srcStruct) const override;
+
+    /**
+     * @brief Get the list of unresolved OpenBMC event log ids that have an
+     * associated hardware isolation entry.
+     *
+     * @return std::vector<uint32_t> - The list of log ids
+     */
+    std::vector<uint32_t> getLogIDWithHwIsolation() const override;
 
   private:
     /**

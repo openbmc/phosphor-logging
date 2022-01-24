@@ -520,7 +520,9 @@ void Manager::scheduleRepoPrune()
 
 void Manager::pruneRepo(sdeventplus::source::EventBase& /*source*/)
 {
-    auto idsToDelete = _repo.prune();
+    auto idsWithHwIsoEntry = _dataIface->getLogIDWithHwIsolation();
+
+    auto idsToDelete = _repo.prune(idsWithHwIsoEntry);
 
     // Remove the OpenBMC event logs for the PELs that were just removed.
     std::for_each(idsToDelete.begin(), idsToDelete.end(),
