@@ -156,6 +156,9 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
                         .c_str());
 
                 _repo.archivePEL(*pel);
+
+                // No need to keep around the openBMC event log entry
+                scheduleObmcLogDelete(obmcLogID);
                 return;
             }
         }
@@ -225,6 +228,9 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
         std::ofstream pelFile{getPELRepoPath() / "badPEL"};
         pelFile.write(reinterpret_cast<const char*>(pelData.data()),
                       pelData.size());
+
+        // No need to keep around the openBMC event log entry
+        scheduleObmcLogDelete(obmcLogID);
     }
 }
 
@@ -900,6 +906,21 @@ void Manager::updateProgressSRC(
             }
         }
     }
+}
+
+void Manager::scheduleObmcLogDelete(uint32_t obmcLogID)
+{
+    _obmcLogDeleteEventSource = std::make_unique<sdeventplus::source::Defer>(
+        _event, std::bind(std::mem_fn(&Manager::deleteObmcLog), this,
+                          std::placeholders::_1, obmcLogID));
+}
+
+void Manager::deleteObmcLog(sdeventplus::source::EventBase&, uint32_t obmcLogID)
+{
+    log<level::INFO>(
+        fmt::format("Removing event log with no PEL: {}", obmcLogID).c_str());
+    _logManager.erase(obmcLogID);
+    _obmcLogDeleteEventSource.reset();
 }
 
 } // namespace pels
