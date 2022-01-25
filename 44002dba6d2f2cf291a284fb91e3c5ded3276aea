@@ -43,6 +43,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "821f2aa3_cac35c8e",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2022-01-25T08:58:50Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "c4a6f8d3_f852b78c",
+      "revId": "44002dba6d2f2cf291a284fb91e3c5ded3276aea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2e8f0283_84ec8574",
         "filename": "extensions/openpower-pels/data_interface.cpp",
         "patchSetId": 1
@@ -66,6 +84,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2415f35b_564017a6",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 795,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2022-01-25T08:58:50Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "2e8f0283_84ec8574",
+      "range": {
+        "startLine": 795,
+        "startChar": 28,
+        "endLine": 795,
+        "endChar": 42
+      },
+      "revId": "44002dba6d2f2cf291a284fb91e3c5ded3276aea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "44e4bd2d_a7e37666",
         "filename": "extensions/openpower-pels/data_interface.hpp",
         "patchSetId": 1
@@ -77,6 +119,24 @@
       "writtenOn": "2022-01-24T21:52:37Z",
       "side": 1,
       "message": "This should describe that the list of log ids are unresolved, so something like \"Get the list of unresolved OpenBMC event...\" or \"log ids that are not resolved and have...\"",
+      "revId": "44002dba6d2f2cf291a284fb91e3c5ded3276aea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfd3f5d2_893f2026",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2022-01-25T08:58:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44e4bd2d_a7e37666",
       "revId": "44002dba6d2f2cf291a284fb91e3c5ded3276aea",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -118,6 +178,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a1ec3c5e_b9fec9ac",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2022-01-25T08:58:50Z",
+      "side": 1,
+      "message": "Either way we have to pass DataInterfaceBase or vector to repo.prune() to process it.",
+      "parentUuid": "812e89d5_3276a239",
+      "revId": "44002dba6d2f2cf291a284fb91e3c5ded3276aea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4c99d9c4_2bce696a",
         "filename": "extensions/openpower-pels/repository.cpp",
         "patchSetId": 1
@@ -141,6 +219,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "649fa04f_bce5b84f",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 721,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2022-01-25T08:58:50Z",
+      "side": 1,
+      "message": "Yeah ok",
+      "parentUuid": "4c99d9c4_2bce696a",
+      "range": {
+        "startLine": 721,
+        "startChar": 31,
+        "endLine": 721,
+        "endChar": 44
+      },
+      "revId": "44002dba6d2f2cf291a284fb91e3c5ded3276aea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d0f4c9a2_f5f32d8f",
         "filename": "extensions/openpower-pels/repository.cpp",
         "patchSetId": 1
@@ -152,6 +254,30 @@
       "writtenOn": "2022-01-24T22:41:27Z",
       "side": 1,
       "message": "it seems like this might cause you to skip one?  I think you can just leave it out and keep the continue.",
+      "range": {
+        "startLine": 726,
+        "startChar": 19,
+        "endLine": 726,
+        "endChar": 25
+      },
+      "revId": "44002dba6d2f2cf291a284fb91e3c5ded3276aea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2085860_fac96001",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 726,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2022-01-25T08:58:50Z",
+      "side": 1,
+      "message": "oh is it.. ok. I observed this being removed was causing unit test to timeout.. seems to be getting in loop.",
+      "parentUuid": "d0f4c9a2_f5f32d8f",
       "range": {
         "startLine": 726,
         "startChar": 19,
@@ -198,6 +324,24 @@
       "writtenOn": "2022-01-24T22:41:27Z",
       "side": 1,
       "message": "don\u0027t you need an EXPECT_CALL somewhere to force the getHwIDs... call to return the list?",
+      "revId": "44002dba6d2f2cf291a284fb91e3c5ded3276aea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7b543dd_2b473270",
+        "filename": "test/openpower-pels/repository_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1051,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2022-01-25T08:58:50Z",
+      "side": 1,
+      "message": "In this case, no as-in the test case is in repository_test.cpp and having passed in the vector value should be sufficient to test.",
+      "parentUuid": "6d1f8d47_3c70a0b6",
       "revId": "44002dba6d2f2cf291a284fb91e3c5ded3276aea",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
