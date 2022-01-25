@@ -290,6 +290,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "922d4527_1f97ecca",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 726,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-01-25T14:26:39Z",
+      "side": 1,
+      "message": "oh yea you\u0027re right, there\u0027s no it++ in the for loop above",
+      "parentUuid": "d2085860_fac96001",
+      "range": {
+        "startLine": 726,
+        "startChar": 19,
+        "endLine": 726,
+        "endChar": 25
+      },
+      "revId": "44002dba6d2f2cf291a284fb91e3c5ded3276aea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "37036757_91d7daa8",
         "filename": "test/openpower-pels/repository_test.cpp",
         "patchSetId": 1
@@ -342,6 +366,24 @@
       "side": 1,
       "message": "In this case, no as-in the test case is in repository_test.cpp and having passed in the vector value should be sufficient to test.",
       "parentUuid": "6d1f8d47_3c70a0b6",
+      "revId": "44002dba6d2f2cf291a284fb91e3c5ded3276aea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f5a474d_43cc146a",
+        "filename": "test/openpower-pels/repository_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1051,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-01-25T14:26:39Z",
+      "side": 1,
+      "message": "yea, not sure what I was thinking there",
+      "parentUuid": "b7b543dd_2b473270",
       "revId": "44002dba6d2f2cf291a284fb91e3c5ded3276aea",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
