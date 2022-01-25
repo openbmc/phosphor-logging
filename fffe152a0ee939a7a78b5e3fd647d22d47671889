@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7dc181e9_5ec7b176",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001062
+      },
+      "writtenOn": "2022-01-25T08:12:22Z",
+      "side": 1,
+      "message": "How did you arrived at the optimal time to wait? what if the host takes time longer than expected.",
+      "revId": "fffe152a0ee939a7a78b5e3fd647d22d47671889",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
