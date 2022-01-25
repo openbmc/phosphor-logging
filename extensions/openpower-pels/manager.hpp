@@ -425,6 +425,21 @@ class Manager : public PELInterface
     void createPELEntry(uint32_t obmcLogID, bool skipIaSignal = false);
 
     /**
+     * @brief Schedules the delete of the OpenBMC event log for when
+     *        execution gets back to the event loop (uses sd_event_add_defer). 
+     *
+     * @param[in] obmcLogID - The OpenBMC entry log ID
+     */
+    void scheduleObmcLogDelete(uint32_t obmcLogID);
+
+    /**
+     * @brief SD event callback to delete an OpenBMC event log
+     *
+     * @param[in] obmcLogID - The OpenBMC entry log ID
+     */
+    void deleteObmcLog(sdeventplus::source::EventBase&, uint32_t obmcLogID);
+
+    /**
      * @brief Reference to phosphor-logging's Manager class
      */
     phosphor::logging::internal::Manager& _logManager;
@@ -481,6 +496,12 @@ class Manager : public PELInterface
      *        running out of space to make room for new ones.
      */
     std::unique_ptr<sdeventplus::source::Defer> _repoPrunerEventSource;
+
+    /**
+     * @brief The event source for deleting an OpenBMC event log.
+     *        Used when its corresponding PEL is invalid. 
+     */
+    std::unique_ptr<sdeventplus::source::Defer> _obmcLogDeleteEventSource;
 
     /**
      * @brief The even source for watching for deleted PEL files.
