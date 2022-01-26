@@ -573,7 +573,8 @@ or both change), it is recommended to disable the existing configuration first.
 phosphor-logging supports a setting, which when set, will result in the
 software looking at new phosphor-logging entries being created, and if a
 CALLOUT* is found within the entry, ensuring the system will not power
-on.
+on.  Entries with severities of Informational or Debug will not block boots,
+even if they have callouts.
 
 The full design for this can be found
 [here](https://github.com/openbmc/docs/blob/master/designs/fail-boot-on-hw-error.md)
