@@ -242,7 +242,8 @@ void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
 
     serialize(*e);
 
-    if (isQuiesceOnErrorEnabled() && isCalloutPresent(*e))
+    if (isQuiesceOnErrorEnabled() && (errLvl < Entry::sevLowerLimit) &&
+        isCalloutPresent(*e))
     {
         quiesceOnError(entryId);
     }
