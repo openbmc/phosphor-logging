@@ -312,6 +312,14 @@
                 }
             },
 
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
             "Documentation":
             {
                 "Description": "The host sent the BMC an invalid PEL",
@@ -361,6 +369,14 @@
                 {
                 }
             },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
 
             "Documentation":
             {
@@ -3025,6 +3041,14 @@
                 }
             },
 
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
             "Documentation": {
                 "Description": "Invalid Json",
                 "Message": "A Json failure occurred.",
@@ -3071,6 +3095,14 @@
                 {
                 }
             },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
 
             "Documentation": {
                 "Description": "Dbus exception",
