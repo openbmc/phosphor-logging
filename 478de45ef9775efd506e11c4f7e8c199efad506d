@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2bdff1c_ea0ae3cc",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-01-27T14:11:15Z",
+      "side": 1,
+      "message": "In my mind, the higher severity errors were higher numbers, but I see in PDI they\u0027re actually lower numbers, so this make sense to me now.",
+      "range": {
+        "startLine": 245,
+        "startChar": 45,
+        "endLine": 245,
+        "endChar": 46
+      },
+      "revId": "478de45ef9775efd506e11c4f7e8c199efad506d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
