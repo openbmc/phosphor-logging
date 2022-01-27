@@ -629,7 +629,7 @@ setup(
     import json
     def parseSRCToJson(ascii_str, word2, word3, word4, word5, word6, word7, \
                        word8, word9):
-        d = dict()
+        d = dict({'A': 1, 'B': 2})
         ...
         # Decode SRC data into dictionary
         ...
