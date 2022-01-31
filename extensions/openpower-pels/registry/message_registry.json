@@ -142,7 +142,7 @@
 
         {
             "Name": "xyz.openbmc_project.Sensor.Device.Error.ReadFailure",
-            "Subsystem": "cec_chip_iface",
+            "Subsystem": "cec_i2c",
 
             "SRC":
             {
@@ -171,7 +171,7 @@
 
         {
             "Name": "xyz.openbmc_project.Common.Device.Error.ReadFailure",
-            "Subsystem": "cec_chip_iface",
+            "Subsystem": "cec_i2c",
 
             "SRC":
             {
@@ -200,7 +200,7 @@
 
         {
             "Name": "xyz.openbmc_project.Control.Device.Error.WriteFailure",
-            "Subsystem": "cec_chip_iface",
+            "Subsystem": "cec_i2c",
 
             "SRC":
             {
@@ -229,7 +229,7 @@
 
         {
             "Name": "xyz.openbmc_project.Common.Device.Error.WriteFailure",
-            "Subsystem": "cec_chip_iface",
+            "Subsystem": "cec_i2c",
 
             "SRC":
             {
