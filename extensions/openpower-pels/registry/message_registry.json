@@ -1889,6 +1889,48 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Power.UPS.Error.Battery.Discharging",
+            "Subsystem": "power",
+            "Severity": "non_error",
+            "ActionFlags": ["report"],
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x4201",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "The Uninterruptible Power Supply (UPS) battery is discharging and providing power to the system due to a utility failure",
+                "Message": "The Uninterruptible Power Supply (UPS) battery is discharging and providing power to the system due to a utility failure",
+                "Notes": [
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Power.UPS.Error.Battery.Low",
+            "Subsystem": "power",
+            "Severity": "non_error",
+            "ActionFlags": ["report"],
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x4203",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "The Uninterruptible Power Supply (UPS) battery level is low",
+                "Message": "The Uninterruptible Power Supply (UPS) battery level is low",
+                "Notes": [
+                ]
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.Power.Regulators.Error.ConfigFile",
             "Subsystem": "power",
             "ComponentID": "0x2700",
