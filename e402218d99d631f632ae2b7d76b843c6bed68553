@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5eed9c68_1b4edbf1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-02-02T02:05:35Z",
+      "side": 1,
+      "message": "I\u0027m surprised these are info errors. Is the design that BMC notifies PHYP and they power down with an unrecoverable SRC for the user?",
+      "revId": "e402218d99d631f632ae2b7d76b843c6bed68553",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
