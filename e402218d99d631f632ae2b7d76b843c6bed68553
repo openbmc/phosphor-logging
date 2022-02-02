@@ -34,6 +34,24 @@
       "parentUuid": "5eed9c68_1b4edbf1",
       "revId": "e402218d99d631f632ae2b7d76b843c6bed68553",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "976d80b6_3414e06e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2022-02-02T19:28:05Z",
+      "side": 1,
+      "message": "Joan Ries from the PHYP team said that PHYP will create an error log with unrecoverable severity for these UPS events.",
+      "parentUuid": "a58d13d9_346df059",
+      "revId": "e402218d99d631f632ae2b7d76b843c6bed68553",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
