@@ -163,7 +163,7 @@ void log(Msg msg, Entry... e)
     constexpr const char* msg_str = "MESSAGE=%s";
     const auto msg_tuple = std::make_tuple(msg_str, std::forward<Msg>(msg));
 
-    constexpr auto transactionStr = "TRANSACTION_ID=%lld";
+    constexpr auto transactionStr = "TRANSACTION_ID=%llu";
     auto transactionId = sdbusplus::server::transaction::get_id();
 
     auto log_tuple = std::tuple_cat(details::prio<L>(), msg_tuple,
