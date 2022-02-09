@@ -71,19 +71,20 @@ std::string pelLogDir()
 
 /**
  * @brief helper function to get PEL commit timestamp from file name
- * @retrun BCDTime - PEL commit timestamp
+ * @retrun uint64_t - PEL commit timestamp
  * @param[in] std::string - file name
  */
-BCDTime fileNameToTimestamp(const std::string& fileName)
+uint64_t fileNameToTimestamp(const std::string& fileName)
 {
     std::string token = fileName.substr(0, fileName.find("_"));
     int i = 0;
-    BCDTime tmp;
+    uint64_t bcdTime = 0;
     if (token.length() >= 14)
     {
         try
         {
-            tmp.yearMSB = std::stoul(token.substr(i, 2), 0, 16);
+            auto tmp = std::stoul(token.substr(i, 2), 0, 16);
+            bcdTime |= (static_cast<uint64_t>(tmp) << 56);
         }
         catch (const std::exception& err)
         {
@@ -92,7 +93,8 @@ BCDTime fileNameToTimestamp(const std::string& fileName)
         i += 2;
         try
         {
-            tmp.yearLSB = std::stoul(token.substr(i, 2), 0, 16);
+            auto tmp = std::stoul(token.substr(i, 2), 0, 16);
+            bcdTime |= (static_cast<uint64_t>(tmp) << 48);
         }
         catch (const std::exception& err)
         {
@@ -101,7 +103,8 @@ BCDTime fileNameToTimestamp(const std::string& fileName)
         i += 2;
         try
         {
-            tmp.month = std::stoul(token.substr(i, 2), 0, 16);
+            auto tmp = std::stoul(token.substr(i, 2), 0, 16);
+            bcdTime |= (static_cast<uint64_t>(tmp) << 40);
         }
         catch (const std::exception& err)
         {
@@ -110,7 +113,8 @@ BCDTime fileNameToTimestamp(const std::string& fileName)
         i += 2;
         try
         {
-            tmp.day = std::stoul(token.substr(i, 2), 0, 16);
+            auto tmp = std::stoul(token.substr(i, 2), 0, 16);
+            bcdTime |= (static_cast<uint64_t>(tmp) << 32);
         }
         catch (const std::exception& err)
         {
@@ -119,7 +123,8 @@ BCDTime fileNameToTimestamp(const std::string& fileName)
         i += 2;
         try
         {
-            tmp.hour = std::stoul(token.substr(i, 2), 0, 16);
+            auto tmp = std::stoul(token.substr(i, 2), 0, 16);
+            bcdTime |= (tmp << 24);
         }
         catch (const std::exception& err)
         {
@@ -128,7 +133,8 @@ BCDTime fileNameToTimestamp(const std::string& fileName)
         i += 2;
         try
         {
-            tmp.minutes = std::stoul(token.substr(i, 2), 0, 16);
+            auto tmp = std::stoul(token.substr(i, 2), 0, 16);
+            bcdTime |= (tmp << 16);
         }
         catch (const std::exception& err)
         {
@@ -137,7 +143,8 @@ BCDTime fileNameToTimestamp(const std::string& fileName)
         i += 2;
         try
         {
-            tmp.seconds = std::stoul(token.substr(i, 2), 0, 16);
+            auto tmp = std::stoul(token.substr(i, 2), 0, 16);
+            bcdTime |= (tmp << 8);
         }
         catch (const std::exception& err)
         {
@@ -146,14 +153,15 @@ BCDTime fileNameToTimestamp(const std::string& fileName)
         i += 2;
         try
         {
-            tmp.hundredths = std::stoul(token.substr(i, 2), 0, 16);
+            auto tmp = std::stoul(token.substr(i, 2), 0, 16);
+            bcdTime |= tmp;
         }
         catch (const std::exception& err)
         {
             std::cout << "Conversion failure: " << err.what() << std::endl;
         }
     }
-    return tmp;
+    return bcdTime;
 }
 
 /**
@@ -296,10 +304,16 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool critSysTerm,
     char tmpValStr[50];
     std::string listStr;
     char name[51];
-    sprintf(name, "/%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X_%.8X", itr.second.yearMSB,
-            itr.second.yearLSB, itr.second.month, itr.second.day,
-            itr.second.hour, itr.second.minutes, itr.second.seconds,
-            itr.second.hundredths, itr.first);
+    sprintf(name, "/%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X_%.8X",
+            static_cast<uint8_t>((itr.second >> 56) & 0xFF),
+            static_cast<uint8_t>((itr.second >> 48) & 0xFF),
+            static_cast<uint8_t>((itr.second >> 40) & 0xFF),
+            static_cast<uint8_t>((itr.second >> 32) & 0xFF),
+            static_cast<uint8_t>((itr.second >> 24) & 0xFF),
+            static_cast<uint8_t>((itr.second >> 16) & 0xFF),
+            static_cast<uint8_t>((itr.second >> 8) & 0xFF),
+            static_cast<uint8_t>(itr.second & 0xFF), itr.first);
+
     auto fileName = (archive ? pelLogDir() + "/archive" : pelLogDir()) + name;
     try
     {
@@ -453,7 +467,7 @@ void printPELs(bool order, bool hidden, bool includeInfo, bool critSysTerm,
                bool hexDump, bool archive = false)
 {
     std::string listStr;
-    std::map<uint32_t, BCDTime> PELs;
+    std::vector<std::pair<uint32_t, uint64_t>> PELs;
     std::vector<std::string> plugins;
     listStr = "{\n";
     for (auto it = (archive ? fs::directory_iterator(pelLogDir() + "/archive")
@@ -466,10 +480,15 @@ void printPELs(bool order, bool hidden, bool includeInfo, bool critSysTerm,
         }
         else
         {
-            PELs.emplace(fileNameToPELId((*it).path().filename()),
-                         fileNameToTimestamp((*it).path().filename()));
+            PELs.emplace_back(fileNameToPELId((*it).path().filename()),
+                              fileNameToTimestamp((*it).path().filename()));
         }
     }
+
+    // Sort the pairs based on second time parameter
+    std::sort(PELs.begin(), PELs.end(), [](auto& left, auto& right) {
+        return left.second < right.second;
+    });
 
     bool foundPEL = false;
 
