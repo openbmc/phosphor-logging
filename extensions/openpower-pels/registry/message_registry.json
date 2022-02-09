@@ -3147,6 +3147,29 @@
         },
 
         {
+            "Name": "com.ibm.VPD.Error.GPIOError",
+            "Subsystem": "cec_vpd",
+            "ComponentID": "0x4000",
+
+            "SRC": {
+                "ReasonCode": "0x4007",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation": {
+                "Description": "GPIO line error",
+                "Message": "GPIO line couldn't find or read.",
+                "Notes": [
+                    "At least one of the GPIO line trying to find is failed. This can be",
+		    " issue with I2C line. If this is okay then need to check the availability",
+		    " of gpio line(shouldn't be in used state)Need to check gpioinfo for that",
+		    " pin and I2C line."
+                ]
+            }
+        },
+        {
             "Name": "org.open_power.Host.Boot.Error.WatchdogTimeout",
             "Subsystem": "cec_sp_hostboot_iface",
 
