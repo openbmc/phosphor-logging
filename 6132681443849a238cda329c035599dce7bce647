@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1f676a1_0c2b9cc0",
+        "filename": "extensions/openpower-pels/tools/peltool.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-02-11T15:38:21Z",
+      "side": 1,
+      "message": "there\u0027s an emplace_back() you can use here on a vector like:\n\nPELs.emplace_back(fileNameToPELId((*it).path().filename(),\n                  fileNameToTimestamp((*it).path().filename()))\n\nthat saves making the temporary std::pair.",
+      "range": {
+        "startLine": 483,
+        "startChar": 17,
+        "endLine": 484,
+        "endChar": 30
+      },
+      "revId": "6132681443849a238cda329c035599dce7bce647",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
