@@ -2,6 +2,7 @@
 #include "xyz/openbmc_project/Logging/Entry/server.hpp"
 
 #include <phosphor-logging/log.hpp>
+#include <sdbusplus/event.hpp>
 #include <sdbusplus/exception.hpp>
 #include <tuple>
 #include <utility>
@@ -119,6 +120,20 @@ uint32_t commit(const char* name, Entry::Level level);
  */
 uint32_t commit(std::string&& name);
 
+/** @fn audit()
+ *  @brief Create an audit log based on journal
+ *          entry with a specified MSG_ID
+ */
+void audit();
+
+/** @fn getMsgId()
+ *  @brief Get a MSG_ID based on the consumer of the event
+ *  @param[in] consumer - name of the event
+ *
+ *  @return The message ID
+ */
+std::string getMsgId(const std::string& consumer);
+
 /** @fn commit()
  *  @brief Create an error log entry based on journal
  *          entry with a specified MSG_ID
@@ -230,6 +245,42 @@ uint32_t report(Entry::Level level, Args... i_args)
         T::errDesc, details::deduce_entry_type<Args>{i_args}.get()...);
 
     return commit<T>(level);
+}
+
+/** @fn event()
+ *  @brief Create a journal log entry based on predefined
+ *         event log information and commit the event
+ *  @tparam T - event
+ *  @param[in] i_args - Metadata fields to be added to the journal entry
+ *
+ */
+template <typename T, typename... Args>
+void event(Args... i_args)
+{
+    // validate if the events is derived from sdbusplus::events.
+    static_assert(std::is_base_of<sdbusplus::events::events, T>::value,
+                  "T must be a descendant of sdbusplus::events::events");
+
+    // Validate the caller passed in the required parameters
+    static_assert(
+        std::is_same<typename details::map_exception_type_t<T>::metadata_types,
+                     std::tuple<details::deduce_entry_type_t<Args>...>>::value,
+        "You are not passing in required arguments for this error");
+
+    auto messageId = getMsgId(T::errConsumer);
+    if (messageId.empty())
+    {
+        return;
+    }
+
+    log<details::map_exception_type_t<T>::L>(
+        T::errDesc, entry(messageId.c_str(), T::errName),
+        details::deduce_entry_type<Args>{i_args}.get()...);
+
+    if (T::errConsumer == "audit")
+    {
+        audit();
+    }
 }
 
 } // namespace logging

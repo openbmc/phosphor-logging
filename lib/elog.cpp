@@ -1,5 +1,6 @@
 #include "config.h"
 
+#include <map>
 #include <phosphor-logging/elog.hpp>
 #include <stdexcept>
 
@@ -55,6 +56,43 @@ uint32_t commit(std::string&& name)
 {
     log<level::ERR>("method is deprecated, use commit() with exception type");
     return phosphor::logging::details::commit(name.c_str());
+}
+
+std::string getMsgId(const std::string& consumer)
+{
+    static std::map<std::string, std::string> consumerMaps = {
+        {"audit", "AUDIT_MESSSAGE_ID=%s"},
+        {"redfish", "REDFISH_MESSSAGE_ID=%s"},
+        {"sel", "SEL_MESSSAGE_ID=%s"}};
+    if (consumerMaps.contains(consumer))
+    {
+        return consumerMaps.at(consumer);
+    }
+
+    return {};
+}
+
+void audit()
+{
+    try
+    {
+        constexpr auto aduitBusName = "xyz.openbmc_project.Audit";
+        constexpr auto auditObjPath = "/xyz/openbmc_project/Audit";
+        constexpr auto auditIntf = "xyz.openbmc_project.Audit.Manager";
+        constexpr auto auditMethod = "Commit";
+
+        auto b = sdbusplus::bus::new_default();
+
+        auto msg = b.new_method_call(aduitBusName, auditObjPath, auditIntf,
+                                     auditMethod);
+        uint64_t id = sdbusplus::server::transaction::get_id();
+        msg.append(id);
+        auto bus = sdbusplus::bus::new_default();
+        auto reply = bus.call(msg);
+    }
+    catch (const std::exception&)
+    {
+    }
 }
 
 } // namespace logging
