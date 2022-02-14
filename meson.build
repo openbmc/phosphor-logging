@@ -200,3 +200,7 @@ subdir('dist')
 if not get_option('tests').disabled()
     subdir('test')
 endif
+
+if not get_option('audit_logging').disabled()
+    subdir('phosphor-audit')
+endif
