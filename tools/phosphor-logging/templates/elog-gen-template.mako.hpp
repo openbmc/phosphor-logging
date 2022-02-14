@@ -44,7 +44,7 @@ namespace phosphor
 namespace logging
 {
 
-    % for index, name in enumerate(errors):
+    % for index, name in enumerate(errors + events):
 <%
     ## Ex: name: xyz.openbmc_project.Error.Callout.Device
     namespaces = name.split('.')
@@ -163,13 +163,20 @@ struct ${error_type}
     if not example_yaml :
         sdbusplus_name = "sdbusplus." + sdbusplus_name
         pos = sdbusplus_name.rfind(".")
-        sdbusplus_name = (sdbusplus_name[:pos] + ".Error." +
-                          sdbusplus_name[pos+1:])
+        if name in errors:
+            sdbusplus_name = (sdbusplus_name[:pos] + ".Error." +
+                              sdbusplus_name[pos+1:])
+        elif name in events:
+            sdbusplus_name = (sdbusplus_name[:pos] + ".Event." +
+                             sdbusplus_name[pos+1:])
     sdbusplus_type = sdbusplus_name.replace(".", "::")
     phosphor_type = sdbusplus_type
     if not example_yaml :
         phosphor_type = sdbusplus_type.replace("sdbusplus::", "")
-        phosphor_type = phosphor_type.replace("Error::", "")
+        if name in errors:
+            phosphor_type = phosphor_type.replace("Error::", "")
+        elif name in events:
+            phosphor_type = phosphor_type.replace("Event::", "")
 %>\
 \
 % if sdbusplus_type != phosphor_type:

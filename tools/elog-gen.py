@@ -65,13 +65,13 @@ def get_error_yaml_files(i_yaml_dir, i_test_dir):
     if i_yaml_dir != "None":
         for root, dirs, files in os.walk(i_yaml_dir):
             for files in \
-                    [file for file in files if file.endswith('.errors.yaml')]:
+                    [file for file in files if file.endswith('.errors.yaml') or file.endswith('.events.yaml')]:
                 splitdir = root.split(i_yaml_dir)[1] + "/" + files[:-12]
                 if splitdir.startswith("/"):
                     splitdir = splitdir[1:]
                 yaml_files[(os.path.join(root, files))] = splitdir
     for root, dirs, files in os.walk(i_test_dir):
-        for files in [file for file in files if file.endswith('.errors.yaml')]:
+        for files in [file for file in files if file.endswith('.errors.yaml') or file.endswith('.events.yaml')]:
             splitdir = root.split(i_test_dir)[1] + "/" + files[:-12]
             yaml_files[(os.path.join(root, files))] = splitdir
     return yaml_files
@@ -80,8 +80,13 @@ def get_error_yaml_files(i_yaml_dir, i_test_dir):
 def get_meta_yaml_file(i_error_yaml_file):
     # the meta data will be defined in file name where we replace
     # <Interface>.errors.yaml with <Interface>.metadata.yaml
-    meta_yaml = i_error_yaml_file.replace("errors", "metadata")
-    return meta_yaml
+    if i_error_yaml_file.endswith('.errors.yaml'):
+        meta_yaml = i_error_yaml_file.replace("errors", "metadata")
+        meta_type = "error"
+    if i_error_yaml_file.endswith('.events.yaml'):
+        meta_yaml = i_error_yaml_file.replace("events", "metadata")
+        meta_type = "event"
+    return meta_yaml, meta_type
 
 
 def get_cpp_type(i_type):
@@ -118,6 +123,7 @@ def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
 
     # Input parameters to mako template
     errors = list()  # Main error codes
+    events = list()  # Main event codes
     error_msg = dict()  # Error msg that corresponds to error code
     error_lvl = dict()  # Error code log level (debug, info, error, ...)
     meta = dict()  # The meta data names associated (ERRNO, FILE_NAME, ...)
@@ -141,25 +147,27 @@ def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
             exit(1)
 
         # Verify the metadata yaml file
-        meta_yaml = get_meta_yaml_file(error_yaml)
+        meta_yaml, meta_type = get_meta_yaml_file(error_yaml)
 
         get_elog_data(error_yaml,
                       meta_yaml,
+                      meta_type,
                       error_yamls[error_yaml],
                       # Last arg is a tuple
                       (errors,
+                       events,
                        error_msg,
                        error_lvl,
                        meta,
                        meta_data,
                        parents,
                        metadata_process))
-
     if(not check_error_inheritance(errors, parents)):
         print("Error - failed to validate error inheritance")
         exit(1)
 
     errors = order_inherited_errors(errors, parents)
+    events = order_inherited_errors(events, parents)
 
     # Load the mako template and call it with the required data
     yaml_dir = i_yaml_dir.strip("./")
@@ -168,6 +176,7 @@ def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
     f = open(i_output_hpp, 'w')
     f.write(template.render(
             errors=errors,
+            events=events,
             error_msg=error_msg,
             error_lvl=error_lvl,
             meta=meta,
@@ -179,6 +188,7 @@ def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
 
 def get_elog_data(i_elog_yaml,
                   i_elog_meta_yaml,
+                  i_elog_meta_type,
                   i_namespace,
                   o_elog_data):
     r"""
@@ -193,7 +203,7 @@ def get_elog_data(i_elog_yaml,
     i_namespace                 namespace data
     o_elog_data                 error metadata
     """
-    (errors, error_msg, error_lvl, meta,
+    (errors, events, error_msg, error_lvl, meta,
      meta_data, parents, metadata_process) = o_elog_data
     ifile = yaml.safe_load(open(i_elog_yaml))
 
@@ -204,7 +214,10 @@ def get_elog_data(i_elog_yaml,
                 str(error), i_elog_yaml))
             exit(1)
         fullname = i_namespace.replace('/', '.') + ('.') + error['name']
-        errors.append(fullname)
+        if i_elog_meta_type == 'error':
+            errors.append(fullname)
+        elif i_elog_meta_type == 'event':
+            events.append(fullname)
 
         if 'description' in error:
             error_msg[fullname] = error['description'].strip()
