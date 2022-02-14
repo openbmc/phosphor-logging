@@ -1,13 +1,20 @@
 
 audit_sources = [
+    generated_sources,
     'audit_main.cpp',
+    'audit_manager.cpp',
 ]
 
 executable(
     'phosphor-audit',
     audit_sources,
-    implicit_include_directories: true,
-    dependencies: [],
+    include_directories: ['.', '../', '../gen'],
+    dependencies: [
+        pdi_dep,
+        phosphor_logging_dep,
+        sdbusplus_dep,
+        sdeventplus_dep,
+    ],
     install: true,
     install_dir: get_option('bindir')
 )
