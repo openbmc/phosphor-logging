@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2af3a8d8_252a1312",
+        "filename": "extensions/openpower-pels/tools/peltool.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-02-15T17:13:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e3ec598_f5fadb89",
+      "range": {
+        "startLine": 81,
+        "startChar": 4,
+        "endLine": 81,
+        "endChar": 15
+      },
+      "revId": "3f1c3e8328ebe48cbe5776fd495f50f443cb094d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67cb4a69_d5be88b4",
@@ -79,6 +103,24 @@
       "side": 1,
       "message": "yup right will do",
       "parentUuid": "67cb4a69_d5be88b4",
+      "revId": "3f1c3e8328ebe48cbe5776fd495f50f443cb094d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd1deaf4_33db48c8",
+        "filename": "extensions/openpower-pels/tools/peltool.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-02-15T17:13:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "544387b6_22a4a7cb",
       "revId": "3f1c3e8328ebe48cbe5776fd495f50f443cb094d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
