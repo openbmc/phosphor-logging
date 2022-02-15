@@ -254,10 +254,10 @@ std::optional<std::string> getPythonJSON(std::vector<std::string>& hexwords,
     }
     if (!pErrStr.empty())
     {
-        log<level::ERR>("Python exception thrown by parser",
-                        entry("ERROR=%s", pErrStr.c_str()),
-                        entry("SRC=%s", hexwords.front().c_str()),
-                        entry("PARSER_MODULE=%s", module.c_str()));
+        log<level::DEBUG>("Python exception thrown by parser",
+                          entry("ERROR=%s", pErrStr.c_str()),
+                          entry("SRC=%s", hexwords.front().c_str()),
+                          entry("PARSER_MODULE=%s", module.c_str()));
     }
     return std::nullopt;
 }

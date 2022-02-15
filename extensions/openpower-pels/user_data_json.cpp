@@ -382,12 +382,12 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
     }
     if (!pErrStr.empty())
     {
-        log<level::ERR>("Python exception thrown by parser",
-                        entry("ERROR=%s", pErrStr.c_str()),
-                        entry("PARSER_MODULE=%s", module.c_str()),
-                        entry("SUBTYPE=0x%X", subType),
-                        entry("VERSION=%d", version),
-                        entry("DATA_LENGTH=%lu\n", data.size()));
+        log<level::DEBUG>("Python exception thrown by parser",
+                          entry("ERROR=%s", pErrStr.c_str()),
+                          entry("PARSER_MODULE=%s", module.c_str()),
+                          entry("SUBTYPE=0x%X", subType),
+                          entry("VERSION=%d", version),
+                          entry("DATA_LENGTH=%lu\n", data.size()));
     }
     return std::nullopt;
 }
