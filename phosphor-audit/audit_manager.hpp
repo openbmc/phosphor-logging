@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sdbusplus/bus.hpp>
+#include <vector>
 #include <xyz/openbmc_project/Logging/Audit/Manager/server.hpp>
 
 namespace phosphor
@@ -44,6 +45,24 @@ class Manager : public details::ServerObject<details::ManagerIface>
      *                            to be committed.
      */
     void notify(uint64_t transactionId) override;
+
+  private:
+    /**
+     * @fn getAdditionalData()
+     * @brief Get additional data for audit log.
+     *
+     * @param[in] transactionId - Unique identifier of the journal entries
+     *                            to be committed.
+     *
+     * @return  the vector of additional data
+     */
+    std::vector<std::string> getAdditionalData(uint64_t transactionId);
+
+    /** @brief Synchronize unwritten journal messages to disk.
+     *  @details This is the same implementation as the systemd command
+     *  "journalctl --sync".
+     */
+    void journalSync();
 };
 
 } // namespace audit
