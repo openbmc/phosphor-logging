@@ -397,6 +397,39 @@
         },
 
         {
+            "Name": "org.open_power.Logging.Error.TestError2",
+            "Subsystem": "bmc_firmware",
+            "Severity": "recovered",
+            "ActionFlags": ["report"],
+
+            "SRC":
+            {
+                "ReasonCode": "0x2005",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Callouts": [
+                {
+                   "CalloutList": [
+                        { "Priority": "high", "LocCode": "P0" }
+                    ]
+                }
+            ],
+
+            "Documentation":
+            {
+                "Description": "An error for testing",
+                "Message": "This is a test recoverable error",
+                "Notes": [
+                    "This error is not created by BMC code and is ",
+                    "only used for error injection tests."
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.PHAL.Error.Boot",
             "Subsystem": "cec_hardware",
             "ComponentID": "0x3000",
