@@ -1,0 +1,14 @@
+[Unit]
+Description=Phosphor Audit Log Manager
+Wants=obmc-mapper.target
+After=obmc-mapper.target
+
+[Service]
+ExecStart=/usr/bin/phosphor-audit
+Restart=always
+Type=dbus
+BusName=xyz.openbmc_project.Logging.Audit
+SyslogIdentifier=phosphor-audit
+
+[Install]
+WantedBy=multi-user.target
