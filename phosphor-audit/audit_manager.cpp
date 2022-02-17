@@ -1,6 +1,9 @@
 
 #include "audit_manager.hpp"
 
+#include "file.hpp"
+#include "utils.hpp"
+
 #include <poll.h>
 #include <sys/inotify.h>
 #include <systemd/sd-bus.h>
@@ -19,7 +22,61 @@ namespace audit
 void Manager::notify(uint64_t transactionId)
 {
 
-    /* auto additionalData =  */ getAdditionalData(transactionId);
+    auto additionalData = getAdditionalData(transactionId);
+
+    std::string eventType{};
+    std::string eventRC{};
+    std::string eventUser{};
+    std::string eventAddr{};
+    std::string eventMsg{};
+
+    std::string buffer;
+    buffer.append(utils::getCurrentSystemTime());
+    buffer.append(",");
+
+    for (auto& data : additionalData)
+    {
+        auto res = utils::split(data, "=");
+        if (res.size() != 2)
+        {
+            continue;
+        }
+
+        if (res[0] == "EVENT_TYPE")
+        {
+            eventType = res[1];
+        }
+        else if (res[0] == "EVENT_RC")
+        {
+            eventRC = res[1];
+        }
+        else if (res[0] == "EVENT_USER")
+        {
+            eventUser = res[1];
+        }
+        else if (res[0] == "EVENT_ADDR")
+        {
+            eventAddr = res[1];
+        }
+        else if (res[0] == "MESSAGE")
+        {
+            eventMsg = res[1];
+        }
+    }
+
+    buffer.append(eventType);
+    buffer.append(",");
+    buffer.append(eventRC);
+    buffer.append(",");
+    buffer.append(eventUser);
+    buffer.append(",");
+    buffer.append(eventAddr);
+    buffer.append(",");
+    buffer.append(eventMsg);
+    buffer.append("\n");
+
+    std::unique_ptr<AuditHandler> handler = getHandlerByType();
+    handler->responseAction(buffer);
 
     return;
 }
@@ -244,6 +301,14 @@ void Manager::journalSync()
     }
 
     return;
+}
+
+std::unique_ptr<AuditHandler> Manager::getHandlerByType(/* uint16_t type */)
+{
+    // TODO The current default is to record logs, and then there will be
+    // operations such as sending emails, triggering DBus, etc.
+
+    return std::make_unique<FileHandler>();
 }
 
 } // namespace audit
