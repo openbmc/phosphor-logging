@@ -3,6 +3,8 @@ audit_sources = [
     generated_sources,
     'audit_main.cpp',
     'audit_manager.cpp',
+    'file.cpp',
+    'utils.cpp',
 ]
 
 executable(

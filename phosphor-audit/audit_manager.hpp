@@ -1,5 +1,7 @@
 #pragma once
 
+#include "audit_handler.hpp"
+
 #include <sdbusplus/bus.hpp>
 #include <vector>
 #include <xyz/openbmc_project/Logging/Audit/Manager/server.hpp>
@@ -63,6 +65,8 @@ class Manager : public details::ServerObject<details::ManagerIface>
      *  "journalctl --sync".
      */
     void journalSync();
+
+    std::unique_ptr<AuditHandler> getHandlerByType(/* uint16_t type */);
 };
 
 } // namespace audit
