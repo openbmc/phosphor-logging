@@ -16,6 +16,24 @@
       "message": "do you consider the design finalized enough for this?  It was hard for me to tell from the review if things were still in flux.",
       "revId": "9341c8e761c4c018e0b884e12c6fe790f9f375e5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88717e1d_fbea3ea6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-02-18T01:58:52Z",
+      "side": 1,
+      "message": "\u003e do you consider the design finalized enough for this?  It was hard for me to tell from the review if things were still in flux.\n\nFor all events (redfish, audit, sel, etc.) I think this design is sufficient.\nBut still need expert review.",
+      "parentUuid": "f2a3cd8f_7089d3ae",
+      "revId": "9341c8e761c4c018e0b884e12c6fe790f9f375e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
