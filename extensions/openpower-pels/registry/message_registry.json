@@ -3554,6 +3554,30 @@
         },
 
         {
+            "Name": "com.ibm.VPD.Error.GPIOError",
+            "Subsystem": "cec_vpd",
+            "ComponentID": "0x4000",
+
+            "SRC": {
+                "ReasonCode": "0x4007",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation": {
+                "Description": "GPIO line error",
+                "Message": "GPIO line couldn't be found or read.",
+                "Notes": [
+                    "The BMC could not access a GPIO line. This generally means that the",
+                    " hardware had issues toggling the line and/or the device driver has",
+                    " not exposed the GPIO line to userspace due to underlying I2C issues.",
+                    " The I2C path will be called out."
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.Host.Boot.Error.WatchdogTimeout",
             "Subsystem": "cec_sp_hostboot_iface",
 
