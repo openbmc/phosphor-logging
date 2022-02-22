@@ -3253,35 +3253,6 @@
                 "Words6To9": {}
             },
 
-            "CalloutsUsingAD": {
-                "ADName": "SENSOR_NAME",
-                "CalloutsWithTheirADValues": [
-                    {
-                        "ADValue": "/xyz/openbmc_project/sensors/voltage/Battery_Voltage",
-                        "Callouts": [
-                            {
-                                "System": "ibm,rainier",
-                                "CalloutList": [
-                                    {
-                                        "Priority": "high",
-                                        "LocCode": "P0-E0"
-                                    }
-                                ]
-                            },
-                            {
-                                "System": "ibm,everest",
-                                "CalloutList": [
-                                    {
-                                        "Priority": "high",
-                                        "LocCode": "P0-C0-E0"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
-
             "Documentation": {
                 "Description": "A voltage sensor went below its critical low threshold.",
                 "Message": "A voltage sensor went below its critical low threshold."
