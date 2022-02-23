@@ -15,7 +15,9 @@
  */
 #include "callouts.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include "trace.hpp"
+
+#include <algorithm>
 
 namespace openpower
 {
@@ -58,8 +60,7 @@ void Callouts::addCallout(std::unique_ptr<Callout> callout)
     }
     else
     {
-        using namespace phosphor::logging;
-        log<level::INFO>("Dropping PEL callout because at max");
+        trace::info("Dropping PEL callout because at max");
     }
 
     // Mapping including the  3 Medium levels as A,B and C

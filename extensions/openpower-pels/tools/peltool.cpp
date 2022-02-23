@@ -21,14 +21,15 @@
 #include "../pel.hpp"
 #include "../pel_types.hpp"
 #include "../pel_values.hpp"
+#include "trace.hpp"
 
 #include <Python.h>
+#include <fmt/format.h>
 
 #include <CLI/CLI.hpp>
 #include <bitset>
 #include <fstream>
 #include <iostream>
-#include <phosphor-logging/log.hpp>
 #include <regex>
 #include <string>
 #include <xyz/openbmc_project/Common/File/error.hpp>
@@ -36,7 +37,6 @@
 #include "config_main.h"
 
 namespace fs = std::filesystem;
-using namespace phosphor::logging;
 using namespace openpower::pels;
 namespace file_error = sdbusplus::xyz::openbmc_project::Common::File::Error;
 namespace message = openpower::pels::message;
@@ -320,8 +320,7 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool critSysTerm,
         std::vector<uint8_t> data = getFileData(fileName);
         if (data.empty())
         {
-            log<level::ERR>("Empty PEL file",
-                            entry("FILENAME=%s", fileName.c_str()));
+            trace::error(fmt::format("Empty PEL file {}", fileName));
             return listStr;
         }
         PEL pel{data};
@@ -444,9 +443,8 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool critSysTerm,
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>("Hit exception while reading PEL File",
-                        entry("FILENAME=%s", fileName.c_str()),
-                        entry("ERROR=%s", e.what()));
+        trace::error(fmt::format("Hit exception when reading PEL file {}: {}",
+                                 fileName, e.what()));
     }
     return listStr;
 }
@@ -648,7 +646,7 @@ void deletePEL(const std::string& id)
  */
 void deleteAllPELs()
 {
-    log<level::INFO>("peltool deleting all event logs");
+    trace::info("peltool deleting all event logs");
 
     for (const auto& entry : fs::directory_iterator(pelLogDir()))
     {
