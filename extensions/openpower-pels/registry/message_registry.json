@@ -4017,6 +4017,100 @@
         },
 
         {
+            "Name": "com.ibm.Panel.Error.InputDevPathFailure",
+            "Subsystem": "cec_op_panel",
+            "ComponentID": "0x5000",
+
+            "SRC": {
+                "ReasonCode": "0x5001",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Button Handler Failure",
+                "Message": "Input Device path failure",
+                "Notes": [
+                    "Button events will not be processed."
+                ]
+            }
+        },
+
+        {
+            "Name": "com.ibm.Panel.Error.I2CSetupFailure",
+            "Subsystem": "cec_op_panel",
+            "ComponentID": "0x5000",
+
+            "SRC": {
+                "ReasonCode": "0x5002",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Panel I2C setup failure",
+                "Message": "Unable to open device path or ioctl failure",
+                "Notes": [
+                    "The Panel is unable to open device",
+                    " path or ioctl failure"
+                ]
+            }
+        },
+
+        {
+            "Name": "com.ibm.Panel.Error.HostCommunicationError",
+            "Subsystem": "cec_op_panel",
+            "ComponentID": "0x5000",
+
+            "SRC": {
+                "ReasonCode": "0x5003",
+                "Words6To9": {}
+            },
+
+            "Callouts": [{
+                "CalloutList": [{
+                    "Priority": "high",
+                    "Procedure": "bmc_code"
+                }]
+            }],
+
+            "Documentation": {
+                "Description": "Host Communication failure",
+                "Message": "Error in sending message to host",
+                "Notes": [
+                    "Failure from PLDM sending message to",
+                    "Host"
+                ]
+            }
+        },
+
+        {
+            "Name": "com.ibm.Panel.Error.DbusError",
+            "Subsystem": "cec_op_panel",
+            "ComponentID": "0x5000",
+
+            "SRC": {
+                "ReasonCode": "0x5004",
+                "Words6To9": {}
+            },
+
+            "Callouts": [{
+                "CalloutList": [{
+                    "Priority": "high",
+                    "Procedure": "bmc_code"
+                }]
+            }],
+
+            "Documentation": {
+                "Description": "Dbus exception",
+                "Message": "A Dbus internal error occurred.",
+                "Notes": [
+                    "This error occurs when Dbus operation fails.",
+                    "Exceptions details are captured in additional",
+                    "data."
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.Host.Boot.Error.WatchdogTimeout",
             "Subsystem": "cec_sp_hostboot_iface",
 
