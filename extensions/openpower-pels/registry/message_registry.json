@@ -3587,6 +3587,163 @@
         },
 
         {
+            "Name": "com.ibm.panel.I2cWriteError",
+            "Subsystem": "ibm_panel",
+            "ComponentID": "0x5000",
+
+            "SRC":
+            {
+                "ReasonCode": "0x5001",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "IBM Panel Error",
+                "Message": "I2C Write Failure in IBM panel"
+                "Notes": [
+                    " I2C write failures, including repeated trials for ",
+                    "writing ".
+                ]
+            }
+        },
+
+        {
+            "Name": "com.ibm.panel.slave.Error",
+            "Subsystem": "ibm_panel",
+            "ComponentID": "0x5000",
+
+            "SRC":
+            {
+                "ReasonCode": "0x5002",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "A slave in IBM Panel encountered error",
+                "Message": "A slave process error in IBM Panel",
+                "Notes": [
+                    " A slave process returned Error, while responding to the",
+                    " master process"
+            }
+        },
+
+        {
+            "Name": "com.ibm.panel.I2CSetup",
+            "Subsystem": "ibm_panel",
+            "ComponentID": "0x5000",
+
+            "SRC":
+            {
+                "ReasonCode": "0x5003",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "Panel I2C setup device path failure",
+                "Message" : " Failure opening device path file"
+            }
+        },
+
+        {
+            "Name": "com.ibm.panel.PhypError",
+            "Subsystem": "ibm_panel",
+            "ComponentID": "0x5000",
+
+            "SRC":
+            {
+                "ReasonCode": "0x5004",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "UseInventoryLocCode": true
+                        }
+                    ]
+                }
+            ],
+
+            "Documentation":
+            {
+                "Description": "IBM Panel phyp message error",
+                "Message": "Error in sending message to phyp"
+                "Notes" : [
+                    "Request to Hypervisor are sent via pldm. Here",
+                    "the failure is sending of panel function to Hypervisor."
+            }
+        },
+
+        {
+            "Name": "com.ibm.panel.DbusError",
+            "Subsystem": "ibm_panel",
+            "ComponentID": "0x5000",
+
+            "SRC":
+            {
+                "ReasonCode": "0x5005",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
+            "Documentation":
+            {
+                "Description": "Panel Dbus Error",
+                "Message" : "Failure related to  Dbus for panel are caught in this PEL"
+                "Notes" : [
+                    "Failures related to Dbus Error mentioned in description",
+                    " along with details."
+                    ]
+            }
+        },
+
+        {
+            "Name": "com.ibm.panel.I2cSetup.IoctlFail",
+            "Subsystem": "ibm_panel",
+            "ComponentID": "0x5000",
+
+            "SRC":
+            {
+                "ReasonCode": "0x5006",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "IBM Panel device access error",
+                "Message": "Failed in accessing device via device path provided"
+                "Notes": [
+                    "Ioctl failures, accessing device failed. Please check ",
+                    "errno in description".
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.Host.Boot.Error.WatchdogTimeout",
             "Subsystem": "cec_sp_hostboot_iface",
 
