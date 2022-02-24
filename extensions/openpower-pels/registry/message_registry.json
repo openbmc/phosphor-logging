@@ -3587,6 +3587,27 @@
         },
 
         {
+            "Name": "com.ibm.ibmpanel.Error",
+            "Subsystem": "ibm_panel",
+            "ComponentID": "0x5000",
+
+            "SRC":
+            {
+                "ReasonCode": "0x5001",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "IBM Panel Error",
+                "Message": "Panel Error"
+            }
+        },
+
+
+        {
             "Name": "org.open_power.Host.Boot.Error.WatchdogTimeout",
             "Subsystem": "cec_sp_hostboot_iface",
 
