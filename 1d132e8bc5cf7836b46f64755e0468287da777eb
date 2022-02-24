@@ -16,6 +16,24 @@
       "message": "The metadata is being removed, i assume that\u0027s an acceptable tradeoff instead of duplicating the templated function that takes the elog entries? Maybe an update to the openpower-pels/README.md would be good to specify that the tracing is just via string and no metadata would be stored.",
       "revId": "1d132e8bc5cf7836b46f64755e0468287da777eb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6821a5bb_27a0cc26",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-02-24T21:15:21Z",
+      "side": 1,
+      "message": "The only time I\u0027ve ever looked at metadata is just because it isn\u0027t in the main trace message, so yea, I think it\u0027s OK unless you can think of a problem with it.\n\nThe journal wouldn\u0027t be available to put metadata into on AIX if we built it there, so I think the more details in the message itself the better anyway, plus we don\u0027t have to reimplement log\u003c\u003e() without using libphosphor_logging since it\u0027s also wrapped up with commit\u003c\u003e(), report\u003c\u003e(), that uses sdbusplus.\n\nThis only applies to code that is used by peltool, I should specify that in the commit message.",
+      "parentUuid": "c5fdeb82_a913cdae",
+      "revId": "1d132e8bc5cf7836b46f64755e0468287da777eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
