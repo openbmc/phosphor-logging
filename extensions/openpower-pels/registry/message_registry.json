@@ -627,6 +627,29 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.State.ChassisPowerBad",
+            "Subsystem": "input_power_source",
+            "ComponentID": "0x3400",
+            "SRC":
+            {
+                "ReasonCode": "0x3402",
+                "Words6To9":
+                {
+                }
+            },
+            "Documentation":
+            {
+                "Description": "Chassis input power is in a bad state",
+                "Message": "Chassis input power is in a bad state, look for other logs with more details",
+                "Notes": [
+                    "The system is most likely in a limited power situation. ",
+                    "There is enough power for the BMC to operate but not the ",
+                    "CEC hardware. Check for UPS or brownout logs."
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.Processor.Error.SbeChipOpFailure",
             "Subsystem": "processor_chip",
             "ComponentID": "0x3500",
