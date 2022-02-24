@@ -853,7 +853,12 @@
 
         {
             "Name": "org.open_power.HwDiags.Error.Checkstop",
-            "Subsystem": "cec_hardware",
+            "PossibleSubsystems": [
+                "processor", "processor_fru", "processor_unit", "processor_bus",
+                "memory_ctlr", "memory_bus", "memory_dimm", "memory_fru",
+                "phb", "cec_hardware", "cec_clocks", "cec_tod", "others"
+            ],
+            "Severity": "unrecoverable",
             "ActionFlags": [ "service_action", "report", "call_home" ],
 
             "SRC":
@@ -887,7 +892,12 @@
 
         {
             "Name": "org.open_power.HwDiags.Error.Predictive",
-            "Subsystem": "cec_hardware",
+            "PossibleSubsystems": [
+                "processor", "processor_fru", "processor_unit", "processor_bus",
+                "memory_ctlr", "memory_bus", "memory_dimm", "memory_fru",
+                "phb", "cec_hardware", "cec_clocks", "cec_tod", "others"
+            ],
+            "Severity": "predictive",
             "ActionFlags": [ "service_action", "report", "call_home" ],
 
             "SRC":
@@ -921,7 +931,12 @@
 
         {
             "Name": "org.open_power.HwDiags.Error.Informational",
-            "Subsystem": "cec_hardware",
+            "PossibleSubsystems": [
+                "processor", "processor_fru", "processor_unit", "processor_bus",
+                "memory_ctlr", "memory_bus", "memory_dimm", "memory_fru",
+                "phb", "cec_hardware", "cec_clocks", "cec_tod", "others"
+            ],
+            "Severity": "non_error",
             "ActionFlags": [ "hidden", "dont_report" ],
 
             "SRC":
