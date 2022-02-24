@@ -673,6 +673,31 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.State.Error.CriticalServiceFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3400",
+            "SRC":
+            {
+                "ReasonCode": "0x3404",
+                "Words6To9":
+                {
+                }
+            },
+            "Documentation":
+            {
+                "Description": "A critical BMC application has failed on the system",
+                "Message": "A critical BMC application has failed on the system, the BMC is in an undefined state",
+                "Notes": [
+                    "As a part of generating this error log, a BMC dump has ",
+                    "also been generated. Please collect this dump if possible. ",
+                    "The BMC state is undefined but basic services could still ",
+                    "be available. Usually an AC cycle of the entire system is ",
+                    "the best recovery option from this error."
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.Processor.Error.SbeChipOpFailure",
             "Subsystem": "processor_chip",
             "ComponentID": "0x3500",
