@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "982c5f05_269ff9d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-02-25T18:50:17Z",
+      "side": 1,
+      "message": "what about all the errors in phosphor-target-monitor-default.json?",
+      "revId": "8648a2e71efba2885ea5b3cfa61606f4774c43b9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e2e79c97_0986ed20",
