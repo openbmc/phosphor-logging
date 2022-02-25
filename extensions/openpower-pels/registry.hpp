@@ -132,7 +132,7 @@ struct Entry
     /**
      * @brief The PEL subsystem field.
      */
-    uint8_t subsystem;
+    std::optional<uint8_t> subsystem;
 
     /**
      * @brief The optional PEL severity field.  If not specified, the PEL
