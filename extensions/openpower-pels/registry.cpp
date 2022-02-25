@@ -610,7 +610,11 @@ std::optional<Entry> Registry::lookup(const std::string& name, LookupType type,
         {
             Entry entry;
             entry.name = (*e)["Name"];
-            entry.subsystem = helper::getSubsystem((*e)["Subsystem"]);
+
+            if (e->contains("Subsystem"))
+            {
+                entry.subsystem = helper::getSubsystem((*e)["Subsystem"]);
+            }
 
             if (e->contains("ActionFlags"))
             {
