@@ -101,6 +101,21 @@ const auto registryData = R"(
                     "dump that provides debug information."
                 ]
             }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Common.Error.Timeout",
+            "PossibleSubsystems": ["processor", "memory"],
+
+            "SRC":
+            {
+                "ReasonCode": "0x2030"
+            },
+            "Documentation":
+            {
+                "Description": "A PGOOD Fault",
+                "Message": "PS had a PGOOD Fault"
+            }
         }
     ]
 }
@@ -650,4 +665,15 @@ TEST_F(RegistryTest, TestGetCallouts)
             EXPECT_TRUE(callouts.empty());
         }
     }
+}
+
+TEST_F(RegistryTest, TestNoSubsystem)
+{
+    auto path = RegistryTest::writeData(registryData);
+    Registry registry{path};
+
+    auto entry = registry.lookup("xyz.openbmc_project.Common.Error.Timeout",
+                                 LookupType::name);
+    ASSERT_TRUE(entry);
+    EXPECT_FALSE(entry->subsystem);
 }

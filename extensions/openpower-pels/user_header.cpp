@@ -58,25 +58,43 @@ UserHeader::UserHeader(const message::Entry& entry,
     _header.subType = 0;
     _header.componentID = static_cast<uint16_t>(ComponentID::phosphorLogging);
 
-    _eventSubsystem = entry.subsystem;
+    std::optional<uint8_t> subsys;
 
     // Check for additional data - PEL_SUBSYSTEM
     auto ss = additionalData.getValue("PEL_SUBSYSTEM");
     if (ss)
     {
         auto eventSubsystem = std::stoul(*ss, NULL, 16);
-        std::string subsystem =
+        std::string subsystemString =
             pv::getValue(eventSubsystem, pel_values::subsystemValues);
-        if (subsystem == "invalid")
+        if (subsystemString == "invalid")
         {
             log<level::WARNING>(
-                fmt::format("UH: Invalid SubSystem value:{:#X}", eventSubsystem)
+                fmt::format(
+                    "UH: Invalid SubSystem value in PEL_SUBSYSTEM: {:#X}",
+                    eventSubsystem)
                     .c_str());
         }
         else
         {
-            _eventSubsystem = eventSubsystem;
+            subsys = eventSubsystem;
         }
+    }
+    else
+    {
+        subsys = entry.subsystem;
+    }
+
+    if (subsys)
+    {
+        _eventSubsystem = *subsys;
+    }
+    else
+    {
+        // Gotta use something, how about 'other_na'.
+        log<level::WARNING>(
+            "No PEL subystem value supplied for error, using 'other_na'");
+        _eventSubsystem = 0x75;
     }
 
     _eventScope = entry.eventScope.value_or(

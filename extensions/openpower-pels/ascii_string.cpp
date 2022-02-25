@@ -51,7 +51,9 @@ AsciiString::AsciiString(const message::Entry& entry)
     }
     else // BMC Error
     {
-        setByte(2, entry.subsystem);
+        // If subsystem wasn't specified, it should get set later in
+        // the SRC constructor.  Default to other_na in case it doesn't.
+        setByte(2, entry.subsystem ? entry.subsystem.value() : 0x75);
     }
 
     // Then the reason code
