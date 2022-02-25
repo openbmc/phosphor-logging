@@ -46,10 +46,22 @@ of the OpenBMC event log that the PEL is being created from.
 ### Subsystem
 This field is part of the PEL User Header section, and is used to specify
 the subsystem pertaining to the error.  It is an enumeration that maps to the
-actual PEL value.
+actual PEL value.  If the subsystem isn't known ahead of time, it can be passed
+in at the time of PEL creation using the 'PEL\_SUBSYSTEM' AdditionalData field.
+In this case, 'Subsystem' isn't required, though 'PossibleSubsystems' is.
 
 ```
 "Subsystem": "power_supply"
+```
+
+### PossibleSubsystems
+This field is used by scripts that build documentation from the message
+registry to know which subsystems are possible for an error when it can't be
+hardcoded using the 'Subsystem' field.  It is mutually exclusive with the
+'Subsystem' field.
+
+```
+"PossibleSubsystems": ["memory", "processor"]
 ```
 
 ### Severity

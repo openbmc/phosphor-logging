@@ -84,3 +84,16 @@ TEST(AsciiStringTest, UnderflowTest)
 
     EXPECT_THROW(src::AsciiString as{stream}, std::out_of_range);
 }
+
+TEST(AsciiStringTest, MissingSubsystemTest)
+{
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+
+    src::AsciiString as{entry};
+    auto data = as.get();
+
+    // Default subsystem is 0x70
+    EXPECT_EQ(data, "BD70ABCD                        ");
+}

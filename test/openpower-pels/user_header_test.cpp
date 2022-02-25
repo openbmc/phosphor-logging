@@ -313,19 +313,56 @@ TEST(UserHeaderTest, UseEventLogQuiesceOnErrorTest)
 TEST(UserHeaderTest, UseEventLogPELSubsystem)
 {
     using namespace openpower::pels::message;
-    Entry regEntry;
 
-    regEntry.name = "test";
-    regEntry.subsystem = 5;
-    regEntry.actionFlags = 0xC000;
-    regEntry.eventType = 1;
-    regEntry.eventScope = 2;
+    {
+        Entry regEntry;
 
-    MockDataInterface dataIface;
-    std::vector<std::string> adData{"PEL_SUBSYSTEM=0x25"};
-    AdditionalData ad{adData};
+        regEntry.name = "test";
+        regEntry.subsystem = 5;
+        regEntry.actionFlags = 0xC000;
+        regEntry.eventType = 1;
+        regEntry.eventScope = 2;
 
-    UserHeader uh(regEntry, phosphor::logging::Entry::Level::Critical, ad,
-                  dataIface);
-    ASSERT_EQ(uh.subsystem(), 0x25);
+        MockDataInterface dataIface;
+        std::vector<std::string> adData{"PEL_SUBSYSTEM=0x25"};
+        AdditionalData ad{adData};
+
+        UserHeader uh(regEntry, phosphor::logging::Entry::Level::Critical, ad,
+                      dataIface);
+        ASSERT_EQ(uh.subsystem(), 0x25);
+    }
+    {
+        // No subsystem in registry, and invalid PEL_SUBSYSTEM
+        Entry regEntry;
+
+        regEntry.name = "test";
+        regEntry.actionFlags = 0xC000;
+        regEntry.eventType = 1;
+        regEntry.eventScope = 2;
+
+        MockDataInterface dataIface;
+        std::vector<std::string> adData{"PEL_SUBSYSTEM=0x99"};
+        AdditionalData ad{adData};
+
+        UserHeader uh(regEntry, phosphor::logging::Entry::Level::Critical, ad,
+                      dataIface);
+        ASSERT_EQ(uh.subsystem(), 0x70); // others
+    }
+    {
+        // No subsystem in registry or PEL_SUBSYSTEM
+        Entry regEntry;
+
+        regEntry.name = "test";
+        regEntry.actionFlags = 0xC000;
+        regEntry.eventType = 1;
+        regEntry.eventScope = 2;
+
+        MockDataInterface dataIface;
+        std::vector<std::string> adData;
+        AdditionalData ad{adData};
+
+        UserHeader uh(regEntry, phosphor::logging::Entry::Level::Critical, ad,
+                      dataIface);
+        ASSERT_EQ(uh.subsystem(), 0x70); // others
+    }
 }
