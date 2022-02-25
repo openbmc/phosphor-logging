@@ -35,6 +35,8 @@
 
                     "Subsystem": {"$ref": "#/definitions/subsystem" },
 
+                    "PossibleSubsystems": {"$ref": "#/definitions/possibleSubsystems" },
+
                     "Severity": {"$ref": "#/definitions/severity" },
 
                     "MfgSeverity": {"$ref": "#/definitions/mfgSeverity" },
@@ -56,13 +58,23 @@
                     "Callouts": {"$ref": "#/definitions/callouts"}
                 },
 
-                "required": ["Name", "SRC", "Subsystem", "Documentation"],
+                "required": ["Name", "SRC", "Documentation"],
                 "additionalProperties": false,
 
                 "not":
                 {
                     "required": ["CalloutsUsingAD", "Callouts"]
-                }
+                },
+
+                "oneOf":
+                [
+                    {
+                        "required": ["Subsystem"]
+                    },
+                    {
+                        "required": ["PossibleSubsystems"]
+                    }
+                ]
             }
         },
 
@@ -193,6 +205,18 @@
 
                      "ext_env", "input_power_source", "ambient_temp",
                      "user_error", "corrosion"]
+        },
+
+        "possibleSubsystems":
+        {
+            "description": "Required when the PEL creator uses PEL_SUBSYSTEM in the AdditionalData property to pass in the subsystem.  Used by scripts that generate documentation to build all possible SRC ASCII strings for this error.",
+            "type": "array",
+            "items":
+            {
+                "$ref": "#/definitions/subsystem"
+            },
+            "minItems": 1,
+            "uniqueItems": true
         },
 
         "systemAndSeverity":
