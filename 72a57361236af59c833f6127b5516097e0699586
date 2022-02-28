@@ -118,6 +118,30 @@
       },
       "revId": "72a57361236af59c833f6127b5516097e0699586",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "466ffb75_55863841",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 3570,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-02-28T17:17:31Z",
+      "side": 1,
+      "message": "sounds good.\n\nSo is the \"couldn\u0027t be found\" scenario not applicable anymore, since that wouldn\u0027t need an IIC callout?  If so, could you remove it from the Message text just so it doesn\u0027t confuse people?",
+      "parentUuid": "0351d5c2_eea7da54",
+      "range": {
+        "startLine": 3570,
+        "startChar": 28,
+        "endLine": 3570,
+        "endChar": 63
+      },
+      "revId": "72a57361236af59c833f6127b5516097e0699586",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
