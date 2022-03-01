@@ -658,6 +658,16 @@ void Manager::checkPelAndQuiesce(std::unique_ptr<openpower::pels::PEL>& pel)
         return;
     }
 
+    CreatorID creatorID{pel->privateHeader().creatorID()};
+
+    if ((creatorID != CreatorID::openBMC) &&
+        (creatorID != CreatorID::hostboot) &&
+        (creatorID != CreatorID::ioDrawer) && (creatorID != CreatorID::occ) &&
+        (creatorID != CreatorID::phyp))
+    {
+        return;
+    }
+
     // Now check if it has any type of callout
     if (pel->isHwCalloutPresent())
     {
