@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a2ceedf_9a122923",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 726,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-02T20:17:51Z",
+      "side": 1,
+      "message": "nit: I try and avoid generic variable names like \"error\" or \"timeout\". I\u0027ve hit too many weird errors where some included header is also using it.",
+      "range": {
+        "startLine": 726,
+        "startChar": 34,
+        "endLine": 726,
+        "endChar": 41
+      },
+      "revId": "2c379fa5f7e61a3af142a2c1e37b9e826bff8927",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
