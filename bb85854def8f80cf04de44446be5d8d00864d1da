@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee422517_6ff4f21f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-03-02T17:16:45Z",
+      "side": 1,
+      "message": "I should probably change this to \u0027Other\u0027 as N/A probably isn\u0027t that great.",
+      "range": {
+        "startLine": 25,
+        "startChar": 60,
+        "endLine": 25,
+        "endChar": 71
+      },
+      "revId": "bb85854def8f80cf04de44446be5d8d00864d1da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
