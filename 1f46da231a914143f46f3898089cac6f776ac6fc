@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40c719e8_051b211b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-03-02T21:32:37Z",
+      "side": 1,
+      "message": "whatever this is:\nopenbmc/phosphor-logging: Step 12/12 : RUN curl -L https://github.com/openbmc/phosphor-logging/archive/1f46da231a914143f46f3898089cac6f776ac6fc.tar.gz | tar -xz \u0026\u0026 cd phosphor-logging* \u0026\u0026  meson builddir --wrap-mode\u003dnodownload -Dprefix\u003d/usr/local -Dyaml_dir\u003d/usr/local/share/phosphor-dbus-yaml/yaml \u0026\u0026 ninja -C builddir \u0026\u0026 ninja -C builddir install\nopenbmc/phosphor-logging:  ---\u003e Running in 79a3291a5939\nopenbmc/phosphor-logging:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\nopenbmc/phosphor-logging:                                  Dload  Upload   Total   Spent    Left  Speed\nopenbmc/phosphor-logging: \n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100   166  100   166    0     0   1257      0 --:--:-- --:--:-- --:--:--  1257\nopenbmc/phosphor-logging: \n100    14  100    14    0     0     51      0 --:--:-- --:--:-- --:--:--    51\nopenbmc/phosphor-logging: \nopenbmc/phosphor-logging: gzip: stdin: not in gzip format\nopenbmc/phosphor-logging: tar: Child returned status 1\nopenbmc/phosphor-logging: tar: Error is not recoverable: exiting now",
+      "revId": "1f46da231a914143f46f3898089cac6f776ac6fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
