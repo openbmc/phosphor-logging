@@ -16,6 +16,24 @@
       "message": "I suspect this also needs a callout of some sort, or should be informational.  Maybe we can see what the FSP did if you remember what part of code did it.",
       "revId": "033ecae654c995c5bedffd55388143a2e4c6a389",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f812d399_a658ac45",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-02T23:18:56Z",
+      "side": 1,
+      "message": "Yeah, I think this can just be info. Does me setting the severity to \"sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level::Notice\" when I create it make it info or do I need to explicitly set that in here?",
+      "parentUuid": "6584e20e_b5f90108",
+      "revId": "033ecae654c995c5bedffd55388143a2e4c6a389",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
