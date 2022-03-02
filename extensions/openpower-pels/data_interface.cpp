@@ -26,6 +26,11 @@
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
 
+// Use a timeout of 10s for D-Bus calls so if there are
+// timeouts the callers of the PEL creation method won't
+// also timeout.
+constexpr auto dbusTimeout = 10000000;
+
 namespace openpower
 {
 namespace pels
@@ -195,7 +200,7 @@ DBusPropertyMap
     auto method = _bus.new_method_call(service.c_str(), objectPath.c_str(),
                                        interface::dbusProperty, "GetAll");
     method.append(interface);
-    auto reply = _bus.call(method);
+    auto reply = _bus.call(method, dbusTimeout);
 
     reply.read(properties);
 
@@ -212,7 +217,7 @@ void DataInterface::getProperty(const std::string& service,
     auto method = _bus.new_method_call(service.c_str(), objectPath.c_str(),
                                        interface::dbusProperty, "Get");
     method.append(interface, property);
-    auto reply = _bus.call(method);
+    auto reply = _bus.call(method, dbusTimeout);
 
     reply.read(value);
 }
@@ -226,7 +231,7 @@ DBusPathList DataInterface::getPaths(const DBusInterfaceList& interfaces) const
 
     method.append(std::string{"/"}, 0, interfaces);
 
-    auto reply = _bus.call(method);
+    auto reply = _bus.call(method, dbusTimeout);
 
     DBusPathList paths;
     reply.read(paths);
@@ -243,7 +248,7 @@ DBusService DataInterface::getService(const std::string& objectPath,
 
     method.append(objectPath, std::vector<std::string>({interface}));
 
-    auto reply = _bus.call(method);
+    auto reply = _bus.call(method, dbusTimeout);
 
     std::map<DBusService, DBusInterfaceList> response;
     reply.read(response);
@@ -462,7 +467,7 @@ std::string DataInterface::expandLocationCode(const std::string& locationCode,
 
     method.append(addLocationCodePrefix(baseLoc), static_cast<uint16_t>(0));
 
-    auto reply = _bus.call(method);
+    auto reply = _bus.call(method, dbusTimeout);
 
     std::string expandedLocationCode;
     reply.read(expandedLocationCode);
@@ -501,7 +506,7 @@ std::string
         method.append(addLocationCodePrefix(baseLoc), node);
     }
 
-    auto reply = _bus.call(method);
+    auto reply = _bus.call(method, dbusTimeout);
 
     std::vector<sdbusplus::message::object_path> entries;
     reply.read(entries);
@@ -531,7 +536,7 @@ void DataInterface::assertLEDGroup(const std::string& ledGroup,
         _bus.new_method_call(service_name::ledGroupManager, ledGroup.c_str(),
                              interface::dbusProperty, "Set");
     method.append(interface::ledGroup, "Asserted", variant);
-    _bus.call(method);
+    _bus.call(method, dbusTimeout);
 }
 
 void DataInterface::setFunctional(const std::string& objectPath,
@@ -544,7 +549,7 @@ void DataInterface::setFunctional(const std::string& objectPath,
                                        interface::dbusProperty, "Set");
 
     method.append(interface::operationalStatus, "Functional", variant);
-    _bus.call(method);
+    _bus.call(method, dbusTimeout);
 }
 
 using AssociationTuple = std::tuple<std::string, std::string, std::string>;
@@ -576,7 +581,7 @@ void DataInterface::setCriticalAssociation(const std::string& objectPath) const
 
         method.append(interface::associationDef, "Associations",
                       setAssociationValue);
-        _bus.call(method);
+        _bus.call(method, dbusTimeout);
     }
 }
 
@@ -590,7 +595,7 @@ std::vector<std::string> DataInterface::getSystemNames() const
                                        interface::objectMapper, "GetSubTree");
     method.append(std::string{"/"}, 0,
                   std::vector<std::string>{interface::compatible});
-    auto reply = _bus.call(method);
+    auto reply = _bus.call(method, dbusTimeout);
 
     reply.read(subtree);
     if (subtree.empty())
@@ -648,7 +653,7 @@ std::vector<bool>
                                        interface::objectMapper, "GetSubTree");
     method.append(std::string{"/"}, 0,
                   std::vector<std::string>{interface::dumpEntry});
-    auto reply = _bus.call(method);
+    auto reply = _bus.call(method, dbusTimeout);
 
     reply.read(subtree);
 
@@ -717,8 +722,8 @@ void DataInterface::createGuardRecord(const std::vector<uint8_t>& binPath,
         // api's. Making d-bus call no reply type to avoid cyclic dependency.
         // Added minimal timeout to catch initial failures.
         // Need to revisit this design later to avoid cyclic dependency.
-        constexpr auto dbusTimeout = 100000; // in micro seconds
-        _bus.call_noreply(method, dbusTimeout);
+        constexpr auto timeout = 100000; // in micro seconds
+        _bus.call_noreply(method, timeout);
     }
 
     catch (const sdbusplus::exception::exception& e)
@@ -749,7 +754,7 @@ void DataInterface::createProgressSRC(
 
     method.append(interface::bootRawProgress, "Value", variant);
 
-    _bus.call(method);
+    _bus.call(method, dbusTimeout);
 }
 
 std::vector<uint32_t> DataInterface::getLogIDWithHwIsolation() const
