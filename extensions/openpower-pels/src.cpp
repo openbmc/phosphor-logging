@@ -1456,8 +1456,8 @@ void SRC::setDumpStatus(const DataInterfaceBase& dataIface)
     }
     catch (const std::exception& e)
     {
-        // Exception - may be no dump interface on dbus or getProperty
-        // failed
+        log<level::ERR>(
+            fmt::format("Checking dump status failed: {}", e.what()).c_str());
     }
 }
 
