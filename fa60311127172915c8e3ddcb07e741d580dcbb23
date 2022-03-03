@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "363ffcaa_74a57436",
+        "filename": "xyz/openbmc_project/Logging/Audit/Manager.interface.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-03T19:25:58Z",
+      "side": 1,
+      "message": "This should not be a private interface.",
+      "revId": "fa60311127172915c8e3ddcb07e741d580dcbb23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0221bd5_6fbafcc7",
+        "filename": "xyz/openbmc_project/Logging/Audit/Manager.interface.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-03T19:25:58Z",
+      "side": 1,
+      "message": "I don\u0027t think we should rely on transaction ids and then the audit manager further processing the journal.  Can we get the phosphor-logging manager to be the single piece of journal processing and then forward the appropriate fields over to the audit manager?\n\nAgain, we should see a design that everyone can throw darts at.  There are certainly design trade-offs to consider.",
+      "revId": "fa60311127172915c8e3ddcb07e741d580dcbb23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
