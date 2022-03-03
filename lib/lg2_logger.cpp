@@ -11,6 +11,17 @@
 #include <phosphor-logging/lg2.hpp>
 #include <vector>
 
+// Clang doesn't currently support source_location, but in order to provide
+// support for compiling an application with Clang while lg2 was compiled with
+// GCC we need to provide compile support *both* source_location and
+// experimental::source_location.
+//
+// Note: The experimental::source_location code will turn into a no-op for
+//       simplicity.  This is simply to allow compilation.
+#if __has_builtin(__builtin_source_location)
+#include <experimental/source_location>
+#endif
+
 namespace lg2::details
 {
 /** Convert unsigned to string using format flags. */
@@ -289,5 +300,16 @@ void do_log(level l, const lg2::source_location& s, const char* m, ...)
     sd_journal_sendv(iov.data(), strings.size());
     extra_output_method(l, s, message);
 }
+
+// If std::source_location is supported, provide an additional
+// std::experimental::source_location implementation that does nothing so that
+// lg2 users can compile with Clang even if lg2 was compiled with GCC.  This
+// is a no-op implementation that simply allows compile support since some
+// people like to compile with Clang for additional / stricter checks.
+#if __has_builtin(__builtin_source_location)
+void do_log(level, const std::experimental::source_location&, const char*, ...)
+{
+}
+#endif
 
 } // namespace lg2::details
