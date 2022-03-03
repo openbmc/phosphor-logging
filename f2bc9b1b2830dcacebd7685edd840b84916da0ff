@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23427599_c2066410",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3590,
+      "author": {
+        "id": 1000338
+      },
+      "writtenOn": "2022-03-03T06:56:33Z",
+      "side": 1,
+      "message": "I2C",
+      "range": {
+        "startLine": 3590,
+        "startChar": 35,
+        "endLine": 3590,
+        "endChar": 38
+      },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "870c373e_53ded39d",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3591,
+      "author": {
+        "id": 1000338
+      },
+      "writtenOn": "2022-03-03T06:56:33Z",
+      "side": 1,
+      "message": "I think we can call the subsystem just \"panel\"",
+      "range": {
+        "startLine": 3591,
+        "startChar": 26,
+        "endLine": 3591,
+        "endChar": 30
+      },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3f1646c_90c2a4bc",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3608,
+      "author": {
+        "id": 1000338
+      },
+      "writtenOn": "2022-03-03T06:56:33Z",
+      "side": 1,
+      "message": "I2C writes to the panel failed, even post retries.",
+      "range": {
+        "startLine": 3607,
+        "startChar": 0,
+        "endLine": 3608,
+        "endChar": 31
+      },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5df4541a_a60ce792",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3614,
+      "author": {
+        "id": 1000338
+      },
+      "writtenOn": "2022-03-03T06:56:33Z",
+      "side": 1,
+      "message": "Just SlaveI2CError",
+      "range": {
+        "startLine": 3614,
+        "startChar": 35,
+        "endLine": 3614,
+        "endChar": 46
+      },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fed9a25_23ad6e02",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3632,
+      "author": {
+        "id": 1000338
+      },
+      "writtenOn": "2022-03-03T06:56:33Z",
+      "side": 1,
+      "message": "The Panel is unable to initialize the I2C responder. Butoon events will not be processed.",
+      "range": {
+        "startLine": 3628,
+        "startChar": 0,
+        "endLine": 3632,
+        "endChar": 37
+      },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5e4f3e2_5fb67784",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3637,
+      "author": {
+        "id": 1000338
+      },
+      "writtenOn": "2022-03-03T06:56:33Z",
+      "side": 1,
+      "message": "I2CSetupFailure",
+      "range": {
+        "startLine": 3637,
+        "startChar": 35,
+        "endLine": 3637,
+        "endChar": 43
+      },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f2ae58e_9fe1c909",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3652,
+      "author": {
+        "id": 1000338
+      },
+      "writtenOn": "2022-03-03T06:56:33Z",
+      "side": 1,
+      "message": "file is not needed here",
+      "range": {
+        "startLine": 3652,
+        "startChar": 58,
+        "endLine": 3652,
+        "endChar": 62
+      },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e663c68d_7fcddcf6",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3657,
+      "author": {
+        "id": 1000338
+      },
+      "writtenOn": "2022-03-03T06:56:33Z",
+      "side": 1,
+      "message": "HostCommunicationError",
+      "range": {
+        "startLine": 3657,
+        "startChar": 35,
+        "endLine": 3657,
+        "endChar": 44
+      },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
