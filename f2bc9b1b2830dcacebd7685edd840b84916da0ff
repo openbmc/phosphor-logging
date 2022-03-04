@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84ecbcbb_9a44fc5b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000348
+      },
+      "writtenOn": "2022-03-04T07:42:02Z",
+      "side": 1,
+      "message": "where did the internal error go ?",
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "23427599_c2066410",
@@ -164,6 +181,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a7c59d97_fc245c70",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3652,
+      "author": {
+        "id": 1000348
+      },
+      "writtenOn": "2022-03-04T07:42:02Z",
+      "side": 1,
+      "message": "this should just be a set-up failure",
+      "range": {
+        "startLine": 3651,
+        "startChar": 1,
+        "endLine": 3652,
+        "endChar": 63
+      },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e663c68d_7fcddcf6",
         "filename": "extensions/openpower-pels/registry/message_registry.json",
         "patchSetId": 2
@@ -180,6 +220,52 @@
         "startChar": 35,
         "endLine": 3657,
         "endChar": 44
+      },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b84606d9_3d20da72",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3686,
+      "author": {
+        "id": 1000348
+      },
+      "writtenOn": "2022-03-04T07:42:02Z",
+      "side": 1,
+      "message": "PLDM send failure",
+      "range": {
+        "startLine": 3682,
+        "startChar": 0,
+        "endLine": 3686,
+        "endChar": 77
+      },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab39e1a1_c64f97bb",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3746,
+      "author": {
+        "id": 1000348
+      },
+      "writtenOn": "2022-03-04T07:42:02Z",
+      "side": 1,
+      "message": "this is. not needed ,we will have only one I2C setup failure error.",
+      "range": {
+        "startLine": 3722,
+        "startChar": 0,
+        "endLine": 3746,
+        "endChar": 9
       },
       "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
