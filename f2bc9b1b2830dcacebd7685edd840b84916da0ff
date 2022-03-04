@@ -43,6 +43,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "85680ae0_6fb2dc27",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3590,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-03-04T15:24:45Z",
+      "side": 1,
+      "message": "The standard is name them like A.Error.B, so like com.ibm.Panel.Error.I2CWriteFailure",
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "870c373e_53ded39d",
         "filename": "extensions/openpower-pels/registry/message_registry.json",
         "patchSetId": 2
@@ -60,6 +77,47 @@
         "endLine": 3591,
         "endChar": 30
       },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec8a9cbb_2c2541e2",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3591,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-03-04T15:24:45Z",
+      "side": 1,
+      "message": "it has to be valid subsystem enum in the schema which reflect the list of PEL subsystems.  Looks like there is a \u0027cec_op_panel\u0027: https://github.com/openbmc/phosphor-logging/blob/master/extensions/openpower-pels/registry/schema/schema.json#L172",
+      "parentUuid": "870c373e_53ded39d",
+      "range": {
+        "startLine": 3591,
+        "startChar": 26,
+        "endLine": 3591,
+        "endChar": 30
+      },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdf2fbca_84b644de",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3592,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-03-04T15:24:45Z",
+      "side": 1,
+      "message": "Can you claim 0x5000 as the component ID in https://github.com/openbmc/phosphor-logging/blob/master/extensions/openpower-pels/registry/ComponentIDs.md put up a change in the same commit?",
       "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
