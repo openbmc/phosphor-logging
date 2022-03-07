@@ -58,6 +58,48 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24cc774e_7cab16ed",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3590,
+      "author": {
+        "id": 1000386
+      },
+      "writtenOn": "2022-03-07T08:02:16Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "85680ae0_6fb2dc27",
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb73a8e2_27d911fe",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3590,
+      "author": {
+        "id": 1000386
+      },
+      "writtenOn": "2022-03-07T08:02:16Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "23427599_c2066410",
+      "range": {
+        "startLine": 3590,
+        "startChar": 35,
+        "endLine": 3590,
+        "endChar": 38
+      },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "870c373e_53ded39d",
@@ -105,6 +147,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a50be77_92c56d5d",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3591,
+      "author": {
+        "id": 1000386
+      },
+      "writtenOn": "2022-03-07T08:02:16Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ec8a9cbb_2c2541e2",
+      "range": {
+        "startLine": 3591,
+        "startChar": 26,
+        "endLine": 3591,
+        "endChar": 30
+      },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bdf2fbca_84b644de",
@@ -122,6 +188,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90bcb06d_055275cf",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3592,
+      "author": {
+        "id": 1000386
+      },
+      "writtenOn": "2022-03-07T08:02:16Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "bdf2fbca_84b644de",
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c3f1646c_90c2a4bc",
@@ -135,6 +219,30 @@
       "writtenOn": "2022-03-03T06:56:33Z",
       "side": 1,
       "message": "I2C writes to the panel failed, even post retries.",
+      "range": {
+        "startLine": 3607,
+        "startChar": 0,
+        "endLine": 3608,
+        "endChar": 31
+      },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0598523_d0333b75",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3608,
+      "author": {
+        "id": 1000386
+      },
+      "writtenOn": "2022-03-07T08:02:16Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c3f1646c_90c2a4bc",
       "range": {
         "startLine": 3607,
         "startChar": 0,
@@ -168,6 +276,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54641dd2_5949c9da",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3614,
+      "author": {
+        "id": 1000386
+      },
+      "writtenOn": "2022-03-07T08:02:16Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5df4541a_a60ce792",
+      "range": {
+        "startLine": 3614,
+        "startChar": 35,
+        "endLine": 3614,
+        "endChar": 46
+      },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8fed9a25_23ad6e02",
@@ -191,6 +323,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1c3331e_ef633499",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3632,
+      "author": {
+        "id": 1000386
+      },
+      "writtenOn": "2022-03-07T08:02:16Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8fed9a25_23ad6e02",
+      "range": {
+        "startLine": 3628,
+        "startChar": 0,
+        "endLine": 3632,
+        "endChar": 37
+      },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5e4f3e2_5fb67784",
@@ -204,6 +360,30 @@
       "writtenOn": "2022-03-03T06:56:33Z",
       "side": 1,
       "message": "I2CSetupFailure",
+      "range": {
+        "startLine": 3637,
+        "startChar": 35,
+        "endLine": 3637,
+        "endChar": 43
+      },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06579963_ce8a6d31",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3637,
+      "author": {
+        "id": 1000386
+      },
+      "writtenOn": "2022-03-07T08:02:16Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e5e4f3e2_5fb67784",
       "range": {
         "startLine": 3637,
         "startChar": 35,
@@ -260,6 +440,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0febabce_8095291a",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3652,
+      "author": {
+        "id": 1000386
+      },
+      "writtenOn": "2022-03-07T08:02:16Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8f2ae58e_9fe1c909",
+      "range": {
+        "startLine": 3652,
+        "startChar": 58,
+        "endLine": 3652,
+        "endChar": 62
+      },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "521dc94f_412d086a",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3652,
+      "author": {
+        "id": 1000386
+      },
+      "writtenOn": "2022-03-07T08:02:16Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a7c59d97_fc245c70",
+      "range": {
+        "startLine": 3651,
+        "startChar": 1,
+        "endLine": 3652,
+        "endChar": 63
+      },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e663c68d_7fcddcf6",
@@ -273,6 +501,30 @@
       "writtenOn": "2022-03-03T06:56:33Z",
       "side": 1,
       "message": "HostCommunicationError",
+      "range": {
+        "startLine": 3657,
+        "startChar": 35,
+        "endLine": 3657,
+        "endChar": 44
+      },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f46f6684_25895877",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3657,
+      "author": {
+        "id": 1000386
+      },
+      "writtenOn": "2022-03-07T08:02:16Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e663c68d_7fcddcf6",
       "range": {
         "startLine": 3657,
         "startChar": 35,
@@ -306,6 +558,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f5f338f_34f99803",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3686,
+      "author": {
+        "id": 1000386
+      },
+      "writtenOn": "2022-03-07T08:02:16Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b84606d9_3d20da72",
+      "range": {
+        "startLine": 3682,
+        "startChar": 0,
+        "endLine": 3686,
+        "endChar": 77
+      },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab39e1a1_c64f97bb",
@@ -319,6 +595,30 @@
       "writtenOn": "2022-03-04T07:42:02Z",
       "side": 1,
       "message": "this is. not needed ,we will have only one I2C setup failure error.",
+      "range": {
+        "startLine": 3722,
+        "startChar": 0,
+        "endLine": 3746,
+        "endChar": 9
+      },
+      "revId": "f2bc9b1b2830dcacebd7685edd840b84916da0ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "591384f7_860a8c71",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3746,
+      "author": {
+        "id": 1000386
+      },
+      "writtenOn": "2022-03-07T08:02:16Z",
+      "side": 1,
+      "message": "Yes, but we planned to have one for device path failure and ioctl, okay will differ in description then.",
+      "parentUuid": "ab39e1a1_c64f97bb",
       "range": {
         "startLine": 3722,
         "startChar": 0,
