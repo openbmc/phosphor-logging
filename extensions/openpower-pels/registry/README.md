@@ -209,23 +209,6 @@ The SRC has a bit in it to indicate if the error is a power fault.  This is an
 optional field in the message registry and defaults to false.
 
 ```
-"PowerFault: false
-```
-
-### Documentation Fields
-The documentation fields are used by PEL parsers to display a human readable
-description of a PEL.  They are also the source for the Redfish event log
-messages.
-
-#### Message
-This field is used by the BMC's PEL parser as the description of the error log.
-It will also be used in Redfish event logs.  It supports argument substitution
-using the %1, %2, etc placeholders allowing any of the SRC user data words 6 -
-9 to be displayed as part of the message.  If the placeholders are used, then
-the `MessageArgSources` property must be present to say which SRC words to use
-for each placeholder.
-
-```
 "Message": "Processor %1 had %2 errors"
 ```
 

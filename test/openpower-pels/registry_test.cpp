@@ -71,7 +71,6 @@ const auto registryData = R"(
                 "ReasonCode": "0x2333",
                 "Type": "BD",
                 "SymptomIDFields": ["SRCWord5", "SRCWord6", "SRCWord7"],
-                "PowerFault": true,
                 "Words6To9":
                 {
                     "6":
@@ -172,7 +171,6 @@ TEST_F(RegistryTest, TestFindEntry)
 
     EXPECT_EQ(entry->src.type, 0xBD);
     EXPECT_EQ(entry->src.reasonCode, 0x2333);
-    EXPECT_EQ(*(entry->src.powerFault), true);
 
     auto& hexwords = entry->src.hexwordADFields;
     EXPECT_TRUE(hexwords);
@@ -226,7 +224,6 @@ TEST_F(RegistryTest, TestFindEntryMinimal)
 
     EXPECT_EQ(entry->src.reasonCode, 0x2030);
     EXPECT_EQ(entry->src.type, 0xBD);
-    EXPECT_FALSE(entry->src.powerFault);
     EXPECT_FALSE(entry->src.hexwordADFields);
     EXPECT_FALSE(entry->src.symptomID);
 }

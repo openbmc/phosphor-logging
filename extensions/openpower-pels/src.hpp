@@ -51,7 +51,6 @@ class SRC : public Section
     enum HeaderFlags
     {
         additionalSections = 0x01,
-        powerFaultEvent = 0x02,
         hypDumpInit = 0x04,
         postOPPanel = 0x08,
         i5OSServiceEventBit = 0x10,
@@ -222,19 +221,6 @@ class SRC : public Section
     inline bool hasAdditionalSections() const
     {
         return _flags & additionalSections;
-    }
-
-    /**
-     * @brief Indicates if this event log is for a power fault.
-     *
-     * This comes from a field in the message registry for BMC
-     * generated PELs.
-     *
-     * @return bool
-     */
-    inline bool isPowerFaultEvent() const
-    {
-        return _flags & powerFaultEvent;
     }
 
     /**
