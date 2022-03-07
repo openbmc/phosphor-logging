@@ -92,9 +92,7 @@
 
                 "SymptomIDFields": {"$ref": "#/definitions/symptomID" },
 
-                "Words6To9": {"$ref": "#/definitions/srcWords6To9" },
-
-                "PowerFault": {"$ref": "#/definitions/powerFault" }
+                "Words6To9": {"$ref": "#/definitions/srcWords6To9" }
             },
 
             "required": ["ReasonCode", "Words6To9"],
@@ -294,12 +292,6 @@
             "type": "string",
             "enum": ["na", "misc_information_only", "tracing_event",
                      "dump_notification", "env_normal"]
-        },
-
-        "powerFault":
-        {
-            "description": "The Power Fault SRC field (bit 6 in byte 1 of header). Optional and defaults to false",
-            "type": "boolean"
         },
 
         "actionFlags":

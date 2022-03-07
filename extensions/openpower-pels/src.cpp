@@ -326,13 +326,6 @@ SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
 
     _flags = 0;
 
-    auto item = additionalData.getValue("POWER_THERMAL_CRITICAL_FAULT");
-    if ((regEntry.src.powerFault.value_or(false)) ||
-        (item.value_or("") == "TRUE"))
-    {
-        _flags |= powerFaultEvent;
-    }
-
     _reserved1B = 0;
 
     _wordCount = numSRCHexDataWords + 1;
@@ -724,8 +717,6 @@ std::optional<std::string> SRC::getJSON(message::Registry& registry,
                pv::boolString.at(_flags & i5OSServiceEventBit), 1);
     jsonInsert(ps, "Hypervisor Dump Initiated",
                pv::boolString.at(_flags & hypDumpInit), 1);
-    jsonInsert(ps, "Power Control Net Fault",
-               pv::boolString.at(isPowerFaultEvent()), 1);
 
     if (isBMCSRC())
     {

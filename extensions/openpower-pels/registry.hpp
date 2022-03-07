@@ -82,11 +82,6 @@ struct SRC
     uint16_t reasonCode;
 
     /**
-     * @brief Specifies if the SRC represents a power fault.  Optional.
-     */
-    std::optional<bool> powerFault;
-
-    /**
      * @brief An optional vector of SRC hexword numbers that should be used
      *        along with the SRC ASCII string to build the Symptom ID, which
      *        is a field in the Extended Header section.

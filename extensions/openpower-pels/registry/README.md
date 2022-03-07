@@ -204,14 +204,6 @@ words will be set to zero in the PEL.
 }
 ```
 
-### SRC Power Fault flag
-The SRC has a bit in it to indicate if the error is a power fault.  This is an
-optional field in the message registry and defaults to false.
-
-```
-"PowerFault: false
-```
-
 ### Documentation Fields
 The documentation fields are used by PEL parsers to display a human readable
 description of a PEL.  They are also the source for the Redfish event log
