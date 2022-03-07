@@ -675,11 +675,6 @@ std::optional<Entry> Registry::lookup(const std::string& name, LookupType type,
                 entry.src.symptomID = helper::getSRCSymptomIDFields(src, name);
             }
 
-            if (src.contains("PowerFault"))
-            {
-                entry.src.powerFault = src["PowerFault"];
-            }
-
             auto& doc = (*e)["Documentation"];
             entry.doc.message = doc["Message"];
             entry.doc.description = doc["Description"];

@@ -190,7 +190,6 @@ TEST_F(SRCTest, CreateTestNoCallouts)
     entry.src.type = 0xBD;
     entry.src.reasonCode = 0xABCD;
     entry.subsystem = 0x42;
-    entry.src.powerFault = true;
     entry.src.hexwordADFields = {
         {5, {"TEST1", "DESCR1"}}, // Not a user defined word
         {6, {"TEST1", "DESCR1"}},
@@ -214,7 +213,7 @@ TEST_F(SRCTest, CreateTestNoCallouts)
     SRC src{entry, ad, dataIface};
 
     EXPECT_TRUE(src.valid());
-    EXPECT_TRUE(src.isPowerFaultEvent());
+    EXPECT_FALSE(src.isPowerFaultEvent());
     EXPECT_EQ(src.size(), baseSRCSize);
 
     const auto& hexwords = src.hexwordData();
@@ -253,37 +252,8 @@ TEST_F(SRCTest, CreateTestNoCallouts)
     SRC newSRC{stream};
 
     EXPECT_TRUE(newSRC.valid());
-    EXPECT_EQ(newSRC.isPowerFaultEvent(), src.isPowerFaultEvent());
     EXPECT_EQ(newSRC.asciiString(), src.asciiString());
     EXPECT_FALSE(newSRC.callouts());
-}
-
-// Create an SRC to test POWER_THERMAL_CRITICAL_FAULT set to TRUE
-// sets the power fault bit in SRC
-TEST_F(SRCTest, PowerFaultTest)
-{
-    message::Entry entry;
-    entry.src.type = 0xBD;
-    entry.src.reasonCode = 0xABCD;
-    entry.subsystem = 0x42;
-    entry.src.powerFault = false;
-
-    // Values for the SRC words pointed to above
-    std::vector<std::string> adData{"POWER_THERMAL_CRITICAL_FAULT=TRUE",
-                                    "TEST2=12345678", "TEST3=0XDEF", "TEST4=Z"};
-    AdditionalData ad{adData};
-    NiceMock<MockDataInterface> dataIface;
-
-    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
-                                      "system/entry"};
-    EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
-        .WillOnce(Return(std::vector<bool>{false, false, false}));
-
-    SRC src{entry, ad, dataIface};
-
-    EXPECT_TRUE(src.valid());
-    EXPECT_TRUE(src.isPowerFaultEvent());
-    EXPECT_EQ(src.size(), baseSRCSize);
 }
 
 // Test when the CCIN string isn't a 4 character number
@@ -293,7 +263,6 @@ TEST_F(SRCTest, BadCCINTest)
     entry.src.type = 0xBD;
     entry.src.reasonCode = 0xABCD;
     entry.subsystem = 0x42;
-    entry.src.powerFault = false;
 
     std::vector<std::string> adData{};
     AdditionalData ad{adData};
@@ -368,7 +337,6 @@ TEST_F(SRCTest, InventoryCalloutTest)
     entry.src.type = 0xBD;
     entry.src.reasonCode = 0xABCD;
     entry.subsystem = 0x42;
-    entry.src.powerFault = false;
 
     std::vector<std::string> adData{"CALLOUT_INVENTORY_PATH=motherboard"};
     AdditionalData ad{adData};
@@ -425,7 +393,6 @@ TEST_F(SRCTest, InventoryCalloutNoLocCodeTest)
     entry.src.type = 0xBD;
     entry.src.reasonCode = 0xABCD;
     entry.subsystem = 0x42;
-    entry.src.powerFault = false;
 
     std::vector<std::string> adData{"CALLOUT_INVENTORY_PATH=motherboard"};
     AdditionalData ad{adData};
@@ -471,7 +438,6 @@ TEST_F(SRCTest, InventoryCalloutNoVPDTest)
     entry.src.type = 0xBD;
     entry.src.reasonCode = 0xABCD;
     entry.subsystem = 0x42;
-    entry.src.powerFault = false;
 
     std::vector<std::string> adData{"CALLOUT_INVENTORY_PATH=motherboard"};
     AdditionalData ad{adData};
@@ -526,7 +492,6 @@ TEST_F(SRCTest, RegistryCalloutTest)
     entry.src.type = 0xBD;
     entry.src.reasonCode = 0xABCD;
     entry.subsystem = 0x42;
-    entry.src.powerFault = false;
 
     entry.callouts = R"(
         [
@@ -738,7 +703,6 @@ TEST_F(SRCTest, SymbolicFRUWithInvPathTest)
     entry.src.type = 0xBD;
     entry.src.reasonCode = 0xABCD;
     entry.subsystem = 0x42;
-    entry.src.powerFault = false;
 
     entry.callouts = R"(
         [{
@@ -851,7 +815,6 @@ TEST_F(SRCTest, DevicePathCalloutTest)
     entry.src.type = 0xBD;
     entry.src.reasonCode = 0xABCD;
     entry.subsystem = 0x42;
-    entry.src.powerFault = false;
 
     const auto calloutJSON = R"(
     {
@@ -1102,7 +1065,6 @@ TEST_F(SRCTest, JsonCalloutsTest)
     entry.src.type = 0xBD;
     entry.src.reasonCode = 0xABCD;
     entry.subsystem = 0x42;
-    entry.src.powerFault = false;
 
     AdditionalData ad;
     NiceMock<MockDataInterface> dataIface;
@@ -1272,7 +1234,6 @@ TEST_F(SRCTest, JsonBadCalloutsTest)
     entry.src.type = 0xBD;
     entry.src.reasonCode = 0xABCD;
     entry.subsystem = 0x42;
-    entry.src.powerFault = false;
 
     AdditionalData ad;
     NiceMock<MockDataInterface> dataIface;
@@ -1355,7 +1316,6 @@ TEST_F(SRCTest, InventoryCalloutTestPriority)
     entry.src.type = 0xBD;
     entry.src.reasonCode = 0xABCD;
     entry.subsystem = 0x42;
-    entry.src.powerFault = false;
 
     std::vector<std::string> adData{"CALLOUT_INVENTORY_PATH=motherboard",
                                     "CALLOUT_PRIORITY=M"};
@@ -1395,7 +1355,6 @@ TEST_F(SRCTest, DumpStatusBitsCheck)
     entry.src.type = 0xBD;
     entry.src.reasonCode = 0xABCD;
     entry.subsystem = 0x42;
-    entry.src.powerFault = false;
 
     AdditionalData ad;
     NiceMock<MockDataInterface> dataIface;
@@ -1454,7 +1413,6 @@ TEST_F(SRCTest, TestPELSubsystem)
     entry.src.type = 0xBD;
     entry.src.reasonCode = 0xABCD;
     entry.subsystem = 0x42;
-    entry.src.powerFault = true;
 
     // Values for the SRC words pointed to above
     std::vector<std::string> adData{"PEL_SUBSYSTEM=0x20"};
