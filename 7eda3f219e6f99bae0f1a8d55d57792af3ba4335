@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daffa6a9_f1db6144",
+        "filename": "extensions/openpower-pels/registry/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-03-08T15:29:20Z",
+      "side": 0,
+      "message": "you just needed to delete lines 207-213",
+      "revId": "7eda3f219e6f99bae0f1a8d55d57792af3ba4335",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e64fe0f_5b30f8b5",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-03-08T15:29:20Z",
+      "side": 0,
+      "message": "I\"m on the fence if we still want to display it in the PEL, since it\u0027s still part of a PEL.  Derek what do you think?",
+      "revId": "7eda3f219e6f99bae0f1a8d55d57792af3ba4335",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4cab2d9_be8f9dca",
+        "filename": "extensions/openpower-pels/src.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-03-08T15:29:20Z",
+      "side": 0,
+      "message": "the power fault field is still in the PEL spec, so I\u0027d still like to keep support for it, but have it just always be false.  So you can leave this in.",
+      "revId": "7eda3f219e6f99bae0f1a8d55d57792af3ba4335",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5508a57_07d5694e",
+        "filename": "extensions/openpower-pels/src.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-03-08T15:29:20Z",
+      "side": 0,
+      "message": "you can leave this in as well.",
+      "revId": "7eda3f219e6f99bae0f1a8d55d57792af3ba4335",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0c0d0aa_4b288bbc",
+        "filename": "test/openpower-pels/src_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-03-08T15:29:20Z",
+      "side": 0,
+      "message": "since isPowerFaultEvent() should always return false, how about a \nEXPECT_FALSE(src.isPowerFaultEvent());",
+      "revId": "7eda3f219e6f99bae0f1a8d55d57792af3ba4335",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
