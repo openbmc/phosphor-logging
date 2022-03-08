@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7601b1f6_aa182ad4",
+        "filename": "lib/elog.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-08T23:14:25Z",
+      "side": 1,
+      "message": "These are what I don\u0027t understand the utility of.",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 39
+      },
+      "revId": "77311eed97303e8d6b058d3ecd4a5161b84b7695",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "708a6938_ce585973",
+        "filename": "lib/elog.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-08T23:14:25Z",
+      "side": 1,
+      "message": "We\u0027re going to document this interface, right?  Where is the PDI commit?",
+      "revId": "77311eed97303e8d6b058d3ecd4a5161b84b7695",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9d4ef48_2eb16ec6",
+        "filename": "lib/elog.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-08T23:14:25Z",
+      "side": 1,
+      "message": "I think this is somewhat dangerous to have a synchronous message call inside the logging code.  Can we queue this up async?  Can we get the phosphor-logging manager to deal with it?  We\u0027re going to end up having N-to-M connections between N applications and M audit types (as these further get implemnented) instead of 1:M connections for phosphor-logging\u0027s manager doing the calls.\n\nAgain, I\u0027d like to see some design on this before we commit to a code direction.",
+      "revId": "77311eed97303e8d6b058d3ecd4a5161b84b7695",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd48f323_027cf8c9",
+        "filename": "lib/include/phosphor-logging/elog.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-08T23:14:25Z",
+      "side": 1,
+      "message": "Don\u0027t we need some parameters here?",
+      "revId": "77311eed97303e8d6b058d3ecd4a5161b84b7695",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef6b4e71_b08fa134",
+        "filename": "lib/include/phosphor-logging/elog.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-08T23:14:25Z",
+      "side": 1,
+      "message": "I don\u0027t really understand the utility of this.  What is a \u0027MSG_ID\u0027?  I don\u0027t see any cases where it is actually used.",
+      "revId": "77311eed97303e8d6b058d3ecd4a5161b84b7695",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
