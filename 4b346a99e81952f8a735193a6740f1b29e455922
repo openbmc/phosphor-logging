@@ -1,0 +1,205 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6224172_1c124cbe",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 3590,
+      "author": {
+        "id": 1000348
+      },
+      "writtenOn": "2022-03-09T10:22:13Z",
+      "side": 1,
+      "message": "should we use \n\"Name\": \"xyz.openbmc_project.Common.Device.Error.WriteFailure\",\nwhich is already available.",
+      "range": {
+        "startLine": 3590,
+        "startChar": 11,
+        "endLine": 3590,
+        "endChar": 58
+      },
+      "revId": "4b346a99e81952f8a735193a6740f1b29e455922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd967093_d9ad00ed",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 3591,
+      "author": {
+        "id": 1000348
+      },
+      "writtenOn": "2022-03-09T10:22:13Z",
+      "side": 1,
+      "message": "should this not be using the  \"Subsystem\": \"cec_i2c\",",
+      "range": {
+        "startLine": 3591,
+        "startChar": 12,
+        "endLine": 3591,
+        "endChar": 40
+      },
+      "revId": "4b346a99e81952f8a735193a6740f1b29e455922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abfb26cd_1f2a7ae7",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 3593,
+      "author": {
+        "id": 1000348
+      },
+      "writtenOn": "2022-03-09T10:22:13Z",
+      "side": 1,
+      "message": "do we need any of the below for our SRCs?\n\"Severity\": \"predictive\",\n\"ActionFlags\": [ \"service_action\", \"report\", \"call_home\" ],\n\"EventType\": \"env_normal\",",
+      "revId": "4b346a99e81952f8a735193a6740f1b29e455922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e767146_404e1222",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 3596,
+      "author": {
+        "id": 1000348
+      },
+      "writtenOn": "2022-03-09T10:22:13Z",
+      "side": 1,
+      "message": "would we not want to capture the errno here ?",
+      "range": {
+        "startLine": 3596,
+        "startChar": 15,
+        "endLine": 3596,
+        "endChar": 31
+      },
+      "revId": "4b346a99e81952f8a735193a6740f1b29e455922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20858425_c0a38fc9",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 3600,
+      "author": {
+        "id": 1000348
+      },
+      "writtenOn": "2022-03-09T10:22:13Z",
+      "side": 1,
+      "message": "I2C Device write failure",
+      "range": {
+        "startLine": 3600,
+        "startChar": 32,
+        "endLine": 3600,
+        "endChar": 47
+      },
+      "revId": "4b346a99e81952f8a735193a6740f1b29e455922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a0ba104_8e8847d3",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 3623,
+      "author": {
+        "id": 1000348
+      },
+      "writtenOn": "2022-03-09T10:22:13Z",
+      "side": 1,
+      "message": "this is an input device open failure  not i2c",
+      "range": {
+        "startLine": 3605,
+        "startChar": 0,
+        "endLine": 3623,
+        "endChar": 10
+      },
+      "revId": "4b346a99e81952f8a735193a6740f1b29e455922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76ffb425_f99b22ec",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 3656,
+      "author": {
+        "id": 1000348
+      },
+      "writtenOn": "2022-03-09T10:22:13Z",
+      "side": 1,
+      "message": "Host Communication failure",
+      "range": {
+        "startLine": 3656,
+        "startChar": 32,
+        "endLine": 3656,
+        "endChar": 49
+      },
+      "revId": "4b346a99e81952f8a735193a6740f1b29e455922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "580f3ea0_883bbb40",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 3659,
+      "author": {
+        "id": 1000348
+      },
+      "writtenOn": "2022-03-09T10:22:13Z",
+      "side": 1,
+      "message": "?? you just need to describe what this is , here you could mention that this is a failure in a PLDM send and likewise.",
+      "range": {
+        "startLine": 3659,
+        "startChar": 41,
+        "endLine": 3659,
+        "endChar": 79
+      },
+      "revId": "4b346a99e81952f8a735193a6740f1b29e455922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "521c7719_cce4427c",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 3687,
+      "author": {
+        "id": 1000348
+      },
+      "writtenOn": "2022-03-09T10:22:13Z",
+      "side": 1,
+      "message": "\"Documentation\": {\n                \"Description\": \"Dbus exception\",\n                \"Message\": \"A Dbus internal error occurred.\",\n                \"Notes\": [\n                    \"This error occurs when Dbus operation fails.\",\n                    \"Exceptions details are captured in additonal\",\n                    \"data.\"\n                ]",
+      "range": {
+        "startLine": 3681,
+        "startChar": 0,
+        "endLine": 3687,
+        "endChar": 17
+      },
+      "revId": "4b346a99e81952f8a735193a6740f1b29e455922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
