@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "999becc8_75e7fb2a",
+        "filename": "lib/elog.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-03-09T03:14:58Z",
+      "side": 1,
+      "message": "\u003e These are what I don\u0027t understand the utility of.\n\nHere we will encapsulate the corresponding MESSAGE_ID for different types of events and store them in the journal.\nFor example: \nIf it is an audit event, it will have AUDIT_MESSSAGE_ID\nIf it is a SEL event, it will have AUDIT_MESSSAGE_ID\n\nso if someone wants to use rsyslog on the backend, they only need to filter the logs they want according to the MESSAGE_ID type.",
+      "parentUuid": "7601b1f6_aa182ad4",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 39
+      },
+      "revId": "77311eed97303e8d6b058d3ecd4a5161b84b7695",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "708a6938_ce585973",
         "filename": "lib/elog.cpp",
         "patchSetId": 2
@@ -37,6 +61,24 @@
       "writtenOn": "2022-03-08T23:14:25Z",
       "side": 1,
       "message": "We\u0027re going to document this interface, right?  Where is the PDI commit?",
+      "revId": "77311eed97303e8d6b058d3ecd4a5161b84b7695",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34833088_a8390bc5",
+        "filename": "lib/elog.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-03-09T03:14:58Z",
+      "side": 1,
+      "message": "\u003e We\u0027re going to document this interface, right?  Where is the PDI commit?\n\nCurrently I just define these interfaces in phosphor-logging, because I am not sure if I am going in the right direction, if you agree, I will push a new patch later to submit these interfaces to PDI",
+      "parentUuid": "708a6938_ce585973",
       "revId": "77311eed97303e8d6b058d3ecd4a5161b84b7695",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -60,6 +102,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9fe21aba_2e0fba77",
+        "filename": "lib/elog.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-03-09T03:14:58Z",
+      "side": 1,
+      "message": "\u003e I think this is somewhat dangerous to have a synchronous message call inside the logging code.  Can we queue this up async?  Can we get the phosphor-logging manager to deal with it?  \n\nWhat is our rationale for get the phosphor-logging manager to deal with it, could you kindly describe it?\n\n\u003e We\u0027re going to end up having N-to-M connections between N applications and M audit types (as these further get implemnented) instead of 1:M connections for phosphor-logging\u0027s manager doing the calls.\n\nFor audit log, i dont think it\u0027s N-to-M, i think it\u0027s N-to-audit log.\nIf it\u0027s a sel log, it will have a sel method instead of audit(I think)\n\n\u003e \n\u003e Again, I\u0027d like to see some design on this before we commit to a code direction.\n\nSorry, I will update design this week 😊",
+      "parentUuid": "f9d4ef48_2eb16ec6",
+      "revId": "77311eed97303e8d6b058d3ecd4a5161b84b7695",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bd48f323_027cf8c9",
         "filename": "lib/include/phosphor-logging/elog.hpp",
         "patchSetId": 2
@@ -77,6 +137,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2904976a_e58f27a0",
+        "filename": "lib/include/phosphor-logging/elog.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-03-09T03:14:58Z",
+      "side": 1,
+      "message": "\u003e Don\u0027t we need some parameters here?\n\nFor now, I don\u0027t think it\u0027s necessary",
+      "parentUuid": "bd48f323_027cf8c9",
+      "revId": "77311eed97303e8d6b058d3ecd4a5161b84b7695",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ef6b4e71_b08fa134",
         "filename": "lib/include/phosphor-logging/elog.hpp",
         "patchSetId": 2
@@ -88,6 +166,24 @@
       "writtenOn": "2022-03-08T23:14:25Z",
       "side": 1,
       "message": "I don\u0027t really understand the utility of this.  What is a \u0027MSG_ID\u0027?  I don\u0027t see any cases where it is actually used.",
+      "revId": "77311eed97303e8d6b058d3ecd4a5161b84b7695",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04184899_0bfa86ad",
+        "filename": "lib/include/phosphor-logging/elog.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-03-09T03:14:58Z",
+      "side": 1,
+      "message": "\u003e I don\u0027t really understand the utility of this.  What is a \u0027MSG_ID\u0027?  I don\u0027t see any cases where it is actually used.\n\nas above",
+      "parentUuid": "ef6b4e71_b08fa134",
       "revId": "77311eed97303e8d6b058d3ecd4a5161b84b7695",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
