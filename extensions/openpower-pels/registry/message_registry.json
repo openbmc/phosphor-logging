@@ -578,6 +578,32 @@
         },
 
         {
+            "Name": "org.open_power.PHAL.Error.NonFunctionalBootProc",
+            "Subsystem": "cec_hardware",
+            "ComponentID": "0x3000",
+            "Severity": "unrecoverable",
+
+            "SRC":
+            {
+                "ReasonCode": "0x3007",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "Non functional boot processor",
+                "Message": "Non functional boot processor",
+                "Notes": [
+                    "BMC firmware couldn't find functional primary processor",
+                    "required to boot the host",
+                    "Debug traces will be captured in AdditionalData section"
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.HardwareIsolation.Error",
             "Subsystem": "cec_hardware",
             "ComponentID": "0x3100",
