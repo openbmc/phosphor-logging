@@ -371,6 +371,7 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
      */
     void deleteAll() override
     {
+        log<level::INFO>("Deleting all event logs");
         manager.eraseAll();
     }
 
