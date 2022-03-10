@@ -708,6 +708,35 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.State.Error.SecurityCheckFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3400",
+            "SRC":
+            {
+                "ReasonCode": "0x3405",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [{"Priority": "high", "Procedure": "next_level_support"}]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "A firmware security check has failed",
+                "Message": "A firmware security check has failed, most likely something is not configured correctly",
+                "Notes": [
+                    "This log is only generated in the manufacturing ",
+                    "environment and it indicates that something has not ",
+                    "been configured correctly. Use the data in the PEL to ",
+                    "determine what that is."
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.Processor.Error.SbeChipOpFailure",
             "Subsystem": "processor_chip",
             "ComponentID": "0x3500",
