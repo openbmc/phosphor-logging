@@ -737,6 +737,238 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.State.BMC.Error.MultiUserTargetFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3400",
+            "SRC":
+            {
+                "ReasonCode": "0x3406",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [{"Priority": "high", "Procedure": "next_level_support"}]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "The system has failed to reach BMC Ready state",
+                "Message": "The system has failed to reach BMC Ready state, look for other errors",
+                "Notes": [
+                    "This log indicates a critical BMC application required ",
+                    "for the BMC to reach Ready state has failed to start  ",
+                    "successfully. Look in the log for other errors indicating ",
+                    "what has failed."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.State.Chassis.Error.PowerOnFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3400",
+            "SRC":
+            {
+                "ReasonCode": "0x3407",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [{"Priority": "high", "Procedure": "next_level_support"}]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "The system has failed to reach chassis power on state",
+                "Message": "The system has failed to reach chassis power on state, look for other errors",
+                "Notes": [
+                    "This log indicates a critical BMC application required ",
+                    "for the BMC to power on the chassis has failed to start  ",
+                    "successfully. Look in the log for other errors indicating ",
+                    "what has failed."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.State.Chassis.Error.PowerOffFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3400",
+            "SRC":
+            {
+                "ReasonCode": "0x3408",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [{"Priority": "high", "Procedure": "next_level_support"}]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "The system has failed to reach chassis power off state",
+                "Message": "The system has failed to reach chassis power off state, look for other errors",
+                "Notes": [
+                    "This log indicates a critical BMC application required ",
+                    "for the BMC to power off the chassis has failed to start  ",
+                    "successfully. Look in the log for other errors indicating ",
+                    "what has failed."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.State.Host.Error.HostStartFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3400",
+            "SRC":
+            {
+                "ReasonCode": "0x3409",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [{"Priority": "high", "Procedure": "next_level_support"}]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "The system has failed to start the host firmware",
+                "Message": "The system has failed to start the host firmware, look for other errors",
+                "Notes": [
+                    "This log indicates a critical BMC application required ",
+                    "for the BMC to start the host has failed to start  ",
+                    "successfully. Look in the log for other errors indicating ",
+                    "what has failed."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.State.Host.Error.HostStartMinFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3400",
+            "SRC":
+            {
+                "ReasonCode": "0x3410",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [{"Priority": "high", "Procedure": "next_level_support"}]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "The system has failed to start the host firmware",
+                "Message": "The system has failed to start the host firmware, look for other errors",
+                "Notes": [
+                    "This log indicates a critical BMC application required ",
+                    "for the BMC to start the host has failed to start  ",
+                    "successfully. Look in the log for other errors indicating ",
+                    "what has failed."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.State.Host.Error.HostShutdownFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3400",
+            "SRC":
+            {
+                "ReasonCode": "0x3411",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [{"Priority": "high", "Procedure": "next_level_support"}]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "The system has failed to shutdown the host firmware",
+                "Message": "The system has failed to shutdown the host firmware, look for other errors",
+                "Notes": [
+                    "This log indicates a critical BMC application required ",
+                    "to shutdown the host firmware has failed to start  ",
+                    "successfully. Look in the log for other errors indicating ",
+                    "what has failed."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.State.Host.Error.HostStopFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3400",
+            "SRC":
+            {
+                "ReasonCode": "0x3412",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [{"Priority": "high", "Procedure": "next_level_support"}]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "The system has failed to stop the host firmware",
+                "Message": "The system has failed to stop the host firmware, look for other errors",
+                "Notes": [
+                    "This log indicates a critical BMC application required ",
+                    "to stop the host firmware has failed to start  ",
+                    "successfully. Look in the log for other errors indicating ",
+                    "what has failed."
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.State.Host.Error.HostRebootFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3400",
+            "SRC":
+            {
+                "ReasonCode": "0x3413",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [{"Priority": "high", "Procedure": "next_level_support"}]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "The system has failed to reboot the host firmware",
+                "Message": "The system has failed to reboot the host firmware, look for other errors",
+                "Notes": [
+                    "This log indicates a critical BMC application required ",
+                    "to reboot the host firmware has failed to start  ",
+                    "successfully. Look in the log for other errors indicating ",
+                    "what has failed."
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.Processor.Error.SbeChipOpFailure",
             "Subsystem": "processor_chip",
             "ComponentID": "0x3500",
