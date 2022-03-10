@@ -155,6 +155,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b675126d_bd47e758",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 3596,
+      "author": {
+        "id": 1000354
+      },
+      "writtenOn": "2022-03-10T05:21:43Z",
+      "side": 1,
+      "message": "I\u0027m not capturing that at present, will add that in panel code.",
+      "parentUuid": "bced3d2b_62413f3b",
+      "range": {
+        "startLine": 3596,
+        "startChar": 15,
+        "endLine": 3596,
+        "endChar": 31
+      },
+      "revId": "4b346a99e81952f8a735193a6740f1b29e455922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "20858425_c0a38fc9",
         "filename": "extensions/openpower-pels/registry/message_registry.json",
         "patchSetId": 9
@@ -222,6 +246,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b60d12f8_a4caa805",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 3656,
+      "author": {
+        "id": 1000354
+      },
+      "writtenOn": "2022-03-10T05:21:43Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "76ffb425_f99b22ec",
+      "range": {
+        "startLine": 3656,
+        "startChar": 32,
+        "endLine": 3656,
+        "endChar": 49
+      },
+      "revId": "4b346a99e81952f8a735193a6740f1b29e455922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "580f3ea0_883bbb40",
@@ -245,6 +293,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50686ded_cc127fe1",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 3659,
+      "author": {
+        "id": 1000354
+      },
+      "writtenOn": "2022-03-10T05:21:43Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "580f3ea0_883bbb40",
+      "range": {
+        "startLine": 3659,
+        "startChar": 41,
+        "endLine": 3659,
+        "endChar": 79
+      },
+      "revId": "4b346a99e81952f8a735193a6740f1b29e455922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "521c7719_cce4427c",
@@ -258,6 +330,30 @@
       "writtenOn": "2022-03-09T10:22:13Z",
       "side": 1,
       "message": "\"Documentation\": {\n                \"Description\": \"Dbus exception\",\n                \"Message\": \"A Dbus internal error occurred.\",\n                \"Notes\": [\n                    \"This error occurs when Dbus operation fails.\",\n                    \"Exceptions details are captured in additonal\",\n                    \"data.\"\n                ]",
+      "range": {
+        "startLine": 3681,
+        "startChar": 0,
+        "endLine": 3687,
+        "endChar": 17
+      },
+      "revId": "4b346a99e81952f8a735193a6740f1b29e455922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21327d05_99d5c13f",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 3687,
+      "author": {
+        "id": 1000354
+      },
+      "writtenOn": "2022-03-10T05:21:43Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "521c7719_cce4427c",
       "range": {
         "startLine": 3681,
         "startChar": 0,
