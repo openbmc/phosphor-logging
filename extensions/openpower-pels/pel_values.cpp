@@ -225,7 +225,10 @@ const std::map<std::string, std::string> maintenanceProcedures = {
     // Problem is somewhere in the FSI bus path
     {"fsi_path", "BMC0004"},
     // Problem is over-current PSU fault
-    {"power_overcurrent", "BMC0005"}};
+    {"power_overcurrent", "BMC0005"},
+    // An unrecoverable event occurred, look for previous errors for the cause
+    {"find_sue_root_cause", "BMC0006"},
+};
 
 /**
  * @brief Map of the registry names for the symbolic FRUs to their
