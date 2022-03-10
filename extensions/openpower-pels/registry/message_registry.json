@@ -445,8 +445,8 @@
 
             "Documentation":
             {
-                "Description": "Failure occured during boot process",
-                "Message": "Failure occured during boot process",
+                "Description": "Failure occurred during boot process",
+                "Message": "Failure occurred during boot process",
                 "Notes": [
                     "Debug traces will be captured in AdditionalData section"
                 ]
@@ -592,8 +592,8 @@
 
             "Documentation":
             {
-                "Description": "Failure occured during hardware isolation operations",
-                "Message": "Failure occured during hardware isolation operations",
+                "Description": "Failure occurred during hardware isolation operations",
+                "Message": "Failure occurred during hardware isolation operations",
                 "Notes": [
                     "Severity needs to be set based on needs for this registry.",
                     "Debug traces will be captured in AdditionalData section"
