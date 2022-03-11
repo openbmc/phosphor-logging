@@ -32,13 +32,11 @@
 #include <iostream>
 #include <regex>
 #include <string>
-#include <xyz/openbmc_project/Common/File/error.hpp>
 
 #include "config_main.h"
 
 namespace fs = std::filesystem;
 using namespace openpower::pels;
-namespace file_error = sdbusplus::xyz::openbmc_project::Common::File::Error;
 namespace message = openpower::pels::message;
 namespace pv = openpower::pels::pel_values;
 
