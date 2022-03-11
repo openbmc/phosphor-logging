@@ -1,7 +1,6 @@
 #pragma once
 
 #include <map>
-#include <sdbusplus/bus.hpp>
 #include <string>
 #include <variant>
 #include <vector>
