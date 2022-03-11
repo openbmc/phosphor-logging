@@ -969,6 +969,34 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.State.Error.HostQuiesce",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3400",
+            "SRC":
+            {
+                "ReasonCode": "0x3414",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [{"Priority": "high", "Procedure": "next_level_support"}]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "The host firmware has failed to boot",
+                "Message": "The host firmware has failed to boot and has entered a Quiesce state. Look for other errors.",
+                "Notes": [
+                    "This log indicates that the host firmware has failed to ",
+                    "boot and all retries have been exhausted. There should be  ",
+                    "other logs with more details on the boot failure reason. "
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.Processor.Error.SbeChipOpFailure",
             "Subsystem": "processor_chip",
             "ComponentID": "0x3500",
