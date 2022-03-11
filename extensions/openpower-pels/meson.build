@@ -71,7 +71,6 @@ libpel_sources = files(
     'mru.cpp',
     'mtms.cpp',
     'pce_identity.cpp',
-    'pel.cpp',
     'pel_rules.cpp',
     'pel_values.cpp',
     'private_header.cpp',
@@ -130,6 +129,7 @@ log_manager_ext_sources += files(
     'extended_user_data.cpp',
     'host_notifier.cpp',
     'manager.cpp',
+    'pel.cpp',
     'pel_entry.cpp',
     'pldm_interface.cpp',
     'repository.cpp',
@@ -144,6 +144,7 @@ install_data(
 
 peltool_sources = files(
     'extended_user_data.cpp',
+    'pel.cpp',
     'src.cpp',
     'user_data.cpp',
     'user_data_json.cpp',

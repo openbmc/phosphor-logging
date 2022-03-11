@@ -13,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "config.h"
-
 #include "pel.hpp"
 
 #include "bcd_time.hpp"
@@ -23,7 +21,9 @@
 #include "failing_mtms.hpp"
 #include "fru_identity.hpp"
 #include "json_utils.hpp"
+#ifndef PELTOOL
 #include "log_id.hpp"
+#endif
 #include "pel_rules.hpp"
 #include "pel_values.hpp"
 #include "section_factory.hpp"
@@ -36,12 +36,16 @@
 #include "sbe_ffdc_handler.hpp"
 #endif
 
+#include "trace.hpp"
+
 #include <fmt/format.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
 #include <iostream>
+#ifndef PELTOOL
 #include <phosphor-logging/log.hpp>
+#endif
 
 namespace openpower
 {
@@ -49,10 +53,13 @@ namespace pels
 {
 namespace message = openpower::pels::message;
 namespace pv = openpower::pels::pel_values;
+#ifndef PELTOOL
 using namespace phosphor::logging;
+#endif
 
 constexpr auto unknownValue = "Unknown";
 
+#ifndef PELTOOL
 PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
          phosphor::logging::Entry::Level severity,
          const AdditionalData& additionalData, const PelFFDC& ffdcFilesIn,
@@ -193,6 +200,7 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
 
     checkRulesAndFix();
 }
+#endif
 
 PEL::PEL(std::vector<uint8_t>& data) : PEL(data, 0)
 {
@@ -249,10 +257,12 @@ void PEL::setCommitTime()
     _ph->setCommitTimestamp(getBCDTime(now));
 }
 
+#ifndef PELTOOL
 void PEL::assignID()
 {
     _ph->setID(generatePELID());
 }
+#endif
 
 void PEL::flatten(std::vector<uint8_t>& pelBuffer) const
 {
@@ -260,7 +270,7 @@ void PEL::flatten(std::vector<uint8_t>& pelBuffer) const
 
     if (!valid())
     {
-        log<level::WARNING>("Unflattening an invalid PEL");
+        trace::error("Unflattening an invalid PEL");
     }
 
     _ph->flatten(pelData);
@@ -455,6 +465,7 @@ void PEL::toJSON(message::Registry& registry,
     std::cout << buf << std::endl;
 }
 
+#ifndef PELTOOL
 bool PEL::addUserDataSection(std::unique_ptr<UserData> userData)
 {
     if (size() + userData->header().size > _maxPELSize)
@@ -480,7 +491,9 @@ bool PEL::addUserDataSection(std::unique_ptr<UserData> userData)
     }
     return true;
 }
+#endif
 
+#ifndef PELTOOL
 nlohmann::json PEL::getCalloutJSON(const PelFFDC& ffdcFiles)
 {
     nlohmann::json callouts;
@@ -506,6 +519,7 @@ nlohmann::json PEL::getCalloutJSON(const PelFFDC& ffdcFiles)
 
     return callouts;
 }
+#endif
 
 bool PEL::isHwCalloutPresent() const
 {
@@ -536,6 +550,7 @@ bool PEL::isHwCalloutPresent() const
     return calloutPresent;
 }
 
+#ifndef PELTOOL
 void PEL::updateSysInfoInExtendedUserDataSection(
     const DataInterfaceBase& dataIface)
 {
@@ -576,6 +591,7 @@ void PEL::updateSysInfoInExtendedUserDataSection(
         }
     }
 }
+#endif
 
 void PEL::updateTerminateBitInSRCSection()
 {
@@ -592,6 +608,7 @@ void PEL::updateTerminateBitInSRCSection()
     }
 }
 
+#ifndef PELTOOL
 namespace util
 {
 
@@ -830,6 +847,7 @@ std::unique_ptr<UserData> makeFFDCuserDataSection(uint16_t componentID,
 }
 
 } // namespace util
+#endif
 
 } // namespace pels
 } // namespace openpower

@@ -1,7 +1,9 @@
 #pragma once
 
 #include "additional_data.hpp"
+#ifndef PELTOOL
 #include "data_interface.hpp"
+#endif
 #include "private_header.hpp"
 #include "registry.hpp"
 #include "src.hpp"
@@ -106,10 +108,12 @@ class PEL
      * @param[in] ffdcFiles - FFCD files that go into UserData sections
      * @param[in] dataIface - The data interface object
      */
+#ifndef PELTOOL
     PEL(const openpower::pels::message::Entry& entry, uint32_t obmcLogID,
         uint64_t timestamp, phosphor::logging::Entry::Level severity,
         const AdditionalData& additionalData, const PelFFDC& ffdcFiles,
         const DataInterfaceBase& dataIface);
+#endif
 
     /**
      * @brief Convenience function to return the log ID field from the
@@ -236,7 +240,9 @@ class PEL
     /**
      * @brief Sets the error log ID field to a unique ID.
      */
+#ifndef PELTOOL
     void assignID();
+#endif
 
     /**
      * @brief Output a PEL in JSON.
@@ -299,8 +305,10 @@ class PEL
      *
      * @param[in] dataIface - The data interface object
      */
+#ifndef PELTOOL
     void updateSysInfoInExtendedUserDataSection(
         const DataInterfaceBase& dataIface);
+#endif
 
   private:
     /**
@@ -344,7 +352,9 @@ class PEL
      *
      * @return bool - If the section was added or not.
      */
+#ifndef PELTOOL
     bool addUserDataSection(std::unique_ptr<UserData> userData);
+#endif
 
     /**
      * @brief helper function for printing PELs.
@@ -372,7 +382,9 @@ class PEL
      *
      * @return json - The callout JSON, or an empty object if not found
      */
+#ifndef PELTOOL
     nlohmann::json getCalloutJSON(const PelFFDC& ffdcFiles);
+#endif
 
     /**
      * @brief Update terminate bit in primary SRC section to this PEL object is
@@ -401,6 +413,7 @@ class PEL
     static constexpr size_t _maxPELSize = 16384;
 };
 
+#ifndef PELTOOL
 namespace util
 {
 
@@ -455,6 +468,6 @@ std::vector<uint8_t> readFD(int fd);
 std::unique_ptr<UserData> makeFFDCuserDataSection(uint16_t componentID,
                                                   const PelFFDCfile& file);
 } // namespace util
-
+#endif
 } // namespace pels
 } // namespace openpower
