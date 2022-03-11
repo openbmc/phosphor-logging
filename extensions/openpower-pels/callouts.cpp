@@ -18,6 +18,7 @@
 #include "trace.hpp"
 
 #include <algorithm>
+#include <map>
 
 namespace openpower
 {
