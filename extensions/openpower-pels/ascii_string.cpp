@@ -17,16 +17,12 @@
 
 #include "pel_types.hpp"
 
-#include <phosphor-logging/log.hpp>
-
 namespace openpower
 {
 namespace pels
 {
 namespace src
 {
-
-using namespace phosphor::logging;
 
 AsciiString::AsciiString(Stream& stream)
 {
