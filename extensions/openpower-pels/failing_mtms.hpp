@@ -1,6 +1,8 @@
 #pragma once
 
+#ifndef PELTOOL
 #include "data_interface.hpp"
+#endif
 #include "mtms.hpp"
 #include "section.hpp"
 #include "stream.hpp"
@@ -33,7 +35,9 @@ class FailingMTMS : public Section
      * @param[in] dataIface - The object to use to obtain
      *                        the MTM and SN.
      */
+#ifndef PELTOOL
     explicit FailingMTMS(const DataInterfaceBase& dataIface);
+#endif
 
     /**
      * @brief Constructor

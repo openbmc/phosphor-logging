@@ -18,8 +18,9 @@
 #include "json_utils.hpp"
 #include "pel_types.hpp"
 #include "pel_values.hpp"
+#include "trace.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include <fmt/format.h>
 
 namespace openpower
 {
@@ -27,9 +28,9 @@ namespace pels
 {
 
 namespace pv = openpower::pels::pel_values;
-using namespace phosphor::logging;
 static constexpr uint8_t failingMTMSVersion = 0x01;
 
+#ifndef PELTOOL
 FailingMTMS::FailingMTMS(const DataInterfaceBase& dataIface) :
     _mtms(dataIface.getMachineTypeModel(), dataIface.getMachineSerialNumber())
 {
@@ -41,6 +42,7 @@ FailingMTMS::FailingMTMS(const DataInterfaceBase& dataIface) :
 
     _valid = true;
 }
+#endif
 
 FailingMTMS::FailingMTMS(Stream& pel)
 {
@@ -51,8 +53,8 @@ FailingMTMS::FailingMTMS(Stream& pel)
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>("Cannot unflatten failing MTM section",
-                        entry("ERROR=%s", e.what()));
+        trace::error(
+            fmt::format("Cannot unflatten failing MTM section: {}", e.what()));
         _valid = false;
     }
 }
@@ -63,15 +65,15 @@ void FailingMTMS::validate()
 
     if (header().id != static_cast<uint16_t>(SectionID::failingMTMS))
     {
-        log<level::ERR>("Invalid failing MTMS section ID",
-                        entry("ID=0x%X", header().id));
+        trace::error(
+            fmt::format("Invalid failing MTMS section ID: {:#X}", header().id));
         failed = true;
     }
 
     if (header().version != failingMTMSVersion)
     {
-        log<level::ERR>("Invalid failing MTMS version",
-                        entry("VERSION=0x%X", header().version));
+        trace::error(
+            fmt::format("Invalid failing MTMS version: {}", header().version));
         failed = true;
     }
 
@@ -100,5 +102,6 @@ std::optional<std::string> FailingMTMS::getJSON() const
     json.erase(json.size() - 2);
     return json;
 }
+
 } // namespace pels
 } // namespace openpower
