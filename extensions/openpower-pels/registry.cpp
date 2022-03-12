@@ -18,10 +18,11 @@
 #include "json_utils.hpp"
 #include "pel_types.hpp"
 #include "pel_values.hpp"
+#include "trace.hpp"
+
+#include <fmt/format.h>
 
 #include <fstream>
-#include <phosphor-logging/log.hpp>
-
 namespace openpower
 {
 namespace pels
@@ -31,7 +32,6 @@ namespace message
 
 namespace pv = pel_values;
 namespace fs = std::filesystem;
-using namespace phosphor::logging;
 
 constexpr auto debugFilePath = "/etc/phosphor-logging/";
 
@@ -45,8 +45,9 @@ uint8_t getSubsystem(const std::string& subsystemName)
     if (ss == pv::subsystemValues.end())
     {
         // Schema validation should be catching this.
-        log<level::ERR>("Invalid subsystem name used in message registry",
-                        entry("SUBSYSTEM=%s", subsystemName.c_str()));
+        trace::error(
+            fmt::format("Invalid subsystem name {} used in message registry",
+                        subsystemName));
 
         throw std::runtime_error("Invalid subsystem used in message registry");
     }
@@ -60,8 +61,8 @@ uint8_t getSeverity(const std::string& severityName)
     if (s == pv::severityValues.end())
     {
         // Schema validation should be catching this.
-        log<level::ERR>("Invalid severity name used in message registry",
-                        entry("SEVERITY=%s", severityName.c_str()));
+        trace::error(fmt::format(
+            "Invalid severity name {} used in message registry", severityName));
 
         throw std::runtime_error("Invalid severity used in message registry");
     }
@@ -115,8 +116,8 @@ uint16_t getActionFlags(const std::vector<std::string>& flags)
         if (s == pv::actionFlagsValues.end())
         {
             // Schema validation should be catching this.
-            log<level::ERR>("Invalid action flag name used in message registry",
-                            entry("FLAG=%s", flag.c_str()));
+            trace::error(fmt::format(
+                "Invalid action flag name {} used in message registry", flag));
 
             throw std::runtime_error(
                 "Invalid action flag used in message registry");
@@ -133,8 +134,8 @@ uint8_t getEventType(const std::string& eventTypeName)
     auto t = pv::findByName(eventTypeName, pv::eventTypeValues);
     if (t == pv::eventTypeValues.end())
     {
-        log<level::ERR>("Invalid event type used in message registry",
-                        entry("EVENT_TYPE=%s", eventTypeName.c_str()));
+        trace::error(fmt::format(
+            "Invalid event type {} used in message registry", eventTypeName));
 
         throw std::runtime_error("Invalid event type used in message registry");
     }
@@ -146,8 +147,8 @@ uint8_t getEventScope(const std::string& eventScopeName)
     auto s = pv::findByName(eventScopeName, pv::eventScopeValues);
     if (s == pv::eventScopeValues.end())
     {
-        log<level::ERR>("Invalid event scope used in registry",
-                        entry("EVENT_SCOPE=%s", eventScopeName.c_str()));
+        trace::error(fmt::format(
+            "Invalid event scope {} used in message registry", eventScopeName));
 
         throw std::runtime_error(
             "Invalid event scope used in message registry");
@@ -161,10 +162,9 @@ uint16_t getSRCReasonCode(const nlohmann::json& src, const std::string& name)
     uint16_t reasonCode = strtoul(rc.c_str(), nullptr, 16);
     if (reasonCode == 0)
     {
-        log<phosphor::logging::level::ERR>(
-            "Invalid reason code in message registry",
-            entry("ERROR_NAME=%s", name.c_str()),
-            entry("REASON_CODE=%s", rc.c_str()));
+        trace::error(fmt::format(
+            "Invalid reason code {} used in message registry (error name = {})",
+            rc, name));
 
         throw std::runtime_error("Invalid reason code in message registry");
     }
@@ -178,10 +178,9 @@ uint8_t getSRCType(const nlohmann::json& src, const std::string& name)
     size_t type = strtoul(srcType.c_str(), nullptr, 16);
     if ((type == 0) || (srcType.size() != 2)) // 1 hex byte
     {
-        log<phosphor::logging::level::ERR>(
-            "Invalid SRC Type in message registry",
-            entry("ERROR_NAME=%s", name.c_str()),
-            entry("SRC_TYPE=%s", srcType.c_str()));
+        trace::error(fmt::format(
+            "Invalid SRC Type {} used in message registry (error name = {})",
+            srcType, name));
 
         throw std::runtime_error("Invalid SRC Type in message registry");
     }
@@ -212,10 +211,9 @@ std::optional<std::map<SRC::WordNum, SRC::AdditionalDataField>>
 
         if (wordNum == 0)
         {
-            log<phosphor::logging::level::ERR>(
-                "Invalid SRC word number in message registry",
-                entry("ERROR_NAME=%s", name.c_str()),
-                entry("SRC_WORD_NUM=%s", num.c_str()));
+            trace::error(fmt::format("Invalid SRC word number {} used in "
+                                     "message registry (error name = {})",
+                                     num, name));
 
             throw std::runtime_error("Invalid SRC word in message registry");
         }
@@ -254,10 +252,9 @@ std::optional<std::vector<SRC::WordNum>>
         size_t num = std::strtoul(srcWordNum.c_str(), nullptr, 10);
         if (num == 0)
         {
-            log<phosphor::logging::level::ERR>(
-                "Invalid symptom ID field in message registry",
-                entry("ERROR_NAME=%s", name.c_str()),
-                entry("FIELD_NAME=%s", srcWordNum.c_str()));
+            trace::error(fmt::format("Invalid symptom ID field {} used in "
+                                     "message registry (error name = {})",
+                                     srcWordNum, name));
 
             throw std::runtime_error("Invalid symptom ID in message registry");
         }
@@ -293,8 +290,9 @@ uint16_t getComponentID(uint8_t srcType, uint16_t reasonCode,
         }
         else
         {
-            log<level::ERR>("Missing component ID field in message registry",
-                            entry("ERROR_NAME=%s", name.c_str()));
+            trace::error(fmt::format(
+                "Missing component ID in message registry (error name = {})",
+                name));
 
             throw std::runtime_error(
                 "Missing component ID field in message registry");
@@ -380,10 +378,10 @@ const nlohmann::json&
         std::string types;
         std::for_each(systemNames.begin(), systemNames.end(),
                       [&types](const auto& t) { types += t + '|'; });
-        log<level::WARNING>(
+        trace::warning(fmt::format(
             "No matching system name entry or default system name entry "
-            " for PEL callout list",
-            entry("SYSTEMNAMES=%s", types.c_str()));
+            "for PEL callout list, system names = {}",
+            types));
 
         throw std::runtime_error{
             "Could not find a CalloutList JSON for this error and system name"};
@@ -542,11 +540,11 @@ std::vector<RegistryCallout>
     if (!adValue)
     {
         // The AdditionalData did not contain the necessary key
-        log<level::WARNING>(
+        trace::warning(fmt::format(
             "The PEL message registry callouts JSON "
-            "said to use an AdditionalData key that isn't in the "
+            "said to use an AdditionalData key '{}' that isn't in the "
             "AdditionalData event log property",
-            entry("ADNAME=%s\n", keyName.c_str()));
+            keyName));
         throw std::runtime_error{
             "Missing AdditionalData entry for this callout"};
     }
@@ -680,7 +678,12 @@ std::optional<Entry> Registry::lookup(const std::string& name, LookupType type,
             entry.doc.description = doc["Description"];
             if (doc.contains("MessageArgSources"))
             {
-                entry.doc.messageArgSources = doc["MessageArgSources"];
+                std::vector<std::string> sources;
+                for (const auto& source : doc.at("MessageArgSources"))
+                {
+                    sources.push_back(source.get<std::string>());
+                }
+                entry.doc.messageArgSources = sources;
             }
 
             // If there are callouts defined, save the JSON for later
@@ -700,8 +703,8 @@ std::optional<Entry> Registry::lookup(const std::string& name, LookupType type,
         }
         catch (const std::exception& e)
         {
-            log<level::ERR>("Found invalid message registry field",
-                            entry("ERROR=%s", e.what()));
+            trace::error(fmt::format("Found invalid message registry field: {}",
+                                     e.what()));
         }
     }
 
@@ -718,7 +721,7 @@ std::optional<nlohmann::json>
 
     if (fs::exists(debugFile))
     {
-        log<level::INFO>("Using debug PEL message registry");
+        trace::info("Using debug PEL message registry");
         file.open(debugFile);
     }
     else
@@ -732,8 +735,8 @@ std::optional<nlohmann::json>
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>("Error parsing message registry JSON",
-                        entry("JSON_ERROR=%s", e.what()));
+        trace::error(
+            fmt::format("Error parsing message registry JSON: {}", e.what()));
         return std::nullopt;
     }
     return registry;
