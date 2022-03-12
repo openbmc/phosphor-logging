@@ -18,8 +18,9 @@
 #include "json_utils.hpp"
 #include "pel_types.hpp"
 #include "pel_values.hpp"
+#include "trace.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include <fmt/format.h>
 
 namespace openpower
 {
@@ -27,7 +28,6 @@ namespace pels
 {
 
 namespace pv = openpower::pels::pel_values;
-using namespace phosphor::logging;
 const size_t defaultSymptomIDWord = 3;
 const size_t symptomIDMaxSize = 80;
 
@@ -40,12 +40,13 @@ ExtendedUserHeader::ExtendedUserHeader(Stream& pel)
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>("Cannot unflatten extended user header",
-                        entry("ERROR=%s", e.what()));
+        trace::error(
+            fmt::format("Cannot unflatten extended user header: {}", e.what()));
         _valid = false;
     }
 }
 
+#ifndef PELTOOL
 ExtendedUserHeader::ExtendedUserHeader(const DataInterfaceBase& dataIface,
                                        const message::Entry& regEntry,
                                        const SRC& src) :
@@ -79,6 +80,7 @@ ExtendedUserHeader::ExtendedUserHeader(const DataInterfaceBase& dataIface,
     _header.size = flattenedSize();
     _valid = true;
 }
+#endif
 
 void ExtendedUserHeader::flatten(Stream& pel) const
 {
@@ -107,15 +109,15 @@ void ExtendedUserHeader::validate()
 
     if (header().id != static_cast<uint16_t>(SectionID::extendedUserHeader))
     {
-        log<level::ERR>("Invalid failing Extended User Header section ID",
-                        entry("ID=0x%X", header().id));
+        trace::error(fmt::format(
+            "Invalid extended user header section ID: {:#X}", header().id));
         failed = true;
     }
 
     if (header().version != extendedUserHeaderVersion)
     {
-        log<level::ERR>("Invalid Extended User Header version",
-                        entry("VERSION=0x%X", header().version));
+        trace::error(fmt::format("Invalid extended user header version: {}",
+                                 header().version));
         failed = true;
     }
 

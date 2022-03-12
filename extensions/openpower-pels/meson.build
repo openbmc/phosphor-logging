@@ -62,7 +62,6 @@ libpel_sources = files(
     'callouts.cpp',
     'data_interface.cpp',
     'device_callouts.cpp',
-    'extended_user_header.cpp',
     'failing_mtms.cpp',
     'fru_identity.cpp',
     'generic.cpp',
@@ -125,6 +124,7 @@ log_manager_ext_deps += [
 log_manager_ext_sources += files(
     'entry_points.cpp',
     'extended_user_data.cpp',
+    'extended_user_header.cpp',
     'host_notifier.cpp',
     'manager.cpp',
     'pel.cpp',
@@ -144,6 +144,7 @@ install_data(
 
 peltool_sources = files(
     'extended_user_data.cpp',
+    'extended_user_header.cpp',
     'pel.cpp',
     'private_header.cpp',
     'src.cpp',

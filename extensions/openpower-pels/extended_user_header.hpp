@@ -1,8 +1,10 @@
 #pragma once
 
 #include "bcd_time.hpp"
+#ifndef PELTOOL
 #include "data_interface.hpp"
 #include "elog_entry.hpp"
+#endif
 #include "mtms.hpp"
 #include "registry.hpp"
 #include "section.hpp"
@@ -53,8 +55,10 @@ class ExtendedUserHeader : public Section
      * @param[in] regEntry - The message registry entry for this event
      * @param[in] src - The SRC section object for this event
      */
+#ifndef PELTOOL
     ExtendedUserHeader(const DataInterfaceBase& dataIface,
                        const message::Entry& regEntry, const SRC& src);
+#endif
 
     /**
      * @brief Flatten the section into the stream
