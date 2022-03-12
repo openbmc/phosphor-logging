@@ -20,19 +20,19 @@
 #include "pel_types.hpp"
 #include "pel_values.hpp"
 #include "stream.hpp"
+#include "trace.hpp"
 #include "user_data_formats.hpp"
 
 #include <Python.h>
+#include <fmt/format.h>
 
 #include <iomanip>
 #include <nlohmann/json.hpp>
-#include <phosphor-logging/log.hpp>
 #include <sstream>
 
 namespace openpower::pels::user_data
 {
 namespace pv = openpower::pels::pel_values;
-using namespace phosphor::logging;
 using orderedJSON = nlohmann::ordered_json;
 
 void pyDecRef(PyObject* pyObj)
@@ -298,13 +298,11 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
         if (!PyDict_Contains(pDict, pKey))
         {
             Py_DECREF(pDict);
-            log<level::ERR>(
-                "Python module error",
-                entry("ERROR=%s",
-                      std::string(funcToCall + " function missing").c_str()),
-                entry("PARSER_MODULE=%s", module.c_str()),
-                entry("SUBTYPE=0x%X", subType), entry("VERSION=%d", version),
-                entry("DATA_LENGTH=%lu\n", data.size()));
+            trace::error(fmt::format("Python module {} missing function {}",
+                                     module, funcToCall));
+            trace::error(
+                fmt::format("subtype = {}, version = {}, data length = {}",
+                            subType, version, data.size()));
             return std::nullopt;
         }
         pFunc = PyDict_GetItemString(pDict, funcToCall.c_str());
@@ -346,12 +344,12 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
                 }
                 catch (const std::exception& e)
                 {
-                    log<level::ERR>("Bad JSON from parser",
-                                    entry("ERROR=%s", e.what()),
-                                    entry("PARSER_MODULE=%s", module.c_str()),
-                                    entry("SUBTYPE=0x%X", subType),
-                                    entry("VERSION=%d", version),
-                                    entry("DATA_LENGTH=%lu\n", data.size()));
+                    trace::error(
+                        fmt::format("Bad JSON from parser module {}: {}",
+                                    module, e.what()));
+                    trace::error(fmt::format(
+                        "subtype = {}, version = {}, data length = {}", subType,
+                        version, data.size()));
                     return std::nullopt;
                 }
             }
@@ -382,12 +380,10 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
     }
     if (!pErrStr.empty())
     {
-        log<level::DEBUG>("Python exception thrown by parser",
-                          entry("ERROR=%s", pErrStr.c_str()),
-                          entry("PARSER_MODULE=%s", module.c_str()),
-                          entry("SUBTYPE=0x%X", subType),
-                          entry("VERSION=%d", version),
-                          entry("DATA_LENGTH=%lu\n", data.size()));
+        trace::debug(
+            fmt::format("Python module {} exception: {}", module, pErrStr));
+        trace::debug(fmt::format("subtype = {}, version = {}, data length = {}",
+                                 subType, version, data.size()));
     }
     return std::nullopt;
 }
@@ -416,11 +412,10 @@ std::optional<std::string> getJSON(uint16_t componentID, uint8_t subType,
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>("Failed parsing UserData", entry("ERROR=%s", e.what()),
-                        entry("COMP_ID=0x%X", componentID),
-                        entry("SUBTYPE=0x%X", subType),
-                        entry("VERSION=%d", version),
-                        entry("DATA_LENGTH=%lu\n", data.size()));
+        trace::error(fmt::format("Failed parsing UserData: {}", e.what()));
+        trace::error(fmt::format(
+            "component ID = {}, subtype = {}, version = {}, data length = {}",
+            componentID, subType, version, data.size()));
     }
 
     return std::nullopt;
