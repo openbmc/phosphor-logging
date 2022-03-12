@@ -1,7 +1,9 @@
 #pragma once
 
+#ifndef PELTOOL
 #include "data_interface.hpp"
 #include "elog_entry.hpp"
+#endif
 #include "pel_values.hpp"
 #include "registry.hpp"
 #include "section.hpp"
@@ -48,10 +50,12 @@ class UserHeader : public Section
      *                             error log
      * @param[in] dataIface - The DataInterface object
      */
+#ifndef PELTOOL
     UserHeader(const message::Entry& entry,
                phosphor::logging::Entry::Level severity,
                const AdditionalData& additionalData,
                const DataInterfaceBase& dataIface);
+#endif
 
     /**
      * @brief Constructor
@@ -250,9 +254,11 @@ class UserHeader : public Section
      *                         structures to find an entry in.
      * @param[in] dataIface - The DataInterface object
      */
+#ifndef PELTOOL
     std::optional<uint8_t>
         getSeverity(const std::vector<message::RegistrySeverity>& severities,
                     const DataInterfaceBase& dataIface) const;
+#endif
 
     /**
      * @brief The subsystem associated with the event.

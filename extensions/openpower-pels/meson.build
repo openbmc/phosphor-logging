@@ -77,7 +77,6 @@ libpel_sources = files(
     'section_factory.cpp',
     'service_indicators.cpp',
     'severity.cpp',
-    'user_header.cpp',
     'temporary_file.cpp',
     extra_sources,
 )
@@ -135,6 +134,7 @@ log_manager_ext_sources += files(
     'repository.cpp',
     'src.cpp',
     'user_data.cpp',
+    'user_header.cpp',
 )
 
 install_data(
@@ -149,6 +149,7 @@ peltool_sources = files(
     'src.cpp',
     'user_data.cpp',
     'user_data_json.cpp',
+    'user_header.cpp',
 )
 
 peltool_deps = [

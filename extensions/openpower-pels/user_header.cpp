@@ -18,12 +18,17 @@
 #include "json_utils.hpp"
 #include "pel_types.hpp"
 #include "pel_values.hpp"
+#ifndef PELTOOL
 #include "severity.hpp"
+#endif
+#include "trace.hpp"
 
 #include <fmt/format.h>
 
 #include <iostream>
+#ifndef PELTOOL
 #include <phosphor-logging/log.hpp>
+#endif
 
 namespace openpower
 {
@@ -31,7 +36,9 @@ namespace pels
 {
 
 namespace pv = openpower::pels::pel_values;
+#ifndef PELTOOL
 using namespace phosphor::logging;
+#endif
 
 void UserHeader::unflatten(Stream& stream)
 {
@@ -47,6 +54,7 @@ void UserHeader::flatten(Stream& stream) const
            << _actionFlags << _states;
 }
 
+#ifndef PELTOOL
 UserHeader::UserHeader(const message::Entry& entry,
                        phosphor::logging::Entry::Level severity,
                        const AdditionalData& additionalData,
@@ -218,6 +226,7 @@ UserHeader::UserHeader(const message::Entry& entry,
         _valid = true;
     }
 }
+#endif
 
 UserHeader::UserHeader(Stream& pel)
 {
@@ -228,8 +237,7 @@ UserHeader::UserHeader(Stream& pel)
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>("Cannot unflatten user header",
-                        entry("ERROR=%s", e.what()));
+        trace::error(fmt::format("Cannot unflatten user header: {}", e.what()));
         _valid = false;
     }
 }
@@ -239,15 +247,15 @@ void UserHeader::validate()
     bool failed = false;
     if (header().id != static_cast<uint16_t>(SectionID::userHeader))
     {
-        log<level::ERR>("Invalid user header section ID",
-                        entry("ID=0x%X", header().id));
+        trace::error(
+            fmt::format("Invalid user header section ID: {:#X}", header().id));
         failed = true;
     }
 
     if (header().version != userHeaderVersion)
     {
-        log<level::ERR>("Invalid user header version",
-                        entry("VERSION=0x%X", header().version));
+        trace::error(
+            fmt::format("Invalid user header version: {}", header().version));
         failed = true;
     }
 
@@ -299,6 +307,7 @@ std::optional<std::string> UserHeader::getJSON() const
     return uh;
 }
 
+#ifndef PELTOOL
 std::optional<uint8_t> UserHeader::getSeverity(
     const std::vector<message::RegistrySeverity>& severities,
     const DataInterfaceBase& dataIface) const
@@ -346,6 +355,7 @@ std::optional<uint8_t> UserHeader::getSeverity(
 
     return std::nullopt;
 }
+#endif
 
 } // namespace pels
 } // namespace openpower
