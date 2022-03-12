@@ -53,7 +53,9 @@ class PrivateHeader : public Section
      * @param[in] obmcLogID - the corresponding OpenBMC event log ID
      * @param[in] timestamp - the creation timestamp, in epoch milliseconds
      */
+#ifndef PELTOOL
     PrivateHeader(uint16_t componentID, uint32_t obmcLogID, uint64_t timestamp);
+#endif
 
     /**
      * @brief Constructor

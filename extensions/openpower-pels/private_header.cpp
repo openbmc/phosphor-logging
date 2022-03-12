@@ -16,7 +16,9 @@
 #include "private_header.hpp"
 
 #include "json_utils.hpp"
+#ifndef PELTOOL
 #include "log_id.hpp"
+#endif
 #include "pel_types.hpp"
 #include "pel_values.hpp"
 #include "trace.hpp"
@@ -30,6 +32,7 @@ namespace pels
 
 namespace pv = openpower::pels::pel_values;
 
+#ifndef PELTOOL
 PrivateHeader::PrivateHeader(uint16_t componentID, uint32_t obmcLogID,
                              uint64_t timestamp)
 {
@@ -65,6 +68,7 @@ PrivateHeader::PrivateHeader(uint16_t componentID, uint32_t obmcLogID,
 
     _valid = true;
 }
+#endif
 
 PrivateHeader::PrivateHeader(Stream& pel) :
     _creatorID(0), _logType(0), _reservedByte(0), _sectionCount(0),
@@ -82,6 +86,7 @@ PrivateHeader::PrivateHeader(Stream& pel) :
         _valid = false;
     }
 }
+
 std::optional<std::string> PrivateHeader::getJSON() const
 {
     char tmpPhVal[50];
@@ -120,6 +125,7 @@ std::optional<std::string> PrivateHeader::getJSON() const
 
     return ph;
 }
+
 void PrivateHeader::validate()
 {
     bool failed = false;
