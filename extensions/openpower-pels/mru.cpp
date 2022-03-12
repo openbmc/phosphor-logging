@@ -15,7 +15,9 @@
  */
 #include "mru.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include "trace.hpp"
+
+#include <fmt/format.h>
 
 namespace openpower
 {
@@ -23,8 +25,6 @@ namespace pels
 {
 namespace src
 {
-
-using namespace phosphor::logging;
 
 // The MRU substructure supports up to 15 MRUs.
 static constexpr size_t maxMRUs = 15;
@@ -48,11 +48,10 @@ MRU::MRU(Stream& pel)
                         (sizeof(MRUCallout) * _mrus.size());
     if (_size != actualSize)
     {
-        log<level::WARNING>("MRU callout section in PEL has listed size that "
-                            "doesn't match actual size",
-                            entry("SUBSTRUCTURE_SIZE=%lu", _size),
-                            entry("NUM_MRUS=%lu", _mrus.size()),
-                            entry("ACTUAL_SIZE=%lu", actualSize));
+        trace::warning(
+            fmt::format("MRU callout section in PEL has listed size {} "
+                        "that doesn't match actual size {} (num MRUs = {})",
+                        _size, _mrus.size(), actualSize));
     }
 }
 
@@ -60,7 +59,7 @@ MRU::MRU(const std::vector<MRUCallout>& mrus)
 {
     if (mrus.empty())
     {
-        log<level::ERR>("Trying to create a MRU section with no MRUs");
+        trace::error("Trying to create a MRU section with no MRUs");
         throw std::runtime_error{"Trying to create a MRU section with no MRUs"};
     }
 
