@@ -15,7 +15,9 @@
  */
 #include "src.hpp"
 
+#ifndef PELTOOL
 #include "device_callouts.hpp"
+#endif
 #include "json_utils.hpp"
 #include "paths.hpp"
 #include "pel_values.hpp"
@@ -25,9 +27,13 @@
 #include <nlohmann/json.hpp>
 #include <sstream>
 #endif
+#include "trace.hpp"
+
 #include <fmt/format.h>
 
+#ifndef PELTOOL
 #include <phosphor-logging/log.hpp>
+#endif
 
 namespace openpower
 {
@@ -35,7 +41,9 @@ namespace pels
 {
 namespace pv = openpower::pels::pel_values;
 namespace rg = openpower::pels::message;
+#ifndef PELTOOL
 using namespace phosphor::logging;
+#endif
 using namespace std::string_literals;
 
 constexpr size_t ccinSize = 4;
@@ -169,12 +177,9 @@ std::optional<std::string> getPythonJSON(std::vector<std::string>& hexwords,
         if (!PyDict_Contains(pDict, pKey))
         {
             Py_DECREF(pDict);
-            log<level::ERR>(
-                "Python module error",
-                entry("ERROR=%s",
-                      std::string(funcToCall + " function missing").c_str()),
-                entry("SRC=%s", hexwords.front().c_str()),
-                entry("PARSER_MODULE=%s", module.c_str()));
+            trace::error(
+                fmt::format("Python module {} missing function {} (SRC {})",
+                            module, funcToCall, hexwords.front()));
             return std::nullopt;
         }
         pFunc = PyDict_GetItemString(pDict, funcToCall.c_str());
@@ -220,10 +225,9 @@ std::optional<std::string> getPythonJSON(std::vector<std::string>& hexwords,
                 }
                 catch (const std::exception& e)
                 {
-                    log<level::ERR>("Bad JSON from parser",
-                                    entry("ERROR=%s", e.what()),
-                                    entry("SRC=%s", hexwords.front().c_str()),
-                                    entry("PARSER_MODULE=%s", module.c_str()));
+                    trace::error(fmt::format(
+                        "Bad JSON from parser module {}: {} (SRC {})", module,
+                        e.what(), hexwords.front()));
                     return std::nullopt;
                 }
             }
@@ -254,10 +258,8 @@ std::optional<std::string> getPythonJSON(std::vector<std::string>& hexwords,
     }
     if (!pErrStr.empty())
     {
-        log<level::DEBUG>("Python exception thrown by parser",
-                          entry("ERROR=%s", pErrStr.c_str()),
-                          entry("SRC=%s", hexwords.front().c_str()),
-                          entry("PARSER_MODULE=%s", module.c_str()));
+        trace::debug(fmt::format("Python module {} exception: {} (SRC {})",
+                                 module, pErrStr, hexwords.front()));
     }
     return std::nullopt;
 }
@@ -309,11 +311,12 @@ SRC::SRC(Stream& pel)
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>("Cannot unflatten SRC", entry("ERROR=%s", e.what()));
+        trace::error(fmt::format("Cannot unflatten SRC: {}", e.what()));
         _valid = false;
     }
 }
 
+#ifndef PELTOOL
 SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
          const nlohmann::json& jsonCallouts, const DataInterfaceBase& dataIface)
 {
@@ -384,7 +387,9 @@ SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
 
     _valid = true;
 }
+#endif
 
+#ifndef PELTOOL
 void SRC::setUserDefinedHexWords(const message::Entry& regEntry,
                                  const AdditionalData& ad)
 {
@@ -420,7 +425,9 @@ void SRC::setUserDefinedHexWords(const message::Entry& regEntry,
         }
     }
 }
+#endif
 
+#ifndef PELTOOL
 void SRC::setMotherboardCCIN(const DataInterfaceBase& dataIface)
 {
     uint32_t ccin = 0;
@@ -443,6 +450,7 @@ void SRC::setMotherboardCCIN(const DataInterfaceBase& dataIface)
     // Set the first 2 bytes
     _hexData[1] |= ccin << 16;
 }
+#endif
 
 void SRC::validate()
 {
@@ -451,15 +459,14 @@ void SRC::validate()
     if ((header().id != static_cast<uint16_t>(SectionID::primarySRC)) &&
         (header().id != static_cast<uint16_t>(SectionID::secondarySRC)))
     {
-        log<level::ERR>("Invalid SRC section ID",
-                        entry("ID=0x%X", header().id));
+        trace::error(fmt::format("Invalid SRC section ID: {:#X}", header().id));
         failed = true;
     }
 
     // Check the version in the SRC, not in the header
     if (_version != srcVersion)
     {
-        log<level::ERR>("Invalid SRC version", entry("VERSION=0x%X", _version));
+        trace::error(fmt::format("Invalid SRC version: {}", _version));
         failed = true;
     }
 
@@ -590,8 +597,8 @@ std::optional<std::string>
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>("Cannot get error message from registry entry",
-                        entry("ERROR=%s", e.what()));
+        trace::error(fmt::format(
+            "Cannot get error message from registry entry: {}", e.what()));
     }
     return std::nullopt;
 }
@@ -807,6 +814,7 @@ std::optional<std::string> SRC::getJSON(message::Registry& registry,
     return ps;
 }
 
+#ifndef PELTOOL
 void SRC::addCallouts(const message::Entry& regEntry,
                       const AdditionalData& additionalData,
                       const nlohmann::json& jsonCallouts,
@@ -852,7 +860,9 @@ void SRC::addCallouts(const message::Entry& regEntry,
         addJSONCallouts(jsonCallouts, dataIface);
     }
 }
+#endif
 
+#ifndef PELTOOL
 void SRC::addInventoryCallout(const std::string& inventoryPath,
                               const std::optional<CalloutPriority>& priority,
                               const std::optional<std::string>& locationCode,
@@ -923,7 +933,9 @@ void SRC::addInventoryCallout(const std::string& inventoryPath,
         _callouts->addCallout(std::move(callout));
     }
 }
+#endif
 
+#ifndef PELTOOL
 std::vector<message::RegistryCallout>
     SRC::getRegistryCallouts(const message::Entry& regEntry,
                              const AdditionalData& additionalData,
@@ -959,7 +971,9 @@ std::vector<message::RegistryCallout>
 
     return registryCallouts;
 }
+#endif
 
+#ifndef PELTOOL
 void SRC::addRegistryCallouts(
     const std::vector<message::RegistryCallout>& callouts,
     const DataInterfaceBase& dataIface,
@@ -985,7 +999,9 @@ void SRC::addRegistryCallouts(
         addDebugData(msg);
     }
 }
+#endif
 
+#ifndef PELTOOL
 void SRC::addRegistryCallout(
     const message::RegistryCallout& regCallout,
     const DataInterfaceBase& dataIface,
@@ -1083,7 +1099,9 @@ void SRC::addRegistryCallout(
         _callouts->addCallout(std::move(callout));
     }
 }
+#endif
 
+#ifndef PELTOOL
 void SRC::addDevicePathCallouts(const AdditionalData& additionalData,
                                 const DataInterfaceBase& dataIface)
 {
@@ -1216,7 +1234,9 @@ void SRC::addDevicePathCallouts(const AdditionalData& additionalData,
         }
     }
 }
+#endif
 
+#ifndef PELTOOL
 void SRC::addJSONCallouts(const nlohmann::json& jsonCallouts,
                           const DataInterfaceBase& dataIface)
 {
@@ -1244,7 +1264,9 @@ void SRC::addJSONCallouts(const nlohmann::json& jsonCallouts,
         }
     }
 }
+#endif
 
+#ifndef PELTOOL
 void SRC::addJSONCallout(const nlohmann::json& jsonCallout,
                          const DataInterfaceBase& dataIface)
 {
@@ -1364,6 +1386,7 @@ void SRC::addJSONCallout(const nlohmann::json& jsonCallout,
         _callouts->addCallout(std::move(callout));
     }
 }
+#endif
 
 CalloutPriority SRC::getPriorityFromJSON(const nlohmann::json& json)
 {
@@ -1429,6 +1452,7 @@ std::vector<src::MRU::MRUCallout>
     return mrus;
 }
 
+#ifndef PELTOOL
 void SRC::setDumpStatus(const DataInterfaceBase& dataIface)
 {
     std::vector<bool> dumpStatus{false, false, false};
@@ -1451,6 +1475,7 @@ void SRC::setDumpStatus(const DataInterfaceBase& dataIface)
             fmt::format("Checking dump status failed: {}", e.what()).c_str());
     }
 }
+#endif
 
 std::vector<uint8_t> SRC::getSrcStruct()
 {

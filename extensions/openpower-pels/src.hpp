@@ -3,7 +3,9 @@
 #include "additional_data.hpp"
 #include "ascii_string.hpp"
 #include "callouts.hpp"
+#ifndef PELTOOL
 #include "data_interface.hpp"
+#endif
 #include "pel_types.hpp"
 #include "registry.hpp"
 #include "section.hpp"
@@ -97,11 +99,13 @@ class SRC : public Section
      *                             log
      * @param[in] dataIface - The DataInterface object
      */
+#ifndef PELTOOL
     SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
         const DataInterfaceBase& dataIface) :
         SRC(regEntry, additionalData, nlohmann::json{}, dataIface)
     {
     }
+#endif
 
     /**
      * @brief Constructor
@@ -116,8 +120,10 @@ class SRC : public Section
      * @param[in] jsonCallouts - The array of JSON callouts, or an empty object.
      * @param[in] dataIface - The DataInterface object
      */
+#ifndef PELTOOL
     SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
         const nlohmann::json& jsonCallouts, const DataInterfaceBase& dataIface);
+#endif
 
     /**
      * @brief Flatten the section into the stream
@@ -316,8 +322,11 @@ class SRC : public Section
      * @param[in] regEntry - The message registry entry for the error
      * @param[in] additionalData - The AdditionalData map
      */
+#ifndef PELTOOL
     void setUserDefinedHexWords(const message::Entry& regEntry,
                                 const AdditionalData& additionalData);
+#endif
+
     /**
      * @brief Fills in the object from the stream data
      *
@@ -365,7 +374,9 @@ class SRC : public Section
      *
      * @param[in] dataIface - The DataInterface object
      */
+#ifndef PELTOOL
     void setMotherboardCCIN(const DataInterfaceBase& dataIface);
+#endif
 
     /**
      * @brief Sets an error status bit in the SRC.
@@ -410,10 +421,12 @@ class SRC : public Section
      * @param[in] jsonCallouts - The array of JSON callouts, or an empty object
      * @param[in] dataIface - The DataInterface object
      */
+#ifndef PELTOOL
     void addCallouts(const message::Entry& regEntry,
                      const AdditionalData& additionalData,
                      const nlohmann::json& jsonCallouts,
                      const DataInterfaceBase& dataIface);
+#endif
 
     /**
      * @brief Adds a FRU callout based on an inventory path
@@ -424,12 +437,14 @@ class SRC : public Section
      * @param[in] dataIface - The DataInterface object
      * @param[in] mrus - The MRUs to add to the callout
      */
+#ifndef PELTOOL
     void
         addInventoryCallout(const std::string& inventoryPath,
                             const std::optional<CalloutPriority>& priority,
                             const std::optional<std::string>& locationCode,
                             const DataInterfaceBase& dataIface,
                             const std::vector<src::MRU::MRUCallout>& mrus = {});
+#endif
 
     /**
      * @brief Returns the callouts to use from the registry entry.
@@ -438,10 +453,12 @@ class SRC : public Section
      * @param[in] additionalData - The AdditionalData property
      * @param[in] dataIface - The DataInterface object
      */
+#ifndef PELTOOL
     std::vector<message::RegistryCallout>
         getRegistryCallouts(const message::Entry& regEntry,
                             const AdditionalData& additionalData,
                             const DataInterfaceBase& dataIface);
+#endif
 
     /**
      * @brief Adds the FRU callouts from the list of registry callouts
@@ -456,10 +473,12 @@ class SRC : public Section
      * @param[in] trustedSymbolicFRUInvPath - The optional inventory path used
      *                                        in the symbolic FRU case.
      */
+#ifndef PELTOOL
     void addRegistryCallouts(
         const std::vector<message::RegistryCallout>& callouts,
         const DataInterfaceBase& dataIface,
         std::optional<std::string> trustedSymbolicFRUInvPath);
+#endif
 
     /**
      * @brief Adds a single FRU callout from the message registry.
@@ -474,10 +493,12 @@ class SRC : public Section
      * @param[in] trustedSymbolicFRUInvPath - The optional inventory path used
      *                                        in the symbolic FRU case.
      */
+#ifndef PELTOOL
     void addRegistryCallout(
         const message::RegistryCallout& callout,
         const DataInterfaceBase& dataIface,
         const std::optional<std::string>& trustedSymbolicFRUInvPath);
+#endif
 
     /**
      * @brief Creates the Callouts object _callouts
@@ -499,8 +520,10 @@ class SRC : public Section
      * @param[in] additionalData - The AdditionalData values
      * @param[in] dataIface - The DataInterface object
      */
+#ifndef PELTOOL
     void addDevicePathCallouts(const AdditionalData& additionalData,
                                const DataInterfaceBase& dataIface);
+#endif
 
     /**
      * @brief Adds any FRU callouts specified in the incoming JSON.
@@ -508,8 +531,10 @@ class SRC : public Section
      * @param[in] jsonCallouts - The JSON array of callouts
      * @param[in] dataIface - The DataInterface object
      */
+#ifndef PELTOOL
     void addJSONCallouts(const nlohmann::json& jsonCallouts,
                          const DataInterfaceBase& dataIface);
+#endif
 
     /**
      * @brief Adds a single callout based on the JSON
@@ -517,8 +542,10 @@ class SRC : public Section
      * @param[in] jsonCallouts - A single callout entry
      * @param[in] dataIface - The DataInterface object
      */
+#ifndef PELTOOL
     void addJSONCallout(const nlohmann::json& jsonCallout,
                         const DataInterfaceBase& dataIface);
+#endif
 
     /**
      * @brief Extracts a CalloutPriority value from the json
@@ -544,7 +571,9 @@ class SRC : public Section
      *
      * @param[in] dataIface - The DataInterface object
      */
+#ifndef PELTOOL
     void setDumpStatus(const DataInterfaceBase& dataIface);
+#endif
 
     /**
      * @brief The SRC version field
