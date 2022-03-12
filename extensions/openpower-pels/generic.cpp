@@ -15,14 +15,14 @@
  */
 #include "generic.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include "trace.hpp"
+
+#include <fmt/format.h>
 
 namespace openpower
 {
 namespace pels
 {
-
-using namespace phosphor::logging;
 
 void Generic::unflatten(Stream& stream)
 {
@@ -54,8 +54,8 @@ Generic::Generic(Stream& pel)
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>("Cannot unflatten generic section",
-                        entry("ERROR=%s", e.what()));
+        trace::error(
+            fmt::format("Cannot unflatten generic section: {}", e.what()));
         _valid = false;
     }
 }
