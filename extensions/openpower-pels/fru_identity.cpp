@@ -16,12 +16,9 @@
 #include "fru_identity.hpp"
 
 #include "pel_values.hpp"
+#include "trace.hpp"
 
 #include <fmt/format.h>
-
-#include <phosphor-logging/log.hpp>
-
-using namespace phosphor::logging;
 
 namespace openpower
 {
@@ -255,9 +252,8 @@ void FRUIdentity::setMaintenanceProcedure(const std::string& procedure,
         }
         else
         {
-            log<level::ERR>(
-                fmt::format("Invalid maintenance procedure {}", procedure)
-                    .c_str());
+            trace::error(
+                fmt::format("Invalid maintenance procedure {}", procedure));
             strncpy(_pnOrProcedureID.data(), "INVALID",
                     _pnOrProcedureID.size());
         }
@@ -288,8 +284,7 @@ void FRUIdentity::setSymbolicFRU(const std::string& symbolicFRU,
         }
         else
         {
-            log<level::ERR>("Invalid symbolic FRU",
-                            entry("FRU=%s", symbolicFRU.c_str()));
+            trace::error(fmt::format("Invalid symbolic FRU {}", symbolicFRU));
             strncpy(_pnOrProcedureID.data(), "INVALID",
                     _pnOrProcedureID.size());
         }
