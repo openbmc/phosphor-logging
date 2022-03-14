@@ -22,6 +22,30 @@
       },
       "revId": "2c0b2cdd4500e2f285ffd5b9314678e6752cddcf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5293f3c_7e6fc3c2",
+        "filename": "extensions/openpower-pels/pel_values.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1000359
+      },
+      "writtenOn": "2022-03-14T17:39:27Z",
+      "side": 1,
+      "message": "This value is correct.",
+      "parentUuid": "b31d1574_3330988e",
+      "range": {
+        "startLine": 230,
+        "startChar": 29,
+        "endLine": 230,
+        "endChar": 36
+      },
+      "revId": "2c0b2cdd4500e2f285ffd5b9314678e6752cddcf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
