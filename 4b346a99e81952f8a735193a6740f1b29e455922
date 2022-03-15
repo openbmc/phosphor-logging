@@ -108,6 +108,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8fac84ef_8d9127c8",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 3593,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-03-15T20:56:56Z",
+      "side": 1,
+      "message": "That\u0027s right:\nSeverity - we convert the Entry::Level severity to a PEL severity.  https://github.com/openbmc/phosphor-logging/blob/master/extensions/openpower-pels/severity.cpp#L27.  It can\u0027t convert to every sev value of course, just the major ones, so if you need a different one you\u0027d have to put it here.\n\nActionFlags - If not supplied here, we\u0027ll fill them in based on these rules:  https://github.com/openbmc/phosphor-logging/blob/master/extensions/openpower-pels/README.md#action-flags-and-event-type-rules\n\nEventType - we default to N/A if not informational, and misc/info only otherwise.",
+      "parentUuid": "bb67d683_8df4746c",
+      "revId": "4b346a99e81952f8a735193a6740f1b29e455922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0e767146_404e1222",
         "filename": "extensions/openpower-pels/registry/message_registry.json",
         "patchSetId": 9
