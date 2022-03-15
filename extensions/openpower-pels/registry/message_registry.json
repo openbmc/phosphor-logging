@@ -1537,7 +1537,6 @@
             "Name": "xyz.openbmc_project.State.Shutdown.Power.Error.Blackout",
             "Subsystem": "power",
             "ActionFlags": [ "report", "service_action" ],
-            "Severity": "unrecoverable",
             "ComponentID": "0x2700",
 
             "SRC":
