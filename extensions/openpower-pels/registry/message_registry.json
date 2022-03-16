@@ -1622,6 +1622,7 @@
         {
             "Name": "xyz.openbmc_project.State.Shutdown.Power.Error.Regulator",
             "Subsystem": "power_control_hw",
+            "Severity": "critical_system_term",
             "ComponentID": "0x2700",
 
             "SRC": {
