@@ -187,9 +187,11 @@ void Server::writeConfig(const std::string& serverAddress, uint16_t serverPort,
     }
     else // this is a disable request
     {
-        // write '*.* ~' - this causes rsyslog to discard all messages
-        stream << "*.* ~";
+        // dummy action to avoid error 2103 on startup
+        stream << "*.* /dev/null";
     }
+
+    stream << std::endl;
 
     restart();
 }
