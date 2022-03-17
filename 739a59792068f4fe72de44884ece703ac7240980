@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2dc7fe61_2ded5c83",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-03-17T22:07:39Z",
+      "side": 1,
+      "message": "LGTM, though I\u0027m no rsyslog expert.",
+      "revId": "739a59792068f4fe72de44884ece703ac7240980",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
