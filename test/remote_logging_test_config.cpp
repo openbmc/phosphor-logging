@@ -28,13 +28,13 @@ std::string getConfig(const char* filePath)
 TEST_F(TestRemoteLogging, testOnlyAddress)
 {
     config->address("1.1.1.1");
-    EXPECT_EQ(getConfig(configFilePath.c_str()), "*.* ~");
+    EXPECT_EQ(getConfig(configFilePath.c_str()), "*.* /dev/null");
 }
 
 TEST_F(TestRemoteLogging, testOnlyPort)
 {
     config->port(100);
-    EXPECT_EQ(getConfig(configFilePath.c_str()), "*.* ~");
+    EXPECT_EQ(getConfig(configFilePath.c_str()), "*.* /dev/null");
 }
 
 TEST_F(TestRemoteLogging, testGoodConfig)
@@ -50,7 +50,7 @@ TEST_F(TestRemoteLogging, testClearAddress)
     config->port(100);
     EXPECT_EQ(getConfig(configFilePath.c_str()), "*.* @@1.1.1.1:100");
     config->address("");
-    EXPECT_EQ(getConfig(configFilePath.c_str()), "*.* ~");
+    EXPECT_EQ(getConfig(configFilePath.c_str()), "*.* /dev/null");
 }
 
 TEST_F(TestRemoteLogging, testClearPort)
@@ -59,7 +59,7 @@ TEST_F(TestRemoteLogging, testClearPort)
     config->port(100);
     EXPECT_EQ(getConfig(configFilePath.c_str()), "*.* @@1.1.1.1:100");
     config->port(0);
-    EXPECT_EQ(getConfig(configFilePath.c_str()), "*.* ~");
+    EXPECT_EQ(getConfig(configFilePath.c_str()), "*.* /dev/null");
 }
 
 TEST_F(TestRemoteLogging, testGoodIPv6Config)
