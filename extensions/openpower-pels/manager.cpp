@@ -197,7 +197,7 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
         // Check if firmware should quiesce system due to error
         checkPelAndQuiesce(pel);
         updateEventId(pel);
-        updateResolution(pel);
+        updateResolution(*pel);
         createPELEntry(obmcLogID);
     }
     else
@@ -404,7 +404,7 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
     // Check if firmware should quiesce system due to error
     checkPelAndQuiesce(pel);
     updateEventId(pel);
-    updateResolution(pel);
+    updateResolution(*pel);
     createPELEntry(obmcLogID);
 }
 
@@ -781,14 +781,16 @@ std::string Manager::getResolution(const openpower::pels::PEL& pel) const
     return resolution;
 }
 
-void Manager::updateResolution(std::unique_ptr<openpower::pels::PEL>& pel)
+bool Manager::updateResolution(const openpower::pels::PEL& pel)
 {
-    std::string callouts = getResolution(*pel);
-    auto entryN = _logManager.entries.find(pel->obmcLogID());
+    std::string callouts = getResolution(pel);
+    auto entryN = _logManager.entries.find(pel.obmcLogID());
     if (entryN != _logManager.entries.end())
     {
         entryN->second->resolution(callouts, true);
     }
+
+    return false;
 }
 
 void Manager::setEntryPath(uint32_t obmcLogID)
