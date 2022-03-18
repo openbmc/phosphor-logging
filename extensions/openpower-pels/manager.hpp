@@ -63,6 +63,10 @@ class Manager : public PELInterface
             // Create PELEntry interface and setup properties with their values
             createPELEntry(entry.first, true);
         }
+
+        _repo.for_each(
+            std::bind(&Manager::updateResolution, this, std::placeholders::_1));
+
         setupPELDeleteWatch();
     }
 
@@ -409,8 +413,10 @@ class Manager : public PELInterface
      * Update the resolution property of D-bus with callouts extracted from PEL
      *
      * @param[in] pel - The PEL to use
+     *
+     * @return bool - false for Repositor::for_each().
      */
-    void updateResolution(std::unique_ptr<openpower::pels::PEL>& pel);
+    bool updateResolution(const openpower::pels::PEL& pel);
 
     /**
      * @brief Create PELEntry Interface with supported properties
