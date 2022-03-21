@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0edf7919_510dd429",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2022-03-21T21:22:21Z",
+      "side": 1,
+      "message": "somehow i first read this as \"With AST2500 this takes..\"",
+      "revId": "661e544fb8cd49572919f20b588c9c6897ac22f3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
