@@ -1,3 +1,6 @@
 [wrap-git]
 url = https://github.com/openbmc/pldm.git
 revision = HEAD
+
+[provide]
+libpldm = libpldm_dep
