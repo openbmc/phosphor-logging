@@ -1,0 +1,11 @@
+Code-Review+1: Adriana Kobylak <anoo@linux.ibm.com>
+Code-Review+1: Andrew Geissler <andrew@geissonator.com>
+Code-Review+2: Matt Spinler <spinler@us.ibm.com>
+Code-Review+1: <sumit_kumar@in.ibm.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Ok-To-Test+1: Matt Spinler <spinler@us.ibm.com>
+Submitted-by: Matt Spinler <spinler@us.ibm.com>
+Submitted-at: Tue, 22 Mar 2022 14:14:26 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-logging/+/51972
+Project: openbmc/phosphor-logging
+Branch: refs/heads/master
