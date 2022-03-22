@@ -15,9 +15,7 @@
  */
 #include "callout.hpp"
 
-#include "trace.hpp"
-
-#include <fmt/format.h>
+#include <phosphor-logging/log.hpp>
 
 namespace openpower
 {
@@ -25,6 +23,8 @@ namespace pels
 {
 namespace src
 {
+
+using namespace phosphor::logging;
 
 constexpr size_t locationCodeMaxSize = 80;
 
@@ -70,8 +70,8 @@ Callout::Callout(Stream& pel)
                 break;
             }
             default:
-                trace::error(
-                    fmt::format("Invalid Callout subsection type {}", type));
+                log<level::ERR>("Invalid Callout subsection type",
+                                entry("CALLOUT_TYPE=0x%X", type));
                 throw std::runtime_error("Invalid Callout subsection type");
                 break;
         }

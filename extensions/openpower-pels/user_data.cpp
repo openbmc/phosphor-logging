@@ -18,18 +18,18 @@
 #include "json_utils.hpp"
 #include "pel_types.hpp"
 #include "user_data_formats.hpp"
-
-#include <fmt/format.h>
 #ifdef PELTOOL
 #include "user_data_json.hpp"
 #endif
 
-#include "trace.hpp"
+#include <phosphor-logging/log.hpp>
 
 namespace openpower
 {
 namespace pels
 {
+
+using namespace phosphor::logging;
 
 void UserData::unflatten(Stream& stream)
 {
@@ -61,7 +61,8 @@ UserData::UserData(Stream& pel)
     }
     catch (const std::exception& e)
     {
-        trace::error(fmt::format("Cannot unflatten user data: {}", e.what()));
+        log<level::ERR>("Cannot unflatten user data",
+                        entry("ERROR=%s", e.what()));
         _valid = false;
     }
 }
@@ -84,8 +85,8 @@ void UserData::validate()
 {
     if (header().id != static_cast<uint16_t>(SectionID::userData))
     {
-        trace::error(
-            fmt::format("Invalid user data section ID: {}", header().id));
+        log<level::ERR>("Invalid user data section ID",
+                        entry("ID=0x%X", header().id));
         _valid = false;
     }
     else
