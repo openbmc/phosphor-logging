@@ -205,6 +205,15 @@ class Manager : public PELInterface
             fFDC) override;
 
     /**
+     * @brief D-Bus method to return the PEL in JSON format
+     *
+     * @param[in] obmcLogID - The OpenBMC entry log ID
+     *
+     * @return std::string - The fully parsed PEL in JSON
+     */
+    std::string getPELJSON(uint32_t obmcLogID);
+
+    /**
      * @brief Converts the ESEL field in an OpenBMC event log to a
      *        vector of uint8_ts that just contains the PEL data.
      *

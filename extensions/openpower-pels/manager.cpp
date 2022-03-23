@@ -641,6 +641,11 @@ std::tuple<uint32_t, uint32_t> Manager::createPELWithFFDCFiles(
     return {_logManager.lastEntryID(), _repo.lastPelID()};
 }
 
+std::string Manager::getPELJSON(uint32_t /*obmcLogID*/)
+{
+    return std::string{};
+}
+
 void Manager::checkPelAndQuiesce(std::unique_ptr<openpower::pels::PEL>& pel)
 {
     if ((pel->userHeader().severity() ==
