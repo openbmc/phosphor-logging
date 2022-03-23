@@ -4105,8 +4105,8 @@
 
             "Documentation":
             {
-                "Description": "An error when reading the Manifest file..",
-                "Message": "An error when reading the Manifest file.."
+                "Description": "An error when reading the Manifest file.",
+                "Message": "An error when reading the Manifest file."
             }
         },
 
@@ -4188,6 +4188,60 @@
             {
                 "Description": "The device is busy during the update.",
                 "Message": "The device is busy during the update."
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Software.Version.Error.ExpiredAccessKey",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3600",
+            "SRC":
+            {
+                "ReasonCode": "0x3608",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
+            "Documentation":
+            {
+                "Description": "The Update Access Key has expired.",
+                "Message": "The Update Access Key has expired."
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Software.Version.Error.InvalidSignature",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3600",
+            "SRC":
+            {
+                "ReasonCode": "0x3609",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
+            "Documentation":
+            {
+                "Description": "The software image has an invalid signature.",
+                "Message": "The software image has an invalid signature"
             }
         }
 
