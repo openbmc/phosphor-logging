@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6579cd7_f830a2e0",
+        "filename": "extensions/openpower-pels/registry.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 685,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-03-24T15:18:48Z",
+      "side": 1,
+      "message": "I think since there is no need for these when the registry is used to create a PEL, and because there can be a lot of large notes sections, it would be good to put #ifdef PELTOOL flags around the documentation section, assuming I\u0027m not missing something.  That also means registry.cpp needs to be moved out of libpel in the meson.build and put in the separate sections so it will get the PELTOOL set when building peltool.",
+      "revId": "bd4adaa1c3f3eff78c56e3744b996ebaf1fcf432",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4adc934e_c67dcebb",
+        "filename": "extensions/openpower-pels/registry.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-03-24T15:18:48Z",
+      "side": 1,
+      "message": "I missed it up above, but nlohmann has documentation that says implicit conversion isn\u0027t a good idea, and to instead use get\u003c\u003e().\n\nThough I think get\u003cvector\u003cstring\u003e\u003e() might not work, so you may need to loop on each entry and build a vector.",
+      "revId": "bd4adaa1c3f3eff78c56e3744b996ebaf1fcf432",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81de9501_ba898eea",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-03-24T15:18:48Z",
+      "side": 1,
+      "message": "i see a lot of cases in the registry where Notes is there but empty.  I think I\u0027d prefer to not print an empty \"Notes\": [] in the output, so maybe check if the vector isn\u0027t empty first (assuming that could still happen after making the other changes).",
+      "revId": "bd4adaa1c3f3eff78c56e3744b996ebaf1fcf432",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
