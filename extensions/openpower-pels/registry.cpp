@@ -682,6 +682,10 @@ std::optional<Entry> Registry::lookup(const std::string& name, LookupType type,
             {
                 entry.doc.messageArgSources = doc["MessageArgSources"];
             }
+            if (doc.contains("Notes") && !doc["Notes"].empty())
+            {
+                entry.doc.notes = doc["Notes"];
+            }
 
             // If there are callouts defined, save the JSON for later
             if (_loadCallouts)
