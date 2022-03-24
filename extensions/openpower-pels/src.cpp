@@ -503,6 +503,10 @@ std::optional<std::string> SRC::getErrorDetails(message::Registry& registry,
                     jsonInsert(errorOut, "Message", errorMsg.value(), 2);
                 }
             }
+            if (entry->doc.notes)
+            {
+                jsonInsertArray(errorOut, "Notes", entry->doc.notes.value(), 2);
+            }
             if (entry->src.hexwordADFields)
             {
                 std::map<size_t, std::tuple<std::string, std::string>>
