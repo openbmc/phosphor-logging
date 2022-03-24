@@ -674,15 +674,20 @@ std::optional<Entry> Registry::lookup(const std::string& name, LookupType type,
             {
                 entry.src.symptomID = helper::getSRCSymptomIDFields(src, name);
             }
-
+#ifdef PELTOOL
             auto& doc = (*e)["Documentation"];
             entry.doc.message = doc["Message"];
             entry.doc.description = doc["Description"];
             if (doc.contains("MessageArgSources"))
             {
-                entry.doc.messageArgSources = doc["MessageArgSources"];
+                entry.doc.messageArgSources =
+                    doc["MessageArgSources"].get<std::vector<std::string>>();
             }
-
+            if (doc.contains("Notes") && !doc["Notes"].empty())
+            {
+                entry.doc.notes = doc["Notes"].get<std::vector<std::string>>();
+            }
+#endif
             // If there are callouts defined, save the JSON for later
             if (_loadCallouts)
             {
