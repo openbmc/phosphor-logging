@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c4e2d6c_a76be1de",
+        "filename": "extensions/openpower-pels/registry.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 685,
+      "author": {
+        "id": 1000380
+      },
+      "writtenOn": "2022-03-25T10:02:37Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "c6579cd7_f830a2e0",
+      "revId": "bd4adaa1c3f3eff78c56e3744b996ebaf1fcf432",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4adc934e_c67dcebb",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-03-24T15:18:48Z",
       "side": 1,
       "message": "I missed it up above, but nlohmann has documentation that says implicit conversion isn\u0027t a good idea, and to instead use get\u003c\u003e().\n\nThough I think get\u003cvector\u003cstring\u003e\u003e() might not work, so you may need to loop on each entry and build a vector.",
+      "revId": "bd4adaa1c3f3eff78c56e3744b996ebaf1fcf432",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9a93ede_5d31bd07",
+        "filename": "extensions/openpower-pels/registry.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 1000380
+      },
+      "writtenOn": "2022-03-25T10:02:37Z",
+      "side": 1,
+      "message": "get\u003cstd::vector\u003cstd::string\u003e\u003e() works fine.",
+      "parentUuid": "4adc934e_c67dcebb",
       "revId": "bd4adaa1c3f3eff78c56e3744b996ebaf1fcf432",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
