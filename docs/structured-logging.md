@@ -68,7 +68,7 @@ The post-C++20 logging APIs presented by phosphor-logging are
 `lg2::log`.  The basic format of a log call is:
 
 ```
-    lg2::level("A {TAG0} occured.", "TAG0", "foo"_s, "TAG1", lg2::hex, 2);
+    lg2::level("A {TAG0} occured.", "TAG0", "foo"s, "TAG1", lg2::hex, 2);
 ```
 
 Each log call has a level or priority, but the level is indicated by the
@@ -95,14 +95,14 @@ The supported format flags are:
     - The [integer] data should be formatted in the requested manner.
     - Decimal is the default.
     - Examples:
-        + `(bin, 0xabcd)` -> `0b1010101111001101`
-        + `(hex, 1234)` -> `0x4d2`
+        + `bin, 0xabcd` -> `0b1010101111001101`
+        + `hex, 1234` -> `0x4d2`
 - `field8`, `field16`, `field32`, `field64`
     - The [integer] data should be padded as if it were a field of
       specified bit-length (useful only for `bin` or `hex` data).
     - Examples:
-        + `(bin | field8, 0xff)` -> `0b11111111`
-        + `(hex | field16, 10)` -> `0x000a`
+        + `(bin | field8), 0xff` -> `0b11111111`
+        + `(hex | field16), 10` -> `0x000a`
 
 Format flags can be OR'd together as necessary: `hex | field32`.
 
@@ -144,17 +144,21 @@ performs compile-time checking of these requirements.
 
 The code that enables compile-time header checking imposes two constraints:
 1. Keys / headers must be passed as constant C-string values.
-    - `"KEY"` is valid; `"KEY"_s` or `variable_key` is not.
+    - `"KEY"` is valid; `"KEY"s` or `variable_key` is not.
 2. Any constant C-string may be interpreted as a key and give non-obvious
    compile warnings about format violations.
     - Constant C-strings (`"a string"`) should be passed as a C++ literal
-      (`"a string"_s`) instead.
+      (`"a string"s`) instead.
 
 ### stderr output
 
 When running an application or daemon on a console or SSH session, it might
 not be obvious that the application is writing to the journal.  The `lg2` APIs
 detect if the application is running on a TTY and additionally log to the TTY.
+
+Output to stderr can also be forced by setting the `LG2_FORCE_STDERR`
+environment variable to any value. This is especially useful to see log output
+in OpenBMC CI test verfication.
 
 The format of information sent to the TTY can be adjusted by setting the
 desired format string in the `LG2_FORMAT` environment variable.  Supported
