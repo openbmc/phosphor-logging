@@ -50,6 +50,24 @@
       "message": "i see a lot of cases in the registry where Notes is there but empty.  I think I\u0027d prefer to not print an empty \"Notes\": [] in the output, so maybe check if the vector isn\u0027t empty first (assuming that could still happen after making the other changes).",
       "revId": "bd4adaa1c3f3eff78c56e3744b996ebaf1fcf432",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f8f8c4c_4e567733",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1000380
+      },
+      "writtenOn": "2022-03-25T02:02:42Z",
+      "side": 1,
+      "message": "This is already done in registry.cpp above.",
+      "parentUuid": "81de9501_ba898eea",
+      "revId": "bd4adaa1c3f3eff78c56e3744b996ebaf1fcf432",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
