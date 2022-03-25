@@ -156,6 +156,10 @@ When running an application or daemon on a console or SSH session, it might
 not be obvious that the application is writing to the journal.  The `lg2` APIs
 detect if the application is running on a TTY and additionally log to the TTY.
 
+Output to stderr can also be forced by setting the `LG2_FORCE_STDERR`
+environment variable to any value. This is especially useful to see log output
+in OpenBMC CI test verfication.
+
 The format of information sent to the TTY can be adjusted by setting the
 desired format string in the `LG2_FORMAT` environment variable.  Supported
 fields are:
