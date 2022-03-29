@@ -33,6 +33,24 @@
       "message": "This happens before the bus name is even claimed, so when the mapper gets the nameownerchanged signal it will property introspect the object.  I\u0027m not convinced yet this is necessary.",
       "revId": "b887e03bf230b80fb15f001c99c22512ca34cef5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53ab701d_2d92172a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-03-29T15:41:12Z",
+      "side": 1,
+      "message": "ok, finally got caught up from vacation and read the emails.\n\nI still think that claiming a bus name after the objects are on d-bus and not emitting an interfaces added for each one is a valid thing to do, and is how PIM works as well.\n\nIt used to emit objects added, and it caused all sorts of problems because the mapper introspecting 3000 new objects that come online at once can cause other daemons making mapper calls to time out.\n\nand also, bmcweb is listening for (possibly still in review upstream) event logs to emit them as bmcweb events, and so it would re-emit event logs even though they aren\u0027t new.\n\nSo, is there a  different solution we can come up with for this?",
+      "parentUuid": "1bdfb8fb_5317d185",
+      "revId": "b887e03bf230b80fb15f001c99c22512ca34cef5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
