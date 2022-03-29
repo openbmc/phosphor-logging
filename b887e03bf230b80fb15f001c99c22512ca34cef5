@@ -141,6 +141,24 @@
       "parentUuid": "b9a5d9dd_aa23dec9",
       "revId": "b887e03bf230b80fb15f001c99c22512ca34cef5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5eb21b3_0d31350d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-29T18:48:09Z",
+      "side": 1,
+      "message": "It\u0027s not really that simple either.  In some cases people use object_t to stitch together a number of interfaces and call \"emit_object_added\".  In this case we end up with the object_t destructor calling \"emit_object_removed\" and the interfaces don\u0027t send any signals on their own.\n\nI think we\u0027d need to add a new constructor parameter or secondary function in interface_t to force emit_removed on destruction.",
+      "parentUuid": "bc464063_cc98205d",
+      "revId": "b887e03bf230b80fb15f001c99c22512ca34cef5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
