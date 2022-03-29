@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "beb689ba_afd8911d",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 14
+      },
+      "lineNbr": 3986,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-03-29T18:50:51Z",
+      "side": 1,
+      "message": "peltool will display the Message field, so it would be nice if it were a bit more detailed here, even just copying the Description or Notes field.",
+      "range": {
+        "startLine": 3986,
+        "startChar": 16,
+        "endLine": 3986,
+        "endChar": 52
+      },
+      "revId": "c24e83d3ee01318f8c444c96569821e71aae73ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
