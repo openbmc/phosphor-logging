@@ -3781,7 +3781,7 @@
             },
 
             "Documentation": {
-                "Description": "A path access error ocurred",
+                "Description": "A path access error occurred",
                 "Message": "An EEPROM path access error occurred.",
                 "Notes": [
                     "This error occurs when parser is unable to access",
