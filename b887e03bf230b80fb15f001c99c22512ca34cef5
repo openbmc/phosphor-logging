@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de795b80_828e6e96",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2022-03-29T08:59:10Z",
+      "side": 1,
+      "message": "There is a detailed background and description in the mailing list:\nhttps://lore.kernel.org/openbmc/CAGm54UHcnniKsN_5AyeTn6NGNGXTSv28UmpDYQ+rjug_MFSyrw@mail.gmail.com/T/#t",
+      "revId": "b887e03bf230b80fb15f001c99c22512ca34cef5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
