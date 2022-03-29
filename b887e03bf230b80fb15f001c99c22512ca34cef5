@@ -87,6 +87,24 @@
       "parentUuid": "1bac6291_92b42a94",
       "revId": "b887e03bf230b80fb15f001c99c22512ca34cef5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67d4ddae_7f63804b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-29T17:46:00Z",
+      "side": 1,
+      "message": "Yep!  That\u0027s it.\n\nSo, if I recall correctly, as long as we claim the service name after we create all the objects there is no signal emitted on the bus for the creation side and there is no harm in this commit, right?  Let me try to track down evidence of that in systemd.",
+      "parentUuid": "bbc76a86_73100fb9",
+      "revId": "b887e03bf230b80fb15f001c99c22512ca34cef5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
