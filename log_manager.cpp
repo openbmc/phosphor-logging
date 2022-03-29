@@ -589,6 +589,7 @@ void Manager::restore()
                     realErrors.push_back(idNum);
                 }
 
+                e->emit_object_added();
                 entries.insert(std::make_pair(idNum, std::move(e)));
                 errorIds.push_back(idNum);
             }
