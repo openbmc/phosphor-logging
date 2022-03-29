@@ -123,6 +123,24 @@
       "parentUuid": "67d4ddae_7f63804b",
       "revId": "b887e03bf230b80fb15f001c99c22512ca34cef5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc464063_cc98205d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-03-29T18:14:56Z",
+      "side": 1,
+      "message": "I can see in object.hpp how it will only emit the removed signal if it already emitted the added signal, but it won\u0027t emit the added one since we told it not to.  How about a change there to just always emit it?",
+      "parentUuid": "b9a5d9dd_aa23dec9",
+      "revId": "b887e03bf230b80fb15f001c99c22512ca34cef5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
