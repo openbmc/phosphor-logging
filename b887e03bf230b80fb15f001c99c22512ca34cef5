@@ -51,6 +51,24 @@
       "parentUuid": "1bdfb8fb_5317d185",
       "revId": "b887e03bf230b80fb15f001c99c22512ca34cef5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bac6291_92b42a94",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-29T17:19:20Z",
+      "side": 1,
+      "message": "\u003e I still think that claiming a bus name after the objects are on d-bus and not emitting an interfaces added for each one is a valid thing to do, and is how PIM works as well.\n\nYes, I agree with this.  That\u0027s exactly what daemons are suppose to do.  Add all their initial / static objects and only then claim the service name.\n\nI thought though that the object-manager doesn\u0027t actually emit the signals on the dbus until the service name is claimed and just eats them.  Is there potentially a side-effect of calling the `emit_added` that the object-manager is now aware of the interface and will _later_ emit the Removed signals?  I looked at both the `sd_bus_emit_interfaces_added_strv` and `sd_bus_emit_interfaces_removed_strv` and I don\u0027t see any side-effects like this.",
+      "parentUuid": "53ab701d_2d92172a",
+      "revId": "b887e03bf230b80fb15f001c99c22512ca34cef5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
