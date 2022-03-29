@@ -105,6 +105,24 @@
       "parentUuid": "bbc76a86_73100fb9",
       "revId": "b887e03bf230b80fb15f001c99c22512ca34cef5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9a5d9dd_aa23dec9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-03-29T18:07:13Z",
+      "side": 1,
+      "message": "They still are:\n\nsignal time\u003d1648577022.769102 sender\u003d:1.883 -\u003e destination\u003d(null destination) serial\u003d3 path\u003d/xyz/openbmc_project/logging; interface\u003dorg.freedesktop.DBus.ObjectManager; member\u003dInterfacesAdded\n   object path \"/xyz/openbmc_project/logging/entry/1\"\n--\nsignal time\u003d1648577022.769521 sender\u003d:1.883 -\u003e destination\u003d(null destination) serial\u003d4 path\u003d/xyz/openbmc_project/logging; interface\u003dorg.freedesktop.DBus.ObjectManager; member\u003dInterfacesAdded\n   object path \"/xyz/openbmc_project/logging/entry/3\"\n--\nsignal time\u003d1648577022.769911 sender\u003d:1.883 -\u003e destination\u003d(null destination) serial\u003d5 path\u003d/xyz/openbmc_project/logging; interface\u003dorg.freedesktop.DBus.ObjectManager; member\u003dInterfacesAdded\n   object path \"/xyz/openbmc_project/logging/entry/2\"\n--\nsignal time\u003d1648577022.771946 sender\u003dorg.freedesktop.DBus -\u003e destination\u003d(null destination) serial\u003d4294967295 path\u003d/org/freedesktop/DBus; interface\u003dorg.freedesktop.DBus; member\u003dNameOwnerChanged\n   string \"xyz.openbmc_project.Logging\"",
+      "parentUuid": "67d4ddae_7f63804b",
+      "revId": "b887e03bf230b80fb15f001c99c22512ca34cef5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
