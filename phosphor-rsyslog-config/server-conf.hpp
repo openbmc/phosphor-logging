@@ -40,7 +40,7 @@ class Server : public Iface
      */
     Server(sdbusplus::bus::bus& bus, const std::string& path,
            const char* filePath) :
-        Iface(bus, path.c_str(), true),
+        Iface(bus, path.c_str(), Iface::action::defer_emit),
         configFilePath(filePath),
         hostnameChange(
             bus,
