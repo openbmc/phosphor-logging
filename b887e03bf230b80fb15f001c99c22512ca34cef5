@@ -195,6 +195,24 @@
       "parentUuid": "954937fe_5982d6aa",
       "revId": "b887e03bf230b80fb15f001c99c22512ca34cef5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9054f04c_564778c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2022-03-30T05:22:54Z",
+      "side": 1,
+      "message": "OK, so it looks like we could add a method to set __sdbusplus_server_object_emitremoved to indicate an object should emit removed signal.\nThe caller shall know what it means and use it carefully.\n\nBut to re-think the case, I think we probably could remove `__sdbusplus_server_object_emitremoved` and let the object always emit removed signal.\nBecause I could not think a case why the object should not emit such signal when it\u0027s deleted. Otherwise we will hit the issue mentioned in my email.\n\n@Patrick what do you think?",
+      "parentUuid": "379bbe88_d2a5a346",
+      "revId": "b887e03bf230b80fb15f001c99c22512ca34cef5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
