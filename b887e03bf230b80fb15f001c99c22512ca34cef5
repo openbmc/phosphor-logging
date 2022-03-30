@@ -213,6 +213,24 @@
       "parentUuid": "379bbe88_d2a5a346",
       "revId": "b887e03bf230b80fb15f001c99c22512ca34cef5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e16cc88_9d75cba3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-30T19:10:23Z",
+      "side": 1,
+      "message": "Here is a proposal:\n\nremote:   https://gerrit.openbmc-project.xyz/c/openbmc/sdbusplus/+/52495 server: object: default emit destruct signals [NEW]",
+      "parentUuid": "9054f04c_564778c2",
+      "revId": "b887e03bf230b80fb15f001c99c22512ca34cef5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
