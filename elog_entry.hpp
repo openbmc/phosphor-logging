@@ -67,7 +67,7 @@ class Entry : public EntryIfaces
           std::string&& msgErr, std::vector<std::string>&& additionalDataErr,
           AssociationList&& objects, const std::string& fwVersion,
           const std::string& filePath, internal::Manager& parent) :
-        EntryIfaces(bus, objectPath.c_str(), true),
+        EntryIfaces(bus, objectPath.c_str(), EntryIfaces::action::defer_emit),
         parent(parent)
     {
         id(idErr, true);
@@ -100,7 +100,7 @@ class Entry : public EntryIfaces
      */
     Entry(sdbusplus::bus::bus& bus, const std::string& path, uint32_t entryId,
           internal::Manager& parent) :
-        EntryIfaces(bus, path.c_str(), true),
+        EntryIfaces(bus, path.c_str(), EntryIfaces::action::defer_emit),
         parent(parent)
     {
         id(entryId, true);
