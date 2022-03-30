@@ -177,6 +177,24 @@
       "parentUuid": "a5eb21b3_0d31350d",
       "revId": "b887e03bf230b80fb15f001c99c22512ca34cef5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "379bbe88_d2a5a346",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-30T04:13:54Z",
+      "side": 1,
+      "message": "\u003e Is there any case that an object should NOT emit interfaces_removed and object_removed signals?\n\nYes, an object should never emit both.  One or the other.  They\u0027re the same signal under the covers but the \u0027emit_object_removed\u0027 does all the interfaces at that location.",
+      "parentUuid": "954937fe_5982d6aa",
+      "revId": "b887e03bf230b80fb15f001c99c22512ca34cef5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
