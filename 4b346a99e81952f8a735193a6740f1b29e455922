@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3673b7d3_db1bddb6",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 3590,
+      "author": {
+        "id": 1000386
+      },
+      "writtenOn": "2022-03-30T04:45:24Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "793e04d4_ecda7415",
+      "range": {
+        "startLine": 3590,
+        "startChar": 11,
+        "endLine": 3590,
+        "endChar": 58
+      },
+      "revId": "4b346a99e81952f8a735193a6740f1b29e455922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bd967093_d9ad00ed",
@@ -109,6 +133,30 @@
       "side": 1,
       "message": "There are other PELs that use cec_i2c on i2c fails so I guess it would be more consistent to use that.  Not sure if anyone would actually notice though.",
       "parentUuid": "0e5cec86_3740e5d9",
+      "range": {
+        "startLine": 3591,
+        "startChar": 12,
+        "endLine": 3591,
+        "endChar": 40
+      },
+      "revId": "4b346a99e81952f8a735193a6740f1b29e455922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1af805f8_55040321",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 3591,
+      "author": {
+        "id": 1000386
+      },
+      "writtenOn": "2022-03-30T04:45:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f6111f4_a205ba5c",
       "range": {
         "startLine": 3591,
         "startChar": 12,
@@ -308,6 +356,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c8db4fa_c9b8c5d3",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 3600,
+      "author": {
+        "id": 1000386
+      },
+      "writtenOn": "2022-03-30T04:45:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "20858425_c0a38fc9",
+      "range": {
+        "startLine": 3600,
+        "startChar": 32,
+        "endLine": 3600,
+        "endChar": 47
+      },
+      "revId": "4b346a99e81952f8a735193a6740f1b29e455922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a0ba104_8e8847d3",
@@ -321,6 +393,30 @@
       "writtenOn": "2022-03-09T10:22:13Z",
       "side": 1,
       "message": "this is an input device open failure  not i2c",
+      "range": {
+        "startLine": 3605,
+        "startChar": 0,
+        "endLine": 3623,
+        "endChar": 10
+      },
+      "revId": "4b346a99e81952f8a735193a6740f1b29e455922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0d9e7bb_0a0e98f7",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 3623,
+      "author": {
+        "id": 1000386
+      },
+      "writtenOn": "2022-03-30T04:45:24Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4a0ba104_8e8847d3",
       "range": {
         "startLine": 3605,
         "startChar": 0,

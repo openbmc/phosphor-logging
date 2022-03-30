@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2caad2a7_add8bfb8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000386
+      },
+      "writtenOn": "2022-03-30T04:45:24Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a51c7736_df5c04da",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 141
+      },
+      "revId": "fb8d342c7914d394a13a10927f337fa98932e9ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7275fe60_92a9d2ec",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-03-23T11:28:35Z",
       "side": 1,
       "message": "open/ioctl failure. Panel LCD may not work",
+      "range": {
+        "startLine": 3988,
+        "startChar": 0,
+        "endLine": 3989,
+        "endChar": 44
+      },
+      "revId": "fb8d342c7914d394a13a10927f337fa98932e9ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dfa4ae5_c993732b",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 13
+      },
+      "lineNbr": 3989,
+      "author": {
+        "id": 1000386
+      },
+      "writtenOn": "2022-03-30T04:45:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7275fe60_92a9d2ec",
       "range": {
         "startLine": 3988,
         "startChar": 0,
