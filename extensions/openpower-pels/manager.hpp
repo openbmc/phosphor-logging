@@ -211,7 +211,7 @@ class Manager : public PELInterface
      *
      * @return std::string - The fully parsed PEL in JSON
      */
-    std::string getPELJSON(uint32_t obmcLogID);
+    std::string getPELJSON(uint32_t obmcLogID) override;
 
     /**
      * @brief Converts the ESEL field in an OpenBMC event log to a
