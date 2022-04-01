@@ -641,9 +641,38 @@ std::tuple<uint32_t, uint32_t> Manager::createPELWithFFDCFiles(
     return {_logManager.lastEntryID(), _repo.lastPelID()};
 }
 
-std::string Manager::getPELJSON(uint32_t /*obmcLogID*/)
+std::string Manager::getPELJSON(uint32_t obmcLogID)
 {
-    return std::string{};
+    Repository::LogID id{Repository::LogID::Obmc(obmcLogID)};
+
+    // Throws InvalidArgument if not found
+    auto pelID = getPELIdFromBMCLogId(obmcLogID);
+
+    auto cmd = fmt::format("/usr/bin/peltool -i {:#x}", pelID);
+
+    FILE* pipe = popen(cmd.c_str(), "r");
+    if (!pipe)
+    {
+        log<level::ERR>(fmt::format("Error running {}", cmd).c_str());
+        throw common_error::InternalFailure();
+    }
+
+    std::string output;
+    std::array<char, 1024> buffer;
+    while (fgets(buffer.data(), buffer.size(), pipe) != nullptr)
+    {
+        output.append(buffer.data());
+    }
+
+    int rc = pclose(pipe);
+    if (rc)
+    {
+        log<level::ERR>(
+            fmt::format("Error running {}, rc = {}", cmd, rc).c_str());
+        throw common_error::InternalFailure();
+    }
+
+    return output;
 }
 
 void Manager::checkPelAndQuiesce(std::unique_ptr<openpower::pels::PEL>& pel)
