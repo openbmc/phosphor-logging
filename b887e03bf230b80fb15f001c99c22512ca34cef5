@@ -231,6 +231,24 @@
       "parentUuid": "9054f04c_564778c2",
       "revId": "b887e03bf230b80fb15f001c99c22512ca34cef5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa44bb32_9c612bba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001084
+      },
+      "writtenOn": "2022-04-04T16:45:38Z",
+      "side": 1,
+      "message": "I\u0027m working on a bug where \u0027ipmitool sel clear\u0027 deletes all entries, but \u0027ipmitool sel list\u0027 gives an error:\n\"Get SEL Entry 0 command failed: Unspecified error\"\n\nI tracked the issue down to getting stale log entry paths from object mapper. \n\nI\u0027m wondering whether Patrick\u0027s proposed fix addresses \u0027sel list\u0027 issue...",
+      "parentUuid": "2e16cc88_9d75cba3",
+      "revId": "b887e03bf230b80fb15f001c99c22512ca34cef5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
