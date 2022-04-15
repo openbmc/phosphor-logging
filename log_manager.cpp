@@ -374,7 +374,7 @@ void Manager::checkAndQuiesceHost()
         "org.freedesktop.systemd1", "/org/freedesktop/systemd1",
         "org.freedesktop.systemd1.Manager", "StartUnit");
 
-    quiesce.append("obmc-host-quiesce@0.target");
+    quiesce.append("obmc-host-graceful-quiesce@0.target");
     quiesce.append("replace");
 
     this->busLog.call_noreply(quiesce);
