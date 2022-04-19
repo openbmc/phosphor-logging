@@ -240,7 +240,8 @@ const std::map<std::string, std::string> symbolicFRUs = {
     {"usb_pgood", "USBPGD"},          {"ambient_temp", "AMBTEMP"},
     {"ambient_temp_back", "AMBBACK"}, {"ambient_perf_loss", "AMBPERF"},
     {"ac_module", "ACMODUL"},         {"fan_cable", "FANCBL"},
-    {"cable_continued", "CBLCONT"},   {"altitude", "ALTTUDE"}};
+    {"cable_continued", "CBLCONT"},   {"altitude", "ALTTUDE"},
+    {"pcie_hot_plug", "PCIEHP"}};
 
 PELValues::const_iterator findByValue(uint32_t value, const PELValues& fields)
 {
