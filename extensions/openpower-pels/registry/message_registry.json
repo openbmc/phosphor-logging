@@ -2019,7 +2019,7 @@
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C58" },
-                                    { "Priority": "medium", "LocCode": "P0-C60" },
+                                    { "Priority": "medium", "LocCode": "P0-C61" },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
@@ -2030,7 +2030,7 @@
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C16" },
-                                    { "Priority": "medium", "LocCode": "P0-C13" },
+                                    { "Priority": "medium", "LocCode": "P0-C14" },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
@@ -2041,7 +2041,7 @@
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C16" },
-                                    { "Priority": "medium", "LocCode": "P0-C20" },
+                                    { "Priority": "medium", "LocCode": "P0-C19" },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
@@ -2059,11 +2059,12 @@
                         ]
                     },
                     {
-                        "ADValue": "0V_USB_front", "Callouts": [
+                        "ADValue": "5.0V_USB_front", "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "SymbolicFRU": "usb_pgood" },
-                                    { "Priority": "medium", "LocCode": "P0" }
+                                    { "Priority": "low", "LocCode": "P1" },
+                                    { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
@@ -2073,7 +2074,7 @@
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C63" },
-                                    { "Priority": "medium", "LocCode": "P0-C60" },
+                                    { "Priority": "medium", "LocCode": "P0-C61" },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
@@ -2084,7 +2085,7 @@
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C12" },
-                                    { "Priority": "medium", "LocCode": "P0-C13" },
+                                    { "Priority": "medium", "LocCode": "P0-C14" },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
@@ -2095,7 +2096,7 @@
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C21" },
-                                    { "Priority": "medium", "LocCode": "P0-C20" },
+                                    { "Priority": "medium", "LocCode": "P0-C19" },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
@@ -2117,7 +2118,7 @@
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C63" },
-                                    { "Priority": "medium", "LocCode": "P0-C60" },
+                                    { "Priority": "medium", "LocCode": "P0-C61" },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
@@ -2128,7 +2129,7 @@
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C12" },
-                                    { "Priority": "medium", "LocCode": "P0-C13" },
+                                    { "Priority": "medium", "LocCode": "P0-C14" },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
@@ -2139,7 +2140,7 @@
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C21" },
-                                    { "Priority": "medium", "LocCode": "P0-C20" },
+                                    { "Priority": "medium", "LocCode": "P0-C19" },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
@@ -2269,7 +2270,11 @@
                         "ADValue": "3V3IO", "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C17" }
+                                    { "Priority": "high", "LocCode": "P0-C17" },
+                                    { "Priority": "medium", "LocCode": "P0-C96" },
+                                    { "Priority": "medium", "LocCode": "P0-C0" },
+                                    { "Priority": "medium", "SymbolicFRU": "pcie_hot_plug" },
+                                    { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
@@ -2341,8 +2346,8 @@
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C58" },
-                                    { "Priority": "medium", "LocCode": "P0-C56" },
                                     { "Priority": "medium", "LocCode": "P0-C61" },
+                                    { "Priority": "medium", "LocCode": "P0-C56" },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
