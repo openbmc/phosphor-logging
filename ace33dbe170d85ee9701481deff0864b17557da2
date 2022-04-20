@@ -22,6 +22,30 @@
       },
       "revId": "ace33dbe170d85ee9701481deff0864b17557da2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e139ba0_b9934d3c",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 2350,
+      "author": {
+        "id": 1000387
+      },
+      "writtenOn": "2022-04-20T02:38:27Z",
+      "side": 1,
+      "message": "Right, I\u0027m not sure it\u0027s consequential but I wanted to list DCM0 first.",
+      "parentUuid": "1bf7a6bb_d63589ad",
+      "range": {
+        "startLine": 2349,
+        "startChar": 0,
+        "endLine": 2350,
+        "endChar": 80
+      },
+      "revId": "ace33dbe170d85ee9701481deff0864b17557da2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
