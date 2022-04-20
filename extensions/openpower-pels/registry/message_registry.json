@@ -257,37 +257,6 @@
         },
 
         {
-            "Name": "xyz.openbmc_project.Common.File.Error.Write",
-            "Subsystem": "bmc_firmware",
-            "ComponentID": "0x1000",
-            "SRC":
-            {
-                "ReasonCode": "0x100B",
-                "Words6To9":
-                {
-                }
-            },
-
-            "Callouts": [
-                {
-                    "CalloutList": [
-                        { "Priority": "high", "Procedure": "bmc_code" }
-                    ]
-                }
-            ],
-
-            "Documentation":
-            {
-                "Description": "Failed to write to a file",
-                "Message": "Failed to write to a file",
-                "Notes": [
-                    "The severity is set by the creator.",
-                    "The journal should contain more information"
-                ]
-            }
-        },
-
-        {
             "Name": "org.open_power.Logging.Error.SentBadPELToHost",
             "Subsystem": "bmc_firmware",
             "Severity": "non_error",
@@ -559,7 +528,7 @@
 
         {
             "Name": "org.open_power.PHAL.Error.HostRunning",
-            "Subsystem": "cec_sp_hostboot_iface",
+            "Subsystem": "cec_sp_hyp_iface",
             "ComponentID": "0x3000",
 
             "SRC":
@@ -4043,100 +4012,6 @@
                     "mismatch in cache data and hardware data.",
                     "The record and keyword causing the failure is captured in",
                     "additional data."
-                ]
-            }
-        },
-
-        {
-            "Name": "com.ibm.Panel.Error.InputDevPathFailure",
-            "Subsystem": "cec_op_panel",
-            "ComponentID": "0x5000",
-
-            "SRC": {
-                "ReasonCode": "0x5001",
-                "Words6To9": {}
-            },
-
-            "Documentation": {
-                "Description": "Button Handler Failure",
-                "Message": "Input Device path failure",
-                "Notes": [
-                    "Button events will not be processed."
-                ]
-            }
-        },
-
-        {
-            "Name": "com.ibm.Panel.Error.I2CSetupFailure",
-            "Subsystem": "cec_op_panel",
-            "ComponentID": "0x5000",
-
-            "SRC": {
-                "ReasonCode": "0x5002",
-                "Words6To9": {}
-            },
-
-            "Documentation": {
-                "Description": "Panel I2C setup failure",
-                "Message": "Unable to open device path or ioctl failure",
-                "Notes": [
-                    "The Panel is unable to open device",
-                    " path or ioctl failure"
-                ]
-            }
-        },
-
-        {
-            "Name": "com.ibm.Panel.Error.HostCommunicationError",
-            "Subsystem": "cec_op_panel",
-            "ComponentID": "0x5000",
-
-            "SRC": {
-                "ReasonCode": "0x5003",
-                "Words6To9": {}
-            },
-
-            "Callouts": [{
-                "CalloutList": [{
-                    "Priority": "high",
-                    "Procedure": "bmc_code"
-                }]
-            }],
-
-            "Documentation": {
-                "Description": "Host Communication failure",
-                "Message": "Error in sending message to host",
-                "Notes": [
-                    "Failure from PLDM sending message to",
-                    "Host"
-                ]
-            }
-        },
-
-        {
-            "Name": "com.ibm.Panel.Error.DbusError",
-            "Subsystem": "cec_op_panel",
-            "ComponentID": "0x5000",
-
-            "SRC": {
-                "ReasonCode": "0x5004",
-                "Words6To9": {}
-            },
-
-            "Callouts": [{
-                "CalloutList": [{
-                    "Priority": "high",
-                    "Procedure": "bmc_code"
-                }]
-            }],
-
-            "Documentation": {
-                "Description": "Dbus exception",
-                "Message": "A Dbus internal error occurred.",
-                "Notes": [
-                    "This error occurs when Dbus operation fails.",
-                    "Exceptions details are captured in additional",
-                    "data."
                 ]
             }
         },
