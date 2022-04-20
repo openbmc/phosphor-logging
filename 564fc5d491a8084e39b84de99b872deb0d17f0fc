@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "14dfa20b_449055cf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000655
+      },
+      "writtenOn": "2022-04-20T17:06:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "47f2facb_325bedff",
+      "range": {
+        "startLine": 7,
+        "startChar": 40,
+        "endLine": 7,
+        "endChar": 44
+      },
+      "revId": "564fc5d491a8084e39b84de99b872deb0d17f0fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a24ba39_3d67173b",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-04-20T15:47:18Z",
       "side": 1,
       "message": "Can you please move this after \"xyz.openbmc_project.Common.Device.Error.WriteFailure\"? I guess we are maintaining the order.",
+      "revId": "564fc5d491a8084e39b84de99b872deb0d17f0fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2ad5920_731df1cc",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4248,
+      "author": {
+        "id": 1000655
+      },
+      "writtenOn": "2022-04-20T17:06:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a24ba39_3d67173b",
       "revId": "564fc5d491a8084e39b84de99b872deb0d17f0fc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -58,6 +100,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "73a6f5a0_a39c5c99",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4249,
+      "author": {
+        "id": 1000655
+      },
+      "writtenOn": "2022-04-20T17:06:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a6d031e_fff3721a",
+      "revId": "564fc5d491a8084e39b84de99b872deb0d17f0fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "adae2035_5d94be6f",
@@ -75,6 +135,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "18d59f94_5796d3c0",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4260,
+      "author": {
+        "id": 1000655
+      },
+      "writtenOn": "2022-04-20T17:06:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "adae2035_5d94be6f",
+      "revId": "564fc5d491a8084e39b84de99b872deb0d17f0fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "88180ae1_ba672cb1",
@@ -88,6 +166,30 @@
       "writtenOn": "2022-04-20T14:03:22Z",
       "side": 1,
       "message": "write to a",
+      "range": {
+        "startLine": 4262,
+        "startChar": 42,
+        "endLine": 4262,
+        "endChar": 50
+      },
+      "revId": "564fc5d491a8084e39b84de99b872deb0d17f0fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fe54cf9_f32b6c3e",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4262,
+      "author": {
+        "id": 1000655
+      },
+      "writtenOn": "2022-04-20T17:06:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88180ae1_ba672cb1",
       "range": {
         "startLine": 4262,
         "startChar": 42,
@@ -144,6 +246,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96868f20_529c4fc0",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4263,
+      "author": {
+        "id": 1000655
+      },
+      "writtenOn": "2022-04-20T17:06:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6627c432_3f9587ce",
+      "range": {
+        "startLine": 4263,
+        "startChar": 38,
+        "endLine": 4263,
+        "endChar": 45
+      },
+      "revId": "564fc5d491a8084e39b84de99b872deb0d17f0fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ce6db1e_8258311d",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4263,
+      "author": {
+        "id": 1000655
+      },
+      "writtenOn": "2022-04-20T17:06:02Z",
+      "side": 1,
+      "message": "Yes, at the end if there are other registry entries",
+      "parentUuid": "06822c01_b4930e26",
+      "range": {
+        "startLine": 4263,
+        "startChar": 50,
+        "endLine": 4263,
+        "endChar": 51
+      },
+      "revId": "564fc5d491a8084e39b84de99b872deb0d17f0fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11d9ee26_f94e7bf1",
@@ -157,6 +307,30 @@
       "writtenOn": "2022-04-20T15:47:18Z",
       "side": 1,
       "message": "Looks like, not required and could be a reason for the CI failure.",
+      "range": {
+        "startLine": 4268,
+        "startChar": 1,
+        "endLine": 4268,
+        "endChar": 2
+      },
+      "revId": "564fc5d491a8084e39b84de99b872deb0d17f0fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a2858c9_1a5edd65",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4268,
+      "author": {
+        "id": 1000655
+      },
+      "writtenOn": "2022-04-20T17:06:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11d9ee26_f94e7bf1",
       "range": {
         "startLine": 4268,
         "startChar": 1,
