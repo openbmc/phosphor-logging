@@ -3985,6 +3985,38 @@
         },
 
         {
+            "Name": "com.ibm.VPD.Error.SystemVPDMismatch",
+            "Subsystem": "cec_vpd",
+            "ComponentID": "0x4000",
+
+            "SRC": {
+                "ReasonCode": "0x4008",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "System VPD restore failed",
+                "Message": "A system VPD restoration error occurred.",
+                "Notes": [
+                    "This error occurs when restoring of system VPD fails due to",
+                    "mismatch in cache data and hardware data.",
+                    "The record and keyword causing the failure is captured in",
+                    "additional data."
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.Host.Boot.Error.WatchdogTimeout",
             "Subsystem": "cec_sp_hostboot_iface",
 
