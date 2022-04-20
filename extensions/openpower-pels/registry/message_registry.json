@@ -4243,7 +4243,26 @@
                 "Description": "The software image has an invalid signature.",
                 "Message": "The software image has an invalid signature"
             }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Common.File.Error.Write",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x1000",
+            "SRC":
+            {
+                "ReasonCode": "0x100B",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "Failed to write a file",
+                "Message": "Failed to write a file"
+            }
         }
 
     ]
-}
+}:
