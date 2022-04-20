@@ -4048,6 +4048,7 @@
         },
 
         {
+<<<<<<< HEAD   (c0cc7e PEL: Add error message registry entry for Panel)
             "Name": "com.ibm.Panel.Error.InputDevPathFailure",
             "Subsystem": "cec_op_panel",
             "ComponentID": "0x5000",
@@ -4142,6 +4143,8 @@
         },
 
         {
+=======
+>>>>>>> CHANGE (b91f43 Org.open_power.PHAL.Error.HostRunning subsystem)
             "Name": "org.open_power.Host.Boot.Error.WatchdogTimeout",
             "Subsystem": "cec_sp_hostboot_iface",
 
