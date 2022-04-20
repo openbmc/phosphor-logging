@@ -257,6 +257,36 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Common.File.Error.Write",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x1000",
+            "SRC":
+            {
+                "ReasonCode": "0x100B",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
+            "Documentation":
+            {
+                "Description": "Failed to write to a file",
+                "Message": "Failed to write to a file",
+                "Notes": [
+                    "The journal should contain more information"
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.Logging.Error.SentBadPELToHost",
             "Subsystem": "bmc_firmware",
             "Severity": "non_error",
