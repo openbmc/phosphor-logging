@@ -3,6 +3,80 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "47f2facb_325bedff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2022-04-20T15:47:18Z",
+      "side": 1,
+      "message": "Common.File.Error.Write?",
+      "range": {
+        "startLine": 7,
+        "startChar": 40,
+        "endLine": 7,
+        "endChar": 44
+      },
+      "revId": "564fc5d491a8084e39b84de99b872deb0d17f0fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a24ba39_3d67173b",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4248,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2022-04-20T15:47:18Z",
+      "side": 1,
+      "message": "Can you please move this after \"xyz.openbmc_project.Common.Device.Error.WriteFailure\"? I guess we are maintaining the order.",
+      "revId": "564fc5d491a8084e39b84de99b872deb0d17f0fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a6d031e_fff3721a",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4249,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2022-04-20T15:47:18Z",
+      "side": 1,
+      "message": "Do we need a severity for this or does the caller need to decide based on the use case?\n\nIf the caller needs to take care then, please mention it in the \"Documentation\". You can refer to other registries.",
+      "revId": "564fc5d491a8084e39b84de99b872deb0d17f0fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adae2035_5d94be6f",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4260,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2022-04-20T15:47:18Z",
+      "side": 1,
+      "message": "Do we need to add any further info about the traces/FFDC to add at the caller\u0027s place if the caller is using this registry?",
+      "revId": "564fc5d491a8084e39b84de99b872deb0d17f0fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "88180ae1_ba672cb1",
         "filename": "extensions/openpower-pels/registry/message_registry.json",
         "patchSetId": 1
@@ -42,6 +116,52 @@
         "startChar": 38,
         "endLine": 4263,
         "endChar": 45
+      },
+      "revId": "564fc5d491a8084e39b84de99b872deb0d17f0fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06822c01_b4930e26",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4263,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2022-04-20T15:47:18Z",
+      "side": 1,
+      "message": "comma \",\" is required at the end like other registries?",
+      "range": {
+        "startLine": 4263,
+        "startChar": 50,
+        "endLine": 4263,
+        "endChar": 51
+      },
+      "revId": "564fc5d491a8084e39b84de99b872deb0d17f0fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11d9ee26_f94e7bf1",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4268,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2022-04-20T15:47:18Z",
+      "side": 1,
+      "message": "Looks like, not required and could be a reason for the CI failure.",
+      "range": {
+        "startLine": 4268,
+        "startChar": 1,
+        "endLine": 4268,
+        "endChar": 2
       },
       "revId": "564fc5d491a8084e39b84de99b872deb0d17f0fc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
