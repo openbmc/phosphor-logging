@@ -59,11 +59,6 @@ struct DOC
      *        in the Message field.
      */
     std::optional<std::vector<std::string>> messageArgSources;
-
-    /**
-     * @brief An optional vector of string that forms the Notes field.
-     */
-    std::optional<std::vector<std::string>> notes;
 };
 
 /**
