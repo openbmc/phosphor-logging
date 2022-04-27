@@ -559,7 +559,7 @@
 
         {
             "Name": "org.open_power.PHAL.Error.HostRunning",
-            "Subsystem": "cec_sp_hostboot_iface",
+            "Subsystem": "cec_sp_hyp_iface",
             "ComponentID": "0x3000",
 
             "SRC":
