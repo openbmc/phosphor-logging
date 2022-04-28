@@ -70,6 +70,24 @@
       "parentUuid": "86c06649_38246a2a",
       "revId": "b91f43756c3611e4d312d89b884548cd19e159b2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d709dd23_efea2223",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 3988,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-04-28T22:37:26Z",
+      "side": 1,
+      "message": "I tested with Docker and unit tests passed successfully. After that I pushed. I did not touch anything else, so I guess the re-basing you mentioned may be the root of the issue here?",
+      "parentUuid": "575f1533_064e3c06",
+      "revId": "b91f43756c3611e4d312d89b884548cd19e159b2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
