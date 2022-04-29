@@ -52,6 +52,24 @@
       "parentUuid": "9538aae3_fdc44b37",
       "revId": "072338ef528040236b771fed1e17b168edf296b9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "999dc928_f46c69d2",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 6
+      },
+      "lineNbr": 4051,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-04-29T20:02:59Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c240f5a0_b0d26b56",
+      "revId": "072338ef528040236b771fed1e17b168edf296b9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
