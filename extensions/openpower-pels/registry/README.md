@@ -26,7 +26,9 @@ field.
 Component IDs will be unique on a per-repository basis for errors unique to
 that repository.  When the same errors are created by multiple repositories,
 those errors will all share the same component ID.  The master list of
-component IDs is [here](ComponentIDs.md).
+component IDs is [here](O_component_ids.json).  That file can used by PEL
+parsers to display a name for the component ID.  The 'O' in the name is the
+creator ID value for BMC created PELs.
 
 ## Message Registry Fields
 The message registry schema is [here](schema/schema.json), and the message
@@ -410,7 +412,7 @@ The general process for adding new entries to the message registry is:
 
 1. Update message_registry.json to add the new errors.
 2. If a new component ID is used (usually the first byte of the SRC reason
-   code), document it in ComponentIDs.md.
+   code), document it in O_component_ids.json.
 3. Validate the file. It must be valid JSON and obey the schema.  The
    `process_registry.py` script in `extensions/openpower-pels/registry/tools`
    will validate both, though it requires the python-jsonschema package to do

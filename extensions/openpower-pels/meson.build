@@ -135,6 +135,7 @@ log_manager_ext_sources += files(
 
 install_data(
     'registry/message_registry.json',
+    'registry/O_component_ids.json',
     install_dir: get_option('datadir') / 'phosphor-logging/pels',
 )
 
