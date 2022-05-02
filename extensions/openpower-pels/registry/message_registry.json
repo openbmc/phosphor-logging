@@ -2573,6 +2573,138 @@
                         ]
                     },
                     {
+                        "ADValue": "CP0_VDN", "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C63" },
+                                    { "Priority": "medium", "LocCode": "P0-C61" },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "CP1_VDN", "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C12" },
+                                    { "Priority": "medium", "LocCode": "P0-C14" },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "CP2_VDN", "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C21" },
+                                    { "Priority": "medium", "LocCode": "P0-C19" },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "CP3_VDN", "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C54" },
+                                    { "Priority": "medium", "LocCode": "P0-C56" },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "CP0_VIO", "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C63" },
+                                    { "Priority": "medium", "LocCode": "P0-C61" },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "CP1_VIO", "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C12" },
+                                    { "Priority": "medium", "LocCode": "P0-C14" },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "CP2_VIO", "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C21" },
+                                    { "Priority": "medium", "LocCode": "P0-C19" },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "CP3_VIO", "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C54" },
+                                    { "Priority": "medium", "LocCode": "P0-C56" },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "CP0_VPCIE", "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C58" },
+                                    { "Priority": "medium", "LocCode": "P0-C61" },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "CP1_VPCIE", "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C16" },
+                                    { "Priority": "medium", "LocCode": "P0-C14" },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "CP2_VPCIE", "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C16" },
+                                    { "Priority": "medium", "LocCode": "P0-C19" },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "CP3_VPCIE", "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C58" },
+                                    { "Priority": "medium", "LocCode": "P0-C56" },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
                         "ADValue": "12.0VCS", "Callouts": [
                             {
                                 "CalloutList": [
@@ -2689,6 +2821,94 @@
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "VDN_DCM0", "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C14" },
+                                    { "Priority": "medium", "LocCode": "P0-C15" },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "VDN_DCM1", "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C23" },
+                                    { "Priority": "medium", "LocCode": "P0-C24" },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "VCS_DCM0", "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C14" },
+                                    { "Priority": "medium", "LocCode": "P0-C15" },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "VCS_DCM1", "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C23" },
+                                    { "Priority": "medium", "LocCode": "P0-C24" },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "VIO_DCM0", "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C14" },
+                                    { "Priority": "medium", "LocCode": "P0-C15" },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "VIO_DCM1", "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C23" },
+                                    { "Priority": "medium", "LocCode": "P0-C24" },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "VPCIE_DCM0", "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C14" },
+                                    { "Priority": "medium", "LocCode": "P0-C15" },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "VPCIE_DCM1", "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C23" },
+                                    { "Priority": "medium", "LocCode": "P0-C24" },
+                                    { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
