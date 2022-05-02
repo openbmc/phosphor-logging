@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdae6f9a_ef72e0aa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-05-02T16:30:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e71c9739_4927ea23",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 70
+      },
+      "revId": "c18e7f11a5f583e38be4b23faf7d0a7fdbd7ba18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5dd7bf06_270aa700",
@@ -41,6 +65,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bdac922_ed213d91",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-05-02T16:30:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5dd7bf06_270aa700",
+      "revId": "c18e7f11a5f583e38be4b23faf7d0a7fdbd7ba18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca97fc68_b21c82b3",
@@ -54,6 +96,24 @@
       "writtenOn": "2022-05-02T14:21:39Z",
       "side": 1,
       "message": "nit: The bullets utilize a lot of real estate. Better to just do a left justified \"-\" to indicate a list.",
+      "revId": "c18e7f11a5f583e38be4b23faf7d0a7fdbd7ba18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04c822eb_b316ff72",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-05-02T16:30:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca97fc68_b21c82b3",
       "revId": "c18e7f11a5f583e38be4b23faf7d0a7fdbd7ba18",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
