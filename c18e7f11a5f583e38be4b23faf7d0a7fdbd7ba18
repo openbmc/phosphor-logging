@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e71c9739_4927ea23",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-02T14:21:39Z",
+      "side": 1,
+      "message": "\"This error indicates a communication error between the BMC and the hypervisor (PHYP) firmware, therefore the subsystem should point to the hypervisor\".",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 70
+      },
+      "revId": "c18e7f11a5f583e38be4b23faf7d0a7fdbd7ba18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dd7bf06_270aa700",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-02T14:21:39Z",
+      "side": 1,
+      "message": "nit: please provide an empty line between the body test and the \"Tested:\" tag.",
+      "revId": "c18e7f11a5f583e38be4b23faf7d0a7fdbd7ba18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca97fc68_b21c82b3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-02T14:21:39Z",
+      "side": 1,
+      "message": "nit: The bullets utilize a lot of real estate. Better to just do a left justified \"-\" to indicate a list.",
+      "revId": "c18e7f11a5f583e38be4b23faf7d0a7fdbd7ba18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
