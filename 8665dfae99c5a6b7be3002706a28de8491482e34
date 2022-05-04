@@ -16,6 +16,24 @@
       "message": "Hmm, Can\u0027t say I\u0027m a fan of this. I find the notes pretty useful and I think customers would too. I\u0027m not the boss though 😊",
       "revId": "8665dfae99c5a6b7be3002706a28de8491482e34",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67711c3b_de473679",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-05-04T20:14:45Z",
+      "side": 1,
+      "message": "I\u0027m going to err on the side of caution and remove it for now.  Will revisit with the python based peltool.",
+      "parentUuid": "d8067e7d_0d0e6d20",
+      "revId": "8665dfae99c5a6b7be3002706a28de8491482e34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
