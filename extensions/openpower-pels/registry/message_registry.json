@@ -4405,7 +4405,24 @@
                 "Description": "The software image has an invalid signature.",
                 "Message": "The software image has an invalid signature"
             }
-        }
+        },
 
+        {
+            "Name": "xyz.openbmc_project.Dump.Error.Invalidate",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3700",
+            "SRC":
+            {
+                "ReasonCode": "0x3700",
+                "Words6To9":
+                {
+                }
+            },
+            "Documentation":
+            {
+                "Description": "Dump offloaded or deleted",
+                "Message": "Dump offloaded to HMC or OS and deleted"
+            }
+        }
     ]
 }

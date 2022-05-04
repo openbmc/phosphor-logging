@@ -14,6 +14,7 @@ used.
 | 0x3400       | phosphor-state-manager |
 | 0x3500       | Processor Errors that span repositories |
 | 0x3600       | phosphor-bmc-code-mgmt |
+| 0x3700       | phosphor-debug-collector |
 | 0x4000       | openpower-vpd-parser |
 | 0x5000       | ibm-panel |
 | 0xC100       | openpower-debug-collector |
