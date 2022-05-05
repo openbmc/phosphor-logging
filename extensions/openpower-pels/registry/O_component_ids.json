@@ -8,6 +8,7 @@
     "3400": "bmc state manager",
     "3500": "bmc common host processor errors",
     "3600": "bmc code management",
+    "3700": "bmc debug collector",
     "4000": "bmc vpd",
     "5000": "bmc panel",
     "C100": "bmc system dump collector",
