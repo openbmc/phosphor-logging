@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e4459e4_a5106f2e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-05-05T14:51:27Z",
+      "side": 1,
+      "message": "oh, can you add a \u0027PEL: \u0027 prefix?",
+      "revId": "5e8a3a273f5936060af8928f283c6bebdf8c086d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c033a3a_4dc19cd7",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 4412,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-05-05T14:51:27Z",
+      "side": 1,
+      "message": "since this will always be informational, maybe add this line:\n\"Severity\": \"non_error\",\n\nso that people looking at this will know.  Also I think the RCDL scripts will pick that up.",
+      "revId": "5e8a3a273f5936060af8928f283c6bebdf8c086d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
