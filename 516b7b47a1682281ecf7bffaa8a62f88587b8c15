@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6810c454_38307258",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4413,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2022-05-05T09:46:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f637e919_cfb4e46f",
+      "range": {
+        "startLine": 4413,
+        "startChar": 28,
+        "endLine": 4413,
+        "endChar": 34
+      },
+      "revId": "516b7b47a1682281ecf7bffaa8a62f88587b8c15",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d55939e5_d74db911",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-05-04T15:45:22Z",
       "side": 1,
       "message": "maybe just match the description?  probably don\u0027t need to mention the PEL being created since it is inside a PEL",
+      "range": {
+        "startLine": 4424,
+        "startChar": 28,
+        "endLine": 4424,
+        "endChar": 91
+      },
+      "revId": "516b7b47a1682281ecf7bffaa8a62f88587b8c15",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ebc4c86_283ec08b",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4424,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2022-05-05T09:46:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d55939e5_d74db911",
       "range": {
         "startLine": 4424,
         "startChar": 28,
