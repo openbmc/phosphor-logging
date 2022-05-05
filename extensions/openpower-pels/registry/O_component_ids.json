@@ -7,6 +7,7 @@
     "3100": "bmc hardware isolation",
     "3400": "bmc state manager",
     "3500": "bmc common host processor errors",
+    "3700": "bmc debug collector",
     "3600": "bmc code management",
     "4000": "bmc vpd",
     "5000": "bmc panel",
