@@ -106,6 +106,24 @@
       "parentUuid": "19bb045a_b9eae928",
       "revId": "b41b90a8e62bc7b21173fb7d706f0c8fee5d1317",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce5fbe91_8de3dd7e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-05-06T12:13:05Z",
+      "side": 1,
+      "message": "Yes, please.  Adjusting the commit message shouldn\u0027t affect the Gerrit score.",
+      "parentUuid": "f3a6dff9_0b817187",
+      "revId": "b41b90a8e62bc7b21173fb7d706f0c8fee5d1317",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
