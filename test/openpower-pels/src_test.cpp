@@ -1057,6 +1057,14 @@ TEST_F(SRCTest, JsonCalloutsTest)
             {
                 "SymbolicFRU": "FRUTST2LONG",
                 "Priority": "L"
+            },
+            {
+                "Procedure": "fsi_path",
+                "Priority": "L"
+            },
+            {
+                "SymbolicFRU": "ambient_temp",
+                "Priority": "L"
             }
         ]
     )"_json;
@@ -1123,7 +1131,7 @@ TEST_F(SRCTest, JsonCalloutsTest)
     EXPECT_TRUE(src.hexwordData()[3] & 0x03000000);
 
     const auto& callouts = src.callouts()->callouts();
-    ASSERT_EQ(callouts.size(), 6);
+    ASSERT_EQ(callouts.size(), 8);
 
     // Check callout 0
     {
@@ -1197,6 +1205,27 @@ TEST_F(SRCTest, JsonCalloutsTest)
 
         auto& fru = callouts[5]->fruIdentity();
         EXPECT_EQ(fru->getPN().value(), "FRUTST2");
+        EXPECT_EQ(fru->failingComponentType(), src::FRUIdentity::symbolicFRU);
+    }
+
+    // Check callout 6
+    {
+        EXPECT_EQ(callouts[6]->priority(), 'L');
+        EXPECT_EQ(callouts[6]->locationCode(), "");
+
+        auto& fru = callouts[6]->fruIdentity();
+        EXPECT_EQ(fru->getMaintProc().value(), "BMC0004");
+        EXPECT_EQ(fru->failingComponentType(),
+                  src::FRUIdentity::maintenanceProc);
+    }
+
+    // Check callout 7
+    {
+        EXPECT_EQ(callouts[7]->priority(), 'L');
+        EXPECT_EQ(callouts[7]->locationCode(), "");
+
+        auto& fru = callouts[7]->fruIdentity();
+        EXPECT_EQ(fru->getPN().value(), "AMBTEMP");
         EXPECT_EQ(fru->failingComponentType(), src::FRUIdentity::symbolicFRU);
     }
 

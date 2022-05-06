@@ -1276,6 +1276,13 @@ void SRC::addJSONCallout(const nlohmann::json& jsonCallout,
     {
         auto procedure = jsonCallout.at("Procedure").get<std::string>();
 
+        // If it's the registry name instead of the raw name, convert.
+        if (pv::maintenanceProcedures.find(procedure) !=
+            pv::maintenanceProcedures.end())
+        {
+            procedure = pv::maintenanceProcedures.at(procedure);
+        }
+
         callout = std::make_unique<src::Callout>(
             static_cast<CalloutPriority>(priority), procedure,
             src::CalloutValueType::raw);
@@ -1283,6 +1290,12 @@ void SRC::addJSONCallout(const nlohmann::json& jsonCallout,
     else if (jsonCallout.contains("SymbolicFRU"))
     {
         auto fru = jsonCallout.at("SymbolicFRU").get<std::string>();
+
+        // If it's the registry name instead of the raw name, convert.
+        if (pv::symbolicFRUs.find(fru) != pv::symbolicFRUs.end())
+        {
+            fru = pv::symbolicFRUs.at(fru);
+        }
 
         bool trusted = false;
         if (jsonCallout.contains("TrustedLocationCode") && !locCode.empty())
