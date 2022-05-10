@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5c10a6a_ab59d9a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-05-10T13:44:43Z",
+      "side": 1,
+      "message": "sure, i\u0027ll do new commit so i don\u0027t make everyone else re-review",
+      "parentUuid": "9a8deb9b_51bc1ad0",
+      "revId": "5ad00c404591cdaabd0bc1829409c338a33dc09a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00d131a5_2cb65d6e",
