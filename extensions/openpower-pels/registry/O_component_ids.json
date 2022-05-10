@@ -12,6 +12,7 @@
     "3700": "bmc debug collector",
     "4000": "bmc vpd",
     "5000": "bmc panel",
+    "6000": "bmc pldm",
     "C100": "bmc system dump collector",
     "D100": "bmc hw diags attention handler",
     "E500": "bmc hw diags"
