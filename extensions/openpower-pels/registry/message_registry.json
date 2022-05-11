@@ -4736,7 +4736,608 @@
                 "Description": "The software image has an invalid signature.",
                 "Message": "The software image has an invalid signature"
             }
-        }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.findDumpObjPath.GetManagedObjectsFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "predictive",
+            "SRC":
+            {
+                "ReasonCode": "0x6001",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
 
+            "Documentation":
+            {
+                "Description": "Failed to get the requested dump object path.",
+                "Message": "Failed to get the requested dump object path from the system."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.newFileAvailable.NewDumpNotifyFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "unrecoverable",
+            "SRC":
+            {
+                "ReasonCode": "0x6002",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "Failed to make a new dump notify request to the dump manager application.",
+                "Message": "Failed to make a new dump notify request to the dump manager application."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.DumpHandler.getOffloadUriFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "unrecoverable",
+            "SRC":
+            {
+                "ReasonCode": "0x6003",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "Failed to get the dump offload URI path from the dump entry.",
+                "Message": "Failed to get the dump offload URI path from the dump entry."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.fileAck.ResourceDumpFileAckFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "non_error",
+            "SRC":
+            {
+                "ReasonCode": "0x6004",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "medium", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "The hypervisor rejected the request to initiate a new resource dump.",
+                "Message": "The hypervisor rejected the request to initiate a new resource dump."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.fileAck.SourceDumpIdResetFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "unrecoverable",
+            "SRC":
+            {
+                "ReasonCode": "0x6005",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "Failed to reset the dump ID, due to this requested dump will not be deleted.",
+                "Message": "Failed to reset the dump ID, due to this requested dump will not be deleted."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.fileAck.DumpEntryDeleteFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "unrecoverable",
+            "SRC":
+            {
+                "ReasonCode": "0x6006",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "Failed to carry out the dump delete request from the hypervisor.",
+                "Message": "Failed to carry out the dump delete request from the hypervisor."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.fileAck.DumpEntryOffloadedSetFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "unrecoverable",
+            "SRC":
+            {
+                "ReasonCode": "0x6007",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "Failed to set the dump offloaded completion flag in the dump entry.",
+                "Message": "Failed to set the dump offloaded completion flag in the dump entry."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.readIntoMemory.GetFilepathFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "unrecoverable",
+            "SRC":
+            {
+                "ReasonCode": "0x6008",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "Failed to get the file path for the BMC dump and offload to the hypervisor.",
+                "Message": "Failed to get the file path for the BMC dump and offload to the hypervisor."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.read.GetFilepathFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "unrecoverable",
+            "SRC":
+            {
+                "ReasonCode": "0x6009",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "Failed to get the file path for the BMC dump and offload to the hypervisor.",
+                "Message": "Failed to get the file path for the BMC dump and offload to the hypervisor."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.fileAck.ResourceDumpFileAckWithMetaDataFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "non_error",
+            "SRC":
+            {
+                "ReasonCode": "0x6010",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "medium", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "Could not create a new resource dump due to hypervisor verification failed.",
+                "Message": "Could not create a new resource dump due to hypervisor verification failed."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.fileAckWithMetaData.DumpEntryOffloadedSetFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "unrecoverable",
+            "SRC":
+            {
+                "ReasonCode": "0x6011",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "Failed to set the dump offload completion flag in the dump entry details.",
+                "Message": "Failed to set the dump offload completion flag in the dump entry details."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.newFileAvailableWithMetaData.NewDumpNotifyFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "unrecoverable",
+            "SRC":
+            {
+                "ReasonCode": "0x6012",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "Failed to notify a new dump available request.",
+                "Message": "Failed to notify a new dump available request."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.sendNewFileAvailableCmd.SendDumpParametersFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "unrecoverable",
+            "SRC":
+            {
+                "ReasonCode": "0x6013",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "Failed to send the resource dump parameters for a new dump initiation.",
+                "Message": "Failed to send the resource dump parameters for a new dump initiation."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.SendFileToHostFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "unrecoverable",
+            "SRC":
+            {
+                "ReasonCode": "0x6014",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "Failed to send the certificate/license file to the host.",
+                "Message": "Failed to send the certificate/license file to the host."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.DecodeNewFileResponseFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "unrecoverable",
+            "SRC":
+            {
+                "ReasonCode": "0x6015",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "Failed to decode the response of certificate/license file sent to the host.",
+                "Message": "Failed to decode the response of certificate/license file sent to the host."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.NewFileAvailableRequestFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "unrecoverable",
+            "SRC":
+            {
+                "ReasonCode": "0x6016",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "Failed to send the new certificate/license file to the host.",
+                "Message": "Failed to send the new certificate/license file to the host."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.SetHostEffecterFailed",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "unrecoverable",
+            "SRC":
+            {
+                "ReasonCode": "0x6017",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "Failed to set state effecter states.",
+                "Message": "Failed to set state effecter states."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.Generate.PDRJsonFileParseFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "unrecoverable",
+            "SRC":
+            {
+                "ReasonCode": "0x6018",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "Failed to parse PDR JSON file.",
+                "Message": "Failed to parse PDR JSON file."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.SetHostSensorState.GetStateSensorPDRFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "unrecoverable",
+            "SRC":
+            {
+                "ReasonCode": "0x6019",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "Failed to get state sensor PDR state.",
+                "Message": "Failed to get state sensor PDR state."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.SetHostSensorState.EncodeStateSensorFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "unrecoverable",
+            "SRC":
+            {
+                "ReasonCode": "0x6020",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "Failed to encode state sensor request.",
+                "Message": "Failed to encode state sensor request."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.CMsubscribeFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "unrecoverable",
+            "SRC":
+            {
+                "ReasonCode": "0x6021",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "Failed to subscribe for concurrent maintenance of FRU.",
+                "Message": "Failed to subscribe for concurrent maintenance of FRU."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.setSurvTimer.RecvSurveillancePingFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "non_error",
+            "SRC":
+            {
+                "ReasonCode": "0x6022",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "Host did not send a surveillance ping within stipulated timeout interval.",
+                "Message": "Host did not send a surveillance ping within stipulated timeout interval."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.fileAck.DumpEntryOffloadUriSetFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "unrecoverable",
+            "SRC":
+            {
+                "ReasonCode": "0x6023",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "Failed to reset the dump offload URI path from the dump entry.",
+                "Message": "Failed to reset the dump offload URI path from the dump entry."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.SoftPowerOff.HostSoftOffTimeOut",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "unrecoverable",
+            "SRC":
+            {
+                "ReasonCode": "0x6024",
+                "Words6To9":
+                {
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation":
+            {
+                "Description": "Host failed to complete the power off gracefully within the timeout.",
+                "Message": "Host failed to complete the power off gracefully within the timeout."
+            }
+        }
     ]
 }
