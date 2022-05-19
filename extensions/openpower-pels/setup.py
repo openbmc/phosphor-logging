@@ -18,7 +18,7 @@ shutil.copy(os.path.join(this_dir, 'registry/B_component_ids.json'),
 
 setup(
     name="pel_message_registry",
-    version="1.0",
+    version=os.getenv('PELTOOL_VERSION', '1.0'),
     classifiers=["License :: OSI Approved :: Apache Software License"],
     packages=['pel_registry'],
     package_data={'': ['message_registry.json',
