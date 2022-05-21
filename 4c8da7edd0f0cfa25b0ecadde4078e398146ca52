@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2e195b2_eded4761",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-21T14:34:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4294597d_d775cd57",
+      "revId": "4c8da7edd0f0cfa25b0ecadde4078e398146ca52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8d4dd19_83afb4ac",
@@ -181,6 +199,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "56228760_e4792235",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4896,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-21T14:34:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0e24bb2_6b5fea1c",
+      "range": {
+        "startLine": 4896,
+        "startChar": 45,
+        "endLine": 4896,
+        "endChar": 49
+      },
+      "revId": "4c8da7edd0f0cfa25b0ecadde4078e398146ca52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "036c43bf_241a51ca",
@@ -194,6 +236,30 @@
       "writtenOn": "2022-05-13T07:53:29Z",
       "side": 1,
       "message": "PLDM missing?",
+      "range": {
+        "startLine": 4915,
+        "startChar": 45,
+        "endLine": 4915,
+        "endChar": 72
+      },
+      "revId": "4c8da7edd0f0cfa25b0ecadde4078e398146ca52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14f6cb38_23898bb8",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4915,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-21T14:34:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "036c43bf_241a51ca",
       "range": {
         "startLine": 4915,
         "startChar": 45,
@@ -227,6 +293,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "08aeca40_05eac743",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4934,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-21T14:34:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5071ecfe_00eec80e",
+      "range": {
+        "startLine": 4934,
+        "startChar": 45,
+        "endLine": 4934,
+        "endChar": 49
+      },
+      "revId": "4c8da7edd0f0cfa25b0ecadde4078e398146ca52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe0b49b1_0dad05dc",
@@ -240,6 +330,30 @@
       "writtenOn": "2022-05-13T07:53:29Z",
       "side": 1,
       "message": "same",
+      "range": {
+        "startLine": 5011,
+        "startChar": 45,
+        "endLine": 5011,
+        "endChar": 49
+      },
+      "revId": "4c8da7edd0f0cfa25b0ecadde4078e398146ca52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cec5aa0a_36c2f7de",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 5011,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-21T14:34:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe0b49b1_0dad05dc",
       "range": {
         "startLine": 5011,
         "startChar": 45,
