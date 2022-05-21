@@ -106,6 +106,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b9d1a63_cc8e05e7",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4644,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-21T14:34:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b2d17bf_f6bb8d73",
+      "range": {
+        "startLine": 4644,
+        "startChar": 15,
+        "endLine": 4644,
+        "endChar": 29
+      },
+      "revId": "4c8da7edd0f0cfa25b0ecadde4078e398146ca52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd727d31_ebf7199a",
@@ -119,6 +143,30 @@
       "writtenOn": "2022-05-13T07:53:29Z",
       "side": 1,
       "message": "DBus",
+      "range": {
+        "startLine": 4682,
+        "startChar": 64,
+        "endLine": 4682,
+        "endChar": 67
+      },
+      "revId": "4c8da7edd0f0cfa25b0ecadde4078e398146ca52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f55f163a_c2482081",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4682,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-21T14:34:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd727d31_ebf7199a",
       "range": {
         "startLine": 4682,
         "startChar": 64,
