@@ -560,7 +560,6 @@ void Manager::restore()
     auto sanity = [](const auto& id, const auto& restoredId) {
         return id == restoredId;
     };
-    std::vector<uint32_t> errorIds;
 
     fs::path dir(ERRLOG_PERSIST_PATH);
     if (!fs::exists(dir) || fs::is_empty(dir))
@@ -590,7 +589,6 @@ void Manager::restore()
                 }
 
                 entries.insert(std::make_pair(idNum, std::move(e)));
-                errorIds.push_back(idNum);
             }
             else
             {
@@ -602,9 +600,9 @@ void Manager::restore()
         }
     }
 
-    if (!errorIds.empty())
+    if (!entries.empty())
     {
-        entryId = *(std::max_element(errorIds.begin(), errorIds.end()));
+        entryId = entries.rbegin()->first;
     }
 }
 
