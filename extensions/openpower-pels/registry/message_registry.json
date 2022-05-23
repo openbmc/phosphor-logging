@@ -464,7 +464,6 @@
             "Name": "org.open_power.PHAL.Error.Boot",
             "Subsystem": "cec_hardware",
             "ComponentID": "0x3000",
-            "Severity": "unrecoverable",
 
             "SRC":
             {
