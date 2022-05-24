@@ -4806,6 +4806,48 @@
                 "Message": "The software image has an invalid signature"
             }
         },
+
+        {
+            "Name" : "xyz.openbmc_project.Software.Version.Error.HostFile",
+            "Subsystem" : "bmc_firmware",
+            "ComponentID" : "0x3600",
+
+            "SRC" :
+            {
+                "ReasonCode" : "0x360A",
+                "Words6To9":
+                {
+                    "6":
+                    {
+                        "Description" : "Size of the current running partition",
+                        "AdditionalDataPropSource" : "CURRENT_FILE_SIZE"
+                    },
+                    "7":
+                    {
+                        "Description" : "Size of the read only partition",
+                        "AdditionalDataPropSource" : "EXPECTED_FILE_SIZE"
+                    }
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+            "Documentation" :
+            {
+                "Description" : "Corrupted or changed preserved file",
+                "Message" : "Partition was not preserved on reboot",
+                "Notes" : [
+                    "This error may occur if one of the partitions marked",
+                    "PRESERVED is either corrupted, or a change of size is ",
+                    "desired for a particular partition."
+                ]
+            }
+        },
+
         {
             "Name": "xyz.openbmc_project.PLDM.Error.findDumpObjPath.GetManagedObjectsFail",
             "Subsystem": "bmc_firmware",
