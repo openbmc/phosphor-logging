@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e50d8bc9_2fa9633a",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 4644,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-24T11:22:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "835d627c_0ab744bf",
+      "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c49168a_e29b5fd7",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-05-24T09:45:06Z",
       "side": 1,
       "message": "Please change something to \"Failed to notify the dump manager application on the newly created hypervisor dump.\"",
+      "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2dc50355_2f7438f2",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 4663,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-24T11:22:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c49168a_e29b5fd7",
       "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7ca3449_743ab7fe",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 4682,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-24T11:22:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad1baa21_66bfeda0",
+      "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aaf2fd61_a9599198",
@@ -65,6 +119,24 @@
       "writtenOn": "2022-05-24T09:45:06Z",
       "side": 1,
       "message": "Please change to \"The hypervisor has rejected the request to initiate a new resource dump.\"",
+      "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b8ff1e1_8f85c4c6",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 4701,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-24T11:22:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aaf2fd61_a9599198",
       "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -86,6 +158,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f8c678a_caf46d55",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 4720,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-24T11:22:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2252dad_4cb2bd15",
+      "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f1278624_4da1f952",
@@ -99,6 +189,24 @@
       "writtenOn": "2022-05-24T09:45:06Z",
       "side": 1,
       "message": "Please change to \"Failed to carry out the dump delete request from the hypervisor.\"",
+      "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "418d8457_184ef41d",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 4739,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-24T11:22:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1278624_4da1f952",
       "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -120,6 +228,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd0f203d_ad692fce",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 4758,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-24T11:22:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe542c89_5c95969d",
+      "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "188bc09c_c1a4043e",
@@ -133,6 +259,24 @@
       "writtenOn": "2022-05-24T09:45:06Z",
       "side": 1,
       "message": "Please change to \"Failed to extract the file path of the BMC dump which in turn required to offload the dump to hypervisor.\"",
+      "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "491fd858_5914a74e",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 4777,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-24T11:22:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "188bc09c_c1a4043e",
       "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -154,6 +298,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb201fef_21587c6a",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 4796,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-24T11:22:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69c7c4ef_cc9c8267",
+      "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6d65a8e_1aa9a843",
@@ -167,6 +329,24 @@
       "writtenOn": "2022-05-24T09:45:06Z",
       "side": 1,
       "message": "Please change to \"Failed to create a new resource dump as hypervisor verification did not get succeeded.\"",
+      "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba26e1cf_8810de13",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 4815,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-24T11:22:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6d65a8e_1aa9a843",
       "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -188,6 +368,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "014a304f_6035b0e5",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 4834,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-24T11:22:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "57e25c56_d7f0a85a",
+      "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b860c96f_3007fdc7",
@@ -201,6 +399,24 @@
       "writtenOn": "2022-05-24T09:45:06Z",
       "side": 1,
       "message": "Please change something to \"Failed to notify the dump manager application on the newly created hypervisor dump details.\"",
+      "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d992427c_83c951e8",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 4853,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-24T11:22:54Z",
+      "side": 1,
+      "message": "I think what I mentioned is enough for this context.",
+      "parentUuid": "b860c96f_3007fdc7",
       "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -228,6 +444,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c9fad11_aa30512f",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 4872,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-24T11:22:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b5aac4a_2c0adea5",
+      "range": {
+        "startLine": 4872,
+        "startChar": 31,
+        "endLine": 4872,
+        "endChar": 72
+      },
+      "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7e1f7b1_74458e2c",
@@ -241,6 +481,24 @@
       "writtenOn": "2022-05-24T09:45:06Z",
       "side": 1,
       "message": "Please change to \"Failed to initiate sending of the certificate or license file to the host\".",
+      "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e97334e_f0464bea",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 4891,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-24T11:22:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7e1f7b1_74458e2c",
       "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -262,6 +520,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "79e937f2_f513653d",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 4910,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-24T11:22:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79fed12c_d8815264",
+      "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "75ef6cfa_19410697",
@@ -275,6 +551,24 @@
       "writtenOn": "2022-05-24T09:45:06Z",
       "side": 1,
       "message": "bmc --\u003e PLDM ?",
+      "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c8768f4_20958a16",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 4915,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-24T11:22:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75ef6cfa_19410697",
       "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -296,6 +590,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a85284f_948b8734",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 4929,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-24T11:22:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "346e7949_b3e96518",
+      "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33b59e42_844185a5",
@@ -313,6 +625,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec5a8640_b73c650e",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 5063,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-24T11:22:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33b59e42_844185a5",
+      "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dab9134a_d247362d",
@@ -326,6 +656,24 @@
       "writtenOn": "2022-05-24T09:45:06Z",
       "side": 1,
       "message": "Is it repeated as both this and \"xyz.openbmc_project.bmc.NewFileAvailableRequestFail\" are same ? You may remove this ?",
+      "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80ca8ef3_048bf6bf",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 5068,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-05-24T11:22:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dab9134a_d247362d",
       "revId": "eee28f5c886407bfd21e5b6a46b075e9a03f1b39",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
