@@ -5,6 +5,7 @@
     "2800": "bmc fans",
     "3000": "bmc host processor control",
     "3100": "bmc hardware isolation",
+    "3200": "bmc occ control",
     "3400": "bmc state manager",
     "3500": "bmc common host processor errors",
     "3600": "bmc code management",
