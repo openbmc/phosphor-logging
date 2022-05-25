@@ -634,6 +634,56 @@
         },
 
         {
+            "Name": "org.open_power.OCC.Error.Presence",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3200",
+            "Severity": "predictive",
+
+            "SRC":
+            {
+                "ReasonCode": "0x3201",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "OCC presence mismatch",
+                "Message": "BMC firmware detected incorrect number of OCCs",
+                "Notes": [
+                    "The number of OCCs detected by the BMC does not match the number of OCCs detected by the OCC.",
+                    "The BMC requests that the OCC reset."
+                ]
+            }
+        },
+
+        {
+            "Name": "org.open_power.OCC.Error.Safe",
+            "Subsystem": "processor_chip",
+            "ComponentID": "0x3200",
+            "Severity": "non_error",
+
+            "SRC":
+            {
+                "ReasonCode": "0x3202",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "OCC safe state",
+                "Message": "OCC in safe state while active for one minute",
+                "Notes": [
+                    "The BMC detected that the OCC was in safe state for one minute while active.",
+                    "The BMC requests that the OCC reset."
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.HardwareIsolation.Error",
             "Subsystem": "cec_hardware",
             "ComponentID": "0x3100",
