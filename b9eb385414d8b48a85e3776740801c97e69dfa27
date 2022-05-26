@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65791c6f_8fb00dbc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2022-05-26T20:25:57Z",
+      "side": 1,
+      "message": "New error msg being used with: https://gerrit.openbmc.org/c/openbmc/openpower-pnor-code-mgmt/+/53831",
+      "revId": "b9eb385414d8b48a85e3776740801c97e69dfa27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24ed6595_7bbb5bdb",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4664,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2022-05-26T20:25:57Z",
+      "side": 1,
+      "message": "extra line",
+      "revId": "b9eb385414d8b48a85e3776740801c97e69dfa27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b0c1343_4afdc9f4",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4667,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2022-05-26T20:25:57Z",
+      "side": 1,
+      "message": "\"changed\"?",
+      "range": {
+        "startLine": 4667,
+        "startChar": 46,
+        "endLine": 4667,
+        "endChar": 53
+      },
+      "revId": "b9eb385414d8b48a85e3776740801c97e69dfa27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f13a090_b28cdb1b",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4671,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2022-05-26T20:25:57Z",
+      "side": 1,
+      "message": "the file can get corrupted if a write fails too, so we can remove the \"due to user tampering\".",
+      "range": {
+        "startLine": 4671,
+        "startChar": 51,
+        "endLine": 4671,
+        "endChar": 72
+      },
+      "revId": "b9eb385414d8b48a85e3776740801c97e69dfa27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
