@@ -2392,7 +2392,6 @@
                                 "CalloutList": [
                                     { "Priority": "medium", "LocCode": "P1" },
                                     { "Priority": "medium", "LocCode": "P2" },
-                                    { "Priority": "medium", "LocCode": "P3" },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
@@ -2866,7 +2865,6 @@
                                 "CalloutList": [
                                     { "Priority": "medium", "LocCode": "P1" },
                                     { "Priority": "medium", "LocCode": "P2" },
-                                    { "Priority": "medium", "LocCode": "P3" },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
