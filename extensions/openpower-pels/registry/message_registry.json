@@ -1272,6 +1272,35 @@
                 }
             },
 
+            "Callouts": [
+                {
+                    "System": "ibm,rainier",
+                    "CalloutList": [
+                        {
+                            "Priority": "low",
+                            "LocCode": "P0"
+                        },
+                        {
+                            "Priority": "low",
+                            "LocCode": "P0-C22"
+                        }
+                    ]
+                },
+                {
+                    "System": "ibm,everest",
+                    "CalloutList": [
+                        {
+                            "Priority": "low",
+                            "LocCode": "P0"
+                        },
+                        {
+                            "Priority": "low",
+                            "LocCode": "P0-C96"
+                        }
+                    ]
+                }
+            ],
+
             "Documentation":
             {
                 "Description": "SBE Boot timeout",
