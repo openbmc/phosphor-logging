@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4488dd2c_d487632b",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 5171,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-06-02T06:21:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0690c898_09dc0ffe",
+      "range": {
+        "startLine": 5171,
+        "startChar": 23,
+        "endLine": 5171,
+        "endChar": 50
+      },
+      "revId": "bfe1480b0ce65eadd28118ff3bc6b21f88439435",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "facfcbd5_7dd2e609",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "792d4c0a_a8b4002e",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 5178,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-06-02T06:21:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "facfcbd5_7dd2e609",
+      "range": {
+        "startLine": 5177,
+        "startChar": 11,
+        "endLine": 5178,
+        "endChar": 62
+      },
+      "revId": "bfe1480b0ce65eadd28118ff3bc6b21f88439435",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "391809c5_96c51a09",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-06-01T08:51:16Z",
       "side": 1,
       "message": "Host failed to complete the power off operation gracefully within the timeout.",
+      "range": {
+        "startLine": 5227,
+        "startChar": 9,
+        "endLine": 5228,
+        "endChar": 60
+      },
+      "revId": "bfe1480b0ce65eadd28118ff3bc6b21f88439435",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cba4836d_28381874",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 5228,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-06-02T06:21:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "391809c5_96c51a09",
       "range": {
         "startLine": 5227,
         "startChar": 9,
