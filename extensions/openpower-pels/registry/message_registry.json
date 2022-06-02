@@ -1184,6 +1184,14 @@
                 }
             },
 
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "next_level_support" }
+                    ]
+                }
+            ],
+
             "Documentation":
             {
                 "Description": "SBE chipop timeout",
