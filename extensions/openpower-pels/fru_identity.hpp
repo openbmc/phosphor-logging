@@ -3,6 +3,7 @@
 #include "pel_types.hpp"
 #include "stream.hpp"
 
+#include <array>
 #include <optional>
 
 namespace openpower
