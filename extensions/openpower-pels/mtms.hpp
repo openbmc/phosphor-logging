@@ -2,6 +2,7 @@
 
 #include "stream.hpp"
 
+#include <array>
 #include <string>
 
 namespace openpower
