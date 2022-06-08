@@ -16,6 +16,24 @@
       "message": "I guess I\u0027m trying to decide if there\u0027s ever any danger of std::map changin it\u0027s behavior to not sort.",
       "revId": "3ccffdc6002fdbee3ad7a3c0288320989f15fc49",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b768496_ab75147f",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 605,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2022-06-08T05:41:27Z",
+      "side": 1,
+      "message": "https://en.cppreference.com/w/cpp/container/map:\n\n\u003e std::map is a sorted associative container that contains key-value pairs with unique keys. Keys are sorted by using the comparison function Compare.\n\nSo it should be OK to depend on the sorted std::map.",
+      "parentUuid": "40179847_01933ddd",
+      "revId": "3ccffdc6002fdbee3ad7a3c0288320989f15fc49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
