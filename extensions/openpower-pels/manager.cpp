@@ -27,6 +27,7 @@
 
 #include <filesystem>
 #include <fstream>
+#include <locale>
 #include <xyz/openbmc_project/Common/error.hpp>
 #include <xyz/openbmc_project/Logging/Create/server.hpp>
 
@@ -735,7 +736,7 @@ std::string Manager::getEventId(const openpower::pels::PEL& pel) const
             str += getNumberString("%08X", value);
         }
     }
-    return str;
+    return sanitizeFieldForDBus(str);
 }
 
 void Manager::updateEventId(std::unique_ptr<openpower::pels::PEL>& pel)
@@ -747,6 +748,17 @@ void Manager::updateEventId(std::unique_ptr<openpower::pels::PEL>& pel)
     {
         entryN->second->eventId(eventIdStr);
     }
+}
+
+std::string Manager::sanitizeFieldForDBus(std::string field)
+{
+    std::for_each(field.begin(), field.end(), [](char& ch) {
+        if (((ch < ' ') || (ch > '~')) && (ch != '\n') && (ch != '\t'))
+        {
+            ch = ' ';
+        }
+    });
+    return field;
 }
 
 std::string Manager::getResolution(const openpower::pels::PEL& pel) const
@@ -812,7 +824,7 @@ std::string Manager::getResolution(const openpower::pels::PEL& pel) const
             }
         }
     }
-    return resolution;
+    return sanitizeFieldForDBus(resolution);
 }
 
 bool Manager::updateResolution(const openpower::pels::PEL& pel)
