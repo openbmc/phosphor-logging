@@ -273,6 +273,17 @@ class Manager : public PELInterface
      */
     void updateProgressSRC(std::unique_ptr<openpower::pels::PEL>& pel) const;
 
+    /**
+     * @brief Converts unprintable characters from the passed
+     *        in string to spaces so they won't crash D-Bus when
+     *        used as a property value.
+     *
+     * @param[in] field - The field to fix
+     *
+     * @return std::string - The string without non printable characters.
+     */
+    static std::string sanitizeFieldForDBus(std::string field);
+
   private:
     /**
      * @brief Adds a received raw PEL to the PEL repository
