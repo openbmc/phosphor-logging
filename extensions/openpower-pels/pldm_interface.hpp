@@ -75,13 +75,6 @@ class PLDMInterface : public HostInterface
     void cancelCmd() override;
 
     /**
-     * @brief Cleans up so that a new command is ready to be sent.
-     *
-     * Does not clear the instance ID.
-     */
-    void cleanupCmd();
-
-    /**
      * @brief Gets called on the async D-Bus method response to
      *        getting the PLDM instance ID.
      *

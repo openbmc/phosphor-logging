@@ -170,7 +170,7 @@ void PLDMInterface::startCommand()
     }
     catch (const std::exception& e)
     {
-        cleanupCmd();
+        cancelCmd();
 
         callResponseFunc(ResponseStatus::failure);
     }
@@ -288,7 +288,7 @@ void PLDMInterface::receive(IO& /*io*/, int fd, uint32_t revents)
         responseMsg = nullptr;
     }
 
-    cleanupCmd();
+    cancelCmd();
 
     // Can't use this instance ID anymore.
     _instanceID = std::nullopt;
@@ -331,18 +331,12 @@ void PLDMInterface::receiveTimerExpired()
 
     // Cleanup, but keep the instance ID because the host didn't
     // respond so we can still use it.
-    cleanupCmd();
+    cancelCmd();
 
     callResponseFunc(ResponseStatus::failure);
 }
 
 void PLDMInterface::cancelCmd()
-{
-    _instanceID = std::nullopt;
-    cleanupCmd();
-}
-
-void PLDMInterface::cleanupCmd()
 {
     _inProgress = false;
     _source.reset();
