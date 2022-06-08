@@ -1110,3 +1110,16 @@ TEST_F(ManagerTest, TestTerminateBitWithPELSevCriticalSysTerminate)
     auto& hexwords = pel.primarySRC().value()->hexwordData();
     EXPECT_EQ(hexwords[3] & 0x20000000, 0x20000000);
 }
+
+TEST_F(ManagerTest, TestSanitizeFieldforDBus)
+{
+    std::string base{"(test0!}\n\t ~"};
+    auto string = base;
+    string += char{' ' - 1};
+    string += char{'~' + 1};
+    string += char{0};
+    string += char{static_cast<char>(0xFF)};
+
+    // convert the last four chars to spaces
+    EXPECT_EQ(Manager::sanitizeFieldForDBus(string), base + "    ");
+}
