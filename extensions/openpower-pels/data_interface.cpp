@@ -44,6 +44,7 @@ constexpr auto ledGroupManager = "xyz.openbmc_project.LED.GroupManager";
 constexpr auto logSetting = "xyz.openbmc_project.Settings";
 constexpr auto hwIsolation = "org.open_power.HardwareIsolation";
 constexpr auto bootRawProgress = "xyz.openbmc_project.State.Boot.Raw";
+constexpr auto biosConfigMgr = "xyz.openbmc_project.BIOSConfigManager";
 } // namespace service_name
 
 namespace object_path
@@ -64,6 +65,7 @@ constexpr auto vpdManager = "/com/ibm/VPD/Manager";
 constexpr auto logSetting = "/xyz/openbmc_project/logging/settings";
 constexpr auto hwIsolation = "/xyz/openbmc_project/hardware_isolation";
 constexpr auto bootRawSetting = "/xyz/openbmc_project/state/boot/raw0";
+constexpr auto biosConfigMgr = "/xyz/openbmc_project/bios_config/manager";
 } // namespace object_path
 
 namespace interface
@@ -96,6 +98,7 @@ constexpr auto hwIsolationCreate = "org.open_power.HardwareIsolation.Create";
 constexpr auto bootRawProgress = "xyz.openbmc_project.State.Boot.Raw";
 constexpr auto hwIsolationEntry = "xyz.openbmc_project.HardwareIsolation.Entry";
 constexpr auto association = "xyz.openbmc_project.Association";
+constexpr auto biosConfigMgr = "xyz.openbmc_project.BIOSConfig.Manager";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
@@ -187,6 +190,26 @@ DataInterface::DataInterface(sdbusplus::bus::bus& bus) : _bus(bus)
         bus, object_path::hostState, interface::hostState, "CurrentHostState",
         *this, [this](const auto& value) {
             this->_hostState = std::get<std::string>(value);
+        }));
+
+    // Watch the BaseBIOSTable property for the hmc managed attribute
+    _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
+        bus, object_path::biosConfigMgr, interface::biosConfigMgr,
+        "BaseBIOSTable", service_name::biosConfigMgr, *this,
+        [this](const auto& value) {
+            const auto& attributes = std::get<BiosAttributes>(value);
+
+            auto it = attributes.find("pvm_hmc_managed");
+            if (it != attributes.end())
+            {
+                const auto& currentValVariant = std::get<5>(it->second);
+                auto currentVal = std::get_if<std::string>(&currentValVariant);
+                if (currentVal)
+                {
+                    this->_hmcManaged =
+                        (*currentVal == "Enabled") ? true : false;
+                }
+            }
         }));
 }
 
