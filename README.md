@@ -221,16 +221,16 @@ The guidelines are:
    others can know about it and use it in the future.  This can be done after
    the fact.
 
-[xyz.openbmc_project.Logging.Entry]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/Logging/Entry.interface.yaml
-[xyz.openbmc_project.Association.Definitions]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/Association/Definitions.interface.yaml
+[xyz.openbmc_project.Logging.Entry]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Logging/Entry.interface.yaml
+[xyz.openbmc_project.Association.Definitions]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Association/Definitions.interface.yaml
 [associations-doc]: https://github.com/openbmc/docs/blob/master/architecture/object-mapper.md#associations
-[callout-doc]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/Common/Callout/README.md
-[xyz.openbmc_project.Object.Delete]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/Object/Delete.interface.yaml
-[xyz.openbmc_project.Software.Version]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/Software/Version.errors.yaml
+[callout-doc]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Common/Callout/README.md
+[xyz.openbmc_project.Object.Delete]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Object/Delete.interface.yaml
+[xyz.openbmc_project.Software.Version]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Software/Version.errors.yaml
 [elog-errors.hpp]: https://github.com/openbmc/phosphor-logging/blob/master/phosphor-logging/elog.hpp
 [openpower-occ-control]: https://github.com/openbmc/openpower-occ-control
 [led-link]: https://github.com/openbmc/openbmc/tree/master/meta-phosphor/recipes-phosphor/leds
-[log-create-link]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/Logging/Create.interface.yaml
+[log-create-link]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Logging/Create.interface.yaml
 
 ## Adding application specific error YAML
 * This document captures steps for adding application specific error YAML files
