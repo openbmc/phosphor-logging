@@ -55,9 +55,8 @@ HostNotifier::HostNotifier(Repository& repo, DataInterfaceBase& dataIface,
 
     // Subscribe to be told about host state changes.
     _dataIface.subscribeToHostStateChange(
-        subscriptionName,
-        std::bind(std::mem_fun(&HostNotifier::hostStateChange), this,
-                  std::placeholders::_1));
+        subscriptionName, std::bind(std::mem_fn(&HostNotifier::hostStateChange),
+                                    this, std::placeholders::_1));
 
     // Set the function to call when the async reponse is received.
     _hostIface->setResponseFunction(
