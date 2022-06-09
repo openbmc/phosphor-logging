@@ -16,6 +16,63 @@
       "message": "dhru",
       "revId": "d7d864a800e4cbe8fa701c5443c60b052266cda4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7d715d8_2e632840",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 1326,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2022-06-09T14:41:04Z",
+      "side": 1,
+      "message": "component ID 3500 is used SBE specific errors. please use 3000  phal errors.,",
+      "revId": "d7d864a800e4cbe8fa701c5443c60b052266cda4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "315f87ec_439c7d11",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 1337,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2022-06-09T14:41:04Z",
+      "side": 1,
+      "message": "Error is logged as unrecoverable , and callout prity is medium , logically seems to be not correct. Matt can comment on this.\nIf this error is used only for MPIPL function software related error , then you can make this high priority. Or incase you want to make genarl purpose , handling priority here is going to be issue.",
+      "revId": "d7d864a800e4cbe8fa701c5443c60b052266cda4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46586297_a3a90898",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 1347,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2022-06-09T14:41:04Z",
+      "side": 1,
+      "message": "This error is used for Sofware related or general purpose?  Please provide more details.",
+      "range": {
+        "startLine": 1347,
+        "startChar": 30,
+        "endLine": 1347,
+        "endChar": 71
+      },
+      "revId": "d7d864a800e4cbe8fa701c5443c60b052266cda4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
