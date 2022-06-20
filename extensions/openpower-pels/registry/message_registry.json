@@ -4403,14 +4403,21 @@
                 }
             },
 
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
             "Documentation": {
                 "Description": "GPIO line error",
                 "Message": "GPIO line couldn't be found or read.",
                 "Notes": [
-                    "The BMC could not access a GPIO line. This generally means that the",
-                    " hardware had issues toggling the line and/or the device driver has",
-                    " not exposed the GPIO line to userspace due to underlying I2C issues.",
-                    " The I2C path will be called out."
+                    "The BMC could not access a GPIO line. This can be a hardware issue",
+                    " or driver issue. Since a hardware or a software issue cannot be",
+                    " differentiated, the BMC code will be called out."
                 ]
             }
         },
@@ -4443,6 +4450,30 @@
                     "mismatch in cache data and hardware data.",
                     "The record and keyword causing the failure is captured in",
                     "additional data."
+                ]
+            }
+        },
+
+        {
+            "Name": "com.ibm.VPD.Error.RequiredFRUMissing",
+            "Subsystem": "cec_vpd",
+            "ComponentID": "0x4000",
+
+            "SRC": {
+                "ReasonCode": "0x4009",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation": {
+                "Description": "Essential FRU check.",
+                "Message": "Essential FRU check failed",
+                "Notes": [
+                    "This error occurs when VPD manager service detects any",
+                    "missing essential FRU. These are FRUs which are required",
+                    "to be present in the system at the time of power on.",
+                    "The inventory path is captured in additional data."
                 ]
             }
         },
