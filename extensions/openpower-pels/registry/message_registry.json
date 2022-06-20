@@ -4427,6 +4427,30 @@
                 }
             },
 
+            "Documentation": {
+                "Description": "System VPD restore failed",
+                "Message": "A system VPD restoration error occurred.",
+                "Notes": [
+                    "This error occurs when restoring of system VPD fails due to",
+                    "mismatch in cache data and hardware data.",
+                    "The record and keyword causing the failure is captured in",
+                    "additional data."
+                ]
+            }
+        },
+
+        {
+            "Name": "com.ibm.VPD.Error.RequiredFRUMissing",
+            "Subsystem": "cec_vpd",
+            "ComponentID": "0x4000",
+
+            "SRC": {
+                "ReasonCode": "0x4009",
+                "Words6To9":
+                {
+                }
+            },
+
             "Callouts": [
                 {
                     "CalloutList": [
@@ -4436,13 +4460,14 @@
             ],
 
             "Documentation": {
-                "Description": "System VPD restore failed",
-                "Message": "A system VPD restoration error occurred.",
+                "Description": "Essential fru check.",
+                "Message": "Essential fru check failed",
                 "Notes": [
-                    "This error occurs when restoring of system VPD fails due to",
-                    "mismatch in cache data and hardware data.",
-                    "The record and keyword causing the failure is captured in",
-                    "additional data."
+                    "This error occurs when VPD manager service detects any",
+                    "missing essential fru. These are frus which are required",
+                    "to be present in the system at the time of power on."
+                    "Inventory path and location code for the FRU will be",
+                    "captured in additional data."
                 ]
             }
         },
