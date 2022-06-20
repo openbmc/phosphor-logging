@@ -4448,6 +4448,42 @@
         },
 
         {
+            "Name": "com.ibm.VPD.Error.RequiredFRUMissing",
+            "Subsystem": "cec_vpd",
+            "ComponentID": "0x4000",
+
+            "SRC": {
+                "ReasonCode": "0x4009",
+                "Words6To9":
+                {
+                }
+            },
+
+	    "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "UseInventoryLocCode": true
+                        }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "Essential fru check.",
+                "Message": "Essential fru check failed",
+                "Notes": [
+                    "This error occurs when VPD manager service detects any",
+                    "missing essential fru. These are frus which are required",
+                    "to be present in the system at the time of power on.",
+                    "The location code in this callout is obtained from ",
+                    "the passed in CALLOUT_INVENTORY_PATH value."
+                ]
+            }
+        },
+
+        {
             "Name": "com.ibm.Panel.Error.InputDevPathFailure",
             "Subsystem": "cec_op_panel",
             "ComponentID": "0x5000",
