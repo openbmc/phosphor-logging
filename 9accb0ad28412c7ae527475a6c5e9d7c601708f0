@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bebcf5b_b4dbfa52",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4450,
+      "author": {
+        "id": 1000522
+      },
+      "writtenOn": "2022-06-20T12:26:03Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "de6f187d_6054cc42",
+      "revId": "9accb0ad28412c7ae527475a6c5e9d7c601708f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ff8aeb7_b0bb9644",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-06-20T09:57:16Z",
       "side": 1,
       "message": "Yes, an essential FRU is Required :) Please change the name: How about RequiredFRUMissing ?",
+      "range": {
+        "startLine": 4451,
+        "startChar": 39,
+        "endLine": 4451,
+        "endChar": 59
+      },
+      "revId": "9accb0ad28412c7ae527475a6c5e9d7c601708f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3815eb8e_4fe9cde1",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4451,
+      "author": {
+        "id": 1000522
+      },
+      "writtenOn": "2022-06-20T12:26:03Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0ff8aeb7_b0bb9644",
       "range": {
         "startLine": 4451,
         "startChar": 39,
@@ -66,6 +108,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1169025f_a0a44cfd",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4465,
+      "author": {
+        "id": 1000522
+      },
+      "writtenOn": "2022-06-20T12:26:03Z",
+      "side": 1,
+      "message": "No idea, but last time while adding systemVPDMismatch there was a comment from matt and we decided to add callout to bmc code till we have some understanding on adding procedures.\nSO i followed that.\n\nhttps://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/53133/3..7/extensions/openpower-pels/registry/message_registry.json#b3996",
+      "parentUuid": "bd1351c7_6fcf184f",
+      "range": {
+        "startLine": 4465,
+        "startChar": 60,
+        "endLine": 4465,
+        "endChar": 68
+      },
+      "revId": "9accb0ad28412c7ae527475a6c5e9d7c601708f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eb37f321_a22f4035",
         "filename": "extensions/openpower-pels/registry/message_registry.json",
         "patchSetId": 1
@@ -77,6 +143,30 @@
       "writtenOn": "2022-06-20T09:57:16Z",
       "side": 1,
       "message": "We should callout the missing FRU by location code. However, we just discovered that we cannot callout FRUs by path from vpd-manager since that indices a D-Bus loop (PEL code calls back into vpd-manager).\n\nWe should add the location of the missing FRU as a user data to this log instead.",
+      "range": {
+        "startLine": 4474,
+        "startChar": 0,
+        "endLine": 4476,
+        "endChar": 60
+      },
+      "revId": "9accb0ad28412c7ae527475a6c5e9d7c601708f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18ad726b_daf01b38",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4476,
+      "author": {
+        "id": 1000522
+      },
+      "writtenOn": "2022-06-20T12:26:03Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "eb37f321_a22f4035",
       "range": {
         "startLine": 4474,
         "startChar": 0,
