@@ -340,13 +340,15 @@
         "docDescription":
         {
             "description": "This is a higher level description of the error.  It is required by the Redfish schema to generate a Redfish message entry, but is not used in Redfish or PEL output.",
-            "type": "string"
+            "type": "string",
+            "minLength": 8
         },
 
         "docMessage":
         {
             "description": "The error message.  This will show up in parsed PELs, and in the Redfish event logs.  It can contain placeholders for numeric values using %1, %2, etc, that come from the SRC words 6-9 as defined by the MessageArgSources property.",
             "type": "string",
+            "minLength": 8,
             "examples": [
                 {"Message": "The code update from level %1 to %2 failed" }
             ]
