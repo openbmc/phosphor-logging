@@ -54,7 +54,7 @@ SbeFFDC::SbeFFDC(const AdditionalData& aData, const PelFFDC& files)
     }
     try
     {
-        procPos = std::stoi((src6.value()).substr(0, 4));
+        procPos = (std::stoi(src6.value()) & 0xFFFF0000) >> 16;
     }
     catch (const std::exception& err)
     {
