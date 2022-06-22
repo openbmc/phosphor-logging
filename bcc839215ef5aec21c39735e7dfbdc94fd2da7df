@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "68df2781_ae2c1a8f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000522
+      },
+      "writtenOn": "2022-06-22T15:27:23Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5997d354_0a35aeca",
+      "revId": "bcc839215ef5aec21c39735e7dfbdc94fd2da7df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "64cac979_eb93605f",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-06-22T12:54:21Z",
       "side": 1,
       "message": "Please add another line here that says - since we cannot differentiate between a hardware of a software issue, the BMC code will be called out.",
+      "range": {
+        "startLine": 4418,
+        "startChar": 0,
+        "endLine": 4419,
+        "endChar": 39
+      },
+      "revId": "bcc839215ef5aec21c39735e7dfbdc94fd2da7df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f526045c_86529458",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 12
+      },
+      "lineNbr": 4419,
+      "author": {
+        "id": 1000522
+      },
+      "writtenOn": "2022-06-22T15:27:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64cac979_eb93605f",
       "range": {
         "startLine": 4418,
         "startChar": 0,
