@@ -56,6 +56,24 @@
       "message": "Based on PEL documentation\n https://github.com/openbmc/phosphor-logging/blob/master/extensions/openpower-pels/README.md#self-boot-enginesbe-first-failure-data-captureffdc-support\n\n\"SRC6\" Keyword in the additional data section should be populated with below.\n* [0:15] chip position (hex)\n* [16:23] command class (hex)\n* [24:31] command (hex)\n\nNeed documentation updates if we are following this direction. Please wait for Matt’s Input on the general direction followed in the PEL SRC handling. Also need to confirm the existing users\u0027s are not  impacted ( occ, hw-diags, watchdog, OpenPower-proc-control) with this new change.",
       "revId": "60d41bd3b5a4e3f306e35bffb1fb9ef6a2e64e8c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e32b7ca_c86aea8d",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-06-23T13:45:19Z",
+      "side": 1,
+      "message": "With all the users I could find that populate SRC6, it looks like they all use std::to_string() so I don\u0027t think any other changes are needed, unless I missed something.\n\nI would agree that a README update is necessary, either that or we change all the callers to fill in the value as a hex string.",
+      "parentUuid": "7f09fa60_11f60bc3",
+      "revId": "60d41bd3b5a4e3f306e35bffb1fb9ef6a2e64e8c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
