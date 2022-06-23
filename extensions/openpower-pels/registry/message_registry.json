@@ -667,12 +667,12 @@
         {
             "Name": "org.open_power.OCC.Firmware.PresenceMismatch",
             "Subsystem": "bmc_firmware",
-            "ComponentID": "0x3200",
+            "ComponentID": "0x2600",
             "Severity": "predictive",
 
             "SRC":
             {
-                "ReasonCode": "0x3201",
+                "ReasonCode": "0x2681",
                 "Words6To9":
                 {
                 }
@@ -700,12 +700,12 @@
         {
             "Name": "org.open_power.OCC.Device.SafeState",
             "Subsystem": "processor_chip",
-            "ComponentID": "0x3200",
+            "ComponentID": "0x2600",
             "Severity": "non_error",
 
             "SRC":
             {
-                "ReasonCode": "0x3202",
+                "ReasonCode": "0x2682",
                 "Words6To9":
                 {
                 }
@@ -725,12 +725,12 @@
         {
             "Name": "org.open_power.OCC.Device.ReadFailure",
             "Subsystem": "cec_chip_iface",
-            "ComponentID": "0x3200",
+            "ComponentID": "0x2600",
             "Severity": "predictive",
 
             "SRC":
             {
-                "ReasonCode": "0x3203",
+                "ReasonCode": "0x2683",
                 "Words6To9":
                 {
                 }
