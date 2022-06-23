@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dc6a847_37166b91",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2022-06-23T05:53:31Z",
+      "side": 1,
+      "message": "start with \"PEL\"",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 4
+      },
+      "revId": "60d41bd3b5a4e3f306e35bffb1fb9ef6a2e64e8c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80699b80_2eaf1214",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2022-06-23T05:53:31Z",
+      "side": 1,
+      "message": "Add test details.",
+      "revId": "60d41bd3b5a4e3f306e35bffb1fb9ef6a2e64e8c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f09fa60_11f60bc3",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2022-06-23T05:53:31Z",
+      "side": 1,
+      "message": "Based on PEL documentation\n https://github.com/openbmc/phosphor-logging/blob/master/extensions/openpower-pels/README.md#self-boot-enginesbe-first-failure-data-captureffdc-support\n\n\"SRC6\" Keyword in the additional data section should be populated with below.\n* [0:15] chip position (hex)\n* [16:23] command class (hex)\n* [24:31] command (hex)\n\nNeed documentation updates if we are following this direction. Please wait for Matt’s Input on the general direction followed in the PEL SRC handling. Also need to confirm the existing users\u0027s are not  impacted ( occ, hw-diags, watchdog, OpenPower-proc-control) with this new change.",
+      "revId": "60d41bd3b5a4e3f306e35bffb1fb9ef6a2e64e8c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
