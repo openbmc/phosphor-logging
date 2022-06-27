@@ -1296,6 +1296,7 @@
             "Name": "org.open_power.Processor.Error.SbeBootFailure",
             "Subsystem": "processor_chip",
             "ComponentID": "0x3500",
+            "ActionFlags": [ "service_action", "report", "call_home" ],
 
             "SRC":
             {
