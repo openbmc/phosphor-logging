@@ -662,6 +662,31 @@
                     "Software error occured during memory preserving reboot"
                 ]
             }
+        }
+,
+        {
+            "Name": "org.open_power.PHAL.Error.SecondaryClock",
+            "Subsystem": "cec_hardware",
+            "ComponentID": "0x3000",
+            "Severity": "non_error",
+            "ActionFlags": [ "service_action", "report", "call_home" ],
+
+            "SRC":
+            {
+                "ReasonCode": "0x3009",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "Error during Secondary clock initilisation",
+                "Message": "Error during Secondary clock initilisation",
+                "Notes": [
+                    "The CalloutList should use the clock symbolic FRU with position details."
+                ]
+            }
         },
 
         {
