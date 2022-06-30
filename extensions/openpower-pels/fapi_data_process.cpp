@@ -235,9 +235,78 @@ static void addPlanarCallout(json& jsonCalloutDataList,
     jsonCalloutDataList.emplace_back(jsonCalloutData);
 }
 
+/**
+ * @brief processClockInfoErrorHelper
+ *
+ * Creates informational PEL for spare clock failure
+ *
+ * @param[in]  ffdc FFDC data capturd by the HWP
+ * @param[out] pelJSONFmtCalloutDataList used to store collected callout
+ *            data into pel expected format
+ * @param[out] ffdcUserData used to store additional ffdc user data to
+ *              provided by the SBE FFDC packet.
+ *
+ * @return NULL
+ *
+ **/
+void processClockInfoErrorHelper(FFDC& ffdc, json& pelJSONFmtCalloutDataList,
+                                 FFDCData& ffdcUserData)
+{
+    log<level::INFO>(
+        fmt::format("processClockInfoErrorHelper: FFDC Message[{}]",
+                    ffdc.message)
+            .c_str());
+
+    // Adding hardware procedures return code details
+    ffdcUserData.emplace_back("HWP_RC", ffdc.hwp_errorinfo.rc);
+    ffdcUserData.emplace_back("HWP_RC_DESC", ffdc.hwp_errorinfo.rc_desc);
+
+    // Adding hardware procedures required ffdc data for debug
+    for_each(ffdc.hwp_errorinfo.ffdcs_data.begin(),
+             ffdc.hwp_errorinfo.ffdcs_data.end(),
+             [&ffdcUserData](std::pair<std::string, std::string>& ele) -> void {
+                 std::string keyWithPrefix("HWP_FFDC_");
+                 keyWithPrefix.append(ele.first);
+
+                 ffdcUserData.emplace_back(keyWithPrefix, ele.second);
+             });
+    // get clock position information
+    auto clk_pos = 0xFF; // Invalid position.
+    for (auto& hwCallout : ffdc.hwp_errorinfo.hwcallouts)
+    {
+        if ((hwCallout.hwid == "PROC_REF_CLOCK") ||
+            (hwCallout.hwid == "PCI_REF_CLOCK"))
+        {
+            clk_pos = hwCallout.clkPos;
+            break;
+        }
+    }
+    // Adding CDG (Only deconfigure) targets details
+    for_each(ffdc.hwp_errorinfo.cdg_targets.begin(),
+             ffdc.hwp_errorinfo.cdg_targets.end(),
+             [&ffdcUserData, &pelJSONFmtCalloutDataList,
+              clk_pos](const CDG_Target& cdg_tgt) -> void {
+                 json jsonCalloutData;
+                 std::string pelPriority = "H";
+                 jsonCalloutData["Priority"] = pelPriority; // Not used
+                 jsonCalloutData["SymbolicFRU"] =
+                     "REFCLK" + std::to_string(clk_pos);
+                 jsonCalloutData["Deconfigured"] = cdg_tgt.deconfigure;
+                 jsonCalloutData["EntityPath"] = cdg_tgt.target_entity_path;
+                 pelJSONFmtCalloutDataList.emplace_back(jsonCalloutData);
+             });
+}
+
 void convertFAPItoPELformat(FFDC& ffdc, json& pelJSONFmtCalloutDataList,
                             FFDCData& ffdcUserData)
 {
+    if (ffdc.ffdc_type == FFDC_TYPE_SPARE_CLOCK_INFO)
+    {
+        processClockInfoErrorHelper(ffdc, pelJSONFmtCalloutDataList,
+                                    ffdcUserData);
+        return;
+    }
+
     if (ffdc.ffdc_type == FFDC_TYPE_HWP)
     {
         // Adding hardware procedures return code details
