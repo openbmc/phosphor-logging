@@ -79,6 +79,12 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
         const auto& sbeFFDCFiles = sbeFFDCPtr->getSbeFFDC();
         ffdcFiles.insert(ffdcFiles.end(), sbeFFDCFiles.begin(),
                          sbeFFDCFiles.end());
+        // update pel priority to informational for spare clock failures
+        if (sbeFFDCPtr->getFfdcType() == FFDC_TYPE_SPARE_CLOCK_INFO)
+        {
+            log<level::INFO>("Changing PELseverity to informational");
+            severity = phosphor::logging::Entry::Level::Informational;
+        }
     }
 #endif
 
