@@ -79,6 +79,12 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
         const auto& sbeFFDCFiles = sbeFFDCPtr->getSbeFFDC();
         ffdcFiles.insert(ffdcFiles.end(), sbeFFDCFiles.begin(),
                          sbeFFDCFiles.end());
+
+        // update pel priority for spare clock failures
+        if (auto customSeverity = sbeFFDCPtr->getSeverity())
+        {
+            severity = customSeverity.value();
+        }
     }
 #endif
 

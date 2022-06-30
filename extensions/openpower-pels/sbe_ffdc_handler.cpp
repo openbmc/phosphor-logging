@@ -39,7 +39,8 @@ namespace sbe
 
 using namespace phosphor::logging;
 
-SbeFFDC::SbeFFDC(const AdditionalData& aData, const PelFFDC& files)
+SbeFFDC::SbeFFDC(const AdditionalData& aData, const PelFFDC& files) :
+    ffdcType(FFDC_TYPE_NONE)
 {
     log<level::INFO>("SBE FFDC processing requested");
 
@@ -192,6 +193,10 @@ void SbeFFDC::process(const sbeFfdcPacketType& ffdcPkt)
         return;
     }
 
+    // update FFDC type class membeir for hwp specific packet
+    // Assumption SBE FFDC contains only one hwp FFDC packet.
+    ffdcType = ffdc.ffdc_type;
+
     // To store callouts details in json format as per pel expectation.
     json pelJSONFmtCalloutDataList;
     pelJSONFmtCalloutDataList = json::array();
@@ -232,6 +237,17 @@ void SbeFFDC::process(const sbeFfdcPacketType& ffdcPkt)
     ffdcFiles.push_back(pdf);
 
     paths.push_back(pelDataFile.getPath());
+}
+
+std::optional<LogSeverity> SbeFFDC::getSeverity()
+{
+    if (ffdcType == FFDC_TYPE_SPARE_CLOCK_INFO)
+    {
+        log<level::INFO>(
+            "Found spare clock error, changing severity to informational");
+        return LogSeverity::Informational;
+    }
+    return std::nullopt;
 }
 
 } // namespace sbe
