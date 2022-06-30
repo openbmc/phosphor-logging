@@ -39,7 +39,8 @@ namespace sbe
 
 using namespace phosphor::logging;
 
-SbeFFDC::SbeFFDC(const AdditionalData& aData, const PelFFDC& files)
+SbeFFDC::SbeFFDC(const AdditionalData& aData, const PelFFDC& files) :
+    ffdcType(FFDC_TYPE_NONE)
 {
     log<level::INFO>("SBE FFDC processing requested");
 
@@ -191,6 +192,10 @@ void SbeFFDC::process(const sbeFfdcPacketType& ffdcPkt)
         log<level::ERR>("libekb_get_sbe_ffdc failed, skipping ffdc processing");
         return;
     }
+
+    // update FFDC type class membeir for hwp specific packet
+    // Assumption SBE FFDC contains only one hwp FFDC packet.
+    ffdcType = ffdc.ffdc_type;
 
     // To store callouts details in json format as per pel expectation.
     json pelJSONFmtCalloutDataList;

@@ -128,6 +128,14 @@ class SbeFFDC
         return ffdcFiles;
     }
 
+    /**
+     * @brief Helper function to return FFDC type
+     */
+    FFDC_TYPE getFfdcType()
+    {
+        return ffdcType;
+    }
+
   private:
     /**
      * @brief Helper function to parse SBE FFDC file.
@@ -174,6 +182,11 @@ class SbeFFDC
      * @brief Processor position associated to SBE FFDC
      */
     uint32_t procPos;
+
+    /**
+     * @brief Used to get type of ffdc
+     */
+    FFDC_TYPE ffdcType;
 };
 
 } // namespace sbe
