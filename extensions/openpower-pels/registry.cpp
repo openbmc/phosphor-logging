@@ -698,10 +698,10 @@ std::optional<Entry> Registry::lookup(const std::string& name, LookupType type,
 
             return entry;
         }
-        catch (const std::exception& e)
+        catch (const std::exception& ex)
         {
             log<level::ERR>("Found invalid message registry field",
-                            entry("ERROR=%s", e.what()));
+                            entry("ERROR=%s", ex.what()));
         }
     }
 

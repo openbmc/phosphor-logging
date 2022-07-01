@@ -80,7 +80,7 @@ class PEL
      *
      * @param[in] data - The PEL data
      */
-    PEL(std::vector<uint8_t>& data);
+    explicit PEL(std::vector<uint8_t>& data);
 
     /**
      * @brief Constructor

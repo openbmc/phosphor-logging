@@ -387,14 +387,14 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
     auto src = pel->primarySRC();
     if (src)
     {
-        auto msg =
+        auto m =
             fmt::format("Created PEL {:#x} (BMC ID {}) with SRC {}", pel->id(),
                         pel->obmcLogID(), (*src)->asciiString());
-        while (msg.back() == ' ')
+        while (m.back() == ' ')
         {
-            msg.pop_back();
+            m.pop_back();
         }
-        log<level::INFO>(msg.c_str());
+        log<level::INFO>(m.c_str());
     }
 
     // Check for severity 0x51 and update boot progress SRC
@@ -648,8 +648,6 @@ std::tuple<uint32_t, uint32_t> Manager::createPELWithFFDCFiles(
 
 std::string Manager::getPELJSON(uint32_t obmcLogID)
 {
-    Repository::LogID id{Repository::LogID::Obmc(obmcLogID)};
-
     // Throws InvalidArgument if not found
     auto pelID = getPELIdFromBMCLogId(obmcLogID);
 

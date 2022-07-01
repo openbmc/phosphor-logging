@@ -723,7 +723,7 @@ std::vector<bool>
                     break;
                 }
             }
-            itDumpStatus++;
+            ++itDumpStatus;
         }
         itDumpStatus = result.begin();
     }
@@ -814,17 +814,18 @@ std::vector<uint32_t> DataInterface::getLogIDWithHwIsolation() const
                 // If the entry isn't resolved
                 if (!status)
                 {
-                    auto service = getService(path, interface::association);
-                    if (!service.empty())
+                    auto assocService =
+                        getService(path, interface::association);
+                    if (!assocService.empty())
                     {
-                        DBusValue value;
+                        DBusValue endpoints;
 
                         // Read Endpoints property
-                        getProperty(service, path, interface::association,
-                                    "endpoints", value);
+                        getProperty(assocService, path, interface::association,
+                                    "endpoints", endpoints);
 
                         auto logPath =
-                            std::get<std::vector<std::string>>(value);
+                            std::get<std::vector<std::string>>(endpoints);
                         if (!logPath.empty())
                         {
                             // Get OpenBMC event log Id

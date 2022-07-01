@@ -668,16 +668,16 @@ std::vector<uint32_t>
 
     if (!obmcLogIDs.empty())
     {
-        std::string msg = "Number of PELs removed to save space: " +
-                          std::to_string(obmcLogIDs.size());
-        log<level::INFO>(msg.c_str());
+        std::string m = "Number of PELs removed to save space: " +
+                        std::to_string(obmcLogIDs.size());
+        log<level::INFO>(m.c_str());
     }
 
     return obmcLogIDs;
 }
 
-void Repository::removePELs(IsOverLimitFunc& isOverLimit,
-                            IsPELTypeFunc& isPELType,
+void Repository::removePELs(const IsOverLimitFunc& isOverLimit,
+                            const IsPELTypeFunc& isPELType,
                             const std::vector<uint32_t>& idsWithHwIsoEntry,
                             std::vector<uint32_t>& removedBMCLogIDs)
 {
