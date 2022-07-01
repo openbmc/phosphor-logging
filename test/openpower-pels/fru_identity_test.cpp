@@ -89,7 +89,7 @@ TEST(FRUIdentityTest, BadDataTest)
     EXPECT_THROW(FRUIdentity fru{stream}, std::out_of_range);
 }
 
-void testHWCallout(const std::string& pn, const std::string ccin,
+void testHWCallout(const std::string& pn, const std::string& ccin,
                    const std::string& sn, const std::string& expectedPN,
                    const std::string& expectedCCIN,
                    const std::string& expectedSN)

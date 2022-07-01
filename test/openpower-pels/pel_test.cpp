@@ -259,14 +259,12 @@ TEST_F(PELTest, CreateTooBigADTest)
     EXPECT_EQ(pel.size(), 16384);
 
     // Make sure that there are still 2 UD sections.
-    size_t udCount = 0;
-    for (const auto& section : pel.optionalSections())
-    {
-        if (section->header().id == static_cast<uint16_t>(SectionID::userData))
-        {
-            udCount++;
-        }
-    }
+    const auto& optSections = pel.optionalSections();
+    auto udCount = std::count_if(
+        optSections.begin(), optSections.end(), [](const auto& section) {
+            return section->header().id ==
+                   static_cast<uint16_t>(SectionID::userData);
+        });
 
     EXPECT_EQ(udCount, 2); // AD section and sysInfo section
 }

@@ -103,12 +103,13 @@ UserHeader::UserHeader(const message::Entry& entry,
     {
         bool mfgSevStatus = false;
         bool mfgActionFlagStatus = false;
-        std::optional<uint8_t> sev = std::nullopt;
-        uint16_t val = 0;
 
         // Get the mfg severity & action flags
         if (entry.mfgSeverity || entry.mfgActionFlags)
         {
+            std::optional<uint8_t> sev = std::nullopt;
+            uint16_t val = 0;
+
             if (entry.mfgSeverity)
             {
                 // Find the mf severity possibly dependent on the system type.
@@ -161,7 +162,6 @@ UserHeader::UserHeader(const message::Entry& entry,
                 {
                     // Either someone  screwed up the message registry
                     // or getSystemNames failed.
-                    std::string types;
                     log<level::ERR>(
                         "Failed finding the severity in the message registry",
                         phosphor::logging::entry("ERROR=%s",

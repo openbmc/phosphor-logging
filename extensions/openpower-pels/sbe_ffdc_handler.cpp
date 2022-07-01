@@ -234,6 +234,7 @@ void SbeFFDC::process(const sbeFfdcPacketType& ffdcPkt)
     pdf.format = openpower::pels::UserDataFormat::text;
     pdf.version = 0x01;
     pdf.fd = pelDataFile.getFd();
+    pdf.subType = 0;
     ffdcFiles.push_back(pdf);
 
     paths.push_back(pelDataFile.getPath());
