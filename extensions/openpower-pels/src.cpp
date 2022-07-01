@@ -126,8 +126,7 @@ std::string prettyJSON(const orderedJSON& json)
 std::optional<std::string> getPythonJSON(std::vector<std::string>& hexwords,
                                          uint8_t creatorID)
 {
-    PyObject *pName, *pModule, *pDict, *pFunc, *pArgs, *pResult, *pBytes,
-        *eType, *eValue, *eTraceback, *pKey;
+    PyObject *pName, *pModule, *eType, *eValue, *eTraceback;
     std::string pErrStr;
     std::string module = getNumberString("%c", tolower(creatorID)) + "src";
     pName = PyUnicode_FromString(
@@ -162,9 +161,9 @@ std::optional<std::string> getPythonJSON(std::vector<std::string>& hexwords,
         std::unique_ptr<PyObject, decltype(&pyDecRef)> modPtr(pModule,
                                                               &pyDecRef);
         std::string funcToCall = "parseSRCToJson";
-        pKey = PyUnicode_FromString(funcToCall.c_str());
+        PyObject* pKey = PyUnicode_FromString(funcToCall.c_str());
         std::unique_ptr<PyObject, decltype(&pyDecRef)> keyPtr(pKey, &pyDecRef);
-        pDict = PyModule_GetDict(pModule);
+        PyObject* pDict = PyModule_GetDict(pModule);
         Py_INCREF(pDict);
         if (!PyDict_Contains(pDict, pKey))
         {
@@ -177,12 +176,12 @@ std::optional<std::string> getPythonJSON(std::vector<std::string>& hexwords,
                 entry("PARSER_MODULE=%s", module.c_str()));
             return std::nullopt;
         }
-        pFunc = PyDict_GetItemString(pDict, funcToCall.c_str());
+        PyObject* pFunc = PyDict_GetItemString(pDict, funcToCall.c_str());
         Py_DECREF(pDict);
         Py_INCREF(pFunc);
         if (PyCallable_Check(pFunc))
         {
-            pArgs = PyTuple_New(9);
+            PyObject* pArgs = PyTuple_New(9);
             std::unique_ptr<PyObject, decltype(&pyDecRef)> argPtr(pArgs,
                                                                   &pyDecRef);
             for (size_t i = 0; i < 9; i++)
@@ -198,13 +197,14 @@ std::optional<std::string> getPythonJSON(std::vector<std::string>& hexwords,
                     PyTuple_SetItem(pArgs, i, Py_BuildValue("s", "00000000"));
                 }
             }
-            pResult = PyObject_CallObject(pFunc, pArgs);
+            PyObject* pResult = PyObject_CallObject(pFunc, pArgs);
             Py_DECREF(pFunc);
             if (pResult)
             {
                 std::unique_ptr<PyObject, decltype(&pyDecRef)> resPtr(
                     pResult, &pyDecRef);
-                pBytes = PyUnicode_AsEncodedString(pResult, "utf-8", "~E~");
+                PyObject* pBytes =
+                    PyUnicode_AsEncodedString(pResult, "utf-8", "~E~");
                 std::unique_ptr<PyObject, decltype(&pyDecRef)> pyBytePtr(
                     pBytes, &pyDecRef);
                 const char* output = PyBytes_AS_STRING(pBytes);

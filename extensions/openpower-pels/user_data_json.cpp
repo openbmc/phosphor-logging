@@ -254,8 +254,7 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
                                          const std::vector<uint8_t>& data,
                                          uint8_t creatorID)
 {
-    PyObject *pName, *pModule, *pDict, *pFunc, *pArgs, *pData, *pResult,
-        *pBytes, *eType, *eValue, *eTraceback, *pKey;
+    PyObject *pName, *pModule, *eType, *eValue, *eTraceback, *pKey;
     std::string pErrStr;
     std::string module = getNumberString("%c", tolower(creatorID)) +
                          getNumberString("%04x", componentID);
@@ -293,7 +292,7 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
         std::string funcToCall = "parseUDToJson";
         pKey = PyUnicode_FromString(funcToCall.c_str());
         std::unique_ptr<PyObject, decltype(&pyDecRef)> keyPtr(pKey, &pyDecRef);
-        pDict = PyModule_GetDict(pModule);
+        PyObject* pDict = PyModule_GetDict(pModule);
         Py_INCREF(pDict);
         if (!PyDict_Contains(pDict, pKey))
         {
@@ -307,30 +306,31 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
                 entry("DATA_LENGTH=%lu\n", data.size()));
             return std::nullopt;
         }
-        pFunc = PyDict_GetItemString(pDict, funcToCall.c_str());
+        PyObject* pFunc = PyDict_GetItemString(pDict, funcToCall.c_str());
         Py_DECREF(pDict);
         Py_INCREF(pFunc);
         if (PyCallable_Check(pFunc))
         {
             auto ud = data.data();
-            pArgs = PyTuple_New(3);
+            PyObject* pArgs = PyTuple_New(3);
             std::unique_ptr<PyObject, decltype(&pyDecRef)> argPtr(pArgs,
                                                                   &pyDecRef);
             PyTuple_SetItem(pArgs, 0,
                             PyLong_FromUnsignedLong((unsigned long)subType));
             PyTuple_SetItem(pArgs, 1,
                             PyLong_FromUnsignedLong((unsigned long)version));
-            pData = PyMemoryView_FromMemory(
+            PyObject* pData = PyMemoryView_FromMemory(
                 reinterpret_cast<char*>(const_cast<unsigned char*>(ud)),
                 data.size(), PyBUF_READ);
             PyTuple_SetItem(pArgs, 2, pData);
-            pResult = PyObject_CallObject(pFunc, pArgs);
+            PyObject* pResult = PyObject_CallObject(pFunc, pArgs);
             Py_DECREF(pFunc);
             if (pResult)
             {
                 std::unique_ptr<PyObject, decltype(&pyDecRef)> resPtr(
                     pResult, &pyDecRef);
-                pBytes = PyUnicode_AsEncodedString(pResult, "utf-8", "~E~");
+                PyObject* pBytes =
+                    PyUnicode_AsEncodedString(pResult, "utf-8", "~E~");
                 std::unique_ptr<PyObject, decltype(&pyDecRef)> pyBytePtr(
                     pBytes, &pyDecRef);
                 const char* output = PyBytes_AS_STRING(pBytes);

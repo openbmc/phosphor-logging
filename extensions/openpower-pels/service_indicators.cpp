@@ -197,7 +197,6 @@ std::vector<std::string> LightPath::getInventoryPaths(
     const std::vector<std::string>& locationCodes) const
 {
     std::vector<std::string> paths;
-    std::string inventoryPath;
 
     for (const auto& locCode : locationCodes)
     {

@@ -659,8 +659,8 @@ TEST_F(RepositoryTest, TestPruneNoAcks)
     // there so we can check they are removed after the prune.
     for (uint32_t i = 1; i < 5; i++)
     {
-        Repository::LogID id{Repository::LogID::Pel{i}};
-        EXPECT_TRUE(repo.getPELAttributes(id));
+        Repository::LogID logID{Repository::LogID::Pel{i}};
+        EXPECT_TRUE(repo.getPELAttributes(logID));
     }
 
     // Prune down to 15%/30%/15%/30% = 90% total
@@ -677,8 +677,8 @@ TEST_F(RepositoryTest, TestPruneNoAcks)
     // each type, were removed.
     for (uint32_t i = 1; i < 5; i++)
     {
-        Repository::LogID id{Repository::LogID::Pel{i}};
-        EXPECT_FALSE(repo.getPELAttributes(id));
+        Repository::LogID logID{Repository::LogID::Pel{i}};
+        EXPECT_FALSE(repo.getPELAttributes(logID));
 
         // Make sure the corresponding OpenBMC event log ID which is
         // 500 + the PEL ID is in the list.
@@ -710,8 +710,8 @@ TEST_F(RepositoryTest, TestPruneInfoOnly)
     // get pruned below we'll know they were removed.
     for (uint32_t i = 1; i <= 20; i++)
     {
-        Repository::LogID id{Repository::LogID::Pel{i}};
-        EXPECT_TRUE(repo.getPELAttributes(id));
+        Repository::LogID logID{Repository::LogID::Pel{i}};
+        EXPECT_TRUE(repo.getPELAttributes(logID));
     }
 
     auto IDs = repo.prune(id);
@@ -728,8 +728,8 @@ TEST_F(RepositoryTest, TestPruneInfoOnly)
     // Can no longer find the oldest 20 PELs.
     for (uint32_t i = 1; i <= 20; i++)
     {
-        Repository::LogID id{Repository::LogID::Pel{i}};
-        EXPECT_FALSE(repo.getPELAttributes(id));
+        Repository::LogID logID{Repository::LogID::Pel{i}};
+        EXPECT_FALSE(repo.getPELAttributes(logID));
         EXPECT_TRUE(std::find(IDs.begin(), IDs.end(), 500 + i) != IDs.end());
     }
 }
@@ -760,11 +760,11 @@ TEST_F(RepositoryTest, TestPruneWithAcks)
         auto idToDelete = pel->obmcLogID();
         repo.add(pel);
 
-        if (0 == i)
+        if (1 == i)
         {
             repo.setPELHMCTransState(pel->id(), TransmissionState::acked);
         }
-        else if (1 == i)
+        else if (2 == i)
         {
             repo.setPELHostTransState(pel->id(), TransmissionState::acked);
         }

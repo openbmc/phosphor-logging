@@ -75,10 +75,11 @@ std::string pelLogDir()
 uint64_t fileNameToTimestamp(const std::string& fileName)
 {
     std::string token = fileName.substr(0, fileName.find("_"));
-    int i = 0;
     uint64_t bcdTime = 0;
     if (token.length() >= 14)
     {
+        int i = 0;
+
         try
         {
             auto tmp = std::stoul(token.substr(i, 2), 0, 16);
@@ -297,9 +298,7 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool critSysTerm,
                        const std::vector<std::string>& plugins, bool hexDump,
                        bool archive)
 {
-    std::size_t found;
     std::string val;
-    char tmpValStr[50];
     std::string listStr;
     char name[51];
     sprintf(name, "/%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X_%.8X",
@@ -410,6 +409,7 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool critSysTerm,
             jsonInsert(listStr, "Subsystem", subsystem, 2);
 
             // commit time
+            char tmpValStr[50];
             sprintf(tmpValStr, "%02X/%02X/%02X%02X %02X:%02X:%02X",
                     pel.privateHeader().commitTimestamp().month,
                     pel.privateHeader().commitTimestamp().day,
@@ -431,7 +431,7 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool critSysTerm,
                            "0x%X", pel.privateHeader().header().componentID),
                        2);
 
-            found = listStr.rfind(",");
+            auto found = listStr.rfind(",");
             if (found != std::string::npos)
             {
                 listStr.replace(found, 1, "");
@@ -484,9 +484,10 @@ void printPELs(bool order, bool hidden, bool includeInfo, bool critSysTerm,
     }
 
     // Sort the pairs based on second time parameter
-    std::sort(PELs.begin(), PELs.end(), [](auto& left, auto& right) {
-        return left.second < right.second;
-    });
+    std::sort(PELs.begin(), PELs.end(),
+              [](const auto& left, const auto& right) {
+                  return left.second < right.second;
+              });
 
     bool foundPEL = false;
 
@@ -557,7 +558,7 @@ void callFunctionOnPEL(const std::string& id, const PELFunc& func,
     {
         std::transform(pelID.begin(), pelID.end(), pelID.begin(), toupper);
 
-        if (pelID.find("0X") == 0)
+        if (pelID.starts_with("0X"))
         {
             pelID.erase(0, 2);
         }
@@ -626,7 +627,7 @@ void deletePEL(const std::string& id)
 
     std::transform(pelID.begin(), pelID.end(), pelID.begin(), toupper);
 
-    if (pelID.find("0X") == 0)
+    if (pelID.starts_with("0X"))
     {
         pelID.erase(0, 2);
     }

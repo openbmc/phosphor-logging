@@ -721,7 +721,7 @@ TEST_F(ManagerTest, TestPruning)
     }
     catch (
         const sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument&
-            e)
+            ex)
     {
         ADD_FAILURE() << "PELs should have all been found";
     }
