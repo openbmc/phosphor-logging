@@ -37,11 +37,11 @@ class journalInterface
 class journalImpl : public journalInterface
 {
   public:
-    void journalSync();
-    int sd_journal_open(sd_journal** j, int k);
+    void journalSync() override;
+    int sd_journal_open(sd_journal** j, int k) override;
     int sd_journal_get_data(sd_journal* j, const char* transactionIdVar,
-                            const void** data, size_t length);
-    void sd_journal_close(sd_journal* j);
+                            const void** data, size_t length) override;
+    void sd_journal_close(sd_journal* j) override;
 };
 
 int journalImpl::sd_journal_open(sd_journal**, int)
