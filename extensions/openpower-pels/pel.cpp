@@ -47,7 +47,6 @@ namespace openpower
 {
 namespace pels
 {
-namespace message = openpower::pels::message;
 namespace pv = openpower::pels::pel_values;
 using namespace phosphor::logging;
 
@@ -179,9 +178,9 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
         addUserDataSection(std::move(ud));
 
         // Also put in the journal for debug
-        for (const auto& [name, data] : debugData)
+        for (const auto& [name, msgs] : debugData)
         {
-            for (const auto& message : data)
+            for (const auto& message : msgs)
             {
                 std::string entry = name + ": " + message;
                 log<level::INFO>(entry.c_str());

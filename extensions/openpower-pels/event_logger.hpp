@@ -55,7 +55,7 @@ class EventLogger
      *
      * @param[in] creator - The function to use to create the event log
      */
-    EventLogger(LogFunction creator) :
+    explicit EventLogger(LogFunction creator) :
         _event(sdeventplus::Event::get_default()), _creator(creator)
     {
     }

@@ -105,10 +105,10 @@ class ExtendedUserData : public Section
     void updateDataSection(const uint8_t subType, const uint16_t componentId,
                            const std::vector<uint8_t>& newData)
     {
-        auto origDataSize = 0;
-
         if (newData.size() >= 4)
         {
+            size_t origDataSize{};
+
             // Update component Id & subtype in section header of ED
             _header.componentID = static_cast<uint16_t>(componentId);
             _header.subType = static_cast<uint8_t>(subType);

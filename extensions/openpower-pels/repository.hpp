@@ -151,7 +151,7 @@ class Repository
      *
      * @param[in] basePath - the base filesystem path for the repository
      */
-    Repository(const std::filesystem::path& basePath) :
+    explicit Repository(const std::filesystem::path& basePath) :
         Repository(basePath, getPELRepoSize(), getMaxNumPELs())
     {
     }
@@ -267,10 +267,7 @@ class Repository
      */
     void subscribeToAdds(const std::string& name, AddCallback func)
     {
-        if (_addSubscriptions.find(name) == _addSubscriptions.end())
-        {
-            _addSubscriptions.emplace(name, func);
-        }
+        _addSubscriptions.emplace(name, func);
     }
 
     /**
@@ -298,10 +295,7 @@ class Repository
      */
     void subscribeToDeletes(const std::string& name, DeleteCallback func)
     {
-        if (_deleteSubscriptions.find(name) == _deleteSubscriptions.end())
-        {
-            _deleteSubscriptions.emplace(name, func);
-        }
+        _deleteSubscriptions.emplace(name, func);
     }
 
     /**
@@ -566,7 +560,8 @@ class Repository
      * @param[out] removedBMCLogIDs - The OpenBMC event log IDs of the
      *                                removed PELs.
      */
-    void removePELs(IsOverLimitFunc& isOverLimit, IsPELTypeFunc& isPELType,
+    void removePELs(const IsOverLimitFunc& isOverLimit,
+                    const IsPELTypeFunc& isPELType,
                     const std::vector<uint32_t>& idsWithHwIsoEntry,
                     std::vector<uint32_t>& removedBMCLogIDs);
     /**

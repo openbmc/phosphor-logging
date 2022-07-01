@@ -43,7 +43,7 @@ char* dumpHex(const void* data, size_t size, size_t indentCount,
  * @param[in] indentCount - Indent count for the line
  */
 void jsonInsert(std::string& jsonStr, const std::string& fieldName,
-                std::string fieldValue, uint8_t indentCount);
+                const std::string& fieldValue, uint8_t indentCount);
 
 /**
  * @brief Inserts key-value array into a JSON string
@@ -54,7 +54,8 @@ void jsonInsert(std::string& jsonStr, const std::string& fieldName,
  * @param[in] indentCount - Indent count for the line
  */
 void jsonInsertArray(std::string& jsonStr, const std::string& fieldName,
-                     std::vector<std::string>& values, uint8_t indentCount);
+                     const std::vector<std::string>& values,
+                     uint8_t indentCount);
 
 /**
  * @brief Converts an integer to a formatted string
