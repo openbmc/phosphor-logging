@@ -383,9 +383,10 @@ void Manager::checkAndQuiesceHost()
 void Manager::quiesceOnError(const uint32_t entryId)
 {
     // Verify we don't already have this entry blocking
-    auto it = find_if(
-        this->blockingErrors.begin(), this->blockingErrors.end(),
-        [&](std::unique_ptr<Block>& obj) { return obj->entryId == entryId; });
+    auto it = find_if(this->blockingErrors.begin(), this->blockingErrors.end(),
+                      [&](const std::unique_ptr<Block>& obj) {
+                          return obj->entryId == entryId;
+                      });
     if (it != this->blockingErrors.end())
     {
         // Already recorded so just return
@@ -468,9 +469,10 @@ void Manager::processMetadata(const std::string& /*errorName*/,
 void Manager::checkAndRemoveBlockingError(uint32_t entryId)
 {
     // First look for blocking object and remove
-    auto it = find_if(
-        blockingErrors.begin(), blockingErrors.end(),
-        [&](std::unique_ptr<Block>& obj) { return obj->entryId == entryId; });
+    auto it = find_if(blockingErrors.begin(), blockingErrors.end(),
+                      [&](const std::unique_ptr<Block>& obj) {
+                          return obj->entryId == entryId;
+                      });
     if (it != blockingErrors.end())
     {
         blockingErrors.erase(it);

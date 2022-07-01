@@ -130,13 +130,13 @@ bool deserialize(const fs::path& path, Entry& e)
         }
         return false;
     }
-    catch (const cereal::Exception& e)
+    catch (const cereal::Exception& ex)
     {
-        log<level::ERR>(e.what());
+        log<level::ERR>(ex.what());
         fs::remove(path);
         return false;
     }
-    catch (const std::length_error& e)
+    catch (const std::length_error& ex)
     {
         // Running into: USCiLab/cereal#192
         // This may be indicating some other issue in the
@@ -144,7 +144,7 @@ bool deserialize(const fs::path& path, Entry& e)
         // possibly associations ??. But handling it here for
         // now since we are anyway tossing the log
         // TODO: openbmc/phosphor-logging#8
-        log<level::ERR>(e.what());
+        log<level::ERR>(ex.what());
         fs::remove(path);
         return false;
     }
