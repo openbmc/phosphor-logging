@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a47f6158_6f9776ea",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-07-06T19:40:01Z",
+      "side": 1,
+      "message": "is there a way you could push these details down into SbeFFDC so the PEL class doesn\u0027t have to know it?  Maybe like:\n\nseverity \u003d sbeFFDCPtr-\u003echeckSeverity(severity)\n\n\nSbeFFDC::checkSeverity(severity)\n{\n   if ffdcType \u003d\u003d SPARE_CLOCK_INFO)\n      log(\"Found spare clock error, changing severity to informational\")\n      return Informational\n      \n    return severity\n}",
+      "range": {
+        "startLine": 83,
+        "startChar": 11,
+        "endLine": 83,
+        "endChar": 68
+      },
+      "revId": "a9da2181a8fe579530da897d4329a389628fd578",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
