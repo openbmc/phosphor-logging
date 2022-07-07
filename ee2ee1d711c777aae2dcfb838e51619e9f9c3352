@@ -16,6 +16,24 @@
       "message": "Discussion is in progress related to Action flags field.",
       "revId": "ee2ee1d711c777aae2dcfb838e51619e9f9c3352",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0de821a5_48d26fa9",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 672,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2022-07-07T12:23:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b16aad3_b7ab2b8d",
+      "revId": "ee2ee1d711c777aae2dcfb838e51619e9f9c3352",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
