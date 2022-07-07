@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "202e6e83_7b35ec4f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-07-07T13:47:29Z",
+      "side": 1,
+      "message": "As it is now, the severity of the Redfish log will still be Critical.\n\nI have changes in progress for 1030 to go back and update the severity property on D-Bus with the final PEL severity.",
+      "revId": "742b00b9472d24e8cdf71e29eed1e8590cec2e1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
