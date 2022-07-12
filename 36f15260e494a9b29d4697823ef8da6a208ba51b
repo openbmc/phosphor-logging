@@ -16,6 +16,24 @@
       "message": "I should mention that we don\u0027t need to persist the property here because updateEventId() will make a call to do that anyway.",
       "revId": "36f15260e494a9b29d4697823ef8da6a208ba51b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1faeed19_e7dd9ea9",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 852,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-07-12T19:28:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f717d719_6ef8a09a",
+      "revId": "36f15260e494a9b29d4697823ef8da6a208ba51b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
