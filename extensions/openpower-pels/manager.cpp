@@ -195,11 +195,12 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
                             entry("PEL_ID=0x%X", pel->id()));
         }
 
-        // Check if firmware should quiesce system due to error
-        checkPelAndQuiesce(pel);
         updateEventId(pel);
         updateResolution(*pel);
         createPELEntry(obmcLogID);
+
+        // Check if firmware should quiesce system due to error
+        checkPelAndQuiesce(pel);
     }
     else
     {
@@ -402,11 +403,12 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
     auto policy = service_indicators::getPolicy(*_dataIface);
     policy->activate(*pel);
 
-    // Check if firmware should quiesce system due to error
-    checkPelAndQuiesce(pel);
     updateEventId(pel);
     updateResolution(*pel);
     createPELEntry(obmcLogID);
+
+    // Check if firmware should quiesce system due to error
+    checkPelAndQuiesce(pel);
 }
 
 sdbusplus::message::unix_fd Manager::getPEL(uint32_t pelID)
