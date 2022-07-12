@@ -439,6 +439,15 @@ class Manager : public PELInterface
     bool updateResolution(const openpower::pels::PEL& pel);
 
     /**
+     * @brief Check if the D-Bus severity property for the event log
+     *        needs to be updated based on the final PEL severity,
+     *        and update the property accordingly.
+     *
+     * @param[in] pel - The PEL to operate on.
+     */
+    void updateDBusSeverity(const openpower::pels::PEL& pel);
+
+    /**
      * @brief Create PELEntry Interface with supported properties
      *
      * Create PELEntry Interface and update all the properties which are
