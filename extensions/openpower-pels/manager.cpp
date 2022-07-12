@@ -20,6 +20,7 @@
 #include "pel.hpp"
 #include "pel_entry.hpp"
 #include "service_indicators.hpp"
+#include "severity.hpp"
 
 #include <fmt/format.h>
 #include <sys/inotify.h>
@@ -403,6 +404,7 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
     auto policy = service_indicators::getPolicy(*_dataIface);
     policy->activate(*pel);
 
+    updateDBusSeverity(*pel);
     updateEventId(pel);
     updateResolution(*pel);
     createPELEntry(obmcLogID);
@@ -839,6 +841,40 @@ bool Manager::updateResolution(const openpower::pels::PEL& pel)
     }
 
     return false;
+}
+
+void Manager::updateDBusSeverity(const openpower::pels::PEL& pel)
+{
+    // The final severity of the PEL may not agree with the
+    // original severity of the D-Bus event log.  Update the
+    // D-Bus property to match in some cases.  This is to
+    // ensure there isn't a Critical or Warning Redfish event
+    // log for an informational or recovered PEL (or vice versa).
+    // This doesn't make an explicit call to serialize the new
+    // event log property value because updateEventId() is called
+    // right after this and will do it.
+    auto sevType =
+        static_cast<SeverityType>(pel.userHeader().severity() & 0xF0);
+
+    auto entryN = _logManager.entries.find(pel.obmcLogID());
+    if (entryN != _logManager.entries.end())
+    {
+        auto newSeverity =
+            fixupLogSeverity(entryN->second->severity(), sevType);
+        if (newSeverity)
+        {
+            log<level::INFO>(
+                fmt::format(
+                    "Changing event log {} severity from {} "
+                    "to {} to match PEL",
+                    entryN->second->id(),
+                    Entry::convertLevelToString(entryN->second->severity()),
+                    Entry::convertLevelToString(*newSeverity))
+                    .c_str());
+
+            entryN->second->severity(*newSeverity, true);
+        }
+    }
 }
 
 void Manager::setEntryPath(uint32_t obmcLogID)
