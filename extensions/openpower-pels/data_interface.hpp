@@ -4,6 +4,7 @@
 #include "dbus_watcher.hpp"
 
 #include <filesystem>
+#include <fstream>
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
@@ -141,6 +142,91 @@ class DataInterfaceBase
         }
 
         return std::nullopt;
+    }
+
+    /**
+     * @brief Returns the time the system was running.
+     *
+     * @return std::optional<uint64_t> - The System uptime or std::nullopt
+     */
+    std::optional<uint64_t> getUptimeInSeconds() const
+    {
+        std::ifstream versionFile{"/proc/uptime"};
+        std::string line{};
+
+        std::getline(versionFile, line);
+        auto pos = line.find(" ");
+        if (pos == std::string::npos)
+        {
+            return std::nullopt;
+        }
+
+        uint64_t seconds = atol(line.substr(0, pos).c_str());
+        if (seconds == 0)
+        {
+            return std::nullopt;
+        }
+
+        return seconds;
+    }
+
+    /**
+     * @brief Returns the time the system was running.
+     *
+     * @param[in] seconds - The number of seconds the system has been running
+     *
+     * @return std::string - days/hours/minutes/seconds
+     */
+    std::string getBMCUptime(uint64_t seconds) const
+    {
+        time_t t(seconds);
+        tm* p = gmtime(&t);
+
+        std::string uptime = std::to_string(p->tm_year - 70) + "y " +
+                             std::to_string(p->tm_yday) + "d " +
+                             std::to_string(p->tm_hour) + "h " +
+                             std::to_string(p->tm_min) + "m " +
+                             std::to_string(p->tm_sec) + "s";
+
+        return uptime;
+    }
+
+    /**
+     * @brief Returns the system load average over the past 1 minute, 5 minutes
+     *        and 15 minutes.
+     *
+     * @return std::string - The system load average
+     */
+    std::string getBMCLoadAvg() const
+    {
+        std::string loadavg{};
+
+        std::ifstream loadavgFile{"/proc/loadavg"};
+        std::string line;
+        std::getline(loadavgFile, line);
+
+        size_t count = 3;
+        for (size_t i = 0; i < count; i++)
+        {
+            auto pos = line.find(" ");
+            if (pos == std::string::npos)
+            {
+                return {};
+            }
+
+            if (i != count - 1)
+            {
+                loadavg.append(line.substr(0, pos + 1));
+            }
+            else
+            {
+                loadavg.append(line.substr(0, pos));
+            }
+
+            line = line.substr(pos + 1);
+        }
+
+        return loadavg;
     }
 
     /**
