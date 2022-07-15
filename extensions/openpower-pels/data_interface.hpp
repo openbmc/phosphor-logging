@@ -4,6 +4,7 @@
 #include "dbus_watcher.hpp"
 
 #include <filesystem>
+#include <fstream>
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
@@ -141,6 +142,64 @@ class DataInterfaceBase
         }
 
         return std::nullopt;
+    }
+
+    /**
+     * @brief Returns the time the system was running.
+     *
+     * @return std::string - The time the system has been running, in seconds
+     */
+    std::string getUptime() const
+    {
+        std::ifstream uptimeFile{"/proc/uptime"};
+        std::string line{};
+        std::getline(uptimeFile, line);
+
+        auto pos = line.find(" ");
+        if (pos == std::string::npos)
+        {
+            return {};
+        }
+
+        return line.substr(0, pos) + "s";
+    }
+
+    /**
+     * @brief Returns the system load average over the past 1 minute, 5 minutes
+     *        and 15 minutes.
+     *
+     * @return std::string - The system load average
+     */
+    std::string getLoadavg() const
+    {
+        std::string loadavg{};
+
+        std::ifstream loadavgFile{"/proc/loadavg"};
+        std::string line;
+        std::getline(loadavgFile, line);
+
+        size_t count = 3;
+        for (size_t i = 0; i < count; i++)
+        {
+            auto pos = line.find(" ");
+            if (pos == std::string::npos)
+            {
+                return {};
+            }
+
+            if (i != count - 1)
+            {
+                loadavg.append(line.substr(0, pos + 1));
+            }
+            else
+            {
+                loadavg.append(line.substr(0, pos));
+            }
+
+            line = line.substr(pos + 1);
+        }
+
+        return loadavg;
     }
 
     /**
