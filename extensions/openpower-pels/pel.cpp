@@ -574,8 +574,8 @@ void PEL::updateSysInfoInExtendedUserDataSection(
                     static_cast<uint16_t>(ComponentID::phosphorLogging);
 
                 // Update system data to ED section
-                auto ud =
-                    util::makeSysInfoUserDataSection(additionalData, dataIface);
+                auto ud = util::makeSysInfoUserDataSection(additionalData,
+                                                           dataIface, false);
                 extUserData->updateDataSection(subType, componentId,
                                                ud->data());
             }
@@ -709,9 +709,16 @@ void addStatesToJSON(nlohmann::json& json, const DataInterfaceBase& dataIface)
     json["BootState"] = lastSegment('.', dataIface.getBootState());
 }
 
+void addBMCUptime(nlohmann::json& json, const DataInterfaceBase& dataIface)
+{
+    json["BMCUptime"] = dataIface.getBMCUptime(dataIface.getUptimeInSeconds());
+    json["BMCLoad"] = dataIface.getBMCLoadavg();
+}
+
 std::unique_ptr<UserData>
     makeSysInfoUserDataSection(const AdditionalData& ad,
-                               const DataInterfaceBase& dataIface)
+                               const DataInterfaceBase& dataIface,
+                               bool addUptime)
 {
     nlohmann::json json;
 
@@ -719,6 +726,11 @@ std::unique_ptr<UserData>
     addBMCFWVersionIDToJSON(json, dataIface);
     addIMKeyword(json, dataIface);
     addStatesToJSON(json, dataIface);
+
+    if (addUptime)
+    {
+        addBMCUptime(json, dataIface);
+    }
 
     return makeJSONUserDataSection(json);
 }

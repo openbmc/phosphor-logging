@@ -429,12 +429,15 @@ std::unique_ptr<UserData> makeADUserDataSection(const AdditionalData& ad);
  *
  * @param[in] ad - The AdditionalData contents
  * @param[in] dataIface - The data interface object
+ * @param[in] addUptime - Whether to add the uptime attribute the default is
+ *                        true
  *
  * @return std::unique_ptr<UserData> - The section
  */
 std::unique_ptr<UserData>
     makeSysInfoUserDataSection(const AdditionalData& ad,
-                               const DataInterfaceBase& dataIface);
+                               const DataInterfaceBase& dataIface,
+                               bool addUptime = true);
 
 /**
  * @brief Reads data from an opened file descriptor.

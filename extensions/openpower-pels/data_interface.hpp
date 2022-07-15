@@ -4,6 +4,7 @@
 #include "dbus_watcher.hpp"
 
 #include <filesystem>
+#include <fstream>
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
@@ -141,6 +142,84 @@ class DataInterfaceBase
         }
 
         return std::nullopt;
+    }
+
+    /**
+     * @brief Returns the time the system was running.
+     *
+     * @return uint64_t - The time the system has been running, in seconds
+     */
+    uint64_t getUptimeInSeconds() const
+    {
+        std::ifstream versionFile{"/proc/uptime"};
+        std::string line{};
+
+        std::getline(versionFile, line);
+        auto pos = line.find(" ");
+        if (pos == std::string::npos)
+        {
+            return 0;
+        }
+
+        return atol(line.substr(0, pos).c_str());
+    }
+
+    /**
+     * @brief Returns the time the system was running.
+     *
+     * @param[in] seconds - The number of seconds the system has been running
+     *
+     * @return std::string - days/hours/minutes/seconds
+     */
+    std::string getBMCUptime(uint64_t seconds) const
+    {
+        time_t t(seconds);
+        tm* p = gmtime(&t);
+
+        std::string uptime = std::to_string(p->tm_yday) + " days " +
+                             std::to_string(p->tm_hour) + " hours " +
+                             std::to_string(p->tm_min) + " minutes " +
+                             std::to_string(p->tm_sec) + " seconds";
+
+        return uptime;
+    }
+
+    /**
+     * @brief Returns the system load average over the past 1 minute, 5 minutes
+     *        and 15 minutes.
+     *
+     * @return std::string - The system load average
+     */
+    std::string getBMCLoadavg() const
+    {
+        std::string loadavg{};
+
+        std::ifstream loadavgFile{"/proc/loadavg"};
+        std::string line;
+        std::getline(loadavgFile, line);
+
+        size_t count = 3;
+        for (size_t i = 0; i < count; i++)
+        {
+            auto pos = line.find(" ");
+            if (pos == std::string::npos)
+            {
+                return {};
+            }
+
+            if (i != count - 1)
+            {
+                loadavg.append(line.substr(0, pos + 1));
+            }
+            else
+            {
+                loadavg.append(line.substr(0, pos));
+            }
+
+            line = line.substr(pos + 1);
+        }
+
+        return loadavg;
     }
 
     /**
