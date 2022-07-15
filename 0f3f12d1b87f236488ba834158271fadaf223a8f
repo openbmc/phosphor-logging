@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89034f55_c63f800c",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-07-15T13:27:44Z",
+      "side": 1,
+      "message": "Could this code do the math to convert to days/hours/minutes/seconds? I think it would make the field more useful, especially to our support staff who may not be up on their math skills.\n\nFor example:  \"10d 3h 4m 5s\"\n\nThere\u0027s already a data_interface_test.cpp if you\u0027d like to add some testcases to verify the conversion algorithm.  \n\nMaybe change this function to uint64_t(or size_t?) getUptimeInSeconds() and then make a new \n\nstd::string getUptime(uint64_t seconds) that you could then test.",
+      "revId": "0f3f12d1b87f236488ba834158271fadaf223a8f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa182004_3679885e",
+        "filename": "extensions/openpower-pels/pel.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-07-15T13:27:44Z",
+      "side": 1,
+      "message": "how about just \u0027addUptime\u0027?  that way it reads like:\n\nif (addUptime)",
+      "range": {
+        "startLine": 440,
+        "startChar": 35,
+        "endLine": 440,
+        "endChar": 47
+      },
+      "revId": "0f3f12d1b87f236488ba834158271fadaf223a8f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
