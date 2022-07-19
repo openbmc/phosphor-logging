@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c27e2933_7be01273",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-07-19T15:49:48Z",
+      "side": 1,
+      "message": "since  getUptimeInSeconds() will return a 0 if atol() fails or the code on line 161 runs, I think it would be better to return \u0027error\u0027 or something in that case instead of an uptime of zero which isn\u0027t possible.",
+      "revId": "4668f0135256cbfb3eb89adeb0a80c97dbcd0f1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1456eb0c_303d3bb0",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-07-19T15:49:48Z",
+      "side": 1,
+      "message": "doesn\u0027t this wrap after a year? We\u0027ve seen BMCs in the fields with uptimes longer than that.  I guess adding tm_year would fix that.",
+      "range": {
+        "startLine": 179,
+        "startChar": 46,
+        "endLine": 179,
+        "endChar": 54
+      },
+      "revId": "4668f0135256cbfb3eb89adeb0a80c97dbcd0f1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15aca70e_5e9db6ba",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-07-19T15:49:48Z",
+      "side": 1,
+      "message": "to save a little bit of space, could you maybe just use d/h/m/s, like\n5d 3h 2m 1s",
+      "revId": "4668f0135256cbfb3eb89adeb0a80c97dbcd0f1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fbb860f_66b85f68",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-07-19T15:49:48Z",
+      "side": 1,
+      "message": "Avg",
+      "range": {
+        "startLine": 193,
+        "startChar": 26,
+        "endLine": 193,
+        "endChar": 31
+      },
+      "revId": "4668f0135256cbfb3eb89adeb0a80c97dbcd0f1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
