@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "36c0f39b_e8ce0f9e",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-07-20T01:34:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c27e2933_7be01273",
+      "revId": "4668f0135256cbfb3eb89adeb0a80c97dbcd0f1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1456eb0c_303d3bb0",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-07-19T15:49:48Z",
       "side": 1,
       "message": "doesn\u0027t this wrap after a year? We\u0027ve seen BMCs in the fields with uptimes longer than that.  I guess adding tm_year would fix that.",
+      "range": {
+        "startLine": 179,
+        "startChar": 46,
+        "endLine": 179,
+        "endChar": 54
+      },
+      "revId": "4668f0135256cbfb3eb89adeb0a80c97dbcd0f1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdffa405_5217b20e",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-07-20T01:34:32Z",
+      "side": 1,
+      "message": "\u003e doesn\u0027t this wrap after a year? We\u0027ve seen BMCs in the fields with uptimes longer than that.  I guess adding tm_year would fix that.\n\nAdded tm_year, like this:\n3y 332d 21h 33m 9s",
+      "parentUuid": "1456eb0c_303d3bb0",
       "range": {
         "startLine": 179,
         "startChar": 46,
@@ -58,6 +100,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fd4f879_d78dbeea",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-07-20T01:34:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "15aca70e_5e9db6ba",
+      "revId": "4668f0135256cbfb3eb89adeb0a80c97dbcd0f1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4fbb860f_66b85f68",
@@ -71,6 +131,30 @@
       "writtenOn": "2022-07-19T15:49:48Z",
       "side": 1,
       "message": "Avg",
+      "range": {
+        "startLine": 193,
+        "startChar": 26,
+        "endLine": 193,
+        "endChar": 31
+      },
+      "revId": "4668f0135256cbfb3eb89adeb0a80c97dbcd0f1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9dacb153_942f5a23",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-07-20T01:34:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4fbb860f_66b85f68",
       "range": {
         "startLine": 193,
         "startChar": 26,
