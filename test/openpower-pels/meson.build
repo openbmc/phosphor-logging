@@ -79,6 +79,7 @@ openpower_test_lib = static_library(
     dependencies: [
         libpel_deps,
         peltool_deps,
+        gtest_dep,
     ],
 )
 
