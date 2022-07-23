@@ -97,7 +97,7 @@ class PropertyWatcher : public DBusWatcher
      * @param[in] dataIface - The DataInterface object
      * @param[in] func - The callback used any time the property is read
      */
-    PropertyWatcher(sdbusplus::bus::bus& bus, const std::string& path,
+    PropertyWatcher(sdbusplus::bus_t& bus, const std::string& path,
                     const std::string& interface,
                     const std::string& propertyName, const std::string& service,
                     const DataIface& dataIface, PropertySetFunc func) :
@@ -119,7 +119,7 @@ class PropertyWatcher : public DBusWatcher
         {
             read(dataIface, service);
         }
-        catch (const sdbusplus::exception::exception& e)
+        catch (const sdbusplus::exception_t& e)
         {
             // Path doesn't exist now
         }
@@ -142,7 +142,7 @@ class PropertyWatcher : public DBusWatcher
      * @param[in] dataIface - The DataInterface object
      * @param[in] func - The callback used any time the property is read
      */
-    PropertyWatcher(sdbusplus::bus::bus& bus, const std::string& path,
+    PropertyWatcher(sdbusplus::bus_t& bus, const std::string& path,
                     const std::string& interface,
                     const std::string& propertyName, const DataIface& dataIface,
                     PropertySetFunc func) :
@@ -183,7 +183,7 @@ class PropertyWatcher : public DBusWatcher
      *
      * @param[in] msg - The sdbusplus message object
      */
-    void propChanged(sdbusplus::message::message& msg)
+    void propChanged(sdbusplus::message_t& msg)
     {
         DBusInterface interface;
         DBusPropertyMap properties;
@@ -204,7 +204,7 @@ class PropertyWatcher : public DBusWatcher
      *
      * @param[in] msg - The sdbusplus message object
      */
-    void interfaceAdded(sdbusplus::message::message& msg)
+    void interfaceAdded(sdbusplus::message_t& msg)
     {
         sdbusplus::message::object_path path;
         DBusInterfaceMap interfaces;
@@ -278,7 +278,7 @@ class InterfaceWatcher : public DBusWatcher
      * @param[in] dataIface - The DataInterface object
      * @param[in] func - The callback used any time the property is read
      */
-    InterfaceWatcher(sdbusplus::bus::bus& bus, const std::string& path,
+    InterfaceWatcher(sdbusplus::bus_t& bus, const std::string& path,
                      const std::string& interface, const DataIface& dataIface,
                      InterfaceSetFunc func) :
         DBusWatcher(path, interface),
@@ -299,7 +299,7 @@ class InterfaceWatcher : public DBusWatcher
         {
             read(dataIface);
         }
-        catch (const sdbusplus::exception::exception& e)
+        catch (const sdbusplus::exception_t& e)
         {
             // Path doesn't exist now
         }
@@ -331,7 +331,7 @@ class InterfaceWatcher : public DBusWatcher
      *
      * @param[in] msg - The sdbusplus message object
      */
-    void propChanged(sdbusplus::message::message& msg)
+    void propChanged(sdbusplus::message_t& msg)
     {
         DBusInterface interface;
         DBusPropertyMap properties;
@@ -348,7 +348,7 @@ class InterfaceWatcher : public DBusWatcher
      *
      * @param[in] msg - The sdbusplus message object
      */
-    void interfaceAdded(sdbusplus::message::message& msg)
+    void interfaceAdded(sdbusplus::message_t& msg)
     {
         sdbusplus::message::object_path path;
         DBusInterfaceMap interfaces;

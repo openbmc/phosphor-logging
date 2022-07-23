@@ -26,7 +26,7 @@ using DeleteAllIface =
 namespace details
 {
 template <typename... T>
-using ServerObject = typename sdbusplus::server::object::object<T...>;
+using ServerObject = typename sdbusplus::server::object_t<T...>;
 
 using ManagerIface =
     sdbusplus::xyz::openbmc_project::Logging::Internal::server::Manager;
@@ -65,7 +65,7 @@ class Manager : public details::ServerObject<details::ManagerIface>
      *  @param[in] bus - Bus to attach to.
      *  @param[in] path - Path to attach at.
      */
-    Manager(sdbusplus::bus::bus& bus, const char* objPath) :
+    Manager(sdbusplus::bus_t& bus, const char* objPath) :
         details::ServerObject<details::ManagerIface>(bus, objPath), busLog(bus),
         entryId(0), fwVersion(readFWVersion()){};
 
@@ -154,9 +154,9 @@ class Manager : public details::ServerObject<details::ManagerIface>
     /**
      * @brief Returns the sdbusplus bus object
      *
-     * @return sdbusplus::bus::bus&
+     * @return sdbusplus::bus_t&
      */
-    sdbusplus::bus::bus& getBus()
+    sdbusplus::bus_t& getBus()
     {
         return busLog;
     }
@@ -300,7 +300,7 @@ class Manager : public details::ServerObject<details::ManagerIface>
      *
      * @param[in] msg - sdbusplus dbusmessage
      */
-    void onEntryResolve(sdbusplus::message::message& msg);
+    void onEntryResolve(sdbusplus::message_t& msg);
 
     /** @brief Remove block objects for any resolved entries  */
     void findAndRemoveResolvedBlocks();
@@ -313,7 +313,7 @@ class Manager : public details::ServerObject<details::ManagerIface>
     void checkAndQuiesceHost();
 
     /** @brief Persistent sdbusplus DBus bus connection. */
-    sdbusplus::bus::bus& busLog;
+    sdbusplus::bus_t& busLog;
 
     /** @brief List of error ids for high severity errors */
     std::list<uint32_t> realErrors;
@@ -331,7 +331,7 @@ class Manager : public details::ServerObject<details::ManagerIface>
     std::vector<std::unique_ptr<Block>> blockingErrors;
 
     /** @brief Map of entry id to call back object on properties changed */
-    std::map<uint32_t, std::unique_ptr<sdbusplus::bus::match::match>>
+    std::map<uint32_t, std::unique_ptr<sdbusplus::bus::match_t>>
         propChangedEntryCallback;
 };
 
@@ -361,7 +361,7 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
      *  @param[in] path - Path to attach at.
      *  @param[in] manager - Reference to internal manager object.
      */
-    Manager(sdbusplus::bus::bus& bus, const std::string& path,
+    Manager(sdbusplus::bus_t& bus, const std::string& path,
             internal::Manager& manager) :
         details::ServerObject<DeleteAllIface, CreateIface>(
             bus, path.c_str(),

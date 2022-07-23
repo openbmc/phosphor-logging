@@ -60,7 +60,7 @@ REGISTER_EXTENSION_FUNCTION(deleteLog2)
 TEST(ExtensionsTest, FunctionCallTest)
 {
     sdbusplus::SdBusMock sdbusMock;
-    sdbusplus::bus::bus bus = sdbusplus::get_mocked_new(&sdbusMock);
+    sdbusplus::bus_t bus = sdbusplus::get_mocked_new(&sdbusMock);
     internal::Manager manager(bus, "testpath");
 
     EXPECT_EQ(Extensions::getStartupFunctions().size(), 2);

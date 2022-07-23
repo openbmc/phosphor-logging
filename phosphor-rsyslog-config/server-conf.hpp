@@ -14,7 +14,7 @@ namespace rsyslog_config
 
 using namespace phosphor::logging;
 using NetworkClient = sdbusplus::xyz::openbmc_project::Network::server::Client;
-using Iface = sdbusplus::server::object::object<NetworkClient>;
+using Iface = sdbusplus::server::object_t<NetworkClient>;
 namespace sdbusRule = sdbusplus::bus::match::rules;
 
 /** @class Server
@@ -38,7 +38,7 @@ class Server : public Iface
      *  @param[in] path - Path to attach at.
      *  @param[in] filePath - rsyslog remote logging config file
      */
-    Server(sdbusplus::bus::bus& bus, const std::string& path,
+    Server(sdbusplus::bus_t& bus, const std::string& path,
            const char* filePath) :
         Iface(bus, path.c_str(), Iface::action::defer_emit),
         configFilePath(filePath),
@@ -106,7 +106,7 @@ class Server : public Iface
     /** @brief React to hostname change
      *  @param[in] msg - sdbusplus message
      */
-    void hostnameChanged(sdbusplus::message::message& /*msg*/)
+    void hostnameChanged(sdbusplus::message_t& /*msg*/)
     {
         restart();
     }

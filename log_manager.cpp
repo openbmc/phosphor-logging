@@ -278,7 +278,7 @@ bool Manager::isQuiesceOnErrorEnabled()
         auto reply = this->busLog.call(method);
         reply.read(property);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         lg2::error("Error reading QuiesceOnHwError property: {ERROR}", "ERROR",
                    e);
@@ -312,7 +312,7 @@ void Manager::findAndRemoveResolvedBlocks()
     }
 }
 
-void Manager::onEntryResolve(sdbusplus::message::message& msg)
+void Manager::onEntryResolve(sdbusplus::message_t& msg)
 {
     using Interface = std::string;
     using Property = std::string;
@@ -352,7 +352,7 @@ void Manager::checkAndQuiesceHost()
         auto reply = this->busLog.call(method);
         reply.read(property);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         // Quiescing the host is a "best effort" type function. If unable to
         // read the host state or it comes back empty, just return.
@@ -404,7 +404,7 @@ void Manager::quiesceOnError(const uint32_t entryId)
     // Register call back if log is resolved
     using namespace sdbusplus::bus::match::rules;
     auto entryPath = std::string(OBJ_ENTRY) + '/' + std::to_string(entryId);
-    auto callback = std::make_unique<sdbusplus::bus::match::match>(
+    auto callback = std::make_unique<sdbusplus::bus::match_t>(
         this->busLog,
         propertiesChanged(entryPath, "xyz.openbmc_project.Logging.Entry"),
         std::bind(std::mem_fn(&Manager::onEntryResolve), this,

@@ -23,7 +23,7 @@ namespace openpower
 namespace pels
 {
 
-using PELInterface = sdbusplus::server::object::object<
+using PELInterface = sdbusplus::server::object_t<
     sdbusplus::org::open_power::Logging::server::PEL>;
 
 /**

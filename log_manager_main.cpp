@@ -20,7 +20,7 @@ int main(int /*argc*/, char* /*argv*/[])
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
 
     // Add sdbusplus ObjectManager for the 'root' path of the logging manager.
-    sdbusplus::server::manager::manager objManager(bus, OBJ_LOGGING);
+    sdbusplus::server::manager_t objManager(bus, OBJ_LOGGING);
 
     phosphor::logging::internal::Manager iMgr(bus, OBJ_INTERNAL);
 
