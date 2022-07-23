@@ -63,7 +63,7 @@ class ManagerTest : public CleanPELFiles
     }
 
     NiceMock<sdbusplus::SdBusMock> sdbusInterface;
-    sdbusplus::bus::bus bus;
+    sdbusplus::bus_t bus;
     phosphor::logging::internal::Manager logManager;
     sd_event* sdEvent;
     TestLogger logger;

@@ -121,7 +121,7 @@ std::pair<std::string, std::string>
     return {base, connector};
 }
 
-DataInterface::DataInterface(sdbusplus::bus::bus& bus) : _bus(bus)
+DataInterface::DataInterface(sdbusplus::bus_t& bus) : _bus(bus)
 {
     readBMCFWVersion();
     readServerFWVersion();
@@ -749,7 +749,7 @@ void DataInterface::createGuardRecord(const std::vector<uint8_t>& binPath,
         _bus.call_noreply(method, hwIsolationTimeout);
     }
 
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         std::string errName = e.name();
         // SD_BUS_ERROR_TIMEOUT error is expected, due to PEL api dependency

@@ -13,7 +13,7 @@ namespace phosphor
 namespace logging
 {
 
-using BlockIface = sdbusplus::server::object::object<
+using BlockIface = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Logging::server::ErrorBlocksTransition,
     sdbusplus::xyz::openbmc_project::Association::server::Definitions>;
 
@@ -40,7 +40,7 @@ class Block : public BlockIface
      *  @param[in] path - Path to attach at.
      *  @param[in] entryId - Distinct ID of the error.
      */
-    Block(sdbusplus::bus::bus& bus, const std::string& path, uint32_t entryId) :
+    Block(sdbusplus::bus_t& bus, const std::string& path, uint32_t entryId) :
         BlockIface(bus, path.c_str()), entryId(entryId)
     {
         std::string entryPath{std::string(OBJ_ENTRY) + '/' +

@@ -16,7 +16,7 @@ namespace phosphor
 namespace logging
 {
 
-using EntryIfaces = sdbusplus::server::object::object<
+using EntryIfaces = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Logging::server::Entry,
     sdbusplus::xyz::openbmc_project::Object::server::Delete,
     sdbusplus::xyz::openbmc_project::Association::server::Definitions,
@@ -62,9 +62,9 @@ class Entry : public EntryIfaces
      *  @param[in] filePath - Serialization path
      *  @param[in] parent - The error's parent.
      */
-    Entry(sdbusplus::bus::bus& bus, const std::string& objectPath,
-          uint32_t idErr, uint64_t timestampErr, Level severityErr,
-          std::string&& msgErr, std::vector<std::string>&& additionalDataErr,
+    Entry(sdbusplus::bus_t& bus, const std::string& objectPath, uint32_t idErr,
+          uint64_t timestampErr, Level severityErr, std::string&& msgErr,
+          std::vector<std::string>&& additionalDataErr,
           AssociationList&& objects, const std::string& fwVersion,
           const std::string& filePath, internal::Manager& parent) :
         EntryIfaces(bus, objectPath.c_str(), EntryIfaces::action::defer_emit),
@@ -98,7 +98,7 @@ class Entry : public EntryIfaces
      *  @param[in] id - The error entry id.
      *  @param[in] parent - The error's parent.
      */
-    Entry(sdbusplus::bus::bus& bus, const std::string& path, uint32_t entryId,
+    Entry(sdbusplus::bus_t& bus, const std::string& path, uint32_t entryId,
           internal::Manager& parent) :
         EntryIfaces(bus, path.c_str(), EntryIfaces::action::defer_emit),
         parent(parent)

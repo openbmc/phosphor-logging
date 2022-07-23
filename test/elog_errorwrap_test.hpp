@@ -68,7 +68,7 @@ void journalImpl::sd_journal_close(sd_journal*)
 class MockJournal : public Manager
 {
   public:
-    MockJournal(sdbusplus::bus::bus& bus, const char* objPath) :
+    MockJournal(sdbusplus::bus_t& bus, const char* objPath) :
         Manager(bus, objPath){};
     MOCK_METHOD0(journalSync, void());
     MOCK_METHOD2(sd_journal_open, int(sd_journal**, int));
@@ -80,7 +80,7 @@ class MockJournal : public Manager
 class TestLogManager : public testing::Test
 {
   public:
-    sdbusplus::bus::bus bus;
+    sdbusplus::bus_t bus;
     MockJournal manager;
     TestLogManager() :
         bus(sdbusplus::bus::new_default()),

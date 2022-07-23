@@ -573,7 +573,7 @@ class DataInterface : public DataInterfaceBase
      *
      * @param[in] bus - The sdbusplus bus object
      */
-    explicit DataInterface(sdbusplus::bus::bus& bus);
+    explicit DataInterface(sdbusplus::bus_t& bus);
 
     /**
      * @brief Finds the D-Bus service name that hosts the
@@ -814,7 +814,7 @@ class DataInterface : public DataInterfaceBase
      *        When the motherboard is found, it then adds a PropertyWatcher
      *        for the motherboard CCIN.
      */
-    void motherboardIfaceAdded(sdbusplus::message::message& msg);
+    void motherboardIfaceAdded(sdbusplus::message_t& msg);
 
     /**
      * @brief Adds the Ufcs- prefix to the location code passed in
@@ -839,7 +839,7 @@ class DataInterface : public DataInterfaceBase
     /**
      * @brief The sdbusplus bus object for making D-Bus calls.
      */
-    sdbusplus::bus::bus& _bus;
+    sdbusplus::bus_t& _bus;
 
     /**
      * @brief The interfacesAdded match object used to wait for inventory

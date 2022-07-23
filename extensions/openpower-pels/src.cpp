@@ -887,7 +887,7 @@ void SRC::addInventoryCallout(const std::string& inventoryPath,
             callout =
                 std::make_unique<src::Callout>(p, locCode, fn, ccin, sn, mrus);
         }
-        catch (const sdbusplus::exception::exception& e)
+        catch (const sdbusplus::exception_t& e)
         {
             std::string msg =
                 "No VPD found for " + inventoryPath + ": " + e.what();
@@ -898,7 +898,7 @@ void SRC::addInventoryCallout(const std::string& inventoryPath,
                 CalloutPriority::high, locCode, fn, ccin, sn, mrus);
         }
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         std::string msg = "Could not get location code for " + inventoryPath +
                           ": " + e.what();
