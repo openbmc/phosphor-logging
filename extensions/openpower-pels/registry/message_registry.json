@@ -461,6 +461,30 @@
         },
 
         {
+            "Name": "org.open_power.Logging.Error.TestError3",
+            "Subsystem": "bmc_firmware",
+            "Severity": "predictive",
+
+            "SRC":
+            {
+                "ReasonCode": "0x2006",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "This is an error used for testing only",
+                "Message": "This is a test predictive error",
+                "Notes": [
+                    "This error is not created by BMC code and is ",
+                    "only used for error injection tests."
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.PHAL.Error.Boot",
             "Subsystem": "cec_hardware",
             "ComponentID": "0x3000",
