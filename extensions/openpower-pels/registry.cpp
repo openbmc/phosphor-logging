@@ -562,7 +562,14 @@ std::vector<RegistryCallout>
     if (it == callouts.end())
     {
         // This can happen if not all possible values were in the
-        // message registry and that's fine.
+        // message registry and that's fine.  There may be a
+        // "CalloutsWhenNoADMatch" section that contains callouts
+        // to use in this case.
+        if (json.contains("CalloutsWhenNoADMatch"))
+        {
+            return getCalloutsWithoutAD(json["CalloutsWhenNoADMatch"],
+                                        systemNames);
+        }
         return std::vector<RegistryCallout>{};
     }
 
