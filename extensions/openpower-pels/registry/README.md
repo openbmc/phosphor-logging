@@ -365,6 +365,47 @@ When it was 1, P1-C6 was called out.  Note that the same 'Callouts' array is
 used as in the previous example, so these callouts can also depend on the
 system type.
 
+If it's desired to use a different set of callouts when there isn't a match
+on the AdditionalData field, one can use CalloutsWhenNoADMatch.  In the
+following example, the 'air_mover' callout will be added if 'PROC_NUM' isn't
+0.  'CalloutsWhenNoADMatch' has the same schema as the 'Callouts' section.
+
+```
+"CalloutsUsingAD":
+{
+    "ADName": "PROC_NUM",
+    "CalloutsWithTheirADValues":
+    [
+        {
+            "ADValue": "0",
+            "Callouts":
+            [
+                {
+                    "CalloutList":
+                    [
+                        {
+                            "Priority": "high",
+                            "LocCode": "P1-C5"
+                        }
+                    ]
+                }
+            ]
+        },
+    ],
+    "CalloutsWhenNoADMatch": [
+        {
+            "CalloutList": [
+                {
+                    "Priority": "high",
+                    "SymbolicFRU": "air_mover"
+                }
+            ]
+        }
+    ]
+}
+
+```
+
 #### CalloutType
 This field can be used to modify the failing component type field in the
 callout when the default doesn\'t fit:

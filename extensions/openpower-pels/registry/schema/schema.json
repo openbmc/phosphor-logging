@@ -658,14 +658,16 @@
 
         "calloutsUsingAD":
         {
-            "description": "This contains the callouts that can be specified based on a value in the AdditionalData property..",
+            "description": "This contains the callouts that can be specified based on a value in the AdditionalData property.",
             "type": "object",
 
             "properties":
             {
                 "ADName": {"$ref": "#/definitions/adName" },
                 "CalloutsWithTheirADValues":
-                    {"$ref": "#/definitions/calloutsWithTheirADValues" }
+                    {"$ref": "#/definitions/calloutsWithTheirADValues" },
+                "CalloutsWhenNoADMatch":
+                    {"$ref": "#/definitions/calloutsWhenNoADMatch" }
             },
             "additionalProperties": false,
             "required": ["ADName", "CalloutsWithTheirADValues"],
@@ -697,6 +699,12 @@
                     ]
                 }
             ]
+        },
+
+        "calloutsWhenNoADMatch":
+        {
+            "description": "This contains the callouts to use when a match in the 'CalloutsWithTheirADValues array isn't found.",
+            "$ref": "#/definitions/callouts"
         }
     }
 }

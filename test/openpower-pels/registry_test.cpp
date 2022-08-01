@@ -662,6 +662,54 @@ TEST_F(RegistryTest, TestGetCallouts)
             EXPECT_TRUE(callouts.empty());
         }
     }
+
+    {
+        // Callouts with a 'CalloutsWhenNoADMatch' section that will
+        // be used when the AdditionalData value doesn't match.
+        auto json = R"(
+        {
+            "ADName": "PROC_NUM",
+            "CalloutsWithTheirADValues":
+            [
+                {
+                    "ADValue": "0",
+                    "Callouts":
+                    [
+                        {
+                            "CalloutList":
+                            [
+                                {
+                                    "Priority": "high",
+                                    "LocCode": "P0-C0"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "CalloutsWhenNoADMatch": [
+                {
+                    "CalloutList": [
+                        {
+                            "Priority": "medium",
+                            "LocCode": "P1-C1"
+                        }
+                    ]
+                }
+            ]
+        })"_json;
+
+        // There isn't an entry in the JSON for a PROC_NUM of 8
+        // so it should choose the P1-C1 callout.
+        std::vector<std::string> adData{"PROC_NUM=8"};
+        AdditionalData ad{adData};
+        names.clear();
+
+        auto callouts = Registry::getCallouts(json, names, ad);
+        EXPECT_EQ(callouts.size(), 1);
+        EXPECT_EQ(callouts[0].priority, "medium");
+        EXPECT_EQ(callouts[0].locCode, "P1-C1");
+    }
 }
 
 TEST_F(RegistryTest, TestNoSubsystem)
