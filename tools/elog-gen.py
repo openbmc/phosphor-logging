@@ -23,20 +23,20 @@ def order_inherited_errors(i_errors, i_parents):
     errors = list()
     has_inheritance = False
     for error in i_errors:
-        if(i_parents[error] is not None):
+        if i_parents[error] is not None:
             has_inheritance = True
             break
 
-    if(has_inheritance):
+    if has_inheritance:
         # Order the error codes list such that an error is never placed
         # before it's parent. This way generated code can ensure parent
         # definitions precede child error definitions.
-        while(len(errors) < len(i_errors)):
+        while len(errors) < len(i_errors):
             for error in i_errors:
-                if(error in errors):
+                if error in errors:
                     # already ordererd
                     continue
-                if((not i_parents[error]) or (i_parents[error] in errors)):
+                if (not i_parents[error]) or (i_parents[error] in errors):
                     # parent present, or has no parent, either way this error
                     # can be added
                     errors.append(error)
@@ -49,7 +49,7 @@ def order_inherited_errors(i_errors, i_parents):
 
 def check_error_inheritance(i_errors, i_parents):
     for error in i_errors:
-        if(i_parents[error] and (i_parents[error] not in i_errors)):
+        if i_parents[error] and (i_parents[error] not in i_errors):
             print(error + " inherits " + i_parents[error] +
                   " but the latter is not defined")
             return False
@@ -155,7 +155,7 @@ def gen_elog_hpp(i_yaml_dir, i_test_dir, i_output_hpp,
                        parents,
                        metadata_process))
 
-    if(not check_error_inheritance(errors, parents)):
+    if not check_error_inheritance(errors, parents):
         print("Error - failed to validate error inheritance")
         exit(1)
 
