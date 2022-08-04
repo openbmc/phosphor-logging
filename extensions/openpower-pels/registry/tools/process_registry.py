@@ -21,11 +21,11 @@ def check_duplicate_names(registry_json):
     """
 
     names = []
-    for entry in registry_json['PELs']:
-        if entry['Name'] in names:
-            sys.exit("Found multiple uses of error {}".format(entry['Name']))
+    for entry in registry_json["PELs"]:
+        if entry["Name"] in names:
+            sys.exit("Found multiple uses of error {}".format(entry["Name"]))
         else:
-            names.append(entry['Name'])
+            names.append(entry["Name"])
 
 
 def check_duplicate_reason_codes(registry_json):
@@ -37,12 +37,15 @@ def check_duplicate_reason_codes(registry_json):
     """
 
     reasonCodes = []
-    for entry in registry_json['PELs']:
-        if entry['SRC']['ReasonCode'] in reasonCodes:
-            sys.exit("Found duplicate SRC reason code {}".format(
-                entry['SRC']['ReasonCode']))
+    for entry in registry_json["PELs"]:
+        if entry["SRC"]["ReasonCode"] in reasonCodes:
+            sys.exit(
+                "Found duplicate SRC reason code {}".format(
+                    entry["SRC"]["ReasonCode"]
+                )
+            )
         else:
-            reasonCodes.append(entry['SRC']['ReasonCode'])
+            reasonCodes.append(entry["SRC"]["ReasonCode"])
 
 
 def check_component_id(registry_json):
@@ -54,23 +57,26 @@ def check_component_id(registry_json):
     registry_json: The message registry JSON
     """
 
-    for entry in registry_json['PELs']:
+    for entry in registry_json["PELs"]:
 
         # Don't check on "11" SRCs as those reason codes aren't supposed to
         # match the component ID.
-        if entry['SRC'].get('Type', '') == "11":
+        if entry["SRC"].get("Type", "") == "11":
             continue
 
-        if 'ComponentID' in entry:
-            id = int(entry['ComponentID'], 16)
-            reason_code = int(entry['SRC']['ReasonCode'], 16)
+        if "ComponentID" in entry:
+            id = int(entry["ComponentID"], 16)
+            reason_code = int(entry["SRC"]["ReasonCode"], 16)
 
             if (id & 0xFF00) != (reason_code & 0xFF00):
-                sys.exit("Found mismatching component ID {} vs reason "
-                         "code {} for error {}".format(
-                             entry['ComponentID'],
-                             entry['SRC']['ReasonCode'],
-                             entry['Name']))
+                sys.exit(
+                    "Found mismatching component ID {} vs reason "
+                    "code {} for error {}".format(
+                        entry["ComponentID"],
+                        entry["SRC"]["ReasonCode"],
+                        entry["Name"],
+                    )
+                )
 
 
 def check_message_args(registry_json):
@@ -82,20 +88,27 @@ def check_message_args(registry_json):
     registry_json: The message registry JSON
     """
 
-    for entry in registry_json['PELs']:
-        num_placeholders = entry['Documentation']['Message'].count('%')
+    for entry in registry_json["PELs"]:
+        num_placeholders = entry["Documentation"]["Message"].count("%")
         if num_placeholders == 0:
             continue
 
-        if 'MessageArgSources' not in entry['Documentation']:
-            sys.exit("Missing MessageArgSources property for error {}".
-                     format(entry['Name']))
+        if "MessageArgSources" not in entry["Documentation"]:
+            sys.exit(
+                "Missing MessageArgSources property for error {}".format(
+                    entry["Name"]
+                )
+            )
 
-        if num_placeholders != \
-                len(entry['Documentation']['MessageArgSources']):
-            sys.exit("Different number of placeholders found in "
-                     "Message vs MessageArgSources for error {}".
-                     format(entry['Name']))
+        if num_placeholders != len(
+            entry["Documentation"]["MessageArgSources"]
+        ):
+            sys.exit(
+                "Different number of placeholders found in "
+                "Message vs MessageArgSources for error {}".format(
+                    entry["Name"]
+                )
+            )
 
 
 def validate_schema(registry, schema):
@@ -132,24 +145,40 @@ def validate_schema(registry, schema):
         check_message_args(registry_json)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(
-        description='PEL message registry processor')
+        description="PEL message registry processor"
+    )
 
-    parser.add_argument('-v', '--validate', action='store_true',
-                        dest='validate',
-                        help='Validate the JSON using the schema')
+    parser.add_argument(
+        "-v",
+        "--validate",
+        action="store_true",
+        dest="validate",
+        help="Validate the JSON using the schema",
+    )
 
-    parser.add_argument('-s', '--schema-file', dest='schema_file',
-                        help='The message registry JSON schema file')
+    parser.add_argument(
+        "-s",
+        "--schema-file",
+        dest="schema_file",
+        help="The message registry JSON schema file",
+    )
 
-    parser.add_argument('-r', '--registry-file', dest='registry_file',
-                        help='The message registry JSON file')
-    parser.add_argument('-k', '--skip-schema-validation', action='store_true',
-                        dest='skip_schema',
-                        help='Skip running schema validation. '
-                             'Only do the extra checks.')
+    parser.add_argument(
+        "-r",
+        "--registry-file",
+        dest="registry_file",
+        help="The message registry JSON file",
+    )
+    parser.add_argument(
+        "-k",
+        "--skip-schema-validation",
+        action="store_true",
+        dest="skip_schema",
+        help="Skip running schema validation. " "Only do the extra checks.",
+    )
 
     args = parser.parse_args()
 
