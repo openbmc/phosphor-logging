@@ -4653,6 +4653,26 @@
         },
 
         {
+            "Name": "com.ibm.Panel.Error.CodeUpdateFailure",
+            "Subsystem": "cec_op_panel",
+            "ComponentID": "0x5000",
+
+            "SRC": {
+                "ReasonCode": "0x5005",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Op-panel code update failure.",
+                "Message": "Error while doing panel code update.",
+                "Notes": [
+                    "Failed to update panel firmware to the latest",
+                    "version. Callout panel I2C path."
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.Host.Boot.Error.WatchdogTimeout",
             "Subsystem": "cec_sp_hostboot_iface",
 
