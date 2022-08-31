@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2355ab6_0cc08493",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000362
+      },
+      "writtenOn": "2022-08-31T09:50:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b0d1693_25b94ba6",
+      "revId": "deb1e39e57ed5eb22f39f35218e6a8b4b791586d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "350caca6_28678e79",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-08-25T14:20:50Z",
       "side": 1,
       "message": "Since you\u0027re both passing in the I2C details and hardcoding a bmc_code maintenance procedure, the callout list has both.  Is that desired here?  Typically callouts are just one or the other, though possibly bmc_code may be low priority.",
+      "revId": "deb1e39e57ed5eb22f39f35218e6a8b4b791586d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "815c6844_779427e5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000362
+      },
+      "writtenOn": "2022-08-31T09:50:57Z",
+      "side": 1,
+      "message": "Callout bmc is not really required in this case. removed it.",
+      "parentUuid": "350caca6_28678e79",
       "revId": "deb1e39e57ed5eb22f39f35218e6a8b4b791586d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
