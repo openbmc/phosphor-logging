@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad7a7a3c_561a14bc",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 4670,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-09-01T19:56:44Z",
+      "side": 1,
+      "message": "Could you add a sentence that the panel hardware or I2C path or whatever will be called out?  Just to make it clear, since there aren\u0027t any hardcoded callouts in the JSON.",
+      "revId": "ceb2532688e700e362141b188c65d46a62cebca0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
