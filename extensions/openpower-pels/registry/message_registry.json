@@ -714,6 +714,31 @@
         },
 
         {
+            "Name": "org.open_power.PHAL.Info.ClockDailyLog",
+            "Subsystem": "cec_clocks",
+            "ComponentID": "0x3000",
+            "Severity": "non_error",
+            "ActionFlags": [ "report", "call_home" ],
+
+            "SRC":
+            {
+                "ReasonCode": "0x300A",
+                "Words6To9":
+                {
+                }
+            },
+
+            "Documentation":
+            {
+                "Description": "Informational error to house clock debug info",
+                "Message": "Informational error to house clock debug info",
+                "Notes": [
+                    "User data includes processor and clock register state information."
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.OCC.Firmware.PresenceMismatch",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x2600",
