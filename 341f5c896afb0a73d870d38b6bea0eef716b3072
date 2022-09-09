@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f82f1367_3e897d90",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 721,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-09-09T16:27:51Z",
+      "side": 1,
+      "message": "The logic we use to decide if a PEL should be visible to admin (as opposed to just service) or not is:\n\n        if (((sevType !\u003d SeverityType::nonError) \u0026\u0026\n             attr.actionFlags.test(reportFlagBit) \u0026\u0026\n             !attr.actionFlags.test(hiddenFlagBit)) ||\n            ((sevType \u003d\u003d SeverityType::nonError) \u0026\u0026\n             attr.actionFlags.test(serviceActionFlagBit)))\n        {\n            isHidden \u003d false;\n        }\n\nso since you have service action set, the event log will still show up on the admin\u0027s web UI page.\n\nI wonder if it would be better to not have service_action set so that doesn\u0027t happen.",
+      "range": {
+        "startLine": 721,
+        "startChar": 29,
+        "endLine": 721,
+        "endChar": 44
+      },
+      "revId": "341f5c896afb0a73d870d38b6bea0eef716b3072",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
