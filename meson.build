@@ -18,6 +18,10 @@ systemd_dep = dependency('systemd')
 sdbusplus_dep = dependency('sdbusplus')
 sdbusplusplus_prog = find_program('sdbus++', native: true)
 sdbuspp_gen_meson_prog = find_program('sdbus++-gen-meson', native: true)
+sdbusplusplus_depfiles = files()
+if sdbusplus_dep.type_name() == 'internal'
+    sdbusplusplus_depfiles = subproject('sdbusplus').get_variable('sdbusplusplus_depfiles')
+endif
 
 pdi_dep = dependency('phosphor-dbus-interfaces')
 
