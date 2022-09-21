@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa77bc09_d6ad6063",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-09-21T13:24:40Z",
+      "side": 1,
+      "message": "could you append with  \u0027PEL: \u0027?",
+      "revId": "8f8053d8eab9fabafef0446dec49f4cbf30bf140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdc6112e_239ff3bd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-09-21T13:24:40Z",
+      "side": 1,
+      "message": "Could you remove this line?  We can\u0027t specify IBM specific things in openbmc commits.",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 25
+      },
+      "revId": "8f8053d8eab9fabafef0446dec49f4cbf30bf140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
