@@ -4691,9 +4691,10 @@
                 "Description": "LCD/Bootfail PIC code update failure.",
                 "Message": "Error while doing LCD/bootfail PIC code update.",
                 "Notes": [
-                    "Failed to update panel firmware(LCD/bootfail PIC) to the",
-                    "latest version. I2C path to the micro controller will be",
-                    "called out."
+                    "Panel firmware(LCD/bootfail PIC) update fails due to ",
+                    "unsupportable firmware version. Inventory path to the",
+                    "FRU on which PIC controller is physically present will",
+                    "be called out."
                 ]
             }
         },
