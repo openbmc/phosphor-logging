@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "68e1d789_47bd1481",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000362
+      },
+      "writtenOn": "2022-09-27T13:22:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "87166982_1b5a468f",
+      "range": {
+        "startLine": 7,
+        "startChar": 4,
+        "endLine": 7,
+        "endChar": 9
+      },
+      "revId": "8ea556ac752682f4159428746e9a33428125d9e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "08bf0139_02c8f65e",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-09-27T04:20:42Z",
       "side": 1,
       "message": "micro-controller not panel",
+      "range": {
+        "startLine": 9,
+        "startChar": 7,
+        "endLine": 9,
+        "endChar": 12
+      },
+      "revId": "8ea556ac752682f4159428746e9a33428125d9e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "475cd426_357e7503",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000362
+      },
+      "writtenOn": "2022-09-27T13:22:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08bf0139_02c8f65e",
       "range": {
         "startLine": 9,
         "startChar": 7,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60a48586_66dee0f4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000362
+      },
+      "writtenOn": "2022-09-27T13:22:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ebb4743b_1216ba60",
+      "range": {
+        "startLine": 10,
+        "startChar": 13,
+        "endLine": 10,
+        "endChar": 18
+      },
+      "revId": "8ea556ac752682f4159428746e9a33428125d9e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8dc20b0_f05cac48",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-09-27T04:20:42Z",
       "side": 1,
       "message": "micro-controller not panel",
+      "range": {
+        "startLine": 18,
+        "startChar": 20,
+        "endLine": 18,
+        "endChar": 25
+      },
+      "revId": "8ea556ac752682f4159428746e9a33428125d9e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7afbc3c_0e500fd2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000362
+      },
+      "writtenOn": "2022-09-27T13:22:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8dc20b0_f05cac48",
       "range": {
         "startLine": 18,
         "startChar": 20,
