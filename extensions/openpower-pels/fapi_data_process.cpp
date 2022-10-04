@@ -167,9 +167,9 @@ bool getTgtReqAttrsVal(const std::vector<uint8_t>& physBinPath,
                                    &targetInfo);
     if (ret == 0)
     {
-        log<level::ERR>(fmt::format("Given ATTR_PHYS_BIN_PATH value({}) "
+        log<level::ERR>(fmt::format("Given ATTR_PHYS_BIN_PATH value({:02x}) "
                                     "not found in phal device tree",
-                                    targetInfo.physBinPath)
+                                    fmt::join(targetInfo.physBinPath, ""))
                             .c_str());
         return false;
     }
