@@ -169,8 +169,8 @@ char* dumpHex(const void* data, size_t size, size_t indentCount, bool toJson)
 void jsonInsert(std::string& jsonStr, const std::string& fieldName,
                 const std::string& fieldValue, uint8_t indentCount)
 {
-    const int8_t spacesToAppend =
-        colAlign - (indentCount * indentLevel) - fieldName.length() - 3;
+    const int8_t spacesToAppend = colAlign - (indentCount * indentLevel) -
+                                  fieldName.length() - 3;
     const std::string jsonIndent(indentCount * indentLevel, 0x20);
     jsonStr.append(jsonIndent + "\"" + fieldName + "\":");
     if (spacesToAppend >= 0)
@@ -208,8 +208,8 @@ void jsonInsertArray(std::string& jsonStr, const std::string& fieldName,
     }
     else
     {
-        const int8_t spacesToAppend =
-            colAlign - (indentCount * indentLevel) - fieldName.length() - 3;
+        const int8_t spacesToAppend = colAlign - (indentCount * indentLevel) -
+                                      fieldName.length() - 3;
         jsonStr.append(jsonIndent + "\"" + fieldName + "\":");
         if (spacesToAppend > 0)
         {

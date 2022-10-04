@@ -1,8 +1,9 @@
 #pragma once
 
+#include <phosphor-logging/lg2/concepts.hpp>
+
 #include <algorithm>
 #include <array>
-#include <phosphor-logging/lg2/concepts.hpp>
 #include <string_view>
 
 namespace lg2::details

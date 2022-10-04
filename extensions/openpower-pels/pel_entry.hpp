@@ -11,7 +11,6 @@ using PropertiesVariant = PELEntryIface::PropertiesVariant;
 
 class PELEntry : public PELEntryIface
 {
-
   public:
     PELEntry() = delete;
     PELEntry(const PELEntry&) = delete;
@@ -35,8 +34,7 @@ class PELEntry : public PELEntryIface
              Repository* repo) :
         PELEntryIface(bus, path.c_str(), prop, true),
         _obmcId(id), _repo(repo)
-    {
-    }
+    {}
 
     /** @brief Update managementSystemAck flag.
      *  @param[in] value - A true value says HMC acknowledged the PEL.

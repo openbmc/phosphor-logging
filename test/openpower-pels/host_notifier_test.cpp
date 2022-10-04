@@ -47,8 +47,8 @@ class HostNotifierTest : public CleanPELFiles
 
         ON_CALL(dataIface, getHostPELEnablement).WillByDefault(Return(true));
 
-        hostIface =
-            std::make_unique<NiceMock<MockHostInterface>>(event, dataIface);
+        hostIface = std::make_unique<NiceMock<MockHostInterface>>(event,
+                                                                  dataIface);
 
         mockHostIface = reinterpret_cast<MockHostInterface*>(hostIface.get());
 

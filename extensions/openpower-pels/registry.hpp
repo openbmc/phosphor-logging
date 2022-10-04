@@ -1,8 +1,9 @@
 #pragma once
 #include "additional_data.hpp"
 
-#include <filesystem>
 #include <nlohmann/json.hpp>
+
+#include <filesystem>
 #include <optional>
 #include <string>
 #include <vector>
@@ -103,9 +104,7 @@ struct SRC
     using AdditionalDataField = std::tuple<std::string, std::string>;
     std::optional<std::map<WordNum, AdditionalDataField>> hexwordADFields;
 
-    SRC() : type(0), reasonCode(0)
-    {
-    }
+    SRC() : type(0), reasonCode(0) {}
 };
 
 /**
@@ -225,8 +224,7 @@ class Registry
      */
     explicit Registry(const std::filesystem::path& registryFile) :
         Registry(registryFile, true)
-    {
-    }
+    {}
 
     /**
      * @brief Constructor
@@ -242,8 +240,7 @@ class Registry
                       bool loadCallouts) :
         _registryFile(registryFile),
         _loadCallouts(loadCallouts)
-    {
-    }
+    {}
 
     /**
      * @brief Find a registry entry based on its error name or reason code.

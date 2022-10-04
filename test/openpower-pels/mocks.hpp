@@ -3,8 +3,9 @@
 
 #include <fcntl.h>
 
-#include <filesystem>
 #include <sdeventplus/source/io.hpp>
+
+#include <filesystem>
 
 #include <gmock/gmock.h>
 
@@ -16,9 +17,7 @@ namespace pels
 class MockDataInterface : public DataInterfaceBase
 {
   public:
-    MockDataInterface()
-    {
-    }
+    MockDataInterface() {}
     MOCK_METHOD(std::string, getMachineTypeModel, (), (const override));
     MOCK_METHOD(std::string, getMachineSerialNumber, (), (const override));
     MOCK_METHOD(std::string, getServerFWVersion, (), (const override));

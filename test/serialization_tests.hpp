@@ -4,9 +4,10 @@
 
 #include <stdlib.h>
 
-#include <filesystem>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/test/sdbus_mock.hpp>
+
+#include <filesystem>
 
 #include <gtest/gtest.h>
 
@@ -27,9 +28,7 @@ phosphor::logging::internal::Manager manager(bus, OBJ_INTERNAL);
 class TestSerialization : public testing::Test
 {
   public:
-    TestSerialization() : dir(fs::path(mkdtemp(tmplt)))
-    {
-    }
+    TestSerialization() : dir(fs::path(mkdtemp(tmplt))) {}
 
     ~TestSerialization()
     {

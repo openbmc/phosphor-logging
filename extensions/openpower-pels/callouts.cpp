@@ -15,9 +15,10 @@
  */
 #include "callouts.hpp"
 
+#include <phosphor-logging/log.hpp>
+
 #include <algorithm>
 #include <map>
-#include <phosphor-logging/log.hpp>
 
 namespace openpower
 {

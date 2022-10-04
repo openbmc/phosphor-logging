@@ -3,12 +3,13 @@
 #include <systemd/sd-journal.h>
 #include <unistd.h>
 
+#include <phosphor-logging/lg2.hpp>
+
 #include <algorithm>
 #include <bitset>
 #include <cstdarg>
 #include <cstdio>
 #include <iostream>
-#include <phosphor-logging/lg2.hpp>
 #include <vector>
 
 // Clang doesn't currently support source_location, but in order to provide
@@ -138,8 +139,7 @@ static constexpr size_t static_locs = pos_func + 1;
 /** No-op output of a message. */
 static void noop_extra_output(level, const lg2::source_location&,
                               const std::string&)
-{
-}
+{}
 
 /** std::cerr output of a message. */
 static void cerr_extra_output(level l, const lg2::source_location& s,
@@ -209,10 +209,10 @@ static void cerr_extra_output(level l, const lg2::source_location& s,
 
 // Use the cerr output method if we are on a TTY or if explicitly set via
 // environment variable.
-static auto extra_output_method =
-    (isatty(fileno(stderr)) || nullptr != getenv("LG2_FORCE_STDERR"))
-        ? cerr_extra_output
-        : noop_extra_output;
+static auto extra_output_method = (isatty(fileno(stderr)) ||
+                                   nullptr != getenv("LG2_FORCE_STDERR"))
+                                      ? cerr_extra_output
+                                      : noop_extra_output;
 
 // Do_log implementation.
 void do_log(level l, const lg2::source_location& s, const char* m, ...)
@@ -311,8 +311,7 @@ void do_log(level l, const lg2::source_location& s, const char* m, ...)
 // people like to compile with Clang for additional / stricter checks.
 #if __has_builtin(__builtin_source_location)
 void do_log(level, const std::experimental::source_location&, const char*, ...)
-{
-}
+{}
 #endif
 
 } // namespace lg2::details

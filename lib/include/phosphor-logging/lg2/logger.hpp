@@ -1,8 +1,9 @@
 #pragma once
 
-#include <cstddef>
 #include <phosphor-logging/lg2/level.hpp>
 #include <phosphor-logging/lg2/source_location.hpp>
+
+#include <cstddef>
 
 namespace lg2::details
 {

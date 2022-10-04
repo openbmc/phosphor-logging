@@ -61,9 +61,7 @@ class Stream
      *
      * @param[in] data - the vector of data
      */
-    explicit Stream(std::vector<uint8_t>& data) : _data(data), _offset(0)
-    {
-    }
+    explicit Stream(std::vector<uint8_t>& data) : _data(data), _offset(0) {}
 
     /**
      * @brief Constructor

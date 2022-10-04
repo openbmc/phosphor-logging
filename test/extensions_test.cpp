@@ -7,35 +7,25 @@
 
 using namespace phosphor::logging;
 
-void startup1(internal::Manager& /*manager*/)
-{
-}
+void startup1(internal::Manager& /*manager*/) {}
 
-void startup2(internal::Manager& /*manager*/)
-{
-}
+void startup2(internal::Manager& /*manager*/) {}
 
 void create1(const std::string& /*message*/, uint32_t /*id*/,
              uint64_t /*timestamp*/, Entry::Level /*severity*/,
              const AdditionalDataArg& /*additionalData*/,
              const AssociationEndpointsArg& /*assocs*/, const FFDCArg& /*ffdc*/)
-{
-}
+{}
 
 void create2(const std::string& /*message*/, uint32_t /*id*/,
              uint64_t /*timestamp*/, Entry::Level /*severity*/,
              const AdditionalDataArg& /*additionalData*/,
              const AssociationEndpointsArg& /*assocs*/, const FFDCArg& /*ffdc*/)
-{
-}
+{}
 
-void deleteLog1(uint32_t /*id*/)
-{
-}
+void deleteLog1(uint32_t /*id*/) {}
 
-void deleteLog2(uint32_t /*id*/)
-{
-}
+void deleteLog2(uint32_t /*id*/) {}
 
 void deleteProhibited1(uint32_t /*id*/, bool& prohibited)
 {

@@ -105,8 +105,7 @@ class FRUIdentity
      */
     explicit FRUIdentity(const std::string& procedureFromRegistry) :
         FRUIdentity(procedureFromRegistry, CalloutValueType::registryName)
-    {
-    }
+    {}
 
     /**
      * @brief Constructor
@@ -132,8 +131,7 @@ class FRUIdentity
                 bool trustedLocationCode) :
         FRUIdentity(symbolicFRUFromRegistry, CalloutValueType::registryName,
                     trustedLocationCode)
-    {
-    }
+    {}
 
     /**
      * @brief Constructor

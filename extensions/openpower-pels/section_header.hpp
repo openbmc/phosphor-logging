@@ -21,9 +21,7 @@ struct SectionHeader
     /**
      * @brief Constructor
      */
-    SectionHeader() : id(0), size(0), version(0), subType(0), componentID(0)
-    {
-    }
+    SectionHeader() : id(0), size(0), version(0), subType(0), componentID(0) {}
 
     /**
      * @brief Constructor
@@ -38,8 +36,7 @@ struct SectionHeader
                   uint16_t componentID) :
         id(id),
         size(size), version(version), subType(subType), componentID(componentID)
-    {
-    }
+    {}
 
     /**
      * @brief A two character ASCII field which identifies the section type.

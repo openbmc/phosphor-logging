@@ -23,10 +23,7 @@ static constexpr auto log_flag_seq_start =
 
 /** Concept to determine if a type is one of the defined flag types. */
 template <typename T>
-concept log_flags = requires
-{
-    T::i_am_a_lg2_flag_type;
-};
+concept log_flags = requires { T::i_am_a_lg2_flag_type; };
 
 /** Operator to combine log_flag sets together. */
 template <log_flags... As, log_flags... Bs>

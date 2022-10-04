@@ -21,8 +21,7 @@
 using namespace openpower::pels;
 
 class PrivateHeaderTest : public CleanLogID
-{
-};
+{};
 
 TEST_F(PrivateHeaderTest, SizeTest)
 {

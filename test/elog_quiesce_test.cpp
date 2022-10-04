@@ -3,9 +3,10 @@
 #include "elog_entry.hpp"
 #include "log_manager.hpp"
 
-#include <filesystem>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/test/sdbus_mock.hpp>
+
+#include <filesystem>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>

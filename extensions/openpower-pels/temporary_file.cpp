@@ -18,8 +18,8 @@ namespace util
 TemporaryFile::TemporaryFile(const char* data, const uint32_t len)
 {
     // Build template path required by mkstemp()
-    std::string templatePath =
-        fs::temp_directory_path() / "phosphor-logging-XXXXXX";
+    std::string templatePath = fs::temp_directory_path() /
+                               "phosphor-logging-XXXXXX";
 
     // Generate unique file name, create file, and open it.  The XXXXXX
     // characters are replaced by mkstemp() to make the file name unique.

@@ -22,8 +22,9 @@
 
 #include <fmt/format.h>
 
-#include <iostream>
 #include <phosphor-logging/log.hpp>
+
+#include <iostream>
 
 namespace openpower
 {
@@ -65,8 +66,8 @@ UserHeader::UserHeader(const message::Entry& entry,
     if (ss)
     {
         auto eventSubsystem = std::stoul(*ss, NULL, 16);
-        std::string subsystemString =
-            pv::getValue(eventSubsystem, pel_values::subsystemValues);
+        std::string subsystemString = pv::getValue(eventSubsystem,
+                                                   pel_values::subsystemValues);
         if (subsystemString == "invalid")
         {
             log<level::WARNING>(
@@ -265,8 +266,8 @@ std::optional<std::string> UserHeader::getJSON() const
     subsystem = pv::getValue(_eventSubsystem, pel_values::subsystemValues);
     eventScope = pv::getValue(_eventScope, pel_values::eventScopeValues);
     eventType = pv::getValue(_eventType, pel_values::eventTypeValues);
-    actionFlags =
-        pv::getValuesBitwise(_actionFlags, pel_values::actionFlagsValues);
+    actionFlags = pv::getValuesBitwise(_actionFlags,
+                                       pel_values::actionFlagsValues);
 
     std::string hostState{"Invalid"};
     std::string hmcState{"Invalid"};

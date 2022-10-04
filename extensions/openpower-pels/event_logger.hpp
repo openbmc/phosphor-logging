@@ -4,9 +4,10 @@
 #include "elog_entry.hpp"
 
 #include <phosphor-logging/log.hpp>
-#include <queue>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
+
+#include <queue>
 #include <tuple>
 
 namespace openpower::pels
@@ -57,8 +58,7 @@ class EventLogger
      */
     explicit EventLogger(LogFunction creator) :
         _event(sdeventplus::Event::get_default()), _creator(creator)
-    {
-    }
+    {}
 
     /**
      * @brief Adds an event to the queue so that it will be created

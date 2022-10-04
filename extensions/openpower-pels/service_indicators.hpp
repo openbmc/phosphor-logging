@@ -27,8 +27,7 @@ class Policy
      * @param[in] dataIface - The DataInterface object
      */
     explicit Policy(const DataInterfaceBase& dataIface) : _dataIface(dataIface)
-    {
-    }
+    {}
 
     /**
      * @brief Pure virtual function for activating service indicators
@@ -70,8 +69,7 @@ class LightPath : public Policy
      * @param[in] dataIface - The DataInterface object
      */
     explicit LightPath(const DataInterfaceBase& dataIface) : Policy(dataIface)
-    {
-    }
+    {}
 
     /**
      * @brief Turns on LEDs for certain FRUs called out in the PEL.

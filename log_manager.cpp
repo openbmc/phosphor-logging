@@ -14,6 +14,10 @@
 #include <systemd/sd-journal.h>
 #include <unistd.h>
 
+#include <phosphor-logging/lg2.hpp>
+#include <sdbusplus/vtable.hpp>
+#include <xyz/openbmc_project/State/Host/server.hpp>
+
 #include <cassert>
 #include <chrono>
 #include <cstdio>
@@ -23,13 +27,10 @@
 #include <future>
 #include <iostream>
 #include <map>
-#include <phosphor-logging/lg2.hpp>
-#include <sdbusplus/vtable.hpp>
 #include <set>
 #include <string>
 #include <string_view>
 #include <vector>
-#include <xyz/openbmc_project/State/Host/server.hpp>
 
 using namespace std::chrono;
 extern const std::map<
@@ -397,8 +398,8 @@ void Manager::quiesceOnError(const uint32_t entryId)
 
     lg2::info("QuiesceOnError set and callout present");
 
-    auto blockPath =
-        std::string(OBJ_LOGGING) + "/block" + std::to_string(entryId);
+    auto blockPath = std::string(OBJ_LOGGING) + "/block" +
+                     std::to_string(entryId);
     auto blockObj = std::make_unique<Block>(this->busLog, blockPath, entryId);
     this->blockingErrors.push_back(std::move(blockObj));
 

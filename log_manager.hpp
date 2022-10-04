@@ -7,9 +7,10 @@
 #include "xyz/openbmc_project/Logging/Entry/server.hpp"
 #include "xyz/openbmc_project/Logging/Internal/Manager/server.hpp"
 
-#include <list>
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
+
+#include <list>
 
 namespace phosphor
 {

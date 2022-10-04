@@ -20,6 +20,7 @@
 
 #include <phosphor-logging/sdjournal.hpp>
 #include <sdbusplus/server/transaction.hpp>
+
 #include <tuple>
 #include <type_traits>
 
@@ -92,27 +93,25 @@ void log(T&& e)
 } // namespace details
 
 template <class T>
-struct is_char_ptr_argtype
-    : std::integral_constant<
-          bool,
-          (std::is_pointer<typename std::decay<T>::type>::value &&
-           std::is_same<typename std::remove_cv<typename std::remove_pointer<
-                            typename std::decay<T>::type>::type>::type,
-                        char>::value)>
-{
-};
+struct is_char_ptr_argtype :
+    std::integral_constant<
+        bool,
+        (std::is_pointer<typename std::decay<T>::type>::value &&
+         std::is_same<typename std::remove_cv<typename std::remove_pointer<
+                          typename std::decay<T>::type>::type>::type,
+                      char>::value)>
+{};
 
 template <class T>
-struct is_printf_argtype
-    : std::integral_constant<
-          bool,
-          (std::is_integral<typename std::remove_reference<T>::type>::value ||
-           std::is_enum<typename std::remove_reference<T>::type>::value ||
-           std::is_floating_point<
-               typename std::remove_reference<T>::type>::value ||
-           std::is_pointer<typename std::decay<T>::type>::value)>
-{
-};
+struct is_printf_argtype :
+    std::integral_constant<
+        bool,
+        (std::is_integral<typename std::remove_reference<T>::type>::value ||
+         std::is_enum<typename std::remove_reference<T>::type>::value ||
+         std::is_floating_point<
+             typename std::remove_reference<T>::type>::value ||
+         std::is_pointer<typename std::decay<T>::type>::value)>
+{};
 
 template <bool...>
 struct bool_pack;

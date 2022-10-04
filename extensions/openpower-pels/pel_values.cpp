@@ -330,7 +330,6 @@ const std::map<TransmissionState, std::string> transmissionStates = {
 std::string getValue(const uint8_t field, const pel_values::PELValues& values,
                      const uint8_t position)
 {
-
     auto tmp = pel_values::findByValue(field, values);
     if (tmp != values.end())
     {

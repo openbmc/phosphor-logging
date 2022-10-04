@@ -17,10 +17,11 @@
 
 #include "paths.hpp"
 
+#include <phosphor-logging/log.hpp>
+
 #include <chrono>
 #include <filesystem>
 #include <fstream>
-#include <phosphor-logging/log.hpp>
 
 namespace openpower
 {

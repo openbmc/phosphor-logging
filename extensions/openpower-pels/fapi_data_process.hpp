@@ -2,8 +2,9 @@
 
 #include <libekb.H>
 
-#include <cstdarg>
 #include <nlohmann/json.hpp>
+
+#include <cstdarg>
 
 namespace openpower
 {

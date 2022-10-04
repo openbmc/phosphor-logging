@@ -4,11 +4,12 @@
 
 #include <stdint.h>
 
-#include <chrono>
-#include <functional>
 #include <phosphor-logging/log.hpp>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/io.hpp>
+
+#include <chrono>
+#include <functional>
 
 namespace openpower
 {
@@ -60,8 +61,7 @@ class HostInterface
      */
     HostInterface(sd_event* event, DataInterfaceBase& dataIface) :
         _event(event), _dataIface(dataIface)
-    {
-    }
+    {}
 
     /**
      * @brief Pure virtual function for sending the 'new PEL available'

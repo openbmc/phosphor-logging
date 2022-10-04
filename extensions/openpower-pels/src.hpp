@@ -100,8 +100,7 @@ class SRC : public Section
     SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
         const DataInterfaceBase& dataIface) :
         SRC(regEntry, additionalData, nlohmann::json{}, dataIface)
-    {
-    }
+    {}
 
     /**
      * @brief Constructor

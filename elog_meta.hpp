@@ -5,9 +5,10 @@
 #include "callouts-gen.hpp"
 #include "elog_entry.hpp"
 
+#include <phosphor-logging/elog-errors.hpp>
+
 #include <algorithm>
 #include <cstring>
-#include <phosphor-logging/elog-errors.hpp>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -84,8 +85,7 @@ inline void
     build<TestErrorTwo::DEV_ID>(const std::string& /*match*/,
                                 const std::vector<std::string>& /*data*/,
                                 AssociationList& /*list*/)
-{
-}
+{}
 
 template <>
 inline void

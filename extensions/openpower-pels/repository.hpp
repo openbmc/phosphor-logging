@@ -45,8 +45,7 @@ class Repository
             sizeOnDisk(size), creator(creator), subsystem(subsystem),
             severity(sev), actionFlags(flags), hostState(hostState),
             hmcState(hmcState)
-        {
-        }
+        {}
     };
 
     /**
@@ -61,33 +60,23 @@ class Repository
         struct Pel
         {
             uint32_t id;
-            explicit Pel(uint32_t i) : id(i)
-            {
-            }
+            explicit Pel(uint32_t i) : id(i) {}
         };
         struct Obmc
         {
             uint32_t id;
-            explicit Obmc(uint32_t i) : id(i)
-            {
-            }
+            explicit Obmc(uint32_t i) : id(i) {}
         };
 
         Pel pelID;
 
         Obmc obmcID;
 
-        LogID(Pel pel, Obmc obmc) : pelID(pel), obmcID(obmc)
-        {
-        }
+        LogID(Pel pel, Obmc obmc) : pelID(pel), obmcID(obmc) {}
 
-        explicit LogID(Pel id) : pelID(id), obmcID(0)
-        {
-        }
+        explicit LogID(Pel id) : pelID(id), obmcID(0) {}
 
-        explicit LogID(Obmc id) : pelID(0), obmcID(id)
-        {
-        }
+        explicit LogID(Obmc id) : pelID(0), obmcID(id) {}
 
         LogID() = delete;
 
@@ -135,8 +124,7 @@ class Repository
         SizeStats() :
             total(0), bmc(0), nonBMC(0), bmcServiceable(0), bmcInfo(0),
             nonBMCServiceable(0), nonBMCInfo(0)
-        {
-        }
+        {}
     };
 
     Repository() = delete;
@@ -153,8 +141,7 @@ class Repository
      */
     explicit Repository(const std::filesystem::path& basePath) :
         Repository(basePath, getPELRepoSize(), getMaxNumPELs())
-    {
-    }
+    {}
 
     /**
      * @brief Constructor that takes the repository size

@@ -1,7 +1,8 @@
 #include <systemd/sd-journal.h>
 
-#include <cstdarg>
 #include <phosphor-logging/sdjournal.hpp>
+
+#include <cstdarg>
 
 namespace phosphor
 {

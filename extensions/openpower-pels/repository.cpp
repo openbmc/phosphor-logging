@@ -17,9 +17,10 @@
 
 #include <sys/stat.h>
 
-#include <fstream>
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/Common/File/error.hpp>
+
+#include <fstream>
 
 namespace openpower
 {
@@ -467,8 +468,8 @@ void Repository::updatePEL(const fs::path& path, PELUpdateFunc updateFunc)
 bool Repository::isServiceableSev(const PELAttributes& pel)
 {
     auto sevType = static_cast<SeverityType>(pel.severity & 0xF0);
-    auto sevPVEntry =
-        pel_values::findByValue(pel.severity, pel_values::severityValues);
+    auto sevPVEntry = pel_values::findByValue(pel.severity,
+                                              pel_values::severityValues);
     std::string sevName = std::get<pel_values::registryNamePos>(*sevPVEntry);
 
     bool check1 = (sevType == SeverityType::predictive) ||

@@ -98,7 +98,6 @@ class SbeFFDC
      */
     ~SbeFFDC()
     {
-
         try
         {
             for (auto path : paths)

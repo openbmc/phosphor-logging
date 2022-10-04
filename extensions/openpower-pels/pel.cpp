@@ -40,8 +40,9 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include <iostream>
 #include <phosphor-logging/log.hpp>
+
+#include <iostream>
 
 namespace openpower
 {
@@ -73,8 +74,8 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
     std::unique_ptr<sbe::SbeFFDC> sbeFFDCPtr;
     if (processReq)
     {
-        sbeFFDCPtr =
-            std::make_unique<sbe::SbeFFDC>(additionalData, ffdcFilesIn);
+        sbeFFDCPtr = std::make_unique<sbe::SbeFFDC>(additionalData,
+                                                    ffdcFilesIn);
         const auto& sbeFFDCFiles = sbeFFDCPtr->getSbeFFDC();
         ffdcFiles.insert(ffdcFiles.end(), sbeFFDCFiles.begin(),
                          sbeFFDCFiles.end());
@@ -109,8 +110,8 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
         }
     }
 
-    auto src =
-        std::make_unique<SRC>(regEntry, additionalData, callouts, dataIface);
+    auto src = std::make_unique<SRC>(regEntry, additionalData, callouts,
+                                     dataIface);
 
     if (!src->getDebugData().empty())
     {
@@ -199,9 +200,7 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
     checkRulesAndFix();
 }
 
-PEL::PEL(std::vector<uint8_t>& data) : PEL(data, 0)
-{
-}
+PEL::PEL(std::vector<uint8_t>& data) : PEL(data, 0) {}
 
 PEL::PEL(std::vector<uint8_t>& data, uint32_t obmcLogID)
 {
@@ -328,8 +327,8 @@ void PEL::checkRulesAndFix()
     // assume the user knows what they are doing.
     if (_uh->actionFlags() == actionFlagsDefault)
     {
-        auto [actionFlags, eventType] =
-            pel_rules::check(0, _uh->eventType(), _uh->severity());
+        auto [actionFlags, eventType] = pel_rules::check(0, _uh->eventType(),
+                                                         _uh->severity());
 
         _uh->setActionFlags(actionFlags);
         _uh->setEventType(eventType);
@@ -655,8 +654,7 @@ void addProcessNameToJSON(nlohmann::json& json,
         }
     }
     catch (const std::exception& e)
-    {
-    }
+    {}
 
     if (pid)
     {

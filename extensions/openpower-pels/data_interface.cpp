@@ -21,10 +21,11 @@
 
 #include <fmt/format.h>
 
-#include <fstream>
-#include <iterator>
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
+
+#include <fstream>
+#include <iterator>
 
 // Use a timeout of 10s for D-Bus calls so if there are
 // timeouts the callers of the PEL creation method won't
@@ -206,8 +207,8 @@ DataInterface::DataInterface(sdbusplus::bus_t& bus) : _bus(bus)
                 auto currentVal = std::get_if<std::string>(&currentValVariant);
                 if (currentVal)
                 {
-                    this->_hmcManaged =
-                        (*currentVal == "Enabled") ? true : false;
+                    this->_hmcManaged = (*currentVal == "Enabled") ? true
+                                                                   : false;
                 }
             }
         }));
@@ -236,7 +237,6 @@ void DataInterface::getProperty(const std::string& service,
                                 const std::string& property,
                                 DBusValue& value) const
 {
-
     auto method = _bus.new_method_call(service.c_str(), objectPath.c_str(),
                                        interface::dbusProperty, "Get");
     method.append(interface, property);
@@ -247,7 +247,6 @@ void DataInterface::getProperty(const std::string& service,
 
 DBusPathList DataInterface::getPaths(const DBusInterfaceList& interfaces) const
 {
-
     auto method = _bus.new_method_call(
         service_name::objectMapper, object_path::objectMapper,
         interface::objectMapper, "GetSubTreePaths");
@@ -312,7 +311,6 @@ std::string DataInterface::getMachineTypeModel() const
     std::string model;
     try
     {
-
         auto service = getService(object_path::systemInv, interface::invAsset);
         if (!service.empty())
         {
@@ -339,7 +337,6 @@ std::string DataInterface::getMachineSerialNumber() const
     std::string sn;
     try
     {
-
         auto service = getService(object_path::systemInv, interface::invAsset);
         if (!service.empty())
         {
@@ -368,8 +365,8 @@ std::string DataInterface::getMotherboardCCIN() const
 
     try
     {
-        auto service =
-            getService(object_path::motherBoardInv, interface::viniRecordVPD);
+        auto service = getService(object_path::motherBoardInv,
+                                  interface::viniRecordVPD);
         if (!service.empty())
         {
             DBusValue value;
@@ -398,8 +395,8 @@ std::vector<uint8_t> DataInterface::getSystemIMKeyword() const
 
     try
     {
-        auto service =
-            getService(object_path::motherBoardInv, interface::vsbpRecordVPD);
+        auto service = getService(object_path::motherBoardInv,
+                                  interface::vsbpRecordVPD);
         if (!service.empty())
         {
             DBusValue value;
@@ -435,8 +432,8 @@ void DataInterface::getHWCalloutFields(const std::string& inventoryPath,
 
     auto service = getService(inventoryPath, interface::viniRecordVPD);
 
-    auto properties =
-        getAllProperties(service, inventoryPath, interface::viniRecordVPD);
+    auto properties = getAllProperties(service, inventoryPath,
+                                       interface::viniRecordVPD);
 
     auto value = std::get<std::vector<uint8_t>>(properties["FN"]);
     fruPartNumber = std::string{value.begin(), value.end()};
@@ -555,9 +552,9 @@ void DataInterface::assertLEDGroup(const std::string& ledGroup,
                                    bool value) const
 {
     DBusValue variant = value;
-    auto method =
-        _bus.new_method_call(service_name::ledGroupManager, ledGroup.c_str(),
-                             interface::dbusProperty, "Set");
+    auto method = _bus.new_method_call(service_name::ledGroupManager,
+                                       ledGroup.c_str(),
+                                       interface::dbusProperty, "Set");
     method.append(interface::ledGroup, "Asserted", variant);
     _bus.call(method, dbusTimeout);
 }
@@ -641,8 +638,8 @@ bool DataInterface::getQuiesceOnError() const
 
     try
     {
-        auto service =
-            getService(object_path::logSetting, interface::logSetting);
+        auto service = getService(object_path::logSetting,
+                                  interface::logSetting);
         if (!service.empty())
         {
             DBusValue value;
@@ -814,8 +811,8 @@ std::vector<uint32_t> DataInterface::getLogIDWithHwIsolation() const
                 // If the entry isn't resolved
                 if (!status)
                 {
-                    auto assocService =
-                        getService(path, interface::association);
+                    auto assocService = getService(path,
+                                                   interface::association);
                     if (!assocService.empty())
                     {
                         DBusValue endpoints;

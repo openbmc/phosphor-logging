@@ -23,6 +23,7 @@
 #include <Python.h>
 
 #include <nlohmann/json.hpp>
+
 #include <sstream>
 #endif
 #include <fmt/format.h>
@@ -203,8 +204,8 @@ std::optional<std::string> getPythonJSON(std::vector<std::string>& hexwords,
             {
                 std::unique_ptr<PyObject, decltype(&pyDecRef)> resPtr(
                     pResult, &pyDecRef);
-                PyObject* pBytes =
-                    PyUnicode_AsEncodedString(pResult, "utf-8", "~E~");
+                PyObject* pBytes = PyUnicode_AsEncodedString(pResult, "utf-8",
+                                                             "~E~");
                 std::unique_ptr<PyObject, decltype(&pyDecRef)> pyBytePtr(
                     pBytes, &pyDecRef);
                 const char* output = PyBytes_AS_STRING(pBytes);
@@ -361,8 +362,8 @@ SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
     if (ss)
     {
         auto eventSubsystem = std::stoul(*ss, NULL, 16);
-        std::string subsystem =
-            pv::getValue(eventSubsystem, pel_values::subsystemValues);
+        std::string subsystem = pv::getValue(eventSubsystem,
+                                             pel_values::subsystemValues);
         if (subsystem == "invalid")
         {
             log<level::WARNING>(
@@ -400,8 +401,8 @@ void SRC::setUserDefinedHexWords(const message::Entry& regEntry,
         // Can only set words 6 - 9
         if (!isUserDefinedWord(wordNum))
         {
-            std::string msg =
-                "SRC user data word out of range: " + std::to_string(wordNum);
+            std::string msg = "SRC user data word out of range: " +
+                              std::to_string(wordNum);
             addDebugData(msg);
             continue;
         }
@@ -812,8 +813,8 @@ void SRC::addCallouts(const message::Entry& regEntry,
                       const nlohmann::json& jsonCallouts,
                       const DataInterfaceBase& dataIface)
 {
-    auto registryCallouts =
-        getRegistryCallouts(regEntry, additionalData, dataIface);
+    auto registryCallouts = getRegistryCallouts(regEntry, additionalData,
+                                                dataIface);
 
     auto item = additionalData.getValue("CALLOUT_INVENTORY_PATH");
     auto priority = additionalData.getValue("CALLOUT_PRIORITY");
@@ -881,16 +882,16 @@ void SRC::addInventoryCallout(const std::string& inventoryPath,
         {
             dataIface.getHWCalloutFields(inventoryPath, fn, ccin, sn);
 
-            CalloutPriority p =
-                priority ? priority.value() : CalloutPriority::high;
+            CalloutPriority p = priority ? priority.value()
+                                         : CalloutPriority::high;
 
-            callout =
-                std::make_unique<src::Callout>(p, locCode, fn, ccin, sn, mrus);
+            callout = std::make_unique<src::Callout>(p, locCode, fn, ccin, sn,
+                                                     mrus);
         }
         catch (const sdbusplus::exception_t& e)
         {
-            std::string msg =
-                "No VPD found for " + inventoryPath + ": " + e.what();
+            std::string msg = "No VPD found for " + inventoryPath + ": " +
+                              e.what();
             addDebugData(msg);
 
             // Just create the callout with empty FRU fields
@@ -980,8 +981,8 @@ void SRC::addRegistryCallouts(
     }
     catch (const std::exception& e)
     {
-        std::string msg =
-            "Error parsing PEL message registry callout JSON: "s + e.what();
+        std::string msg = "Error parsing PEL message registry callout JSON: "s +
+                          e.what();
         addDebugData(msg);
     }
 }
@@ -1002,8 +1003,8 @@ void SRC::addRegistryCallout(
         }
         catch (const std::exception& e)
         {
-            auto msg =
-                "Unable to expand location code " + locCode + ": " + e.what();
+            auto msg = "Unable to expand location code " + locCode + ": " +
+                       e.what();
             addDebugData(msg);
             return;
         }
@@ -1011,8 +1012,8 @@ void SRC::addRegistryCallout(
 
     // Via the PEL values table, get the priority enum.
     // The schema will have validated the priority was a valid value.
-    auto priorityIt =
-        pv::findByName(regCallout.priority, pv::calloutPriorityValues);
+    auto priorityIt = pv::findByName(regCallout.priority,
+                                     pv::calloutPriorityValues);
     assert(priorityIt != pv::calloutPriorityValues.end());
     auto priority =
         static_cast<CalloutPriority>(std::get<pv::fieldValuePos>(*priorityIt));
@@ -1020,8 +1021,8 @@ void SRC::addRegistryCallout(
     if (!regCallout.procedure.empty())
     {
         // Procedure callout
-        callout =
-            std::make_unique<src::Callout>(priority, regCallout.procedure);
+        callout = std::make_unique<src::Callout>(priority,
+                                                 regCallout.procedure);
     }
     else if (!regCallout.symbolicFRU.empty())
     {

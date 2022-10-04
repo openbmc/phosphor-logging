@@ -26,8 +26,7 @@ namespace fs = std::filesystem;
 using namespace openpower::pels;
 
 class PELTest : public CleanLogID
-{
-};
+{};
 
 // A PEL from a real system
 const std::vector<uint8_t> realPELData{

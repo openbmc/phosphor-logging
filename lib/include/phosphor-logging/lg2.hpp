@@ -41,8 +41,7 @@ struct log
         const char* msg, details::header_str_conversion_t<Ts&&>... ts,
         const lg2::source_location& s = lg2::source_location::current()) :
         log(s, msg, std::forward<details::header_str_conversion_t<Ts&&>>(ts)...)
-    {
-    }
+    {}
 
     // Give a nicer compile error if someone tries to log without a message.
     log() = delete;

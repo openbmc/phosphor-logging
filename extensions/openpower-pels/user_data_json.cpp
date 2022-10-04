@@ -24,9 +24,10 @@
 
 #include <Python.h>
 
-#include <iomanip>
 #include <nlohmann/json.hpp>
 #include <phosphor-logging/log.hpp>
+
+#include <iomanip>
 #include <sstream>
 
 namespace openpower::pels::user_data
@@ -329,8 +330,8 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
             {
                 std::unique_ptr<PyObject, decltype(&pyDecRef)> resPtr(
                     pResult, &pyDecRef);
-                PyObject* pBytes =
-                    PyUnicode_AsEncodedString(pResult, "utf-8", "~E~");
+                PyObject* pBytes = PyUnicode_AsEncodedString(pResult, "utf-8",
+                                                             "~E~");
                 std::unique_ptr<PyObject, decltype(&pyDecRef)> pyBytePtr(
                     pBytes, &pyDecRef);
                 const char* output = PyBytes_AS_STRING(pBytes);

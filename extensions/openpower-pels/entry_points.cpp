@@ -48,9 +48,9 @@ void pelStartup(internal::Manager& logManager)
     std::unique_ptr<HostInterface> hostIface = std::make_unique<PLDMInterface>(
         logManager.getBus().get_event(), *(dataIface.get()));
 
-    manager =
-        std::make_unique<Manager>(logManager, std::move(dataIface),
-                                  std::move(logger), std::move(hostIface));
+    manager = std::make_unique<Manager>(logManager, std::move(dataIface),
+                                        std::move(logger),
+                                        std::move(hostIface));
 #else
     manager = std::make_unique<Manager>(logManager, std::move(dataIface),
                                         std::move(logger));

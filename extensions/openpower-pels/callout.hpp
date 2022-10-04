@@ -125,8 +125,7 @@ class Callout
     Callout(CalloutPriority priority,
             const std::string& procedureFromRegistry) :
         Callout(priority, procedureFromRegistry, CalloutValueType::registryName)
-    {
-    }
+    {}
 
     /**
      * @brief Constructor
@@ -162,8 +161,7 @@ class Callout
         Callout(priority, symbolicFRUFromRegistry,
                 CalloutValueType::registryName, locationCode,
                 trustedLocationCode)
-    {
-    }
+    {}
 
     /**
      * @brief Returns the size of this object when flattened into a PEL

@@ -3,12 +3,13 @@
 #include <getopt.h>
 #include <systemd/sd-journal.h>
 
-#include <cstring>
-#include <iostream>
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/elog.hpp>
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/exception.hpp>
+
+#include <cstring>
+#include <iostream>
 #include <sstream>
 
 using namespace phosphor;
@@ -125,8 +126,8 @@ int elog_test()
     if (rc)
         return (rc);
 
-    rc =
-        validate_journal(TestErrorOne::FILE_NAME::str_short, "elog_test_3.txt");
+    rc = validate_journal(TestErrorOne::FILE_NAME::str_short,
+                          "elog_test_3.txt");
     if (rc)
         return (rc);
 
@@ -170,8 +171,8 @@ int elog_test()
     if (rc)
         return (rc);
 
-    rc =
-        validate_journal(TestErrorOne::FILE_NAME::str_short, "elog_test_4.txt");
+    rc = validate_journal(TestErrorOne::FILE_NAME::str_short,
+                          "elog_test_4.txt");
     if (rc)
         return (rc);
 

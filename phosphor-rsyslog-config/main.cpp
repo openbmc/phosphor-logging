@@ -1,10 +1,10 @@
 #include "config.h"
 
+#include "config_main.h"
+
 #include "server-conf.hpp"
 
 #include <sdbusplus/bus.hpp>
-
-#include "config_main.h"
 
 int main(int /*argc*/, char* /*argv*/[])
 {

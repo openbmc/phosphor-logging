@@ -26,11 +26,12 @@
 #include <sys/inotify.h>
 #include <unistd.h>
 
+#include <xyz/openbmc_project/Common/error.hpp>
+#include <xyz/openbmc_project/Logging/Create/server.hpp>
+
 #include <filesystem>
 #include <fstream>
 #include <locale>
-#include <xyz/openbmc_project/Common/error.hpp>
-#include <xyz/openbmc_project/Logging/Create/server.hpp>
 
 namespace openpower
 {
@@ -387,9 +388,9 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
     auto src = pel->primarySRC();
     if (src)
     {
-        auto m =
-            fmt::format("Created PEL {:#x} (BMC ID {}) with SRC {}", pel->id(),
-                        pel->obmcLogID(), (*src)->asciiString());
+        auto m = fmt::format("Created PEL {:#x} (BMC ID {}) with SRC {}",
+                             pel->id(), pel->obmcLogID(),
+                             (*src)->asciiString());
         while (m.back() == ' ')
         {
             m.pop_back();
@@ -548,8 +549,8 @@ void Manager::setupPELDeleteWatch()
     if (-1 == _pelFileDeleteFD)
     {
         auto e = errno;
-        std::string msg =
-            "inotify_init1 failed with errno " + std::to_string(e);
+        std::string msg = "inotify_init1 failed with errno " +
+                          std::to_string(e);
         log<level::ERR>(msg.c_str());
         abort();
     }
@@ -559,8 +560,8 @@ void Manager::setupPELDeleteWatch()
     if (-1 == _pelFileDeleteWatchFD)
     {
         auto e = errno;
-        std::string msg =
-            "inotify_add_watch failed with error " + std::to_string(e);
+        std::string msg = "inotify_add_watch failed with error " +
+                          std::to_string(e);
         log<level::ERR>(msg.c_str());
         abort();
     }
@@ -784,8 +785,8 @@ std::string Manager::getResolution(const openpower::pels::PEL& pel) const
                 resolution += std::to_string(index) + ". ";
                 // Adding Location code to resolution
                 if (!entry->locationCode().empty())
-                    resolution +=
-                        "Location Code: " + entry->locationCode() + ", ";
+                    resolution += "Location Code: " + entry->locationCode() +
+                                  ", ";
                 if (entry->fruIdentity())
                 {
                     // Get priority and set the resolution string
@@ -857,8 +858,8 @@ void Manager::updateDBusSeverity(const openpower::pels::PEL& pel)
     auto entryN = _logManager.entries.find(pel.obmcLogID());
     if (entryN != _logManager.entries.end())
     {
-        auto newSeverity =
-            fixupLogSeverity(entryN->second->severity(), sevType);
+        auto newSeverity = fixupLogSeverity(entryN->second->severity(),
+                                            sevType);
         if (newSeverity)
         {
             log<level::INFO>(
@@ -988,8 +989,8 @@ void Manager::updateProgressSRC(
             // Read bytes from offset [40-47] e.g. BD8D1001
             for (int i = 0; i < 8; i++)
             {
-                srcRefCode |=
-                    (static_cast<uint64_t>(asciiSRC[40 + i]) << (8 * i));
+                srcRefCode |= (static_cast<uint64_t>(asciiSRC[40 + i])
+                               << (8 * i));
             }
 
             try

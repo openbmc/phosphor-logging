@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-extern "C" {
+extern "C"
+{
 #include <libpdbg.h>
 }
 
@@ -27,8 +28,9 @@ extern "C" {
 #include <fmt/format.h>
 #include <libekb.H>
 
-#include <new>
 #include <phosphor-logging/log.hpp>
+
+#include <new>
 
 namespace openpower
 {

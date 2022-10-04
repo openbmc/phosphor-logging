@@ -33,8 +33,7 @@ using ::testing::Return;
 using ::testing::SetArgReferee;
 
 class PELTest : public CleanLogID
-{
-};
+{};
 
 fs::path makeTempDir()
 {

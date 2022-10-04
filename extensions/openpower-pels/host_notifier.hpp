@@ -4,10 +4,11 @@
 #include "pel.hpp"
 #include "repository.hpp"
 
-#include <deque>
 #include <sdeventplus/clock.hpp>
 #include <sdeventplus/source/event.hpp>
 #include <sdeventplus/utility/timer.hpp>
+
+#include <deque>
 
 namespace openpower::pels
 {

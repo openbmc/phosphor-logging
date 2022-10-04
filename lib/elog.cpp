@@ -1,6 +1,7 @@
 #include "config.h"
 
 #include <phosphor-logging/elog.hpp>
+
 #include <stdexcept>
 
 namespace phosphor

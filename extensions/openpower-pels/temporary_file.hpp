@@ -73,9 +73,7 @@ class TemporaryFile
     /**
      * Destructor.
      */
-    ~TemporaryFile()
-    {
-    }
+    ~TemporaryFile() {}
 
     /**
      * Deletes the temporary file.

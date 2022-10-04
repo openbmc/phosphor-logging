@@ -312,7 +312,6 @@ TEST_F(DeviceCalloutsTest, getJSONFilenameTest)
 // Test determining the callout type from the device path
 TEST_F(DeviceCalloutsTest, getCalloutTypeTest)
 {
-
     // Invalid
     {
         EXPECT_EQ(util::getCalloutType("/some/bad/device/path"),
@@ -347,7 +346,6 @@ TEST_F(DeviceCalloutsTest, getCalloutTypeTest)
 
     // FSI-SPI
     {
-
         EXPECT_EQ(
             util::getCalloutType(
                 "/sys/devices/platform/ahb/ahb:apb/1e79b000.fsi/fsi-master/"
@@ -360,7 +358,6 @@ TEST_F(DeviceCalloutsTest, getCalloutTypeTest)
 // Test getting I2C search keys
 TEST_F(DeviceCalloutsTest, getI2CSearchKeysTest)
 {
-
     {
         EXPECT_EQ(util::getI2CSearchKeys(
                       "/sys/devices/platform/ahb/ahb:apb/ahb:apb:bus@1e78a000/"

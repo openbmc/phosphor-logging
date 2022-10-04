@@ -18,10 +18,11 @@
 #include "mocks.hpp"
 #include "pel_utils.hpp"
 
-#include <fstream>
-#include <regex>
 #include <sdbusplus/test/sdbus_mock.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
+
+#include <fstream>
+#include <regex>
 
 #include <gtest/gtest.h>
 

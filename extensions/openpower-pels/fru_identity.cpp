@@ -274,7 +274,6 @@ void FRUIdentity::setMaintenanceProcedure(const std::string& procedure,
 void FRUIdentity::setSymbolicFRU(const std::string& symbolicFRU,
                                  CalloutValueType type)
 {
-
     // Treat this has a HW callout.
     _flags |= pnSupplied;
     _flags &= ~maintProcSupplied;

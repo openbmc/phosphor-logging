@@ -1,15 +1,16 @@
 #include "config.h"
 
+#include "config_main.h"
+
 #include "extensions.hpp"
 #include "log_manager.hpp"
 
-#include <filesystem>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/manager.hpp>
 #include <sdeventplus/event.hpp>
 
-#include "config_main.h"
+#include <filesystem>
 
 int main(int /*argc*/, char* /*argv*/[])
 {

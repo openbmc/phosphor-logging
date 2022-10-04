@@ -1,4 +1,5 @@
-extern "C" {
+extern "C"
+{
 #include <libpdbg.h>
 }
 
@@ -9,13 +10,14 @@ extern "C" {
 #include <libphal.H>
 #include <phal_exception.H>
 
+#include <phosphor-logging/elog.hpp>
+
 #include <algorithm>
 #include <cstdlib>
 #include <cstring>
 #include <iomanip>
 #include <list>
 #include <map>
-#include <phosphor-logging/elog.hpp>
 #include <sstream>
 #include <string>
 
@@ -291,8 +293,8 @@ void processClockInfoErrorHelper(const FFDC& ffdc,
                  json jsonCalloutData;
                  std::string pelPriority = "H";
                  jsonCalloutData["Priority"] = pelPriority; // Not used
-                 jsonCalloutData["SymbolicFRU"] =
-                     "REFCLK" + std::to_string(clk_pos);
+                 jsonCalloutData["SymbolicFRU"] = "REFCLK" +
+                                                  std::to_string(clk_pos);
                  jsonCalloutData["Deconfigured"] = cdg_tgt.deconfigure;
                  jsonCalloutData["EntityPath"] = cdg_tgt.target_entity_path;
                  pelJSONFmtCalloutDataList.emplace_back(jsonCalloutData);

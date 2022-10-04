@@ -3,6 +3,7 @@
 
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/exception.hpp>
+
 #include <tuple>
 #include <utility>
 
@@ -37,7 +38,6 @@ namespace details
 template <typename T>
 struct deduce_entry_type
 {
-
     using type = T;
     auto get()
     {

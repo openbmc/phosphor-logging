@@ -3,8 +3,9 @@
 #include "utils.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
-#include <fstream>
 #include <phosphor-logging/elog.hpp>
+
+#include <fstream>
 #if __has_include("../../usr/include/phosphor-logging/elog-errors.hpp")
 #include "../../usr/include/phosphor-logging/elog-errors.hpp"
 #else
@@ -67,8 +68,8 @@ std::optional<std::pair<std::string, uint32_t>> parseConfig(std::istream& ss)
                 // There is no ':', or no more content after ':', invalid config
                 return {};
             }
-            serverAddress =
-                line.substr(posColonLeft + 1, posColonRight - posColonLeft - 1);
+            serverAddress = line.substr(posColonLeft + 1,
+                                        posColonRight - posColonLeft - 1);
             serverPort = line.substr(posColonRight + 2);
         }
         else

@@ -19,8 +19,9 @@
 #include "pel_types.hpp"
 #include "pel_values.hpp"
 
-#include <fstream>
 #include <phosphor-logging/log.hpp>
+
+#include <fstream>
 
 namespace openpower
 {
@@ -673,8 +674,8 @@ std::optional<Entry> Registry::lookup(const std::string& name, LookupType type,
 
             if (src.contains("Words6To9"))
             {
-                entry.src.hexwordADFields =
-                    helper::getSRCHexwordFields(src, name);
+                entry.src.hexwordADFields = helper::getSRCHexwordFields(src,
+                                                                        name);
             }
 
             if (src.contains("SymptomIDFields"))

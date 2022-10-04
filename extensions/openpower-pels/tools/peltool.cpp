@@ -15,6 +15,8 @@
  */
 #include "config.h"
 
+#include "config_main.h"
+
 #include "../bcd_time.hpp"
 #include "../json_utils.hpp"
 #include "../paths.hpp"
@@ -25,14 +27,13 @@
 #include <Python.h>
 
 #include <CLI/CLI.hpp>
+#include <phosphor-logging/log.hpp>
+
 #include <bitset>
 #include <fstream>
 #include <iostream>
-#include <phosphor-logging/log.hpp>
 #include <regex>
 #include <string>
-
-#include "config_main.h"
 
 namespace fs = std::filesystem;
 using namespace phosphor::logging;
@@ -671,8 +672,8 @@ void displayPEL(const PEL& pel, bool hexDump)
     {
         if (hexDump)
         {
-            std::string dstr =
-                dumpHex(std::data(pel.data()), pel.size(), 0, false);
+            std::string dstr = dumpHex(std::data(pel.data()), pel.size(), 0,
+                                       false);
             std::cout << dstr << std::endl;
         }
         else
@@ -878,8 +879,8 @@ int main(int argc, char** argv)
             PEL pel{data};
             if (hexDump)
             {
-                std::string dstr =
-                    dumpHex(std::data(pel.data()), pel.size(), 0, false);
+                std::string dstr = dumpHex(std::data(pel.data()), pel.size(), 0,
+                                           false);
                 std::cout << dstr << std::endl;
             }
             else

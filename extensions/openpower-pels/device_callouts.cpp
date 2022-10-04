@@ -17,8 +17,9 @@
 
 #include "paths.hpp"
 
-#include <fstream>
 #include <phosphor-logging/log.hpp>
+
+#include <fstream>
 #include <regex>
 
 namespace openpower::pels::device_callouts
@@ -191,7 +192,6 @@ size_t getSPISearchKeys(const std::string& devPath)
 
 std::tuple<std::string, size_t> getFSISPISearchKeys(const std::string& devPath)
 {
-
     // Combine the FSI and SPI search keys.
     auto links = getFSISearchKeys(devPath);
     auto bus = getSPISearchKeys(devPath);
@@ -480,8 +480,8 @@ std::vector<device_callouts::Callout> findCallouts(const std::string& devPath,
             callouts = calloutFSISPI(path, json);
             break;
         default:
-            std::string msg =
-                "Could not get callout type from device path: " + path.string();
+            std::string msg = "Could not get callout type from device path: " +
+                              path.string();
             throw std::invalid_argument{msg.c_str()};
             break;
     }

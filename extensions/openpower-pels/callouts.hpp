@@ -40,8 +40,7 @@ class Callouts
     Callouts() :
         _subsectionID(calloutsSubsectionID), _subsectionFlags(0),
         _subsectionWordLength(1)
-    {
-    }
+    {}
 
     /**
      * @brief Constructor

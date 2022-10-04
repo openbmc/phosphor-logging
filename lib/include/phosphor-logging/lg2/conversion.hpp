@@ -1,14 +1,15 @@
 #pragma once
 
-#include <concepts>
-#include <cstddef>
-#include <filesystem>
 #include <phosphor-logging/lg2/flags.hpp>
 #include <phosphor-logging/lg2/header.hpp>
 #include <phosphor-logging/lg2/level.hpp>
 #include <phosphor-logging/lg2/logger.hpp>
 #include <phosphor-logging/lg2/source_location.hpp>
 #include <sdbusplus/message/native_types.hpp>
+
+#include <concepts>
+#include <cstddef>
+#include <filesystem>
 #include <string_view>
 #include <tuple>
 #include <type_traits>
@@ -27,8 +28,9 @@ namespace lg2::details
 template <typename T>
 concept string_like_type =
     (std::constructible_from<std::string_view, T> ||
-     std::same_as<std::filesystem::path,
-                  std::decay_t<T>>)&&!std::same_as<std::nullptr_t, T>;
+     std::same_as<std::filesystem::path, std::decay_t<T>>) &&
+    !
+std::same_as<std::nullptr_t, T>;
 
 /** Concept to determine if an item acts like a pointer.
  *
@@ -37,7 +39,9 @@ concept string_like_type =
  */
 template <typename T>
 concept pointer_type = (std::is_pointer_v<T> ||
-                        std::same_as<std::nullptr_t, T>)&&!string_like_type<T>;
+                        std::same_as<std::nullptr_t, T>) &&
+                       !
+string_like_type<T>;
 
 /** Concept to determine if an item acts like an unsigned_integral.
  *
@@ -45,8 +49,8 @@ concept pointer_type = (std::is_pointer_v<T> ||
  *  `True` and `False` strings.
  */
 template <typename T>
-concept unsigned_integral_except_bool =
-    !std::same_as<T, bool> && std::unsigned_integral<T>;
+concept unsigned_integral_except_bool = !
+std::same_as<T, bool>&& std::unsigned_integral<T>;
 
 template <typename T>
 concept sdbusplus_enum = sdbusplus::message::has_convert_from_string_v<T>;
@@ -224,8 +228,8 @@ static auto log_convert(const char* h, log_flag<Fs...> f, V v)
 
     // Cast (void*) to a hex-formatted uint64 using the target's pointer-size
     // to determine field-width.
-    constexpr static auto new_f =
-        sizeof(void*) == 4 ? field32.value : field64.value;
+    constexpr static auto new_f = sizeof(void*) == 4 ? field32.value
+                                                     : field64.value;
 
     return std::make_tuple(h, new_f | (hex | unsigned_val).value,
                            reinterpret_cast<uint64_t>(v));

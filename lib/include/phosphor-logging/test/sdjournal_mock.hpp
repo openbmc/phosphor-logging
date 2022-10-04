@@ -1,7 +1,8 @@
 #pragma once
 
-#include <cstdarg>
 #include <phosphor-logging/sdjournal.hpp>
+
+#include <cstdarg>
 
 #include <gmock/gmock.h>
 

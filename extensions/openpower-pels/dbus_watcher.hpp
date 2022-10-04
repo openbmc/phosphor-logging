@@ -32,8 +32,7 @@ class DBusWatcher
      */
     DBusWatcher(const std::string& path, const std::string& interface) :
         _path(path), _interface(interface)
-    {
-    }
+    {}
 
   protected:
     /**
@@ -147,8 +146,7 @@ class PropertyWatcher : public DBusWatcher
                     const std::string& propertyName, const DataIface& dataIface,
                     PropertySetFunc func) :
         PropertyWatcher(bus, path, interface, propertyName, "", dataIface, func)
-    {
-    }
+    {}
 
     /**
      * @brief Reads the property on D-Bus, and calls
@@ -316,8 +314,8 @@ class InterfaceWatcher : public DBusWatcher
         auto service = dataIface.getService(_path, _interface);
         if (!service.empty())
         {
-            auto properties =
-                dataIface.getAllProperties(service, _path, _interface);
+            auto properties = dataIface.getAllProperties(service, _path,
+                                                         _interface);
 
             _setFunc(properties);
         }

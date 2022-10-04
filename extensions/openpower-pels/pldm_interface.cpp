@@ -20,8 +20,9 @@
 #include <systemd/sd-bus.h>
 #include <unistd.h>
 
-#include <fstream>
 #include <phosphor-logging/log.hpp>
+
+#include <fstream>
 
 namespace openpower::pels
 {
