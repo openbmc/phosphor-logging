@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6aa1bb54_6dc7d041",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-10-05T16:28:56Z",
+      "side": 1,
+      "message": "Hi, a few things on commit messages:\n* there are some guidelines on the length of the title and the body at https://github.com/openbmc/docs/blob/master/CONTRIBUTING.md#formatting-commit-messages.  It\u0027s 50 and 72.  If you have vim configured as your commit editor, you can configure it to format it for you.\n* You need to use your real name in your signed off by line, and not a user id.\n\n* For this specific message, can you add a \u0027PEL:\u0027 prefix so people know it is PEL related?",
+      "revId": "f3d0b381f0ecab292509a383d24a1c5c51d613f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89104793_c6941823",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-10-05T16:28:56Z",
+      "side": 1,
+      "message": "can remove this line",
+      "revId": "f3d0b381f0ecab292509a383d24a1c5c51d613f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
