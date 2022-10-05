@@ -17,7 +17,6 @@ concept maybe_constexpr_string = std::is_array_v<std::remove_cvref_t<T>> &&
 
 /** Determine if a type is certainly not a constexpr string. */
 template <typename T>
-concept not_constexpr_string = !
-maybe_constexpr_string<T>;
+concept not_constexpr_string = (!maybe_constexpr_string<T>);
 
 }; // namespace lg2::details
