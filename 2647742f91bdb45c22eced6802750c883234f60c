@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebe8980c_aef91a8a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001592
+      },
+      "writtenOn": "2022-10-11T10:45:13Z",
+      "side": 1,
+      "message": "Sure",
+      "parentUuid": "badf10d0_bef711a0",
+      "revId": "2647742f91bdb45c22eced6802750c883234f60c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa4e5ab9_31a5af00",
@@ -53,6 +71,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "40b8dd88_6fdc536d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001592
+      },
+      "writtenOn": "2022-10-11T10:45:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa4e5ab9_31a5af00",
+      "revId": "2647742f91bdb45c22eced6802750c883234f60c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30bd16cd_efe2978d",
@@ -66,6 +102,24 @@
       "writtenOn": "2022-10-11T08:28:52Z",
       "side": 1,
       "message": "align it behind blue line",
+      "revId": "2647742f91bdb45c22eced6802750c883234f60c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bea72f6_f8ba58b5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1001592
+      },
+      "writtenOn": "2022-10-11T10:45:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30bd16cd_efe2978d",
       "revId": "2647742f91bdb45c22eced6802750c883234f60c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
