@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "badf10d0_bef711a0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2022-10-11T08:28:52Z",
+      "side": 1,
+      "message": "give some context\n\nduring start_host guard records are read and e.t.c.... and if that fails at present application crashes without a PEL...",
+      "revId": "2647742f91bdb45c22eced6802750c883234f60c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa4e5ab9_31a5af00",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2022-10-11T08:28:52Z",
+      "side": 1,
+      "message": "too long should be behind blue line",
+      "revId": "2647742f91bdb45c22eced6802750c883234f60c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30bd16cd_efe2978d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2022-10-11T08:28:52Z",
+      "side": 1,
+      "message": "align it behind blue line",
+      "revId": "2647742f91bdb45c22eced6802750c883234f60c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
