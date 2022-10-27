@@ -703,12 +703,43 @@
                 }
             },
 
+            "Callouts": [
+                {
+                    "System": "ibm,rainier",
+                    "CalloutList": [
+                        {
+                            "Priority": "medium",
+                            "LocCode": "P0"
+                        },
+                        {
+                            "Priority": "high",
+                            "LocCode": "P0-C22"
+                        }
+                    ]
+                },
+                {
+                    "System": "ibm,everest",
+                    "CalloutList": [
+                        {
+                            "Priority": "medium",
+                            "LocCode": "P0"
+                        },
+                        {
+                            "Priority": "high",
+                            "LocCode": "P0-C96"
+                        }
+                    ]
+                }
+            ],
+
             "Documentation":
             {
                 "Description": "Error during Spare clock initialisation",
                 "Message": "Error during Spare clock initialisation",
                 "Notes": [
-                    "The CalloutList should use the clock symbolic FRU with position details."
+                    "The clock symbolic FRU in the CalloutList provides the",
+                    "additional details of the problematic clock chip position",
+                    "useful for debug."
                 ]
             }
         },
