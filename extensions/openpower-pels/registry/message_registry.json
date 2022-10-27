@@ -702,12 +702,42 @@
                 }
             },
 
+            "Callouts": [
+                {
+                    "System": "ibm,rainier",
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "LocCode": "P0"
+                        },
+                        {
+                            "Priority": "low",
+                            "LocCode": "P0-C15"
+                        }
+                    ]
+                },
+                {
+                    "System": "ibm,everest",
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "LocCode": "P0"
+                        },
+                        {
+                            "Priority": "low",
+                            "LocCode": "P0-C61"
+                        }
+                    ]
+                }
+            ],
+
             "Documentation":
             {
                 "Description": "Error during Spare clock initialisation",
                 "Message": "Error during Spare clock initialisation",
                 "Notes": [
-                    "The CalloutList should use the clock symbolic FRU with position details."
+                    "The clock symbolic FRU in the CalloutList provides the",
+                    "reference to clock unit."
                 ]
             }
         },
