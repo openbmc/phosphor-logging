@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "64fa8875_5d8aa515",
         "filename": "extensions/openpower-pels/data_interface.cpp",
@@ -20,10 +21,34 @@
         "endChar": 38
       },
       "revId": "afcd691d44184b4e17be23cfaf150b81b58d6782",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8713b6b0_875ed2ed",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 712,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-10-28T14:32:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64fa8875_5d8aa515",
+      "range": {
+        "startLine": 712,
+        "startChar": 9,
+        "endLine": 712,
+        "endChar": 38
+      },
+      "revId": "afcd691d44184b4e17be23cfaf150b81b58d6782",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "1591d675_00d24a61",
         "filename": "extensions/openpower-pels/data_interface.cpp",
@@ -37,10 +62,28 @@
       "side": 1,
       "message": "can you add another comment about how this is the ASCIIString field of the SRC",
       "revId": "afcd691d44184b4e17be23cfaf150b81b58d6782",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f44ec03c_93e7d419",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 717,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-10-28T14:32:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1591d675_00d24a61",
+      "revId": "afcd691d44184b4e17be23cfaf150b81b58d6782",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "b792f9a2_c34ea3f0",
         "filename": "extensions/openpower-pels/src.cpp",
@@ -54,8 +97,25 @@
       "side": 1,
       "message": "since getProgressCode can throw if there  is a D-bus exception, could you wrap it in a try/catch here?  then it would be left at the default of zero",
       "revId": "afcd691d44184b4e17be23cfaf150b81b58d6782",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "adf12ac2_6828fc99",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-10-28T14:32:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b792f9a2_c34ea3f0",
+      "revId": "afcd691d44184b4e17be23cfaf150b81b58d6782",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
