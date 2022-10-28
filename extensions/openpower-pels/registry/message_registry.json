@@ -693,7 +693,6 @@
             "Subsystem": "cec_hardware",
             "ComponentID": "0x3000",
             "Severity": "non_error",
-            "ActionFlags": [ "service_action", "report", "call_home" ],
 
             "SRC":
             {
