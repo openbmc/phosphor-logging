@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f82dc29_6ec2e54c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000020
+      },
+      "writtenOn": "2022-11-18T21:39:14Z",
+      "side": 1,
+      "message": "I assume this failed because https://gerrit.openbmc.org/c/openbmc/phosphor-dbus-interfaces/+/47683 needs to merge first. After 47683 merges, this can be rebased and submitted soon after. The bumps will need to go together. ",
+      "revId": "fbaace31cf68fc38b3b442e88b19ce6978175aaa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
