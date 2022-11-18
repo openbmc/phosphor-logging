@@ -899,8 +899,14 @@ void Manager::setServiceProviderNotifyFlag(uint32_t obmcLogID)
         auto entry = _logManager.entries.find(obmcLogID);
         if (entry != _logManager.entries.end())
         {
-            entry->second->serviceProviderNotify(
-                attr.actionFlags.test(callHomeFlagBit), true);
+            if (attr.actionFlags.test(callHomeFlagBit))
+            {
+                entry->second->serviceProviderNotify(Entry::Notify::Notify);
+            }
+            else
+            {
+                entry->second->serviceProviderNotify(Entry::Notify::Inhibit);
+            }
         }
     }
 }
