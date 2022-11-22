@@ -50,6 +50,29 @@
       "message": "@Matt - are you ok with this?  Can we merge the dbus interface and this?  If you feel they\u0027re both ready to go, please give this a +2 and I can handle the dependencies.",
       "revId": "fbaace31cf68fc38b3b442e88b19ce6978175aaa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e653dac7_01870179",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 905,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-11-22T15:04:49Z",
+      "side": 1,
+      "message": "nit: don\u0027t need this as we are already in this namespace.",
+      "range": {
+        "startLine": 905,
+        "startChar": 19,
+        "endLine": 905,
+        "endChar": 37
+      },
+      "revId": "fbaace31cf68fc38b3b442e88b19ce6978175aaa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
