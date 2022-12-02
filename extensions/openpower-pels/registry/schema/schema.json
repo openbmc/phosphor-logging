@@ -525,7 +525,8 @@
                 "sbe_code",
                 "fsi_path",
                 "power_overcurrent",
-                "find_sue_root_cause"
+                "find_sue_root_cause",
+                "system_vpd_correction"
             ]
         },
 
