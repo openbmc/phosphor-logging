@@ -228,6 +228,8 @@ const std::map<std::string, std::string> maintenanceProcedures = {
     {"power_overcurrent", "BMC0005"},
     // An unrecoverable event occurred, look for previous errors for the cause
     {"find_sue_root_cause", "BMC0006"},
+    // Correct system backplane VPD mismatch
+    {"system_vpd_correction", "BMC0007"},
 };
 
 /**
