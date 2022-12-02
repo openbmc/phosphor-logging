@@ -469,7 +469,7 @@
         {
             "description": "The maintenance procedure callout.",
             "type": "string",
-            "enum": ["bmc_code", "next_level_support", "sbe_code", "fsi_path", "power_overcurrent", "find_sue_root_cause"]
+            "enum": ["bmc_code", "next_level_support", "sbe_code", "fsi_path", "power_overcurrent", "find_sue_root_cause", "system_vpd_correction"]
         },
 
         "useInventoryLocCode":
