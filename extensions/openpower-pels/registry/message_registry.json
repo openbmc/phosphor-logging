@@ -1,31 +1,24 @@
 {
-    "PELs":
-    [
+    "PELs": [
         {
             "Name": "xyz.openbmc_project.Common.Error.Timeout",
             "Subsystem": "bmc_firmware",
             "Severity": "non_error",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x1001",
-                "Words6To9":
-                {
-                    "6":
-                    {
+                "Words6To9": {
+                    "6": {
                         "Description": "Timeout in ms",
                         "AdditionalDataPropSource": "TIMEOUT_IN_MSEC"
                     }
                 }
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "This is a generic timeout error",
                 "Message": "An operation timed out",
-                "Notes": [
-                    "The journal should contain more information"
-                ]
+                "Notes": ["The journal should contain more information"]
             }
         },
 
@@ -34,21 +27,15 @@
             "Subsystem": "bmc_firmware",
             "Severity": "non_error",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x1002",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "BMC code had a generic internal failure",
                 "Message": "An application had an internal failure",
-                "Notes": [
-                    "The journal should contain more information"
-                ]
+                "Notes": ["The journal should contain more information"]
             }
         },
 
@@ -57,21 +44,15 @@
             "Subsystem": "user_error",
             "Severity": "non_error",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x1003",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "BMC code was given an invalid argument",
                 "Message": "Code was given an invalid argument",
-                "Notes": [
-                    "The journal should contain more information"
-                ]
+                "Notes": ["The journal should contain more information"]
             }
         },
         {
@@ -79,21 +60,15 @@
             "Subsystem": "user_error",
             "Severity": "non_error",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x1004",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "An operation failed due to insufficient permission",
                 "Message": "An operation failed due to unsufficient permission",
-                "Notes": [
-                    "The journal should contain more information"
-                ]
+                "Notes": ["The journal should contain more information"]
             }
         },
 
@@ -102,21 +77,15 @@
             "Subsystem": "user_error",
             "Severity": "non_error",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x1005",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "An operation failed because it isn't allowed",
                 "Message": "An operation failed because it isn't allowed",
-                "Notes": [
-                    "The journal should contain more information"
-                ]
+                "Notes": ["The journal should contain more information"]
             }
         },
 
@@ -125,16 +94,12 @@
             "Subsystem": "user_error",
             "Severity": "non_error",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x1006",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "The server's CA certificate has not been provided",
                 "Message": "The server's CA certificate has not been provided"
             }
@@ -144,21 +109,17 @@
             "Name": "xyz.openbmc_project.Sensor.Device.Error.ReadFailure",
             "Subsystem": "cec_i2c",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x1007",
-                "Words6To9":
-                {
-                    "6":
-                    {
+                "Words6To9": {
+                    "6": {
                         "Description": "errno of the failure",
                         "AdditionalDataPropSource": "CALLOUT_ERRNO"
                     }
                 }
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Sensor device read failure",
                 "Message": "There was a failure when reading a sensor device",
                 "Notes": [
@@ -173,21 +134,17 @@
             "Name": "xyz.openbmc_project.Common.Device.Error.ReadFailure",
             "Subsystem": "cec_i2c",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x1008",
-                "Words6To9":
-                {
-                    "6":
-                    {
+                "Words6To9": {
+                    "6": {
                         "Description": "errno of the failure",
                         "AdditionalDataPropSource": "CALLOUT_ERRNO"
                     }
                 }
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Device read failure",
                 "Message": "There was a failure when reading a hardware device",
                 "Notes": [
@@ -202,21 +159,17 @@
             "Name": "xyz.openbmc_project.Control.Device.Error.WriteFailure",
             "Subsystem": "cec_i2c",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x1009",
-                "Words6To9":
-                {
-                    "6":
-                    {
+                "Words6To9": {
+                    "6": {
                         "Description": "errno of the failure",
                         "AdditionalDataPropSource": "CALLOUT_ERRNO"
                     }
                 }
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Device write failure",
                 "Message": "There was a failure when writing to a hardware device",
                 "Notes": [
@@ -231,21 +184,17 @@
             "Name": "xyz.openbmc_project.Common.Device.Error.WriteFailure",
             "Subsystem": "cec_i2c",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x100A",
-                "Words6To9":
-                {
-                    "6":
-                    {
+                "Words6To9": {
+                    "6": {
                         "Description": "errno of the failure",
                         "AdditionalDataPropSource": "CALLOUT_ERRNO"
                     }
                 }
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Device write failure",
                 "Message": "There was a failure when writing to a hardware device",
                 "Notes": [
@@ -260,12 +209,9 @@
             "Name": "xyz.openbmc_project.Common.File.Error.Write",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x1000",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x100B",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
@@ -276,8 +222,7 @@
                 }
             ],
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failed to write to a file",
                 "Message": "Failed to write to a file",
                 "Notes": [
@@ -292,26 +237,20 @@
             "Subsystem": "bmc_firmware",
             "Severity": "non_error",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x2001",
-                "Words6To9":
-                {
-                    "6":
-                    {
+                "Words6To9": {
+                    "6": {
                         "Description": "The bad PEL ID",
                         "AdditionalDataPropSource": "BAD_ID"
                     }
                 }
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "The BMC sent the host a malformed PEL",
                 "Message": "The BMC sent the host a malformed PEL",
-                "Notes": [
-                    "The host firmware rejected that PEL."
-                ]
+                "Notes": ["The host firmware rejected that PEL."]
             }
         },
 
@@ -320,23 +259,18 @@
             "Subsystem": "platform_firmware",
             "Severity": "unrecoverable",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x2002",
-                "Words6To9":
-                {
-                    "6":
-                    {
+                "Words6To9": {
+                    "6": {
                         "Description": "The PLID of the invalid PEL",
                         "AdditionalDataPropSource": "PLID"
                     },
-                    "7":
-                    {
+                    "7": {
                         "Description": "The corresponding OpenBMC event log ID",
                         "AdditionalDataPropSource": "OBMC_LOG_ID"
                     },
-                    "8":
-                    {
+                    "8": {
                         "Description": "The size of the invalid PEL",
                         "AdditionalDataPropSource": "PEL_SIZE"
                     }
@@ -351,12 +285,10 @@
                 }
             ],
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "The host sent the BMC an invalid PEL",
                 "Message": "The host sent the BMC an invalid PEL",
-                "Notes": [
-                ]
+                "Notes": []
             }
         },
 
@@ -365,25 +297,21 @@
             "Subsystem": "platform_firmware",
             "Severity": "unrecoverable",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x2003",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
                 {
                     "CalloutList": [
-                        {"Priority": "high", "Procedure": "bmc_code"},
-                        {"Priority": "medium", "SymbolicFRU": "service_docs"}
+                        { "Priority": "high", "Procedure": "bmc_code" },
+                        { "Priority": "medium", "SymbolicFRU": "service_docs" }
                     ]
                 }
             ],
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "An error for testing",
                 "Message": "This is a test error"
             }
@@ -393,12 +321,9 @@
             "Name": "xyz.openbmc_project.Logging.Error.Default",
             "Subsystem": "other_na",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x2004",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
@@ -409,8 +334,7 @@
                 }
             ],
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "This entry is used when no other matching entry is found",
                 "Message": "Unknown (Original event not in message registry)",
                 "Notes": [
@@ -433,24 +357,18 @@
             "Severity": "recovered",
             "ActionFlags": ["report"],
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x2005",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
                 {
-                   "CalloutList": [
-                        { "Priority": "high", "LocCode": "P0" }
-                    ]
+                    "CalloutList": [{ "Priority": "high", "LocCode": "P0" }]
                 }
             ],
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "An error for testing",
                 "Message": "This is a test recoverable error",
                 "Notes": [
@@ -465,16 +383,12 @@
             "Subsystem": "bmc_firmware",
             "Severity": "predictive",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x2006",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "This is an error used for testing only",
                 "Message": "This is a test predictive error",
                 "Notes": [
@@ -489,16 +403,12 @@
             "Subsystem": "cec_hardware",
             "ComponentID": "0x3000",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3001",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failure occurred during boot process",
                 "Message": "Failure occurred during boot process",
                 "Notes": [
@@ -512,16 +422,12 @@
             "Subsystem": "cec_hardware",
             "ComponentID": "0x3000",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3002",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failure occurred during PHAL pre-poweroff operations",
                 "Message": "Failure occurred during PHAL pre-poweroff operations",
                 "Notes": [
@@ -538,21 +444,15 @@
             "ComponentID": "0x3000",
             "Severity": "unrecoverable",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3003",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failure occurred during PHAL devtree sync ",
                 "Message": "Failure occurred during PHAL devtree sync",
-                "Notes": [
-                    "The journal should contain more information"
-                ]
+                "Notes": ["The journal should contain more information"]
             }
         },
 
@@ -562,21 +462,15 @@
             "ComponentID": "0x3000",
             "Severity": "unrecoverable",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3004",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failure occurred during PHAL devtree backup ",
                 "Message": "Failure occurred during PHAL devtree backup",
-                "Notes": [
-                    "The journal should contain more information"
-                ]
+                "Notes": ["The journal should contain more information"]
             }
         },
 
@@ -585,16 +479,12 @@
             "Subsystem": "cec_sp_hyp_iface",
             "ComponentID": "0x3000",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3005",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Host did not respond to BMC after a BMC reset",
                 "Message": "Host did not respond to BMC after a BMC reset but hardware indicates it is running",
                 "Notes": [
@@ -613,21 +503,15 @@
             "ComponentID": "0x3000",
             "Severity": "unrecoverable",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3006",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failure re-initializing BMC to Host data structure",
                 "Message": "Failure occurred during re-initializing BMC to Host data structure",
-                "Notes": [
-                    "The journal should contain more information"
-                ]
+                "Notes": ["The journal should contain more information"]
             }
         },
 
@@ -637,16 +521,12 @@
             "ComponentID": "0x3000",
             "Severity": "unrecoverable",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3007",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Non functional boot processor",
                 "Message": "Non functional boot processor",
                 "Notes": [
@@ -663,43 +543,36 @@
             "ComponentID": "0x3000",
             "Severity": "unrecoverable",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3008",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
                 {
-                    "CalloutList": [{"Priority": "high", "Procedure": "bmc_code" }
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
                     ]
                 }
             ],
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Error during memory preserving reboot",
                 "Message": "Error during memory preserving reboot",
                 "Notes": [
                     "Software error occured during memory preserving reboot"
                 ]
             }
-        }
-,
+        },
         {
             "Name": "org.open_power.PHAL.Error.SpareClock",
             "Subsystem": "cec_hardware",
             "ComponentID": "0x3000",
             "Severity": "non_error",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3009",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
@@ -731,8 +604,7 @@
                 }
             ],
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Error during Spare clock initialisation",
                 "Message": "Error during Spare clock initialisation",
                 "Notes": [
@@ -747,18 +619,14 @@
             "Subsystem": "cec_clocks",
             "ComponentID": "0x3000",
             "Severity": "non_error",
-            "ActionFlags": [ "report", "call_home" ],
+            "ActionFlags": ["report", "call_home"],
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x300A",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Informational error to house clock debug info",
                 "Message": "Informational error to house clock debug info",
                 "Notes": [
@@ -773,12 +641,9 @@
             "ComponentID": "0x3000",
             "Severity": "predictive",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x300B",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
@@ -789,8 +654,7 @@
                 }
             ],
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Guard partition access failure",
                 "Message": "Guard partition access failure",
                 "Notes": [
@@ -805,12 +669,9 @@
             "ComponentID": "0x2600",
             "Severity": "predictive",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x2681",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
@@ -821,8 +682,7 @@
                 }
             ],
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "OCC presence mismatch",
                 "Message": "BMC firmware detected incorrect number of OCCs",
                 "Notes": [
@@ -838,16 +698,12 @@
             "ComponentID": "0x2600",
             "Severity": "non_error",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x2682",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "OCC safe state",
                 "Message": "OCC in safe state while active for one minute",
                 "Notes": [
@@ -863,16 +719,12 @@
             "ComponentID": "0x2600",
             "Severity": "predictive",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x2683",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "OCC communication failure",
                 "Message": "BMC failed to communicate with the OCC",
                 "Notes": [
@@ -887,16 +739,12 @@
             "Subsystem": "cec_hardware",
             "ComponentID": "0x3100",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3101",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failure occurred during hardware isolation operations",
                 "Message": "Failure occurred during hardware isolation operations",
                 "Notes": [
@@ -910,15 +758,11 @@
             "Name": "xyz.openbmc_project.State.Error.HostNotRunning",
             "Subsystem": "cec_sp_hostboot_iface",
             "ComponentID": "0x3400",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3401",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Host was booting or booted before BMC reset but is now unresponsive",
                 "Message": "Host did not respond to BMC after a BMC reset but it was booting or booted prior to the BMC reboot",
                 "Notes": [
@@ -935,20 +779,21 @@
             "Name": "xyz.openbmc_project.State.ChassisPowerBad",
             "Subsystem": "input_power_source",
             "ComponentID": "0x3400",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3402",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
-                    "CalloutList": [{"Priority": "high", "Procedure": "next_level_support"}]
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "next_level_support"
+                        }
+                    ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Chassis input power is in a bad state",
                 "Message": "Chassis input power is in a bad state, look for other logs with more details",
                 "Notes": [
@@ -963,15 +808,11 @@
             "Name": "xyz.openbmc_project.State.PinholeReset",
             "Subsystem": "cec_op_panel",
             "ComponentID": "0x3400",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3403",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "User initiated a pinhole reset via the op-panel",
                 "Message": "User initiated a pinhole reset via the op-panel",
                 "Notes": [
@@ -986,20 +827,21 @@
             "Name": "xyz.openbmc_project.State.Error.CriticalServiceFailure",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x3400",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3404",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
-                    "CalloutList": [{"Priority": "high", "Procedure": "next_level_support"}]
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "next_level_support"
+                        }
+                    ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "A critical BMC application has failed on the system",
                 "Message": "A critical BMC application has failed on the system, the BMC is in an undefined state",
                 "Notes": [
@@ -1016,20 +858,21 @@
             "Name": "xyz.openbmc_project.State.Error.SecurityCheckFail",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x3400",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3405",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
-                    "CalloutList": [{"Priority": "high", "Procedure": "next_level_support"}]
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "next_level_support"
+                        }
+                    ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "A firmware security check has failed",
                 "Message": "A firmware security check has failed, most likely something is not configured correctly",
                 "Notes": [
@@ -1045,20 +888,21 @@
             "Name": "xyz.openbmc_project.State.BMC.Error.MultiUserTargetFailure",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x3400",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3406",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
-                    "CalloutList": [{"Priority": "high", "Procedure": "next_level_support"}]
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "next_level_support"
+                        }
+                    ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "The system has failed to reach BMC Ready state",
                 "Message": "The system has failed to reach BMC Ready state, look for other errors",
                 "Notes": [
@@ -1074,20 +918,21 @@
             "Name": "xyz.openbmc_project.State.Chassis.Error.PowerOnFailure",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x3400",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3407",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
-                    "CalloutList": [{"Priority": "high", "Procedure": "next_level_support"}]
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "next_level_support"
+                        }
+                    ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "The system has failed to reach chassis power on state",
                 "Message": "The system has failed to reach chassis power on state, look for other errors",
                 "Notes": [
@@ -1103,20 +948,21 @@
             "Name": "xyz.openbmc_project.State.Chassis.Error.PowerOffFailure",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x3400",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3408",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
-                    "CalloutList": [{"Priority": "high", "Procedure": "next_level_support"}]
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "next_level_support"
+                        }
+                    ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "The system has failed to reach chassis power off state",
                 "Message": "The system has failed to reach chassis power off state, look for other errors",
                 "Notes": [
@@ -1132,20 +978,21 @@
             "Name": "xyz.openbmc_project.State.Host.Error.HostStartFailure",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x3400",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3409",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
-                    "CalloutList": [{"Priority": "high", "Procedure": "next_level_support"}]
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "next_level_support"
+                        }
+                    ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "The system has failed to start the host firmware",
                 "Message": "The system has failed to start the host firmware, look for other errors",
                 "Notes": [
@@ -1161,20 +1008,21 @@
             "Name": "xyz.openbmc_project.State.Host.Error.HostStartMinFailure",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x3400",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3410",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
-                    "CalloutList": [{"Priority": "high", "Procedure": "next_level_support"}]
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "next_level_support"
+                        }
+                    ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "The system has failed to start the host firmware",
                 "Message": "The system has failed to start the host firmware, look for other errors",
                 "Notes": [
@@ -1190,20 +1038,21 @@
             "Name": "xyz.openbmc_project.State.Host.Error.HostShutdownFailure",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x3400",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3411",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
-                    "CalloutList": [{"Priority": "high", "Procedure": "next_level_support"}]
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "next_level_support"
+                        }
+                    ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "The system has failed to shutdown the host firmware",
                 "Message": "The system has failed to shutdown the host firmware, look for other errors",
                 "Notes": [
@@ -1219,20 +1068,21 @@
             "Name": "xyz.openbmc_project.State.Host.Error.HostStopFailure",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x3400",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3412",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
-                    "CalloutList": [{"Priority": "high", "Procedure": "next_level_support"}]
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "next_level_support"
+                        }
+                    ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "The system has failed to stop the host firmware",
                 "Message": "The system has failed to stop the host firmware, look for other errors",
                 "Notes": [
@@ -1248,20 +1098,21 @@
             "Name": "xyz.openbmc_project.State.Host.Error.HostRebootFailure",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x3400",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3413",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
-                    "CalloutList": [{"Priority": "high", "Procedure": "next_level_support"}]
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "next_level_support"
+                        }
+                    ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "The system has failed to reboot the host firmware",
                 "Message": "The system has failed to reboot the host firmware, look for other errors",
                 "Notes": [
@@ -1277,20 +1128,21 @@
             "Name": "xyz.openbmc_project.State.Error.HostQuiesce",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x3400",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3414",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
-                    "CalloutList": [{"Priority": "high", "Procedure": "next_level_support"}]
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "next_level_support"
+                        }
+                    ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "The host firmware has failed to boot",
                 "Message": "The host firmware has failed to boot and has entered a Quiesce state. Look for other errors.",
                 "Notes": [
@@ -1306,21 +1158,17 @@
             "Subsystem": "processor_chip",
             "ComponentID": "0x3500",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3500",
-                "Words6To9":
-                {
-                    "6":
-                    {
+                "Words6To9": {
+                    "6": {
                         "Description": "[0:15] chip position, [16:23] command class, [24:31] command type",
                         "AdditionalDataPropSource": "SRC6"
                     }
                 }
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "chipop failure with SBE provided FFDC",
                 "Message": "chipop request failure reported by SBE",
                 "Notes": [
@@ -1337,13 +1185,10 @@
             "Subsystem": "processor_chip",
             "ComponentID": "0x3500",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3501",
-                "Words6To9":
-                {
-                    "6":
-                    {
+                "Words6To9": {
+                    "6": {
                         "Description": "[0:15] chip position, [16:23] command class, [24:31] command type",
                         "AdditionalDataPropSource": "SRC6"
                     }
@@ -1353,13 +1198,15 @@
             "Callouts": [
                 {
                     "CalloutList": [
-                        { "Priority": "high", "Procedure": "next_level_support" }
+                        {
+                            "Priority": "high",
+                            "Procedure": "next_level_support"
+                        }
                     ]
                 }
             ],
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "SBE chipop timeout",
                 "Message": "chipop timeout reported during SBE communication",
                 "Notes": [
@@ -1374,31 +1221,24 @@
             "Subsystem": "processor_chip",
             "ComponentID": "0x3500",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3502",
-                "Words6To9":
-                {
-                    "6":
-                    {
+                "Words6To9": {
+                    "6": {
                         "Description": "[0:15] chip position, [16:23] command class, [24:31] command type",
                         "AdditionalDataPropSource": "SRC6"
                     },
-                    "7":
-                    {
+                    "7": {
                         "Description": "Value of SBE state",
                         "AdditionalDataPropSource": "SRC7"
                     }
                 }
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "The SBE on this processor is not in a state where chipOps can be issued",
                 "Message": "SBE Chipop is not allowed due to invalid SBE state ",
-                "Notes": [
-                    "The severity is set by the creator."
-                ]
+                "Notes": ["The severity is set by the creator."]
             }
         },
 
@@ -1406,23 +1246,19 @@
             "Name": "org.open_power.Processor.Error.SbeBootFailure",
             "Subsystem": "processor_chip",
             "ComponentID": "0x3500",
-            "ActionFlags": [ "service_action", "report", "call_home" ],
+            "ActionFlags": ["service_action", "report", "call_home"],
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3503",
-                "Words6To9":
-                {
-                    "6":
-                    {
+                "Words6To9": {
+                    "6": {
                         "Description": "[0:15] chip position",
                         "AdditionalDataPropSource": "SRC6"
                     }
                 }
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Boot failure with SBE provided FFDC",
                 "Message": "Boot failure reported by SBE",
                 "Notes": [
@@ -1439,12 +1275,9 @@
             "Subsystem": "processor_chip",
             "ComponentID": "0x3500",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3504",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
@@ -1476,8 +1309,7 @@
                 }
             ],
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "SBE Boot timeout",
                 "Message": "timeout reported during SBE boot process",
                 "Notes": [
@@ -1492,17 +1324,21 @@
             "Subsystem": "cec_hardware",
             "Severity": "non_error",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0xD138",
-                "SymptomIDFields": [ "SRCWord3", "SRCWord4", "SRCWord5", "SRCWord6", "SRCWord7", "SRCWord8", "SRCWord9" ],
-                "Words6To9":
-                {
-                }
+                "SymptomIDFields": [
+                    "SRCWord3",
+                    "SRCWord4",
+                    "SRCWord5",
+                    "SRCWord6",
+                    "SRCWord7",
+                    "SRCWord8",
+                    "SRCWord9"
+                ],
+                "Words6To9": {}
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Status shows TI special attention active",
                 "Message": "TI special attention detected",
                 "Notes": [
@@ -1517,26 +1353,20 @@
             "Subsystem": "bmc_firmware",
             "Severity": "unrecoverable_loss_of_function",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0xD13E",
-                "Words6To9":
-                {
-                    "6":
-                    {
+                "Words6To9": {
+                    "6": {
                         "Description": "Error code from attention handler",
                         "AdditionalDataPropSource": "ERROR_CODE"
                     }
                 }
             },
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "The attention handler encountered an error",
-                "MessageArgSources" : ["SRCWord6"],
+                "MessageArgSources": ["SRCWord6"],
                 "Message": "Attention handler error %1",
-                "Notes": [
-                    "Attention handler will provide error code"
-                ]
+                "Notes": ["Attention handler will provide error code"]
             }
         },
 
@@ -1545,16 +1375,12 @@
             "Subsystem": "processor_chip",
             "Severity": "critical",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0xD16D",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Status shows SBE vital attention active",
                 "Message": "SBE vital attention detected",
                 "Notes": [
@@ -1567,38 +1393,42 @@
         {
             "Name": "org.open_power.HwDiags.Error.Checkstop",
             "PossibleSubsystems": [
-                "processor", "processor_fru", "processor_unit", "processor_bus",
-                "memory_ctlr", "memory_bus", "memory_dimm", "memory_fru",
-                "phb", "cec_hardware", "cec_clocks", "cec_tod", "others"
+                "processor",
+                "processor_fru",
+                "processor_unit",
+                "processor_bus",
+                "memory_ctlr",
+                "memory_bus",
+                "memory_dimm",
+                "memory_fru",
+                "phb",
+                "cec_hardware",
+                "cec_clocks",
+                "cec_tod",
+                "others"
             ],
             "Severity": "unrecoverable",
-            "ActionFlags": [ "service_action", "report", "call_home" ],
+            "ActionFlags": ["service_action", "report", "call_home"],
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0xE510",
-                "SymptomIDFields": [ "SRCWord6", "SRCWord7", "SRCWord8" ],
-                "Words6To9":
-                {
-                    "6":
-                    {
+                "SymptomIDFields": ["SRCWord6", "SRCWord7", "SRCWord8"],
+                "Words6To9": {
+                    "6": {
                         "AdditionalDataPropSource": "SRC6"
                     },
-                    "7":
-                    {
+                    "7": {
                         "AdditionalDataPropSource": "SRC7"
                     },
-                    "8":
-                    {
+                    "8": {
                         "AdditionalDataPropSource": "SRC8"
                     }
                 }
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "A system checkstop attention has occurred",
-                "MessageArgSources" : [ "SRCWord6", "SRCWord7", "SRCWord8" ],
+                "MessageArgSources": ["SRCWord6", "SRCWord7", "SRCWord8"],
                 "Message": "Error Signature: %1 %2 %3"
             }
         },
@@ -1606,38 +1436,42 @@
         {
             "Name": "org.open_power.HwDiags.Error.Predictive",
             "PossibleSubsystems": [
-                "processor", "processor_fru", "processor_unit", "processor_bus",
-                "memory_ctlr", "memory_bus", "memory_dimm", "memory_fru",
-                "phb", "cec_hardware", "cec_clocks", "cec_tod", "others"
+                "processor",
+                "processor_fru",
+                "processor_unit",
+                "processor_bus",
+                "memory_ctlr",
+                "memory_bus",
+                "memory_dimm",
+                "memory_fru",
+                "phb",
+                "cec_hardware",
+                "cec_clocks",
+                "cec_tod",
+                "others"
             ],
             "Severity": "predictive",
-            "ActionFlags": [ "service_action", "report", "call_home" ],
+            "ActionFlags": ["service_action", "report", "call_home"],
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0xE511",
-                "SymptomIDFields": [ "SRCWord6", "SRCWord7", "SRCWord8" ],
-                "Words6To9":
-                {
-                    "6":
-                    {
+                "SymptomIDFields": ["SRCWord6", "SRCWord7", "SRCWord8"],
+                "Words6To9": {
+                    "6": {
                         "AdditionalDataPropSource": "SRC6"
                     },
-                    "7":
-                    {
+                    "7": {
                         "AdditionalDataPropSource": "SRC7"
                     },
-                    "8":
-                    {
+                    "8": {
                         "AdditionalDataPropSource": "SRC8"
                     }
                 }
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "A hardware attention requiring service has occurred",
-                "MessageArgSources" : [ "SRCWord6", "SRCWord7", "SRCWord8" ],
+                "MessageArgSources": ["SRCWord6", "SRCWord7", "SRCWord8"],
                 "Message": "Error Signature: %1 %2 %3"
             }
         },
@@ -1645,38 +1479,42 @@
         {
             "Name": "org.open_power.HwDiags.Error.Informational",
             "PossibleSubsystems": [
-                "processor", "processor_fru", "processor_unit", "processor_bus",
-                "memory_ctlr", "memory_bus", "memory_dimm", "memory_fru",
-                "phb", "cec_hardware", "cec_clocks", "cec_tod", "others"
+                "processor",
+                "processor_fru",
+                "processor_unit",
+                "processor_bus",
+                "memory_ctlr",
+                "memory_bus",
+                "memory_dimm",
+                "memory_fru",
+                "phb",
+                "cec_hardware",
+                "cec_clocks",
+                "cec_tod",
+                "others"
             ],
             "Severity": "non_error",
-            "ActionFlags": [ "hidden", "dont_report" ],
+            "ActionFlags": ["hidden", "dont_report"],
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0xE512",
-                "SymptomIDFields": [ "SRCWord6", "SRCWord7", "SRCWord8" ],
-                "Words6To9":
-                {
-                    "6":
-                    {
+                "SymptomIDFields": ["SRCWord6", "SRCWord7", "SRCWord8"],
+                "Words6To9": {
+                    "6": {
                         "AdditionalDataPropSource": "SRC6"
                     },
-                    "7":
-                    {
+                    "7": {
                         "AdditionalDataPropSource": "SRC7"
                     },
-                    "8":
-                    {
+                    "8": {
                         "AdditionalDataPropSource": "SRC8"
                     }
                 }
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Manual analysis was initiated via the command line. FFDC only.",
-                "MessageArgSources" : [ "SRCWord6", "SRCWord7", "SRCWord8" ],
+                "MessageArgSources": ["SRCWord6", "SRCWord7", "SRCWord8"],
                 "Message": "Error Signature: %1 %2 %3"
             }
         },
@@ -1911,11 +1749,10 @@
         {
             "Name": "xyz.openbmc_project.State.Shutdown.Power.Error.Blackout",
             "Subsystem": "power",
-            "ActionFlags": [ "report", "service_action" ],
+            "ActionFlags": ["report", "service_action"],
             "ComponentID": "0x2700",
 
-            "SRC":
-            {
+            "SRC": {
                 "Type": "11",
                 "ReasonCode": "0x00AC",
                 "Words6To9": {}
@@ -1924,7 +1761,7 @@
             "Callouts": [
                 {
                     "CalloutList": [
-                        { "Priority": "high", "SymbolicFRU": "ac_module"}
+                        { "Priority": "high", "SymbolicFRU": "ac_module" }
                     ]
                 }
             ],
@@ -1940,7 +1777,7 @@
         },
 
         {
-           "Name": "xyz.openbmc_project.Power.PowerSupply.Error.PSKillFault",
+            "Name": "xyz.openbmc_project.Power.PowerSupply.Error.PSKillFault",
             "Subsystem": "power_supply",
             "ActionFlags": ["service_action", "report", "call_home"],
             "ComponentID": "0x2700",
@@ -1962,8 +1799,7 @@
             "Documentation": {
                 "Description": "A power supply fault is potentially preventing the power supply from allowing the system to power on.",
                 "Message": "Power supply PSKill_fault",
-                "Notes": [
-                ]
+                "Notes": []
             }
         },
 
@@ -1989,8 +1825,7 @@
             "Documentation": {
                 "Description": "A power off was issued because a power fault was detected",
                 "Message": "A power off was issued because a power fault was detected",
-                "Notes": [
-                ]
+                "Notes": []
             }
         },
 
@@ -2038,8 +1873,7 @@
             "Documentation": {
                 "Description": "A power off was issued because a regulator for standby power faulted",
                 "Message": "A power off was issued because a regulator for standby power faulted",
-                "Notes": [
-                ]
+                "Notes": []
             }
         },
 
@@ -2055,9 +1889,11 @@
             },
 
             "CalloutsUsingAD": {
-                "ADName": "INPUT_NAME", "CalloutsWithTheirADValues": [
+                "ADName": "INPUT_NAME",
+                "CalloutsWithTheirADValues": [
                     {
-                        "ADValue": "PCIE_SLOT0", "Callouts": [
+                        "ADValue": "PCIE_SLOT0",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C0" },
@@ -2067,7 +1903,8 @@
                         ]
                     },
                     {
-                        "ADValue": "PCIE_SLOT1", "Callouts": [
+                        "ADValue": "PCIE_SLOT1",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C1" },
@@ -2077,7 +1914,8 @@
                         ]
                     },
                     {
-                        "ADValue": "PCIE_SLOT2", "Callouts": [
+                        "ADValue": "PCIE_SLOT2",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C2" },
@@ -2087,7 +1925,8 @@
                         ]
                     },
                     {
-                        "ADValue": "PCIE_SLOT3", "Callouts": [
+                        "ADValue": "PCIE_SLOT3",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C3" },
@@ -2097,7 +1936,8 @@
                         ]
                     },
                     {
-                        "ADValue": "PCIE_SLOT4", "Callouts": [
+                        "ADValue": "PCIE_SLOT4",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C4" },
@@ -2107,7 +1947,8 @@
                         ]
                     },
                     {
-                        "ADValue": "PCIE_SLOT5", "Callouts": [
+                        "ADValue": "PCIE_SLOT5",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C5" },
@@ -2117,7 +1958,8 @@
                         ]
                     },
                     {
-                        "ADValue": "PCIE_SLOT6", "Callouts": [
+                        "ADValue": "PCIE_SLOT6",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C6" },
@@ -2127,7 +1969,8 @@
                         ]
                     },
                     {
-                        "ADValue": "PCIE_SLOT7", "Callouts": [
+                        "ADValue": "PCIE_SLOT7",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C7" },
@@ -2137,7 +1980,8 @@
                         ]
                     },
                     {
-                        "ADValue": "PCIE_SLOT8", "Callouts": [
+                        "ADValue": "PCIE_SLOT8",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C8" },
@@ -2147,7 +1991,8 @@
                         ]
                     },
                     {
-                        "ADValue": "PCIE_SLOT9", "Callouts": [
+                        "ADValue": "PCIE_SLOT9",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C9" },
@@ -2157,7 +2002,8 @@
                         ]
                     },
                     {
-                        "ADValue": "PCIE_SLOT10", "Callouts": [
+                        "ADValue": "PCIE_SLOT10",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C10" },
@@ -2167,7 +2013,8 @@
                         ]
                     },
                     {
-                        "ADValue": "PCIE_SLOT11", "Callouts": [
+                        "ADValue": "PCIE_SLOT11",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C11" },
@@ -2177,241 +2024,337 @@
                         ]
                     },
                     {
-                        "ADValue": "PGOOD_12A", "Callouts": [
+                        "ADValue": "PGOOD_12A",
+                        "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "pgood_part" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "pgood_part"
+                                    }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "PGOOD_12B", "Callouts": [
+                        "ADValue": "PGOOD_12B",
+                        "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "pgood_part" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "pgood_part"
+                                    }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "PGOOD_12C", "Callouts": [
+                        "ADValue": "PGOOD_12C",
+                        "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "pgood_part" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "pgood_part"
+                                    }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "PGOOD_12D", "Callouts": [
+                        "ADValue": "PGOOD_12D",
+                        "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "pgood_part" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "pgood_part"
+                                    }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "PGOOD_12L", "Callouts": [
+                        "ADValue": "PGOOD_12L",
+                        "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "pgood_part" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "pgood_part"
+                                    }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "PGOOD_12M", "Callouts": [
+                        "ADValue": "PGOOD_12M",
+                        "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "pgood_part" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "pgood_part"
+                                    }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "PGOOD_12N", "Callouts": [
+                        "ADValue": "PGOOD_12N",
+                        "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "pgood_part" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "pgood_part"
+                                    }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "PGOOD_12P", "Callouts": [
+                        "ADValue": "PGOOD_12P",
+                        "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "pgood_part" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "pgood_part"
+                                    }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "PGOOD_12PCIE", "Callouts": [
+                        "ADValue": "PGOOD_12PCIE",
+                        "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "pgood_part" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "pgood_part"
+                                    }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "PGOOD_12Q", "Callouts": [
+                        "ADValue": "PGOOD_12Q",
+                        "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "pgood_part" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "pgood_part"
+                                    }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "PGOOD_12R", "Callouts": [
+                        "ADValue": "PGOOD_12R",
+                        "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "pgood_part" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "pgood_part"
+                                    }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "PGOOD_VDN_DCM0", "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C14" },
-                                    { "Priority": "medium", "LocCode": "P0-C15" },
-                                    { "Priority": "low", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "PGOOD_VDN_DCM1", "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C23" },
-                                    { "Priority": "medium", "LocCode": "P0-C24" },
-                                    { "Priority": "low", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "PGOOD_VCS_DCM0", "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C14" },
-                                    { "Priority": "medium", "LocCode": "P0-C15" },
-                                    { "Priority": "low", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "PGOOD_VCS_DCM1", "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C23" },
-                                    { "Priority": "medium", "LocCode": "P0-C24" },
-                                    { "Priority": "low", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "PGOOD_VIO_DCM0", "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C14" },
-                                    { "Priority": "medium", "LocCode": "P0-C15" },
-                                    { "Priority": "low", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "PGOOD_VIO_DCM1", "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C23" },
-                                    { "Priority": "medium", "LocCode": "P0-C24" },
-                                    { "Priority": "low", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "PGOOD_VPCIE_DCM0", "Callouts": [
+                        "ADValue": "PGOOD_VDN_DCM0",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C14" },
-                                    { "Priority": "medium", "LocCode": "P0-C15" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C15"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "PGOOD_VPCIE_DCM1", "Callouts": [
+                        "ADValue": "PGOOD_VDN_DCM1",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C23" },
-                                    { "Priority": "medium", "LocCode": "P0-C24" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C24"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP0_VPCIE", "Callouts": [
+                        "ADValue": "PGOOD_VCS_DCM0",
+                        "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C14" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C15"
+                                    },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "PGOOD_VCS_DCM1",
+                        "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C23" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C24"
+                                    },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "PGOOD_VIO_DCM0",
+                        "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C14" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C15"
+                                    },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "PGOOD_VIO_DCM1",
+                        "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C23" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C24"
+                                    },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "PGOOD_VPCIE_DCM0",
+                        "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C14" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C15"
+                                    },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "PGOOD_VPCIE_DCM1",
+                        "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C23" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C24"
+                                    },
+                                    { "Priority": "low", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "CP0_VPCIE",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C58" },
-                                    { "Priority": "medium", "LocCode": "P0-C61" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C61"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP1_VPCIE", "Callouts": [
+                        "ADValue": "CP1_VPCIE",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C16" },
-                                    { "Priority": "medium", "LocCode": "P0-C14" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C14"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP2_VPCIE", "Callouts": [
+                        "ADValue": "CP2_VPCIE",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C16" },
-                                    { "Priority": "medium", "LocCode": "P0-C19" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C19"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP3_VPCIE", "Callouts": [
+                        "ADValue": "CP3_VPCIE",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C58" },
-                                    { "Priority": "medium", "LocCode": "P0-C56" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C56"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "5.0V_USB_front", "Callouts": [
+                        "ADValue": "5.0V_USB_front",
+                        "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "usb_pgood" },
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "usb_pgood"
+                                    },
                                     { "Priority": "low", "LocCode": "P1" },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
@@ -2419,95 +2362,128 @@
                         ]
                     },
                     {
-                        "ADValue": "CP0_VDN", "Callouts": [
+                        "ADValue": "CP0_VDN",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C63" },
-                                    { "Priority": "medium", "LocCode": "P0-C61" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C61"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP1_VDN", "Callouts": [
+                        "ADValue": "CP1_VDN",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C12" },
-                                    { "Priority": "medium", "LocCode": "P0-C14" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C14"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP2_VDN", "Callouts": [
+                        "ADValue": "CP2_VDN",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C21" },
-                                    { "Priority": "medium", "LocCode": "P0-C19" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C19"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP3_VDN", "Callouts": [
+                        "ADValue": "CP3_VDN",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C54" },
-                                    { "Priority": "medium", "LocCode": "P0-C56" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C56"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP0_VIO", "Callouts": [
+                        "ADValue": "CP0_VIO",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C63" },
-                                    { "Priority": "medium", "LocCode": "P0-C61" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C61"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP1_VIO", "Callouts": [
+                        "ADValue": "CP1_VIO",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C12" },
-                                    { "Priority": "medium", "LocCode": "P0-C14" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C14"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP2_VIO", "Callouts": [
+                        "ADValue": "CP2_VIO",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C21" },
-                                    { "Priority": "medium", "LocCode": "P0-C19" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C19"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP3_VIO", "Callouts": [
+                        "ADValue": "CP3_VIO",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C54" },
-                                    { "Priority": "medium", "LocCode": "P0-C56" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C56"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "PGOOD_PSU1", "Callouts": [
+                        "ADValue": "PGOOD_PSU1",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "E0" }
@@ -2516,7 +2492,8 @@
                         ]
                     },
                     {
-                        "ADValue": "PGOOD_PSU2", "Callouts": [
+                        "ADValue": "PGOOD_PSU2",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "E1" }
@@ -2525,7 +2502,8 @@
                         ]
                     },
                     {
-                        "ADValue": "PGOOD_PSU3", "Callouts": [
+                        "ADValue": "PGOOD_PSU3",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "E2" }
@@ -2534,7 +2512,8 @@
                         ]
                     },
                     {
-                        "ADValue": "PGOOD_PSU4", "Callouts": [
+                        "ADValue": "PGOOD_PSU4",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "E3" }
@@ -2548,8 +2527,7 @@
             "Documentation": {
                 "Description": "The power sequencer chip detected a PGOOD fault",
                 "Message": "The power sequencer chip detected a PGOOD fault",
-                "Notes": [
-                ]
+                "Notes": []
             }
         },
 
@@ -2565,28 +2543,38 @@
             },
 
             "CalloutsUsingAD": {
-                "ADName": "RAIL_NAME", "CalloutsWithTheirADValues": [
+                "ADName": "RAIL_NAME",
+                "CalloutsWithTheirADValues": [
                     {
-                        "ADValue": "12.0V", "Callouts": [
+                        "ADValue": "12.0V",
+                        "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "pgood_part" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "pgood_part"
+                                    }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "5.0V_USB", "Callouts": [
+                        "ADValue": "5.0V_USB",
+                        "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "usb_pgood" },
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "usb_pgood"
+                                    },
                                     { "Priority": "medium", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "5.0V_DASD", "Callouts": [
+                        "ADValue": "5.0V_DASD",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "medium", "LocCode": "P1" },
@@ -2597,7 +2585,8 @@
                         ]
                     },
                     {
-                        "ADValue": "3.3VA", "Callouts": [
+                        "ADValue": "3.3VA",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0" }
@@ -2606,7 +2595,8 @@
                         ]
                     },
                     {
-                        "ADValue": "3.3VB", "Callouts": [
+                        "ADValue": "3.3VB",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0" }
@@ -2615,20 +2605,31 @@
                         ]
                     },
                     {
-                        "ADValue": "3V3IO", "Callouts": [
+                        "ADValue": "3V3IO",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C17" },
-                                    { "Priority": "medium", "LocCode": "P0-C96" },
-                                    { "Priority": "medium", "LocCode": "P0-C0" },
-                                    { "Priority": "medium", "SymbolicFRU": "pcie_hot_plug" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C96"
+                                    },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C0"
+                                    },
+                                    {
+                                        "Priority": "medium",
+                                        "SymbolicFRU": "pcie_hot_plug"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "1.5V", "Callouts": [
+                        "ADValue": "1.5V",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0" }
@@ -2637,7 +2638,8 @@
                         ]
                     },
                     {
-                        "ADValue": "1.1V", "Callouts": [
+                        "ADValue": "1.1V",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0" }
@@ -2646,392 +2648,539 @@
                         ]
                     },
                     {
-                        "ADValue": "VDDA_DCM0", "Callouts": [
+                        "ADValue": "VDDA_DCM0",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C14" },
-                                    { "Priority": "medium", "LocCode": "P0-C15" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C15"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "VDDB_DCM0", "Callouts": [
+                        "ADValue": "VDDB_DCM0",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C14" },
-                                    { "Priority": "medium", "LocCode": "P0-C15" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C15"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "VDDA_DCM1", "Callouts": [
+                        "ADValue": "VDDA_DCM1",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C23" },
-                                    { "Priority": "medium", "LocCode": "P0-C24" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C24"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "VDDB_DCM1", "Callouts": [
+                        "ADValue": "VDDB_DCM1",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C23" },
-                                    { "Priority": "medium", "LocCode": "P0-C24" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C24"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP03_AVDD", "Callouts": [
+                        "ADValue": "CP03_AVDD",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C58" },
-                                    { "Priority": "medium", "LocCode": "P0-C61" },
-                                    { "Priority": "medium", "LocCode": "P0-C56" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C61"
+                                    },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C56"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP12_AVDD", "Callouts": [
+                        "ADValue": "CP12_AVDD",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C16" },
-                                    { "Priority": "medium", "LocCode": "P0-C14" },
-                                    { "Priority": "medium", "LocCode": "P0-C19" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C14"
+                                    },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C19"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP0_VDD0", "Callouts": [
+                        "ADValue": "CP0_VDD0",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C62" },
-                                    { "Priority": "medium", "LocCode": "P0-C61" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C61"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP0_VDD1", "Callouts": [
+                        "ADValue": "CP0_VDD1",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C60" },
-                                    { "Priority": "medium", "LocCode": "P0-C61" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C61"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP1_VDD0", "Callouts": [
+                        "ADValue": "CP1_VDD0",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C13" },
-                                    { "Priority": "medium", "LocCode": "P0-C14" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C14"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP1_VDD1", "Callouts": [
+                        "ADValue": "CP1_VDD1",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C15" },
-                                    { "Priority": "medium", "LocCode": "P0-C14" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C14"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP2_VDD0", "Callouts": [
+                        "ADValue": "CP2_VDD0",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C18" },
-                                    { "Priority": "medium", "LocCode": "P0-C19" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C19"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP2_VDD1", "Callouts": [
+                        "ADValue": "CP2_VDD1",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C20" },
-                                    { "Priority": "medium", "LocCode": "P0-C19" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C19"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP3_VDD0", "Callouts": [
+                        "ADValue": "CP3_VDD0",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C57" },
-                                    { "Priority": "medium", "LocCode": "P0-C56" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C56"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP3_VDD1", "Callouts": [
+                        "ADValue": "CP3_VDD1",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C55" },
-                                    { "Priority": "medium", "LocCode": "P0-C56" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C56"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP0_VCS0", "Callouts": [
+                        "ADValue": "CP0_VCS0",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C63" },
-                                    { "Priority": "medium", "LocCode": "P0-C61" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C61"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP0_VCS1", "Callouts": [
+                        "ADValue": "CP0_VCS1",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C59" },
-                                    { "Priority": "medium", "LocCode": "P0-C61" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C61"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP1_VCS0", "Callouts": [
+                        "ADValue": "CP1_VCS0",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C12" },
-                                    { "Priority": "medium", "LocCode": "P0-C14" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C14"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP1_VCS1", "Callouts": [
+                        "ADValue": "CP1_VCS1",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C16" },
-                                    { "Priority": "medium", "LocCode": "P0-C14" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C14"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP2_VCS0", "Callouts": [
+                        "ADValue": "CP2_VCS0",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C17" },
-                                    { "Priority": "medium", "LocCode": "P0-C19" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C19"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP2_VCS1", "Callouts": [
+                        "ADValue": "CP2_VCS1",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C21" },
-                                    { "Priority": "medium", "LocCode": "P0-C19" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C19"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP3_VCS0", "Callouts": [
+                        "ADValue": "CP3_VCS0",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C58" },
-                                    { "Priority": "medium", "LocCode": "P0-C56" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C56"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP3_VCS1", "Callouts": [
+                        "ADValue": "CP3_VCS1",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C54" },
-                                    { "Priority": "medium", "LocCode": "P0-C56" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C56"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP0_VDN", "Callouts": [
+                        "ADValue": "CP0_VDN",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C63" },
-                                    { "Priority": "medium", "LocCode": "P0-C61" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C61"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP1_VDN", "Callouts": [
+                        "ADValue": "CP1_VDN",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C12" },
-                                    { "Priority": "medium", "LocCode": "P0-C14" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C14"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP2_VDN", "Callouts": [
+                        "ADValue": "CP2_VDN",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C21" },
-                                    { "Priority": "medium", "LocCode": "P0-C19" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C19"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP3_VDN", "Callouts": [
+                        "ADValue": "CP3_VDN",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C54" },
-                                    { "Priority": "medium", "LocCode": "P0-C56" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C56"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP0_VIO", "Callouts": [
+                        "ADValue": "CP0_VIO",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C63" },
-                                    { "Priority": "medium", "LocCode": "P0-C61" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C61"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP1_VIO", "Callouts": [
+                        "ADValue": "CP1_VIO",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C12" },
-                                    { "Priority": "medium", "LocCode": "P0-C14" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C14"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP2_VIO", "Callouts": [
+                        "ADValue": "CP2_VIO",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C21" },
-                                    { "Priority": "medium", "LocCode": "P0-C19" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C19"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP3_VIO", "Callouts": [
+                        "ADValue": "CP3_VIO",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C54" },
-                                    { "Priority": "medium", "LocCode": "P0-C56" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C56"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP0_VPCIE", "Callouts": [
+                        "ADValue": "CP0_VPCIE",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C58" },
-                                    { "Priority": "medium", "LocCode": "P0-C61" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C61"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP1_VPCIE", "Callouts": [
+                        "ADValue": "CP1_VPCIE",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C16" },
-                                    { "Priority": "medium", "LocCode": "P0-C14" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C14"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP2_VPCIE", "Callouts": [
+                        "ADValue": "CP2_VPCIE",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C16" },
-                                    { "Priority": "medium", "LocCode": "P0-C19" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C19"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "CP3_VPCIE", "Callouts": [
+                        "ADValue": "CP3_VPCIE",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C58" },
-                                    { "Priority": "medium", "LocCode": "P0-C56" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C56"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "12.0VCS", "Callouts": [
+                        "ADValue": "12.0VCS",
+                        "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "pgood_part" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "pgood_part"
+                                    }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "3.3VCS", "Callouts": [
+                        "ADValue": "3.3VCS",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0" }
@@ -3040,7 +3189,8 @@
                         ]
                     },
                     {
-                        "ADValue": "1.1V_Current", "Callouts": [
+                        "ADValue": "1.1V_Current",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0" }
@@ -3049,17 +3199,22 @@
                         ]
                     },
                     {
-                        "ADValue": "5.0V_USB_Current", "Callouts": [
+                        "ADValue": "5.0V_USB_Current",
+                        "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "usb_pgood" },
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "usb_pgood"
+                                    },
                                     { "Priority": "medium", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "5.0V_DASD_Current", "Callouts": [
+                        "ADValue": "5.0V_DASD_Current",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "medium", "LocCode": "P1" },
@@ -3070,43 +3225,60 @@
                         ]
                     },
                     {
-                        "ADValue": "12.0VN", "Callouts": [
+                        "ADValue": "12.0VN",
+                        "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "pgood_part" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "pgood_part"
+                                    }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "12.0VP", "Callouts": [
+                        "ADValue": "12.0VP",
+                        "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "pgood_part" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "pgood_part"
+                                    }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "12.0VQ", "Callouts": [
+                        "ADValue": "12.0VQ",
+                        "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "pgood_part" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "pgood_part"
+                                    }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "12.0VR", "Callouts": [
+                        "ADValue": "12.0VR",
+                        "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "pgood_part" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "pgood_part"
+                                    }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "ThermalDiode1", "Callouts": [
+                        "ADValue": "ThermalDiode1",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0" }
@@ -3115,7 +3287,8 @@
                         ]
                     },
                     {
-                        "ADValue": "ThermalDiode2", "Callouts": [
+                        "ADValue": "ThermalDiode2",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0" }
@@ -3124,7 +3297,8 @@
                         ]
                     },
                     {
-                        "ADValue": "ThermalDiode3", "Callouts": [
+                        "ADValue": "ThermalDiode3",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0" }
@@ -3133,7 +3307,8 @@
                         ]
                     },
                     {
-                        "ADValue": "ThermalDiode4", "Callouts": [
+                        "ADValue": "ThermalDiode4",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0" }
@@ -3142,88 +3317,120 @@
                         ]
                     },
                     {
-                        "ADValue": "VDN_DCM0", "Callouts": [
+                        "ADValue": "VDN_DCM0",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C14" },
-                                    { "Priority": "medium", "LocCode": "P0-C15" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C15"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "VDN_DCM1", "Callouts": [
+                        "ADValue": "VDN_DCM1",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C23" },
-                                    { "Priority": "medium", "LocCode": "P0-C24" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C24"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "VCS_DCM0", "Callouts": [
+                        "ADValue": "VCS_DCM0",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C14" },
-                                    { "Priority": "medium", "LocCode": "P0-C15" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C15"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "VCS_DCM1", "Callouts": [
+                        "ADValue": "VCS_DCM1",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C23" },
-                                    { "Priority": "medium", "LocCode": "P0-C24" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C24"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "VIO_DCM0", "Callouts": [
+                        "ADValue": "VIO_DCM0",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C14" },
-                                    { "Priority": "medium", "LocCode": "P0-C15" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C15"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "VIO_DCM1", "Callouts": [
+                        "ADValue": "VIO_DCM1",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C23" },
-                                    { "Priority": "medium", "LocCode": "P0-C24" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C24"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "VPCIE_DCM0", "Callouts": [
+                        "ADValue": "VPCIE_DCM0",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C14" },
-                                    { "Priority": "medium", "LocCode": "P0-C15" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C15"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "VPCIE_DCM1", "Callouts": [
+                        "ADValue": "VPCIE_DCM1",
+                        "Callouts": [
                             {
                                 "CalloutList": [
                                     { "Priority": "high", "LocCode": "P0-C23" },
-                                    { "Priority": "medium", "LocCode": "P0-C24" },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C24"
+                                    },
                                     { "Priority": "low", "LocCode": "P0" }
                                 ]
                             }
@@ -3235,8 +3442,7 @@
             "Documentation": {
                 "Description": "The power sequencer chip detected a voltage fault",
                 "Message": "The power sequencer chip detected a voltage fault",
-                "Notes": [
-                ]
+                "Notes": []
             }
         },
 
@@ -3332,8 +3538,7 @@
             "Documentation": {
                 "Description": "The Uninterruptible Power Supply (UPS) battery is discharging and providing power to the system due to a utility failure",
                 "Message": "The Uninterruptible Power Supply (UPS) battery is discharging and providing power to the system due to a utility failure",
-                "Notes": [
-                ]
+                "Notes": []
             }
         },
 
@@ -3353,8 +3558,7 @@
             "Documentation": {
                 "Description": "The Uninterruptible Power Supply (UPS) battery level is low",
                 "Message": "The Uninterruptible Power Supply (UPS) battery level is low",
-                "Notes": [
-                ]
+                "Notes": []
             }
         },
 
@@ -3432,17 +3636,14 @@
 
             "Callouts": [
                 {
-                    "CalloutList": [
-                        { "Priority": "high", "LocCode": "P0" }
-                    ]
+                    "CalloutList": [{ "Priority": "high", "LocCode": "P0" }]
                 }
             ],
 
             "Documentation": {
                 "Description": "The power sequencer chip detected a fault",
                 "Message": "The power sequencer chip detected a fault",
-                "Notes": [
-                ]
+                "Notes": []
             }
         },
 
@@ -3460,17 +3661,14 @@
 
             "Callouts": [
                 {
-                    "CalloutList": [
-                        { "Priority": "high", "LocCode": "P0" }
-                    ]
+                    "CalloutList": [{ "Priority": "high", "LocCode": "P0" }]
                 }
             ],
 
             "Documentation": {
                 "Description": "System power failed to turn on within timeout period",
                 "Message": "System power failed to turn on within timeout period",
-                "Notes": [
-                ]
+                "Notes": []
             }
         },
 
@@ -3488,17 +3686,14 @@
 
             "Callouts": [
                 {
-                    "CalloutList": [
-                        { "Priority": "high", "LocCode": "P0" }
-                    ]
+                    "CalloutList": [{ "Priority": "high", "LocCode": "P0" }]
                 }
             ],
 
             "Documentation": {
                 "Description": "System power failed to turn off within timeout period",
                 "Message": "System power failed to turn off within timeout period",
-                "Notes": [
-                ]
+                "Notes": []
             }
         },
 
@@ -3647,9 +3842,9 @@
                     "System": "ibm,rainier",
                     "CalloutList": [
                         {
-                          "Priority": "high",
-                          "SymbolicFRUTrusted": "air_mover",
-                          "UseInventoryLocCode": true
+                            "Priority": "high",
+                            "SymbolicFRUTrusted": "air_mover",
+                            "UseInventoryLocCode": true
                         },
                         {
                             "Priority": "low",
@@ -3661,9 +3856,9 @@
                     "System": "ibm,everest",
                     "CalloutList": [
                         {
-                          "Priority": "high",
-                          "SymbolicFRUTrusted": "air_mover",
-                          "UseInventoryLocCode": true
+                            "Priority": "high",
+                            "SymbolicFRUTrusted": "air_mover",
+                            "UseInventoryLocCode": true
                         },
                         {
                             "Priority": "low",
@@ -3705,15 +3900,11 @@
             "Callouts": [
                 {
                     "System": "ibm,rainier",
-                    "CalloutList": [
-                        {"Priority": "medium", "LocCode": "P0"}
-                    ]
+                    "CalloutList": [{ "Priority": "medium", "LocCode": "P0" }]
                 },
                 {
                     "System": "ibm,everest",
-                    "CalloutList": [
-                        {"Priority": "medium", "LocCode": "P1"}
-                    ]
+                    "CalloutList": [{ "Priority": "medium", "LocCode": "P1" }]
                 }
             ],
 
@@ -3748,18 +3939,26 @@
                 {
                     "System": "ibm,rainier",
                     "CalloutList": [
-                        {"Priority": "high", "LocCode": "P0-C5"},
-                        {"Priority": "medium_group_a", "LocCode": "P0-T12", "SymbolicFRUTrusted": "fan_cable"},
-                        {"Priority": "medium_group_a", "LocCode": "P0-T17", "SymbolicFRUTrusted": "cable_continued"},
-                        {"Priority": "low", "LocCode": "P0"}
+                        { "Priority": "high", "LocCode": "P0-C5" },
+                        {
+                            "Priority": "medium_group_a",
+                            "LocCode": "P0-T12",
+                            "SymbolicFRUTrusted": "fan_cable"
+                        },
+                        {
+                            "Priority": "medium_group_a",
+                            "LocCode": "P0-T17",
+                            "SymbolicFRUTrusted": "cable_continued"
+                        },
+                        { "Priority": "low", "LocCode": "P0" }
                     ]
                 },
                 {
                     "System": "ibm,everest",
                     "CalloutList": [
-                        {"Priority": "high", "LocCode": "P0-C0"},
-                        {"Priority": "medium", "LocCode": "P1"},
-                        {"Priority": "low", "LocCode": "P0"}
+                        { "Priority": "high", "LocCode": "P0-C0" },
+                        { "Priority": "medium", "LocCode": "P1" },
+                        { "Priority": "low", "LocCode": "P0" }
                     ]
                 }
             ],
@@ -3777,45 +3976,53 @@
         },
 
         {
-             "Name": "xyz.openbmc_project.Fan.Presence.Error.GPIODeviceUnavailable",
-             "Subsystem": "power_fans",
-             "ComponentID": "0x2800",
-             "Severity": "unrecoverable_redundancy_loss",
-             "ActionFlags": ["service_action", "report", "call_home"],
+            "Name": "xyz.openbmc_project.Fan.Presence.Error.GPIODeviceUnavailable",
+            "Subsystem": "power_fans",
+            "ComponentID": "0x2800",
+            "Severity": "unrecoverable_redundancy_loss",
+            "ActionFlags": ["service_action", "report", "call_home"],
 
-             "SRC": {
-                 "Type": "11",
-                 "ReasonCode": "0x76F4",
-                 "Words6To9": {}
-             },
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x76F4",
+                "Words6To9": {}
+            },
 
-             "Callouts": [
-                 {
-                     "System" : "ibm,rainier",
-                     "CalloutList": [
-                         {"Priority": "high", "LocCode": "P0-C5"},
-                         {"Priority": "medium_group_a", "LocCode": "P0-T12","SymbolicFRUTrusted": "fan_cable"},
-                         {"Priority": "medium_group_a", "LocCode": "P0-T17","SymbolicFRUTrusted": "cable_continued"},
-                         {"Priority": "low", "LocCode": "P0"}
-                     ]
-                 },
-                 {
-                     "System" : "ibm,everest",
-                     "CalloutList": [
-                         {"Priority": "high", "LocCode": "P0-C0"},
-                         {"Priority": "medium", "LocCode": "P1"},
-                         {"Priority": "low", "LocCode": "P0"}
-                     ]
-                 }
-             ],
+            "Callouts": [
+                {
+                    "System": "ibm,rainier",
+                    "CalloutList": [
+                        { "Priority": "high", "LocCode": "P0-C5" },
+                        {
+                            "Priority": "medium_group_a",
+                            "LocCode": "P0-T12",
+                            "SymbolicFRUTrusted": "fan_cable"
+                        },
+                        {
+                            "Priority": "medium_group_a",
+                            "LocCode": "P0-T17",
+                            "SymbolicFRUTrusted": "cable_continued"
+                        },
+                        { "Priority": "low", "LocCode": "P0" }
+                    ]
+                },
+                {
+                    "System": "ibm,everest",
+                    "CalloutList": [
+                        { "Priority": "high", "LocCode": "P0-C0" },
+                        { "Priority": "medium", "LocCode": "P1" },
+                        { "Priority": "low", "LocCode": "P0" }
+                    ]
+                }
+            ],
 
-             "Documentation": {
-                 "Description": "Fan GPIO sensors not present",
-                 "Message": "Fan GPIO sensors not present",
-                 "Notes": [
-                     "The device that reports fan presence is not functioning."
-                 ]
-             }
+            "Documentation": {
+                "Description": "Fan GPIO sensors not present",
+                "Message": "Fan GPIO sensors not present",
+                "Notes": [
+                    "The device that reports fan presence is not functioning."
+                ]
+            }
         },
 
         {
@@ -3838,7 +4045,10 @@
                         "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "ambient_temp" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "ambient_temp"
+                                    }
                                 ]
                             }
                         ]
@@ -3889,7 +4099,10 @@
                         "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "ambient_temp_back" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "ambient_temp_back"
+                                    }
                                 ]
                             }
                         ]
@@ -3927,7 +4140,10 @@
                         "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "ambient_temp" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "ambient_temp"
+                                    }
                                 ]
                             }
                         ]
@@ -3978,7 +4194,10 @@
                         "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "ambient_temp_back" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "ambient_temp_back"
+                                    }
                                 ]
                             }
                         ]
@@ -4016,7 +4235,10 @@
                         "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "ambient_temp" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "ambient_temp"
+                                    }
                                 ]
                             }
                         ]
@@ -4067,7 +4289,10 @@
                         "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "ambient_temp_back" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "ambient_temp_back"
+                                    }
                                 ]
                             }
                         ]
@@ -4101,8 +4326,8 @@
                 {
                     "CalloutList": [
                         {
-                          "Priority": "high",
-                          "SymbolicFRU": "ambient_temp"
+                            "Priority": "high",
+                            "SymbolicFRU": "ambient_temp"
                         }
                     ]
                 }
@@ -4135,8 +4360,8 @@
                 {
                     "CalloutList": [
                         {
-                          "Priority": "high",
-                          "SymbolicFRU": "ambient_temp_back"
+                            "Priority": "high",
+                            "SymbolicFRU": "ambient_temp_back"
                         }
                     ]
                 }
@@ -4163,8 +4388,8 @@
                 {
                     "CalloutList": [
                         {
-                          "Priority": "high",
-                          "SymbolicFRU": "ambient_temp"
+                            "Priority": "high",
+                            "SymbolicFRU": "ambient_temp"
                         }
                     ]
                 }
@@ -4200,7 +4425,10 @@
                         "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "SymbolicFRU": "altitude" }
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "altitude"
+                                    }
                                 ]
                             }
                         ]
@@ -4372,10 +4600,8 @@
 
             "SRC": {
                 "ReasonCode": "0x4000",
-                "Words6To9":
-                {
-                    "6":
-                    {
+                "Words6To9": {
+                    "6": {
                         "Description": "Errno of the failure.",
                         "AdditionalDataPropSource": "CALLOUT_ERRNO"
                     }
@@ -4400,9 +4626,7 @@
 
             "SRC": {
                 "ReasonCode": "0x4001",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Documentation": {
@@ -4424,9 +4648,7 @@
 
             "SRC": {
                 "ReasonCode": "0x4002",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Documentation": {
@@ -4447,9 +4669,7 @@
 
             "SRC": {
                 "ReasonCode": "0x4003",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
@@ -4479,9 +4699,7 @@
 
             "SRC": {
                 "ReasonCode": "0x4004",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Documentation": {
@@ -4502,9 +4720,7 @@
 
             "SRC": {
                 "ReasonCode": "0x4005",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
@@ -4533,16 +4749,12 @@
 
             "SRC": {
                 "ReasonCode": "0x4006",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
                 {
-                   "CalloutList": [
-                        { "Priority": "high", "LocCode": "P0" }
-                    ]
+                    "CalloutList": [{ "Priority": "high", "LocCode": "P0" }]
                 }
             ],
 
@@ -4564,9 +4776,7 @@
 
             "SRC": {
                 "ReasonCode": "0x4007",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
@@ -4595,9 +4805,7 @@
 
             "SRC": {
                 "ReasonCode": "0x4008",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
@@ -4627,9 +4835,7 @@
 
             "SRC": {
                 "ReasonCode": "0x4009",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Documentation": {
@@ -4657,9 +4863,7 @@
             "Documentation": {
                 "Description": "Button Handler Failure",
                 "Message": "Input Device path failure",
-                "Notes": [
-                    "Button events will not be processed."
-                ]
+                "Notes": ["Button events will not be processed."]
             }
         },
 
@@ -4693,20 +4897,21 @@
                 "Words6To9": {}
             },
 
-            "Callouts": [{
-                "CalloutList": [{
-                    "Priority": "high",
-                    "Procedure": "bmc_code"
-                }]
-            }],
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "bmc_code"
+                        }
+                    ]
+                }
+            ],
 
             "Documentation": {
                 "Description": "Host Communication failure",
                 "Message": "Error in sending message to host",
-                "Notes": [
-                    "Failure from PLDM sending message to",
-                    "Host"
-                ]
+                "Notes": ["Failure from PLDM sending message to", "Host"]
             }
         },
 
@@ -4720,12 +4925,16 @@
                 "Words6To9": {}
             },
 
-            "Callouts": [{
-                "CalloutList": [{
-                    "Priority": "high",
-                    "Procedure": "bmc_code"
-                }]
-            }],
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "bmc_code"
+                        }
+                    ]
+                }
+            ],
 
             "Documentation": {
                 "Description": "Dbus exception",
@@ -4764,16 +4973,12 @@
             "Name": "org.open_power.Host.Boot.Error.WatchdogTimeout",
             "Subsystem": "cec_sp_hostboot_iface",
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0xC101",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Host did not respond within the watchdog timeout interval",
                 "Message": "Host did not respond before the watchdog timeout interval expired",
                 "Notes": [
@@ -4787,12 +4992,9 @@
             "Name": "xyz.openbmc_project.Software.Version.Error.Incompatible",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x3600",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3601",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
@@ -4803,8 +5005,7 @@
                 }
             ],
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "A system component has a software version that is incompatible.",
                 "Message": "A system component has a software version that is incompatible."
             }
@@ -4814,12 +5015,9 @@
             "Name": "xyz.openbmc_project.Software.Version.Error.AlreadyExists",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x3600",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3602",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
@@ -4830,8 +5028,7 @@
                 }
             ],
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "This image version already exists on the device.",
                 "Message": "This image version already exists on the device."
             }
@@ -4841,12 +5038,9 @@
             "Name": "xyz.openbmc_project.Software.Image.Error.UnTarFailure",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x3600",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3603",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
@@ -4857,8 +5051,7 @@
                 }
             ],
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "An error occurred during untar.",
                 "Message": "An error occurred during untar."
             }
@@ -4868,12 +5061,9 @@
             "Name": "xyz.openbmc_project.Software.Image.Error.ManifestFileFailure",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x3600",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3604",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
@@ -4884,8 +5074,7 @@
                 }
             ],
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "An error occurred when reading the software image Manifest file.",
                 "Message": "An error occurred when reading the software image Manifest file."
             }
@@ -4895,12 +5084,9 @@
             "Name": "xyz.openbmc_project.Software.Image.Error.InternalFailure",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x3600",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3605",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
@@ -4911,8 +5097,7 @@
                 }
             ],
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "The operation failed internally during processing the image.",
                 "Message": "The operation failed internally during processing the image."
             }
@@ -4922,12 +5107,9 @@
             "Name": "xyz.openbmc_project.Software.Image.Error.ImageFailure",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x3600",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3606",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
@@ -4938,8 +5120,7 @@
                 }
             ],
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "An error occurred processing the image.",
                 "Message": "An error occurred processing the image."
             }
@@ -4949,12 +5130,9 @@
             "Name": "xyz.openbmc_project.Software.Image.Error.BusyFailure",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x3600",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3607",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
@@ -4965,8 +5143,7 @@
                 }
             ],
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "The device is busy during the update.",
                 "Message": "The device is busy during the update."
             }
@@ -4976,12 +5153,9 @@
             "Name": "xyz.openbmc_project.Software.Version.Error.ExpiredAccessKey",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x3600",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3608",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
@@ -4992,8 +5166,7 @@
                 }
             ],
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "The Update Access Key has expired.",
                 "Message": "The Update Access Key has expired."
             }
@@ -5003,12 +5176,9 @@
             "Name": "xyz.openbmc_project.Software.Version.Error.InvalidSignature",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x3600",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x3609",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
@@ -5019,32 +5189,27 @@
                 }
             ],
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "The software image has an invalid signature.",
                 "Message": "The software image has an invalid signature"
             }
         },
 
         {
-            "Name" : "xyz.openbmc_project.Software.Version.Error.HostFile",
-            "Subsystem" : "bmc_firmware",
-            "ComponentID" : "0x3600",
+            "Name": "xyz.openbmc_project.Software.Version.Error.HostFile",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3600",
 
-            "SRC" :
-            {
-                "ReasonCode" : "0x360A",
-                "Words6To9":
-                {
-                    "6":
-                    {
-                        "Description" : "Size of the current running partition",
-                        "AdditionalDataPropSource" : "CURRENT_FILE_SIZE"
+            "SRC": {
+                "ReasonCode": "0x360A",
+                "Words6To9": {
+                    "6": {
+                        "Description": "Size of the current running partition",
+                        "AdditionalDataPropSource": "CURRENT_FILE_SIZE"
                     },
-                    "7":
-                    {
-                        "Description" : "Size of the read only partition",
-                        "AdditionalDataPropSource" : "EXPECTED_FILE_SIZE"
+                    "7": {
+                        "Description": "Size of the read only partition",
+                        "AdditionalDataPropSource": "EXPECTED_FILE_SIZE"
                     }
                 }
             },
@@ -5055,11 +5220,10 @@
                     ]
                 }
             ],
-            "Documentation" :
-            {
-                "Description" : "Corrupted or changed preserved file",
-                "Message" : "Partition was not preserved on reboot",
-                "Notes" : [
+            "Documentation": {
+                "Description": "Corrupted or changed preserved file",
+                "Message": "Partition was not preserved on reboot",
+                "Notes": [
                     "This error may occur if one of the partitions marked",
                     "PRESERVED is either corrupted, or a change of size is ",
                     "desired for a particular partition."
@@ -5072,12 +5236,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "predictive",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6001",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
@@ -5087,8 +5248,7 @@
                 }
             ],
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failed to get the requested dump object path.",
                 "Message": "Failed to get the requested dump object path from the system."
             }
@@ -5098,12 +5258,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "unrecoverable",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6002",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
@@ -5112,8 +5269,7 @@
                     ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failed to make a new dump notify request to the dump manager application.",
                 "Message": "Failed to make a new dump notify request to the dump manager application."
             }
@@ -5123,12 +5279,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "unrecoverable",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6003",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
@@ -5137,8 +5290,7 @@
                     ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failed to get the dump offload URI path from the dump entry.",
                 "Message": "Failed to get the dump offload URI path from the dump entry."
             }
@@ -5148,12 +5300,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "non_error",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6004",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
@@ -5162,8 +5311,7 @@
                     ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "The hypervisor rejected the request to initiate a new resource dump.",
                 "Message": "The hypervisor rejected the request to initiate a new resource dump."
             }
@@ -5173,12 +5321,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "unrecoverable",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6005",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
@@ -5187,8 +5332,7 @@
                     ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failed to reset the dump ID, due to this requested dump will not be deleted.",
                 "Message": "Failed to reset the dump ID, due to this requested dump will not be deleted."
             }
@@ -5198,12 +5342,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "unrecoverable",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6006",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
@@ -5212,8 +5353,7 @@
                     ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failed to carry out the dump delete request from the hypervisor.",
                 "Message": "Failed to carry out the dump delete request from the hypervisor."
             }
@@ -5223,12 +5363,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "unrecoverable",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6007",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
@@ -5237,8 +5374,7 @@
                     ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failed to set the dump offloaded completion flag in the dump entry.",
                 "Message": "Failed to set the dump offloaded completion flag in the dump entry."
             }
@@ -5248,12 +5384,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "unrecoverable",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6008",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
@@ -5262,8 +5395,7 @@
                     ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failed to get the file path for the BMC dump and offload to the hypervisor.",
                 "Message": "Failed to get the file path for the BMC dump and offload to the hypervisor."
             }
@@ -5273,12 +5405,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "unrecoverable",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6009",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
@@ -5287,8 +5416,7 @@
                     ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failed to get the file path for the BMC dump and offload to the hypervisor.",
                 "Message": "Failed to get the file path for the BMC dump and offload to the hypervisor."
             }
@@ -5298,12 +5426,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "non_error",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6010",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
@@ -5312,8 +5437,7 @@
                     ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Could not create a new resource dump due to hypervisor verification failed.",
                 "Message": "Could not create a new resource dump due to hypervisor verification failed."
             }
@@ -5323,12 +5447,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "unrecoverable",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6011",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
@@ -5337,8 +5458,7 @@
                     ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failed to set the dump offload completion flag in the dump entry details.",
                 "Message": "Failed to set the dump offload completion flag in the dump entry details."
             }
@@ -5348,12 +5468,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "unrecoverable",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6012",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
@@ -5362,8 +5479,7 @@
                     ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failed to notify a new dump available request.",
                 "Message": "Failed to notify a new dump available request."
             }
@@ -5373,12 +5489,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "unrecoverable",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6013",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
@@ -5387,8 +5500,7 @@
                     ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failed to send the resource dump parameters for a new dump initiation.",
                 "Message": "Failed to send the resource dump parameters for a new dump initiation."
             }
@@ -5398,12 +5510,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "unrecoverable",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6014",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
@@ -5412,8 +5521,7 @@
                     ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failed to send the certificate/license file to the host.",
                 "Message": "Failed to send the certificate/license file to the host."
             }
@@ -5423,12 +5531,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "unrecoverable",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6015",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
@@ -5437,8 +5542,7 @@
                     ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failed to decode the response of certificate/license file sent to the host.",
                 "Message": "Failed to decode the response of certificate/license file sent to the host."
             }
@@ -5448,12 +5552,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "unrecoverable",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6016",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
@@ -5462,8 +5563,7 @@
                     ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failed to send the new certificate/license file to the host.",
                 "Message": "Failed to send the new certificate/license file to the host."
             }
@@ -5473,12 +5573,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "unrecoverable",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6017",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
 
             "Callouts": [
@@ -5488,8 +5585,7 @@
                     ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failed to set state effecter states.",
                 "Message": "Failed to set state effecter states."
             }
@@ -5499,12 +5595,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "unrecoverable",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6018",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
@@ -5513,8 +5606,7 @@
                     ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failed to parse PDR JSON file.",
                 "Message": "Failed to parse PDR JSON file."
             }
@@ -5524,12 +5616,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "unrecoverable",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6019",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
@@ -5538,8 +5627,7 @@
                     ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failed to get state sensor PDR state.",
                 "Message": "Failed to get state sensor PDR state."
             }
@@ -5549,12 +5637,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "unrecoverable",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6020",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
@@ -5563,8 +5648,7 @@
                     ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failed to encode state sensor request.",
                 "Message": "Failed to encode state sensor request."
             }
@@ -5574,12 +5658,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "unrecoverable",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6021",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
@@ -5588,8 +5669,7 @@
                     ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failed to subscribe for concurrent maintenance of FRU.",
                 "Message": "Failed to subscribe for concurrent maintenance of FRU."
             }
@@ -5599,12 +5679,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "non_error",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6022",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
@@ -5613,8 +5690,7 @@
                     ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Host did not send a surveillance ping within stipulated timeout interval.",
                 "Message": "Host did not send a surveillance ping within stipulated timeout interval."
             }
@@ -5624,12 +5700,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "unrecoverable",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6023",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
@@ -5638,8 +5711,7 @@
                     ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Failed to reset the dump offload URI path from the dump entry.",
                 "Message": "Failed to reset the dump offload URI path from the dump entry."
             }
@@ -5649,12 +5721,9 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
             "Severity": "unrecoverable",
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x6024",
-                "Words6To9":
-                {
-                }
+                "Words6To9": {}
             },
             "Callouts": [
                 {
@@ -5663,8 +5732,7 @@
                     ]
                 }
             ],
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "Host failed to complete the power off gracefully within the timeout.",
                 "Message": "Host failed to complete the power off gracefully within the timeout."
             }
