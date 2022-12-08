@@ -1,6 +1,7 @@
-from setuptools import setup
 import os
 import shutil
+
+from setuptools import setup
 
 # Builds the message registry and other data files into a python package
 

@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 
-import os
-import yaml
-from mako.template import Template
 import argparse
+import os
+
+from mako.template import Template
+
+import yaml
 
 
 def main():

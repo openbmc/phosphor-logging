@@ -11,11 +11,13 @@ file we're going to generate.  We then call it with information from the
 yaml to generate the header file.
 """
 
-from mako.template import Template
-from optparse import OptionParser
-import yaml
-import sys
 import os
+import sys
+from optparse import OptionParser
+
+from mako.template import Template
+
+import yaml
 
 
 def order_inherited_errors(i_errors, i_parents):
