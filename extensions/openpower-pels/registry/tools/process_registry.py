@@ -58,7 +58,6 @@ def check_component_id(registry_json):
     """
 
     for entry in registry_json["PELs"]:
-
         # Don't check on "11" SRCs as those reason codes aren't supposed to
         # match the component ID.
         if entry["SRC"].get("Type", "") == "11":
@@ -124,7 +123,6 @@ def validate_schema(registry, schema):
         registry_json = json.load(registry_handle)
 
         if schema:
-
             import jsonschema
 
             with open(schema) as schema_handle:
@@ -146,7 +144,6 @@ def validate_schema(registry, schema):
 
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser(
         description="PEL message registry processor"
     )
@@ -177,7 +174,7 @@ if __name__ == "__main__":
         "--skip-schema-validation",
         action="store_true",
         dest="skip_schema",
-        help="Skip running schema validation. " "Only do the extra checks.",
+        help="Skip running schema validation. Only do the extra checks.",
     )
 
     args = parser.parse_args()
