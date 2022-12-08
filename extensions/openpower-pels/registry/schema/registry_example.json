@@ -1,53 +1,41 @@
 {
-    "PELs":
-    [
+    "PELs": [
         {
             "Name": "xyz.openbmc_project.Power.Fault",
             "Subsystem": "power_supply",
             "Severity": "unrecoverable",
             "ActionFlags": ["service_action", "report"],
 
-            "SRC":
-            {
+            "SRC": {
                 "ReasonCode": "0x2030",
                 "SymptomIDFields": ["SRCWord3", "SRCWord6"],
-                "Words6To9":
-                {
-                    "6":
-                    {
+                "Words6To9": {
+                    "6": {
                         "Description": "Failing unit number",
                         "AdditionalDataPropSource": "PS_NUM"
                     }
                 }
             },
 
-            "Documentation":
-            {
+            "Documentation": {
                 "Description": "A PGOOD Fault",
                 "Message": "PS %1 had a PGOOD Fault",
-                "MessageArgSources":
-                [
-                    "SRCWord6"
-                ],
+                "MessageArgSources": ["SRCWord6"],
                 "Notes": [
                     "In the UserData section there is a JSON",
                     "dump that provides debug information."
                 ]
             },
 
-            "CalloutsUsingAD":
-            {
+            "CalloutsUsingAD": {
                 "ADName": "PS_NUM",
-                "CalloutsWithTheirADValues":
-                [
+                "CalloutsWithTheirADValues": [
                     {
                         "ADValue": "0",
-                        "Callouts":
-                        [
+                        "Callouts": [
                             {
                                 "System": "system1",
-                                "CalloutList":
-                                [
+                                "CalloutList": [
                                     {
                                         "Priority": "high",
                                         "LocCode": "E1"
@@ -59,8 +47,7 @@
                                 ]
                             },
                             {
-                                "CalloutList":
-                                [
+                                "CalloutList": [
                                     {
                                         "Priority": "high",
                                         "Procedure": "bmc_code"
