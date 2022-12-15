@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <optional>
 #include <string>
+#include <variant>
 #include <vector>
 
 namespace openpower
@@ -107,6 +108,17 @@ struct SRC
     SRC() : type(0), reasonCode(0) {}
 };
 
+struct AppCapture
+{
+    std::string syslogID;
+    size_t numLines;
+};
+
+// Can specify either the syslog IDs to capture along with how many
+// entries of each, or just how many entries to get the full journal.
+using AppCaptureList = std::vector<AppCapture>;
+using JournalCapture = std::variant<size_t, AppCaptureList>;
+
 /**
  * @brief Represents a message registry entry, which is used for creating a
  *        PEL from an OpenBMC event log.
@@ -180,6 +192,11 @@ struct Entry
      * @brief The callout JSON, if the entry has callouts.
      */
     std::optional<nlohmann::json> callouts;
+
+    /**
+     * @brief The journal capture instructions, if present.
+     */
+    std::optional<JournalCapture> journalCapture;
 };
 
 /**

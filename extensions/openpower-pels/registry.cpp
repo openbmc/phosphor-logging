@@ -578,6 +578,58 @@ std::vector<RegistryCallout>
     return getCalloutsWithoutAD((*it)["Callouts"], systemNames);
 }
 
+/**
+ * @brief Returns the journal capture information
+ *
+ *  The JSON looks like:
+ *    "JournalCapture": {
+ *        "NumLines": 30
+ *    }
+ *
+ *    "JournalCapture":
+ *    {
+ *        "Sections": [
+ *            {
+ *                "SyslogID": "phosphor-log-manager",
+ *                "NumLines": 20
+ *            }
+ *        ]
+ *    }
+ *
+ * @param json - The journal capture JSON
+ * @return JournalCapture - The filled in variant
+ */
+JournalCapture getJournalCapture(const nlohmann::json& json)
+{
+    JournalCapture capt;
+
+    // Primary key is either NumLines or Sections.
+    if (json.contains("NumLines"))
+    {
+        capt = json.at("NumLines").get<size_t>();
+    }
+    else if (json.contains("Sections"))
+    {
+        AppCaptureList captures;
+        for (const auto& capture : json.at("Sections"))
+        {
+            AppCapture ac;
+            ac.syslogID = capture.at("SyslogID").get<std::string>();
+            ac.numLines = capture.at("NumLines").get<size_t>();
+            captures.push_back(std::move(ac));
+        }
+
+        capt = captures;
+    }
+    else
+    {
+        log<level::ERR>("JournalCapture section not the right format");
+        throw std::runtime_error{"JournalCapture section not the right format"};
+    }
+
+    return capt;
+}
+
 } // namespace helper
 
 std::optional<Entry> Registry::lookup(const std::string& name, LookupType type,
@@ -702,6 +754,12 @@ std::optional<Entry> Registry::lookup(const std::string& name, LookupType type,
                 {
                     entry.callouts = (*e)["CalloutsUsingAD"];
                 }
+            }
+
+            if (e->contains("JournalCapture"))
+            {
+                entry.journalCapture =
+                    helper::getJournalCapture((*e)["JournalCapture"]);
             }
 
             return entry;
