@@ -32,6 +32,11 @@ class JournalBase
      */
     virtual std::vector<std::string> getMessages(const std::string& syslogID,
                                                  size_t maxMessages) const = 0;
+
+    /**
+     * @brief Call journalctl --sync to write unwritten journal data to disk
+     */
+    virtual void sync() const = 0;
 };
 
 /**
@@ -59,6 +64,11 @@ class Journal : public JournalBase
      */
     std::vector<std::string> getMessages(const std::string& syslogID,
                                          size_t maxMessages) const override;
+
+    /**
+     * @brief Call journalctl --sync to write unwritten journal data to disk
+     */
+    void sync() const override;
 
   private:
     /**

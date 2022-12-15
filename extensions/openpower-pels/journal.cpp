@@ -15,6 +15,8 @@
  */
 #include "journal.hpp"
 
+#include <fmt/format.h>
+
 #include <phosphor-logging/log.hpp>
 
 #include <stdexcept>
@@ -49,6 +51,28 @@ class JournalCloser
   private:
     sd_journal* journal{nullptr};
 };
+
+void Journal::sync() const
+{
+    auto start = std::chrono::system_clock::now();
+
+    auto rc = system("journalctl --sync");
+    if (rc != 0)
+    {
+        log<level::ERR>(
+            fmt::format("journalctl --sync failed with rc {}", rc).c_str());
+    }
+
+    auto end = std::chrono::system_clock::now();
+    auto duration =
+        std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+    if (duration.count() > 100)
+    {
+        log<level::INFO>(
+            fmt::format("Journal sync took {}ms", duration.count()).c_str());
+    }
+}
 
 std::vector<std::string> Journal::getMessages(const std::string& syslogID,
                                               size_t maxMessages) const

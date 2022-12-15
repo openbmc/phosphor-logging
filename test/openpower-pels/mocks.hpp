@@ -286,6 +286,8 @@ class MockJournal : public JournalBase
 
     MOCK_METHOD(std::vector<std::string>, getMessages,
                 (const std::string&, size_t), (const override));
+
+    MOCK_METHOD(void, sync, (), (const override));
 };
 
 } // namespace pels
