@@ -131,10 +131,13 @@ TEST_F(ManagerTest, TestCreateWithPEL)
     std::unique_ptr<DataInterfaceBase> dataIface =
         std::make_unique<MockDataInterface>();
 
+    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+
     openpower::pels::Manager manager{
         logManager, std::move(dataIface),
         std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3)};
+                  std::placeholders::_2, std::placeholders::_3),
+        std::move(journal)};
 
     // Create a PEL, write it to a file, and pass that filename into
     // the create function.
@@ -173,10 +176,13 @@ TEST_F(ManagerTest, TestCreateWithInvalidPEL)
     std::unique_ptr<DataInterfaceBase> dataIface =
         std::make_unique<MockDataInterface>();
 
+    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+
     openpower::pels::Manager manager{
         logManager, std::move(dataIface),
         std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3)};
+                  std::placeholders::_2, std::placeholders::_3),
+        std::move(journal)};
 
     // Create a PEL, write it to a file, and pass that filename into
     // the create function.
@@ -282,10 +288,13 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
     EXPECT_CALL(*mockIface, checkDumpStatus(dumpType))
         .WillRepeatedly(Return(std::vector<bool>{false, false, false}));
 
+    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+
     openpower::pels::Manager manager{
         logManager, std::move(dataIface),
         std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3)};
+                  std::placeholders::_2, std::placeholders::_3),
+        std::move(journal)};
 
     std::vector<std::string> additionalData{"FOO=BAR"};
     std::vector<std::string> associations;
@@ -387,10 +396,13 @@ TEST_F(ManagerTest, TestDBusMethods)
     std::unique_ptr<DataInterfaceBase> dataIface =
         std::make_unique<MockDataInterface>();
 
+    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+
     Manager manager{logManager, std::move(dataIface),
                     std::bind(std::mem_fn(&TestLogger::log), &logger,
                               std::placeholders::_1, std::placeholders::_2,
-                              std::placeholders::_3)};
+                              std::placeholders::_3),
+                    std::move(journal)};
 
     // Create a PEL, write it to a file, and pass that filename into
     // the create function so there's one in the repo.
@@ -610,10 +622,13 @@ TEST_F(ManagerTest, TestCreateWithESEL)
     std::unique_ptr<DataInterfaceBase> dataIface =
         std::make_unique<MockDataInterface>();
 
+    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+
     openpower::pels::Manager manager{
         logManager, std::move(dataIface),
         std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3)};
+                  std::placeholders::_2, std::placeholders::_3),
+        std::move(journal)};
 
     {
         std::string adItem = "ESEL=" + esel;
@@ -664,10 +679,13 @@ TEST_F(ManagerTest, TestPruning)
     std::unique_ptr<DataInterfaceBase> dataIface =
         std::make_unique<MockDataInterface>();
 
+    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+
     openpower::pels::Manager manager{
         logManager, std::move(dataIface),
         std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3)};
+                  std::placeholders::_2, std::placeholders::_3),
+        std::move(journal)};
 
     // Create 25 1000B (4096B on disk each, which is what is used for pruning)
     // BMC non-informational PELs in the 100KB repository.  After the 24th one,
@@ -738,10 +756,13 @@ TEST_F(ManagerTest, TestPELManualDelete)
     std::unique_ptr<DataInterfaceBase> dataIface =
         std::make_unique<MockDataInterface>();
 
+    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+
     openpower::pels::Manager manager{
         logManager, std::move(dataIface),
         std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3)};
+                  std::placeholders::_2, std::placeholders::_3),
+        std::move(journal)};
 
     auto data = pelDataFactory(TestPELType::pelSimple);
     auto dir = makeTempDir();
@@ -814,10 +835,13 @@ TEST_F(ManagerTest, TestPELManualDeleteAll)
     std::unique_ptr<DataInterfaceBase> dataIface =
         std::make_unique<MockDataInterface>();
 
+    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+
     openpower::pels::Manager manager{
         logManager, std::move(dataIface),
         std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3)};
+                  std::placeholders::_2, std::placeholders::_3),
+        std::move(journal)};
 
     auto data = pelDataFactory(TestPELType::pelSimple);
     auto dir = makeTempDir();
@@ -890,10 +914,13 @@ TEST_F(ManagerTest, TestServiceIndicators)
     EXPECT_CALL(*mockIface, checkDumpStatus(dumpType))
         .WillRepeatedly(Return(std::vector<bool>{false, false, false}));
 
+    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+
     openpower::pels::Manager manager{
         logManager, std::move(dataIface),
         std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3)};
+                  std::placeholders::_2, std::placeholders::_3),
+        std::move(journal)};
 
     // Add a PEL with a callout as if hostboot added it
     {
@@ -999,10 +1026,13 @@ TEST_F(ManagerTest, TestDuplicatePEL)
     std::unique_ptr<DataInterfaceBase> dataIface =
         std::make_unique<MockDataInterface>();
 
+    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+
     openpower::pels::Manager manager{
         logManager, std::move(dataIface),
         std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3)};
+                  std::placeholders::_2, std::placeholders::_3),
+        std::move(journal)};
 
     for (int i = 0; i < 2; i++)
     {
@@ -1084,10 +1114,13 @@ TEST_F(ManagerTest, TestTerminateBitWithPELSevCriticalSysTerminate)
     EXPECT_CALL(*mockIface, checkDumpStatus(dumpType))
         .WillRepeatedly(Return(std::vector<bool>{false, false, false}));
 
+    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+
     openpower::pels::Manager manager{
         logManager, std::move(dataIface),
         std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3)};
+                  std::placeholders::_2, std::placeholders::_3),
+        std::move(journal)};
 
     std::vector<std::string> additionalData{"FOO=BAR"};
     std::vector<std::string> associations;
