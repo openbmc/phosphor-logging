@@ -376,7 +376,8 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
     }
 
     auto pel = std::make_unique<openpower::pels::PEL>(
-        *entry, obmcLogID, timestamp, severity, ad, pelFFDC, *_dataIface);
+        *entry, obmcLogID, timestamp, severity, ad, pelFFDC, *_dataIface,
+        *_journal);
 
     _repo.add(pel);
 
