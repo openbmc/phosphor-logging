@@ -474,6 +474,48 @@ the first callout in the registry for this to work.
 }
 ```
 
+### Capturing the Journal
+
+The PEL daemon can be told to capture pieces of the journal in PEL UserData
+sections.  This could be useful for debugging problems where a BMC dump which
+would also contain the journal isn't available.
+
+The 'JournalCapture' field has two formats, one that will create one UserData
+section with the previous N lines of the journal, and another that can capture
+any number of journal snippets based on the journal's SYSLOG_IDENTIFIER field.
+
+```json
+"JournalCapture": {
+    "NumLines": 30
+}
+```
+
+```json
+"JournalCapture":
+{
+    "Sections": [
+        {
+            "SyslogID": "phosphor-bmc-state-manager",
+            "NumLines": 20
+        },
+        {
+            "SyslogID": "phosphor-log-manager",
+            "NumLines": 15
+        }
+    ]
+}
+```
+
+The first example will capture the previous 30 lines from the journal into a
+single UserData section.
+
+The second example will create two UserData sections, the first with the most
+recent 20 lines from phosphor-bmc-state-manager, and the second with 15 lines
+from phosphor-log-manager.
+
+If a UserData section would make the PEL exceed its maximum size of 16KB, it
+will be dropped.
+
 ## Modifying and Testing
 
 The general process for adding new entries to the message registry is:
