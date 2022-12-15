@@ -56,7 +56,7 @@ constexpr auto unknownValue = "Unknown";
 PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
          phosphor::logging::Entry::Level severity,
          const AdditionalData& additionalData, const PelFFDC& ffdcFilesIn,
-         const DataInterfaceBase& dataIface)
+         const DataInterfaceBase& dataIface, const JournalBase& journal)
 {
     // No changes in input, for non SBE error related requests
     PelFFDC ffdcFiles = ffdcFilesIn;
@@ -194,6 +194,8 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
             }
         }
     }
+
+    addJournalSections(regEntry, journal);
 
     _ph->setSectionCount(2 + _optionalSections.size());
 
@@ -596,6 +598,111 @@ void PEL::updateTerminateBitInSRCSection()
     }
 }
 
+void PEL::addJournalSections(const message::Entry& regEntry,
+                             const JournalBase& journal)
+{
+    if (!regEntry.journalCapture)
+    {
+        return;
+    }
+
+    // Write all unwritten journal data to disk.
+    journal.sync();
+
+    const auto& jc = regEntry.journalCapture.value();
+    std::vector<std::vector<std::string>> allMessages;
+
+    if (std::holds_alternative<size_t>(jc))
+    {
+        // Get the previous numLines journal entries
+        const auto& numLines = std::get<size_t>(jc);
+        try
+        {
+            auto messages = journal.getMessages("", numLines);
+            if (!messages.empty())
+            {
+                allMessages.push_back(std::move(messages));
+            }
+        }
+        catch (const std::exception& e)
+        {
+            log<level::ERR>(
+                fmt::format("Failed during journal collection: {}", e.what())
+                    .c_str());
+        }
+    }
+    else if (std::holds_alternative<message::AppCaptureList>(jc))
+    {
+        // Get journal entries based on the syslog id field.
+        const auto& sections = std::get<message::AppCaptureList>(jc);
+        for (const auto& [syslogID, numLines] : sections)
+        {
+            try
+            {
+                auto messages = journal.getMessages(syslogID, numLines);
+                if (!messages.empty())
+                {
+                    allMessages.push_back(std::move(messages));
+                }
+            }
+            catch (const std::exception& e)
+            {
+                log<level::ERR>(
+                    fmt::format("Failed during journal collection: {}",
+                                e.what())
+                        .c_str());
+            }
+        }
+    }
+
+    // Create the UserData sections
+    for (const auto& messages : allMessages)
+    {
+        auto buffer = util::flattenLines(messages);
+
+        // If the buffer is way too big, it can overflow the uint16_t
+        // PEL section size field that is checked below so do a cursory
+        // check here.
+        if (buffer.size() > _maxPELSize)
+        {
+            log<level::WARNING>(
+                "Journal UserData section does not fit in PEL, dropping");
+            log<level::WARNING>(fmt::format("PEL size = {}, data size = {}",
+                                            size(), buffer.size())
+                                    .c_str());
+            continue;
+        }
+
+        // Sections must be 4 byte aligned.
+        while (buffer.size() % 4 != 0)
+        {
+            buffer.push_back(0);
+        }
+
+        auto ud = std::make_unique<UserData>(
+            static_cast<uint16_t>(ComponentID::phosphorLogging),
+            static_cast<uint8_t>(UserDataFormat::text),
+            static_cast<uint8_t>(UserDataFormatVersion::text), buffer);
+
+        if (size() + ud->header().size <= _maxPELSize)
+        {
+            _optionalSections.push_back(std::move(ud));
+        }
+        else
+        {
+            // Don't attempt to shrink here since we'd be dropping the
+            // most recent journal entries which would be confusing.
+            log<level::WARNING>(
+                "Journal UserData section does not fit in PEL, dropping");
+            log<level::WARNING>(fmt::format("PEL size = {}, UserData size = {}",
+                                            size(), ud->header().size)
+                                    .c_str());
+            ud.reset();
+            continue;
+        }
+    }
+}
+
 namespace util
 {
 
@@ -850,6 +957,23 @@ std::unique_ptr<UserData> makeFFDCuserDataSection(uint16_t componentID,
     }
 
     return std::make_unique<UserData>(compID, subType, version, data);
+}
+
+std::vector<uint8_t> flattenLines(const std::vector<std::string>& lines)
+{
+    std::vector<uint8_t> out;
+
+    for (const auto& line : lines)
+    {
+        out.insert(out.end(), line.begin(), line.end());
+
+        if (out.back() != '\n')
+        {
+            out.push_back('\n');
+        }
+    }
+
+    return out;
 }
 
 } // namespace util

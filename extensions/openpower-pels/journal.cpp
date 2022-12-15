@@ -15,10 +15,11 @@
  */
 #include "journal.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include "util.hpp"
 
-#include <stdexcept>
-#include <thread>
+#include <fmt/format.h>
+
+#include <phosphor-logging/log.hpp>
 
 namespace openpower::pels
 {
@@ -49,6 +50,23 @@ class JournalCloser
   private:
     sd_journal* journal{nullptr};
 };
+
+void Journal::sync() const
+{
+    auto start = std::chrono::steady_clock::now();
+
+    util::journalSync();
+
+    auto end = std::chrono::steady_clock::now();
+    auto duration =
+        std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+    if (duration.count() > 100)
+    {
+        log<level::INFO>(
+            fmt::format("Journal sync took {}ms", duration.count()).c_str());
+    }
+}
 
 std::vector<std::string> Journal::getMessages(const std::string& syslogID,
                                               size_t maxMessages) const
