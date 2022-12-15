@@ -100,6 +100,11 @@ const auto registryData = R"(
                     "In the UserData section there is a JSON",
                     "dump that provides debug information."
                 ]
+            },
+
+            "JournalCapture":
+            {
+                "NumLines": 7
             }
         },
 
@@ -115,6 +120,36 @@ const auto registryData = R"(
             {
                 "Description": "A PGOOD Fault",
                 "Message": "PS had a PGOOD Fault"
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Journal.Capture",
+            "Subsystem": "power_supply",
+
+            "SRC":
+            {
+                "ReasonCode": "0x2030"
+            },
+
+            "Documentation":
+            {
+                "Description": "journal capture test",
+                "Message": "journal capture test"
+            },
+
+            "JournalCapture":
+            {
+                "Sections": [
+                    {
+                        "NumLines": 5,
+                        "SyslogID": "test1"
+                    },
+                    {
+                        "NumLines": 6,
+                        "SyslogID": "test2"
+                    }
+                ]
             }
         }
     ]
@@ -213,6 +248,11 @@ TEST_F(RegistryTest, TestFindEntry)
     EXPECT_TRUE(hexwordSource);
     EXPECT_EQ((*hexwordSource).size(), 1);
     EXPECT_EQ((*hexwordSource).front(), "SRCWord6");
+
+    const auto& jc = entry->journalCapture;
+    ASSERT_TRUE(jc);
+    ASSERT_TRUE(std::holds_alternative<size_t>(*jc));
+    EXPECT_EQ(std::get<size_t>(*jc), 7);
 
     entry = registry.lookup("0x2333", LookupType::reasonCode);
     ASSERT_TRUE(entry);
@@ -722,4 +762,27 @@ TEST_F(RegistryTest, TestNoSubsystem)
                                  LookupType::name);
     ASSERT_TRUE(entry);
     EXPECT_FALSE(entry->subsystem);
+}
+
+TEST_F(RegistryTest, TestJournalSectionCapture)
+{
+    auto path = RegistryTest::writeData(registryData);
+    Registry registry{path};
+
+    auto entry = registry.lookup("xyz.openbmc_project.Journal.Capture",
+                                 LookupType::name);
+    ASSERT_TRUE(entry);
+
+    const auto& jc = entry->journalCapture;
+    ASSERT_TRUE(jc);
+    ASSERT_TRUE(std::holds_alternative<AppCaptureList>(*jc));
+    const auto& acl = std::get<AppCaptureList>(*jc);
+
+    ASSERT_EQ(acl.size(), 2);
+
+    EXPECT_EQ(acl[0].syslogID, "test1");
+    EXPECT_EQ(acl[0].numLines, 5);
+
+    EXPECT_EQ(acl[1].syslogID, "test2");
+    EXPECT_EQ(acl[1].numLines, 6);
 }
