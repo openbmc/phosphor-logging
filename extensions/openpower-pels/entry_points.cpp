@@ -17,6 +17,7 @@
 #include "elog_entry.hpp"
 #include "event_logger.hpp"
 #include "extensions.hpp"
+#include "journal.hpp"
 #include "manager.hpp"
 #include "pldm_interface.hpp"
 
@@ -44,16 +45,18 @@ void pelStartup(internal::Manager& logManager)
     std::unique_ptr<DataInterfaceBase> dataIface =
         std::make_unique<DataInterface>(logManager.getBus());
 
+    std::unique_ptr<JournalBase> journal = std::make_unique<Journal>();
+
 #ifndef DONT_SEND_PELS_TO_HOST
     std::unique_ptr<HostInterface> hostIface = std::make_unique<PLDMInterface>(
         logManager.getBus().get_event(), *(dataIface.get()));
 
     manager = std::make_unique<Manager>(logManager, std::move(dataIface),
-                                        std::move(logger),
+                                        std::move(logger), std::move(journal),
                                         std::move(hostIface));
 #else
     manager = std::make_unique<Manager>(logManager, std::move(dataIface),
-                                        std::move(logger));
+                                        std::move(logger), std::move(journal));
 #endif
 
 #ifdef PEL_ENABLE_PHAL

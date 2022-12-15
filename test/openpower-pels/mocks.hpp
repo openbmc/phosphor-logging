@@ -1,5 +1,6 @@
 #include "extensions/openpower-pels/data_interface.hpp"
 #include "extensions/openpower-pels/host_interface.hpp"
+#include "extensions/openpower-pels/journal.hpp"
 
 #include <fcntl.h>
 
@@ -276,6 +277,15 @@ class MockHostInterface : public HostInterface
      * @brief The number of commands processed
      */
     size_t _cmdsProcessed = 0;
+};
+
+class MockJournal : public JournalBase
+{
+  public:
+    MockJournal() {}
+
+    MOCK_METHOD(std::vector<std::string>, getMessages,
+                (const std::string&, size_t), (const override));
 };
 
 } // namespace pels

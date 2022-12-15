@@ -5,6 +5,7 @@
 #include "data_interface.hpp"
 #include "event_logger.hpp"
 #include "host_notifier.hpp"
+#include "journal.hpp"
 #include "log_manager.hpp"
 #include "paths.hpp"
 #include "pel.hpp"
@@ -48,13 +49,14 @@ class Manager : public PELInterface
      */
     Manager(phosphor::logging::internal::Manager& logManager,
             std::unique_ptr<DataInterfaceBase> dataIface,
-            EventLogger::LogFunction creatorFunc) :
+            EventLogger::LogFunction creatorFunc,
+            std::unique_ptr<JournalBase> journal) :
         PELInterface(logManager.getBus(), OBJ_LOGGING),
         _logManager(logManager), _eventLogger(std::move(creatorFunc)),
         _repo(getPELRepoPath()),
         _registry(getPELReadOnlyDataPath() / message::registryFileName),
         _event(sdeventplus::Event::get_default()),
-        _dataIface(std::move(dataIface))
+        _dataIface(std::move(dataIface)), _journal(std::move(journal))
     {
         for (const auto& entry : _logManager.entries)
         {
@@ -82,8 +84,10 @@ class Manager : public PELInterface
     Manager(phosphor::logging::internal::Manager& logManager,
             std::unique_ptr<DataInterfaceBase> dataIface,
             EventLogger::LogFunction creatorFunc,
+            std::unique_ptr<JournalBase> journal,
             std::unique_ptr<HostInterface> hostIface) :
-        Manager(logManager, std::move(dataIface), std::move(creatorFunc))
+        Manager(logManager, std::move(dataIface), std::move(creatorFunc),
+                std::move(journal))
     {
         _hostNotifier = std::make_unique<HostNotifier>(
             _repo, *(_dataIface.get()), std::move(hostIface));
@@ -504,6 +508,11 @@ class Manager : public PELInterface
      * @brief The API the PEL sections use to gather data
      */
     std::unique_ptr<DataInterfaceBase> _dataIface;
+
+    /**
+     * @brief Object used to read from the journal
+     */
+    std::unique_ptr<JournalBase> _journal;
 
     /**
      * @brief The map used to keep track of PEL entry pointer associated with
