@@ -2,6 +2,7 @@
 
 #include "additional_data.hpp"
 #include "data_interface.hpp"
+#include "journal.hpp"
 #include "private_header.hpp"
 #include "registry.hpp"
 #include "src.hpp"
@@ -105,11 +106,12 @@ class PEL
      * @param[in] additionalData - The AdditionalData contents
      * @param[in] ffdcFiles - FFCD files that go into UserData sections
      * @param[in] dataIface - The data interface object
+     * @param[in] journal - The journal object
      */
     PEL(const openpower::pels::message::Entry& entry, uint32_t obmcLogID,
         uint64_t timestamp, phosphor::logging::Entry::Level severity,
         const AdditionalData& additionalData, const PelFFDC& ffdcFiles,
-        const DataInterfaceBase& dataIface);
+        const DataInterfaceBase& dataIface, const JournalBase& journal);
 
     /**
      * @brief Convenience function to return the log ID field from the
@@ -381,6 +383,16 @@ class PEL
     void updateTerminateBitInSRCSection();
 
     /**
+     * @brief Adds journal data to the PEL as UserData sections
+     *        if specified to in the message registry.
+     *
+     * @param regEntry - The registry entry
+     * @param journal - The journal object
+     */
+    void addJournalSections(const message::Entry& regEntry,
+                            const JournalBase& journal);
+
+    /**
      * @brief The PEL Private Header section
      */
     std::unique_ptr<PrivateHeader> _ph;
@@ -457,6 +469,19 @@ std::vector<uint8_t> readFD(int fd);
  */
 std::unique_ptr<UserData> makeFFDCuserDataSection(uint16_t componentID,
                                                   const PelFFDCfile& file);
+
+/**
+ * @brief Flattens a vector of strings into a vector of bytes suitable
+ *        for storing in a PEL section.
+ *
+ * Adds a newline character after each string.
+ *
+ * @param lines - The vector of strings to convert
+ *
+ * @return std::vector<uint8_t> - The flattened data
+ */
+std::vector<uint8_t> flattenLines(const std::vector<std::string>& lines);
+
 } // namespace util
 
 } // namespace pels
