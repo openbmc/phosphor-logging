@@ -1892,138 +1892,6 @@
                 "ADName": "INPUT_NAME",
                 "CalloutsWithTheirADValues": [
                     {
-                        "ADValue": "PCIE_SLOT0",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C0" },
-                                    { "Priority": "medium", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "PCIE_SLOT1",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C1" },
-                                    { "Priority": "medium", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "PCIE_SLOT2",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C2" },
-                                    { "Priority": "medium", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "PCIE_SLOT3",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C3" },
-                                    { "Priority": "medium", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "PCIE_SLOT4",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C4" },
-                                    { "Priority": "medium", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "PCIE_SLOT5",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C5" },
-                                    { "Priority": "medium", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "PCIE_SLOT6",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C6" },
-                                    { "Priority": "medium", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "PCIE_SLOT7",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C7" },
-                                    { "Priority": "medium", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "PCIE_SLOT8",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C8" },
-                                    { "Priority": "medium", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "PCIE_SLOT9",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C9" },
-                                    { "Priority": "medium", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "PCIE_SLOT10",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C10" },
-                                    { "Priority": "medium", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "PCIE_SLOT11",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C11" },
-                                    { "Priority": "medium", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
                         "ADValue": "PGOOD_12A",
                         "Callouts": [
                             {
@@ -2115,19 +1983,6 @@
                         ]
                     },
                     {
-                        "ADValue": "PGOOD_12P",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    {
-                                        "Priority": "high",
-                                        "SymbolicFRU": "pgood_part"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
                         "ADValue": "PGOOD_12PCIE",
                         "Callouts": [
                             {
@@ -2142,19 +1997,6 @@
                     },
                     {
                         "ADValue": "PGOOD_12Q",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    {
-                                        "Priority": "high",
-                                        "SymbolicFRU": "pgood_part"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "PGOOD_12R",
                         "Callouts": [
                             {
                                 "CalloutList": [
@@ -2477,46 +2319,6 @@
                                         "LocCode": "P0-C56"
                                     },
                                     { "Priority": "low", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "PGOOD_PSU1",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "E0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "PGOOD_PSU2",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "E1" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "PGOOD_PSU3",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "E2" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "PGOOD_PSU4",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "E3" }
                                 ]
                             }
                         ]
