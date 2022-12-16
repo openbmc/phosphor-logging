@@ -1373,7 +1373,6 @@
         {
             "Name": "org.open_power.Attn.Error.Vital",
             "Subsystem": "processor_chip",
-            "Severity": "critical",
 
             "SRC": {
                 "ReasonCode": "0xD16D",
