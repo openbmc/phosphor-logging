@@ -507,7 +507,8 @@
                 "cable_continued",
                 "altitude",
                 "pcie_hot_plug",
-                "overtemp"
+                "overtemp",
+                "memory_dimm"
             ]
         },
 
