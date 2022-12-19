@@ -16,6 +16,24 @@
       "message": "Just curious, did they just not hook those slots up, or?",
       "revId": "39e1b23a9c684f9d133c49083f7f2c2cf8a4cbc7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7706e026_9bf0c452",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000387
+      },
+      "writtenOn": "2022-12-19T21:12:54Z",
+      "side": 1,
+      "message": "The PCIE_SLOT* ones aren\u0027t pgoods in way that is useful to us, i.e. they don\u0027t turn on when the power turns on.\n\nPGOOD_12P and PGOOD_12R were disconnected in a CEC backplane revision.\n\nThe PGOOD_PSU* ones we decided were better managed by the PSU application.",
+      "parentUuid": "4532bacd_31a030e0",
+      "revId": "39e1b23a9c684f9d133c49083f7f2c2cf8a4cbc7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
