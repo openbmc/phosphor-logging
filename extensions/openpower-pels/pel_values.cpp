@@ -35,7 +35,7 @@ const PELValues subsystemValues = {
     {0x13, "processor_unit", "Processor Unit (CPU)"},
     {0x14, "processor_bus", "Processor Bus Controller"},
 
-    {0x20, "memory", "Memory "},
+    {0x20, "memory", "Memory"},
     {0x21, "memory_ctlr", "Memory Controller"},
     {0x22, "memory_bus", "Memory Bus Interface"},
     {0x23, "memory_dimm", "Memory DIMM"},
