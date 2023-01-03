@@ -1,0 +1,9 @@
+Code-Review+1: Derek Howard <derekh@us.ibm.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Shawn McCarney <shawnmm@us.ibm.com>
+Code-Review+2: Matt Spinler <spinler@us.ibm.com>
+Submitted-by: Matt Spinler <spinler@us.ibm.com>
+Submitted-at: Tue, 03 Jan 2023 15:24:57 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/59762
+Project: openbmc/phosphor-logging
+Branch: refs/heads/master
