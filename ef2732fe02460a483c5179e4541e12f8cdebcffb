@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "362f84eb_03f1e6bb",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 5039,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-01-04T20:54:47Z",
+      "side": 1,
+      "message": "this makes the error informational, so an admin user wouldn\u0027t even see it in the web UI.  Is that OK?",
+      "revId": "ef2732fe02460a483c5179e4541e12f8cdebcffb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
