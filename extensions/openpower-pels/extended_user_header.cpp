@@ -19,6 +19,8 @@
 #include "pel_types.hpp"
 #include "pel_values.hpp"
 
+#include <fmt/format.h>
+
 #include <phosphor-logging/log.hpp>
 
 namespace openpower
@@ -40,8 +42,9 @@ ExtendedUserHeader::ExtendedUserHeader(Stream& pel)
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>("Cannot unflatten extended user header",
-                        entry("ERROR=%s", e.what()));
+        log<level::ERR>(
+            fmt::format("Cannot unflatten extended user header: {}", e.what())
+                .c_str());
         _valid = false;
     }
 }
@@ -107,15 +110,19 @@ void ExtendedUserHeader::validate()
 
     if (header().id != static_cast<uint16_t>(SectionID::extendedUserHeader))
     {
-        log<level::ERR>("Invalid failing Extended User Header section ID",
-                        entry("ID=0x%X", header().id));
+        log<level::ERR>(
+            fmt::format("Invalid ExtendedUserHeader section ID: {0:#x}",
+                        header().id)
+                .c_str());
         failed = true;
     }
 
     if (header().version != extendedUserHeaderVersion)
     {
-        log<level::ERR>("Invalid Extended User Header version",
-                        entry("VERSION=0x%X", header().version));
+        log<level::ERR>(
+            fmt::format("Invalid ExtendedUserHeader version: {0:#x}",
+                        header().version)
+                .c_str());
         failed = true;
     }
 
