@@ -16,6 +16,24 @@
       "message": "this makes the error informational, so an admin user wouldn\u0027t even see it in the web UI.  Is that OK?",
       "revId": "ef2732fe02460a483c5179e4541e12f8cdebcffb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8948f047_b94baf9c",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 5039,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2023-01-04T21:33:27Z",
+      "side": 1,
+      "message": "Done. Thanks, that\u0027s not the intention. I originally checked the GUI but was logged in as service. Changed the commit to override the action flags instead.",
+      "parentUuid": "362f84eb_03f1e6bb",
+      "revId": "ef2732fe02460a483c5179e4541e12f8cdebcffb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
