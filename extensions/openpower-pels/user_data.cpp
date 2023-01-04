@@ -22,6 +22,8 @@
 #include "user_data_json.hpp"
 #endif
 
+#include <fmt/format.h>
+
 #include <phosphor-logging/log.hpp>
 
 namespace openpower
@@ -61,8 +63,8 @@ UserData::UserData(Stream& pel)
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>("Cannot unflatten user data",
-                        entry("ERROR=%s", e.what()));
+        log<level::ERR>(
+            fmt::format("Cannot unflatten user data: {}", e.what()).c_str());
         _valid = false;
     }
 }
@@ -85,8 +87,9 @@ void UserData::validate()
 {
     if (header().id != static_cast<uint16_t>(SectionID::userData))
     {
-        log<level::ERR>("Invalid user data section ID",
-                        entry("ID=0x%X", header().id));
+        log<level::ERR>(
+            fmt::format("Invalid UserData section ID: {0:#x}", header().id)
+                .c_str());
         _valid = false;
     }
     else

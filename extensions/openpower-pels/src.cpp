@@ -310,7 +310,8 @@ SRC::SRC(Stream& pel)
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>("Cannot unflatten SRC", entry("ERROR=%s", e.what()));
+        log<level::ERR>(
+            fmt::format("Cannot unflatten SRC: {}", e.what()).c_str());
         _valid = false;
     }
 }
@@ -453,15 +454,17 @@ void SRC::validate()
     if ((header().id != static_cast<uint16_t>(SectionID::primarySRC)) &&
         (header().id != static_cast<uint16_t>(SectionID::secondarySRC)))
     {
-        log<level::ERR>("Invalid SRC section ID",
-                        entry("ID=0x%X", header().id));
+        log<level::ERR>(
+            fmt::format("Invalid SRC section ID: {0:#x}", header().id).c_str());
         failed = true;
     }
 
     // Check the version in the SRC, not in the header
     if (_version != srcVersion)
     {
-        log<level::ERR>("Invalid SRC version", entry("VERSION=0x%X", _version));
+        log<level::ERR>(
+            fmt::format("Invalid SRC version: {0:#x}", header().version)
+                .c_str());
         failed = true;
     }
 

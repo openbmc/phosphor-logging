@@ -229,8 +229,8 @@ UserHeader::UserHeader(Stream& pel)
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>("Cannot unflatten user header",
-                        entry("ERROR=%s", e.what()));
+        log<level::ERR>(
+            fmt::format("Cannot unflatten user header: {}", e.what()).c_str());
         _valid = false;
     }
 }
@@ -240,15 +240,17 @@ void UserHeader::validate()
     bool failed = false;
     if (header().id != static_cast<uint16_t>(SectionID::userHeader))
     {
-        log<level::ERR>("Invalid user header section ID",
-                        entry("ID=0x%X", header().id));
+        log<level::ERR>(
+            fmt::format("Invalid user header section ID: {0:#x}", header().id)
+                .c_str());
         failed = true;
     }
 
     if (header().version != userHeaderVersion)
     {
-        log<level::ERR>("Invalid user header version",
-                        entry("VERSION=0x%X", header().version));
+        log<level::ERR>(
+            fmt::format("Invalid user header version: {0:#x}", header().version)
+                .c_str());
         failed = true;
     }
 

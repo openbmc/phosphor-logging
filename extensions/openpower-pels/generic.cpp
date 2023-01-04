@@ -15,6 +15,8 @@
  */
 #include "generic.hpp"
 
+#include <fmt/format.h>
+
 #include <phosphor-logging/log.hpp>
 
 namespace openpower
@@ -54,8 +56,9 @@ Generic::Generic(Stream& pel)
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>("Cannot unflatten generic section",
-                        entry("ERROR=%s", e.what()));
+        log<level::ERR>(
+            fmt::format("Cannot unflatten generic section: {}", e.what())
+                .c_str());
         _valid = false;
     }
 }
