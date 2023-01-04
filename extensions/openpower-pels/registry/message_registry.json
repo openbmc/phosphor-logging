@@ -5036,6 +5036,7 @@
             "Name": "xyz.openbmc_project.Software.Image.Error.UnTarFailure",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x3600",
+            "ActionFlags": ["report"],
             "SRC": {
                 "ReasonCode": "0x3603",
                 "Words6To9": {}
