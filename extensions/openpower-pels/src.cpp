@@ -187,16 +187,12 @@ std::optional<std::string> getPythonJSON(std::vector<std::string>& hexwords,
                                                                   &pyDecRef);
             for (size_t i = 0; i < 9; i++)
             {
+                std::string arg{"00000000"};
                 if (i < hexwords.size())
                 {
-                    auto arg = hexwords[i];
-                    PyTuple_SetItem(pArgs, i,
-                                    Py_BuildValue("s#", arg.c_str(), 8));
+                    arg = hexwords[i];
                 }
-                else
-                {
-                    PyTuple_SetItem(pArgs, i, Py_BuildValue("s", "00000000"));
-                }
+                PyTuple_SetItem(pArgs, i, Py_BuildValue("s", arg.c_str()));
             }
             PyObject* pResult = PyObject_CallObject(pFunc, pArgs);
             Py_DECREF(pFunc);
