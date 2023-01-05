@@ -4691,7 +4691,7 @@
         },
 
         {
-            "Name": "com.ibm.VPD.Error.BlankSystemVPD",
+            "Name": "com.ibm.VPD.Error.SystemVPDDefault",
             "Subsystem": "cec_vpd",
             "ComponentID": "0x4000",
 
@@ -4712,12 +4712,13 @@
             ],
 
             "Documentation": {
-                "Description": "System VPD restore failed",
-                "Message": "A system VPD restoration error occurred.",
+                "Description": "Manufacturing default value found on system VPD.",
+                "Message": "Found manufacturing default data on system VPD, thus restore fails.",
                 "Notes": [
-                    "This error occurs when restoring of system VPD fails.",
-                    "The FRU path and reason for failure is captured in",
-                    "additional data."
+                    "This error occurs when system VPD restoration fails,",
+                    "as the system VPD keyword has its manufacturing default",
+                    "value. The FRU path and reason for failure is captured",
+                    "in additional data."
                 ]
             }
         },
@@ -4829,12 +4830,12 @@
             ],
 
             "Documentation": {
-                "Description": "System VPD restore failed",
-                "Message": "A system VPD restoration error occurred.",
+                "Description": "System VPD mismatch between hardware and backup",
+                "Message": "A system VPD restoration error occurred due to data mismatch between backup and hardware.",
                 "Notes": [
                     "This error occurs when restoring of system VPD fails due to",
-                    "mismatch in cache data and hardware data.",
-                    "The record and keyword causing the failure is captured in",
+                    "mismatch in backup data and hardware data.",
+                    "The record and keyword causing the failure are captured in",
                     "additional data."
                 ]
             }
