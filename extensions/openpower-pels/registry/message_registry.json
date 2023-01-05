@@ -5156,7 +5156,7 @@
         },
 
         {
-            "Name": "com.ibm.VPD.Error.BlankSystemVPD",
+            "Name": "com.ibm.VPD.Error.DefaultValue",
             "Subsystem": "cec_vpd",
             "ComponentID": "0x4000",
 
@@ -5177,12 +5177,11 @@
             ],
 
             "Documentation": {
-                "Description": "System VPD restore failed",
-                "Message": "A system VPD restoration error occurred.",
+                "Description": "Default value found on VPD.",
+                "Message": "Found default VPD.",
                 "Notes": [
-                    "This error occurs when restoring of system VPD fails.",
-                    "The FRU path and reason for failure is captured in",
-                    "additional data."
+                    "This error occurs when a default value found on VPD.",
+                    "Details regarding failure are captured in additional data."
                 ]
             }
         },
@@ -5273,7 +5272,7 @@
         },
 
         {
-            "Name": "com.ibm.VPD.Error.SystemVPDMismatch",
+            "Name": "com.ibm.VPD.Error.Mismatch",
             "Subsystem": "cec_vpd",
             "ComponentID": "0x4000",
 
@@ -5294,13 +5293,12 @@
             ],
 
             "Documentation": {
-                "Description": "System VPD restore failed",
-                "Message": "A system VPD restoration error occurred.",
+                "Description": "VPD mismatch found between primary and backup",
+                "Message": "Error occurred due to VPD mismatch between primary and backup.",
                 "Notes": [
-                    "This error occurs when restoring of system VPD fails due to",
-                    "mismatch in cache data and hardware data.",
-                    "The record and keyword causing the failure is captured in",
-                    "additional data."
+                    "This error occurs when there is a data mismatch between ",
+                    "primary and backup VPD.",
+                    "Details regarding the failure are captured in additional data."
                 ]
             }
         },
