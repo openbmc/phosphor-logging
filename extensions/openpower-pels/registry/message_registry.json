@@ -36,6 +36,10 @@
                 "Description": "BMC code had a generic internal failure",
                 "Message": "An application had an internal failure",
                 "Notes": ["The journal should contain more information"]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -127,6 +131,10 @@
                     "The action flags are set automatically by the code.",
                     "Callouts added based on CALLOUT_DEVICE_PATH."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -152,6 +160,10 @@
                     "The action flags are set automatically by the code.",
                     "Callouts added based on CALLOUT_DEVICE_PATH."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -177,6 +189,10 @@
                     "The action flags are set automatically by the code.",
                     "Callouts added based on CALLOUT_DEVICE_PATH"
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -202,6 +218,10 @@
                     "The action flags are set automatically by the code.",
                     "Callouts added based on CALLOUT_DEVICE_PATH"
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -251,6 +271,19 @@
                 "Description": "The BMC sent the host a malformed PEL",
                 "Message": "The BMC sent the host a malformed PEL",
                 "Notes": ["The host firmware rejected that PEL."]
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-log-manager",
+                        "NumLines": 20
+                    },
+                    {
+                        "SyslogID": "systemd",
+                        "NumLines": 30
+                    }
+                ]
             }
         },
 
@@ -289,6 +322,23 @@
                 "Description": "The host sent the BMC an invalid PEL",
                 "Message": "The host sent the BMC an invalid PEL",
                 "Notes": []
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-log-manager",
+                        "NumLines": 20
+                    },
+                    {
+                        "SyslogID": "systemd",
+                        "NumLines": 20
+                    },
+                    {
+                        "SyslogID": "pldmd",
+                        "NumLines": 20
+                    }
+                ]
             }
         },
 
@@ -348,6 +398,10 @@
                     "If this error is seen, then a code change needs to be ",
                     "made to add the missing error entry to this registry."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -772,6 +826,10 @@
                     "host was booting and in a state where it still needed ",
                     "the BMC to complete its boot."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -801,6 +859,10 @@
                     "There is enough power for the BMC to operate but not the ",
                     "CEC hardware. Check for UPS or brownout logs."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -851,6 +913,10 @@
                     "be available. Usually an AC cycle of the entire system is ",
                     "the best recovery option from this error."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -911,6 +977,10 @@
                     "successfully. Look in the log for other errors indicating ",
                     "what has failed."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -941,6 +1011,10 @@
                     "successfully. Look in the log for other errors indicating ",
                     "what has failed."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -971,6 +1045,10 @@
                     "successfully. Look in the log for other errors indicating ",
                     "what has failed."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -1001,6 +1079,10 @@
                     "successfully. Look in the log for other errors indicating ",
                     "what has failed."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -1031,6 +1113,10 @@
                     "successfully. Look in the log for other errors indicating ",
                     "what has failed."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -1061,6 +1147,10 @@
                     "successfully. Look in the log for other errors indicating ",
                     "what has failed."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -1091,6 +1181,10 @@
                     "successfully. Look in the log for other errors indicating ",
                     "what has failed."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -1121,6 +1215,10 @@
                     "successfully. Look in the log for other errors indicating ",
                     "what has failed."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -1150,6 +1248,10 @@
                     "boot and all retries have been exhausted. There should be  ",
                     "other logs with more details on the boot failure reason. "
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
