@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7a49c9d_37bf4fd7",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-01-09T21:48:54Z",
+      "side": 1,
+      "message": "ouch, hard coded sleeps. I take it this is a \"lessons learned\" from others that did this? No \"synch\" command we can send to the journal?",
+      "revId": "71bdca38f972cee7ab1c70bb2d731c022be46d93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
