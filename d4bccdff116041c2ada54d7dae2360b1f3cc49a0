@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "34f64e97_78f160c0",
+        "filename": "extensions/openpower-pels/journal.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-01-10T22:42:12Z",
+      "side": 1,
+      "message": "yea, they get caught here: https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/59978/3/extensions/openpower-pels/pel.cpp#622",
+      "parentUuid": "b23830e0_293fc85a",
+      "revId": "d4bccdff116041c2ada54d7dae2360b1f3cc49a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bcf443b2_298faece",
         "filename": "extensions/openpower-pels/journal.cpp",
         "patchSetId": 2
@@ -43,6 +61,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5e18b817_590798a2",
+        "filename": "extensions/openpower-pels/journal.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-01-10T22:42:12Z",
+      "side": 1,
+      "message": "need to look into this a bit",
+      "parentUuid": "bcf443b2_298faece",
+      "range": {
+        "startLine": 88,
+        "startChar": 13,
+        "endLine": 88,
+        "endChar": 25
+      },
+      "revId": "d4bccdff116041c2ada54d7dae2360b1f3cc49a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "996071cc_8a6543f6",
         "filename": "extensions/openpower-pels/journal.hpp",
         "patchSetId": 2
@@ -54,6 +96,24 @@
       "writtenOn": "2023-01-09T21:32:33Z",
       "side": 1,
       "message": "Some more info on what the behavior is if a user passes in 0 (or goes with the default 0)?",
+      "revId": "d4bccdff116041c2ada54d7dae2360b1f3cc49a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bef11f9d_b27267f9",
+        "filename": "extensions/openpower-pels/journal.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-01-10T22:42:12Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "996071cc_8a6543f6",
       "revId": "d4bccdff116041c2ada54d7dae2360b1f3cc49a0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
