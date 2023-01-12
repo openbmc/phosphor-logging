@@ -3,6 +3,7 @@
 #include "elog_serialize.hpp"
 #include "log_manager.hpp"
 
+#include <fcntl.h>
 #include <unistd.h>
 
 #include <xyz/openbmc_project/Common/File/error.hpp>
@@ -73,16 +74,14 @@ std::string Entry::resolution(std::string value)
 
 sdbusplus::message::unix_fd Entry::getEntry()
 {
-    FILE* fp = fopen(path().c_str(), "rb");
-    if (fp == nullptr)
+    int fd = open(path().c_str(), O_RDONLY | O_NONBLOCK);
+    if (fd == -1)
     {
         auto e = errno;
         log<level::ERR>("Failed to open Entry File", entry("ERRNO=%d", e),
                         entry("PATH=%s", path().c_str()));
         throw sdbusplus::xyz::openbmc_project::Common::File::Error::Open();
     }
-
-    auto fd = fileno(fp);
 
     // Schedule the fd to be closed by sdbusplus when it sends it back over
     // D-Bus.
