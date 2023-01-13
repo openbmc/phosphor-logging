@@ -34,6 +34,24 @@
       "parentUuid": "f7a49c9d_37bf4fd7",
       "revId": "71bdca38f972cee7ab1c70bb2d731c022be46d93",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe5c220c_7dcfb346",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-01-13T20:32:22Z",
+      "side": 1,
+      "message": "Wow, that\u0027s some complicated code. I see there\u0027s a systemd-journal-flush.service but not a systemd-journal-synch.service which is unfortunate, because then you could just start the service.\n\nMy vote would be to just run \"journalctl --sync\" (https://www.freedesktop.org/software/systemd/man/systemd-journald.service.html). It\u0027s not the best for error handling to do that but it feels better then a hard coded sleep or that really complex signal code.",
+      "parentUuid": "67b2922c_2b42a176",
+      "revId": "71bdca38f972cee7ab1c70bb2d731c022be46d93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
