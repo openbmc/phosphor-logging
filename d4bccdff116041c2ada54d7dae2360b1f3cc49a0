@@ -85,6 +85,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e264c8c3_592024a8",
+        "filename": "extensions/openpower-pels/journal.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-01-13T15:03:09Z",
+      "side": 1,
+      "message": "I think I\u0027m just going to leave out the reserve.\n\nAlso, maxMessages shouldn\u0027t be zero so I should check for that.",
+      "parentUuid": "5e18b817_590798a2",
+      "range": {
+        "startLine": 88,
+        "startChar": 13,
+        "endLine": 88,
+        "endChar": 25
+      },
+      "revId": "d4bccdff116041c2ada54d7dae2360b1f3cc49a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "996071cc_8a6543f6",
         "filename": "extensions/openpower-pels/journal.hpp",
         "patchSetId": 2
