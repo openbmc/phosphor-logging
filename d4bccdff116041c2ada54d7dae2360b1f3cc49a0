@@ -140,6 +140,24 @@
       "parentUuid": "996071cc_8a6543f6",
       "revId": "d4bccdff116041c2ada54d7dae2360b1f3cc49a0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aae3f0ee_c8e2646a",
+        "filename": "extensions/openpower-pels/journal.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-01-13T15:35:07Z",
+      "side": 1,
+      "message": "I took out the default of zero.  That was taken from some other code that when called with the default would just collect 10 lines.  That doesn\u0027t apply here so I removed the default, and put in a check in the function for a zero where it would just return.  The PEL message registry schema checking that runs during CI that will fail if a zero is used: https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/59976/3/extensions/openpower-pels/registry/schema/schema.json#761",
+      "parentUuid": "bef11f9d_b27267f9",
+      "revId": "d4bccdff116041c2ada54d7dae2360b1f3cc49a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
