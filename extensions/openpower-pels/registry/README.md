@@ -47,7 +47,7 @@ In the message registry, there are fields for specifying:
 This is the key into the message registry, and is the Message property of the
 OpenBMC event log that the PEL is being created from.
 
-```
+```json
 "Name": "xyz.openbmc_project.Power.Fault"
 ```
 
@@ -59,7 +59,7 @@ PEL value. If the subsystem isn't known ahead of time, it can be passed in at
 the time of PEL creation using the 'PEL_SUBSYSTEM' AdditionalData field. In this
 case, 'Subsystem' isn't required, though 'PossibleSubsystems' is.
 
-```
+```json
 "Subsystem": "power_supply"
 ```
 
@@ -70,7 +70,7 @@ to know which subsystems are possible for an error when it can't be hardcoded
 using the 'Subsystem' field. It is mutually exclusive with the 'Subsystem'
 field.
 
-```
+```json
 "PossibleSubsystems": ["memory", "processor"]
 ```
 
@@ -84,11 +84,11 @@ It can either be the plain severity value, or an array of severity values that
 are based on system type, where an entry without a system type will match
 anything unless another entry has a matching system type.
 
-```
+```json
 "Severity": "unrecoverable"
 ```
 
-```
+```json
 Severity":
 [
     {
@@ -110,7 +110,7 @@ This is an optional field and is used to override the Severity field when a
 specific manufacturing isolation mode is enabled. It has the same format as
 Severity.
 
-```
+```json
 "MfgSeverity": "unrecoverable"
 ```
 
@@ -120,7 +120,7 @@ This field is part of the PEL User Header section, and is used to specify the
 event scope, as defined by the PEL spec. It is optional and defaults to "entire
 platform".
 
-```
+```json
 "EventScope": "entire_platform"
 ```
 
@@ -131,7 +131,7 @@ event type, as defined by the PEL spec. It is optional and defaults to "not
 applicable" for non-informational logs, and "misc_information_only" for
 informational ones.
 
-```
+```json
 "EventType": "na"
 ```
 
@@ -148,7 +148,7 @@ In fact, even if supplied here, the code may still modify them to ensure they
 are correct. The rules used for this are
 [here](../README.md#action-flags-and-event-type-rules).
 
-```
+```json
 "ActionFlags": ["service_action", "report", "call_home"]
 ```
 
@@ -157,7 +157,7 @@ are correct. The rules used for this are
 This is an optional field and is used to override the Action Flags field when a
 specific manufacturing isolation mode is enabled.
 
-```
+```json
 "MfgActionFlags": ["service_action", "report", "call_home"]
 ```
 
@@ -168,7 +168,7 @@ this is an optional field and if not present the value will be taken from the
 upper byte of the reason code. If present for `BD` SRCs, then this byte must
 match the upper byte of the reason code.
 
-```
+```json
 "ComponentID": "0x5500"
 ```
 
@@ -187,7 +187,7 @@ Note: The ASCII string for BD SRCs looks like: `BDBBCCCC`, where:
 
 For `11` SRCs, it looks like: `1100RRRR`, where RRRR is the SRC reason code.
 
-```
+```json
 "Type": "11"
 ```
 
@@ -198,7 +198,7 @@ treated as a 2 byte hex value, such as 0x5678. For `BD` SRCs, the first byte is
 the same as the first byte of the component ID field in the Private Header
 section that represents the creator's component ID.
 
-```
+```json
 "ReasonCode": "0x5544"
 ```
 
@@ -215,7 +215,7 @@ For example: ["SRCWord3", "SRCWord9"] would be:
 `<ASCII_STRING>_<SRCWord3>_<SRCWord9>`, which could look like:
 `B181320_00000050_49000000`.
 
-```
+```json
 "SymptomIDFields": ["SRCWord3", "SRCWord9"]
 ```
 
@@ -228,7 +228,7 @@ specify which AdditionalData property field to get the data from, and also to
 define what the SRC word means for use by parsers. If not specified, these SRC
 words will be set to zero in the PEL.
 
-```
+```json
 "Words6to9":
 {
     "6":
@@ -254,7 +254,7 @@ to be displayed as part of the message. If the placeholders are used, then the
 `MessageArgSources` property must be present to say which SRC words to use for
 each placeholder.
 
-```
+```json
 "Message": "Processor %1 had %2 errors"
 ```
 
@@ -265,7 +265,7 @@ placeholder arguments. It is an array that says which SRC words to get the
 placeholders from. In the example below, SRC word 6 would be used for %1, and
 SRC word 7 for %2.
 
-```
+```json
 "MessageArgSources":
 [
     "SRCWord6", "SRCWord7"
@@ -277,7 +277,7 @@ SRC word 7 for %2.
 A short description of the error. This is required by the Redfish schema to
 generate a Redfish message entry, but is not used in Redfish or PEL output.
 
-```
+```json
 "Description": "A power fault"
 ```
 
@@ -287,7 +287,7 @@ This is an optional free format text field for keeping any notes for the
 registry entry, as comments are not allowed in JSON. It is an array of strings
 for easier readability of long fields.
 
-```
+```json
 "Notes": [
     "This entry is for every type of power fault.",
     "There is probably a hardware failure."
@@ -308,7 +308,7 @@ There is room for up to 10 callouts in a PEL.
 
 #### Callouts example based on the system type
 
-```
+```json
 "Callouts":
 [
     {
@@ -345,7 +345,7 @@ On every other system, the maintenance procedure SVCDOCS is called out.
 
 #### Callouts example based on an AdditionalData field
 
-```
+```json
 "CalloutsUsingAD":
 {
     "ADName": "PROC_NUM",
@@ -396,7 +396,7 @@ the AdditionalData field, one can use CalloutsWhenNoADMatch. In the following
 example, the 'air_mover' callout will be added if 'PROC_NUM' isn't 0.
 'CalloutsWhenNoADMatch' has the same schema as the 'Callouts' section.
 
-```
+```json
 "CalloutsUsingAD":
 {
     "ADName": "PROC_NUM",
@@ -437,7 +437,7 @@ example, the 'air_mover' callout will be added if 'PROC_NUM' isn't 0.
 This field can be used to modify the failing component type field in the callout
 when the default doesn\'t fit:
 
-```
+```json
 {
 
     "Priority": "high",
@@ -466,12 +466,11 @@ passed in inventory FRU and place it in the symbolic FRU callout. The normal FRU
 callout with that inventory item will not be created. The symbolic FRU must be
 the first callout in the registry for this to work.
 
-```
+```json
 {
-
-    "Priority": "high",
-    "SymbolicFRUTrusted": "AIR_MOVR",
-    "UseInventoryLocCode": true
+  "Priority": "high",
+  "SymbolicFRUTrusted": "AIR_MOVR",
+  "UseInventoryLocCode": true
 }
 ```
 
@@ -488,23 +487,24 @@ The general process for adding new entries to the message registry is:
    the schema validation. This script is also run to validate the message
    registry as part of CI testing.
 
-```
- ./tools/process_registry.py -v -s schema/schema.json -r message_registry.json
-```
+   ```sh
+   ./tools/process_registry.py -v -s schema/schema.json -r message_registry.json
+   ```
 
 4. One can test what PELs are generated from these new entries without writing
    any code to create the corresponding event logs:
+
    1. Copy the modified message_registry.json into `/etc/phosphor-logging/` on
       the BMC. That directory may need to be created.
    2. Use busctl to call the Create method to create an event log corresponding
       to the message registry entry under test.
 
-```
-busctl call xyz.openbmc_project.Logging /xyz/openbmc_project/logging \
-xyz.openbmc_project.Logging.Create Create ssa{ss} \
-xyz.openbmc_project.Common.Error.Timeout \
-xyz.openbmc_project.Logging.Entry.Level.Error 1 "TIMEOUT_IN_MSEC" "5"
-```
+      ```sh
+      busctl call xyz.openbmc_project.Logging /xyz/openbmc_project/logging \
+      xyz.openbmc_project.Logging.Create Create ssa{ss} \
+      xyz.openbmc_project.Common.Error.Timeout \
+      xyz.openbmc_project.Logging.Entry.Level.Error 1 "TIMEOUT_IN_MSEC" "5"
+      ```
 
-    3. Check the PEL that was created using peltool.
-    4. When finished, delete the file from `/etc/phosphor-logging/`.
+   3. Check the PEL that was created using peltool.
+   4. When finished, delete the file from `/etc/phosphor-logging/`.
