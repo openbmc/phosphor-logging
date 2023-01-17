@@ -106,6 +106,24 @@
       "parentUuid": "d1ad5b3b_52f468e1",
       "revId": "71bdca38f972cee7ab1c70bb2d731c022be46d93",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c35c428_a90fe7bd",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-01-17T22:58:24Z",
+      "side": 1,
+      "message": "I took at look at what the latest journalctl --sync would be doing: https://github.com/systemd/systemd/blob/main/src/journal/journalctl.c#L2059 and it appears to just make a varlink call into the journal daemon.\n\nIf I followed it right, that appears to use an sd_event_add_defer() (in the journal daemon) to do the sync... which makes me wonder if the sync is even done by the time journalctl --sync returns.",
+      "parentUuid": "d1ad5b3b_52f468e1",
+      "revId": "71bdca38f972cee7ab1c70bb2d731c022be46d93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
