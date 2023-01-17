@@ -70,6 +70,24 @@
       "parentUuid": "fe5c220c_7dcfb346",
       "revId": "71bdca38f972cee7ab1c70bb2d731c022be46d93",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1ad5b3b_52f468e1",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2023-01-17T22:03:13Z",
+      "side": 1,
+      "message": "journalSync() is a copy/paste from \"journalctl --sync\", it was done that way because using system() is discouraged - https://github.com/openbmc/docs/blob/master/CONTRIBUTING.md#best-practices-for-c",
+      "parentUuid": "162dee4f_30e3d474",
+      "revId": "71bdca38f972cee7ab1c70bb2d731c022be46d93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
