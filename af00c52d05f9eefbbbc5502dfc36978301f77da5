@@ -16,6 +16,24 @@
       "message": "The deleted comment still seems relevant to let people know that sdbusplus is responsible for closing the fd?",
       "revId": "af00c52d05f9eefbbbc5502dfc36978301f77da5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "172af44b_791ace63",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-01-17T14:49:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8fa74713_e4be047d",
+      "revId": "af00c52d05f9eefbbbc5502dfc36978301f77da5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
