@@ -88,6 +88,24 @@
       "parentUuid": "162dee4f_30e3d474",
       "revId": "71bdca38f972cee7ab1c70bb2d731c022be46d93",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ae8bce7_ac9ae653",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-01-17T22:57:50Z",
+      "side": 1,
+      "message": "Yeah, I don\u0027t think there\u0027s an easy answer to this one. Copy/pasting code (that could change without us knowing) is also a bit dangerous. My vote is we just call journalctl command line, at least it abstracts us from the implementation and if it does run into issues, we\u0027re just missing some traces in an error log.",
+      "parentUuid": "d1ad5b3b_52f468e1",
+      "revId": "71bdca38f972cee7ab1c70bb2d731c022be46d93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
