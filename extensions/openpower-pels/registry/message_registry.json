@@ -5851,6 +5851,19 @@
                 "Description": "Host failed to complete the power off gracefully within the timeout.",
                 "Message": "Host failed to complete the power off gracefully within the timeout."
             }
+        },
+        {
+            "Name": "xyz.openbmc_project.Dump.Error.Invalidate",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "SRC": {
+                "ReasonCode": "0x6025",
+                "Words6To9": {}
+            },
+            "Documentation": {
+                "Description": "Dump has been deleted/offloaded",
+                "Message": "BMC/System/Resource dump has been deleted/offloaded"
+            }
         }
     ]
 }
