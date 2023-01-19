@@ -184,19 +184,25 @@ uint32_t fileNameToPELId(const std::string& fileName)
 }
 
 /**
- * @brief helper function to check string suffix
- * @retrun bool - true with suffix matches
- * @param[in] std::string - string to check for suffix
- * @param[in] std::string - suffix string
+ * @brief Check if the string ends with the PEL ID string passed in
+ * @param[in] str - string to check for PEL ID
+ * @param[in] pelID - PEL id string
+ *
+ * @return bool - true with suffix matches
  */
-bool ends_with(const std::string& str, const std::string& end)
+bool endsWithPelID(const std::string& str, const std::string& pelID)
 {
-    size_t slen = str.size(), elen = end.size();
+    if (pelID.size() != 8)
+    {
+        return false;
+    }
+
+    size_t slen = str.size(), elen = pelID.size();
     if (slen < elen)
         return false;
     while (elen)
     {
-        if (str[--slen] != end[--elen])
+        if (str[--slen] != pelID[--elen])
             return false;
     }
     return true;
@@ -579,7 +585,7 @@ void callFunctionOnPEL(const std::string& id, const PELFunc& func,
             continue;
         }
 
-        if ((ends_with((*it).path(), pelID) && !useBMC) || useBMC)
+        if ((endsWithPelID((*it).path(), pelID) && !useBMC) || useBMC)
         {
             auto data = getFileData((*it).path());
             if (!data.empty())
@@ -636,7 +642,7 @@ void deletePEL(const std::string& id)
     for (auto it = fs::directory_iterator(pelLogDir());
          it != fs::directory_iterator(); ++it)
     {
-        if (ends_with((*it).path(), pelID))
+        if (endsWithPelID((*it).path(), pelID))
         {
             fs::remove((*it).path());
         }
