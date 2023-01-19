@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c2c4438_f2a900ab",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-01-19T20:08:50Z",
+      "side": 1,
+      "message": "Can you add a \u0027PEL: \u0027 prefix to this, since it deals with PELs?",
+      "revId": "8af4a1ab2c08e71ecf741ddc2f699fd145986690",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ff06f02_fd47db45",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-01-19T20:08:50Z",
+      "side": 1,
+      "message": "actually, if the severity is in the message registry, it will ignore the severity passed in.  If you\u0027d like to be able to have different severities, then you can just delete the Severity line from the JSON and it will always use what is passed in.",
+      "range": {
+        "startLine": 11,
+        "startChar": 33,
+        "endLine": 11,
+        "endChar": 66
+      },
+      "revId": "8af4a1ab2c08e71ecf741ddc2f699fd145986690",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
