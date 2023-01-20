@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e2356a7_c6396077",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-01-20T17:59:44Z",
+      "side": 1,
+      "message": "Do we have any other examples where this new \"D-Bus Service\" config file is needed?",
+      "revId": "e4790554c235255b80aea363bdcdaaff1f9ad751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13fac8d9_a3250ea6",
+        "filename": "dist/dbus/xyz.openbmc_project.Logging.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-01-20T17:59:44Z",
+      "side": 1,
+      "message": "What is this?\n\nI\u0027m pretty sure you just change the xyz.openbmc_project.Logging.service file to have:\n\n```\nType\u003ddbus\nBusname\u003dxyz.openbmc_project.Logging\n```",
+      "revId": "e4790554c235255b80aea363bdcdaaff1f9ad751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45bdbeaf_2c1584d8",
+        "filename": "dist/meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-01-20T17:59:44Z",
+      "side": 1,
+      "message": "meson gives a warning about using this deprecated function now.  Probably shouldn\u0027t add new ones.",
+      "range": {
+        "startLine": 16,
+        "startChar": 52,
+        "endLine": 16,
+        "endChar": 74
+      },
+      "revId": "e4790554c235255b80aea363bdcdaaff1f9ad751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef2bf900_466b2bc2",
+        "filename": "dist/xyz.openbmc_project.Logging.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-01-20T17:59:44Z",
+      "side": 1,
+      "message": "I\u0027m confused.  Why is this not working already?\n\nphsophor-objmgr doesn\u0027t have anything else.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 35
+      },
+      "revId": "e4790554c235255b80aea363bdcdaaff1f9ad751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
