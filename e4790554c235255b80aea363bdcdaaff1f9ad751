@@ -76,6 +76,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "01991706_1b52f2a8",
+        "filename": "dist/meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-01-20T20:13:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45bdbeaf_2c1584d8",
+      "range": {
+        "startLine": 16,
+        "startChar": 52,
+        "endLine": 16,
+        "endChar": 74
+      },
+      "revId": "e4790554c235255b80aea363bdcdaaff1f9ad751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ef2bf900_466b2bc2",
