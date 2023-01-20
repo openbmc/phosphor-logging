@@ -9,3 +9,4 @@ BusName=xyz.openbmc_project.Logging
 
 [Install]
 WantedBy=multi-user.target
+Alias=dbus-xyz.openbmc_project.Logging.service
