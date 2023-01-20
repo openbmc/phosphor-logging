@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "730fe37c_a0f33f70",
+        "filename": "dist/dbus/xyz.openbmc_project.Logging.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-01-20T18:09:04Z",
+      "side": 1,
+      "message": "I\u0027m looking at the documentation and you\u0027re probably right on this.  There are two pieces:\n\n1. busname in the systemd service file - tells systemd how to know when the service is started.\n2. This file - tells the dbus broker what to do when a connection is [attempted] to be made to a service that isn\u0027t running.\n\nI think we have an incomplete implementation on the objmgr side.",
+      "parentUuid": "13fac8d9_a3250ea6",
+      "revId": "e4790554c235255b80aea363bdcdaaff1f9ad751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45bdbeaf_2c1584d8",
@@ -71,6 +89,30 @@
       "writtenOn": "2023-01-20T17:59:44Z",
       "side": 1,
       "message": "I\u0027m confused.  Why is this not working already?\n\nphsophor-objmgr doesn\u0027t have anything else.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 35
+      },
+      "revId": "e4790554c235255b80aea363bdcdaaff1f9ad751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c32e1c0f_691b8f0c",
+        "filename": "dist/xyz.openbmc_project.Logging.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-01-20T18:09:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef2bf900_466b2bc2",
       "range": {
         "startLine": 7,
         "startChar": 0,
