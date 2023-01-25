@@ -1058,12 +1058,12 @@ void SRC::addRegistryCallout(
     else
     {
         // A hardware callout
-        std::string inventoryPath;
+        std::vector<std::string> inventoryPaths;
 
         try
         {
             // Get the inventory item from the unexpanded location code
-            inventoryPath =
+            inventoryPaths =
                 dataIface.getInventoryFromLocCode(regCallout.locCode, 0, false);
         }
         catch (const std::exception& e)
@@ -1075,7 +1075,8 @@ void SRC::addRegistryCallout(
             return;
         }
 
-        addInventoryCallout(inventoryPath, priority, locCode, dataIface);
+        // Just use first path returned since they all point to the same FRU.
+        addInventoryCallout(inventoryPaths[0], priority, locCode, dataIface);
     }
 
     if (callout)
@@ -1187,10 +1188,13 @@ void SRC::addDevicePathCallouts(const AdditionalData& additionalData,
 
         try
         {
-            auto inventoryPath = dataIface.getInventoryFromLocCode(
+            auto inventoryPaths = dataIface.getInventoryFromLocCode(
                 callout.locationCode, 0, false);
 
-            addInventoryCallout(inventoryPath, priority, locCode, dataIface);
+            // Just use first path returned since they all
+            // point to the same FRU.
+            addInventoryCallout(inventoryPaths[0], priority, locCode,
+                                dataIface);
         }
         catch (const std::exception& e)
         {
@@ -1328,8 +1332,11 @@ void SRC::addJSONCallout(const nlohmann::json& jsonCallout,
 
             try
             {
-                inventoryPath = dataIface.getInventoryFromLocCode(
+                auto inventoryPaths = dataIface.getInventoryFromLocCode(
                     unexpandedLocCode, 0, false);
+                // Just use first path returned since they all
+                // point to the same FRU.
+                inventoryPath = inventoryPaths[0];
             }
             catch (const std::exception& e)
             {

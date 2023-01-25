@@ -860,8 +860,8 @@ TEST_F(PELTest, CreateWithDevCalloutsTest)
         .WillOnce(Return("UXXX-P1"));
 
     EXPECT_CALL(dataIface, getInventoryFromLocCode("P1", 0, false))
-        .WillOnce(
-            Return("/xyz/openbmc_project/inventory/chassis/motherboard/cpu0"));
+        .WillOnce(Return(std::vector<std::string>{
+            "/xyz/openbmc_project/inventory/chassis/motherboard/cpu0"}));
 
     EXPECT_CALL(
         dataIface,
@@ -1007,7 +1007,8 @@ TEST_F(PELTest, CreateWithJSONCalloutsTest)
         .WillOnce(Return("UXXX-P0-C1"));
     EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-C1", 0, false))
         .Times(1)
-        .WillOnce(Return("/inv/system/chassis/motherboard/bmc"));
+        .WillOnce(Return(
+            std::vector<std::string>{"/inv/system/chassis/motherboard/bmc"}));
     EXPECT_CALL(dataIface, getHWCalloutFields(
                                "/inv/system/chassis/motherboard/bmc", _, _, _))
         .Times(1)
