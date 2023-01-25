@@ -925,7 +925,8 @@ TEST_F(ManagerTest, TestServiceIndicators)
     // Add a PEL with a callout as if hostboot added it
     {
         EXPECT_CALL(*mockIface, getInventoryFromLocCode("U42", 0, true))
-            .WillOnce(Return("/system/chassis/processor"));
+            .WillOnce(
+                Return(std::vector<std::string>{"/system/chassis/processor"}));
 
         EXPECT_CALL(*mockIface,
                     setFunctional("/system/chassis/processor", false))
@@ -962,11 +963,13 @@ TEST_F(ManagerTest, TestServiceIndicators)
 
         // First call to this is when building the Callout section
         EXPECT_CALL(*mockIface, getInventoryFromLocCode("P42-C23", 0, false))
-            .WillOnce(Return("/system/chassis/processor"));
+            .WillOnce(
+                Return(std::vector<std::string>{"/system/chassis/processor"}));
 
         // Second call to this is finding the associated LED group
         EXPECT_CALL(*mockIface, getInventoryFromLocCode("U42-P42-C23", 0, true))
-            .WillOnce(Return("/system/chassis/processor"));
+            .WillOnce(
+                Return(std::vector<std::string>{"/system/chassis/processor"}));
 
         EXPECT_CALL(*mockIface,
                     setFunctional("/system/chassis/processor", false))

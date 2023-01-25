@@ -500,7 +500,7 @@ std::string DataInterface::expandLocationCode(const std::string& locationCode,
     return expandedLocationCode;
 }
 
-std::string
+std::vector<std::string>
     DataInterface::getInventoryFromLocCode(const std::string& locationCode,
                                            uint16_t node, bool expanded) const
 {
@@ -531,21 +531,13 @@ std::string
     std::vector<sdbusplus::message::object_path> entries;
     reply.read(entries);
 
-    // Get the shortest entry from the paths received, as this
-    // would be the path furthest up the inventory hierarchy so
-    // would be the parent FRU.  There is guaranteed to at least
-    // be one entry if the call didn't fail.
-    std::string shortest{entries[0]};
+    std::vector<std::string> paths;
 
+    // Note: The D-Bus method will fail if nothing found.
     std::for_each(entries.begin(), entries.end(),
-                  [&shortest](const auto& path) {
-                      if (path.str.size() < shortest.size())
-                      {
-                          shortest = path;
-                      }
-                  });
+                  [&paths](const auto& path) { paths.push_back(path); });
 
-    return shortest;
+    return paths;
 }
 
 void DataInterface::assertLEDGroup(const std::string& ledGroup,
