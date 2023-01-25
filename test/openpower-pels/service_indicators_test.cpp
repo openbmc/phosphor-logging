@@ -268,7 +268,8 @@ TEST(ServiceIndicatorsTest, ActivateTest)
         service_indicators::LightPath lightPath{dataIface};
 
         EXPECT_CALL(dataIface, getInventoryFromLocCode("U42", 0, true))
-            .WillOnce(Return("/system/chassis/processor"));
+            .WillOnce(
+                Return(std::vector<std::string>{"/system/chassis/processor"}));
 
         EXPECT_CALL(dataIface,
                     setFunctional("/system/chassis/processor", false))
@@ -276,6 +277,32 @@ TEST(ServiceIndicatorsTest, ActivateTest)
 
         EXPECT_CALL(dataIface,
                     setCriticalAssociation("/system/chassis/processor"))
+            .Times(1);
+
+        auto data = pelFactory(1, 'O', 0x20, 0xA400, 500);
+        PEL pel{data};
+
+        lightPath.activate(pel);
+    }
+
+    // With the same U42 callout, have it be associated with two
+    // inventory paths
+    {
+        MockDataInterface dataIface;
+        service_indicators::LightPath lightPath{dataIface};
+
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("U42", 0, true))
+            .WillOnce(Return(std::vector<std::string>{"/system/chassis/cpu0",
+                                                      "/system/chassis/cpu1"}));
+
+        EXPECT_CALL(dataIface, setFunctional("/system/chassis/cpu0", false))
+            .Times(1);
+        EXPECT_CALL(dataIface, setFunctional("/system/chassis/cpu1", false))
+            .Times(1);
+
+        EXPECT_CALL(dataIface, setCriticalAssociation("/system/chassis/cpu0"))
+            .Times(1);
+        EXPECT_CALL(dataIface, setCriticalAssociation("/system/chassis/cpu1"))
             .Times(1);
 
         auto data = pelFactory(1, 'O', 0x20, 0xA400, 500);
@@ -329,7 +356,8 @@ TEST(ServiceIndicatorsTest, ActivateTest)
         service_indicators::LightPath lightPath{dataIface};
 
         EXPECT_CALL(dataIface, getInventoryFromLocCode("U42", 0, true))
-            .WillOnce(Return("/system/chassis/processor"));
+            .WillOnce(
+                Return(std::vector<std::string>{"/system/chassis/processor"}));
 
         EXPECT_CALL(dataIface,
                     setFunctional("/system/chassis/processor", false))
@@ -347,7 +375,8 @@ TEST(ServiceIndicatorsTest, ActivateTest)
         service_indicators::LightPath lightPath{dataIface};
 
         EXPECT_CALL(dataIface, getInventoryFromLocCode("U42", 0, true))
-            .WillOnce(Return("/system/chassis/processor"));
+            .WillOnce(
+                Return(std::vector<std::string>{"/system/chassis/processor"}));
 
         EXPECT_CALL(dataIface,
                     setCriticalAssociation("/system/chassis/processor"))
