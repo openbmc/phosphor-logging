@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "633e4443_504ce673",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1077,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-01-30T22:56:32Z",
+      "side": 1,
+      "message": "Moving that other comment here would be good (where you say use the first one because it\u0027s the shortest). Or maybe since you hard code the 0 in multiple places here, a helper function (getPrimaryPath()) or something that just returns index 0 under the covers.",
+      "revId": "ee1ac2628bfaf8717e88c93a66cc8620ae453142",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
