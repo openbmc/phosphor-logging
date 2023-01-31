@@ -16,6 +16,24 @@
       "message": "Moving that other comment here would be good (where you say use the first one because it\u0027s the shortest). Or maybe since you hard code the 0 in multiple places here, a helper function (getPrimaryPath()) or something that just returns index 0 under the covers.",
       "revId": "ee1ac2628bfaf8717e88c93a66cc8620ae453142",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b2e2c6e_acff728a",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1077,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-01-31T19:33:13Z",
+      "side": 1,
+      "message": "I\u0027ll just go with a comment, since it doesn\u0027t matter which path is used here.",
+      "parentUuid": "633e4443_504ce673",
+      "revId": "ee1ac2628bfaf8717e88c93a66cc8620ae453142",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
