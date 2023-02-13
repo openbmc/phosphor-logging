@@ -164,6 +164,7 @@ TEST_F(PELTest, CreateFromRegistryTest)
     std::vector<std::string> data{"KEY1=VALUE1"};
     AdditionalData ad{data};
     NiceMock<MockDataInterface> dataIface;
+    NiceMock<MockJournal> journal;
     PelFFDC ffdc;
 
     std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
@@ -172,7 +173,7 @@ TEST_F(PELTest, CreateFromRegistryTest)
         .WillRepeatedly(Return(std::vector<bool>{false, false, false}));
 
     PEL pel{regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
-            ad,       ffdc, dataIface};
+            ad,       ffdc, dataIface, journal};
 
     EXPECT_TRUE(pel.valid());
     EXPECT_EQ(pel.privateHeader().obmcLogID(), 42);
@@ -217,7 +218,7 @@ TEST_F(PELTest, CreateFromRegistryTest)
 
         PEL pel2{
             regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
-            ad,       ffdc, dataIface};
+            ad,       ffdc, dataIface, journal};
 
         EXPECT_EQ(pel2.userHeader().actionFlags(), 0xA800);
     }
@@ -245,6 +246,7 @@ TEST_F(PELTest, CreateTooBigADTest)
     std::vector<std::string> data{bigAD};
     AdditionalData ad{data};
     NiceMock<MockDataInterface> dataIface;
+    NiceMock<MockJournal> journal;
 
     std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
                                       "system/entry"};
@@ -252,7 +254,7 @@ TEST_F(PELTest, CreateTooBigADTest)
         .WillOnce(Return(std::vector<bool>{false, false, false}));
 
     PEL pel{regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
-            ad,       ffdc, dataIface};
+            ad,       ffdc, dataIface, journal};
 
     EXPECT_TRUE(pel.valid());
     EXPECT_EQ(pel.size(), 16384);
@@ -761,6 +763,7 @@ TEST_F(PELTest, CreateWithFFDCTest)
     std::vector<std::string> additionalData{"KEY1=VALUE1"};
     AdditionalData ad{additionalData};
     NiceMock<MockDataInterface> dataIface;
+    NiceMock<MockJournal> journal;
     PelFFDC ffdc;
 
     std::vector<uint8_t> customData{1, 2, 3, 4, 5, 6, 7, 8};
@@ -780,7 +783,7 @@ TEST_F(PELTest, CreateWithFFDCTest)
         .WillOnce(Return(std::vector<bool>{false, false, false}));
 
     PEL pel{regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
-            ad,       ffdc, dataIface};
+            ad,       ffdc, dataIface, journal};
 
     EXPECT_TRUE(pel.valid());
 
@@ -823,6 +826,7 @@ TEST_F(PELTest, CreateWithDevCalloutsTest)
     regEntry.src.reasonCode = 0x1234;
 
     NiceMock<MockDataInterface> dataIface;
+    NiceMock<MockJournal> journal;
     PelFFDC ffdc;
 
     const auto calloutJSON = R"(
@@ -856,8 +860,8 @@ TEST_F(PELTest, CreateWithDevCalloutsTest)
         .WillOnce(Return("UXXX-P1"));
 
     EXPECT_CALL(dataIface, getInventoryFromLocCode("P1", 0, false))
-        .WillOnce(
-            Return("/xyz/openbmc_project/inventory/chassis/motherboard/cpu0"));
+        .WillOnce(Return(std::vector<std::string>{
+            "/xyz/openbmc_project/inventory/chassis/motherboard/cpu0"}));
 
     EXPECT_CALL(
         dataIface,
@@ -886,7 +890,7 @@ TEST_F(PELTest, CreateWithDevCalloutsTest)
 
         PEL pel{
             regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
-            ad,       ffdc, dataIface};
+            ad,       ffdc, dataIface, journal};
 
         ASSERT_TRUE(pel.primarySRC().value()->callouts());
         auto& callouts = pel.primarySRC().value()->callouts()->callouts();
@@ -936,7 +940,7 @@ TEST_F(PELTest, CreateWithDevCalloutsTest)
 
         PEL pel{
             regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
-            ad,       ffdc, dataIface};
+            ad,       ffdc, dataIface, journal};
 
         // no callouts
         EXPECT_FALSE(pel.primarySRC().value()->callouts());
@@ -996,13 +1000,15 @@ TEST_F(PELTest, CreateWithJSONCalloutsTest)
 
     AdditionalData ad;
     NiceMock<MockDataInterface> dataIface;
+    NiceMock<MockJournal> journal;
 
     EXPECT_CALL(dataIface, expandLocationCode("P0-C1", 0))
         .Times(1)
         .WillOnce(Return("UXXX-P0-C1"));
     EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-C1", 0, false))
         .Times(1)
-        .WillOnce(Return("/inv/system/chassis/motherboard/bmc"));
+        .WillOnce(Return(
+            std::vector<std::string>{"/inv/system/chassis/motherboard/bmc"}));
     EXPECT_CALL(dataIface, getHWCalloutFields(
                                "/inv/system/chassis/motherboard/bmc", _, _, _))
         .Times(1)
@@ -1021,8 +1027,8 @@ TEST_F(PELTest, CreateWithJSONCalloutsTest)
     regEntry.src.type = 0xBD;
     regEntry.src.reasonCode = 0x1234;
 
-    PEL pel{regEntry, 42,   5,        phosphor::logging::Entry::Level::Error,
-            ad,       ffdc, dataIface};
+    PEL pel{regEntry, 42,   5,         phosphor::logging::Entry::Level::Error,
+            ad,       ffdc, dataIface, journal};
 
     ASSERT_TRUE(pel.valid());
     ASSERT_TRUE(pel.primarySRC().value()->callouts());
@@ -1079,6 +1085,7 @@ TEST_F(PELTest, CreateWithJSONSymblicCalloutTest)
 
     AdditionalData ad;
     NiceMock<MockDataInterface> dataIface;
+    NiceMock<MockJournal> journal;
 
     std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
                                       "system/entry"};
@@ -1092,8 +1099,8 @@ TEST_F(PELTest, CreateWithJSONSymblicCalloutTest)
     regEntry.src.type = 0xBD;
     regEntry.src.reasonCode = 0x1234;
 
-    PEL pel{regEntry, 42,   5,        phosphor::logging::Entry::Level::Error,
-            ad,       ffdc, dataIface};
+    PEL pel{regEntry, 42,   5,         phosphor::logging::Entry::Level::Error,
+            ad,       ffdc, dataIface, journal};
 
     ASSERT_TRUE(pel.valid());
     ASSERT_TRUE(pel.primarySRC().value()->callouts());
@@ -1109,4 +1116,177 @@ TEST_F(PELTest, CreateWithJSONSymblicCalloutTest)
         EXPECT_EQ(fru->getMaintProc().value(), "SVCDOCS");
     }
     fs::remove_all(dir);
+}
+
+TEST_F(PELTest, FlattenLinesTest)
+{
+    std::vector<std::string> msgs{"test1 test2", "test3 test4", "test5 test6"};
+
+    auto buffer = util::flattenLines(msgs);
+
+    std::string string{"test1 test2\ntest3 test4\ntest5 test6\n"};
+    std::vector<uint8_t> expected(string.begin(), string.end());
+
+    EXPECT_EQ(buffer, expected);
+}
+
+void checkJournalSection(const std::unique_ptr<Section>& section,
+                         const std::string& expected)
+{
+    ASSERT_EQ(SectionID::userData,
+              static_cast<SectionID>(section->header().id));
+    ASSERT_EQ(UserDataFormat::text,
+              static_cast<UserDataFormat>(section->header().subType));
+    ASSERT_EQ(section->header().version,
+              static_cast<uint8_t>(UserDataFormatVersion::text));
+
+    auto ud = static_cast<UserData*>(section.get());
+
+    std::vector<uint8_t> expectedData(expected.begin(), expected.end());
+
+    // PEL sections are 4B aligned so add padding before the compare
+    while (expectedData.size() % 4 != 0)
+    {
+        expectedData.push_back('\0');
+    }
+
+    EXPECT_EQ(ud->data(), expectedData);
+}
+
+TEST_F(PELTest, CaptureJournalTest)
+{
+    message::Entry regEntry;
+    uint64_t timestamp = 5;
+
+    regEntry.name = "test";
+    regEntry.subsystem = 5;
+    regEntry.actionFlags = 0xC000;
+    regEntry.src.type = 0xBD;
+    regEntry.src.reasonCode = 0x1234;
+
+    std::vector<std::string> data;
+    AdditionalData ad{data};
+    NiceMock<MockDataInterface> dataIface;
+    NiceMock<MockJournal> journal;
+    PelFFDC ffdc;
+
+    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
+                                      "system/entry"};
+    EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
+        .WillRepeatedly(Return(std::vector<bool>{false, false, false}));
+
+    size_t pelSectsWithOneUD{0};
+
+    {
+        // Capture 5 lines from the journal into a single UD section
+        message::JournalCapture jc = size_t{5};
+        regEntry.journalCapture = jc;
+
+        std::vector<std::string> msgs{"test1 test2", "test3 test4",
+                                      "test5 test6", "4", "5"};
+
+        EXPECT_CALL(journal, getMessages("", 5)).WillOnce(Return(msgs));
+
+        PEL pel{
+            regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
+            ad,       ffdc, dataIface, journal};
+
+        // Check the generated UserData section
+        std::string expected{"test1 test2\ntest3 test4\ntest5 test6\n4\n5\n"};
+
+        checkJournalSection(pel.optionalSections().back(), expected);
+
+        // Save for upcoming testcases
+        pelSectsWithOneUD = pel.privateHeader().sectionCount();
+    }
+
+    {
+        // Attempt to capture too many journal entries so the
+        // section gets dropped.
+        message::JournalCapture jc = size_t{1};
+        regEntry.journalCapture = jc;
+
+        EXPECT_CALL(journal, sync()).Times(1);
+
+        // A 20000 byte line won't fit in a PEL
+        EXPECT_CALL(journal, getMessages("", 1))
+            .WillOnce(
+                Return(std::vector<std::string>{std::string(20000, 'x')}));
+
+        PEL pel{
+            regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
+            ad,       ffdc, dataIface, journal};
+
+        // Check for 1 fewer sections than in the previous PEL
+        EXPECT_EQ(pel.privateHeader().sectionCount(), pelSectsWithOneUD - 1);
+    }
+
+    // Capture 3 different journal sections
+    {
+        message::AppCaptureList captureList{
+            message::AppCapture{"app1", 3},
+            message::AppCapture{"app2", 4},
+            message::AppCapture{"app3", 1},
+        };
+        message::JournalCapture jc = captureList;
+        regEntry.journalCapture = jc;
+
+        std::vector<std::string> app1{"A B", "C D", "E F"};
+        std::vector<std::string> app2{"1 2", "3 4", "5 6", "7 8"};
+        std::vector<std::string> app3{"a b c"};
+
+        std::string expected1{"A B\nC D\nE F\n"};
+        std::string expected2{"1 2\n3 4\n5 6\n7 8\n"};
+        std::string expected3{"a b c\n"};
+
+        EXPECT_CALL(journal, sync()).Times(1);
+        EXPECT_CALL(journal, getMessages("app1", 3)).WillOnce(Return(app1));
+        EXPECT_CALL(journal, getMessages("app2", 4)).WillOnce(Return(app2));
+        EXPECT_CALL(journal, getMessages("app3", 1)).WillOnce(Return(app3));
+
+        PEL pel{
+            regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
+            ad,       ffdc, dataIface, journal};
+
+        // Two more sections than the 1 extra UD section in the first testcase
+        ASSERT_EQ(pel.privateHeader().sectionCount(), pelSectsWithOneUD + 2);
+
+        const auto& optionalSections = pel.optionalSections();
+        auto numOptSections = optionalSections.size();
+
+        checkJournalSection(optionalSections[numOptSections - 3], expected1);
+        checkJournalSection(optionalSections[numOptSections - 2], expected2);
+        checkJournalSection(optionalSections[numOptSections - 1], expected3);
+    }
+
+    {
+        // One section gets saved, and one is too big and gets dropped
+        message::AppCaptureList captureList{
+            message::AppCapture{"app4", 2},
+            message::AppCapture{"app5", 1},
+        };
+        message::JournalCapture jc = captureList;
+        regEntry.journalCapture = jc;
+
+        std::vector<std::string> app4{"w x", "y z"};
+        std::string expected4{"w x\ny z\n"};
+
+        EXPECT_CALL(journal, sync()).Times(1);
+
+        EXPECT_CALL(journal, getMessages("app4", 2)).WillOnce(Return(app4));
+
+        // A 20000 byte line won't fit in a PEL
+        EXPECT_CALL(journal, getMessages("app5", 1))
+            .WillOnce(
+                Return(std::vector<std::string>{std::string(20000, 'x')}));
+
+        PEL pel{
+            regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
+            ad,       ffdc, dataIface, journal};
+
+        // The last section should have been dropped, so same as first TC
+        ASSERT_EQ(pel.privateHeader().sectionCount(), pelSectsWithOneUD);
+
+        checkJournalSection(pel.optionalSections().back(), expected4);
+    }
 }

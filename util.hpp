@@ -16,4 +16,11 @@ namespace phosphor::logging::util
  */
 std::optional<std::string> getOSReleaseValue(const std::string& key);
 
+/**
+ * @brief Synchronize unwritten journal messages to disk.
+ * @details This is the same implementation as the systemd command
+ *          "journalctl --sync".
+ */
+void journalSync();
+
 } // namespace phosphor::logging::util

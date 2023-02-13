@@ -20,6 +20,8 @@
 #include "pel_types.hpp"
 #include "pel_values.hpp"
 
+#include <fmt/format.h>
+
 #include <phosphor-logging/log.hpp>
 
 namespace openpower
@@ -77,8 +79,9 @@ PrivateHeader::PrivateHeader(Stream& pel) :
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>("Cannot unflatten private header",
-                        entry("ERROR=%s", e.what()));
+        log<level::ERR>(
+            fmt::format("Cannot unflatten privatej header: {}", e.what())
+                .c_str());
         _valid = false;
     }
 }
@@ -126,22 +129,26 @@ void PrivateHeader::validate()
 
     if (header().id != static_cast<uint16_t>(SectionID::privateHeader))
     {
-        log<level::ERR>("Invalid private header section ID",
-                        entry("ID=0x%X", header().id));
+        log<level::ERR>(fmt::format("Invalid private header section ID: {0:#x}",
+                                    header().id)
+                            .c_str());
         failed = true;
     }
 
     if (header().version != privateHeaderVersion)
     {
-        log<level::ERR>("Invalid private header version",
-                        entry("VERSION=0x%X", header().version));
+        log<level::ERR>(fmt::format("Invalid private header version: {0:#x}",
+                                    header().version)
+                            .c_str());
         failed = true;
     }
 
     if (_sectionCount < minSectionCount)
     {
-        log<level::ERR>("Invalid section count in private header",
-                        entry("SECTION_COUNT=0x%X", _sectionCount));
+        log<level::ERR>(
+            fmt::format("Invalid section count in private header: {0:#x}",
+                        _sectionCount)
+                .c_str());
         failed = true;
     }
 

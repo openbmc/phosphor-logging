@@ -62,6 +62,7 @@ libpel_sources = files(
     'failing_mtms.cpp',
     'fru_identity.cpp',
     'generic.cpp',
+    'journal.cpp',
     'json_utils.cpp',
     'log_id.cpp',
     'mru.cpp',

@@ -1,5 +1,6 @@
 #include "extensions/openpower-pels/data_interface.hpp"
 #include "extensions/openpower-pels/host_interface.hpp"
+#include "extensions/openpower-pels/journal.hpp"
 
 #include <fcntl.h>
 
@@ -36,7 +37,7 @@ class MockDataInterface : public DataInterfaceBase
     MOCK_METHOD(std::vector<std::string>, getSystemNames, (), (const override));
     MOCK_METHOD(std::string, expandLocationCode, (const std::string&, uint16_t),
                 (const override));
-    MOCK_METHOD(std::string, getInventoryFromLocCode,
+    MOCK_METHOD(std::vector<std::string>, getInventoryFromLocCode,
                 (const std::string&, uint16_t, bool), (const override));
     MOCK_METHOD(void, assertLEDGroup, (const std::string&, bool),
                 (const override));
@@ -276,6 +277,17 @@ class MockHostInterface : public HostInterface
      * @brief The number of commands processed
      */
     size_t _cmdsProcessed = 0;
+};
+
+class MockJournal : public JournalBase
+{
+  public:
+    MockJournal() {}
+
+    MOCK_METHOD(std::vector<std::string>, getMessages,
+                (const std::string&, size_t), (const override));
+
+    MOCK_METHOD(void, sync, (), (const override));
 };
 
 } // namespace pels

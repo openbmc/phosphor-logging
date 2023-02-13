@@ -55,7 +55,9 @@
                         "$ref": "#/definitions/calloutsUsingAD"
                     },
 
-                    "Callouts": { "$ref": "#/definitions/callouts" }
+                    "Callouts": { "$ref": "#/definitions/callouts" },
+
+                    "JournalCapture": { "$ref": "#/definitions/journalCapture" }
                 },
 
                 "required": ["Name", "SRC", "Documentation"],
@@ -755,6 +757,88 @@
         "calloutsWhenNoADMatch": {
             "description": "This contains the callouts to use when a match in the 'CalloutsWithTheirADValues array isn't found.",
             "$ref": "#/definitions/callouts"
+        },
+
+        "numLines": {
+            "description": "The number of lines of the journal to capture.",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+        },
+
+        "syslogID": {
+            "description": "SYSLOG_IDENTIFIER value from the journal whose entries to capture.",
+            "type": "string",
+            "minLength": 1
+        },
+
+        "journalSection": {
+            "type": "object",
+            "properties": {
+                "SyslogID": { "$ref": "#/definitions/syslogID" },
+                "NumLines": { "$ref": "#/definitions/numLines" }
+            },
+            "additionalProperties": false,
+            "required": ["SyslogID", "NumLines"]
+        },
+
+        "journalSectionList": {
+            "description": "Describes which syslog IDs and how many journal lines to capture",
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/journalSection"
+            },
+            "minItems": 1,
+            "uniqueItems": true,
+            "examples": [
+                {
+                    "Sections": [
+                        {
+                            "SyslogID": "phosphor-bmc-state-manager",
+                            "NumLines": 20
+                        }
+                    ]
+                }
+            ]
+        },
+
+        "journalCapture": {
+            "description": "Allows a PEL to capture journal data in UserData sections.",
+            "type": "object",
+            "properties": {
+                "NumLines": { "$ref": "#/definitions/numLines" },
+                "Sections": { "$ref": "#/definitions/journalSectionList" }
+            },
+            "oneOf": [
+                {
+                    "required": ["NumLines"]
+                },
+                {
+                    "required": ["Sections"]
+                }
+            ],
+            "additionalProperties": false,
+            "examples": [
+                {
+                    "JournalCapture": {
+                        "NumLines": 30
+                    }
+                },
+                {
+                    "JournalCapture": {
+                        "Sections": [
+                            {
+                                "SyslogID": "phosphor-bmc-state-manager",
+                                "NumLines": 20
+                            },
+                            {
+                                "SyslogID": "phosphor-log-manager",
+                                "NumLines": 15
+                            }
+                        ]
+                    }
+                }
+            ]
         }
     }
 }

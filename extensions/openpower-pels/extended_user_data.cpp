@@ -61,7 +61,8 @@ ExtendedUserData::ExtendedUserData(Stream& pel)
     catch (const std::exception& e)
     {
         log<level::ERR>(
-            fmt::format("Cannot unflatten ExtendedUserData: {}", e.what())
+            fmt::format("Cannot unflatten ExtendedUserData section: {}",
+                        e.what())
                 .c_str());
         _valid = false;
     }
@@ -89,7 +90,8 @@ void ExtendedUserData::validate()
     if (header().id != static_cast<uint16_t>(SectionID::extUserData))
     {
         log<level::ERR>(
-            fmt::format("Invalid ExtendedUserData section ID {}", header().id)
+            fmt::format("Invalid ExtendedUserData section ID: {0:#x}",
+                        header().id)
                 .c_str());
         _valid = false;
     }

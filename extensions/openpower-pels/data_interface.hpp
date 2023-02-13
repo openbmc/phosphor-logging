@@ -352,7 +352,7 @@ class DataInterfaceBase
                                            uint16_t node) const = 0;
 
     /**
-     * @brief Returns the inventory path for the FRU that the location
+     * @brief Returns the inventory paths for the FRU that the location
      *        code represents.
      *
      * @param[in] locationCode - If an expanded location code, then the
@@ -367,11 +367,11 @@ class DataInterfaceBase
      * @param[in] expanded - If the location code already has the relevent
      *                       VPD fields embedded in it.
      *
-     * @return std::string - The inventory D-Bus object
+     * @return std::vector<std::string> - The inventory D-Bus objects
      */
-    virtual std::string getInventoryFromLocCode(const std::string& LocationCode,
-                                                uint16_t node,
-                                                bool expanded) const = 0;
+    virtual std::vector<std::string>
+        getInventoryFromLocCode(const std::string& LocationCode, uint16_t node,
+                                bool expanded) const = 0;
 
     /**
      * @brief Sets the Asserted property on the LED group passed in.
@@ -695,7 +695,7 @@ class DataInterface : public DataInterfaceBase
                                    uint16_t node) const override;
 
     /**
-     * @brief Returns the inventory path for the FRU that the location
+     * @brief Returns the inventory paths for the FRU that the location
      *        code represents.
      *
      * @param[in] locationCode - If an expanded location code, then the
@@ -710,11 +710,11 @@ class DataInterface : public DataInterfaceBase
      * @param[in] expanded - If the location code already has the relevent
      *                       VPD fields embedded in it.
      *
-     * @return std::string - The inventory D-Bus object
+     * @return std::vector<std::string> - The inventory D-Bus objects
      */
-    std::string getInventoryFromLocCode(const std::string& locationCode,
-                                        uint16_t node,
-                                        bool expanded) const override;
+    std::vector<std::string>
+        getInventoryFromLocCode(const std::string& locationCode, uint16_t node,
+                                bool expanded) const override;
 
     /**
      * @brief Sets the Asserted property on the LED group passed in.
