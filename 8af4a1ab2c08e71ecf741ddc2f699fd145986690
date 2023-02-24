@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8898d944_29b11658",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001591
+      },
+      "writtenOn": "2023-02-24T09:21:24Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4c2c4438_f2a900ab",
+      "revId": "8af4a1ab2c08e71ecf741ddc2f699fd145986690",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4ff06f02_fd47db45",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-01-19T20:08:50Z",
       "side": 1,
       "message": "actually, if the severity is in the message registry, it will ignore the severity passed in.  If you\u0027d like to be able to have different severities, then you can just delete the Severity line from the JSON and it will always use what is passed in.",
+      "range": {
+        "startLine": 11,
+        "startChar": 33,
+        "endLine": 11,
+        "endChar": 66
+      },
+      "revId": "8af4a1ab2c08e71ecf741ddc2f699fd145986690",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdc9ef54_db8c5e2c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1001591
+      },
+      "writtenOn": "2023-02-24T09:21:24Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4ff06f02_fd47db45",
       "range": {
         "startLine": 11,
         "startChar": 33,
