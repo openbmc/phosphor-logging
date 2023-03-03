@@ -1654,6 +1654,27 @@
                     "CALLOUT_INVENTORY_PATH to the additional data, and set the",
                     "CALLOUT_PRIORITY to something other than high."
                 ]
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "systemd",
+                        "NumLines": 15
+                    }
+                ]
             }
         },
 
@@ -1686,6 +1707,27 @@
                     "specific fault, STATUS_* details, and code level in the ",
                     "AdditionalData section."
                 ]
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "systemd",
+                        "NumLines": 15
+                    }
+                ]
             }
         },
 
@@ -1717,6 +1759,26 @@
                     "the power supply, or any hardware between it and the ",
                     "BMC. Reporting the error should be passing in a call ",
                     "out using CALLOUT_DEVICE_PATH."
+                ]
+            },
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "systemd",
+                        "NumLines": 15
+                    }
                 ]
             }
         },
@@ -1754,6 +1816,27 @@
                     "location code in this callout is obtained from ",
                     "the passed in CALLOUT_INVENTORY_PATH value."
                 ]
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "systemd",
+                        "NumLines": 15
+                    }
+                ]
             }
         },
 
@@ -1785,6 +1868,27 @@
                     "system is not supported. This could be caused by ",
                     "mismatched models, less than expected number of power ",
                     "supplies, or other unsupported characteristics."
+                ]
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "systemd",
+                        "NumLines": 15
+                    }
                 ]
             }
         },
@@ -1818,6 +1922,27 @@
                     "specific fault, STATUS_* details, and code level in the ",
                     "AdditionalData section."
                 ]
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "systemd",
+                        "NumLines": 15
+                    }
+                ]
             }
         },
 
@@ -1844,6 +1969,27 @@
             "Documentation": {
                 "Description": "Power Supply output over-current power fault",
                 "Message": "A power supply has indicated an output over-current condition."
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "systemd",
+                        "NumLines": 15
+                    }
+                ]
             }
         },
 
@@ -1874,6 +2020,27 @@
                     "Input power was lost while system powered on.",
                     "The CalloutList should use the ACMODUL symbolic FRU."
                 ]
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "systemd",
+                        "NumLines": 15
+                    }
+                ]
             }
         },
 
@@ -1901,6 +2068,27 @@
                 "Description": "A power supply fault is potentially preventing the power supply from allowing the system to power on.",
                 "Message": "Power supply PSKill_fault",
                 "Notes": []
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "systemd",
+                        "NumLines": 15
+                    }
+                ]
             }
         },
 
@@ -1927,6 +2115,31 @@
                 "Description": "A power off was issued because a power fault was detected",
                 "Message": "A power off was issued because a power fault was detected",
                 "Notes": []
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "systemd",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-regulators",
+                        "NumLines": 5
+                    }
+                ]
             }
         },
 
@@ -1975,6 +2188,31 @@
                 "Description": "A power off was issued because a regulator for standby power faulted",
                 "Message": "A power off was issued because a regulator for standby power faulted",
                 "Notes": []
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "systemd",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-regulators",
+                        "NumLines": 5
+                    }
+                ]
             }
         },
 
@@ -2457,6 +2695,31 @@
                 "Description": "The power sequencer chip detected a PGOOD fault",
                 "Message": "The power sequencer chip detected a PGOOD fault",
                 "Notes": []
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "systemd",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-regulators",
+                        "NumLines": 5
+                    }
+                ]
             }
         },
 
@@ -3543,6 +3806,31 @@
                 "Description": "The power sequencer chip detected a voltage fault",
                 "Message": "The power sequencer chip detected a voltage fault",
                 "Notes": []
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "systemd",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-regulators",
+                        "NumLines": 5
+                    }
+                ]
             }
         },
 
@@ -3744,6 +4032,31 @@
                 "Description": "The power sequencer chip detected a fault",
                 "Message": "The power sequencer chip detected a fault",
                 "Notes": []
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "systemd",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-regulators",
+                        "NumLines": 5
+                    }
+                ]
             }
         },
 
@@ -3769,6 +4082,31 @@
                 "Description": "System power failed to turn on within timeout period",
                 "Message": "System power failed to turn on within timeout period",
                 "Notes": []
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "systemd",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-regulators",
+                        "NumLines": 5
+                    }
+                ]
             }
         },
 
@@ -3794,6 +4132,31 @@
                 "Description": "System power failed to turn off within timeout period",
                 "Message": "System power failed to turn off within timeout period",
                 "Notes": []
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "systemd",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-regulators",
+                        "NumLines": 5
+                    }
+                ]
             }
         },
 
