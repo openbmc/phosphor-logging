@@ -145,15 +145,7 @@ def validate_schema(registry, schema):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="PEL message registry processor"
-    )
-
-    parser.add_argument(
-        "-v",
-        "--validate",
-        action="store_true",
-        dest="validate",
-        help="Validate the JSON using the schema",
+        description="PEL message registry validator"
     )
 
     parser.add_argument(
@@ -161,6 +153,7 @@ if __name__ == "__main__":
         "--schema-file",
         dest="schema_file",
         help="The message registry JSON schema file",
+        required=True,
     )
 
     parser.add_argument(
@@ -168,7 +161,9 @@ if __name__ == "__main__":
         "--registry-file",
         dest="registry_file",
         help="The message registry JSON file",
+        required=True,
     )
+
     parser.add_argument(
         "-k",
         "--skip-schema-validation",
@@ -179,15 +174,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    if args.validate:
-        if not args.schema_file:
-            sys.exit("Schema file required")
+    schema = args.schema_file
+    if args.skip_schema:
+        schema = None
 
-        if not args.registry_file:
-            sys.exit("Registry file required")
-
-        schema = args.schema_file
-        if args.skip_schema:
-            schema = None
-
-        validate_schema(args.registry_file, schema)
+    validate_schema(args.registry_file, schema)
