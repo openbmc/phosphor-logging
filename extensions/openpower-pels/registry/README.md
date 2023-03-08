@@ -524,13 +524,13 @@ The general process for adding new entries to the message registry is:
 2. If a new component ID is used (usually the first byte of the SRC reason
    code), document it in O_component_ids.json.
 3. Validate the file. It must be valid JSON and obey the schema. The
-   `process_registry.py` script in `extensions/openpower-pels/registry/tools`
+   `validate_registry.py` script in `extensions/openpower-pels/registry/tools`
    will validate both, though it requires the python-jsonschema package to do
    the schema validation. This script is also run to validate the message
    registry as part of CI testing.
 
    ```sh
-   ./tools/process_registry.py -v -s schema/schema.json -r message_registry.json
+   ./tools/validate_registry.py -s schema/schema.json -r message_registry.json
    ```
 
 4. One can test what PELs are generated from these new entries without writing
