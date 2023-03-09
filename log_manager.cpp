@@ -231,13 +231,16 @@ void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
     auto objPath = std::string(OBJ_ENTRY) + '/' + std::to_string(entryId);
 
     AssociationList objects{};
-    processMetadata(errMsg, additionalData, objects);
+    std::string messageId;
+    std::vector<std::string> messageArgs;
+    processMetadata(messageId, messageArgs, errMsg, additionalData, objects);
 
     auto e = std::make_unique<Entry>(
         busLog, objPath, entryId,
         ms, // Milliseconds since 1970
-        errLvl, std::move(errMsg), std::move(additionalData),
-        std::move(objects), fwVersion, getEntrySerializePath(entryId), *this);
+        errLvl, std::move(errMsg), std::move(messageId), std::move(messageArgs),
+        std::move(additionalData), std::move(objects), fwVersion,
+        getEntrySerializePath(entryId), *this);
 
     serialize(*e);
 
@@ -444,7 +447,9 @@ void Manager::doExtensionLogCreate(const Entry& entry, const FFDCEntries& ffdc)
     }
 }
 
-void Manager::processMetadata(const std::string& /*errorName*/,
+void Manager::processMetadata(std::string& messageId,
+                              std::vector<std::string>& messageArgs,
+                              const std::string& /*errorName*/,
                               const std::vector<std::string>& additionalData,
                               AssociationList& objects) const
 {
@@ -460,6 +465,32 @@ void Manager::processMetadata(const std::string& /*errorName*/,
             if (meta.end() != iter)
             {
                 (iter->second)(metadata, additionalData, objects);
+            }
+        }
+        auto messageIdFound = entryItem.find("REDFISH_MESSAGE_ID");
+        if (std::string::npos != messageIdFound)
+        {
+            auto idSeparatorFound = entryItem.find(separator);
+            if (std::string::npos != idSeparatorFound)
+            {
+                messageId = entryItem.substr(idSeparatorFound);
+                messageId.erase(messageId.begin());
+            }
+        }
+        auto messageArgsFound = entryItem.find("REDFISH_MESSAGE_ARGS");
+        if (std::string::npos != messageArgsFound)
+        {
+            std::string messageArg;
+            std::stringstream argsStream(entryItem);
+            while (getline(argsStream, messageArg, ','))
+            {
+                messageArgs.push_back(messageArg);
+            }
+            auto argsSeparatorFound = messageArgs[0].find(separator);
+            if (std::string::npos != argsSeparatorFound)
+            {
+                messageArgs[0] = messageArgs[0].substr(argsSeparatorFound);
+                messageArgs[0].erase(messageArgs[0].begin());
             }
         }
     }

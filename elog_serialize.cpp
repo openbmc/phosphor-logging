@@ -30,9 +30,9 @@ namespace logging
 template <class Archive>
 void save(Archive& a, const Entry& e, const std::uint32_t /*version*/)
 {
-    a(e.id(), e.severity(), e.timestamp(), e.message(), e.additionalData(),
-      e.associations(), e.resolved(), e.version(), e.updateTimestamp(),
-      e.eventId(), e.resolution());
+    a(e.id(), e.severity(), e.timestamp(), e.message(), e.messageId(),
+      e.messageArgs(), e.additionalData(), e.associations(), e.resolved(),
+      e.version(), e.updateTimestamp(), e.eventId(), e.resolution());
 }
 
 /** @brief Function required by Cereal to perform deserialization.
@@ -51,6 +51,8 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
     Entry::Level severity{};
     uint64_t timestamp{};
     std::string message{};
+    std::string messageId{};
+    std::vector<std::string> messageArgs{};
     std::vector<std::string> additionalData{};
     bool resolved{};
     AssociationList associations{};
@@ -83,14 +85,17 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
     }
     else
     {
-        a(id, severity, timestamp, message, additionalData, associations,
-          resolved, fwVersion, updateTimestamp, eventId, resolution);
+        a(id, severity, timestamp, message, messageId, messageArgs,
+          additionalData, associations, resolved, fwVersion, updateTimestamp,
+          eventId, resolution);
     }
 
     e.id(id, true);
     e.severity(severity, true);
     e.timestamp(timestamp, true);
     e.message(message, true);
+    e.messageId(messageId, true);
+    e.messageArgs(messageArgs, true);
     e.additionalData(additionalData, true);
     e.sdbusplus::xyz::openbmc_project::Logging::server::Entry::resolved(
         resolved, true);

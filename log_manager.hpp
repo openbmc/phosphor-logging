@@ -255,7 +255,9 @@ class Manager : public details::ServerObject<details::ManagerIface>
      *  @param[in] additionalData - list of metadata (in key=value format)
      *  @param[out] objects - list of error's association objects
      */
-    void processMetadata(const std::string& errorName,
+    void processMetadata(std::string& messageId,
+                         std::vector<std::string>& messageArgs,
+                         const std::string& errorName,
                          const std::vector<std::string>& additionalData,
                          AssociationList& objects) const;
 
