@@ -80,7 +80,7 @@ PrivateHeader::PrivateHeader(Stream& pel) :
     catch (const std::exception& e)
     {
         log<level::ERR>(
-            fmt::format("Cannot unflatten privatej header: {}", e.what())
+            fmt::format("Cannot unflatten private header: {}", e.what())
                 .c_str());
         _valid = false;
     }
