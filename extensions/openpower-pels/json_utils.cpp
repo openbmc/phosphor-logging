@@ -15,9 +15,15 @@
  */
 #include "json_utils.hpp"
 
+#include "paths.hpp"
+
 #include <stdio.h>
 
+#include <nlohmann/json.hpp>
+
 #include <cstring>
+#include <filesystem>
+#include <optional>
 #include <sstream>
 #include <string>
 
@@ -232,5 +238,109 @@ std::string trimEnd(std::string s)
     }
     return s;
 }
+
+/**
+ * @brief Lookup the component ID in a JSON file named
+ *        after the creator ID.
+ *
+ * Keeps a cache of the JSON it reads to live throughout
+ * the peltool call as the JSON can be reused across
+ * PEL sections or even across PELs.
+ *
+ * @param[in] compID - The component ID
+ * @param[in] creatorID - The creator ID for the PEL
+ * @return optional<string> - The comp name, or std::nullopt
+ */
+static std::optional<std::string> lookupComponentName(uint16_t compID,
+                                                      char creatorID)
+{
+    static std::map<char, nlohmann::json> jsonCache;
+    nlohmann::json jsonData;
+    nlohmann::json* jsonPtr = &jsonData;
+    std::filesystem::path filename{std::string{creatorID} +
+                                   "_component_ids.json"};
+    filename = getPELReadOnlyDataPath() / filename;
+
+    auto jsonIt = jsonCache.find(creatorID);
+    if (jsonIt != jsonCache.end())
+    {
+        jsonPtr = &(jsonIt->second);
+    }
+    else
+    {
+        std::error_code ec;
+        if (!std::filesystem::exists(filename, ec))
+        {
+            return std::nullopt;
+        }
+
+        std::ifstream file{filename};
+        if (!file)
+        {
+            return std::nullopt;
+        }
+
+        jsonData = nlohmann::json::parse(file, nullptr, false);
+        if (jsonData.is_discarded())
+        {
+            return std::nullopt;
+        }
+
+        jsonCache.emplace(creatorID, jsonData);
+    }
+
+    auto id = getNumberString("%04X", compID);
+
+    auto it = jsonPtr->find(id);
+    if (it == jsonPtr->end())
+    {
+        return std::nullopt;
+    }
+
+    return it->get<std::string>();
+}
+
+/**
+ * @brief Convert the component ID to a 2 character string
+ *        if both bytes are nonzero
+ *
+ * e.g. 0x4552 -> "ER"
+ *
+ * @param[in] compID - The component ID
+ * @return optional<string> - The two character string, or std::nullopt.
+ */
+static std::optional<std::string> convertCompIDToChars(uint16_t compID)
+{
+    uint8_t first = (compID >> 8) & 0xFF;
+    uint8_t second = compID & 0xFF;
+    if ((first != 0) && (second != 0))
+    {
+        std::string id{static_cast<char>(first)};
+        id += static_cast<char>(second);
+        return id;
+    }
+
+    return std::nullopt;
+}
+
+std::string getComponentName(uint16_t compID, uint8_t creatorID)
+{
+    // See if there's a JSON file with the names
+    auto name = lookupComponentName(compID, creatorID);
+
+    // If PHYP, convert to ASCII
+    if (!name && ('H' == creatorID))
+    {
+        name = convertCompIDToChars(compID);
+    }
+
+    if (!name)
+    {
+        name = getNumberString("0x%04X", compID);
+    }
+
+    return *name;
+}
+
 } // namespace pels
 } // namespace openpower

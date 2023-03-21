@@ -93,5 +93,19 @@ std::string getNumberString(const char* format, T number)
  */
 std::string trimEnd(std::string s);
 
+/**
+ * @brief Returns the component name for the component ID.
+ *
+ * It will try to look up the name to use in JSON files based on
+ * the creator ID.  If PHYP, will convert the component ID to
+ * two characters.
+ *
+ * If nothing else, it will just return the name as a string like
+ * "0x1234".
+ *
+ * @return std::string - The component name
+ */
+std::string getComponentName(uint16_t compID, uint8_t creatorID);
+
 } // namespace pels
 } // namespace openpower

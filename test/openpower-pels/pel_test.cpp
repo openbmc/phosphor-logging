@@ -476,14 +476,14 @@ TEST_F(PELTest, SectionJSONTest)
     // The getJSON() response needs to be wrapped in a { } to make
     // actual valid JSON (PEL::toJSON() usually handles that).
 
-    auto jsonString = pel.privateHeader().getJSON();
+    auto jsonString = pel.privateHeader().getJSON('O');
 
     // PrivateHeader always prints JSON
     ASSERT_TRUE(jsonString);
     *jsonString = '{' + *jsonString + '}';
     auto json = nlohmann::json::parse(*jsonString);
 
-    jsonString = pel.userHeader().getJSON();
+    jsonString = pel.userHeader().getJSON('O');
 
     // UserHeader always prints JSON
     ASSERT_TRUE(jsonString);
@@ -493,7 +493,7 @@ TEST_F(PELTest, SectionJSONTest)
     for (const auto& section : pel.optionalSections())
     {
         // The optional sections may or may not have implemented getJSON().
-        jsonString = section->getJSON();
+        jsonString = section->getJSON('O');
         if (jsonString)
         {
             *jsonString = '{' + *jsonString + '}';

@@ -221,9 +221,12 @@ class PrivateHeader : public Section
 
     /**
      * @brief Get section in JSON.
+     *
+     * @param[in] creatorID - The creator ID for the PEL
+     *
      * @return std::optional<std::string> - Private header section's JSON
      */
-    std::optional<std::string> getJSON() const override;
+    std::optional<std::string> getJSON(uint8_t creatorID) const override;
 
   private:
     /**

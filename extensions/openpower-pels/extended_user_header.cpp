@@ -185,13 +185,13 @@ void ExtendedUserHeader::createSymptomID(const message::Entry& regEntry,
     _symptomIDSize = _symptomID.size();
 }
 
-std::optional<std::string> ExtendedUserHeader::getJSON() const
+std::optional<std::string> ExtendedUserHeader::getJSON(uint8_t creatorID) const
 {
     std::string json;
     jsonInsert(json, pv::sectionVer, getNumberString("%d", _header.version), 1);
     jsonInsert(json, pv::subSection, getNumberString("%d", _header.subType), 1);
     jsonInsert(json, pv::createdBy,
-               getNumberString("0x%X", _header.componentID), 1);
+               getComponentName(_header.componentID, creatorID), 1);
     jsonInsert(json, "Reporting Machine Type", machineTypeModel(), 1);
     jsonInsert(json, "Reporting Serial Number", trimEnd(machineSerialNumber()),
                1);

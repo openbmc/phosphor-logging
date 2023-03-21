@@ -93,13 +93,13 @@ void FailingMTMS::unflatten(Stream& stream)
     stream >> _header >> _mtms;
 }
 
-std::optional<std::string> FailingMTMS::getJSON() const
+std::optional<std::string> FailingMTMS::getJSON(uint8_t creatorID) const
 {
     std::string json;
     jsonInsert(json, pv::sectionVer, getNumberString("%d", _header.version), 1);
     jsonInsert(json, pv::subSection, getNumberString("%d", _header.subType), 1);
     jsonInsert(json, pv::createdBy,
-               getNumberString("0x%X", _header.componentID), 1);
+               getComponentName(_header.componentID, creatorID), 1);
     jsonInsert(json, "Machine Type Model", _mtms.machineTypeAndModel(), 1);
     jsonInsert(json, "Serial Number", trimEnd(_mtms.machineSerialNumber()), 1);
     json.erase(json.size() - 2);

@@ -51,10 +51,13 @@ class Section
 
     /**
      * @brief Get section in JSON. Derived classes to override when required to.
+     *
+     * @param[in] creatorID - The creator ID for the PEL
+     *
      * @return std::optional<std::string> - If a section comes with a JSON
      * representation, this would return the string for it.
      */
-    virtual std::optional<std::string> getJSON() const
+    virtual std::optional<std::string> getJSON(uint8_t /* creatorID*/) const
     {
         return std::nullopt;
     }

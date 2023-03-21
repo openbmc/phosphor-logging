@@ -373,7 +373,7 @@ void PEL::printSectionInJSON(const Section& section, std::string& buf,
         }
         else
         {
-            json = section.getJSON();
+            json = section.getJSON(creatorID);
         }
 
         buf += "\"" + sectionName + "\": {\n";
@@ -447,8 +447,10 @@ void PEL::toJSON(message::Registry& registry,
     auto sections = getPluralSections();
 
     std::string buf = "{\n";
-    printSectionInJSON(*(_ph.get()), buf, sections, registry, plugins);
-    printSectionInJSON(*(_uh.get()), buf, sections, registry, plugins);
+    printSectionInJSON(*(_ph.get()), buf, sections, registry, plugins,
+                       _ph->creatorID());
+    printSectionInJSON(*(_uh.get()), buf, sections, registry, plugins,
+                       _ph->creatorID());
     for (auto& section : this->optionalSections())
     {
         printSectionInJSON(*(section.get()), buf, sections, registry, plugins,
