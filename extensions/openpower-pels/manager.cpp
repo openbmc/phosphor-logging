@@ -902,11 +902,11 @@ void Manager::setServiceProviderNotifyFlag(uint32_t obmcLogID)
         {
             if (attr.actionFlags.test(callHomeFlagBit))
             {
-                entry->second->serviceProviderNotify(Entry::Notify::Notify);
+                // entry->second->serviceProviderNotify(Entry::Notify::Notify);
             }
             else
             {
-                entry->second->serviceProviderNotify(Entry::Notify::Inhibit);
+                // entry->second->serviceProviderNotify(Entry::Notify::Inhibit);
             }
         }
     }

@@ -257,7 +257,7 @@ void UserHeader::validate()
     _valid = (failed) ? false : true;
 }
 
-std::optional<std::string> UserHeader::getJSON() const
+std::optional<std::string> UserHeader::getJSON(uint8_t creatorID) const
 {
     std::string severity;
     std::string subsystem;
@@ -290,7 +290,7 @@ std::optional<std::string> UserHeader::getJSON() const
     jsonInsert(uh, pv::sectionVer, getNumberString("%d", userHeaderVersion), 1);
     jsonInsert(uh, pv::subSection, getNumberString("%d", _header.subType), 1);
     jsonInsert(uh, "Log Committed by",
-               getNumberString("0x%X", _header.componentID), 1);
+               getComponentName(_header.componentID, creatorID), 1);
     jsonInsert(uh, "Subsystem", subsystem, 1);
     jsonInsert(uh, "Event Scope", eventScope, 1);
     jsonInsert(uh, "Event Severity", severity, 1);

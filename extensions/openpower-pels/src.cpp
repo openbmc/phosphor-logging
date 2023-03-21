@@ -707,8 +707,8 @@ std::optional<std::string> SRC::getJSON(message::Registry& registry,
     std::vector<std::string> hexwords;
     jsonInsert(ps, pv::sectionVer, getNumberString("%d", _header.version), 1);
     jsonInsert(ps, pv::subSection, getNumberString("%d", _header.subType), 1);
-    jsonInsert(ps, pv::createdBy, getNumberString("0x%X", _header.componentID),
-               1);
+    jsonInsert(ps, pv::createdBy,
+               getComponentName(_header.componentID, creatorID), 1);
     jsonInsert(ps, "SRC Version", getNumberString("0x%02X", _version), 1);
     jsonInsert(ps, "SRC Format", getNumberString("0x%02X", _hexData[0] & 0xFF),
                1);
