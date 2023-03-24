@@ -1256,6 +1256,37 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.State.Error.TpmMeasurementFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3400",
+            "SRC": {
+                "ReasonCode": "0x3415",
+                "Words6To9": {}
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "next_level_support"
+                        }
+                    ]
+                }
+            ],
+            "Documentation": {
+                "Description": "TPM measurement failed",
+                "Message": "The system has detected a failure in the TPM measurement.",
+                "Notes": [
+                    "This error occurs when /sys/class/tpm/tpm0/pcr-sha256/0",
+                    "is missing or has a value of 0, indicating a potential compromise",
+                    "of the system's boot process.",
+                    "Please contact your system administrator or next level support",
+                    "to investigate and resolve the issue."
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.Processor.Error.SbeChipOpFailure",
             "Subsystem": "processor_chip",
             "ComponentID": "0x3500",
