@@ -16,6 +16,24 @@
       "message": "Can you move this to the end of the other state manager errors?\n\nOther than that, looks good.",
       "revId": "122ca5539b55efb2b78598d1d6197559de4b5d00",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "770d1a19_2ae8307a",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 6230,
+      "author": {
+        "id": 1001633
+      },
+      "writtenOn": "2023-03-27T02:41:06Z",
+      "side": 1,
+      "message": "I moved the error.",
+      "parentUuid": "7dea29a7_57f28aa0",
+      "revId": "122ca5539b55efb2b78598d1d6197559de4b5d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
