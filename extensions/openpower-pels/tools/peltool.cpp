@@ -435,10 +435,11 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool critSysTerm,
             jsonInsert(listStr, "Sev", severity, 2);
 
             // compID
-            jsonInsert(listStr, "CompID",
-                       getNumberString(
-                           "0x%X", pel.privateHeader().header().componentID),
-                       2);
+            jsonInsert(
+                listStr, "CompID",
+                getComponentName(pel.privateHeader().header().componentID,
+                                 pel.privateHeader().creatorID()),
+                2);
 
             auto found = listStr.rfind(",");
             if (found != std::string::npos)
