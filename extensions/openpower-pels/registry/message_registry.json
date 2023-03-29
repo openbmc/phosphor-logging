@@ -253,6 +253,22 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Certs.Error.InvalidCertificate",
+            "Subsystem": "user_error",
+            "Severity": "non_error",
+
+            "SRC": {
+                "ReasonCode": "0x100C",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Certificate verification failed",
+                "Message": "Certificate verification failed"
+            }
+        },
+
+        {
             "Name": "org.open_power.Logging.Error.SentBadPELToHost",
             "Subsystem": "bmc_firmware",
             "Severity": "non_error",
