@@ -2252,6 +2252,15 @@
                             "LocCode": "P0"
                         }
                     ]
+                },
+                {
+                    "System": "ibm,bonnell",
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "LocCode": "P0"
+                        }
+                    ]
                 }
             ],
 
@@ -4399,6 +4408,20 @@
                             "LocCode": "P1"
                         }
                     ]
+                },
+                {
+                    "System": "ibm,bonnell",
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "SymbolicFRUTrusted": "air_mover",
+                            "UseInventoryLocCode": true
+                        },
+                        {
+                            "Priority": "low",
+                            "LocCode": "P0"
+                        }
+                    ]
                 }
             ],
 
@@ -4439,6 +4462,10 @@
                 {
                     "System": "ibm,everest",
                     "CalloutList": [{ "Priority": "medium", "LocCode": "P1" }]
+                },
+                {
+                    "System": "ibm,bonnell",
+                    "CalloutList": [{ "Priority": "medium", "LocCode": "P0" }]
                 }
             ],
 
@@ -4494,6 +4521,10 @@
                         { "Priority": "medium", "LocCode": "P1" },
                         { "Priority": "low", "LocCode": "P0" }
                     ]
+                },
+                {
+                    "System": "ibm,bonnell",
+                    "CalloutList": [{ "Priority": "high", "LocCode": "P0" }]
                 }
             ],
 
@@ -4547,6 +4578,10 @@
                         { "Priority": "medium", "LocCode": "P1" },
                         { "Priority": "low", "LocCode": "P0" }
                     ]
+                },
+                {
+                    "System": "ibm,bonnell",
+                    "CalloutList": [{ "Priority": "high", "LocCode": "P0" }]
                 }
             ],
 
