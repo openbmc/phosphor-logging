@@ -1466,6 +1466,19 @@
                             "LocCode": "P0-C96"
                         }
                     ]
+                },
+                {
+                    "System": "ibm,bonnell",
+                    "CalloutList": [
+                        {
+                            "Priority": "low",
+                            "LocCode": "P0"
+                        },
+                        {
+                            "Priority": "low",
+                            "LocCode": "P0-C5"
+                        }
+                    ]
                 }
             ],
 
