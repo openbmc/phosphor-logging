@@ -1,5 +1,5 @@
 systemd_system_unit_dir = dependency('systemd').get_variable(
-    pkgconfig: 'systemdsystemunitdir')
+    'systemdsystemunitdir')
 
 install_data(
     ['xyz.openbmc_project.Logging.service',
@@ -14,7 +14,7 @@ install_data(
 )
 
 dbus_system_bus_services_dir = dependency('dbus-1').get_variable(
-    pkgconfig: 'system_bus_services_dir',
+    'system_bus_services_dir',
     pkgconfig_define: ['prefix', get_option('prefix')])
 install_data(
     'dbus/xyz.openbmc_project.Logging.service',
