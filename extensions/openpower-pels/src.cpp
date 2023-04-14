@@ -350,6 +350,11 @@ SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
     setBMCPosition();
     setMotherboardCCIN(dataIface);
 
+    if (regEntry.src.deconfigFlag)
+    {
+        setErrorStatusFlag(ErrorStatusFlags::deconfigured);
+    }
+
     // Fill in the last 4 words from the AdditionalData property contents.
     setUserDefinedHexWords(regEntry, additionalData);
 

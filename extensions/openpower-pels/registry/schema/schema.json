@@ -100,7 +100,9 @@
 
                 "SymptomIDFields": { "$ref": "#/definitions/symptomID" },
 
-                "Words6To9": { "$ref": "#/definitions/srcWords6To9" }
+                "Words6To9": { "$ref": "#/definitions/srcWords6To9" },
+
+                "DeconfigFlag": { "$ref": "#/definitions/deconfigFlag" }
             },
 
             "required": ["ReasonCode", "Words6To9"],
@@ -130,6 +132,11 @@
             "description": "The first byte of the SRC ASCII string. Optional and defaults to BD.  The '11' SRC is only to be used for events related to power.",
             "type": "string",
             "enum": ["BD", "11"]
+        },
+
+        "deconfigFlag": {
+            "description": "If true, will set bit 6 in hex data word 5, which means 'one or more resources are deconfigured'.",
+            "type": "boolean"
         },
 
         "docNotes": {
