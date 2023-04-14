@@ -105,7 +105,12 @@ struct SRC
     using AdditionalDataField = std::tuple<std::string, std::string>;
     std::optional<std::map<WordNum, AdditionalDataField>> hexwordADFields;
 
-    SRC() : type(0), reasonCode(0) {}
+    /**
+     * @brief If the Deconfigured flag should be set in hex word 5
+     */
+    bool deconfigFlag;
+
+    SRC() : type(0), reasonCode(0), deconfigFlag(false) {}
 };
 
 struct AppCapture
@@ -446,6 +451,15 @@ std::optional<std::map<SRC::WordNum, SRC::AdditionalDataField>>
  */
 std::optional<std::vector<SRC::WordNum>>
     getSRCSymptomIDFields(const nlohmann::json& src, const std::string& name);
+
+/**
+ * @brief Returns the value of the 'DeconfigFlag' field.
+ *
+ * @param[in] src - The message registry SRC dictionary to read from
+ *
+ * @return bool - The field value
+ */
+bool getSRCDeconfigFlag(const nlohmann::json& src);
 
 /**
  * @brief Reads the "ComponentID" field out of JSON and converts it to a

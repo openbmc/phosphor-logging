@@ -239,6 +239,20 @@ words will be set to zero in the PEL.
 }
 ```
 
+### SRC Deconfig Flag
+
+Bit 6 in hex word 5 of the SRC means that one or more called out resources have
+been deconfigured, and this flag can be used to set that bit. The only other way
+to set it is by indicating it when
+[passing in the callouts via JSON](../README.md#callouts).
+
+This is looked at by the software that creates the periodic PELs that indicate a
+system is running with deconfigured hardware.
+
+```json
+"DeconfigFlag": true
+```
+
 ### Documentation Fields
 
 The documentation fields are used by PEL parsers to display a human readable
