@@ -15,5 +15,6 @@
     "6000": "bmc pldm",
     "C100": "bmc system dump collector",
     "D100": "bmc hw diags attention handler",
-    "E500": "bmc hw diags"
+    "E500": "bmc hw diags",
+    "F100": "bmc faultlog"
 }

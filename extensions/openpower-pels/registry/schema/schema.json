@@ -529,7 +529,8 @@
                 "fsi_path",
                 "power_overcurrent",
                 "find_sue_root_cause",
-                "system_vpd_correction"
+                "system_vpd_correction",
+                "detected_issue_need_service"
             ]
         },
 
