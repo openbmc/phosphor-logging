@@ -1758,7 +1758,8 @@
             "SRC": {
                 "Type": "11",
                 "ReasonCode": "0x15F1",
-                "Words6To9": {}
+                "Words6To9": {},
+                "DeconfigFlag": true
             },
 
             "Callouts": [
@@ -1811,7 +1812,8 @@
             "SRC": {
                 "Type": "11",
                 "ReasonCode": "0x15F2",
-                "Words6To9": {}
+                "Words6To9": {},
+                "DeconfigFlag": true
             },
 
             "Callouts": [
@@ -1863,7 +1865,8 @@
             "SRC": {
                 "Type": "11",
                 "ReasonCode": "0x15F6",
-                "Words6To9": {}
+                "Words6To9": {},
+                "DeconfigFlag": true
             },
 
             "Callouts": [
@@ -1920,7 +1923,8 @@
             "SRC": {
                 "Type": "11",
                 "ReasonCode": "0x15F7",
-                "Words6To9": {}
+                "Words6To9": {},
+                "DeconfigFlag": true
             },
 
             "Callouts": [
@@ -1973,7 +1977,8 @@
             "SRC": {
                 "Type": "11",
                 "ReasonCode": "0x15FF",
-                "Words6To9": {}
+                "Words6To9": {},
+                "DeconfigFlag": true
             },
 
             "Callouts": [
@@ -2026,7 +2031,8 @@
             "SRC": {
                 "Type": "11",
                 "ReasonCode": "0x1B01",
-                "Words6To9": {}
+                "Words6To9": {},
+                "DeconfigFlag": true
             },
 
             "Callouts": [
@@ -2124,7 +2130,8 @@
             "SRC": {
                 "Type": "11",
                 "ReasonCode": "0x2500",
-                "Words6To9": {}
+                "Words6To9": {},
+                "DeconfigFlag": true
             },
 
             "Callouts": [
@@ -3923,7 +3930,8 @@
             "SRC": {
                 "Type": "11",
                 "ReasonCode": "0x2700",
-                "Words6To9": {}
+                "Words6To9": {},
+                "DeconfigFlag": true
             },
 
             "Documentation": {
@@ -3949,7 +3957,8 @@
             "SRC": {
                 "Type": "11",
                 "ReasonCode": "0x2701",
-                "Words6To9": {}
+                "Words6To9": {},
+                "DeconfigFlag": true
             },
 
             "Documentation": {
@@ -3971,7 +3980,8 @@
             "SRC": {
                 "Type": "11",
                 "ReasonCode": "0x2900",
-                "Words6To9": {}
+                "Words6To9": {},
+                "DeconfigFlag": true
             },
 
             "Documentation": {
@@ -4277,7 +4287,8 @@
             "SRC": {
                 "Type": "11",
                 "ReasonCode": "0xE100",
-                "Words6To9": {}
+                "Words6To9": {},
+                "DeconfigFlag": true
             },
 
             "Documentation": {
@@ -4301,7 +4312,8 @@
             "SRC": {
                 "Type": "11",
                 "ReasonCode": "0xE200",
-                "Words6To9": {}
+                "Words6To9": {},
+                "DeconfigFlag": true
             },
 
             "Documentation": {
@@ -4350,7 +4362,8 @@
             "SRC": {
                 "Type": "11",
                 "ReasonCode": "0x76F0",
-                "Words6To9": {}
+                "Words6To9": {},
+                "DeconfigFlag": true
             },
 
             "Documentation": {
@@ -4377,7 +4390,8 @@
             "SRC": {
                 "Type": "11",
                 "ReasonCode": "0x76F1",
-                "Words6To9": {}
+                "Words6To9": {},
+                "DeconfigFlag": true
             },
 
             "Callouts": [
@@ -4550,7 +4564,8 @@
             "SRC": {
                 "Type": "11",
                 "ReasonCode": "0x76F4",
-                "Words6To9": {}
+                "Words6To9": {},
+                "DeconfigFlag": true
             },
 
             "Callouts": [
