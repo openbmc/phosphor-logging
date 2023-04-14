@@ -190,6 +190,11 @@ uint8_t getSRCType(const nlohmann::json& src, const std::string& name)
     return type;
 }
 
+bool getSRCDeconfigFlag(const nlohmann::json& src)
+{
+    return src["DeconfigFlag"].get<bool>();
+}
+
 std::optional<std::map<SRC::WordNum, SRC::AdditionalDataField>>
     getSRCHexwordFields(const nlohmann::json& src, const std::string& name)
 {
@@ -733,6 +738,11 @@ std::optional<Entry> Registry::lookup(const std::string& name, LookupType type,
             if (src.contains("SymptomIDFields"))
             {
                 entry.src.symptomID = helper::getSRCSymptomIDFields(src, name);
+            }
+
+            if (src.contains("DeconfigFlag"))
+            {
+                entry.src.deconfigFlag = helper::getSRCDeconfigFlag(src);
             }
 
             auto& doc = (*e)["Documentation"];
