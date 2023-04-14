@@ -836,6 +836,54 @@
         },
 
         {
+            "Name": "org.open_power.Faultlog.Error.DeconfiguredHW",
+            "Subsystem": "cec_hardware",
+            "Severity": "predictive",
+            "ComponentID": "0xf100",
+            "SRC": {
+                "ReasonCode": "0xf138",
+                "Words6To9": {
+                    "6": {
+                        "Description": "Number of guard records with error object",
+                        "AdditionalDataPropSource": "GUARD_WITH_ASSOC_ERROR_COUNT"
+                    },
+                    "7": {
+                        "Description": "Number of guard records with no error object",
+                        "AdditionalDataPropSource": "GUARD_WITH_NO_ASSOC_ERROR_COUNT"
+                    },
+                    "8": {
+                        "Description": "Number of deconfigured records",
+                        "AdditionalDataPropSource": "DECONFIG_RECORD_COUNT"
+                    },
+                    "9": {
+                        "Description": "Number of unresolved pels count",
+                        "AdditionalDataPropSource": "UNRESOLVED_PEL_WITH_DECONFIG_BIT_COUNT"
+                    }
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "next_level_support"
+                        }
+                    ]
+                }
+            ],
+            "Documentation": {
+                "Description": "Firmware detected either a FRU deconfigured And/Or guard record",
+                "Message": "Firmware detected either a FRU deconfigured And/Or guard record",
+                "Notes": [
+                    "Either Guard And/Or Deconfiguration records found during periodic check",
+                    "as part of the NAG event. Look into the BMC Nag dump for more details. ",
+                    "This is a reminder for servicing faulty hardware pending service present ",
+                    "in the system."
+                ]
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.State.Error.HostNotRunning",
             "Subsystem": "cec_sp_hostboot_iface",
             "ComponentID": "0x3400",
