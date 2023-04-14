@@ -230,6 +230,7 @@ TEST_F(SRCTest, CreateTestNoCallouts)
     // Validate more fields here as the code starts filling them in.
 
     // Ensure hex word 5 wasn't allowed to be set to TEST1's contents
+    // And that none of the error status flags are set
     EXPECT_EQ(hexwords[5 - 2], 0);
 
     // The user defined hex word fields specifed in the additional data.
@@ -491,6 +492,7 @@ TEST_F(SRCTest, RegistryCalloutTest)
     message::Entry entry;
     entry.src.type = 0xBD;
     entry.src.reasonCode = 0xABCD;
+    entry.src.deconfigFlag = true;
     entry.subsystem = 0x42;
 
     entry.callouts = R"(
@@ -554,6 +556,10 @@ TEST_F(SRCTest, RegistryCalloutTest)
             .WillOnce(Return(std::vector<bool>{false, false, false}));
 
         SRC src{entry, ad, dataIface};
+
+        const auto& hexwords = src.hexwordData();
+        auto mask = static_cast<uint32_t>(SRC::ErrorStatusFlags::deconfigured);
+        EXPECT_EQ(hexwords[5 - 2] & mask, mask);
 
         auto& callouts = src.callouts()->callouts();
         ASSERT_EQ(callouts.size(), 2);
