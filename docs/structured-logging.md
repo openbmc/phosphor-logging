@@ -44,7 +44,7 @@ accepted log-levels and their definition is historically documented in
 The pre-C++20 logging APIs presented by phosphor-logging are
 `phosphor::logging::log`. The basic format of a log call is:
 
-```
+```cpp
     log<level>("A message", entry("TAG0=%s", "value"), entry("TAG1=%x", 2));
 ```
 
@@ -67,7 +67,7 @@ because the contents are then, effectively, unstructured.
 The post-C++20 logging APIs presented by phosphor-logging are `lg2::log`. The
 basic format of a log call is:
 
-```
+```cpp
     lg2::level("A {TAG0} occured.", "TAG0", "foo"s, "TAG1", lg2::hex, 2);
 ```
 
@@ -252,19 +252,18 @@ have similar formatting performance to the printf-style formatting that
 journal_send used. The only difference is that this is done in our library
 rather than in `libsystemd`.
 
-    Utilizing `{fmt}` for each structured data element would impose much greater
-    overheads.  Either we insert the `{fmt}` calls at the call-site (N calls
-    plus N string objects for N structured data elements), or we do them in the
-    library side where we lose the compile-time format checking.  Also, the
-    performance of the more robust formatting would almost certainly be worse,
-    especially if we do the formatting library-side.
+Utilizing `{fmt}` for each structured data element would impose much greater
+overheads. Either we insert the `{fmt}` calls at the call-site (N calls plus N
+string objects for N structured data elements), or we do them in the library
+side where we lose the compile-time format checking. Also, the performance of
+the more robust formatting would almost certainly be worse, especially if we do
+the formatting library-side.
 
-    Logging is done often.  Shifting a few values onto the stack for a
-    printf-type call compared to a kilobyte+ of generated code for inline
-    `{fmt}` calls is a significant trade-off.  And one with the only major
-    advantage being more universally standardized API.  The `lg2` API seems
-    obvious enough in ergonomics such that this should not be an impediment to
-    our community of developers.
+Logging is done often. Shifting a few values onto the stack for a printf-type
+call compared to a kilobyte+ of generated code for inline `{fmt}` calls is a
+significant trade-off. And one with the only major advantage being more
+universally standardized API. The `lg2` API seems obvious enough in ergonomics
+such that this should not be an impediment to our community of developers.
 
 If it is later decided that we need more robust formatting or the `lg2::format`
 flags were a bad idea they could be deprecated and replaced. The format flags

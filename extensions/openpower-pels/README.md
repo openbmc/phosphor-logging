@@ -28,7 +28,7 @@ keywords in the AdditionalData property of the event log.
 This keyword is used to point to an existing PEL in a binary file that should be
 associated with this event log. The syntax is:
 
-```
+```ascii
 RAWPEL=<path to PEL File>
 e.g.
 RAWPEL="/tmp/pels/pel.5"
@@ -41,7 +41,7 @@ commit timestamp field to the current time.
 
 This keyword is used to set the power fault bit in PEL. The syntax is:
 
-```
+```ascii
 POWER_THERMAL_CRITICAL_FAULT=<FLAG>
 e.g.
 POWER_THERMAL_CRITICAL_FAULT=TRUE
@@ -57,7 +57,7 @@ PEL severity conversion could give.
 
 The syntax is:
 
-```
+```ascii
 SEVERITY_DETAIL=<SEVERITY_TYPE>
 e.g.
 SEVERITY_DETAIL=SYSTEM_TERM
@@ -75,7 +75,7 @@ handled just like the PEL obtained using the RAWPEL keyword.
 
 The syntax is:
 
-```
+```ascii
 ESEL=
 "00 00 df 00 00 00 00 20 00 04 12 01 6f aa 00 00 50 48 00 30 01 00 33 00 00..."
 ```
@@ -94,7 +94,7 @@ the application name it corresponds to.
 
 The syntax is:
 
-```
+```ascii
 _PID=<PID of application>
 e.g.
 _PID="12345"
@@ -131,7 +131,7 @@ This is used to pass in an I2C bus and address to create callouts from. See
 #### PEL_SUBSYSTEM
 
 This keyword is used to pass in the subsystem that should be associated with
-this event log. The syntax is: PEL_SUBSYSTEM=<subsystem value in hex> e.g.
+this event log. The syntax is: `PEL_SUBSYSTEM=<subsystem value in hex>` e.g.
 PEL_SUBSYSTEM=0x20
 
 ### FFDC Intended For UserData PEL sections
@@ -143,7 +143,7 @@ of files to store in the PEL UserData sections.
 
 That API is the same as the 'Create' one, except it has a new parameter:
 
-```
+```cpp
 std::vector<std::tuple<enum[FFDCFormat],
                        uint8_t,
                        uint8_t,
@@ -175,7 +175,7 @@ stored in a unique UserData section. The tuple's arguments are:
 
 An example of saving JSON data to a file and getting its file descriptor is:
 
-```
+```cpp
 nlohmann::json json = ...;
 auto jsonString = json.dump();
 FILE* fp = fopen(filename, "w");
@@ -252,10 +252,10 @@ AdditionalData event log property. They are:
   high priority callout is specified for this error in the message registry and
   the FRU callout needs to have a different priority.
 
-  ```
+```ascii
   CALLOUT_INVENTORY_PATH=
   "/xyz/openbmc_project/inventory/system/chassis/motherboard"
-  ```
+```
 
 - CALLOUT_DEVICE_PATH with CALLOUT_ERRNO
 
@@ -266,10 +266,10 @@ AdditionalData event log property. They are:
 
   I2C, FSI, FSI-I2C, and FSI-SPI paths are supported.
 
-  ```
+```ascii
   CALLOUT_DEVICE_PATH="/sys/bus/i2c/devices/3-0069"
   CALLOUT_ERRNO="2"
-  ```
+```
 
 - CALLOUT_IIC_BUS with CALLOUT_IIC_ADDR and CALLOUT_ERRNO
 
@@ -281,11 +281,11 @@ AdditionalData event log property. They are:
   the bus number by itself. CALLOUT_IIC_ADDR is the 7 bit address either as a
   decimal or a hex number if preceded with a "0x".
 
-  ```
+```ascii
   CALLOUT_IIC_BUS="/dev/i2c-7"
   CALLOUT_IIC_ADDR="81"
   CALLOUT_ERRNO=62
-  ```
+```
 
 ### Defining callouts in the message registry
 
@@ -319,7 +319,7 @@ added into a PEL UserData section for debug.
 To specify that an FFDC file contains callouts, the format value for that FFDC
 entry must be set to JSON, and the subtype field must be set to 0xCA:
 
-```
+```cpp
 using FFDC = std::tuple<CreateIface::FFDCFormat,
                         uint8_t,
                         uint8_t,
@@ -336,7 +336,7 @@ The JSON contains an array of callouts that must be in order of highest priority
 to lowest, with a maximum of 10. Any callouts after the 10th will just be thrown
 away as there is no room for them in the PEL. The format looks like:
 
-```
+```jsonl
 [
     {
         // First callout
@@ -378,7 +378,7 @@ values will be false.
 When the inventory path of a sub-FRU is passed in, the PEL code will put the
 location code of the parent FRU into the callout.
 
-```
+```jsonl
 {
     "LocationCode": "P0-C1",
     "Priority": "H"
@@ -402,20 +402,20 @@ in a callout. The possible priority values match the FRU priority values.
 Note that since JSON only supports numbers in decimal and not in hex, MRU IDs
 will show up as decimal when visually inspecting the JSON.
 
-```
+```jsonl
 {
-    "LocationCode": "P0-C1",
-    "Priority": "H",
-    "MRUs": [
-        {
-            "ID": 1234,
-            "Priority": "H"
-        },
-        {
-            "ID": 5678,
-            "Priority": "H"
-        }
-    ]
+  "LocationCode": "P0-C1",
+  "Priority": "H",
+  "MRUs": [
+    {
+      "ID": 1234,
+      "Priority": "H"
+    },
+    {
+      "ID": 5678,
+      "Priority": "H"
+    }
+  ]
 }
 ```
 
@@ -424,10 +424,10 @@ will show up as decimal when visually inspecting the JSON.
 The LocationCode field is not used with procedure callouts. Only the first 7
 characters of the Procedure field will be used by the PEL.
 
-```
+```jsonl
 {
-    "Procedure": "PRONAME",
-    "Priority": "H"
+  "Procedure": "PRONAME",
+  "Priority": "H"
 }
 ```
 
@@ -441,12 +441,12 @@ location code may be used to turn on service indicators, so the LocationCode
 field is required. If TrustedLocationCode is false or missing, then the
 LocationCode field is optional.
 
-```
+```jsonl
 {
-    "TrustedLocationCode": true,
-    "Location Code": "P0-C1",
-    "Priority": "H",
-    "SymbolicFRU": "FRUNAME"
+  "TrustedLocationCode": true,
+  "Location Code": "P0-C1",
+  "Priority": "H",
+  "SymbolicFRU": "FRUNAME"
 }
 ```
 
@@ -524,8 +524,10 @@ The steps are:
 PELs with associated guard records will never be deleted. Each step above makes
 the following 4 passes, stopping as soon as its limit is reached:
 
-Pass 1. Remove HMC acknowledged PELs.<br> Pass 2. Remove OS acknowledged
-PELs.<br> Pass 3. Remove PHYP acknowledged PELs.<br> Pass 4. Remove all PELs.
+- Pass 1. Remove HMC acknowledged PELs.
+- Pass 2. Remove OS acknowledged PELs.
+- Pass 3. Remove PHYP acknowledged PELs.
+- Pass 4. Remove all PELs.
 
 After all these steps, disk capacity will be at most 90% (15% + 30% + 15% +
 30%).
@@ -536,21 +538,17 @@ In order to support python3 modules for the parsing of PEL User Data sections
 and to decode SRC data, setuptools is used to import python3 packages from
 external repos to be included in the OpenBMC image.
 
-```
 Sample layout for setuptools:
 
-setup.py
-src/usr/scom/plugins/ebmc/b0300.py
-src/usr/i2c/plugins/ebmc/b0700.py
+setup.py src/usr/scom/plugins/ebmc/b0300.py src/usr/i2c/plugins/ebmc/b0700.py
 src/build/tools/ebmc/errludP_Helpers.py
-```
 
 `setup.py` is the build script for setuptools. It contains information about the
 package (such as the name and version) as well as which code files to include.
 
 The setup.py template to be used for eBMC User Data parsers:
 
-```
+```python3
 import os.path
 from setuptools import setup
 
@@ -602,7 +600,8 @@ setup(
       1. (str) JSON string
 
   - Sample User Data parser module:
-    ```
+
+```python3
     import json
     def parseUDToJson(subType, ver, data):
         d = dict()
@@ -611,7 +610,7 @@ setup(
         ...
         jsonStr = json.dumps(d)
         return jsonStr
-    ```
+```
 
 - SRC parser module
 
@@ -634,7 +633,8 @@ setup(
       1. (str) JSON string
 
   - Sample SRC parser module:
-    ```
+
+    ```python3
     import json
     def parseSRCToJson(ascii_str, word2, word3, word4, word5, word6, word7, \
                        word8, word9):
@@ -676,7 +676,7 @@ interface must be used when creating a new event log.
 To specify that an FFDC file contains SBE FFDC, the format value for that FFDC
 entry must be set to "custom", and the subtype field must be set to 0xCB:
 
-```
+```cpp
 using FFDC = std::tuple<CreateIface::FFDCFormat,
                         uint8_t,
                         uint8_t,

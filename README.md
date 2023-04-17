@@ -86,7 +86,7 @@ for details on how get errors into these headers.
 
 Example:
 
-```
+```cpp
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/elog.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
@@ -103,7 +103,7 @@ if (somethingBadHappened)
 
 Alternatively, to throw, catch, and then commit the error:
 
-```
+```cpp
 try
 {
     phosphor::logging::elog<InternalFailure>();
@@ -124,7 +124,7 @@ log.
 
 Example:
 
-```
+```cpp
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/elog.hpp>
 #include <xyz/openbmc_project/Control/Device/error.hpp>
@@ -143,7 +143,7 @@ if (somethingBadHappened)
 
 In the above example, the AdditionalData property would look like:
 
-```
+```cpp
 ["CALLOUT_ERRNO=5", "CALLOUT_DEVICE_PATH=some path"]
 ```
 
@@ -203,9 +203,9 @@ There is also a [D-Bus method][log-create-link] to create event logs:
       `xyz.openbmc_project.Logging.Entry` interface, but in a map instead of in
       a vector of "KEY=VALUE" strings. Example:
 
-```
-                     std::map<std::string, std::string> additionalData;
-                     additionalData["KEY"] = "VALUE";
+```cpp
+    std::map<std::string, std::string> additionalData;
+    additionalData["KEY"] = "VALUE";
 ```
 
 Unlike the previous APIs where errors could also act as exceptions that could be
@@ -249,8 +249,6 @@ The guidelines are:
   https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Object/Delete.interface.yaml
 [xyz.openbmc_project.software.version]:
   https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Software/Version.errors.yaml
-[elog-errors.hpp]:
-  https://github.com/openbmc/phosphor-logging/blob/master/phosphor-logging/elog.hpp
 [openpower-occ-control]: https://github.com/openbmc/openpower-occ-control
 [led-link]:
   https://github.com/openbmc/openbmc/tree/master/meta-phosphor/recipes-phosphor/leds
@@ -264,7 +262,7 @@ The guidelines are:
 - Should cater for continuous integration (CI) build, bitbake image build, and
   local repository build.
 
-#### Continuous Integration (CI) build
+### Continuous Integration (CI) build
 
 - Make is called on the repository that is modified.
 - Dependent packages are pulled based on the dependency list specified in the
@@ -284,15 +282,13 @@ The guidelines are:
 
 #### Makefile changes
 
-**Reference**
+[Reference](https://github.com/openbmc/openpower-debug-collector/blob/master/Makefile.am)
 
-- https://github.com/openbmc/openpower-debug-collector/blob/master/Makefile.am
+##### Export error YAML to shared location
 
-###### Export error YAML to shared location
+##### Modify Makefile.am to export newly added error YAML to shared location
 
-_Modify Makefile.am to export newly added error YAML to shared location_
-
-```
+```make
 yamldir = ${datadir}/phosphor-dbus-yaml/yaml
 nobase_yaml_DATA = \
     org/open_power/Host.errors.yaml
@@ -305,7 +301,7 @@ nobase_yaml_DATA = \
 - Enable it for local repository build
 - If "GEN_ERRORS" is enabled, build generates elog-errors.hpp header file.
 
-```
+```make
   # Generate phosphor-logging/elog-errors.hpp
   if GEN_ERRORS
   ELOG_MAKO ?= elog-gen-template.mako.hpp
@@ -330,7 +326,7 @@ nobase_yaml_DATA = \
   GEN_ERRORS so that the elog-errors.hpp is generated only during local
   repository build.
 
-```
+```make
     if GEN_ERRORS
     nobase_nodist_include_HEADERS += \
                 phosphor-logging/elog-errors.hpp
@@ -347,18 +343,16 @@ nobase_yaml_DATA = \
   happens during native build. It is not required to build repository during
   native build.
 
-```
+```make
    if !INSTALL_ERROR_YAML
    endif
 ```
 
 #### Autotools changes
 
-**Reference**
+[Reference](https://github.com/openbmc/openpower-debug-collector/blob/master/configure.ac)
 
-- https://github.com/openbmc/openpower-debug-collector/blob/master/configure.ac
-
-###### Add option(argument) to enable/disable installing error yaml file
+##### Add option(argument) to enable/disable installing error yaml file
 
 - Install error yaml option(argument) is enabled for native recipe build and
   disabled for bitbake build.
@@ -368,7 +362,7 @@ nobase_yaml_DATA = \
 
 ###### Add option(argument) to install error yaml files
 
-```
+```autoconf
 AC_ARG_ENABLE([install_error_yaml],
     AS_HELP_STRING([--enable-install_error_yaml],
     [Enable installing error yaml file]),[], [install_error_yaml=no])
@@ -382,7 +376,7 @@ AS_IF([test "x$enable_install_error_yaml" != "xyes"], [
 
 ###### Add option(argument) to enable/disable generating elog-errors header file
 
-```
+```autoconf
 AC_ARG_ENABLE([gen_errors],
     AS_HELP_STRING([--enable-gen_errors], [Enable elog-errors.hpp generation ]),
     [],[gen_errors=yes])
@@ -391,16 +385,13 @@ AM_CONDITIONAL([GEN_ERRORS], [test "x$enable_gen_errors" != "xno"])
 
 #### Recipe changes
 
-**Reference**
+[Reference](https://github.com/openbmc/openbmc/blob/master/meta-openbmc-machines/meta-openpower/common/recipes-phosphor/debug/openpower-debug-collector.bb)
 
-- https://github.com/openbmc/openbmc/blob/master/meta-openbmc-machines\
-  /meta-openpower/common/recipes-phosphor/debug/openpower-debug-collector.bb
-
-###### Extend recipe for native and nativesdk
+##### Extend recipe for native and nativesdk
 
 - Extend the recipe for native and native SDK builds
 
-```
+```BitBake
 BBCLASSEXTEND += "native nativesdk"
 ```
 
@@ -412,13 +403,13 @@ BBCLASSEXTEND += "native nativesdk"
 
 ###### Remove dependency on phosphor-logging for native build
 
-```
+```BitBake
 DEPENDS_remove_class-native = "phosphor-logging"
 ```
 
 ###### Remove dependency on phosphor-logging for native SDK build
 
-```
+```BitBake
 DEPENDS_remove_class-nativesdk = "phosphor-logging"
 ```
 
@@ -428,7 +419,7 @@ DEPENDS_remove_class-nativesdk = "phosphor-logging"
 
 ###### Add package config to enable/disable install_error_yaml feature
 
-```
+```BitBake
 PACKAGECONFIG ??= "install_error_yaml"
 PACKAGECONFIG[install_error_yaml] = " \
         --enable-install_error_yaml, \
@@ -438,14 +429,14 @@ PACKAGECONFIG[install_error_yaml] = " \
 
 ###### Enable install_error_yaml check for native build
 
-```
+```BitBake
 PACKAGECONFIG_add_class-native = "install_error_yaml"
 PACKAGECONFIG_add_class-nativesdk = "install_error_yaml"
 ```
 
 ###### Disable install_error_yaml during target build
 
-```
+```BitBake
 PACKAGECONFIG_remove_class-target = "install_error_yaml"
 ```
 
@@ -456,7 +447,7 @@ PACKAGECONFIG_remove_class-target = "install_error_yaml"
 - Argument is enabled by default for local repository build in the configure
   script of the local repository.
 
-```
+```BitBake
  XTRA_OECONF += "--disable-gen_errors"
 ```
 
@@ -464,9 +455,7 @@ PACKAGECONFIG_remove_class-target = "install_error_yaml"
 
 - During local build use --prefix=/usr for the configure script.
 
-**Reference**
-
-- https://github.com/openbmc/openpower-debug-collector/blob/master/README.md
+[Reference](https://github.com/openbmc/openpower-debug-collector/blob/master/README.md)
 
 ## Event Log Extensions
 
@@ -520,59 +509,59 @@ D-Bus, such as:
 
 1. Add a new flag to configure.ac to enable the extension:
 
-```
-AC_ARG_ENABLE([foo-extension],
-              AS_HELP_STRING([--enable-foo-extension],
-                             [Create Foo logs]))
-AM_CONDITIONAL([ENABLE_FOO_EXTENSION],
-               [test "x$enable_foo_extension" == "xyes"])
-```
+   ```autoconf
+   AC_ARG_ENABLE([foo-extension],
+                 AS_HELP_STRING([--enable-foo-extension],
+                                [Create Foo logs]))
+   AM_CONDITIONAL([ENABLE_FOO_EXTENSION],
+                  [test "x$enable_foo_extension" == "xyes"])
+   ```
 
 2. Add the code in `extensions/<extension>/`.
 3. Create a makefile include to add the new code to phosphor-log-manager:
 
-```
-phosphor_log_manager_SOURCES += \
-        extensions/foo/foo.cpp
-```
+   ```make
+   phosphor_log_manager_SOURCES += \
+           extensions/foo/foo.cpp
+   ```
 
 4. In `extensions/extensions.mk`, add the makefile include:
 
-```
-if ENABLE_FOO_EXTENSION
-include extensions/foo/foo.mk
-endif
-```
+   ```make
+   if ENABLE_FOO_EXTENSION
+   include extensions/foo/foo.mk
+   endif
+   ```
 
 5. In the extension code, register the functions to call and optionally disable
    log capping using the provided macros:
 
-```
-DISABLE_LOG_ENTRY_CAPS();
+   ```cpp
+   DISABLE_LOG_ENTRY_CAPS();
 
-void fooStartup(internal::Manager& manager)
-{
-    // Initialize
-}
+   void fooStartup(internal::Manager& manager)
+   {
+       // Initialize
+   }
 
-REGISTER_EXTENSION_FUNCTION(fooStartup);
+   REGISTER_EXTENSION_FUNCTION(fooStartup);
 
-void fooCreate(const std::string& message, uint32_t id, uint64_t timestamp,
-               Entry::Level severity, const AdditionalDataArg& additionalData,
-               const AssociationEndpointsArg& assocs)
-{
-    // Create a different type of error log based on 'entry'.
-}
+   void fooCreate(const std::string& message, uint32_t id, uint64_t timestamp,
+                   Entry::Level severity, const AdditionalDataArg& additionalData,
+                   const AssociationEndpointsArg& assocs)
+   {
+       // Create a different type of error log based on 'entry'.
+   }
 
-REGISTER_EXTENSION_FUNCTION(fooCreate);
+   REGISTER_EXTENSION_FUNCTION(fooCreate);
 
-void fooRemove(uint32_t id)
-{
-    // Delete the extension error log that corresponds to 'id'.
-}
+   void fooRemove(uint32_t id)
+   {
+       // Delete the extension error log that corresponds to 'id'.
+   }
 
-REGISTER_EXTENSION_FUNCTION(fooRemove);
-```
+   REGISTER_EXTENSION_FUNCTION(fooRemove);
+   ```
 
 ### Extension List
 
@@ -586,27 +575,27 @@ The supported extensions are:
 ## Remote Logging via Rsyslog
 
 The BMC has the ability to stream out local logs (that go to the systemd
-journal) via rsyslog (https://www.rsyslog.com/).
+journal) via rsyslog (<https://www.rsyslog.com/>).
 
 The BMC will send everything. Any kind of filtering and appropriate storage will
 have to be managed on the rsyslog server. Various examples are available on the
 internet. Here are few pointers :
-https://www.rsyslog.com/storing-and-forwarding-remote-messages/
-https://www.rsyslog.com/doc/rsyslog%255Fconf%255Ffilter.html
-https://www.thegeekdiary.com/understanding-rsyslog-filter-options/
+<https://www.rsyslog.com/storing-and-forwarding-remote-messages/>
+<https://www.rsyslog.com/doc/rsyslog%255Fconf%255Ffilter.html>
+<https://www.thegeekdiary.com/understanding-rsyslog-filter-options/>
 
-#### Configuring rsyslog server for remote logging
+### Configuring rsyslog server for remote logging
 
 The BMC is an rsyslog client. To stream out logs, it needs to talk to an rsyslog
 server, to which there's connectivity over a network. REST API can be used to
 set the remote server's IP address and port number.
 
 The following presumes a user has logged on to the BMC (see
-https://github.com/openbmc/docs/blob/master/rest-api.md).
+<https://github.com/openbmc/docs/blob/master/rest-api.md>).
 
 Set the IP:
 
-```
+```sh
 curl -b cjar -k -H "Content-Type: application/json" -X PUT \
     -d '{"data": <IP address>}' \
     https://<BMC IP address>/xyz/openbmc_project/logging/config/remote/attr/Address
@@ -614,7 +603,7 @@ curl -b cjar -k -H "Content-Type: application/json" -X PUT \
 
 Set the port:
 
-```
+```sh
 curl -b cjar -k -H "Content-Type: application/json" -X PUT \
     -d '{"data": <port number>}' \
     https://<BMC IP address>/xyz/openbmc_project/logging/config/remote/attr/Port
@@ -622,7 +611,7 @@ curl -b cjar -k -H "Content-Type: application/json" -X PUT \
 
 #### Querying the current configuration
 
-```
+```sh
 curl -b cjar -k \
     https://<BMC IP address>/xyz/openbmc_project/logging/config/remote
 ```
@@ -633,7 +622,7 @@ Rsyslog can store logs separately for each host. For this reason, it's useful to
 provide a unique hostname to each managed BMC. Here's how that can be done via a
 REST API :
 
-```
+```sh
 curl -b cjar -k -H "Content-Type: application/json" -X PUT \
     -d '{"data": "myHostName"}' \
     https://<BMC IP address>//xyz/openbmc_project/network/config/attr/HostName
@@ -662,13 +651,13 @@ The full design for this can be found
 
 To enable this function:
 
-```
+```sh
 busctl set-property xyz.openbmc_project.Settings /xyz/openbmc_project/logging/settings xyz.openbmc_project.Logging.Settings QuiesceOnHwError b true
 ```
 
 To check if an entry is blocking the boot:
 
-```
+```sh
 obmcutil listbootblock
 ```
 
