@@ -1,0 +1,198 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c491024c_f84e9f8f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-04-17T18:58:18Z",
+      "side": 1,
+      "message": "I suspect the CI failure is due to markdownlint being able to call other linters for the embedded languages.  For example, markdownlint calls prettier for the \\`\\`\\`json\\`\\`\\` parts.  It might even call clang-format for the C/C++ parts.",
+      "revId": "a39bf45225111a254904e36f6a211a9b05c6aec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edb06636_86b375f6",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-04-17T18:58:18Z",
+      "side": 1,
+      "message": "We might want to unindent this a bit.  It isn\u0027t obvious why it was indented so much originally.",
+      "range": {
+        "startLine": 207,
+        "startChar": 0,
+        "endLine": 207,
+        "endChar": 21
+      },
+      "revId": "a39bf45225111a254904e36f6a211a9b05c6aec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b89c5b6c_35c6052d",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-04-17T18:58:18Z",
+      "side": 1,
+      "message": "Check indent throughout.",
+      "revId": "a39bf45225111a254904e36f6a211a9b05c6aec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4acd75fa_06549f30",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-04-17T18:58:18Z",
+      "side": 1,
+      "message": "Rather than use HTML escape, how about escape the whole thing? `PEL_SUBSYSTEM\u003d\u003csubsystem value in hex\u003e`",
+      "range": {
+        "startLine": 134,
+        "startChar": 31,
+        "endLine": 134,
+        "endChar": 72
+      },
+      "revId": "a39bf45225111a254904e36f6a211a9b05c6aec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a64f277d_ecdf59df",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-04-17T18:58:18Z",
+      "side": 1,
+      "message": "Check that all these are un-indented.  I see a few throughout the file that are still indented.",
+      "range": {
+        "startLine": 255,
+        "startChar": 0,
+        "endLine": 255,
+        "endChar": 10
+      },
+      "revId": "a39bf45225111a254904e36f6a211a9b05c6aec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e34d5244_6ff6784d",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-04-17T18:58:18Z",
+      "side": 1,
+      "message": "json?",
+      "revId": "a39bf45225111a254904e36f6a211a9b05c6aec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e81c96f_5bf23354",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 530,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-04-17T18:58:18Z",
+      "side": 1,
+      "message": "You might need to make these bullets.\n\n- Pass 1. Remove HMC acknowledged PELs.",
+      "range": {
+        "startLine": 527,
+        "startChar": 0,
+        "endLine": 530,
+        "endChar": 24
+      },
+      "revId": "a39bf45225111a254904e36f6a211a9b05c6aec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa1ec2db_362d69c0",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-04-17T18:58:18Z",
+      "side": 1,
+      "message": "Can we just do `python`?  Is there an advantage to python3 here?",
+      "revId": "a39bf45225111a254904e36f6a211a9b05c6aec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "891f2991_d746ce53",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-04-17T18:58:18Z",
+      "side": 1,
+      "message": "This doesn\u0027t look like Python... we probably should pull this out of the escapes.",
+      "revId": "a39bf45225111a254904e36f6a211a9b05c6aec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44750569_b0df287d",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 608,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-04-17T18:58:18Z",
+      "side": 1,
+      "message": "outdent",
+      "revId": "a39bf45225111a254904e36f6a211a9b05c6aec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
