@@ -18,6 +18,41 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f34067b3_dc18b8df",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2023-04-18T23:49:42Z",
+      "side": 1,
+      "message": "Thanks for reviewing patch.",
+      "revId": "a39bf45225111a254904e36f6a211a9b05c6aec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "032e013e_71cdfb64",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2023-04-18T23:49:42Z",
+      "side": 1,
+      "message": "Doesn\u0027t give any specific reason here - https://jenkins.openbmc.org/job/ci-repository/64327/console",
+      "parentUuid": "c491024c_f84e9f8f",
+      "revId": "a39bf45225111a254904e36f6a211a9b05c6aec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "edb06636_86b375f6",
@@ -31,6 +66,30 @@
       "writtenOn": "2023-04-17T18:58:18Z",
       "side": 1,
       "message": "We might want to unindent this a bit.  It isn\u0027t obvious why it was indented so much originally.",
+      "range": {
+        "startLine": 207,
+        "startChar": 0,
+        "endLine": 207,
+        "endChar": 21
+      },
+      "revId": "a39bf45225111a254904e36f6a211a9b05c6aec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e986a34a_648a3289",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2023-04-18T23:49:42Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "edb06636_86b375f6",
       "range": {
         "startLine": 207,
         "startChar": 0,
@@ -60,6 +119,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "93e0c348_603f1c79",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2023-04-18T23:49:42Z",
+      "side": 1,
+      "message": "I start getting markdown lint warnings once i change this. Looks like it changes the ordering for list and creates a new list.\n\nREADME.md:521:1 MD029/ol-prefix Ordered list item prefix [Expected: 1; Actual: 2; Style: 1/2/3]\nREADME.md:522:1 MD029/ol-prefix Ordered list item prefix [Expected: 2; Actual: 3; Style: 1/2/3]\nREADME.md:529:1 MD029/ol-prefix Ordered list item prefix [Expected: 3; Actual: 4; Style: 1/2/3]",
+      "parentUuid": "b89c5b6c_35c6052d",
+      "revId": "a39bf45225111a254904e36f6a211a9b05c6aec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4acd75fa_06549f30",
         "filename": "extensions/openpower-pels/README.md",
         "patchSetId": 1
@@ -71,6 +148,30 @@
       "writtenOn": "2023-04-17T18:58:18Z",
       "side": 1,
       "message": "Rather than use HTML escape, how about escape the whole thing? `PEL_SUBSYSTEM\u003d\u003csubsystem value in hex\u003e`",
+      "range": {
+        "startLine": 134,
+        "startChar": 31,
+        "endLine": 134,
+        "endChar": 72
+      },
+      "revId": "a39bf45225111a254904e36f6a211a9b05c6aec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bac058c8_60958ef3",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2023-04-18T23:49:42Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4acd75fa_06549f30",
       "range": {
         "startLine": 134,
         "startChar": 31,
@@ -104,6 +205,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b8b924c_faa3849a",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2023-04-18T23:49:42Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a64f277d_ecdf59df",
+      "range": {
+        "startLine": 255,
+        "startChar": 0,
+        "endLine": 255,
+        "endChar": 10
+      },
+      "revId": "a39bf45225111a254904e36f6a211a9b05c6aec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e34d5244_6ff6784d",
@@ -121,6 +246,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de0a88be_327d8783",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2023-04-18T23:49:42Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e34d5244_6ff6784d",
+      "revId": "a39bf45225111a254904e36f6a211a9b05c6aec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e81c96f_5bf23354",
@@ -134,6 +277,30 @@
       "writtenOn": "2023-04-17T18:58:18Z",
       "side": 1,
       "message": "You might need to make these bullets.\n\n- Pass 1. Remove HMC acknowledged PELs.",
+      "range": {
+        "startLine": 527,
+        "startChar": 0,
+        "endLine": 530,
+        "endChar": 24
+      },
+      "revId": "a39bf45225111a254904e36f6a211a9b05c6aec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0a861ca_bee58169",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 530,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2023-04-18T23:49:42Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7e81c96f_5bf23354",
       "range": {
         "startLine": 527,
         "startChar": 0,
@@ -163,6 +330,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d025999b_adbcf431",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2023-04-18T23:49:42Z",
+      "side": 1,
+      "message": "python3 was specified as alias here, thats why i used it https://github.com/github/linguist/blob/master/lib/linguist/languages.yml#L5412\n\nShall i change to python?",
+      "parentUuid": "fa1ec2db_362d69c0",
+      "revId": "a39bf45225111a254904e36f6a211a9b05c6aec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "891f2991_d746ce53",
         "filename": "extensions/openpower-pels/README.md",
         "patchSetId": 1
@@ -174,6 +359,24 @@
       "writtenOn": "2023-04-17T18:58:18Z",
       "side": 1,
       "message": "This doesn\u0027t look like Python... we probably should pull this out of the escapes.",
+      "revId": "a39bf45225111a254904e36f6a211a9b05c6aec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9394bb0c_04948f77",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2023-04-18T23:49:42Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "891f2991_d746ce53",
       "revId": "a39bf45225111a254904e36f6a211a9b05c6aec7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -191,6 +394,24 @@
       "writtenOn": "2023-04-17T18:58:18Z",
       "side": 1,
       "message": "outdent",
+      "revId": "a39bf45225111a254904e36f6a211a9b05c6aec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ccf90d4_12b308f2",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 608,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2023-04-18T23:49:42Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "44750569_b0df287d",
       "revId": "a39bf45225111a254904e36f6a211a9b05c6aec7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
