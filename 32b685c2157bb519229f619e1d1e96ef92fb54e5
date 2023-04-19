@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "915355a2_2f244da2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2023-04-19T22:24:33Z",
+      "side": 1,
+      "message": "Thanks for reviewing the patch.",
+      "revId": "32b685c2157bb519229f619e1d1e96ef92fb54e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7d61f480_fa54e8b6",
@@ -14,6 +31,24 @@
       "writtenOn": "2023-04-19T21:57:44Z",
       "side": 1,
       "message": "this one is different than the []: style above and below it.  Will it still work?",
+      "revId": "32b685c2157bb519229f619e1d1e96ef92fb54e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17a185f5_97fb32ca",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2023-04-19T22:24:33Z",
+      "side": 1,
+      "message": "Matt,\nThis fix is in relation to following markdownlint warning -\n\nREADME.md:252:1 MD053/link-image-reference-definitions Link and image reference definitions should be needed [Unused link or image reference definition: \"elog-errors.hpp\"] [Context: \"[elog-errors.hpp]:\"]\n\nAs per https://github.com/DavidAnson/markdownlint/blob/next/doc/Rules.md#md053, elog-errors.hpp is being defined and not being used anywhere, hence this warning. So, i converted it into a inline link. Other option would be to remove it if not needed? (as mentioned in Step2 in rule link)",
+      "parentUuid": "7d61f480_fa54e8b6",
       "revId": "32b685c2157bb519229f619e1d1e96ef92fb54e5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -43,6 +78,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a273d5f7_7af8aa9e",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 586,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2023-04-19T22:24:33Z",
+      "side": 1,
+      "message": "The markdownlint rule only mentions about adding angular brackets.\n\nhttps://github.com/DavidAnson/markdownlint/blob/next/doc/Rules.md#md034---bare-url-used",
+      "parentUuid": "0f6bebb8_3b44a0d0",
+      "range": {
+        "startLine": 586,
+        "startChar": 61,
+        "endLine": 586,
+        "endChar": 62
+      },
+      "revId": "32b685c2157bb519229f619e1d1e96ef92fb54e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8ca54976_adeb6af3",
         "filename": "README.md",
         "patchSetId": 2
@@ -54,6 +113,30 @@
       "writtenOn": "2023-04-19T21:57:44Z",
       "side": 1,
       "message": "same question here",
+      "range": {
+        "startLine": 596,
+        "startChar": 56,
+        "endLine": 596,
+        "endChar": 57
+      },
+      "revId": "32b685c2157bb519229f619e1d1e96ef92fb54e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8003d80_30edb71c",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 596,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2023-04-19T22:24:33Z",
+      "side": 1,
+      "message": "The markdownlint rule only mentions about adding angular brackets.\n\nhttps://github.com/DavidAnson/markdownlint/blob/next/doc/Rules.md#md034---bare-url-used",
+      "parentUuid": "8ca54976_adeb6af3",
       "range": {
         "startLine": 596,
         "startChar": 56,
