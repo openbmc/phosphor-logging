@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d61f480_fa54e8b6",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-04-19T21:57:44Z",
+      "side": 1,
+      "message": "this one is different than the []: style above and below it.  Will it still work?",
+      "revId": "32b685c2157bb519229f619e1d1e96ef92fb54e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f6bebb8_3b44a0d0",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 586,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-04-19T21:57:44Z",
+      "side": 1,
+      "message": "does this need to be /\u003e ?",
+      "range": {
+        "startLine": 586,
+        "startChar": 61,
+        "endLine": 586,
+        "endChar": 62
+      },
+      "revId": "32b685c2157bb519229f619e1d1e96ef92fb54e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ca54976_adeb6af3",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 596,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-04-19T21:57:44Z",
+      "side": 1,
+      "message": "same question here",
+      "range": {
+        "startLine": 596,
+        "startChar": 56,
+        "endLine": 596,
+        "endChar": 57
+      },
+      "revId": "32b685c2157bb519229f619e1d1e96ef92fb54e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
