@@ -18,6 +18,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b93f3c7_61d46fa3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2023-04-21T17:09:36Z",
+      "side": 1,
+      "message": "Addressed the comments.",
+      "revId": "32b685c2157bb519229f619e1d1e96ef92fb54e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7d61f480_fa54e8b6",
@@ -67,6 +84,24 @@
       "side": 1,
       "message": "Thanks for info.  Yea you can just delete it.",
       "parentUuid": "17a185f5_97fb32ca",
+      "revId": "32b685c2157bb519229f619e1d1e96ef92fb54e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4dab2b28_777a3f90",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2023-04-21T17:09:36Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3ad74070_fa9bc128",
       "revId": "32b685c2157bb519229f619e1d1e96ef92fb54e5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
