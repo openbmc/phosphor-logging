@@ -22,6 +22,30 @@
       },
       "revId": "da9355044e1d9df562bc4bee25b791b1ca9b85d7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ba27329_27b13b5e",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 869,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2023-04-24T07:54:13Z",
+      "side": 1,
+      "message": "\"Callout Section\": {\n        \"Callout Count\":        \"1\",\n        \"Callouts\": [{\n            \"FRU Type\":         \"Maintenance Procedure Required\",\n            \"Priority\":         \"Mandatory, replace all with this type as a unit\",\n            \"Procedure\":        \"BMC0008\"\n        }]\n    }\nadded detected_issues_need_service\nchecking with PE about the error",
+      "parentUuid": "fcddd644_28e7cf96",
+      "range": {
+        "startLine": 869,
+        "startChar": 42,
+        "endLine": 869,
+        "endChar": 61
+      },
+      "revId": "da9355044e1d9df562bc4bee25b791b1ca9b85d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

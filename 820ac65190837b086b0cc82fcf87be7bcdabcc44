@@ -34,6 +34,24 @@
       "parentUuid": "3ab58ae0_ba60696c",
       "revId": "820ac65190837b086b0cc82fcf87be7bcdabcc44",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4466659_34978d80",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2023-04-24T07:54:13Z",
+      "side": 1,
+      "message": "\"Callout Section\": {\n        \"Callout Count\":        \"1\",\n        \"Callouts\": [{\n            \"FRU Type\":         \"Maintenance Procedure Required\",\n            \"Priority\":         \"Mandatory, replace all with this type as a unit\",\n            \"Procedure\":        \"BMC0008\"\n        }]\n    }\n\n\nover looked the comment, now added BMC008 which corresponds to detected_issues_need_service",
+      "parentUuid": "053678bc_6bf7907e",
+      "revId": "820ac65190837b086b0cc82fcf87be7bcdabcc44",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
