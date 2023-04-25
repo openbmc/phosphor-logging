@@ -282,14 +282,6 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
     std::unique_ptr<DataInterfaceBase> dataIface =
         std::make_unique<MockDataInterface>();
 
-    MockDataInterface* mockIface =
-        reinterpret_cast<MockDataInterface*>(dataIface.get());
-
-    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
-                                      "system/entry"};
-    EXPECT_CALL(*mockIface, checkDumpStatus(dumpType))
-        .WillRepeatedly(Return(std::vector<bool>{false, false, false}));
-
     std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
 
     openpower::pels::Manager manager{
@@ -903,11 +895,6 @@ TEST_F(ManagerTest, TestServiceIndicators)
     MockDataInterface* mockIface =
         reinterpret_cast<MockDataInterface*>(dataIface.get());
 
-    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
-                                      "system/entry"};
-    EXPECT_CALL(*mockIface, checkDumpStatus(dumpType))
-        .WillRepeatedly(Return(std::vector<bool>{false, false, false}));
-
     std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
 
     openpower::pels::Manager manager{
@@ -1100,14 +1087,6 @@ TEST_F(ManagerTest, TestTerminateBitWithPELSevCriticalSysTerminate)
 
     std::unique_ptr<DataInterfaceBase> dataIface =
         std::make_unique<MockDataInterface>();
-
-    MockDataInterface* mockIface =
-        reinterpret_cast<MockDataInterface*>(dataIface.get());
-
-    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
-                                      "system/entry"};
-    EXPECT_CALL(*mockIface, checkDumpStatus(dumpType))
-        .WillRepeatedly(Return(std::vector<bool>{false, false, false}));
 
     std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
 
