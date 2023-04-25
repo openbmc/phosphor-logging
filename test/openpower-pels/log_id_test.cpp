@@ -94,4 +94,6 @@ TEST(LogIdTest, PELIDTest)
     EXPECT_NE(generatePELID(), 0x50000003);
     EXPECT_NE(generatePELID(), 0x50000004);
     EXPECT_NE(generatePELID(), 0x50000005);
+
+    fs::remove_all(fs::path{backingFile}.parent_path());
 }
