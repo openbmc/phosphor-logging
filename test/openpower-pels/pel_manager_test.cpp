@@ -58,8 +58,20 @@ class ManagerTest : public CleanPELFiles
         sd_event_default(&sdEvent);
     }
 
+    fs::path makeTempDir()
+    {
+        char path[] = "/tmp/tempnameXXXXXX";
+        std::filesystem::path dir = mkdtemp(path);
+        dirsToRemove.push_back(dir);
+        return dir;
+    }
+
     ~ManagerTest()
     {
+        for (const auto& d : dirsToRemove)
+        {
+            std::filesystem::remove_all(d);
+        }
         sd_event_unref(sdEvent);
     }
 
@@ -68,14 +80,8 @@ class ManagerTest : public CleanPELFiles
     phosphor::logging::internal::Manager logManager;
     sd_event* sdEvent;
     TestLogger logger;
+    std::vector<std::filesystem::path> dirsToRemove;
 };
-
-fs::path makeTempDir()
-{
-    char path[] = "/tmp/tempnameXXXXXX";
-    std::filesystem::path dir = mkdtemp(path);
-    return dir;
-}
 
 std::optional<fs::path> findAnyPELInRepo()
 {
@@ -167,8 +173,6 @@ TEST_F(ManagerTest, TestCreateWithPEL)
     pelPathInRepo = findAnyPELInRepo();
 
     EXPECT_FALSE(pelPathInRepo);
-
-    fs::remove_all(pelFilename.parent_path());
 }
 
 TEST_F(ManagerTest, TestCreateWithInvalidPEL)
@@ -219,8 +223,6 @@ TEST_F(ManagerTest, TestCreateWithInvalidPEL)
     // Check that the bad PEL data was saved to a file.
     auto badPELData = readPELFile(getPELRepoPath() / "badPEL");
     EXPECT_EQ(*badPELData, data);
-
-    fs::remove_all(pelFilename.parent_path());
 }
 
 // Test that the message registry can be used to build a PEL.
@@ -485,8 +487,6 @@ TEST_F(ManagerTest, TestDBusMethods)
         manager.hostReject(id + 1, Manager::RejectionReason::BadPEL),
         sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument);
 
-    fs::remove_all(pelFilename.parent_path());
-
     // GetPELIdFromBMCLogId
     EXPECT_EQ(pel.id(), manager.getPELIdFromBMCLogId(pel.obmcLogID()));
     EXPECT_THROW(
@@ -744,8 +744,6 @@ TEST_F(ManagerTest, TestPruning)
     {
         ADD_FAILURE() << "PELs should have all been found";
     }
-
-    fs::remove_all(dir);
 }
 
 // Test that manually deleting a PEL file will be recognized by the code.
@@ -823,8 +821,6 @@ TEST_F(ManagerTest, TestPELManualDelete)
             manager.getPEL(i),
             sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument);
     });
-
-    fs::remove_all(dir);
 }
 
 // Test that deleting all PELs at once is handled OK.
@@ -896,8 +892,6 @@ TEST_F(ManagerTest, TestPELManualDeleteAll)
             manager.getPEL(0x50000000 + i),
             sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument);
     }
-
-    fs::remove_all(dir);
 }
 
 // Test that fault LEDs are turned on when PELs are created
@@ -947,8 +941,6 @@ TEST_F(ManagerTest, TestServiceIndicators)
         manager.create("error message", 42, 0,
                        phosphor::logging::Entry::Level::Error, additionalData,
                        associations);
-
-        fs::remove_all(pelFilename.parent_path());
     }
 
     // Add a BMC PEL with a callout that uses the message registry
