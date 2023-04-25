@@ -16,6 +16,24 @@
       "message": "nit: strange wrapping here.",
       "revId": "b1980b676194ba4c59c9417a79310eea356c9788",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "037c5516_840ed04e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1001592
+      },
+      "writtenOn": "2023-04-25T11:04:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e13136d_2bf9d570",
+      "revId": "b1980b676194ba4c59c9417a79310eea356c9788",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
