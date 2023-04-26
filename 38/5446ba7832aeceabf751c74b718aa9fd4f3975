@@ -1,0 +1,9 @@
+Code-Review+1: Deepakala Karthikeyan <deepakala.karthikeyan@ibm.com>
+Code-Review+1: Aravind T <aravynd@gmail.com>
+Code-Review+2: Matt Spinler <spinler@us.ibm.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: MARRI DEVENDER RAO <devenrao@in.ibm.com>
+Submitted-at: Wed, 26 Apr 2023 05:54:32 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/62506
+Project: openbmc/phosphor-logging
+Branch: refs/heads/master
