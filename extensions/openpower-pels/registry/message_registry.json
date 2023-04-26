@@ -1362,6 +1362,25 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.State.Info.ChassisPowerOnStarted",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3400",
+            "Severity": "non_error",
+            "SRC": {
+                "ReasonCode": "0x3416",
+                "Words6To9": {}
+            },
+            "Documentation": {
+                "Description": "A power on of the chassis has been started",
+                "Message": "The chassis is powering on.",
+                "Notes": [
+                    "This informational error is logged each time the chassis",
+                    "is powered on."
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.Processor.Error.SbeChipOpFailure",
             "Subsystem": "processor_chip",
             "ComponentID": "0x3500",
