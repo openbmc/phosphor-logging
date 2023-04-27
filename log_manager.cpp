@@ -205,6 +205,13 @@ void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
             if (realErrors.size() >= ERROR_CAP)
             {
                 erase(realErrors.front());
+                if (!realErrorsRotated)
+                {
+                    std::vector<std::string> ad;
+                    createEntry("high severity error entries had been rotated.",
+                                Severity::Critical, ad);
+                    realErrorsRotated = true;
+                }
             }
         }
         else
@@ -212,6 +219,14 @@ void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
             if (infoErrors.size() >= ERROR_INFO_CAP)
             {
                 erase(infoErrors.front());
+                if (!infoErrorsRotated)
+                {
+                    std::vector<std::string> ad;
+                    createEntry(
+                        "Info(and below) severity error entries had been rotated.",
+                        Severity::Critical, ad);
+                    infoErrorsRotated = true;
+                }
             }
         }
     }
