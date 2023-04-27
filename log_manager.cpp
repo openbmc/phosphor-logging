@@ -205,6 +205,15 @@ void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
             if (realErrors.size() >= ERROR_CAP)
             {
                 erase(realErrors.front());
+                // Send log when first rotation occured
+                if (!realErrorsRotated)
+                {
+                    realErrorsRotated = true;
+                    std::vector<std::string> ad;
+                    createEntry("high severity error entries had been rotated.",
+                                Severity::Critical, ad);
+                    erase(realErrors.front());
+                }
             }
         }
         else
@@ -212,6 +221,16 @@ void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
             if (infoErrors.size() >= ERROR_INFO_CAP)
             {
                 erase(infoErrors.front());
+                // Send log when first rotation occured
+                if (!infoErrorsRotated)
+                {
+                    infoErrorsRotated = true;
+                    std::vector<std::string> ad;
+                    createEntry(
+                        "Info(and below) severity error entries had been rotated.",
+                        Severity::Informational, ad);
+                    erase(infoErrors.front());
+                }
             }
         }
     }
