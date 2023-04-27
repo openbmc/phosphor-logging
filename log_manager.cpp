@@ -205,6 +205,14 @@ void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
             if (realErrors.size() >= ERROR_CAP)
             {
                 erase(realErrors.front());
+                if (!realErrorsRotated)
+                {
+                    realErrorsRotated = true;
+                    std::vector<std::string> ad;
+                    RealLogsRotated realLogsRotated;
+                    createEntry(realLogsRotated.name(), Severity::Informational,
+                                ad);
+                }
             }
         }
         else
@@ -212,6 +220,16 @@ void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
             if (infoErrors.size() >= ERROR_INFO_CAP)
             {
                 erase(infoErrors.front());
+                if (!infoErrorsRotated)
+                {
+                    infoErrorsRotated = true;
+                    std::vector<std::string> ad;
+                    InfoLogsRotated infoLogsRotated;
+                    createEntry(infoLogsRotated.name(), Severity::Informational,
+                                ad);
+                    // Erase the oldest log to keep logs number within capacity.
+                    erase(infoErrors.front());
+                }
             }
         }
     }

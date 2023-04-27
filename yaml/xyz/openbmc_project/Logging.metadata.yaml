@@ -1,0 +1,9 @@
+- name: LogsCleared
+  level: INFO
+  meta:
+      - str: "NUM_LOGS=%u"
+        type: uint
+- name: InfoLogsRotated
+  level: INFO
+- name: RealLogsRotated
+  level: INFO
