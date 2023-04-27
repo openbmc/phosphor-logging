@@ -1,0 +1,7 @@
+# xyz.openbmc_project.Logging.Error
+- name: LogsCleared
+  description: Indicate the user cleared all the logs
+- name: InfoLogsRotated
+  description: Indicate the Info(and below) severity logs had been rotated
+- name: NonInfoLogsRotated
+  description: Indicate the high severity logs had been rotated

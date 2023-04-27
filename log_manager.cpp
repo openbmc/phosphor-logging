@@ -205,6 +205,13 @@ void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
             if (realErrors.size() >= ERROR_CAP)
             {
                 erase(realErrors.front());
+                if (!nonInfoErrorsRotated)
+                {
+                    nonInfoErrorsRotated = true;
+                    std::vector<std::string> ad;
+                    createEntry(NonInfoLogsRotated::errName,
+                                Severity::Informational, ad);
+                }
             }
         }
         else
@@ -212,6 +219,13 @@ void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
             if (infoErrors.size() >= ERROR_INFO_CAP)
             {
                 erase(infoErrors.front());
+                if (!infoErrorsRotated)
+                {
+                    infoErrorsRotated = true;
+                    std::vector<std::string> ad;
+                    createEntry(InfoLogsRotated::errName,
+                                Severity::Informational, ad);
+                }
             }
         }
     }
@@ -219,7 +233,11 @@ void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
     entryId++;
     if (errLvl >= Entry::sevLowerLimit)
     {
-        infoErrors.push_back(entryId);
+        if (errMsg != NonInfoLogsRotated::errName &&
+            errMsg != InfoLogsRotated::errName)
+        {
+            infoErrors.push_back(entryId);
+        }
     }
     else
     {
