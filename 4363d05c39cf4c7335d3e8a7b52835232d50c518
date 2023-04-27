@@ -1,0 +1,164 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b0c6bf4_4d3e88c2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-04-27T14:33:49Z",
+      "side": 1,
+      "message": "This is an IPMI term.  Instead how about just \u0027event log\u0027.",
+      "range": {
+        "startLine": 7,
+        "startChar": 4,
+        "endLine": 7,
+        "endChar": 7
+      },
+      "revId": "4363d05c39cf4c7335d3e8a7b52835232d50c518",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d39e8b5_9a7b8890",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-04-27T14:33:49Z",
+      "side": 1,
+      "message": "\u0027Send\u0027 is also IPMIy, how about Create",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 5
+      },
+      "revId": "4363d05c39cf4c7335d3e8a7b52835232d50c518",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b1e6144_54c3fdd3",
+        "filename": "log_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-04-27T14:33:49Z",
+      "side": 1,
+      "message": "same comments as on other create.\n* should be informational\n* something like \u0027xyz.openbmc_project.Logging.Error.LogsRotated\n* add it to the yaml",
+      "range": {
+        "startLine": 213,
+        "startChar": 33,
+        "endLine": 213,
+        "endChar": 77
+      },
+      "revId": "4363d05c39cf4c7335d3e8a7b52835232d50c518",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c98c1fb3_004b99ab",
+        "filename": "log_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-04-27T14:33:49Z",
+      "side": 1,
+      "message": "so you\u0027re creating it and then deleting it?",
+      "revId": "4363d05c39cf4c7335d3e8a7b52835232d50c518",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86e584af_c00cdd1e",
+        "filename": "log_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-04-27T14:33:49Z",
+      "side": 1,
+      "message": "same comments as above",
+      "revId": "4363d05c39cf4c7335d3e8a7b52835232d50c518",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11b24196_9c3c3578",
+        "filename": "log_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-04-27T14:33:49Z",
+      "side": 1,
+      "message": "may as well add how many errors are being removed to the additional data so we can see it in the event log like\nadditionalData.emplace(\"NUM_LOGS\", entries.size());",
+      "revId": "4363d05c39cf4c7335d3e8a7b52835232d50c518",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "178b84a3_32f978ed",
+        "filename": "log_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-04-27T14:33:49Z",
+      "side": 1,
+      "message": "I think this needs to be Informational since no action is required.",
+      "range": {
+        "startLine": 380,
+        "startChar": 51,
+        "endLine": 380,
+        "endChar": 69
+      },
+      "revId": "4363d05c39cf4c7335d3e8a7b52835232d50c518",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0705fe07_4fd54b89",
+        "filename": "log_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-04-27T14:33:49Z",
+      "side": 1,
+      "message": "A few things on the Message field -\n- It should be something like:\n  xyz.openbmc_project.Logging.Error.DeleteAll\n  \n- I think it would be good if this was still defined in an error yaml file, I think just doing it in yaml files in the yaml subdir of this repo is good enough since it isn\u0027t used by anyone else.\n\nThe phosphor-logging README has some info on the error files, or also look at the *.errors.yaml files out in phosphor-dbus-interfaces.",
+      "revId": "4363d05c39cf4c7335d3e8a7b52835232d50c518",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
