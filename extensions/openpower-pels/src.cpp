@@ -484,6 +484,17 @@ bool SRC::isBMCSRC() const
     return false;
 }
 
+bool SRC::isHostbootSRC() const
+{
+    auto as = asciiString();
+    if (as.length() >= 2)
+    {
+        uint8_t errorType = strtoul(as.substr(0, 2).c_str(), nullptr, 16);
+        return errorType == static_cast<uint8_t>(SRCType::hostbootError);
+    }
+    return false;
+}
+
 std::optional<std::string> SRC::getErrorDetails(message::Registry& registry,
                                                 DetailLevel type,
                                                 bool toCache) const
@@ -741,6 +752,10 @@ std::optional<std::string> SRC::getJSON(message::Registry& registry,
                        _hexData[3] &
                        static_cast<uint32_t>(ErrorStatusFlags::terminateFwErr)),
                    1);
+    }
+
+    if (isBMCSRC() || isHostbootSRC())
+    {
         jsonInsert(ps, "Deconfigured",
                    pv::boolString.at(
                        _hexData[3] &

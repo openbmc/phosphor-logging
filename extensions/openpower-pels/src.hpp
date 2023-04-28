@@ -283,6 +283,13 @@ class SRC : public Section
     bool isBMCSRC() const;
 
     /**
+     * @brief Says if this SRC was created by Hostboot
+     *
+     * @return bool - If created by Hostboot or not
+     */
+    bool isHostbootSRC() const;
+
+    /**
      * @brief Set the terminate bit in hex data word 3.
      */
     void setTerminateBit()
