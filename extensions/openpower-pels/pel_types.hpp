@@ -44,7 +44,8 @@ enum class SectionID
 enum class SRCType
 {
     bmcError = 0xBD,
-    powerError = 0x11
+    powerError = 0x11,
+    hostbootError = 0xBC
 };
 
 /**
