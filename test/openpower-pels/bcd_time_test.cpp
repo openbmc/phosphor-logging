@@ -103,3 +103,20 @@ TEST(BCDTimeTest, ConvertFromMSTest)
 
     ASSERT_EQ(getBCDTime(now), getBCDTime(ms));
 }
+
+TEST(BCDTimeTest, GetMillisecondsSinceEpochTest)
+{
+    // Convert current time to a BCDTime to use
+    auto now = std::chrono::system_clock::now();
+    uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                      now.time_since_epoch())
+                      .count();
+    auto bcdTime = getBCDTime(ms);
+
+    // BCDTime only tracks down to hundredths of a second (10ms),
+    // so some precision will be lost converting back to milliseconds.
+    // e.g. 12345 -> 12340
+    ms = ms - (ms % 10);
+
+    EXPECT_EQ(ms, getMillisecondsSinceEpoch(bcdTime));
+}

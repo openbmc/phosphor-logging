@@ -15,6 +15,11 @@
  */
 #include "bcd_time.hpp"
 
+#include <fmt/format.h>
+#include <time.h>
+
+#include <phosphor-logging/log.hpp>
+
 namespace openpower
 {
 namespace pels
@@ -64,6 +69,29 @@ BCDTime getBCDTime(uint64_t epochMS)
     std::chrono::time_point<std::chrono::system_clock> time{ms};
 
     return getBCDTime(time);
+}
+
+uint64_t getMillisecondsSinceEpoch(const BCDTime& bcdTime)
+{
+    // Convert a UTC tm struct to a UTC time_t struct to a timepoint.
+    int year = (fromBCD(bcdTime.yearMSB) * 100) + fromBCD(bcdTime.yearLSB);
+    tm utcTime;
+    utcTime.tm_year = year - 1900;
+    utcTime.tm_mon = fromBCD(bcdTime.month) - 1;
+    utcTime.tm_mday = fromBCD(bcdTime.day);
+    utcTime.tm_hour = fromBCD(bcdTime.hour);
+    utcTime.tm_min = fromBCD(bcdTime.minutes);
+    utcTime.tm_sec = fromBCD(bcdTime.seconds);
+    utcTime.tm_isdst = 0;
+
+    time_t t = timegm(&utcTime);
+    auto timepoint = std::chrono::system_clock::from_time_t(t);
+    int milliseconds = fromBCD(bcdTime.hundredths) * 10;
+    timepoint += std::chrono::milliseconds(milliseconds);
+
+    return std::chrono::duration_cast<std::chrono::milliseconds>(
+               timepoint.time_since_epoch())
+        .count();
 }
 
 Stream& operator>>(Stream& s, BCDTime& time)
