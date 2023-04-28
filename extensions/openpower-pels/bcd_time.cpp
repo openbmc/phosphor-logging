@@ -15,6 +15,11 @@
  */
 #include "bcd_time.hpp"
 
+#include <fmt/format.h>
+#include <time.h>
+
+#include <phosphor-logging/log.hpp>
+
 namespace openpower
 {
 namespace pels
@@ -64,6 +69,57 @@ BCDTime getBCDTime(uint64_t epochMS)
     std::chrono::time_point<std::chrono::system_clock> time{ms};
 
     return getBCDTime(time);
+}
+
+bool isValid(const BCDTime& bcdTime)
+{
+    if ((bcdTime.yearMSB < 0x20) || (bcdTime.yearMSB > 0x30) ||
+        (bcdTime.yearLSB > 0x99) || (bcdTime.month > 0x12) ||
+        (bcdTime.day > 0x31) || (bcdTime.hour > 0x23) ||
+        (bcdTime.minutes > 0x59) || (bcdTime.seconds > 0x59) ||
+        (bcdTime.hundredths > 0x99))
+    {
+        return false;
+    }
+
+    return true;
+}
+
+uint64_t getMillisecondsSinceEpoch(const BCDTime& bcdTime)
+{
+    // Validate the BCD time so from_time_t() doesn't overflow.
+    if (!isValid(bcdTime))
+    {
+        using namespace phosphor::logging;
+        log<level::ERR>(
+            fmt::format("getMillisecondsSinceEpoch: Invalid BCDTime: "
+                        "{:#X}{:#X} {:#X}/{:#X} {:#X}:{:#X}:{:#X}:{:#X}",
+                        bcdTime.yearMSB, bcdTime.yearLSB, bcdTime.month,
+                        bcdTime.day, bcdTime.hour, bcdTime.minutes,
+                        bcdTime.seconds, bcdTime.hundredths)
+                .c_str());
+        return 0;
+    }
+
+    // Convert a UTC tm struct to a UTC time_t struct to a timepoint.
+    int year = (fromBCD(bcdTime.yearMSB) * 100) + fromBCD(bcdTime.yearLSB);
+    tm utcTime;
+    utcTime.tm_year = year - 1900;
+    utcTime.tm_mon = fromBCD(bcdTime.month) - 1;
+    utcTime.tm_mday = fromBCD(bcdTime.day);
+    utcTime.tm_hour = fromBCD(bcdTime.hour);
+    utcTime.tm_min = fromBCD(bcdTime.minutes);
+    utcTime.tm_sec = fromBCD(bcdTime.seconds);
+    utcTime.tm_isdst = 0;
+
+    time_t t = timegm(&utcTime);
+    auto timepoint = std::chrono::system_clock::from_time_t(t);
+    int milliseconds = fromBCD(bcdTime.hundredths) * 10;
+    timepoint += std::chrono::milliseconds(milliseconds);
+
+    return std::chrono::duration_cast<std::chrono::milliseconds>(
+               timepoint.time_since_epoch())
+        .count();
 }
 
 Stream& operator>>(Stream& s, BCDTime& time)
