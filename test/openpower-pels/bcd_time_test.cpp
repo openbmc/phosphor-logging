@@ -103,3 +103,54 @@ TEST(BCDTimeTest, ConvertFromMSTest)
 
     ASSERT_EQ(getBCDTime(now), getBCDTime(ms));
 }
+
+TEST(BCDTimeTest, IsValidTest)
+{
+    {
+        // 2023 5/3 12:50:10:35
+        std::vector<uint8_t> data{0x20, 0x23, 0x05, 0x03,
+                                  0x12, 0x50, 0x10, 0x35};
+        Stream stream{data};
+        BCDTime bcdTime;
+        stream >> bcdTime;
+        EXPECT_TRUE(isValid(bcdTime));
+    }
+    {
+        // Invalid: 2023 5/3 99:50:10:35
+        std::vector<uint8_t> data{0x20, 0x23, 0x05, 0x03,
+                                  0x99, 0x50, 0x10, 0x35};
+        Stream stream{data};
+        BCDTime bcdTime;
+        stream >> bcdTime;
+        EXPECT_FALSE(isValid(bcdTime));
+    }
+}
+
+TEST(BCDTimeTest, GetMillisecondsSinceEpochTest)
+{
+    {
+        // Convert current time to a BCDTime to use
+        auto now = std::chrono::system_clock::now();
+        uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                          now.time_since_epoch())
+                          .count();
+        auto bcdTime = getBCDTime(ms);
+
+        // BCDTime only tracks down to hundredths of a second (10ms),
+        // so some precision will be lost converting back to milliseconds.
+        // e.g. 12345 -> 12340
+        ms = ms - (ms % 10);
+
+        EXPECT_EQ(ms, getMillisecondsSinceEpoch(bcdTime));
+    }
+
+    {
+        // Invalid BCDTime, getMillisecondsSinceEpoch should return zero.
+        std::vector<uint8_t> data{1, 2, 3, 4, 5, 6, 7, 8};
+        Stream stream{data};
+        BCDTime bcdTime;
+        stream >> bcdTime;
+
+        EXPECT_EQ(0, getMillisecondsSinceEpoch(bcdTime));
+    }
+}
