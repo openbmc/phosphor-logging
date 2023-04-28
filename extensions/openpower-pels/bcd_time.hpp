@@ -57,6 +57,15 @@ BCDTime getBCDTime(std::chrono::time_point<std::chrono::system_clock>& time);
 BCDTime getBCDTime(uint64_t milliseconds);
 
 /**
+ * @brief Convert a BCDTime value into the number of
+ *        milliseconds since the epoch (1/1/1970).
+ *
+ * @param[in] bcdTime - The BCD time value
+ * @return uint64_t - The milliseconds value
+ */
+uint64_t getMillisecondsSinceEpoch(const BCDTime& bcdTime);
+
+/**
  * @brief Converts a number to a BCD.
  *
  * For example 32 -> 0x32.
@@ -83,6 +92,19 @@ T toBCD(T decimal)
     }
 
     return bcd;
+}
+
+/**
+ * @brief Converts a BCD byte to a decimal number.
+ *
+ * For example 0x22 -> 22.
+ *
+ * @param[in] bcd - The value in BCD
+ * @return int - The number in decimal
+ */
+inline int fromBCD(uint8_t bcd)
+{
+    return (((bcd & 0xF0) >> 4) * 10) + (bcd & 0xF);
 }
 
 /**
