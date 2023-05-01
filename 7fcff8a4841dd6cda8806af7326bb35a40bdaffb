@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2274ddf5_4ea13c0f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2023-05-01T21:46:15Z",
+      "side": 1,
+      "message": "looks nice!",
+      "revId": "7fcff8a4841dd6cda8806af7326bb35a40bdaffb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cec710b7_eff613fc",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 1927,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2023-05-01T21:46:15Z",
+      "side": 1,
+      "message": "I\u0027d recommend not setting the deconfig flag to nag on this one since we don\u0027t always call out one of the psu\u0027s with this error, so we would keep nagging even after the psu was replaced.",
+      "revId": "7fcff8a4841dd6cda8806af7326bb35a40bdaffb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1f81908_99143846",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 2035,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2023-05-01T21:46:15Z",
+      "side": 1,
+      "message": "I\u0027d not set the flag here either.",
+      "revId": "7fcff8a4841dd6cda8806af7326bb35a40bdaffb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "530838d3_189088ec",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 2134,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2023-05-01T21:46:15Z",
+      "side": 1,
+      "message": "nor here.",
+      "revId": "7fcff8a4841dd6cda8806af7326bb35a40bdaffb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b945482_aa54ad62",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 3961,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2023-05-01T21:46:15Z",
+      "side": 1,
+      "message": "this one is informational so doesn\u0027t need the nag.",
+      "revId": "7fcff8a4841dd6cda8806af7326bb35a40bdaffb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
