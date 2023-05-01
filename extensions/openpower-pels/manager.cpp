@@ -1004,7 +1004,7 @@ void Manager::updateProgressSRC(
             {
                 _dataIface->createProgressSRC(srcRefCode, asciiSRC);
             }
-            catch (std::exception& e)
+            catch (const std::exception&)
             {
                 // Exception - may be no boot progress interface on dbus
             }
