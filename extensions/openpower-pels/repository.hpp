@@ -34,17 +34,23 @@ class Repository
         std::bitset<16> actionFlags;
         TransmissionState hostState;
         TransmissionState hmcState;
+        uint32_t plid;
+        bool deconfig;
+        bool guard;
+        uint64_t creationTime;
 
         PELAttributes() = delete;
 
         PELAttributes(const std::filesystem::path& p, size_t size,
                       uint8_t creator, uint8_t subsystem, uint8_t sev,
                       uint16_t flags, TransmissionState hostState,
-                      TransmissionState hmcState) :
+                      TransmissionState hmcState, uint32_t plid, bool deconfig,
+                      bool guard, uint64_t creationTime) :
             path(p),
             sizeOnDisk(size), creator(creator), subsystem(subsystem),
             severity(sev), actionFlags(flags), hostState(hostState),
-            hmcState(hmcState)
+            hmcState(hmcState), plid(plid), deconfig(deconfig), guard(guard),
+            creationTime(creationTime)
         {}
     };
 
