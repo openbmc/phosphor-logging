@@ -304,6 +304,45 @@ class PEL
     void updateSysInfoInExtendedUserDataSection(
         const DataInterfaceBase& dataIface);
 
+    /**
+     * @brief Return the deconfig flag from hex data word 5 of BMC and
+     *        hostboot PELs.
+     *
+     * @return bool - If the 'one or more resources are deconfigured'
+     *                flag is set.
+     */
+    bool getDeconfigFlag() const
+    {
+        auto creator = static_cast<CreatorID>(_ph->creatorID());
+
+        if ((creator == CreatorID::openBMC) || (creator == CreatorID::hostboot))
+        {
+            auto src = primarySRC();
+            return (*src)->getErrorStatusFlag(
+                SRC::ErrorStatusFlags::deconfigured);
+        }
+        return false;
+    }
+
+    /**
+     * @brief Return the guard flag from hex data word 5 of BMC and
+     *        hostboot PELs.
+     *
+     * @return bool - If the 'one or more resources are guarded'
+     *                flag is set.
+     */
+    bool getGuardFlag() const
+    {
+        auto creator = static_cast<CreatorID>(_ph->creatorID());
+
+        if ((creator == CreatorID::openBMC) || (creator == CreatorID::hostboot))
+        {
+            auto src = primarySRC();
+            return (*src)->getErrorStatusFlag(SRC::ErrorStatusFlags::guarded);
+        }
+        return false;
+    }
+
   private:
     /**
      * @brief Builds the section objects from a PEL data buffer

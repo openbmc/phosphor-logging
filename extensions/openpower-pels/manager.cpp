@@ -941,6 +941,11 @@ void Manager::createPELEntry(uint32_t obmcLogID, bool skipIaSignal)
             std::string("ManagementSystemAck"),
             (attr.hmcState == TransmissionState::acked ? true : false));
 
+        varData.emplace("PlatformLogID", attr.plid);
+        varData.emplace("Deconfig", attr.deconfig);
+        varData.emplace("Guard", attr.guard);
+        varData.emplace("Timestamp", attr.creationTime);
+
         // Path to create PELEntry Interface is same as PEL
         auto path = std::string(OBJ_ENTRY) + '/' + std::to_string(obmcLogID);
         // Create Interface for PELEntry and set properties

@@ -115,14 +115,20 @@ void Repository::restore()
                     }
                 }
 
-                PELAttributes attributes{dirEntry.path(),
-                                         getFileDiskSize(dirEntry.path()),
-                                         pel.privateHeader().creatorID(),
-                                         pel.userHeader().subsystem(),
-                                         pel.userHeader().severity(),
-                                         pel.userHeader().actionFlags(),
-                                         pel.hostTransmissionState(),
-                                         pel.hmcTransmissionState()};
+                PELAttributes attributes{
+                    dirEntry.path(),
+                    getFileDiskSize(dirEntry.path()),
+                    pel.privateHeader().creatorID(),
+                    pel.userHeader().subsystem(),
+                    pel.userHeader().severity(),
+                    pel.userHeader().actionFlags(),
+                    pel.hostTransmissionState(),
+                    pel.hmcTransmissionState(),
+                    pel.plid(),
+                    pel.getDeconfigFlag(),
+                    pel.getGuardFlag(),
+                    getMillisecondsSinceEpoch(
+                        pel.privateHeader().createTimestamp())};
 
                 using pelID = LogID::Pel;
                 using obmcID = LogID::Obmc;
@@ -173,14 +179,19 @@ void Repository::add(std::unique_ptr<PEL>& pel)
 
     write(*(pel.get()), path);
 
-    PELAttributes attributes{path,
-                             getFileDiskSize(path),
-                             pel->privateHeader().creatorID(),
-                             pel->userHeader().subsystem(),
-                             pel->userHeader().severity(),
-                             pel->userHeader().actionFlags(),
-                             pel->hostTransmissionState(),
-                             pel->hmcTransmissionState()};
+    PELAttributes attributes{
+        path,
+        getFileDiskSize(path),
+        pel->privateHeader().creatorID(),
+        pel->userHeader().subsystem(),
+        pel->userHeader().severity(),
+        pel->userHeader().actionFlags(),
+        pel->hostTransmissionState(),
+        pel->hmcTransmissionState(),
+        pel->plid(),
+        pel->getDeconfigFlag(),
+        pel->getGuardFlag(),
+        getMillisecondsSinceEpoch(pel->privateHeader().createTimestamp())};
 
     using pelID = LogID::Pel;
     using obmcID = LogID::Obmc;
