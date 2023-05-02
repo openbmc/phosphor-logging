@@ -308,6 +308,18 @@ class SRC : public Section
      */
     static uint32_t getProgressCode(std::vector<uint8_t>& rawProgressSRC);
 
+    /**
+     * @brief Return the value of the passed in error status flag.
+     *
+     * @param[in] flag - The flag
+     *
+     * @return bool - If the flag is set.
+     */
+    bool getErrorStatusFlag(ErrorStatusFlags flag) const
+    {
+        return _hexData[3] & static_cast<uint32_t>(flag);
+    }
+
   private:
     /**
      * @brief Fills in the user defined hex words from the

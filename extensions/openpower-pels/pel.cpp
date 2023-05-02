@@ -585,6 +585,30 @@ void PEL::updateSysInfoInExtendedUserDataSection(
     }
 }
 
+bool PEL::getDeconfigFlag() const
+{
+    auto creator = static_cast<CreatorID>(_ph->creatorID());
+
+    if ((creator == CreatorID::openBMC) || (creator == CreatorID::hostboot))
+    {
+        auto src = primarySRC();
+        return (*src)->getErrorStatusFlag(SRC::ErrorStatusFlags::deconfigured);
+    }
+    return false;
+}
+
+bool PEL::getGuardFlag() const
+{
+    auto creator = static_cast<CreatorID>(_ph->creatorID());
+
+    if ((creator == CreatorID::openBMC) || (creator == CreatorID::hostboot))
+    {
+        auto src = primarySRC();
+        return (*src)->getErrorStatusFlag(SRC::ErrorStatusFlags::guarded);
+    }
+    return false;
+}
+
 void PEL::updateTerminateBitInSRCSection()
 {
     //  Check for pel severity of type - 0x51 = critical error, system
