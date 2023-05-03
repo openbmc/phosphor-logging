@@ -18,9 +18,6 @@ std::tuple<uint16_t, uint8_t> check(uint16_t actionFlags, uint8_t eventType,
     uint8_t newEventType = eventType;
     auto sevType = static_cast<SeverityType>(severity & 0xF0);
 
-    // TODO: This code covers the most common cases.  The final tweaking
-    // will be done with ibm-openbmc/dev#1333.
-
     // Always report, unless specifically told not to
     if (!newActionFlags.test(dontReportToHostFlagBit))
     {
