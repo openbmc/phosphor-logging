@@ -76,6 +76,11 @@ class MockDataInterface : public DataInterfaceBase
     {
         _hmcManaged = managed;
     }
+
+    void fruPresent(const std::string& locationCode)
+    {
+        setFruPresent(locationCode);
+    }
 };
 
 /**
