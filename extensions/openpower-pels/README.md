@@ -15,6 +15,9 @@ instead of creating one.
 - [PEL Retention](#pel-retention)
 - [Adding python3 modules for PEL UserData and SRC parsing](#adding-python3-modules-for-pel-userdata-and-src-parsing)
 - [Fail Boot on Host Errors](#fail-boot-on-host-errors)
+- [SBE FFDC](#self-boot-engine-first-failure-data-capture-support)
+- [PEL Archiving](#pel-archiving)
+- [Handling PELs for hot plugged FRUs](#handling-pels-for-hot-plugged-frus)
 
 ## Passing PEL related data within an OpenBMC event log
 
@@ -659,7 +662,7 @@ following criteria:
 - not SeverityType::nonError
 - has a callout of any kind from the `FailingComponentType` structure
 
-## Self Boot Engine(SBE) First Failure Data Capture(FFDC) Support
+## Self Boot Engine First Failure Data Capture Support
 
 During SBE chip-op failure SBE creates FFDC with custom data format. SBE FFDC
 contains different packets, which include SBE internal failure related Trace and
@@ -716,6 +719,29 @@ Highlighted points are:
   size exceeds warning size all archived PELs will be deleted.
 - Archived PEL logs can be viewed using peltool with flag --archive.
 - If a PEL is deleted using peltool its not archived.
+
+## Handling PELs for hot plugged FRUs
+
+The degraded mode reporting functionality (i.e. nag) implemented by IBM creates
+periodic degraded mode reports when a system is running in degraded mode. This
+includes when hardware has been deconfigured or guarded by hostboot, and also
+when there is a fault on a redundant fan, VRM, or power supply. The report
+includes the PELs created for the fails leading to the degraded mode. These PELs
+can be identified by the 'deconfig' or 'guard' flags set in the SRC of BMC or
+hostboot PELs.
+
+Fans and power supplies can be hot plugged when they are replaced, and as that
+FRU is no longer considered degraded the PELs that led to its replacement no
+longer need be picked up in the degraded mode report.
+
+To handle this, the PEL daemon will watch the inventory D-Bus objects that have
+the 'xyz.openbmc_project.Inventory.Item.Fan' or
+'xyz.openbmc_project.Inventory.Item.PowerSupply' interface. When the 'Present'
+property on the 'xyz.openbmc_project.Inventory.Item' interface on these paths
+change to true, the code will find all fan/PS PELs with the deconfig bit set and
+that location code in the callout list and clear the deconfig flag in the PEL.
+That way, when the code that does the report searches for PELs, it will no
+longer find them.
 
 [1]:
   https://github.com/openbmc/docs/blob/master/designs/fail-boot-on-hw-error.md
