@@ -1131,3 +1131,107 @@ TEST_F(ManagerTest, TestSanitizeFieldforDBus)
     // convert the last four chars to spaces
     EXPECT_EQ(Manager::sanitizeFieldForDBus(string), base + "    ");
 }
+
+TEST_F(ManagerTest, TestFruPlug)
+{
+    const auto registry = R"(
+{
+    "PELs":
+    [{
+        "Name": "xyz.openbmc_project.Fan.Error.Fault",
+        "Subsystem": "power_fans",
+        "ComponentID": "0x2800",
+        "SRC":
+        {
+            "Type": "11",
+            "ReasonCode": "0x76F0",
+            "Words6To9": {},
+            "DeconfigFlag": true
+        },
+        "Callouts": [{
+                "CalloutList": [
+                    {"Priority": "low", "LocCode": "P0"},
+                    {"Priority": "high", "LocCode": "A3"}
+                ]
+            }],
+        "Documentation": {
+            "Description": "A Fan Fault",
+            "Message": "Fan had a Fault"
+        }
+     }]
+}
+)";
+
+    auto path = getPELReadOnlyDataPath();
+    fs::create_directories(path);
+    path /= "message_registry.json";
+
+    std::ofstream registryFile{path};
+    registryFile << registry;
+    registryFile.close();
+
+    std::unique_ptr<DataInterfaceBase> dataIface =
+        std::make_unique<MockDataInterface>();
+
+    MockDataInterface* mockIface =
+        reinterpret_cast<MockDataInterface*>(dataIface.get());
+
+    // Set up the mock calls used when building callouts
+    EXPECT_CALL(*mockIface, getInventoryFromLocCode("P0", 0, false))
+        .WillRepeatedly(Return(std::vector<std::string>{"motherboard"}));
+    EXPECT_CALL(*mockIface, expandLocationCode("P0", 0))
+        .WillRepeatedly(Return("U1234-P0"));
+    EXPECT_CALL(*mockIface, getInventoryFromLocCode("U1234-P0", 0, true))
+        .WillRepeatedly(Return(std::vector<std::string>{"motherboard"}));
+
+    EXPECT_CALL(*mockIface, getInventoryFromLocCode("A3", 0, false))
+        .WillRepeatedly(Return(std::vector<std::string>{"fan"}));
+    EXPECT_CALL(*mockIface, expandLocationCode("A3", 0))
+        .WillRepeatedly(Return("U1234-A3"));
+    EXPECT_CALL(*mockIface, getInventoryFromLocCode("U1234-A3", 0, true))
+        .WillRepeatedly(Return(std::vector<std::string>{"fan"}));
+
+    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+
+    openpower::pels::Manager manager{
+        logManager, std::move(dataIface),
+        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
+                  std::placeholders::_2, std::placeholders::_3),
+        std::move(journal)};
+
+    std::vector<std::string> additionalData;
+    std::vector<std::string> associations;
+
+    auto checkDeconfigured = [](bool deconfigured) {
+        auto pelFile = findAnyPELInRepo();
+        ASSERT_TRUE(pelFile);
+
+        auto data = readPELFile(*pelFile);
+        PEL pel(*data);
+        ASSERT_TRUE(pel.valid());
+
+        EXPECT_EQ(pel.primarySRC().value()->getErrorStatusFlag(
+                      SRC::ErrorStatusFlags::deconfigured),
+                  deconfigured);
+    };
+
+    manager.create("xyz.openbmc_project.Fan.Error.Fault", 42, 0,
+                   phosphor::logging::Entry::Level::Error, additionalData,
+                   associations);
+    checkDeconfigured(true);
+
+    // Replace A3 so PEL deconfigured flag should be set to false
+    mockIface->fruPresent("U1234-A3");
+    checkDeconfigured(false);
+
+    manager.erase(42);
+
+    // Create it again and replace a FRU not in the callout list.
+    // Deconfig flag should stay on.
+    manager.create("xyz.openbmc_project.Fan.Error.Fault", 43, 0,
+                   phosphor::logging::Entry::Level::Error, additionalData,
+                   associations);
+    checkDeconfigured(true);
+    mockIface->fruPresent("U1234-A4");
+    checkDeconfigured(true);
+}
