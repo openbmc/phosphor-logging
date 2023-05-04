@@ -940,11 +940,9 @@ void DataInterface::inventoryIfaceAdded(sdbusplus::message_t& msg)
     // Check if any of the new interfaces are for hot pluggable FRUs.
     if (std::find_if(interfaces.begin(), interfaces.end(),
                      [](const auto& interfacePair) {
-                         return std::find(hotplugInterfaces.begin(),
-                                          hotplugInterfaces.end(),
-                                          interfacePair.first) !=
-                                hotplugInterfaces.end();
-                     }) == interfaces.end())
+        return std::find(hotplugInterfaces.begin(), hotplugInterfaces.end(),
+                         interfacePair.first) != hotplugInterfaces.end();
+        }) == interfaces.end())
     {
         return;
     }

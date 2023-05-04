@@ -54,6 +54,8 @@ constexpr auto error = "ERROR_NAME";
 } // namespace additional_data
 
 constexpr auto defaultLogMessage = "xyz.openbmc_project.Logging.Error.Default";
+constexpr uint32_t bmcThermalCompID = 0x2700;
+constexpr uint32_t bmcFansCompID = 0x2800;
 
 Manager::~Manager()
 {
@@ -1030,6 +1032,75 @@ void Manager::deleteObmcLog(sdeventplus::source::EventBase&, uint32_t obmcLogID)
         fmt::format("Removing event log with no PEL: {}", obmcLogID).c_str());
     _logManager.erase(obmcLogID);
     _obmcLogDeleteEventSource.reset();
+}
+
+bool Manager::clearPowerThermalDeconfigFlag(const std::string& locationCode,
+                                            openpower::pels::PEL& pel)
+{
+    // The requirements state that only power-thermal or
+    // fan PELs need their deconfig flag cleared.
+    static const std::vector<uint32_t> compIDs{bmcThermalCompID, bmcFansCompID};
+
+    if (std::find(compIDs.begin(), compIDs.end(),
+                  pel.privateHeader().header().componentID) == compIDs.end())
+    {
+        return false;
+    }
+
+    auto src = pel.primarySRC();
+    const auto& callouts = (*src)->callouts();
+    if (!callouts)
+    {
+        return false;
+    }
+
+    for (const auto& callout : callouts->callouts())
+    {
+        // Look for the passed in location code in a callout that
+        // is either a normal HW callout or a symbolic FRU with
+        // a trusted location code callout.
+        if ((callout->locationCode() != locationCode) ||
+            !callout->fruIdentity())
+        {
+            continue;
+        }
+
+        if ((callout->fruIdentity()->failingComponentType() !=
+             src::FRUIdentity::hardwareFRU) &&
+            (callout->fruIdentity()->failingComponentType() !=
+             src::FRUIdentity::symbolicFRUTrustedLocCode))
+        {
+            continue;
+        }
+
+        log<level::INFO>(
+            fmt::format(
+                "Clearing deconfig flag in PEL {:#x} with SRC {} because {} was replaced",
+                pel.id(), (*src)->asciiString().substr(0, 8), locationCode)
+                .c_str());
+        (*src)->clearErrorStatusFlag(SRC::ErrorStatusFlags::deconfigured);
+        return true;
+    }
+    return false;
+}
+
+void Manager::hardwarePresent(const std::string& locationCode)
+{
+    Repository::PELUpdateFunc handlePowerThermalHardwarePresent =
+        [locationCode](openpower::pels::PEL& pel) {
+        return Manager::clearPowerThermalDeconfigFlag(locationCode, pel);
+    };
+
+    // If the PEL was created by the BMC and has the deconfig flag set,
+    // it's a candidate to have the deconfig flag cleared.
+    for (const auto& [id, attributes] : _repo.getAttributesMap())
+    {
+        if ((attributes.creator == static_cast<uint8_t>(CreatorID::openBMC)) &&
+            attributes.deconfig)
+        {
+            _repo.updatePEL(attributes.path, handlePowerThermalHardwarePresent);
+        }
+    }
 }
 
 } // namespace pels
