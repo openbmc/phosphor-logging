@@ -445,13 +445,14 @@ class Repository
     void archivePEL(const PEL& pel);
 
   private:
-    using PELUpdateFunc = std::function<void(PEL&)>;
+    using PELUpdateFunc = std::function<bool(PEL&)>;
 
     /**
      * @brief Lets a function modify a PEL and saves the results
      *
      * Runs updateFunc (a void(PEL&) function) on the PEL data
-     * on the file specified, and writes the results back to the file.
+     * on the file specified, and writes the results back to the file
+     * if the function returned true.
      *
      * @param[in] path - The file path to use
      * @param[in] updateFunc - The function to run to update the PEL.
