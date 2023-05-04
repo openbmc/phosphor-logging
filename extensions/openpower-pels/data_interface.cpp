@@ -22,6 +22,7 @@
 #include <fmt/format.h>
 
 #include <phosphor-logging/log.hpp>
+#include <xyz/openbmc_project/State/BMC/server.hpp>
 #include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
 
 #include <fstream>
@@ -100,10 +101,19 @@ constexpr auto hwIsolationEntry = "xyz.openbmc_project.HardwareIsolation.Entry";
 constexpr auto association = "xyz.openbmc_project.Association";
 constexpr auto biosConfigMgr = "xyz.openbmc_project.BIOSConfig.Manager";
 constexpr auto bootRawProgress = "xyz.openbmc_project.State.Boot.Raw";
+constexpr auto invItem = "xyz.openbmc_project.Inventory.Item";
+constexpr auto invFan = "xyz.openbmc_project.Inventory.Item.Fan";
+constexpr auto invPowerSupply =
+    "xyz.openbmc_project.Inventory.Item.PowerSupply";
 } // namespace interface
 
 using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
+using namespace sdbusplus::xyz::openbmc_project::State::server;
 using namespace phosphor::logging;
+namespace match_rules = sdbusplus::bus::match::rules;
+
+const DBusInterfaceList hotplugInterfaces{interface::invFan,
+                                          interface::invPowerSupply};
 
 std::pair<std::string, std::string>
     DataInterfaceBase::extractConnectorFromLocCode(
@@ -165,7 +175,15 @@ DataInterface::DataInterface(sdbusplus::bus_t& bus) : _bus(bus)
     _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
         bus, object_path::bmcState, interface::bmcState, "CurrentBMCState",
         *this, [this](const auto& value) {
-            this->_bmcState = std::get<std::string>(value);
+            const auto& state = std::get<std::string>(value);
+            this->_bmcState = state;
+
+            // Wait for BMC ready to start watching for
+            // plugs so things calm down first.
+            if (BMC::convertBMCStateFromString(state) == BMC::BMCState::Ready)
+            {
+                startFruPlugWatch();
+            }
         }));
 
     // Watch the chassis current and requested power state properties
@@ -871,5 +889,121 @@ std::vector<uint8_t> DataInterface::getRawProgressSRC(void) const
     return std::get<1>(rawProgress);
 }
 
+void DataInterface::startFruPlugWatch()
+{
+    // Add a watch on inventory InterfacesAdded and then find all
+    // existing hotpluggable interfaces and add propertiesChanged
+    // watches on them.
+
+    _invIaMatch = std::make_unique<sdbusplus::bus::match_t>(
+        _bus, match_rules::interfacesAdded(object_path::baseInv),
+        std::bind(&DataInterface::inventoryIfaceAdded, this,
+                  std::placeholders::_1));
+    try
+    {
+        auto paths = getPaths(hotplugInterfaces);
+
+        _invPresentMatches.clear();
+
+        std::for_each(paths.begin(), paths.end(),
+                      [this](const auto& path) { addHotplugWatch(path); });
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        log<level::WARNING>(
+            fmt::format("Failed getting FRU paths to watch: {}", e.what())
+                .c_str());
+    }
+}
+
+void DataInterface::addHotplugWatch(const std::string& path)
+{
+    if (!_invPresentMatches.contains(path))
+    {
+        _invPresentMatches.emplace(
+            path,
+            std::make_unique<sdbusplus::bus::match_t>(
+                _bus, match_rules::propertiesChanged(path, interface::invItem),
+                std::bind(&DataInterface::presenceChanged, this,
+                          std::placeholders::_1)));
+    }
+}
+
+void DataInterface::inventoryIfaceAdded(sdbusplus::message_t& msg)
+{
+    sdbusplus::message::object_path path;
+    DBusInterfaceMap interfaces;
+
+    msg.read(path, interfaces);
+
+    // Check if any of the new interfaces are for hot pluggable FRUs.
+    if (std::find_if(interfaces.begin(), interfaces.end(),
+                     [](const auto& interfacePair) {
+        return std::find(hotplugInterfaces.begin(), hotplugInterfaces.end(),
+                         interfacePair.first) != hotplugInterfaces.end();
+        }) == interfaces.end())
+    {
+        return;
+    }
+
+    addHotplugWatch(path.str);
+
+    // If an Inventory.Item interface was also added, check presence now.
+
+    // Notes:
+    // * This assumes the Inv.Item and Inv.Fan/PS are added together which
+    //   is currently the case.
+    // * If the code ever switches to something without a Present
+    //   property, then the IA signal itself would probably indicate presence.
+
+    auto itemIt = interfaces.find(interface::invItem);
+    if (itemIt != interfaces.end())
+    {
+        notifyPresenceSubsribers(path.str, itemIt->second);
+    }
+}
+
+void DataInterface::presenceChanged(sdbusplus::message_t& msg)
+{
+    DBusInterface interface;
+    DBusPropertyMap properties;
+
+    msg.read(interface, properties);
+    if (interface != interface::invItem)
+    {
+        return;
+    }
+
+    std::string path = msg.get_path();
+    notifyPresenceSubsribers(path, properties);
+}
+
+void DataInterface::notifyPresenceSubsribers(const std::string& path,
+                                             const DBusPropertyMap& properties)
+{
+    try
+    {
+        auto prop = properties.find("Present");
+        if (prop != properties.end())
+        {
+            if (std::get<bool>(prop->second))
+            {
+                auto locCode = getLocationCode(path);
+                log<level::INFO>(
+                    fmt::format("Detected FRU {} ({}) present ", path, locCode)
+                        .c_str());
+                // Tell the subscribers.
+                setFruPresent(locCode);
+            }
+        }
+    }
+    catch (const std::exception& e)
+    {
+        log<level::ERR>(
+            fmt::format("Failed while processing presence for {}: {}", path,
+                        e.what())
+                .c_str());
+    }
+}
 } // namespace pels
 } // namespace openpower

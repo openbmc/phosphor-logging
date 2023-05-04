@@ -93,6 +93,24 @@ class DataInterfaceBase
         _hostChangeCallbacks.erase(name);
     }
 
+    using FRUPresentFunc =
+        std::function<void(const std::string& /* locationCode */)>;
+
+    /**
+     * @brief Register a callback function that will get
+     *        called when certain FRUs become present.
+     *
+     * The void(std::string) function will get passed the
+     * location code of the FRU.
+     *
+     * @param[in] name - The subscription name
+     * @param[in] func - The function to run
+     */
+    void subscribeToFruPresent(const std::string& name, FRUPresentFunc func)
+    {
+        _fruPresentCallbacks[name] = std::move(func);
+    }
+
     /**
      * @brief Returns the BMC firmware version
      *
@@ -498,6 +516,26 @@ class DataInterfaceBase
     }
 
     /**
+     * @brief Runs the callback functions registered when
+     *        FRUs become present.
+     */
+    void setFruPresent(const std::string& locationCode)
+    {
+        for (const auto& [_, func] : _fruPresentCallbacks)
+        {
+            try
+            {
+                func(locationCode);
+            }
+            catch (const std::exception& e)
+            {
+                using namespace phosphor::logging;
+                log<level::ERR>("A FRU present callback threw an exception");
+            }
+        }
+    }
+
+    /**
      * @brief The hardware management console status.  Always kept
      *        up to date.
      */
@@ -513,6 +551,12 @@ class DataInterfaceBase
      *        names to callback functions.
      */
     std::map<std::string, HostStateChangeFunc> _hostChangeCallbacks;
+
+    /**
+     * @brief The map of FRU present subscriber
+     *        names to callback functions.
+     */
+    std::map<std::string, FRUPresentFunc> _fruPresentCallbacks;
 
     /**
      * @brief The BMC firmware version string
@@ -834,6 +878,49 @@ class DataInterface : public DataInterfaceBase
     void motherboardIfaceAdded(sdbusplus::message_t& msg);
 
     /**
+     * @brief Start watching for the hotpluggable FRUs to become
+     *        present.
+     */
+    void startFruPlugWatch();
+
+    /**
+     * @brief Create a D-Bus match object for the Present property
+     *        to change on the path passed in.
+     * @param[in] path - The path to watch.
+     */
+    void addHotplugWatch(const std::string& path);
+
+    /**
+     * @brief Callback when an inventory interface was added.
+     *
+     * Only does something if it's one of the hotpluggable FRUs,
+     * in which case it will treat it as a hotplug if the
+     * Present property is true.
+     *
+     * @param[in] msg - The InterfacesAdded signal contents.
+     */
+    void inventoryIfaceAdded(sdbusplus::message_t& msg);
+
+    /**
+     * @brief Callback when the Present property changes.
+     *
+     * If present, will run the registered callbacks.
+     *
+     * @param[in] msg - The PropertiesChanged signal contents.
+     */
+    void presenceChanged(sdbusplus::message_t& msg);
+
+    /**
+     * @brief If the Present property is in the properties map
+     *        passed in and it is true, notify the subscribers.
+     *
+     * @param[in] path - The object path of the inventory item.
+     * @param[in] properties - The properties map
+     */
+    void notifyPresenceSubsribers(const std::string& path,
+                                  const DBusPropertyMap& properties);
+
+    /**
      * @brief Adds the Ufcs- prefix to the location code passed in
      *        if necessary.
      *
@@ -853,18 +940,20 @@ class DataInterface : public DataInterfaceBase
      */
     std::vector<std::unique_ptr<DBusWatcher>> _properties;
 
+    std::unique_ptr<sdbusplus::bus::match_t> _invIaMatch;
+
+    /**
+     * @brief The matches for watching for hotplugs.
+     *
+     * A map so we can check that we never get duplicates.
+     */
+    std::map<std::string, std::unique_ptr<sdbusplus::bus::match_t>>
+        _invPresentMatches;
+
     /**
      * @brief The sdbusplus bus object for making D-Bus calls.
      */
     sdbusplus::bus_t& _bus;
-
-    /**
-     * @brief The interfacesAdded match object used to wait for inventory
-     *        interfaces to show up, so that the object with the motherboard
-     *        interface can be found.  After it is found, this object is
-     *        deleted.
-     */
-    std::unique_ptr<sdbusplus::bus::match_t> _inventoryIfacesAddedMatch;
 };
 
 } // namespace pels
