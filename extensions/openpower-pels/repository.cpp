@@ -409,13 +409,12 @@ void Repository::setPELHostTransState(uint32_t pelID, TransmissionState state)
     {
         PELUpdateFunc func = [state](PEL& pel) {
             pel.setHostTransmissionState(state);
+            return true;
         };
 
         try
         {
             updatePEL(attr->second.path, func);
-
-            attr->second.hostState = state;
         }
         catch (const std::exception& e)
         {
@@ -436,13 +435,12 @@ void Repository::setPELHMCTransState(uint32_t pelID, TransmissionState state)
     {
         PELUpdateFunc func = [state](PEL& pel) {
             pel.setHMCTransmissionState(state);
+            return true;
         };
 
         try
         {
             updatePEL(attr->second.path, func);
-
-            attr->second.hmcState = state;
         }
         catch (const std::exception& e)
         {
@@ -464,9 +462,28 @@ void Repository::updatePEL(const fs::path& path, PELUpdateFunc updateFunc)
 
     if (pel.valid())
     {
-        updateFunc(pel);
+        if (updateFunc(pel))
+        {
+            // Three attribute fields can change post creation from
+            // an updatePEL call:
+            //  - hmcTransmissionState - When HMC acks a PEL
+            //  - hostTransmissionState - When host acks a PEL
+            //  - deconfig flag - Can be cleared for PELs that call out
+            //                    hotplugged FRUs.
+            // Make sure they're up to date.
+            LogID id{LogID::Pel(pel.id())};
+            auto attr =
+                std::find_if(_pelAttributes.begin(), _pelAttributes.end(),
+                             [&id](const auto& a) { return a.first == id; });
+            if (attr != _pelAttributes.end())
+            {
+                attr->second.hmcState = pel.hmcTransmissionState();
+                attr->second.hostState = pel.hostTransmissionState();
+                attr->second.deconfig = pel.getDeconfigFlag();
+            }
 
-        write(pel, path);
+            write(pel, path);
+        }
     }
     else
     {
