@@ -327,6 +327,16 @@ class SRC : public Section
         return _hexData[3] & static_cast<uint32_t>(flag);
     }
 
+    /**
+     * @brief Clears an error status flag in the SRC.
+     *
+     * @param[in] flag - The flag to set
+     */
+    void clearErrorStatusFlag(ErrorStatusFlags flag)
+    {
+        _hexData[3] &= ~static_cast<uint32_t>(flag);
+    }
+
   private:
     /**
      * @brief Fills in the user defined hex words from the
