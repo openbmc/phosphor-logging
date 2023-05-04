@@ -70,6 +70,10 @@ class Manager : public PELInterface
             std::bind(&Manager::updateResolution, this, std::placeholders::_1));
 
         setupPELDeleteWatch();
+
+        _dataIface->subscribeToFruPresent(
+            "Manager",
+            std::bind(&Manager::hardwarePresent, this, std::placeholders::_1));
     }
 
     /**
@@ -477,6 +481,30 @@ class Manager : public PELInterface
      * @param[in] obmcLogID - The OpenBMC entry log ID
      */
     void deleteObmcLog(sdeventplus::source::EventBase&, uint32_t obmcLogID);
+
+    /**
+     * @brief Clears the deconfig flag in the PEL if necessary.
+     *
+     * If the passed in location code is in a callout and it's a PEL with
+     * the BMC power/thermal or fans component ID, clear the deconfig flag.
+     *
+     * @param[in] locationCode - The location code to look for
+     * @param[inout] pel - The PEL to check and modify.
+     * @return bool - true if the flag was cleared for this PEL
+     */
+    static bool clearPowerThermalDeconfigFlag(const std::string& locationCode,
+                                              openpower::pels::PEL& pel);
+
+    /**
+     * @brief Called by DataInterface when the presence of hotpluggable
+     *        hardware is detected.
+     *
+     * Clears the 'Deconfig' flag in any PEL that has the location code
+     * of the hardware in a callout.
+     *
+     * @param[in] locationCode - The location code of the hardware.
+     */
+    void hardwarePresent(const std::string& locationCode);
 
     /**
      * @brief Reference to phosphor-logging's Manager class

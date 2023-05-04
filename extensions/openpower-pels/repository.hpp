@@ -312,6 +312,16 @@ class Repository
         getPELAttributes(const LogID& id) const;
 
     /**
+     * @brief Returns the attributes map so that others can traverse PELs.
+     *
+     * @return - A const reference to the attributes map.
+     */
+    const std::map<LogID, PELAttributes>& getAttributesMap() const
+    {
+        return _pelAttributes;
+    }
+
+    /**
      * @brief Sets the host transmission state on a PEL file
      *
      * Writes the host transmission state field in the User Header
@@ -444,7 +454,6 @@ class Repository
      */
     void archivePEL(const PEL& pel);
 
-  private:
     using PELUpdateFunc = std::function<bool(PEL&)>;
 
     /**
@@ -459,6 +468,7 @@ class Repository
      */
     void updatePEL(const std::filesystem::path& path, PELUpdateFunc updateFunc);
 
+  private:
     /**
      * @brief Finds an entry in the _pelAttributes map.
      *
