@@ -137,7 +137,6 @@ DataInterface::DataInterface(sdbusplus::bus_t& bus) : _bus(bus)
                 std::get<std::string>(value));
 
             if ((status == Progress::ProgressStages::SystemInitComplete) ||
-                (status == Progress::ProgressStages::OSStart) ||
                 (status == Progress::ProgressStages::OSRunning))
             {
                 setHostUp(true);
