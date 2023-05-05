@@ -1,6 +1,6 @@
 libpldm_dep = dependency(
     'libpldm',
-    default_options: ['libpldm-only=enabled', 'oem-ibm=enabled'],
+    default_options: ['oem-ibm=enabled'],
 )
 
 if cpp.has_header('nlohmann/json.hpp')
