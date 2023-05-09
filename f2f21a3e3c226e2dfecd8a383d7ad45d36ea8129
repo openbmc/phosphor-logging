@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "53ca11de_512c265f",
+        "filename": "log_manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-05-09T07:54:05Z",
+      "side": 1,
+      "message": "Yes, it means that it created log when the logs were rotated first time. This log will eventually be rotated if the system keeps creating logs. Should we create another log if it is rotated?",
+      "parentUuid": "83f702aa_c350f1b7",
+      "revId": "f2f21a3e3c226e2dfecd8a383d7ad45d36ea8129",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cc2fec68_2617602d",
         "filename": "log_manager.cpp",
         "patchSetId": 9
