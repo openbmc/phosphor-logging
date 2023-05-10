@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1138e21_15cb0a14",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-05-10T20:53:11Z",
+      "side": 1,
+      "message": "Anything you could add under a \"Tested:\" indicating what you were able to test end to end here?",
+      "revId": "e527c35f54abb52efd0bed7c06e06fa610217ae9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77a831b0_720e63d2",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1081,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-05-10T20:53:11Z",
+      "side": 1,
+      "message": "Do we have any corner cases where a PEL could have 2 callouts and we wouldn\u0027t want to clear the deconfigure unless both callouts were replaced?",
+      "revId": "e527c35f54abb52efd0bed7c06e06fa610217ae9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "503a3b0c_fbf31fc4",
+        "filename": "extensions/openpower-pels/manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 505,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-05-10T20:53:11Z",
+      "side": 1,
+      "message": "nit: the",
+      "range": {
+        "startLine": 505,
+        "startChar": 54,
+        "endLine": 505,
+        "endChar": 58
+      },
+      "revId": "e527c35f54abb52efd0bed7c06e06fa610217ae9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
