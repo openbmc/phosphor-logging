@@ -16,6 +16,24 @@
       "message": "Hmm, so before this we would just show them for all SRC\u0027s. Why the specific BMC and hostboot check now in a debug tool?",
       "revId": "36dd6f7f2348d41c82e867b85492ea65959de239",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7471f138_5c1b5162",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 757,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-05-10T20:19:23Z",
+      "side": 1,
+      "message": "This diff is a bit confusing, but these 2 fields used to be inside the isBMCSRC() if check on line 738.  Now I ended that one on line 755 and started a new one for either BMC or hostboot.\n\nThe hostboot PELs also use the Deconfig and Guard flags, so I figured I should show them in peltool as well, especially now that the nag code will be looking at them.",
+      "parentUuid": "1f54b8da_a81529dd",
+      "revId": "36dd6f7f2348d41c82e867b85492ea65959de239",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
