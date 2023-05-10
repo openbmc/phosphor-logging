@@ -64,11 +64,11 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
 #ifdef PEL_ENABLE_PHAL
     // Add sbe ffdc processed data into ffdcfiles.
     namespace sbe = openpower::pels::sbe;
-    auto processReq =
-        std::any_of(ffdcFiles.begin(), ffdcFiles.end(), [](const auto& file) {
-            return file.format == UserDataFormat::custom &&
-                   file.subType == sbe::sbeFFDCSubType;
-        });
+    auto processReq = std::any_of(ffdcFiles.begin(), ffdcFiles.end(),
+                                  [](const auto& file) {
+        return file.format == UserDataFormat::custom &&
+               file.subType == sbe::sbeFFDCSubType;
+    });
     // sbeFFDC can't be destroyed until the end of the PEL constructor
     // because it needs to keep around the FFDC Files to be used below.
     std::unique_ptr<sbe::SbeFFDC> sbeFFDCPtr;
@@ -309,11 +309,11 @@ size_t PEL::size() const
 
 std::optional<SRC*> PEL::primarySRC() const
 {
-    auto src = std::find_if(
-        _optionalSections.begin(), _optionalSections.end(), [](auto& section) {
-            return section->header().id ==
-                   static_cast<uint16_t>(SectionID::primarySRC);
-        });
+    auto src = std::find_if(_optionalSections.begin(), _optionalSections.end(),
+                            [](auto& section) {
+        return section->header().id ==
+               static_cast<uint16_t>(SectionID::primarySRC);
+    });
     if (src != _optionalSections.end())
     {
         return static_cast<SRC*>(src->get());
@@ -554,11 +554,11 @@ void PEL::updateSysInfoInExtendedUserDataSection(
     {
         // Get the ED section from PEL
         auto op = std::find_if(_optionalSections.begin(),
-                               _optionalSections.end(), [](auto& section) {
-                                   return section->header().id ==
-                                          static_cast<uint16_t>(
-                                              SectionID::extUserData);
-                               });
+                               _optionalSections.end(),
+                               [](auto& section) {
+            return section->header().id ==
+                   static_cast<uint16_t>(SectionID::extUserData);
+        });
 
         // Check for ED section found and its not the last section of PEL
         if (op != _optionalSections.end())

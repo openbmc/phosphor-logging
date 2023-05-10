@@ -1558,8 +1558,8 @@ uint32_t SRC::getProgressCode(std::vector<uint8_t>& rawProgressSRC)
 
         if (std::all_of(progressCodeString.begin(), progressCodeString.end(),
                         [](char c) {
-                            return std::isxdigit(static_cast<unsigned char>(c));
-                        }))
+            return std::isxdigit(static_cast<unsigned char>(c));
+            }))
         {
             progressCode = std::stoul(progressCodeString, nullptr, 16);
         }

@@ -121,8 +121,8 @@ TEST_F(HostNotifierTest, TestHostStateChange)
 {
     bool hostState = false;
     bool called = false;
-    DataInterfaceBase::HostStateChangeFunc func = [&hostState,
-                                                   &called](bool state) {
+    DataInterfaceBase::HostStateChangeFunc func =
+        [&hostState, &called](bool state) {
         hostState = state;
         called = true;
     };

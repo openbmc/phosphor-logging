@@ -566,18 +566,19 @@ std::vector<Repository::AttributesReference>
 {
     std::vector<Repository::AttributesReference> attributes;
 
-    std::for_each(
-        _pelAttributes.begin(), _pelAttributes.end(),
-        [&attributes](auto& pelEntry) { attributes.push_back(pelEntry); });
+    std::for_each(_pelAttributes.begin(), _pelAttributes.end(),
+                  [&attributes](auto& pelEntry) {
+        attributes.push_back(pelEntry);
+    });
 
     std::sort(attributes.begin(), attributes.end(),
               [order](const auto& left, const auto& right) {
-                  if (order == SortOrder::ascending)
-                  {
-                      return left.get().second.path < right.get().second.path;
-                  }
-                  return left.get().second.path > right.get().second.path;
-              });
+        if (order == SortOrder::ascending)
+        {
+            return left.get().second.path < right.get().second.path;
+        }
+        return left.get().second.path > right.get().second.path;
+    });
 
     return attributes;
 }
@@ -696,18 +697,18 @@ void Repository::removePELs(const IsOverLimitFunc& isOverLimit,
     //   Pass 4: delete all PELs
     static const std::vector<std::function<bool(const PELAttributes& pel)>>
         stateChecks{[](const auto& pel) {
-                        return pel.hmcState == TransmissionState::acked;
+        return pel.hmcState == TransmissionState::acked;
                     },
 
                     [](const auto& pel) {
-                        return pel.hostState == TransmissionState::acked;
-                    },
+        return pel.hostState == TransmissionState::acked;
+        },
 
-                    [](const auto& pel) {
-                        return pel.hostState == TransmissionState::sent;
-                    },
+        [](const auto& pel) {
+        return pel.hostState == TransmissionState::sent;
+        },
 
-                    [](const auto& /*pel*/) { return true; }};
+        [](const auto& /*pel*/) { return true; }};
 
     for (const auto& stateCheck : stateChecks)
     {

@@ -32,10 +32,10 @@ std::filesystem::path CleanPELFiles::registryPath{};
 
 const std::vector<uint8_t> privateHeaderSection{
     // section header
-    0x50, 0x48, // ID 'PH'
-    0x00, 0x30, // Size
-    0x01, 0x02, // version, subtype
-    0x03, 0x04, // comp ID
+    0x50, 0x48,                                     // ID 'PH'
+    0x00, 0x30,                                     // Size
+    0x01, 0x02,                                     // version, subtype
+    0x03, 0x04,                                     // comp ID
 
     0x20, 0x30, 0x05, 0x09, 0x11, 0x1E, 0x1,  0x63, // create timestamp
     0x20, 0x31, 0x06, 0x0F, 0x09, 0x22, 0x3A, 0x00, // commit timestamp
@@ -50,10 +50,10 @@ const std::vector<uint8_t> privateHeaderSection{
 
 const std::vector<uint8_t> userHeaderSection{
     // section header
-    0x55, 0x48, // ID 'UH'
-    0x00, 0x18, // Size
-    0x01, 0x0A, // version, subtype
-    0x0B, 0x0C, // comp ID
+    0x55, 0x48,             // ID 'UH'
+    0x00, 0x18,             // Size
+    0x01, 0x0A,             // version, subtype
+    0x0B, 0x0C,             // comp ID
 
     0x10, 0x04,             // subsystem, scope
     0x20, 0x00,             // severity, type

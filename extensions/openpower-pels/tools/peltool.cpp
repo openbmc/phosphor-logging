@@ -496,8 +496,8 @@ void printPELs(bool order, bool hidden, bool includeInfo, bool critSysTerm,
     // Sort the pairs based on second time parameter
     std::sort(PELs.begin(), PELs.end(),
               [](const auto& left, const auto& right) {
-                  return left.second < right.second;
-              });
+        return left.second < right.second;
+    });
 
     bool foundPEL = false;
 
