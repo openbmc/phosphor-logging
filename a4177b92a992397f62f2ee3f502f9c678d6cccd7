@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bb073d6_242977e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-05-10T19:14:05Z",
+      "side": 1,
+      "message": "My gtest skills are pretty bad so take my +1 with a grain of salt on this one. Seems pretty harmless though although I\u0027m a little confused because it seems like we\u0027re losing a part of the test here.",
+      "revId": "a4177b92a992397f62f2ee3f502f9c678d6cccd7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
