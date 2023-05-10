@@ -28,9 +28,8 @@ namespace lg2::details
 template <typename T>
 concept string_like_type =
     (std::constructible_from<std::string_view, T> ||
-     std::same_as<std::filesystem::path, std::decay_t<T>>) &&
-    !
-std::same_as<std::nullptr_t, T>;
+     std::same_as<std::filesystem::path,
+                  std::decay_t<T>>)&&!std::same_as<std::nullptr_t, T>;
 
 /** Concept to determine if an item acts like a pointer.
  *
@@ -39,9 +38,7 @@ std::same_as<std::nullptr_t, T>;
  */
 template <typename T>
 concept pointer_type = (std::is_pointer_v<T> ||
-                        std::same_as<std::nullptr_t, T>) &&
-                       !
-string_like_type<T>;
+                        std::same_as<std::nullptr_t, T>)&&!string_like_type<T>;
 
 /** Concept to determine if an item acts like an unsigned_integral.
  *
@@ -49,8 +46,8 @@ string_like_type<T>;
  *  `True` and `False` strings.
  */
 template <typename T>
-concept unsigned_integral_except_bool = !
-std::same_as<T, bool>&& std::unsigned_integral<T>;
+concept unsigned_integral_except_bool = !std::same_as<T, bool> &&
+                                        std::unsigned_integral<T>;
 
 template <typename T>
 concept sdbusplus_enum = sdbusplus::message::has_convert_from_string_v<T>;

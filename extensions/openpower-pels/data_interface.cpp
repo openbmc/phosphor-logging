@@ -151,14 +151,14 @@ DataInterface::DataInterface(sdbusplus::bus_t& bus) : _bus(bus)
     _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
         bus, object_path::enableHostPELs, interface::enable, "Enabled", *this,
         [this](const auto& value) {
-            if (std::get<bool>(value) != this->_sendPELsToHost)
-            {
-                log<level::INFO>(
-                    fmt::format("The send PELs to host setting changed to {}",
-                                std::get<bool>(value))
-                        .c_str());
-            }
-            this->_sendPELsToHost = std::get<bool>(value);
+        if (std::get<bool>(value) != this->_sendPELsToHost)
+        {
+            log<level::INFO>(
+                fmt::format("The send PELs to host setting changed to {}",
+                            std::get<bool>(value))
+                    .c_str());
+        }
+        this->_sendPELsToHost = std::get<bool>(value);
         }));
 
     // Watch the BMCState property
@@ -172,17 +172,17 @@ DataInterface::DataInterface(sdbusplus::bus_t& bus) : _bus(bus)
     _properties.emplace_back(std::make_unique<InterfaceWatcher<DataInterface>>(
         bus, object_path::chassisState, interface::chassisState, *this,
         [this](const auto& properties) {
-            auto state = properties.find("CurrentPowerState");
-            if (state != properties.end())
-            {
-                this->_chassisState = std::get<std::string>(state->second);
-            }
+        auto state = properties.find("CurrentPowerState");
+        if (state != properties.end())
+        {
+            this->_chassisState = std::get<std::string>(state->second);
+        }
 
-            auto trans = properties.find("RequestedPowerTransition");
-            if (trans != properties.end())
-            {
-                this->_chassisTransition = std::get<std::string>(trans->second);
-            }
+        auto trans = properties.find("RequestedPowerTransition");
+        if (trans != properties.end())
+        {
+            this->_chassisTransition = std::get<std::string>(trans->second);
+        }
         }));
 
     // Watch the CurrentHostState property
@@ -197,19 +197,18 @@ DataInterface::DataInterface(sdbusplus::bus_t& bus) : _bus(bus)
         bus, object_path::biosConfigMgr, interface::biosConfigMgr,
         "BaseBIOSTable", service_name::biosConfigMgr, *this,
         [this](const auto& value) {
-            const auto& attributes = std::get<BiosAttributes>(value);
+        const auto& attributes = std::get<BiosAttributes>(value);
 
-            auto it = attributes.find("pvm_hmc_managed");
-            if (it != attributes.end())
+        auto it = attributes.find("pvm_hmc_managed");
+        if (it != attributes.end())
+        {
+            const auto& currentValVariant = std::get<5>(it->second);
+            auto currentVal = std::get_if<std::string>(&currentValVariant);
+            if (currentVal)
             {
-                const auto& currentValVariant = std::get<5>(it->second);
-                auto currentVal = std::get_if<std::string>(&currentValVariant);
-                if (currentVal)
-                {
-                    this->_hmcManaged = (*currentVal == "Enabled") ? true
-                                                                   : false;
-                }
+                this->_hmcManaged = (*currentVal == "Enabled") ? true : false;
             }
+        }
         }));
 }
 
