@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db8a225c_ad4b0990",
+        "filename": "extensions/openpower-pels/pel.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-05-10T19:05:16Z",
+      "side": 1,
+      "message": "Something in function name to indicate it\u0027s for just hostboot and bmc? Some documentation on why it\u0027s only for them?",
+      "revId": "92cbb12232aa16b76eda0e38ec94cf67bbed84b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1b9b7e9_c727fe5a",
+        "filename": "extensions/openpower-pels/pel.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-05-10T19:05:16Z",
+      "side": 1,
+      "message": "nit: how come this isn\u0027t implemented in the cpp?",
+      "revId": "92cbb12232aa16b76eda0e38ec94cf67bbed84b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
