@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3966c24e_38f1868b",
+        "filename": "extensions/openpower-pels/bcd_time.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-05-10T19:00:09Z",
+      "side": 1,
+      "message": "These types of checks are always a bit scary to me. Is there a concern the BCD could be bad? If the BCD is bad, do we care if the epochMS turns out bad? My vote would be just not have this function.",
+      "revId": "c4d70ec3f03ea0f67f11ab4220d07fbf8545b227",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
