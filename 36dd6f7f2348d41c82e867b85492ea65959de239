@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f54b8da_a81529dd",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 757,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-05-10T19:07:40Z",
+      "side": 1,
+      "message": "Hmm, so before this we would just show them for all SRC\u0027s. Why the specific BMC and hostboot check now in a debug tool?",
+      "revId": "36dd6f7f2348d41c82e867b85492ea65959de239",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
