@@ -16,6 +16,24 @@
       "message": "These types of checks are always a bit scary to me. Is there a concern the BCD could be bad? If the BCD is bad, do we care if the epochMS turns out bad? My vote would be just not have this function.",
       "revId": "c4d70ec3f03ea0f67f11ab4220d07fbf8545b227",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67fc6853_838ca1f7",
+        "filename": "extensions/openpower-pels/bcd_time.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-05-10T19:51:14Z",
+      "side": 1,
+      "message": "Good question.  At first I didn\u0027t have it, and one of the existing testcases had a bad timestamp in a PEL and CI failed because some switch was just turned on to fail if there is any stderr output during one of the undefined behavior sanitizer tests.\n\nThere was a line about something in std::chrono getting an overflow, and I narrowed it down to the from_time_t() call below when passed an invalid time.\n\n\nI guess I could fixup that testcase and then technically I wouldn\u0027t need this.  I\u0027ll think about it.\n\nI\u0027m not worried about the BMC generating a bad timestamp, but we don\u0027t have any control over what hostboot/phyp/etc do.",
+      "parentUuid": "3966c24e_38f1868b",
+      "revId": "c4d70ec3f03ea0f67f11ab4220d07fbf8545b227",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
