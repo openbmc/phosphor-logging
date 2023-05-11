@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "719a31cf_bdfed678",
+        "filename": "extensions/openpower-pels/pel.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-05-11T18:33:31Z",
+      "side": 1,
+      "message": "I added documention.  I think I\u0027d prefer to keep the function name as it is.",
+      "parentUuid": "db8a225c_ad4b0990",
+      "revId": "92cbb12232aa16b76eda0e38ec94cf67bbed84b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1b9b7e9_c727fe5a",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-05-10T19:05:16Z",
       "side": 1,
       "message": "nit: how come this isn\u0027t implemented in the cpp?",
+      "revId": "92cbb12232aa16b76eda0e38ec94cf67bbed84b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2905a42a_6d10112f",
+        "filename": "extensions/openpower-pels/pel.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-05-11T18:33:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1b9b7e9_c727fe5a",
       "revId": "92cbb12232aa16b76eda0e38ec94cf67bbed84b8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
