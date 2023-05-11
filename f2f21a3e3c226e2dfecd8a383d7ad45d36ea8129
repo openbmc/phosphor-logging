@@ -90,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d79dcce4_e4c8297a",
+        "filename": "log_manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-05-11T03:04:10Z",
+      "side": 1,
+      "message": "We have devised an implementation wherein we initially create a rotated log during the first rotation. Subsequently, we ensure the preservation of this log from further rotations. By referring to this log, users can determine the starting point of the rotation. Do you have any thoughts or opinions on this particular implementation?",
+      "parentUuid": "1e774eb1_d494fec2",
+      "revId": "f2f21a3e3c226e2dfecd8a383d7ad45d36ea8129",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cc2fec68_2617602d",
         "filename": "log_manager.cpp",
         "patchSetId": 9
