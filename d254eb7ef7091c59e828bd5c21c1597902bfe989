@@ -16,6 +16,24 @@
       "message": "No way to fine tune this to only notify of the hot plug interfaces? Just worried about adding a bunch of cpu cycles to this app now for interfaces it\u0027s 99% not interested in.",
       "revId": "d254eb7ef7091c59e828bd5c21c1597902bfe989",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed8e1c78_1a063f8e",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 902,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-05-11T16:20:38Z",
+      "side": 1,
+      "message": "Since we don\u0027t know the object paths of the FRUs, there\u0027s nothing else we can do with the match rules since unfortunately sdbus doesn\u0027t let you match on the interface added, or do a wildcard on the arg0 path.\n\nThough since I don\u0027t create the matches until it reaches BMC ready, that avoids most of the signals coming from inventory manager on the genesis POR.  As I mentioned in the commit message that does leave the PLDM ones for the cores during the first boot of the host after a genesis POR.  Every reboot/boot after that wouldn\u0027t generate any signals.\n\nThe handler itself just checks for an interesting interface and then returns so it isn\u0027t doing too much.\n\nDo you have any ideas?",
+      "parentUuid": "f05cf895_b2c49455",
+      "revId": "d254eb7ef7091c59e828bd5c21c1597902bfe989",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
