@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c03895c_944cd536",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-05-11T18:33:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1138e21_15cb0a14",
+      "revId": "e527c35f54abb52efd0bed7c06e06fa610217ae9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77a831b0_720e63d2",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "56057911_32db3465",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1081,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-05-11T18:33:31Z",
+      "side": 1,
+      "message": "Hmm, interesting question, but I don\u0027t think so.  We went over every single PEL in the message registry that had this bit set to go over the callouts, and none have 2 different PS or fan callouts.  The situations this is geared for is when a single PS or fan take a hit but the rest keep running.   (Also, the FSP didn\u0027t worry about that either).",
+      "parentUuid": "77a831b0_720e63d2",
+      "revId": "e527c35f54abb52efd0bed7c06e06fa610217ae9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "503a3b0c_fbf31fc4",
@@ -48,6 +84,30 @@
       "writtenOn": "2023-05-10T20:53:11Z",
       "side": 1,
       "message": "nit: the",
+      "range": {
+        "startLine": 505,
+        "startChar": 54,
+        "endLine": 505,
+        "endChar": 58
+      },
+      "revId": "e527c35f54abb52efd0bed7c06e06fa610217ae9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4138aa03_df13725d",
+        "filename": "extensions/openpower-pels/manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 505,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-05-11T18:33:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "503a3b0c_fbf31fc4",
       "range": {
         "startLine": 505,
         "startChar": 54,
