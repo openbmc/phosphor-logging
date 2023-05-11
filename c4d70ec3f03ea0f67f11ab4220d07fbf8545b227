@@ -52,6 +52,24 @@
       "parentUuid": "67fc6853_838ca1f7",
       "revId": "c4d70ec3f03ea0f67f11ab4220d07fbf8545b227",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fd4788a_59c5655e",
+        "filename": "extensions/openpower-pels/bcd_time.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-05-11T15:28:53Z",
+      "side": 1,
+      "message": "I\u0027ll the check. on the BMC it will just show a made up timestamp in that case.",
+      "parentUuid": "f95ee249_3418bc06",
+      "revId": "c4d70ec3f03ea0f67f11ab4220d07fbf8545b227",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
