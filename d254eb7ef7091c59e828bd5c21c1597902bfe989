@@ -34,6 +34,24 @@
       "parentUuid": "f05cf895_b2c49455",
       "revId": "d254eb7ef7091c59e828bd5c21c1597902bfe989",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d4a697e_4cd20598",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 902,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-05-11T18:02:18Z",
+      "side": 1,
+      "message": "Ahh, I missed that we\u0027re at least only looking at interfacesAdded that have a base Inventory path. That\u0027s good.",
+      "parentUuid": "ed8e1c78_1a063f8e",
+      "revId": "d254eb7ef7091c59e828bd5c21c1597902bfe989",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
