@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebec2f9d_552faa47",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2023-05-12T12:06:42Z",
+      "side": 1,
+      "message": "minor comment if required please fix",
+      "revId": "5d1d69577dcbf76cff3c9254c7dd7761c16a4a7c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f9ca6fa_b50ffd7b",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 594,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2023-05-12T12:06:42Z",
+      "side": 1,
+      "message": "auto\u0026 ?",
+      "range": {
+        "startLine": 594,
+        "startChar": 8,
+        "endLine": 594,
+        "endChar": 12
+      },
+      "revId": "5d1d69577dcbf76cff3c9254c7dd7761c16a4a7c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
