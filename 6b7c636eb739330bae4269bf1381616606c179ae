@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0f1c7d1_e506d772",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2023-05-12T12:37:17Z",
+      "side": 1,
+      "message": "may be for future we can read the BMCState directly rather than the string value if that avoids calling convertBMCStateFromString method \n\nusing PropertiesVariant \u003d sdbusplus::utility::dedup_variant_t\u003cBMCState\u003e;\nconst HostState* progPtr \u003d std::get_if\u003cHostState\u003e(\u0026retVal);",
+      "revId": "6b7c636eb739330bae4269bf1381616606c179ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47084a9e_523d1616",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 922,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2023-05-12T12:37:17Z",
+      "side": 1,
+      "message": "to simplify we could use separate watch _fruIntfWatch, _fruPropWatch, suggestion just for readability, was confused a bit.",
+      "range": {
+        "startLine": 922,
+        "startChar": 9,
+        "endLine": 922,
+        "endChar": 20
+      },
+      "revId": "6b7c636eb739330bae4269bf1381616606c179ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f7fffad_2ef0eacb",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 982,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2023-05-12T12:37:17Z",
+      "side": 1,
+      "message": "name is a bit confusing should it be checkAndSetPresence, or else it looks like a function returning bool vaue",
+      "revId": "6b7c636eb739330bae4269bf1381616606c179ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
