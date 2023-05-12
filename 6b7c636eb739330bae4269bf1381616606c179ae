@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d792dd19_3611e235",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-05-12T15:49:43Z",
+      "side": 1,
+      "message": "I originally wrote it to save it as a string because at first I just needed the string value to add to a UserData section, and also sdbusplus didn\u0027t support enums directly.\n\nthis is neat though, I may change things around to use it in the future.",
+      "parentUuid": "f0f1c7d1_e506d772",
+      "revId": "6b7c636eb739330bae4269bf1381616606c179ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "47084a9e_523d1616",
@@ -41,6 +59,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ff64e48_df1aac7e",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 922,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-05-12T15:49:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "47084a9e_523d1616",
+      "range": {
+        "startLine": 922,
+        "startChar": 9,
+        "endLine": 922,
+        "endChar": 20
+      },
+      "revId": "6b7c636eb739330bae4269bf1381616606c179ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f7fffad_2ef0eacb",
@@ -54,6 +96,24 @@
       "writtenOn": "2023-05-12T12:37:17Z",
       "side": 1,
       "message": "name is a bit confusing should it be checkAndSetPresence, or else it looks like a function returning bool vaue",
+      "revId": "6b7c636eb739330bae4269bf1381616606c179ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9400fd0f_ee6e6b7f",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 982,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-05-12T15:49:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f7fffad_2ef0eacb",
       "revId": "6b7c636eb739330bae4269bf1381616606c179ae",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
