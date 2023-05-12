@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4928665f_c029c0f7",
+        "filename": "extensions/openpower-pels/pel_types.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-05-12T15:48:17Z",
+      "side": 1,
+      "message": "yea, it\u0027s the first byte of the SRC refcode.",
+      "parentUuid": "fc788ae7_0650e560",
+      "revId": "7fc3d7b87365ea455c36b241d2c5415443ffef7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cd466421_0031c578",
         "filename": "extensions/openpower-pels/src.hpp",
         "patchSetId": 3
@@ -31,6 +49,24 @@
       "writtenOn": "2023-05-12T12:10:00Z",
       "side": 1,
       "message": "i think we need an api for nagdump to detect if it is power/thermal error, during IPL time nag should ignore power and thermal error, can you please cater for it. Not sure if it needs to be added to the interface?",
+      "revId": "7fc3d7b87365ea455c36b241d2c5415443ffef7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d72c3182_011550d0",
+        "filename": "extensions/openpower-pels/src.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-05-12T15:48:17Z",
+      "side": 1,
+      "message": "I\u0027ll need to think about this some.",
+      "parentUuid": "cd466421_0031c578",
       "revId": "7fc3d7b87365ea455c36b241d2c5415443ffef7f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
