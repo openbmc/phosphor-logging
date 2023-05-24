@@ -86,7 +86,7 @@
         "componentID": {
             "description": "The component ID of the PEL creator, in the form 0xYY00.  For BD SRCs, this is optional and if not present the component ID will be taken from the upper byte of the reason code.",
             "type": "string",
-            "pattern": "^0x[0-9a-fA-F]{2}00$"
+            "pattern": "^0x[0-9A-F]{2}00$"
         },
 
         "src": {
@@ -151,7 +151,7 @@
         "reasonCode": {
             "description": "String representation of the 2 byte reason code, like 0xABCD.  The reason code is the 2nd half of the 8 character SRC ASCII String field, such as B1FFABCD.",
             "type": "string",
-            "pattern": "^0x[0-9a-fA-F]{4}$",
+            "pattern": "^0x[0-9A-F]{4}$",
 
             "examples": ["0x3355"]
         },

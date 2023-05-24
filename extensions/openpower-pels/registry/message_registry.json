@@ -839,9 +839,9 @@
             "Name": "org.open_power.Faultlog.Error.DeconfiguredHW",
             "Subsystem": "cec_hardware",
             "Severity": "predictive",
-            "ComponentID": "0xf100",
+            "ComponentID": "0xF100",
             "SRC": {
-                "ReasonCode": "0xf138",
+                "ReasonCode": "0xF138",
                 "Words6To9": {
                     "6": {
                         "Description": "Number of guard records with error object",
