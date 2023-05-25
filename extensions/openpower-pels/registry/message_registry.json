@@ -480,6 +480,30 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Logging.Error.LogsCleared",
+            "Subsystem": "bmc_firmware",
+            "Severity": "non_error",
+
+            "SRC": {
+                "ReasonCode": "0x2007",
+                "Words6To9": {
+                    "6": {
+                        "Description": "Number of logs removed",
+                        "AdditionalDataPropSource": "NUM_LOGS"
+                    }
+                }
+            },
+
+            "Documentation": {
+                "Description": "Event logs have been cleared",
+                "Message": "Event logs have been cleared",
+                "Notes": [
+                    "Created when someone clears all event logs."
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.PHAL.Error.Boot",
             "Subsystem": "cec_hardware",
             "ComponentID": "0x3000",
@@ -741,6 +765,31 @@
                 "Notes": [
                     "User data and journal should contain more information"
                 ]
+            }
+        },
+
+        {
+            "Name": "org.open_power.Proc.FSI.Error.MasterDetectionFailure",
+            "Subsystem": "cec_chip_iface",
+            "ComponentID": "0x3000",
+            "Severity": "unrecoverable",
+
+            "SRC": {
+                "ReasonCode": "0x300C",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "There was a failure while initializing the FSI links",
+                "Message": "There was a failure while initializing the FSI links",
+                "Notes": [
+                    "The FSI device driver had a problem doing a scan.",
+                    "The callouts are done based on the passed in FSI device path."
+                ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 75
             }
         },
 
