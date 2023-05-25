@@ -745,6 +745,31 @@
         },
 
         {
+            "Name": "org.open_power.Proc.FSI.Error.MasterDetectionFailure",
+            "Subsystem": "cec_chip_iface",
+            "ComponentID": "0x3000",
+            "Severity": "predictive",
+
+            "SRC": {
+                "ReasonCode": "0x300C",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "There was a failure while initializing the FSI links",
+                "Message": "There was a failure while initializing the FSI links",
+                "Notes": [
+                    "The FSI device driver had a problem doing a scan.",
+                    "The callouts are passed in using the FSI device path."
+                ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 50
+            }
+        },
+
+        {
             "Name": "org.open_power.OCC.Firmware.PresenceMismatch",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x2600",
