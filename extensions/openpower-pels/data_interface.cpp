@@ -981,29 +981,31 @@ void DataInterface::presenceChanged(sdbusplus::message_t& msg)
 void DataInterface::notifyPresenceSubsribers(const std::string& path,
                                              const DBusPropertyMap& properties)
 {
+    auto prop = properties.find("Present");
+    if ((prop == properties.end()) || (!std::get<bool>(prop->second)))
+    {
+        return;
+    }
+
+    std::string locCode;
+
     try
     {
-        auto prop = properties.find("Present");
-        if (prop != properties.end())
-        {
-            if (std::get<bool>(prop->second))
-            {
-                auto locCode = getLocationCode(path);
-                log<level::INFO>(
-                    fmt::format("Detected FRU {} ({}) present ", path, locCode)
-                        .c_str());
-                // Tell the subscribers.
-                setFruPresent(locCode);
-            }
-        }
+        locCode = getLocationCode(path);
     }
-    catch (const std::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
-        log<level::ERR>(
-            fmt::format("Failed while processing presence for {}: {}", path,
-                        e.what())
-                .c_str());
+        log<level::DEBUG>(fmt::format("Could not get location code for {}: {}",
+                                      path, e.what())
+                              .c_str());
+        return;
     }
+
+    log<level::DEBUG>(
+        fmt::format("Detected FRU {} ({}) present ", path, locCode).c_str());
+
+    // Tell the subscribers.
+    setFruPresent(locCode);
 }
 } // namespace pels
 } // namespace openpower
