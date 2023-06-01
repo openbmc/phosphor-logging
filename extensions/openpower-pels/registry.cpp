@@ -659,10 +659,11 @@ std::optional<Entry> Registry::lookup(const std::string& name, LookupType type,
     const auto& registry = reg.value();
     // Find an entry with this name in the PEL array.
     auto e = std::find_if(registry["PELs"].begin(), registry["PELs"].end(),
-                          [&name, &type](const auto& j) {
-        return (
-            (name == j["Name"] && type == LookupType::name) ||
-            (name == j["SRC"]["ReasonCode"] && type == LookupType::reasonCode));
+                          [&name, &type](const nlohmann::json& j) {
+        return ((name == j.at("Name").get<std::string>() &&
+                 type == LookupType::name) ||
+                (name == j.at("SRC").at("ReasonCode").get<std::string>() &&
+                 type == LookupType::reasonCode));
     });
 
     if (e != registry["PELs"].end())

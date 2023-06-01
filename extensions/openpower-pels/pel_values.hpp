@@ -2,6 +2,7 @@
 
 #include "pel_types.hpp"
 
+#include <cstdint>
 #include <map>
 #include <string>
 #include <tuple>
