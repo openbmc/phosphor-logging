@@ -253,6 +253,15 @@ system is running with deconfigured hardware.
 "DeconfigFlag": true
 ```
 
+### SRC Checkstop Flag
+
+This is used to indicate the PEL is for a hardware checkstop, and causes bit 0
+in hex word 5 of the SRC to be set.
+
+```json
+"CheckstopFlag": true
+```
+
 ### Documentation Fields
 
 The documentation fields are used by PEL parsers to display a human readable

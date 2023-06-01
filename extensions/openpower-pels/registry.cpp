@@ -195,6 +195,11 @@ bool getSRCDeconfigFlag(const nlohmann::json& src)
     return src["DeconfigFlag"].get<bool>();
 }
 
+bool getSRCCheckstopFlag(const nlohmann::json& src)
+{
+    return src["CheckstopFlag"].get<bool>();
+}
+
 std::optional<std::map<SRC::WordNum, SRC::AdditionalDataField>>
     getSRCHexwordFields(const nlohmann::json& src, const std::string& name)
 {
@@ -743,6 +748,11 @@ std::optional<Entry> Registry::lookup(const std::string& name, LookupType type,
             if (src.contains("DeconfigFlag"))
             {
                 entry.src.deconfigFlag = helper::getSRCDeconfigFlag(src);
+            }
+
+            if (src.contains("CheckstopFlag"))
+            {
+                entry.src.checkstopFlag = helper::getSRCCheckstopFlag(src);
             }
 
             auto& doc = (*e)["Documentation"];

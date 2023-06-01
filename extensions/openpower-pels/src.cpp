@@ -350,6 +350,11 @@ SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
     setBMCPosition();
     setMotherboardCCIN(dataIface);
 
+    if (regEntry.src.checkstopFlag)
+    {
+        setErrorStatusFlag(ErrorStatusFlags::hwCheckstop);
+    }
+
     if (regEntry.src.deconfigFlag)
     {
         setErrorStatusFlag(ErrorStatusFlags::deconfigured);

@@ -110,7 +110,12 @@ struct SRC
      */
     bool deconfigFlag;
 
-    SRC() : type(0), reasonCode(0), deconfigFlag(false) {}
+    /**
+     * @brief If the checkstop flag should be set in hex word 5
+     */
+    bool checkstopFlag;
+
+    SRC() : type(0), reasonCode(0), deconfigFlag(false), checkstopFlag(false) {}
 };
 
 struct AppCapture
