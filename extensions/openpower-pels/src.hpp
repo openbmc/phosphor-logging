@@ -62,8 +62,9 @@ class SRC : public Section
      * @brief Enums for the error status bits in hex word 5
      *        of BMC SRCs.
      */
-    enum class ErrorStatusFlags
+    enum class ErrorStatusFlags : uint32_t
     {
+        hwCheckstop = 0x80000000,
         terminateFwErr = 0x20000000,
         deconfigured = 0x02000000,
         guarded = 0x01000000

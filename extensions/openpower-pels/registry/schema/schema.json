@@ -102,7 +102,9 @@
 
                 "Words6To9": { "$ref": "#/definitions/srcWords6To9" },
 
-                "DeconfigFlag": { "$ref": "#/definitions/deconfigFlag" }
+                "DeconfigFlag": { "$ref": "#/definitions/deconfigFlag" },
+
+                "CheckstopFlag": { "$ref": "#/definitions/checkstopFlag" }
             },
 
             "required": ["ReasonCode", "Words6To9"],
@@ -136,6 +138,11 @@
 
         "deconfigFlag": {
             "description": "If true, will set bit 6 in hex data word 5, which means 'one or more resources are deconfigured'.",
+            "type": "boolean"
+        },
+
+        "checkstopFlag": {
+            "description": "Indicates the SRC is for a hardware checkstop.",
             "type": "boolean"
         },
 
