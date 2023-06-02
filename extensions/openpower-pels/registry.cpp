@@ -661,8 +661,8 @@ std::optional<Entry> Registry::lookup(const std::string& name, LookupType type,
     auto e = std::find_if(registry["PELs"].begin(), registry["PELs"].end(),
                           [&name, &type](const auto& j) {
         return (
-            (name == j["Name"] && type == LookupType::name) ||
-            (name == j["SRC"]["ReasonCode"] && type == LookupType::reasonCode));
+            (j["Name"] == name && type == LookupType::name) ||
+            (j["SRC"]["ReasonCode"] == name && type == LookupType::reasonCode));
     });
 
     if (e != registry["PELs"].end())

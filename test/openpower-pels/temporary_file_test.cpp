@@ -193,7 +193,7 @@ TEST_F(TemporaryFileTests, MoveAssignmentOperatorTest2)
     fs::path path = tmpFile->getPath();
 
     // Try to move object into itself; should do nothing
-    tmpFile = std::move(tmpFile);
+    *tmpFile = static_cast<TemporaryFile&&>(*tmpFile);
 
     // Verify object still owns same temporary file and file exists
     EXPECT_EQ(tmpFile->getPath(), path);
