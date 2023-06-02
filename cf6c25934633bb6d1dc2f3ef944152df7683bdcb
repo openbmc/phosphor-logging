@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8283c994_d6a509ea",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-06-02T15:38:41Z",
+      "side": 1,
+      "message": "This isn\u0027t particularly useful of a \"Tested\" message.  What did you test and how?",
+      "revId": "cf6c25934633bb6d1dc2f3ef944152df7683bdcb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "af1428c4_001b751b",
         "filename": "log_manager.cpp",
         "patchSetId": 10
@@ -36,6 +53,29 @@
         "startChar": 0,
         "endLine": 241,
         "endChar": 5
+      },
+      "revId": "cf6c25934633bb6d1dc2f3ef944152df7683bdcb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67dc8ede_d0861e03",
+        "filename": "yaml/xyz/openbmc_project/Logging.metadata.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-06-02T15:38:41Z",
+      "side": 1,
+      "message": "This should probably be size_t?  Hopefully that is possible with the metadata parsing tools.",
+      "range": {
+        "startLine": 5,
+        "startChar": 14,
+        "endLine": 5,
+        "endChar": 18
       },
       "revId": "cf6c25934633bb6d1dc2f3ef944152df7683bdcb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
