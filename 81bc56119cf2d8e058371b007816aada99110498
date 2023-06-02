@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d75e8ffc_72ba7a49",
+        "filename": "extensions/openpower-pels/registry.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 664,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-06-02T18:57:42Z",
+      "side": 1,
+      "message": "I think you could have just changed these to:\n\nj[\"Name\"] \u003d\u003d name\n\nWhen the JSON is on the LHS then the implicit conversions will work fine.",
+      "range": {
+        "startLine": 663,
+        "startChar": 0,
+        "endLine": 664,
+        "endChar": 45
+      },
+      "revId": "81bc56119cf2d8e058371b007816aada99110498",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
