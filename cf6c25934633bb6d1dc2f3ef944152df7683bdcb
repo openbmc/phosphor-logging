@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d5fd1a2_fb18fce3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-06-07T01:49:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8283c994_d6a509ea",
+      "revId": "cf6c25934633bb6d1dc2f3ef944152df7683bdcb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "af1428c4_001b751b",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-06-02T15:36:37Z",
       "side": 1,
       "message": "Doesn\u0027t this still mean we only get one rotated log?  How do we get a new one once the previous rotated log is itself purged out?\n\nI\u0027m still having a bit of a trouble understanding what the utility of this log is, especially if the machine has a very long uptime where we expect the logs to be rotated potentially many times.",
+      "revId": "cf6c25934633bb6d1dc2f3ef944152df7683bdcb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5c4cd4e_91450c46",
+        "filename": "log_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-06-07T01:49:24Z",
+      "side": 1,
+      "message": "We make the implementation preserving the log from being rotated. The explanation is on line 241 comment.",
+      "parentUuid": "af1428c4_001b751b",
       "revId": "cf6c25934633bb6d1dc2f3ef944152df7683bdcb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -58,6 +94,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bff9d840_b402f1cf",
+        "filename": "log_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-06-07T01:49:24Z",
+      "side": 1,
+      "message": "They will still be published on dbus. The list is utilize for tracking logs number by the size of list. Therefore, we can preserve the rotated log from being rotated.",
+      "parentUuid": "5ca8598a_39a4e671",
+      "range": {
+        "startLine": 234,
+        "startChar": 0,
+        "endLine": 241,
+        "endChar": 5
+      },
+      "revId": "cf6c25934633bb6d1dc2f3ef944152df7683bdcb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67dc8ede_d0861e03",
@@ -71,6 +131,30 @@
       "writtenOn": "2023-06-02T15:38:41Z",
       "side": 1,
       "message": "This should probably be size_t?  Hopefully that is possible with the metadata parsing tools.",
+      "range": {
+        "startLine": 5,
+        "startChar": 14,
+        "endLine": 5,
+        "endChar": 18
+      },
+      "revId": "cf6c25934633bb6d1dc2f3ef944152df7683bdcb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6c1fd13_1aa447da",
+        "filename": "yaml/xyz/openbmc_project/Logging.metadata.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-06-07T01:49:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67dc8ede_d0861e03",
       "range": {
         "startLine": 5,
         "startChar": 14,
