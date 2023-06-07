@@ -752,7 +752,7 @@ void Manager::updateEventId(std::unique_ptr<openpower::pels::PEL>& pel)
     auto entryN = _logManager.entries.find(pel->obmcLogID());
     if (entryN != _logManager.entries.end())
     {
-        entryN->second->eventId(eventIdStr);
+        entryN->second->eventId(eventIdStr, true);
     }
 }
 
@@ -904,11 +904,11 @@ void Manager::setServiceProviderNotifyFlag(uint32_t obmcLogID)
         {
             if (attr.actionFlags.test(callHomeFlagBit))
             {
-                entry->second->serviceProviderNotify(Entry::Notify::Notify);
+                entry->second->serviceProviderNotify(Entry::Notify::Notify, true);
             }
             else
             {
-                entry->second->serviceProviderNotify(Entry::Notify::Inhibit);
+                entry->second->serviceProviderNotify(Entry::Notify::Inhibit, true);
             }
         }
     }
