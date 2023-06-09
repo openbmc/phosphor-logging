@@ -64,6 +64,7 @@ class Server : public Iface
 
     using NetworkClient::address;
     using NetworkClient::port;
+    using NetworkClient::transportProtocol;
 
     /** @brief Override that updates rsyslog config file as well
      *  @param[in] value - remote server address
@@ -81,15 +82,23 @@ class Server : public Iface
      */
     virtual void restart();
 
+    /** @brief Set protocol for rsyslog TCP or UDP.
+     *  @param[in] value - UDP/TCP.
+     *  @returns protocol value
+     */
+    virtual TransportProtocol
+        transportProtocol(TransportProtocol protocol) override;
+
   private:
     /** @brief Update remote server address and port in
      *         rsyslog config file.
      *  @param[in] serverAddress - remote server address
      *  @param[in] serverPort - remote server port
+     *  @param[in] serverTransportProtocol - remote server protocol TCP/UDP
      *  @param[in] filePath - rsyslog config file path
      */
     void writeConfig(const std::string& serverAddress, uint16_t serverPort,
-                     const char* filePath);
+                     TransportProtocol protocol, const char* filePath);
 
     /** @brief Checks if input IP address is valid (uses getaddrinfo)
      *  @param[in] address - server address
