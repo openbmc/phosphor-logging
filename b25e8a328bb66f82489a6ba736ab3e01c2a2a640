@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21277c86_90815e94",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 755,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-06-09T15:15:52Z",
+      "side": 1,
+      "message": "I feel like I should probably be familiar with this but ... sdbusplus provides an optional parameter I assume here when setting a property and it\u0027s default false (which means send notification) and so passing true is telling it to not send a property change notification?",
+      "revId": "b25e8a328bb66f82489a6ba736ab3e01c2a2a640",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
