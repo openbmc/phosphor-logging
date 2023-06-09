@@ -8,7 +8,8 @@ namespace phosphor
 
 namespace rsyslog_config::internal
 {
-extern std::optional<std::pair<std::string, uint32_t>>
+extern std::optional<
+    std::tuple<std::string, uint32_t, NetworkClient::TransportProtocol>>
     parseConfig(std::istream& ss);
 }
 
@@ -76,8 +77,8 @@ TEST_F(TestRemoteLogging, parseConfigGoodIpv6)
     std::stringstream ss(str);
     auto ret = phosphor::rsyslog_config::internal::parseConfig(ss);
     EXPECT_TRUE(ret);
-    EXPECT_EQ(ret->first, "abcd:ef01::01");
-    EXPECT_EQ(ret->second, 50000);
+    EXPECT_EQ(std::get<0>(*ret), "abcd:ef01::01");
+    EXPECT_EQ(std::get<1>(*ret), 50000);
 }
 
 TEST_F(TestRemoteLogging, parseConfigBadIpv6WithoutRightBracket)
@@ -132,6 +133,38 @@ TEST_F(TestRemoteLogging, parseConfigBadEmpty)
     std::stringstream ss(str);
     auto ret = phosphor::rsyslog_config::internal::parseConfig(ss);
     EXPECT_FALSE(ret);
+}
+
+TEST_F(TestRemoteLogging, parseConfigTCP)
+{
+    // A good case
+    std::string str = "*.* @@[abcd:ef01::01]:50000";
+    std::stringstream ss(str);
+    auto ret = phosphor::rsyslog_config::internal::parseConfig(ss);
+    EXPECT_TRUE(ret);
+    EXPECT_EQ(std::get<2>(*ret),
+              phosphor::rsyslog_config::NetworkClient::TransportProtocol::TCP);
+}
+
+TEST_F(TestRemoteLogging, parseConfigUdp)
+{
+    // A good case
+    std::string str = "*.* @[abcd:ef01::01]:50000";
+    std::stringstream ss(str);
+    auto ret = phosphor::rsyslog_config::internal::parseConfig(ss);
+    EXPECT_TRUE(ret);
+    EXPECT_EQ(std::get<2>(*ret),
+              phosphor::rsyslog_config::NetworkClient::TransportProtocol::UDP);
+}
+
+TEST_F(TestRemoteLogging, createUdpConfig)
+{
+    // A good case
+    config->address("abcd:ef01::01");
+    config->port(50000);
+    config->transportProtocol(
+        phosphor::rsyslog_config::NetworkClient::TransportProtocol::UDP);
+    EXPECT_EQ(getConfig(configFilePath.c_str()), "*.* @[abcd:ef01::01]:50000");
 }
 
 } // namespace test

@@ -35,20 +35,39 @@ bool isIPv6Address(const std::string& addr)
     return inet_pton(AF_INET6, addr.c_str(), &result) == 1;
 }
 
-std::optional<std::pair<std::string, uint32_t>> parseConfig(std::istream& ss)
+std::optional<
+    std::tuple<std::string, uint32_t, NetworkClient::TransportProtocol>>
+    parseConfig(std::istream& ss)
 {
     std::string line;
     std::getline(ss, line);
 
-    //"*.* @@<address>:<port>" or
-    //"*.* @@[<ipv6-address>:<port>"
-    constexpr auto start = 6; // Skip "*.* @@"
     std::string serverAddress;
     std::string serverPort;
+    NetworkClient::TransportProtocol serverTransportProtocol =
+        NetworkClient::TransportProtocol::TCP;
 
     // Ignore if line is commented
     if (!line.empty() && '#' != line.at(0))
     {
+        //"*.* @@<address>:<port>" or
+        //"*.* @@[<ipv6-address>:<port>"
+        auto start = line.find('@');
+        if (start == std::string::npos)
+            return {};
+
+        // Skip "*.* @@" or "*.* @"
+        if (line.at(start + 1) == '@')
+        {
+            serverTransportProtocol = NetworkClient::TransportProtocol::TCP;
+            start += 2;
+        }
+        else
+        {
+            serverTransportProtocol = NetworkClient::TransportProtocol::UDP;
+            start++;
+        }
+
         // Check if there is "[]", and make IPv6 address from it
         auto posColonLeft = line.find('[');
         auto posColonRight = line.find(']');
@@ -90,8 +109,8 @@ std::optional<std::pair<std::string, uint32_t>> parseConfig(std::istream& ss)
     }
     try
     {
-        uint32_t port = std::stoul(serverPort);
-        return std::make_pair(std::move(serverAddress), port);
+        return std::make_tuple(std::move(serverAddress), std::stoul(serverPort),
+                               serverTransportProtocol);
     }
     catch (const std::exception& ex)
     {
@@ -121,7 +140,7 @@ std::string Server::address(std::string value)
                                   Argument::ARGUMENT_VALUE(value.c_str()));
         }
 
-        writeConfig(value, port(), configFilePath.c_str());
+        writeConfig(value, port(), transportProtocol(), configFilePath.c_str());
         result = NetworkClient::address(value);
     }
     catch (const InvalidArgument& e)
@@ -153,7 +172,8 @@ uint16_t Server::port(uint16_t value)
             return serverPort;
         }
 
-        writeConfig(address(), value, configFilePath.c_str());
+        writeConfig(address(), value, transportProtocol(),
+                    configFilePath.c_str());
         result = NetworkClient::port(value);
     }
     catch (const InternalFailure& e)
@@ -169,21 +189,57 @@ uint16_t Server::port(uint16_t value)
     return result;
 }
 
-void Server::writeConfig(const std::string& serverAddress, uint16_t serverPort,
-                         const char* filePath)
+NetworkClient::TransportProtocol
+    Server::transportProtocol(NetworkClient::TransportProtocol value)
+{
+    TransportProtocol result{};
+
+    try
+    {
+        auto serverTransportProtocol = transportProtocol();
+        if (serverTransportProtocol == value)
+        {
+            return serverTransportProtocol;
+        }
+
+        writeConfig(address(), port(), value, configFilePath.c_str());
+        result = NetworkClient::transportProtocol(value);
+    }
+    catch (const InternalFailure& e)
+    {
+        throw;
+    }
+    catch (const std::exception& e)
+    {
+        log<level::ERR>(e.what());
+        elog<InternalFailure>();
+    }
+
+    return result;
+}
+
+void Server::writeConfig(
+    const std::string& serverAddress, uint16_t serverPort,
+    NetworkClient::TransportProtocol serverTransportProtocol,
+    const char* filePath)
 {
     std::fstream stream(filePath, std::fstream::out);
 
     if (serverPort && !serverAddress.empty())
     {
-        // write '*.* @@<remote-host>:<port>'
+        std::string type =
+            (serverTransportProtocol == NetworkClient::TransportProtocol::UDP)
+                ? "@"
+                : "@@";
+        // write '*.* @@<remote-host>:<port>' or '*.* @<remote-host>:<port>'
         if (internal::isIPv6Address(serverAddress))
         {
-            stream << "*.* @@[" << serverAddress << "]:" << serverPort;
+            stream << "*.* " << type << "[" << serverAddress
+                   << "]:" << serverPort;
         }
         else
         {
-            stream << "*.* @@" << serverAddress << ":" << serverPort;
+            stream << "*.* " << type << serverAddress << ":" << serverPort;
         }
     }
     else // this is a disable request
@@ -224,8 +280,9 @@ void Server::restore(const char* filePath)
     auto ret = internal::parseConfig(stream);
     if (ret)
     {
-        NetworkClient::address(ret->first);
-        NetworkClient::port(ret->second);
+        NetworkClient::address(std::get<0>(*ret));
+        NetworkClient::port(std::get<1>(*ret));
+        NetworkClient::transportProtocol(std::get<2>(*ret));
     }
 }
 
