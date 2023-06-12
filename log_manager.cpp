@@ -281,7 +281,7 @@ bool Manager::isQuiesceOnErrorEnabled()
     {
         lg2::error("Error reading QuiesceOnHwError property: {ERROR}", "ERROR",
                    e);
-        throw;
+        return false;
     }
 
     return std::get<bool>(property);
