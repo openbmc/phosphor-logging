@@ -869,20 +869,12 @@
                 "ReasonCode": "0xF138",
                 "Words6To9": {
                     "6": {
-                        "Description": "Number of guard records with error object",
-                        "AdditionalDataPropSource": "GUARD_WITH_ASSOC_ERROR_COUNT"
-                    },
-                    "7": {
-                        "Description": "Number of guard records with no error object",
-                        "AdditionalDataPropSource": "GUARD_WITH_NO_ASSOC_ERROR_COUNT"
+                        "Description": "Number of system guard records if any",
+                        "AdditionalDataPropSource": "GUARD_RECORD_COUNT"
                     },
                     "8": {
-                        "Description": "Number of deconfigured records",
-                        "AdditionalDataPropSource": "DECONFIG_RECORD_COUNT"
-                    },
-                    "9": {
-                        "Description": "Number of unresolved pels count",
-                        "AdditionalDataPropSource": "UNRESOLVED_PEL_WITH_DECONFIG_BIT_COUNT"
+                        "Description": "Number of PEL's having deconfig bit set",
+                        "AdditionalDataPropSource": "PEL_WITH_DECONFIG_BIT_COUNT"
                     }
                 }
             },
