@@ -1406,6 +1406,61 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Memory.MemoryECC.Error.isLoggingLimitReached",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3400",
+            "Severity": "unrecoverable",
+            "MfgSeverity": "unrecoverable",
+            "MfgActionFlags": ["service_action", "report", "call_home"],
+
+            "SRC": {
+                "ReasonCode": "0x3417",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Correctable ECC memory error collection limit is reached.",
+                "Message": "Correctable ECC memory error collection limit is reached."
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Memory.MemoryECC.Error.ceCount",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3400",
+            "Severity": "non_error",
+
+            "SRC": {
+                "ReasonCode": "0x3418",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Correctable ECC/other correctable memory error.",
+                "Message": "Correctable ECC/other correctable memory error."
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Memory.MemoryECC.Error.ueCount",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3400",
+            "Severity": "unrecoverable",
+            "MfgSeverity": "unrecoverable",
+            "MfgActionFlags": ["service_action", "report", "call_home"],
+
+            "SRC": {
+                "ReasonCode": "0x3419",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Uncorrectable ECC/other uncorrectable memory error.",
+                "Message": "Uncorrectable ECC/other uncorrectable memory error."
+            }
+        },
+
+        {
             "Name": "org.open_power.Processor.Error.SbeChipOpFailure",
             "Subsystem": "processor_chip",
             "ComponentID": "0x3500",
