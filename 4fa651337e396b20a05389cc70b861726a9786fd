@@ -34,6 +34,24 @@
       "parentUuid": "79201546_81f92c7f",
       "revId": "4fa651337e396b20a05389cc70b861726a9786fd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b39a3721_fc900ccc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-06-23T13:40:58Z",
+      "side": 1,
+      "message": "This isn\u0027t a requirement from Meta?  Is it one built into IPMI and/or Redfish?",
+      "parentUuid": "9682272e_4b107284",
+      "revId": "4fa651337e396b20a05389cc70b861726a9786fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
