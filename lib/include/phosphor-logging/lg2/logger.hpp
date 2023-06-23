@@ -1,9 +1,9 @@
 #pragma once
 
 #include <phosphor-logging/lg2/level.hpp>
-#include <phosphor-logging/lg2/source_location.hpp>
 
 #include <cstddef>
+#include <source_location>
 
 namespace lg2::details
 {
@@ -20,6 +20,6 @@ namespace lg2::details
  *                               log call.
  *  @param[in] char* - The primary message to log.
  */
-void do_log(level, const lg2::source_location&, const char*, ...);
+void do_log(level, const std::source_location&, const char*, ...);
 
 } // namespace lg2::details
