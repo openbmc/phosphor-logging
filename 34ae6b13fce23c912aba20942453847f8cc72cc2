@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98c23dcc_c69a9408",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 1408,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-06-23T13:55:26Z",
+      "side": 1,
+      "message": "I forget, what daemon/repo generates these?  If it\u0027s a new one, we\u0027ll want a new component ID.",
+      "revId": "34ae6b13fce23c912aba20942453847f8cc72cc2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1eaefd7f_417e3429",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 1409,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-06-23T13:55:26Z",
+      "side": 1,
+      "message": "These should still all be upper camel case, so IsLogging... same for the others.",
+      "range": {
+        "startLine": 1409,
+        "startChar": 64,
+        "endLine": 1409,
+        "endChar": 67
+      },
+      "revId": "34ae6b13fce23c912aba20942453847f8cc72cc2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a76dd16a_5c2a730c",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 1410,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-06-23T13:55:26Z",
+      "side": 1,
+      "message": "Are you passing in a callout?  Otherwise, these would all need to call out the card the BMC is on.  If you need to do that I can point you to some examples.",
+      "revId": "34ae6b13fce23c912aba20942453847f8cc72cc2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72903ccd_47f37c24",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 1410,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-06-23T13:55:26Z",
+      "side": 1,
+      "message": "i think it would be a hardware subsystem too, since it isn\u0027t a code problem.",
+      "range": {
+        "startLine": 1410,
+        "startChar": 24,
+        "endLine": 1410,
+        "endChar": 39
+      },
+      "revId": "34ae6b13fce23c912aba20942453847f8cc72cc2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e49ef74d_a3b85959",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 1412,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-06-23T13:55:26Z",
+      "side": 1,
+      "message": "I think this would probably be Predictive?  Since its just CEs, it\u0027s predicting a UE may occur.\n\nand then in MFG it would be unrecoverable as you have it to terminate/stop the boot.",
+      "range": {
+        "startLine": 1412,
+        "startChar": 24,
+        "endLine": 1412,
+        "endChar": 38
+      },
+      "revId": "34ae6b13fce23c912aba20942453847f8cc72cc2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2369e3f7_371d821b",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 1449,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-06-23T13:55:26Z",
+      "side": 1,
+      "message": "if these are the same, you can just leave off the Mfg entries.",
+      "range": {
+        "startLine": 1448,
+        "startChar": 12,
+        "endLine": 1449,
+        "endChar": 42
+      },
+      "revId": "34ae6b13fce23c912aba20942453847f8cc72cc2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
