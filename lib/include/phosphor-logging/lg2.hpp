@@ -9,12 +9,13 @@
 #include <phosphor-logging/lg2/flags.hpp>
 #include <phosphor-logging/lg2/header.hpp>
 #include <phosphor-logging/lg2/level.hpp>
-#include <phosphor-logging/lg2/source_location.hpp>
+
+#include <source_location>
 
 namespace lg2
 {
 /** Implementation of the structured logging `lg2::log` interface. */
-template <level S = level::debug, details::any_but<lg2::source_location>... Ts>
+template <level S = level::debug, details::any_but<std::source_location>... Ts>
 struct log
 {
     /** log with a custom source_location.
@@ -23,7 +24,7 @@ struct log
      *  @param[in] msg - The message to log.
      *  @param[in] ts - The rest of the arguments.
      */
-    explicit log(const lg2::source_location& s, const char* msg,
+    explicit log(const std::source_location& s, const char* msg,
                  details::header_str_conversion_t<Ts&&>... ts)
     {
         details::log_conversion::start(
@@ -39,7 +40,7 @@ struct log
      */
     explicit log(
         const char* msg, details::header_str_conversion_t<Ts&&>... ts,
-        const lg2::source_location& s = lg2::source_location::current()) :
+        const std::source_location& s = std::source_location::current()) :
         log(s, msg, std::forward<details::header_str_conversion_t<Ts&&>>(ts)...)
     {}
 
@@ -53,7 +54,7 @@ template <level S = level::debug, typename... Ts>
 explicit log(const char*, Ts&&...) -> log<S, Ts...>;
 
 template <level S = level::debug, typename... Ts>
-explicit log(const lg2::source_location&, const char*, Ts&&...)
+explicit log(const std::source_location&, const char*, Ts&&...)
     -> log<S, Ts...>;
 
 /** Macro to define aliases for lg2::level(...) -> lg2::log<level>(...)
@@ -71,7 +72,7 @@ explicit log(const lg2::source_location&, const char*, Ts&&...)
     explicit levelval(const char*, Ts&&...) -> levelval<Ts...>;                \
                                                                                \
     template <typename... Ts>                                                  \
-    explicit levelval(const lg2::source_location&, const char*, Ts&&...)       \
+    explicit levelval(const std::source_location&, const char*, Ts&&...)       \
         ->levelval<Ts...>
 
 // Enumerate the aliases for each log level.
