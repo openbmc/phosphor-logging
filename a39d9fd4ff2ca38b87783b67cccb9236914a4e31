@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3257c909_9c6f6931",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 1408,
+      "author": {
+        "id": 1001633
+      },
+      "writtenOn": "2023-06-27T04:04:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "efb233bd_6cc81a8d",
+      "revId": "a39d9fd4ff2ca38b87783b67cccb9236914a4e31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c40e468f_21104abf",
@@ -48,6 +66,30 @@
       "writtenOn": "2023-06-26T16:52:13Z",
       "side": 1,
       "message": "I missed this before, but this might be slightly better if it were reworded a bit, like:  CEThresholdReached or something along those lines.",
+      "range": {
+        "startLine": 1409,
+        "startChar": 64,
+        "endLine": 1409,
+        "endChar": 85
+      },
+      "revId": "a39d9fd4ff2ca38b87783b67cccb9236914a4e31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ce0ede3_e41f59ed",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 1409,
+      "author": {
+        "id": 1001633
+      },
+      "writtenOn": "2023-06-27T04:04:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c40e468f_21104abf",
       "range": {
         "startLine": 1409,
         "startChar": 64,
@@ -81,6 +123,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "99060cfe_ef0bb897",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 1413,
+      "author": {
+        "id": 1001633
+      },
+      "writtenOn": "2023-06-27T04:04:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "271c4129_3b6d5635",
+      "range": {
+        "startLine": 1413,
+        "startChar": 11,
+        "endLine": 1413,
+        "endChar": 72
+      },
+      "revId": "a39d9fd4ff2ca38b87783b67cccb9236914a4e31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "848e55a6_e4428804",
@@ -104,6 +170,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b8b0ac5_0c2fb86d",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 1457,
+      "author": {
+        "id": 1001633
+      },
+      "writtenOn": "2023-06-27T04:04:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "848e55a6_e4428804",
+      "range": {
+        "startLine": 1457,
+        "startChar": 63,
+        "endLine": 1457,
+        "endChar": 71
+      },
+      "revId": "a39d9fd4ff2ca38b87783b67cccb9236914a4e31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b30bf4c5_42b5e864",
@@ -117,6 +207,30 @@
       "writtenOn": "2023-06-26T16:52:13Z",
       "side": 1,
       "message": "and here \u0027.UE\u0027.",
+      "range": {
+        "startLine": 1474,
+        "startChar": 64,
+        "endLine": 1474,
+        "endChar": 71
+      },
+      "revId": "a39d9fd4ff2ca38b87783b67cccb9236914a4e31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8fad767_c40328b5",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 1474,
+      "author": {
+        "id": 1001633
+      },
+      "writtenOn": "2023-06-27T04:04:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b30bf4c5_42b5e864",
       "range": {
         "startLine": 1474,
         "startChar": 64,
