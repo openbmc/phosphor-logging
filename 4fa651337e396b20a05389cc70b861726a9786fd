@@ -69,6 +69,24 @@
       "message": "Looks good to me.",
       "revId": "4fa651337e396b20a05389cc70b861726a9786fd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bd9350f_dc2ee242",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-06-28T08:58:22Z",
+      "side": 1,
+      "message": "Hi Patrick,\n\nThe logs will keep rotating once the log numbers reach the maximum. The oldest log will be remove when there is new log created. Therefore, we decided to create the event log when first rotation occured for the record. It\u0027s hard to define when the second \"rotated\" log should be created.",
+      "parentUuid": "b39a3721_fc900ccc",
+      "revId": "4fa651337e396b20a05389cc70b861726a9786fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
