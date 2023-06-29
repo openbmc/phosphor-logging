@@ -449,6 +449,70 @@ TEST_F(HostNotifierTest, TestHardFailure)
     EXPECT_EQ(notifier.queueSize(), 2);
 }
 
+// Test that if the command cannot be started it will give
+// up but still try again later
+TEST_F(HostNotifierTest, TestCannotStartCmd)
+{
+    sdeventplus::Event sdEvent{event};
+
+    HostNotifier notifier{repo, dataIface, std::move(hostIface)};
+
+    // Make it behave like startCommand() fails.
+    auto sendFailure = [this](uint32_t /*id*/, uint32_t /*size*/) {
+        this->mockHostIface->cancelCmd();
+        return CmdStatus::failure;
+    };
+
+    auto sendSuccess = [this](uint32_t /*id*/, uint32_t /*size*/) {
+        return this->mockHostIface->send(0);
+    };
+
+    // Fails 16 times (1 fail + 15  retries) and
+    // then start working.
+    EXPECT_CALL(*mockHostIface, sendNewLogCmd(_, _))
+        .WillOnce(Invoke(sendFailure))
+        .WillOnce(Invoke(sendFailure))
+        .WillOnce(Invoke(sendFailure))
+        .WillOnce(Invoke(sendFailure))
+        .WillOnce(Invoke(sendFailure))
+        .WillOnce(Invoke(sendFailure))
+        .WillOnce(Invoke(sendFailure))
+        .WillOnce(Invoke(sendFailure))
+        .WillOnce(Invoke(sendFailure))
+        .WillOnce(Invoke(sendFailure))
+        .WillOnce(Invoke(sendFailure))
+        .WillOnce(Invoke(sendFailure))
+        .WillOnce(Invoke(sendFailure))
+        .WillOnce(Invoke(sendFailure))
+        .WillOnce(Invoke(sendFailure))
+        .WillOnce(Invoke(sendFailure))
+        .WillRepeatedly(Invoke(sendSuccess));
+
+    dataIface.changeHostState(true);
+
+    auto pel = makePEL();
+    repo.add(pel);
+
+    // Clock more retries than necessary
+    runEvents(sdEvent, 40, mockHostIface->getReceiveRetryDelay());
+
+    // Didn't get far enough for a cmd to be processed
+    EXPECT_EQ(mockHostIface->numCmdsProcessed(), 0);
+    EXPECT_EQ(notifier.queueSize(), 1);
+
+    // At this point, commands will work again.
+
+    pel = makePEL();
+    repo.add(pel);
+
+    // Run the events to send the PELs
+    runEvents(sdEvent, 5, mockHostIface->getReceiveRetryDelay());
+
+    // All PELs sent
+    EXPECT_EQ(mockHostIface->numCmdsProcessed(), 2);
+    EXPECT_EQ(notifier.queueSize(), 0);
+}
+
 // Cancel an in progress command
 TEST_F(HostNotifierTest, TestCancelCmd)
 {
