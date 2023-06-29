@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/io.hpp>
 
@@ -152,10 +152,9 @@ class HostInterface
             }
             catch (const std::exception& e)
             {
-                using namespace phosphor::logging;
-                log<level::ERR>(
-                    "Host iface response callback threw an exception",
-                    entry("ERROR=%s", e.what()));
+                lg2::error(
+                    "Host iface response callback threw an exception: {EX}",
+                    "EX", e);
             }
         }
     }

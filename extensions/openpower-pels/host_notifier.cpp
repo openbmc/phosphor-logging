@@ -15,15 +15,13 @@
  */
 #include "host_notifier.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 namespace openpower::pels
 {
 
 const auto subscriptionName = "PELHostNotifier";
 const size_t maxRetryAttempts = 15;
-
-using namespace phosphor::logging;
 
 HostNotifier::HostNotifier(Repository& repo, DataInterfaceBase& dataIface,
                            std::unique_ptr<HostInterface> hostIface) :
@@ -66,7 +64,7 @@ HostNotifier::HostNotifier(Repository& repo, DataInterfaceBase& dataIface,
     // Start sending logs if the host is running
     if (!_pelQueue.empty() && _dataIface.isHostUp())
     {
-        log<level::DEBUG>("Host is already up at startup");
+        lg2::debug("Host is already up at startup");
         _hostUpTimer.restartOnce(_hostIface->getHostUpDelay());
     }
 }
@@ -79,7 +77,7 @@ HostNotifier::~HostNotifier()
 
 void HostNotifier::hostUpTimerExpired()
 {
-    log<level::DEBUG>("Host up timer expired");
+    lg2::debug("Host up timer expired");
     doNewLogNotify();
 }
 
@@ -127,8 +125,8 @@ bool HostNotifier::enqueueRequired(uint32_t id) const
     else
     {
         using namespace phosphor::logging;
-        log<level::ERR>("Host Enqueue: Unable to find PEL ID in repository",
-                        entry("PEL_ID=0x%X", id));
+        lg2::error("Host Enqueue: Unable to find PEL ID {ID} in repository",
+                   "ID", lg2::hex, id);
         required = false;
     }
 
@@ -177,7 +175,8 @@ void HostNotifier::newLogCallback(const PEL& pel)
         return;
     }
 
-    log<level::DEBUG>("new PEL added to queue", entry("PEL_ID=0x%X", pel.id()));
+    lg2::debug("New PEL added to queue, PEL ID = {ID}", "ID", lg2::hex,
+               pel.id());
 
     _pelQueue.push_back(pel.id());
 
@@ -210,23 +209,23 @@ void HostNotifier::deleteLogCallback(uint32_t id)
     auto queueIt = std::find(_pelQueue.begin(), _pelQueue.end(), id);
     if (queueIt != _pelQueue.end())
     {
-        log<level::DEBUG>("Host notifier removing deleted log from queue");
+        lg2::debug("Host notifier removing deleted log from queue");
         _pelQueue.erase(queueIt);
     }
 
     auto sentIt = std::find(_sentPELs.begin(), _sentPELs.end(), id);
     if (sentIt != _sentPELs.end())
     {
-        log<level::DEBUG>("Host notifier removing deleted log from sent list");
+        lg2::debug("Host notifier removing deleted log from sent list");
         _sentPELs.erase(sentIt);
     }
 
     // Nothing we can do about this...
     if (id == _inProgressPEL)
     {
-        log<level::WARNING>(
-            "A PEL was deleted while its host notification was in progress",
-            entry("PEL_ID=0x%X", id));
+        lg2::warning(
+            "A PEL was deleted while its host notification was in progress, PEL ID = {ID}",
+            "ID", lg2::hex, id);
     }
 }
 
@@ -261,9 +260,9 @@ void HostNotifier::doNewLogNotify()
             // would be down and isolating that shouldn't left to
             // a logging daemon, so just trace.  Also, this will start
             // trying again when the next new log comes in.
-            log<level::ERR>(
-                "PEL Host notifier hit max retry attempts. Giving up for now.",
-                entry("PEL_ID=0x%X", _pelQueue.front()));
+            lg2::error(
+                "PEL Host notifier hit max retry attempts. Giving up for now. PEL ID = {ID}",
+                "ID", lg2::hex, _pelQueue.front());
 
             // Tell the host interface object to clean itself up, especially to
             // release the PLDM instance ID it's been using.
@@ -296,8 +295,8 @@ void HostNotifier::doNewLogNotify()
             auto size = static_cast<size_t>(
                 std::filesystem::file_size((*attributes).get().path));
 
-            log<level::DEBUG>("sendNewLogCmd", entry("PEL_ID=0x%X", id),
-                              entry("PEL_SIZE=%d", size));
+            lg2::debug("sendNewLogCmd: ID {ID} size {SIZE}", "ID", lg2::hex, id,
+                       "SIZE", size);
 
             auto rc = _hostIface->sendNewLogCmd(id, size);
 
@@ -308,7 +307,8 @@ void HostNotifier::doNewLogNotify()
             else
             {
                 // It failed.  Retry
-                log<level::ERR>("PLDM send failed", entry("PEL_ID=0x%X", id));
+                lg2::error("PLDM send failed, PEL ID = {ID}", "ID", lg2::hex,
+                           id);
                 _pelQueue.push_front(id);
                 _inProgressPEL = 0;
                 _retryTimer.restartOnce(_hostIface->getSendRetryDelay());
@@ -316,8 +316,9 @@ void HostNotifier::doNewLogNotify()
         }
         else
         {
-            log<level::ERR>("PEL ID not in repository.  Cannot notify host",
-                            entry("PEL_ID=0x%X", id));
+            lg2::error(
+                "PEL ID is not in repository. Cannot notify host. PEL ID = {ID}",
+                "ID", lg2::hex, id);
         }
     }
 }
@@ -329,12 +330,12 @@ void HostNotifier::hostStateChange(bool hostUp)
 
     if (hostUp && !_pelQueue.empty())
     {
-        log<level::DEBUG>("Host state change to on");
+        lg2::debug("Host state change to on");
         _hostUpTimer.restartOnce(_hostIface->getHostUpDelay());
     }
     else if (!hostUp)
     {
-        log<level::DEBUG>("Host state change to off");
+        lg2::debug("Host state change to off");
 
         stopCommand();
 
@@ -367,8 +368,8 @@ void HostNotifier::commandResponse(ResponseStatus status)
 
     if (status == ResponseStatus::success)
     {
-        log<level::DEBUG>("HostNotifier command response success",
-                          entry("PEL_ID=0x%X", id));
+        lg2::debug("HostNotifier command response success, PEL ID = {ID}", "ID",
+                   lg2::hex, id);
         _retryCount = 0;
 
         _sentPELs.push_back(id);
@@ -383,8 +384,8 @@ void HostNotifier::commandResponse(ResponseStatus status)
     }
     else
     {
-        log<level::ERR>("PLDM command response failure",
-                        entry("PEL_ID=0x%X", id));
+        lg2::error("PLDM command response failure, PEL ID = {ID}", "ID",
+                   lg2::hex, id);
         // Retry
         _pelQueue.push_front(id);
         _retryTimer.restartOnce(_hostIface->getReceiveRetryDelay());
@@ -395,8 +396,8 @@ void HostNotifier::retryTimerExpired()
 {
     if (_dataIface.isHostUp())
     {
-        log<level::INFO>("Attempting command retry",
-                         entry("PEL_ID=0x%X", _pelQueue.front()));
+        lg2::info("Attempting command retry, PEL ID = {ID}", "ID", lg2::hex,
+                  _pelQueue.front());
         _retryCount++;
         doNewLogNotify();
     }
@@ -404,7 +405,7 @@ void HostNotifier::retryTimerExpired()
 
 void HostNotifier::hostFullTimerExpired()
 {
-    log<level::DEBUG>("Host full timer expired, trying send again");
+    lg2::debug("Host full timer expired, trying send again");
     doNewLogNotify();
 }
 
@@ -448,7 +449,7 @@ void HostNotifier::ackPEL(uint32_t id)
     {
         _hostFull = false;
 
-        log<level::DEBUG>("Host previously full, not anymore after this ack");
+        lg2::debug("Host previously full, not anymore after this ack");
 
         // Start sending PELs again, from the event loop
         if (!_pelQueue.empty())
@@ -460,7 +461,8 @@ void HostNotifier::ackPEL(uint32_t id)
 
 void HostNotifier::setHostFull(uint32_t id)
 {
-    log<level::INFO>("Received Host full indication", entry("PEL_ID=0x%X", id));
+    lg2::info("Received Host full indication, PEL ID = {ID}", "ID", lg2::hex,
+              id);
 
     _hostFull = true;
 
@@ -482,14 +484,14 @@ void HostNotifier::setHostFull(uint32_t id)
     // host is full is from this timer callback.
     if (!_hostFullTimer.isEnabled())
     {
-        log<level::DEBUG>("Starting host full timer");
+        lg2::debug("Starting host full timer");
         _hostFullTimer.restartOnce(_hostIface->getHostFullRetryDelay());
     }
 }
 
 void HostNotifier::setBadPEL(uint32_t id)
 {
-    log<level::ERR>("PEL rejected by the host", entry("PEL_ID=0x%X", id));
+    lg2::error("PEL rejected by the host, PEL ID = {ID}", "ID", lg2::hex, id);
 
     auto sent = std::find(_sentPELs.begin(), _sentPELs.end(), id);
     if (sent != _sentPELs.end())
