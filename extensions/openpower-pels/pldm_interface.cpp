@@ -20,7 +20,7 @@
 #include <systemd/sd-bus.h>
 #include <unistd.h>
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <fstream>
 
@@ -42,7 +42,6 @@ namespace interface
 constexpr auto pldm_requester = "xyz.openbmc_project.PLDM.Requester";
 }
 
-using namespace phosphor::logging;
 using namespace sdeventplus;
 using namespace sdeventplus::source;
 
@@ -73,7 +72,7 @@ void PLDMInterface::readEID()
     std::ifstream eidFile{eidPath};
     if (!eidFile.good())
     {
-        log<level::ERR>("Could not open host EID file");
+        lg2::error("Could not open host EID file");
     }
     else
     {
@@ -85,7 +84,7 @@ void PLDMInterface::readEID()
         }
         else
         {
-            log<level::ERR>("EID file was empty");
+            lg2::error("EID file was empty");
         }
     }
 }
@@ -96,8 +95,8 @@ void PLDMInterface::open()
     if (_fd < 0)
     {
         auto e = errno;
-        log<level::ERR>("pldm_open failed", entry("ERRNO=%d", e),
-                        entry("RC=%d\n", _fd));
+        lg2::error("pldm_open failed.  errno = {ERRNO}, rc = {RC}", "ERRNO", e,
+                   "RC", _fd);
         throw std::exception{};
     }
 }
@@ -106,9 +105,7 @@ void PLDMInterface::instanceIDCallback(sd_bus_message* msg)
 {
     if (!_inProgress)
     {
-        // A cancelCmd was run, just return
-        log<level::INFO>(
-            "A command was canceled while waiting for the instance ID");
+        lg2::info("A command was canceled while waiting for the instance ID");
         return;
     }
 
@@ -117,8 +114,7 @@ void PLDMInterface::instanceIDCallback(sd_bus_message* msg)
     auto rc = sd_bus_message_get_errno(msg);
     if (rc)
     {
-        log<level::ERR>("GetInstanceId D-Bus method failed",
-                        entry("ERRNO=%d", rc));
+        lg2::error("GetInstanceId D-Bus method failed, rc = {RC}", "RC", rc);
         failed = true;
     }
     else
@@ -127,8 +123,8 @@ void PLDMInterface::instanceIDCallback(sd_bus_message* msg)
         rc = sd_bus_message_read_basic(msg, 'y', &id);
         if (rc < 0)
         {
-            log<level::ERR>("Could not read instance ID out of message",
-                            entry("ERROR=%d", rc));
+            lg2::error("Could not read instance ID out of message, rc = {RC}",
+                       "RC", rc);
             failed = true;
         }
         else
@@ -185,9 +181,9 @@ void PLDMInterface::startReadInstanceID()
 
     if (rc < 0)
     {
-        log<level::ERR>("Error calling sd_bus_call_method_async",
-                        entry("RC=%d", rc), entry("MSG=%s", strerror(-rc)));
-        throw std::exception{};
+        lg2::error(
+            "Error calling sd_bus_call_method_async, rc = {RC}, msg = {MSG}",
+            "RC", rc, "MSG", strerror(-rc));
     }
 }
 
@@ -240,7 +236,7 @@ void PLDMInterface::doSend()
                                   request);
     if (rc != PLDM_SUCCESS)
     {
-        log<level::ERR>("encode_new_file_req failed", entry("RC=%d", rc));
+        lg2::error("encode_new_file_req failed, rc = {RC}", "RC", rc);
         throw std::exception{};
     }
 
@@ -248,8 +244,8 @@ void PLDMInterface::doSend()
     if (rc < 0)
     {
         auto e = errno;
-        log<level::ERR>("pldm_send failed", entry("RC=%d", rc),
-                        entry("ERRNO=%d", e));
+        lg2::error("pldm_send failed, rc = {RC}, errno = {ERRNO}", "RC", rc,
+                   "ERRNO", e);
 
         throw std::exception{};
     }
@@ -282,8 +278,9 @@ void PLDMInterface::receive(IO& /*io*/, int fd, uint32_t revents)
         }
 
         auto e = errno;
-        log<level::ERR>("pldm_recv failed", entry("RC=%d", rc),
-                        entry("ERRNO=%d", e));
+        lg2::error("pldm_recv failed, rc = {RC}, errno = {ERRNO}", "RC",
+                   static_cast<std::underlying_type_t<pldm_requester_rc_t>>(rc),
+                   "ERRNO", e);
         status = ResponseStatus::failure;
 
         responseMsg = nullptr;
@@ -303,16 +300,16 @@ void PLDMInterface::receive(IO& /*io*/, int fd, uint32_t revents)
                                              &completionCode);
         if (decodeRC < 0)
         {
-            log<level::ERR>("decode_new_file_resp failed",
-                            entry("RC=%d", decodeRC));
+            lg2::error("decode_new_file_resp failed, rc = {RC}", "RC",
+                       decodeRC);
             status = ResponseStatus::failure;
         }
         else
         {
             if (completionCode != PLDM_SUCCESS)
             {
-                log<level::ERR>("Bad PLDM completion code",
-                                entry("COMPLETION_CODE=%d", completionCode));
+                lg2::error("Bad PLDM completion code {CODE}", "CODE",
+                           completionCode);
                 status = ResponseStatus::failure;
             }
         }
@@ -328,7 +325,7 @@ void PLDMInterface::receive(IO& /*io*/, int fd, uint32_t revents)
 
 void PLDMInterface::receiveTimerExpired()
 {
-    log<level::ERR>("Timed out waiting for PLDM response");
+    lg2::error("Timed out waiting for PLDM response");
 
     // Cleanup, but keep the instance ID because the host didn't
     // respond so we can still use it.
