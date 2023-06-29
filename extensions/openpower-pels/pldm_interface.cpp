@@ -97,7 +97,7 @@ void PLDMInterface::open()
         auto e = errno;
         lg2::error("pldm_open failed.  errno = {ERRNO}, rc = {RC}", "ERRNO", e,
                    "RC", _fd);
-        throw std::exception{};
+        throw std::runtime_error{"pldm_open failed"};
     }
 }
 
@@ -140,7 +140,14 @@ void PLDMInterface::instanceIDCallback(sd_bus_message* msg)
     }
     else
     {
-        startCommand();
+        try
+        {
+            startCommand();
+        }
+        catch (const std::exception& e)
+        {
+            callResponseFunc(ResponseStatus::failure);
+        }
     }
 }
 
@@ -167,9 +174,11 @@ void PLDMInterface::startCommand()
     }
     catch (const std::exception& e)
     {
+        lg2::error("startCommand exception: {ERROR}", "ERROR", e);
+
         cleanupCmd();
 
-        callResponseFunc(ResponseStatus::failure);
+        throw;
     }
 }
 
@@ -184,6 +193,7 @@ void PLDMInterface::startReadInstanceID()
         lg2::error(
             "Error calling sd_bus_call_method_async, rc = {RC}, msg = {MSG}",
             "RC", rc, "MSG", strerror(-rc));
+        throw std::runtime_error{"sd_bus_call_method_async failed"};
     }
 }
 
@@ -237,7 +247,7 @@ void PLDMInterface::doSend()
     if (rc != PLDM_SUCCESS)
     {
         lg2::error("encode_new_file_req failed, rc = {RC}", "RC", rc);
-        throw std::exception{};
+        throw std::runtime_error{"encode_new_file_req failed"};
     }
 
     rc = pldm_send(_eid, _fd, requestMsg.data(), requestMsg.size());
@@ -246,8 +256,7 @@ void PLDMInterface::doSend()
         auto e = errno;
         lg2::error("pldm_send failed, rc = {RC}, errno = {ERRNO}", "RC", rc,
                    "ERRNO", e);
-
-        throw std::exception{};
+        throw std::runtime_error{"pldm_send failed"};
     }
 }
 
