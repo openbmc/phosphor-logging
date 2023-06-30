@@ -3,7 +3,7 @@
 #include "dbus_types.hpp"
 #include "dbus_watcher.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
 
@@ -507,9 +507,8 @@ class DataInterfaceBase
                 }
                 catch (const std::exception& e)
                 {
-                    using namespace phosphor::logging;
-                    log<level::ERR>("A host state change callback threw "
-                                    "an exception");
+                    lg2::error(
+                        "A host state change callback threw an exception");
                 }
             }
         }
@@ -529,8 +528,7 @@ class DataInterfaceBase
             }
             catch (const std::exception& e)
             {
-                using namespace phosphor::logging;
-                log<level::ERR>("A FRU present callback threw an exception");
+                lg2::error("A FRU present callback threw an exception");
             }
         }
     }
