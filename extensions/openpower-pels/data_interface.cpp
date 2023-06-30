@@ -21,7 +21,7 @@
 
 #include <fmt/format.h>
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/State/BMC/server.hpp>
 #include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
 
@@ -109,7 +109,6 @@ constexpr auto invPowerSupply =
 
 using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
 using namespace sdbusplus::xyz::openbmc_project::State::server;
-using namespace phosphor::logging;
 namespace match_rules = sdbusplus::bus::match::rules;
 
 const DBusInterfaceList hotplugInterfaces{interface::invFan,
@@ -163,10 +162,8 @@ DataInterface::DataInterface(sdbusplus::bus_t& bus) : _bus(bus)
         [this](const auto& value) {
         if (std::get<bool>(value) != this->_sendPELsToHost)
         {
-            log<level::INFO>(
-                fmt::format("The send PELs to host setting changed to {}",
-                            std::get<bool>(value))
-                    .c_str());
+            lg2::info("The send PELs to host setting changed to {VAL}", "VAL",
+                      std::get<bool>(value));
         }
         this->_sendPELsToHost = std::get<bool>(value);
         }));
@@ -339,10 +336,9 @@ std::string DataInterface::getMachineTypeModel() const
     }
     catch (const std::exception& e)
     {
-        log<level::WARNING>(fmt::format("Failed reading Model property from "
-                                        "Interface: {} exception: {}",
-                                        interface::invAsset, e.what())
-                                .c_str());
+        lg2::warning("Failed reading Model property from "
+                     "interface: {IFACE} exception: {ERROR}",
+                     "IFACE", interface::invAsset, "ERROR", e);
     }
 
     return model;
@@ -365,11 +361,9 @@ std::string DataInterface::getMachineSerialNumber() const
     }
     catch (const std::exception& e)
     {
-        log<level::WARNING>(
-            fmt::format("Failed reading SerialNumber property from "
-                        "Interface: {} exception: {}",
-                        interface::invAsset, e.what())
-                .c_str());
+        lg2::warning("Failed reading SerialNumber property from "
+                     "interface: {IFACE} exception: {ERROR}",
+                     "IFACE", interface::invAsset, "ERROR", e);
     }
 
     return sn;
@@ -395,11 +389,9 @@ std::string DataInterface::getMotherboardCCIN() const
     }
     catch (const std::exception& e)
     {
-        log<level::WARNING>(
-            fmt::format("Failed reading Motherboard CCIN property from "
-                        "Interface: {} exception: {}",
-                        interface::viniRecordVPD, e.what())
-                .c_str());
+        lg2::warning("Failed reading Motherboard CCIN property from "
+                     "interface: {IFACE} exception: {ERROR}",
+                     "IFACE", interface::viniRecordVPD, "ERROR", e);
     }
 
     return ccin;
@@ -424,11 +416,9 @@ std::vector<uint8_t> DataInterface::getSystemIMKeyword() const
     }
     catch (const std::exception& e)
     {
-        log<level::WARNING>(
-            fmt::format("Failed reading System IM property from "
-                        "Interface: {} exception: {}",
-                        interface::vsbpRecordVPD, e.what())
-                .c_str());
+        lg2::warning("Failed reading System IM property from "
+                     "interface: {IFACE} exception: {ERROR}",
+                     "IFACE", interface::vsbpRecordVPD, "ERROR", e);
     }
 
     return systemIM;
@@ -659,11 +649,9 @@ bool DataInterface::getQuiesceOnError() const
     }
     catch (const std::exception& e)
     {
-        log<level::WARNING>(
-            fmt::format("Failed reading QuiesceOnHwError property from "
-                        "Interface: {} exception: {}",
-                        interface::logSetting, e.what())
-                .c_str());
+        lg2::warning("Failed reading QuiesceOnHwError property from "
+                     "interface: {IFACE} exception: {ERROR}",
+                     "IFACE", interface::logSetting, "ERROR", e);
     }
 
     return ret;
@@ -761,12 +749,10 @@ void DataInterface::createGuardRecord(const std::vector<uint8_t>& binPath,
         // mentioned above. Ignoring the error.
         if (errName != SD_BUS_ERROR_TIMEOUT)
         {
-            log<level::ERR>(
-                fmt::format("GUARD D-Bus call exception"
-                            "OBJPATH={}, INTERFACE={}, EXCEPTION={}",
-                            object_path::hwIsolation,
-                            interface::hwIsolationCreate, e.what())
-                    .c_str());
+            lg2::error("GUARD D-Bus call exception. Path={PATH}, "
+                       "interface = {IFACE}, exception = {ERROR}",
+                       "PATH", object_path::hwIsolation, "IFACE",
+                       interface::hwIsolationCreate, "ERROR", e);
         }
     }
 }
@@ -910,9 +896,7 @@ void DataInterface::startFruPlugWatch()
     }
     catch (const sdbusplus::exception_t& e)
     {
-        log<level::WARNING>(
-            fmt::format("Failed getting FRU paths to watch: {}", e.what())
-                .c_str());
+        lg2::warning("Failed getting FRU paths to watch: {ERROR}", "ERROR", e);
     }
 }
 
@@ -995,14 +979,13 @@ void DataInterface::notifyPresenceSubsribers(const std::string& path,
     }
     catch (const sdbusplus::exception_t& e)
     {
-        log<level::DEBUG>(fmt::format("Could not get location code for {}: {}",
-                                      path, e.what())
-                              .c_str());
+        lg2::debug("Could not get location code for {PATH}: {ERROR}", "PATH",
+                   path, "ERROR", e);
         return;
     }
 
-    log<level::DEBUG>(
-        fmt::format("Detected FRU {} ({}) present ", path, locCode).c_str());
+    lg2::debug("Detected FRU {PATH} ({LOC}) present ", "PATH", path, "LOC",
+               locCode);
 
     // Tell the subscribers.
     setFruPresent(locCode);
