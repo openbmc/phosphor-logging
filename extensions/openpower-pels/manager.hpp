@@ -421,6 +421,12 @@ class Manager : public PELInterface
     void updateEventId(std::unique_ptr<openpower::pels::PEL>& pel);
 
     /**
+     * @brief Finds and serializes the log entry for the ID passed in.
+     * @param[in] obmcLogID - The OpenBMC event log ID
+     */
+    void serializeLogEntry(uint32_t obmcLogID);
+
+    /**
      * @brief Sets the FilePath of the specified error log entry to the PEL file
      *        path.
      *

@@ -16,6 +16,7 @@
 #include "manager.hpp"
 
 #include "additional_data.hpp"
+#include "elog_serialize.hpp"
 #include "json_utils.hpp"
 #include "pel.hpp"
 #include "pel_entry.hpp"
@@ -201,6 +202,7 @@ void Manager::addPEL(std::vector<uint8_t>& pelData, uint32_t obmcLogID)
 
         updateEventId(pel);
         updateResolution(*pel);
+        serializeLogEntry(obmcLogID);
         createPELEntry(obmcLogID);
 
         // Check if firmware should quiesce system due to error
@@ -411,6 +413,7 @@ void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
     updateDBusSeverity(*pel);
     updateEventId(pel);
     updateResolution(*pel);
+    serializeLogEntry(obmcLogID);
     createPELEntry(obmcLogID);
 
     // Check if firmware should quiesce system due to error
@@ -843,6 +846,15 @@ bool Manager::updateResolution(const openpower::pels::PEL& pel)
     }
 
     return false;
+}
+
+void Manager::serializeLogEntry(uint32_t obmcLogID)
+{
+    auto entryN = _logManager.entries.find(obmcLogID);
+    if (entryN != _logManager.entries.end())
+    {
+        serialize(*entryN->second);
+    }
 }
 
 void Manager::updateDBusSeverity(const openpower::pels::PEL& pel)
