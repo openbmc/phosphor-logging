@@ -66,9 +66,6 @@ class Manager : public PELInterface
             createPELEntry(entry.first, true);
         }
 
-        _repo.for_each(
-            std::bind(&Manager::updateResolution, this, std::placeholders::_1));
-
         setupPELDeleteWatch();
 
         _dataIface->subscribeToFruPresent(
