@@ -27,7 +27,7 @@
 #include <Python.h>
 
 #include <CLI/CLI.hpp>
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <bitset>
 #include <fstream>
@@ -36,7 +36,6 @@
 #include <string>
 
 namespace fs = std::filesystem;
-using namespace phosphor::logging;
 using namespace openpower::pels;
 namespace message = openpower::pels::message;
 namespace pv = openpower::pels::pel_values;
@@ -326,8 +325,7 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool critSysTerm,
         std::vector<uint8_t> data = getFileData(fileName);
         if (data.empty())
         {
-            log<level::ERR>("Empty PEL file",
-                            entry("FILENAME=%s", fileName.c_str()));
+            lg2::error("Empty PEL file {FILE}", "FILE", fileName);
             return listStr;
         }
         PEL pel{data};
@@ -452,9 +450,8 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool critSysTerm,
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>("Hit exception while reading PEL File",
-                        entry("FILENAME=%s", fileName.c_str()),
-                        entry("ERROR=%s", e.what()));
+        lg2::error("Hit exception while reading PEL File {FILE}: {ERROR}",
+                   "FILE", fileName, "ERROR", e);
     }
     return listStr;
 }
@@ -657,7 +654,7 @@ void deletePEL(const std::string& id)
  */
 void deleteAllPELs()
 {
-    log<level::INFO>("peltool deleting all event logs");
+    lg2::info("peltool deleting all event logs");
 
     for (const auto& entry : fs::directory_iterator(pelLogDir()))
     {
