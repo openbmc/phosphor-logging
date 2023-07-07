@@ -25,7 +25,7 @@
 #include <Python.h>
 
 #include <nlohmann/json.hpp>
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <iomanip>
 #include <sstream>
@@ -33,7 +33,6 @@
 namespace openpower::pels::user_data
 {
 namespace pv = openpower::pels::pel_values;
-using namespace phosphor::logging;
 using orderedJSON = nlohmann::ordered_json;
 
 void pyDecRef(PyObject* pyObj)
@@ -302,13 +301,11 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
         if (!PyDict_Contains(pDict, pKey))
         {
             Py_DECREF(pDict);
-            log<level::ERR>(
-                "Python module error",
-                entry("ERROR=%s",
-                      std::string(funcToCall + " function missing").c_str()),
-                entry("PARSER_MODULE=%s", module.c_str()),
-                entry("SUBTYPE=0x%X", subType), entry("VERSION=%d", version),
-                entry("DATA_LENGTH=%lu\n", data.size()));
+            lg2::error("Python module error.  Function missing: {FUNC}, "
+                       "module = {MODULE}, subtype = {SUBTYPE}, "
+                       "version = {VERSION}, data length = {LEN}",
+                       "FUNC", funcToCall, "MODULE", module, "SUBTYPE", subType,
+                       "VERSION", version, "LEN", data.size());
             return std::nullopt;
         }
         PyObject* pFunc = PyDict_GetItemString(pDict, funcToCall.c_str());
@@ -352,12 +349,11 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
                 }
                 catch (const std::exception& e)
                 {
-                    log<level::ERR>("Bad JSON from parser",
-                                    entry("ERROR=%s", e.what()),
-                                    entry("PARSER_MODULE=%s", module.c_str()),
-                                    entry("SUBTYPE=0x%X", subType),
-                                    entry("VERSION=%d", version),
-                                    entry("DATA_LENGTH=%lu\n", data.size()));
+                    lg2::error("Bad JSON from parser.  Error = {ERROR}, "
+                               "module = {MODULE}, subtype = {SUBTYPE}, "
+                               "version = {VERSION}, data length = {LEN}",
+                               "ERROR", e, "MODULE", module, "SUBTYPE", subType,
+                               "VERSION", version, "LEN", data.size());
                     return std::nullopt;
                 }
             }
@@ -388,12 +384,11 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
     }
     if (!pErrStr.empty())
     {
-        log<level::DEBUG>("Python exception thrown by parser",
-                          entry("ERROR=%s", pErrStr.c_str()),
-                          entry("PARSER_MODULE=%s", module.c_str()),
-                          entry("SUBTYPE=0x%X", subType),
-                          entry("VERSION=%d", version),
-                          entry("DATA_LENGTH=%lu\n", data.size()));
+        lg2::debug("Python exception thrown by parser.  Error = {ERROR}, "
+                   "module = {MODULE}, subtype = {SUBTYPE}, "
+                   "version = {VERSION}, data length = {LEN}",
+                   "ERROR", pErrStr, "MODULE", module, "SUBTYPE", subType,
+                   "VERSION", version, "LEN", data.size());
     }
     return std::nullopt;
 }
@@ -423,11 +418,11 @@ std::optional<std::string> getJSON(uint16_t componentID, uint8_t subType,
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>("Failed parsing UserData", entry("ERROR=%s", e.what()),
-                        entry("COMP_ID=0x%X", componentID),
-                        entry("SUBTYPE=0x%X", subType),
-                        entry("VERSION=%d", version),
-                        entry("DATA_LENGTH=%lu\n", data.size()));
+        lg2::error("Failed parsing UserData.  Error = {ERROR}, "
+                   "component ID = {COMP_ID}, subtype = {SUBTYPE}, "
+                   "version = {VERSION}, data length = {LEN}",
+                   "ERROR", e, "COMP_ID", componentID, "SUBTYPE", subType,
+                   "VERSION", version, "LEN", data.size());
     }
 
     return std::nullopt;
