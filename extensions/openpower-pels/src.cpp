@@ -28,7 +28,7 @@
 #endif
 #include <fmt/format.h>
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 namespace openpower
 {
@@ -36,7 +36,6 @@ namespace pels
 {
 namespace pv = openpower::pels::pel_values;
 namespace rg = openpower::pels::message;
-using namespace phosphor::logging;
 using namespace std::string_literals;
 
 constexpr size_t ccinSize = 4;
@@ -169,12 +168,9 @@ std::optional<std::string> getPythonJSON(std::vector<std::string>& hexwords,
         if (!PyDict_Contains(pDict, pKey))
         {
             Py_DECREF(pDict);
-            log<level::ERR>(
-                "Python module error",
-                entry("ERROR=%s",
-                      std::string(funcToCall + " function missing").c_str()),
-                entry("SRC=%s", hexwords.front().c_str()),
-                entry("PARSER_MODULE=%s", module.c_str()));
+            lg2::error(
+                "Python module error.  Function missing: {FUNC}, SRC = {SRC}, module = {MODULE}",
+                "FUNC", funcToCall, "SRC", hexwords.front(), "MODULE", module);
             return std::nullopt;
         }
         PyObject* pFunc = PyDict_GetItemString(pDict, funcToCall.c_str());
@@ -217,10 +213,9 @@ std::optional<std::string> getPythonJSON(std::vector<std::string>& hexwords,
                 }
                 catch (const std::exception& e)
                 {
-                    log<level::ERR>("Bad JSON from parser",
-                                    entry("ERROR=%s", e.what()),
-                                    entry("SRC=%s", hexwords.front().c_str()),
-                                    entry("PARSER_MODULE=%s", module.c_str()));
+                    lg2::error(
+                        "Bad JSON from parser. Error = {ERROR}, SRC = {SRC}, module = {MODULE}",
+                        "ERROR", e, "SRC", hexwords.front(), "MODULE", module);
                     return std::nullopt;
                 }
             }
@@ -251,10 +246,9 @@ std::optional<std::string> getPythonJSON(std::vector<std::string>& hexwords,
     }
     if (!pErrStr.empty())
     {
-        log<level::DEBUG>("Python exception thrown by parser",
-                          entry("ERROR=%s", pErrStr.c_str()),
-                          entry("SRC=%s", hexwords.front().c_str()),
-                          entry("PARSER_MODULE=%s", module.c_str()));
+        lg2::debug("Python exception thrown by parser. Error = {ERROR}, "
+                   "SRC = {SRC}, module = {MODULE}",
+                   "ERROR", pErrStr, "SRC", hexwords.front(), "MODULE", module);
     }
     return std::nullopt;
 }
@@ -306,8 +300,7 @@ SRC::SRC(Stream& pel)
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>(
-            fmt::format("Cannot unflatten SRC: {}", e.what()).c_str());
+        lg2::error("Cannot unflatten SRC, error = {ERROR}", "ERROR", e);
         _valid = false;
     }
 }
@@ -374,10 +367,8 @@ SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
                                              pel_values::subsystemValues);
         if (subsystem == "invalid")
         {
-            log<level::WARNING>(
-                fmt::format("SRC: Invalid SubSystem value:{:#X}",
-                            eventSubsystem)
-                    .c_str());
+            lg2::warning("SRC: Invalid SubSystem value: {VAL}", "VAL", lg2::hex,
+                         eventSubsystem);
         }
         else
         {
@@ -444,8 +435,8 @@ void SRC::setMotherboardCCIN(const DataInterfaceBase& dataIface)
     }
     catch (const std::exception& e)
     {
-        log<level::WARNING>("Could not convert motherboard CCIN to a number",
-                            entry("CCIN=%s", ccinString.c_str()));
+        lg2::warning("Could not convert motherboard CCIN {CCIN} to a number",
+                     "CCIN", ccinString);
         return;
     }
 
@@ -460,17 +451,15 @@ void SRC::validate()
     if ((header().id != static_cast<uint16_t>(SectionID::primarySRC)) &&
         (header().id != static_cast<uint16_t>(SectionID::secondarySRC)))
     {
-        log<level::ERR>(
-            fmt::format("Invalid SRC section ID: {0:#x}", header().id).c_str());
+        lg2::error("Invalid SRC section ID: {ID}", "ID", lg2::hex, header().id);
         failed = true;
     }
 
     // Check the version in the SRC, not in the header
     if (_version != srcVersion)
     {
-        log<level::ERR>(
-            fmt::format("Invalid SRC version: {0:#x}", header().version)
-                .c_str());
+        lg2::error("Invalid SRC version: {VERSION}", "VERSION", lg2::hex,
+                   header().version);
         failed = true;
     }
 
@@ -612,8 +601,9 @@ std::optional<std::string>
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>("Cannot get error message from registry entry",
-                        entry("ERROR=%s", e.what()));
+        lg2::error(
+            "Cannot get error message from registry entry, error = {ERROR}",
+            "ERROR", e);
     }
     return std::nullopt;
 }
@@ -1493,8 +1483,7 @@ void SRC::setDumpStatus(const DataInterfaceBase& dataIface)
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>(
-            fmt::format("Checking dump status failed: {}", e.what()).c_str());
+        lg2::error("Checking dump status failed: {ERROR}", "ERROR", e);
     }
 }
 
@@ -1549,8 +1538,7 @@ void SRC::setProgressCode(const DataInterfaceBase& dataIface)
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>(
-            fmt::format("Error getting progress code: {}", e.what()).c_str());
+        lg2::error("Error getting progress code: {ERROR}", "ERROR", e);
         return;
     }
 
