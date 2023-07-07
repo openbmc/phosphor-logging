@@ -18,7 +18,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Common/File/error.hpp>
 
 #include <fstream>
@@ -29,7 +29,6 @@ namespace pels
 {
 
 namespace fs = std::filesystem;
-using namespace phosphor::logging;
 namespace file_error = sdbusplus::xyz::openbmc_project::Common::File::Error;
 
 constexpr size_t warningPercentage = 95;
@@ -51,9 +50,8 @@ size_t getFileDiskSize(const std::filesystem::path& file)
     if (rc != 0)
     {
         auto e = errno;
-        std::string msg = "call to stat() failed on " + file.native() +
-                          " with errno " + std::to_string(e);
-        log<level::ERR>(msg.c_str());
+        lg2::error("Call to stat() failed on {FILE} with errno {ERRNO}", "FILE",
+                   file.native(), "ERRNO", e);
         abort();
     }
 
@@ -109,9 +107,9 @@ void Repository::restore()
                     }
                     catch (const std::exception& e)
                     {
-                        log<level::ERR>(
-                            "Failed to save PEL after updating host state",
-                            entry("PELID=0x%X", pel.id()));
+                        lg2::error(
+                            "Failed to save PEL after updating host state, PEL ID = {ID}",
+                            "ID", lg2::hex, pel.id());
                     }
                 }
 
@@ -140,17 +138,16 @@ void Repository::restore()
             }
             else
             {
-                log<level::ERR>(
-                    "Found invalid PEL file while restoring.  Removing.",
-                    entry("FILENAME=%s", dirEntry.path().c_str()));
+                lg2::error(
+                    "Found invalid PEL file {FILE} while restoring.  Removing.",
+                    "FILE", dirEntry.path());
                 fs::remove(dirEntry.path());
             }
         }
         catch (const std::exception& e)
         {
-            log<level::ERR>("Hit exception while restoring PEL File",
-                            entry("FILENAME=%s", dirEntry.path().c_str()),
-                            entry("ERROR=%s", e.what()));
+            lg2::error("Hit exception while restoring PEL file {FILE}: {ERROR}",
+                       "FILE", dirEntry.path(), "ERROR", e);
         }
     }
 
@@ -215,8 +212,9 @@ void Repository::write(const PEL& pel, const fs::path& path)
         // we could successfully create yet another error log here.
         auto e = errno;
         fs::remove(path);
-        log<level::ERR>("Unable to open PEL file for writing",
-                        entry("ERRNO=%d", e), entry("PATH=%s", path.c_str()));
+        lg2::error(
+            "Unable to open PEL file {FILE} for writing, errno = {ERRNO}",
+            "FILE", path, "ERRNO", e);
         throw file_error::Open();
     }
 
@@ -230,8 +228,8 @@ void Repository::write(const PEL& pel, const fs::path& path)
         auto e = errno;
         file.close();
         fs::remove(path);
-        log<level::ERR>("Unable to write PEL file", entry("ERRNO=%d", e),
-                        entry("PATH=%s", path.c_str()));
+        lg2::error("Unable to write PEL file {FILE}, errno = {ERRNO}", "FILE",
+                   path, "ERRNO", e);
         throw file_error::Write();
     }
 }
@@ -247,9 +245,9 @@ std::optional<Repository::LogID> Repository::remove(const LogID& id)
     LogID actualID = pel->first;
     updateRepoStats(pel->second, false);
 
-    log<level::DEBUG>("Removing PEL from repository",
-                      entry("PEL_ID=0x%X", actualID.pelID.id),
-                      entry("OBMC_LOG_ID=%d", actualID.obmcID.id));
+    lg2::debug(
+        "Removing PEL from repository, PEL ID = {PEL_ID}, BMC log ID = {BMC_ID}",
+        "PEL_ID", lg2::hex, actualID.pelID.id, "BMC_ID", actualID.obmcID.id);
 
     if (fs::exists(pel->second.path))
     {
@@ -283,8 +281,8 @@ std::optional<std::vector<uint8_t>> Repository::getPELData(const LogID& id)
         if (!file.good())
         {
             auto e = errno;
-            log<level::ERR>("Unable to open PEL file", entry("ERRNO=%d", e),
-                            entry("PATH=%s", pel->second.path.c_str()));
+            lg2::error("Unable to open PEL file {FILE}, errno = {ERRNO}",
+                       "FILE", pel->second.path, "ERRNO", e);
             throw file_error::Open();
         }
 
@@ -305,8 +303,8 @@ std::optional<sdbusplus::message::unix_fd> Repository::getPELFD(const LogID& id)
         if (fd == -1)
         {
             auto e = errno;
-            log<level::ERR>("Unable to open PEL File", entry("ERRNO=%d", e),
-                            entry("PATH=%s", pel->second.path.c_str()));
+            lg2::error("Unable to open PEL file {FILE}, errno = {ERRNO}",
+                       "FILE", pel->second.path, "ERRNO", e);
             throw file_error::Open();
         }
 
@@ -326,9 +324,9 @@ void Repository::for_each(ForEachFunc func) const
         if (!file.good())
         {
             auto e = errno;
-            log<level::ERR>("Repository::for_each: Unable to open PEL file",
-                            entry("ERRNO=%d", e),
-                            entry("PATH=%s", attributes.path.c_str()));
+            lg2::error(
+                "Repository::for_each: Unable to open PEL file {FILE}, errno = {ERRNO}",
+                "FILE", attributes.path, "ERRNO", e);
             continue;
         }
 
@@ -347,8 +345,8 @@ void Repository::for_each(ForEachFunc func) const
         }
         catch (const std::exception& e)
         {
-            log<level::ERR>("Repository::for_each function exception",
-                            entry("ERROR=%s", e.what()));
+            lg2::error("Repository::for_each function exception: {ERROR}",
+                       "ERROR", e);
         }
     }
 }
@@ -363,9 +361,9 @@ void Repository::processAddCallbacks(const PEL& pel) const
         }
         catch (const std::exception& e)
         {
-            log<level::ERR>("PEL Repository add callback exception",
-                            entry("NAME=%s", name.c_str()),
-                            entry("ERROR=%s", e.what()));
+            lg2::error(
+                "PEL Repository add callback exception. Name = {NAME}, Error = {ERROR}",
+                "NAME", name, "ERROR", e);
         }
     }
 }
@@ -380,9 +378,9 @@ void Repository::processDeleteCallbacks(uint32_t id) const
         }
         catch (const std::exception& e)
         {
-            log<level::ERR>("PEL Repository delete callback exception",
-                            entry("NAME=%s", name.c_str()),
-                            entry("ERROR=%s", e.what()));
+            lg2::error(
+                "PEL Repository delete callback exception. Name = {NAME}, Error = {ERROR}",
+                "NAME", name, "ERROR", e);
         }
     }
 }
@@ -418,9 +416,9 @@ void Repository::setPELHostTransState(uint32_t pelID, TransmissionState state)
         }
         catch (const std::exception& e)
         {
-            log<level::ERR>("Unable to update PEL host transmission state",
-                            entry("PATH=%s", attr->second.path.c_str()),
-                            entry("ERROR=%s", e.what()));
+            lg2::error(
+                "Unable to update PEL host transmission state. Path = {PATH}, Error = {ERROR}",
+                "PATH", attr->second.path, "ERROR", e);
         }
     }
 }
@@ -444,9 +442,9 @@ void Repository::setPELHMCTransState(uint32_t pelID, TransmissionState state)
         }
         catch (const std::exception& e)
         {
-            log<level::ERR>("Unable to update PEL HMC transmission state",
-                            entry("PATH=%s", attr->second.path.c_str()),
-                            entry("ERROR=%s", e.what()));
+            lg2::error(
+                "Unable to update PEL HMC transmission state. Path = {PATH}, Error = {ERROR}",
+                "PATH", attr->second.path, "ERROR", e);
         }
     }
 }
@@ -567,7 +565,7 @@ bool Repository::sizeWarning()
     if ((_archiveSize > 0) && ((_sizes.total + _archiveSize) >
                                ((_maxRepoSize * warningPercentage) / 100)))
     {
-        log<level::INFO>(
+        lg2::info(
             "Repository::sizeWarning function:Deleting the files in archive");
 
         for (const auto& dirEntry : fs::directory_iterator(_archivePath))
@@ -575,10 +573,9 @@ bool Repository::sizeWarning()
             fs::remove(dirEntry.path(), ec);
             if (ec)
             {
-                log<level::INFO>(
-                    "Repository::sizeWarning function:Could not delete "
-                    "a file in PEL archive",
-                    entry("FILENAME=%s", dirEntry.path().c_str()));
+                lg2::info("Repository::sizeWarning: Could not delete "
+                          "file {FILE} in PEL archive",
+                          "FILE", dirEntry.path());
             }
         }
 
@@ -615,10 +612,9 @@ std::vector<uint32_t>
     Repository::prune(const std::vector<uint32_t>& idsWithHwIsoEntry)
 {
     std::vector<uint32_t> obmcLogIDs;
-    std::string msg = "Pruning PEL repository that takes up " +
-                      std::to_string(_sizes.total) + " bytes and has " +
-                      std::to_string(_pelAttributes.size()) + " PELs";
-    log<level::INFO>(msg.c_str());
+    lg2::info("Pruning PEL repository that takes up {TOTAL} bytes and has "
+              "{NUM_PELS} PELs",
+              "TOTAL", _sizes.total, "NUM_PELS", _pelAttributes.size());
 
     // Set up the 5 functions to check if the PEL category
     // is still over its limits.
@@ -697,9 +693,8 @@ std::vector<uint32_t>
 
     if (!obmcLogIDs.empty())
     {
-        std::string m = "Number of PELs removed to save space: " +
-                        std::to_string(obmcLogIDs.size());
-        log<level::INFO>(m.c_str());
+        lg2::info("Number of PELs removed to save space: {NUM_PELS}",
+                  "NUM_PELS", obmcLogIDs.size());
     }
 
     return obmcLogIDs;
