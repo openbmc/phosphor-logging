@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2848562_ae1228b2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-07-11T14:39:57Z",
+      "side": 1,
+      "message": "I was kind of expecting to see a deletion of this serialize somewhere? But I guess it\u0027s still needed for when these specific fields are not updated.",
+      "range": {
+        "startLine": 12,
+        "startChar": 57,
+        "endLine": 12,
+        "endChar": 71
+      },
+      "revId": "3387eac922ad16186eabbc126edd6719ef7cbb9b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
