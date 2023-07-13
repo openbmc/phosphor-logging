@@ -6,13 +6,7 @@ libpldm_dep = dependency(
 if cpp.has_header('nlohmann/json.hpp')
     nlohmann_json = declare_dependency()
 else
-    subproject('nlohmann-json')
-    nlohmann_json = declare_dependency(
-        include_directories: include_directories(
-            '../../subprojects/nlohmann-json/single_include',
-            '../../subprojects/nlohmann-json/single_include/nlohmann',
-        )
-    )
+    dependency('nlohmann-json')
 endif
 
 python_inst = import('python').find_installation('python3')
