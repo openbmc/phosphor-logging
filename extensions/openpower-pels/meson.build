@@ -4,15 +4,9 @@ libpldm_dep = dependency(
 )
 
 if cpp.has_header('nlohmann/json.hpp')
-    nlohmann_json = declare_dependency()
+    nlohmann_json_dep = declare_dependency()
 else
-    subproject('nlohmann-json')
-    nlohmann_json = declare_dependency(
-        include_directories: include_directories(
-            '../../subprojects/nlohmann-json/single_include',
-            '../../subprojects/nlohmann-json/single_include/nlohmann',
-        )
-    )
+    nlohmann_json_dep = dependency('nlohmann-json')
 endif
 
 python_inst = import('python').find_installation('python3')
@@ -84,7 +78,7 @@ libpel_sources = files(
 libpel_deps = [
     conf_h_dep,
     libpldm_dep,
-    nlohmann_json,
+    nlohmann_json_dep,
     sdbusplus_dep,
     sdeventplus_dep,
     pdi_dep,
@@ -108,7 +102,7 @@ libpel_dep = declare_dependency(
     link_with: libpel_lib,
     dependencies: [
         libpldm_dep,
-        nlohmann_json,
+        nlohmann_json_dep,
         sdbusplus_dep,
         sdeventplus_dep,
         pdi_dep,
@@ -119,7 +113,7 @@ libpel_dep = declare_dependency(
 log_manager_ext_deps += [
     libpel_dep,
     libpldm_dep,
-    nlohmann_json,
+    nlohmann_json_dep,
 ]
 
 log_manager_ext_sources += files(
