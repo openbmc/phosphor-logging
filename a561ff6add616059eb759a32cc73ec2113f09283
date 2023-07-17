@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2411457d_06134e19",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-07-17T16:55:52Z",
+      "side": 1,
+      "message": "Hmm, yeah good thing to think about with command line tools and lg2. Could always ask for a way to tell lg2 to not output to the console, but probably not worth it at this point.",
+      "revId": "a561ff6add616059eb759a32cc73ec2113f09283",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
