@@ -10,6 +10,7 @@
 #include <cstdarg>
 #include <cstdio>
 #include <iostream>
+#include <mutex>
 #include <source_location>
 #include <vector>
 
@@ -126,6 +127,8 @@ static constexpr size_t pos_line = 4;
 static constexpr size_t pos_func = 5;
 static constexpr size_t static_locs = pos_func + 1;
 
+static std::mutex stderr_mutex;
+
 /** No-op output of a message. */
 static void noop_extra_output(level, const std::source_location&,
                               const std::string&)
@@ -135,6 +138,9 @@ static void noop_extra_output(level, const std::source_location&,
 static void cerr_extra_output(level l, const std::source_location& s,
                               const std::string& m)
 {
+    // Prevent multiple threads from clobbering the stderr lines of each other
+    std::scoped_lock<std::mutex> lock(stderr_mutex);
+
     static const char* const defaultFormat = []() {
         const char* f = getenv("LG2_FORMAT");
         if (nullptr == f)
@@ -194,7 +200,8 @@ static void cerr_extra_output(level l, const std::source_location& s,
         }
     }
 
-    std::cerr << std::endl;
+    // Ensure this line makes it out before releasing mutex for next line
+    std::cerr << std::endl << std::flush;
 }
 
 // Use the cerr output method if we are on a TTY or if explicitly set via
