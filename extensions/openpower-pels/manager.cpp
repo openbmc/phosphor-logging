@@ -1094,7 +1094,26 @@ void Manager::hardwarePresent(const std::string& locationCode)
         if ((attributes.creator == static_cast<uint8_t>(CreatorID::openBMC)) &&
             attributes.deconfig)
         {
-            _repo.updatePEL(attributes.path, handlePowerThermalHardwarePresent);
+            auto updated = _repo.updatePEL(attributes.path,
+                                           handlePowerThermalHardwarePresent);
+
+            if (updated)
+            {
+                // Also update the property on D-Bus
+                auto objPath = std::string(OBJ_ENTRY) + '/' +
+                               std::to_string(id.obmcID.id);
+                auto entryN = _pelEntries.find(objPath);
+                if (entryN != _pelEntries.end())
+                {
+                    entryN->second->deconfig(false);
+                }
+                else
+                {
+                    lg2::error(
+                        "Could not find PEL Entry D-Bus object for {PATH}",
+                        "PATH", objPath);
+                }
+            }
         }
     }
 }

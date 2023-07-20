@@ -449,7 +449,7 @@ void Repository::setPELHMCTransState(uint32_t pelID, TransmissionState state)
     }
 }
 
-void Repository::updatePEL(const fs::path& path, PELUpdateFunc updateFunc)
+bool Repository::updatePEL(const fs::path& path, PELUpdateFunc updateFunc)
 {
     std::ifstream file{path};
     std::vector<uint8_t> data{std::istreambuf_iterator<char>(file),
@@ -481,6 +481,7 @@ void Repository::updatePEL(const fs::path& path, PELUpdateFunc updateFunc)
             }
 
             write(pel, path);
+            return true;
         }
     }
     else
@@ -488,6 +489,7 @@ void Repository::updatePEL(const fs::path& path, PELUpdateFunc updateFunc)
         throw std::runtime_error(
             "Unable to read a valid PEL when trying to update it");
     }
+    return false;
 }
 
 bool Repository::isServiceableSev(const PELAttributes& pel)

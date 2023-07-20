@@ -465,8 +465,10 @@ class Repository
      *
      * @param[in] path - The file path to use
      * @param[in] updateFunc - The function to run to update the PEL.
+     *
+     * @return bool - If the PEL was updated or not.
      */
-    void updatePEL(const std::filesystem::path& path, PELUpdateFunc updateFunc);
+    bool updatePEL(const std::filesystem::path& path, PELUpdateFunc updateFunc);
 
   private:
     /**
