@@ -4,10 +4,27 @@ phosphor_logging_gen = []
 
 subdir('include/phosphor-logging')
 
+threads_dep = dependency(
+    'threads',
+    native: false,
+    required: false
+)
+
+threads_args = []
+
+if threads_dep.found()
+    threads_args += '-DTHREADS_ENABLED'
+    message('Threads: Enabled')
+elif
+    threads_args += '-DTHREADS_DISABLED'
+    message('Threads: Disabled')
+endif
+
 phosphor_logging_deps = [
     pdi_dep,
     sdbusplus_dep,
     systemd_dep,
+    threads_dep
 ]
 
 phosphor_logging_lib = library(
@@ -16,6 +33,7 @@ phosphor_logging_lib = library(
     'lg2_logger.cpp',
     'sdjournal.cpp',
     phosphor_logging_gen,
+    cpp_args: threads_args,
     implicit_include_directories: false,
     include_directories: phosphor_logging_includes,
     dependencies: [
