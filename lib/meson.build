@@ -4,10 +4,16 @@ phosphor_logging_gen = []
 
 subdir('include/phosphor-logging')
 
+threads_dep = dependency(
+    'threads',
+    native: false
+)
+
 phosphor_logging_deps = [
     pdi_dep,
     sdbusplus_dep,
     systemd_dep,
+    threads_dep
 ]
 
 phosphor_logging_lib = library(
