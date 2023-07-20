@@ -10,6 +10,9 @@
 #include <cstdarg>
 #include <cstdio>
 #include <iostream>
+#include <mutex>
+#include <source_location>
+#include <sstream>
 #include <vector>
 
 // Clang doesn't currently support source_location, but in order to provide
@@ -156,11 +159,13 @@ static void cerr_extra_output(level l, const lg2::source_location& s,
 
     const char* format = defaultFormat;
 
+    std::stringstream stream;
+
     while (*format)
     {
         if (*format != '%')
         {
-            std::cerr << *format;
+            stream << *format;
             ++format;
             continue;
         }
@@ -170,31 +175,31 @@ static void cerr_extra_output(level l, const lg2::source_location& s,
         {
             case '%':
             case '\0':
-                std::cerr << '%';
+                stream << '%';
                 break;
 
             case 'f':
-                std::cerr << s.function_name();
+                stream << s.function_name();
                 break;
 
             case 'F':
-                std::cerr << s.file_name();
+                stream << s.file_name();
                 break;
 
             case 'l':
-                std::cerr << static_cast<uint64_t>(l);
+                stream << static_cast<uint64_t>(l);
                 break;
 
             case 'L':
-                std::cerr << s.line();
+                stream << s.line();
                 break;
 
             case 'm':
-                std::cerr << m;
+                stream << m;
                 break;
 
             default:
-                std::cerr << '%' << *format;
+                stream << '%' << *format;
                 break;
         }
 
@@ -204,7 +209,13 @@ static void cerr_extra_output(level l, const lg2::source_location& s,
         }
     }
 
-    std::cerr << std::endl;
+    static std::mutex mutex;
+
+    // Prevent multiple threads from clobbering the stderr lines of each other
+    std::scoped_lock lock(mutex);
+
+    // Ensure this line makes it out before releasing mutex for next line
+    std::cerr << stream.str() << std::endl;
 }
 
 // Use the cerr output method if we are on a TTY or if explicitly set via
