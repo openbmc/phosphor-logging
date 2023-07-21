@@ -20,6 +20,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "85b4f3c2_2e81ce93",
+        "filename": "lib/lg2_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-07-21T04:21:44Z",
+      "side": 1,
+      "message": "nit: prefer you move this into the cerr function too.",
+      "revId": "8f892adc7701fd84f1b0943116cb291326ff39f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12d54de3_aeb68020",
+        "filename": "lib/lg2_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-07-21T04:21:44Z",
+      "side": 1,
+      "message": "nit: std::mutex isn’t necessary here.",
+      "revId": "8f892adc7701fd84f1b0943116cb291326ff39f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ee4bce11_23f4ede7",
         "filename": "lib/lg2_logger.cpp",
         "patchSetId": 1
@@ -31,6 +65,41 @@
       "writtenOn": "2023-07-21T02:00:53Z",
       "side": 1,
       "message": "Take the lock here, not earlier than needed.",
+      "revId": "8f892adc7701fd84f1b0943116cb291326ff39f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03b5fe8a_697f0c77",
+        "filename": "lib/lg2_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-07-21T04:21:44Z",
+      "side": 1,
+      "message": "doesn’t endl do a flush?",
+      "revId": "8f892adc7701fd84f1b0943116cb291326ff39f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b25086ff_008ad04b",
+        "filename": "lib/lg2_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-07-21T04:21:44Z",
+      "side": 1,
+      "message": "There are outputs earlier though. We need the lock before the while.",
+      "parentUuid": "ee4bce11_23f4ede7",
       "revId": "8f892adc7701fd84f1b0943116cb291326ff39f9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
