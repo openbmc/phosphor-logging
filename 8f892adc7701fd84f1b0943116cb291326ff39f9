@@ -156,6 +156,24 @@
       "parentUuid": "b25086ff_008ad04b",
       "revId": "8f892adc7701fd84f1b0943116cb291326ff39f9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e641c160_f3ee15eb",
+        "filename": "lib/lg2_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-07-21T10:17:21Z",
+      "side": 1,
+      "message": "\u003e Inserts a newline character into the output sequence os and flushes it as if by calling os.put(os.widen(\u0027\\n\u0027)) followed by os.flush().\n\nhttps://en.cppreference.com/w/cpp/io/manip/endl",
+      "parentUuid": "613a33c6_1d7d9dac",
+      "revId": "8f892adc7701fd84f1b0943116cb291326ff39f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
