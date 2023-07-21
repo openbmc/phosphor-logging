@@ -102,6 +102,24 @@
       "parentUuid": "ee4bce11_23f4ede7",
       "revId": "8f892adc7701fd84f1b0943116cb291326ff39f9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30cbc0ac_68c98bc9",
+        "filename": "lib/lg2_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000733
+      },
+      "writtenOn": "2023-07-21T05:50:20Z",
+      "side": 1,
+      "message": "If it\u0027s anything like C, stderr is unbuffered, so every write would \"flush\" even before the `endl` (a quick search isn\u0027t finding an authoritative confirmation of that, but a few non-authoritative sources seem to agree).  So yeah, adding an explicit flush here seems redundant.",
+      "parentUuid": "03b5fe8a_697f0c77",
+      "revId": "8f892adc7701fd84f1b0943116cb291326ff39f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
