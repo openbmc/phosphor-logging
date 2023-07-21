@@ -16,6 +16,23 @@
       "message": "I think you need to link against pthreads in the library for this to work universally.",
       "revId": "8f892adc7701fd84f1b0943116cb291326ff39f9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee4bce11_23f4ede7",
+        "filename": "lib/lg2_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000188
+      },
+      "writtenOn": "2023-07-21T02:00:53Z",
+      "side": 1,
+      "message": "Take the lock here, not earlier than needed.",
+      "revId": "8f892adc7701fd84f1b0943116cb291326ff39f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
