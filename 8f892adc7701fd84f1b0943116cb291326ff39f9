@@ -282,6 +282,24 @@
       "parentUuid": "20627dfe_a13dadd1",
       "revId": "8f892adc7701fd84f1b0943116cb291326ff39f9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aec12cf6_824a9dba",
+        "filename": "lib/lg2_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-07-22T23:00:25Z",
+      "side": 1,
+      "message": "I did a little of that already, when testing. It\u0027s faster now, to build it all up in a stringstream first, then write it out all at once. It was 900ms in the first version of this patch, now it\u0027s 600ms, compared with not having the mutex at all, which is 500ms (but thread-unsafe). However, part of that speedup might be due to eliminating the extra flush that I had before.",
+      "parentUuid": "33bf4638_a06e1a47",
+      "revId": "8f892adc7701fd84f1b0943116cb291326ff39f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
