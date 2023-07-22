@@ -264,6 +264,24 @@
       "parentUuid": "03fd3128_daa880e3",
       "revId": "8f892adc7701fd84f1b0943116cb291326ff39f9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33bf4638_a06e1a47",
+        "filename": "lib/lg2_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-07-22T21:12:34Z",
+      "side": 1,
+      "message": "It would be good to see if there is a performance / size trade off for eliminating the cerr calls. since it is buffered-IO, I would expect similar performance, but maybe data would show me wrong. (sstream will end up with allocations instead of writing to the existing buffer space)",
+      "parentUuid": "20627dfe_a13dadd1",
+      "revId": "8f892adc7701fd84f1b0943116cb291326ff39f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
