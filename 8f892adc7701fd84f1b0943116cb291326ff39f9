@@ -300,6 +300,24 @@
       "parentUuid": "33bf4638_a06e1a47",
       "revId": "8f892adc7701fd84f1b0943116cb291326ff39f9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8670bd22_05bfffc0",
+        "filename": "lib/lg2_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000188
+      },
+      "writtenOn": "2023-07-23T01:54:45Z",
+      "side": 1,
+      "message": "std::cerr is not buffered, it just calls write() every `\u003c\u003c` operator. So yeah, we should see a speedup from building a memory string first.",
+      "parentUuid": "aec12cf6_824a9dba",
+      "revId": "8f892adc7701fd84f1b0943116cb291326ff39f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
