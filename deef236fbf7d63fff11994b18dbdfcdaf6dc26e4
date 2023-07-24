@@ -16,6 +16,24 @@
       "message": "Don\u0027t make it optional, there is no good way to enforce that dependent things do / don\u0027t use threads.",
       "revId": "deef236fbf7d63fff11994b18dbdfcdaf6dc26e4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14359dee_8378bd5b",
+        "filename": "lib/meson.build",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-07-24T17:23:00Z",
+      "side": 1,
+      "message": "This is the intention. I don\u0027t want to enforce a threads requirement. I want to make it work both with and without threads enabled, to minimize disruption to any dependent.",
+      "parentUuid": "c6e76c5e_3a5333b5",
+      "revId": "deef236fbf7d63fff11994b18dbdfcdaf6dc26e4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
