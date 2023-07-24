@@ -16,6 +16,24 @@
       "message": "nit: this is the default, just use `dependency(\u0027threads\u0027)`",
       "revId": "9ddad5c4a704f4cee022e153f0ed6c5bda8359ff",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07e5214a_52f9c186",
+        "filename": "lib/meson.build",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-07-24T23:45:43Z",
+      "side": 1,
+      "message": "Did not know that. Done.",
+      "parentUuid": "79f991f6_a3a6a1e3",
+      "revId": "9ddad5c4a704f4cee022e153f0ed6c5bda8359ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
