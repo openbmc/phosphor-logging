@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xyz/openbmc_project/Network/Client/server.hpp"
+#include "xyz/openbmc_project/Logging/Syslog/Config/Filter/server.hpp"
 
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
@@ -15,8 +16,17 @@ namespace rsyslog_config
 
 using namespace phosphor::logging;
 using NetworkClient = sdbusplus::xyz::openbmc_project::Network::server::Client;
-using Iface = sdbusplus::server::object_t<NetworkClient>;
+using FilterIface =
+    sdbusplus::server::xyz::openbmc_project::logging::syslog::config::Filter;
+using Iface = sdbusplus::server::object_t<NetworkClient, FilterIface>;
 namespace sdbusRule = sdbusplus::bus::match::rules;
+
+using Facility = FilterIface::Facility;
+using PriorityModifier = FilterIface::PriorityModifier;
+using Priority = FilterIface::Priority;
+
+using selectorType = std::tuple<
+    std::vector<Facility>, PriorityModifier, Priority>;
 
 /** @class Server
  *  @brief Configuration for rsyslog server
@@ -89,16 +99,28 @@ class Server : public Iface
     virtual TransportProtocol
         transportProtocol(TransportProtocol protocol) override;
 
+    using FilterIface::selectors;
+
+    /** @brief Override that updates rsyslog config file as well
+     *  @param[in] value - list of rsyslog selectors
+     *  @returns value of changed list of rsyslog selectors
+     */
+    virtual std::vector<selectorType>
+        selectors(std::vector<selectorType> value) override;
+
   private:
     /** @brief Update remote server address and port in
      *         rsyslog config file.
      *  @param[in] serverAddress - remote server address
      *  @param[in] serverPort - remote server port
      *  @param[in] serverTransportProtocol - remote server protocol TCP/UDP
+     *  @param[in] selectors - rsyslog selectors (filter)
      *  @param[in] filePath - rsyslog config file path
      */
     void writeConfig(const std::string& serverAddress, uint16_t serverPort,
-                     TransportProtocol protocol, const char* filePath);
+                     TransportProtocol protocol,
+                     const std::vector<selectorType>& selectors,
+                     const char* filePath);
 
     /** @brief Checks if input IP address is valid (uses getaddrinfo)
      *  @param[in] address - server address
