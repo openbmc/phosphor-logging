@@ -47,6 +47,7 @@ constexpr auto logSetting = "xyz.openbmc_project.Settings";
 constexpr auto hwIsolation = "org.open_power.HardwareIsolation";
 constexpr auto biosConfigMgr = "xyz.openbmc_project.BIOSConfigManager";
 constexpr auto bootRawProgress = "xyz.openbmc_project.State.Boot.Raw";
+constexpr auto pldm = "xyz.openbmc_project.PLDM";
 } // namespace service_name
 
 namespace object_path
@@ -975,6 +976,15 @@ void DataInterface::notifyPresenceSubsribers(const std::string& path,
 
     try
     {
+        auto service = getService(path, interface::locCode);
+
+        // If the hotplugged FRU is hosted by PLDM, then it is
+        // in an IO expansion drawer and we don't care about it.
+        if (service == service_name::pldm)
+        {
+            return;
+        }
+
         locCode = getLocationCode(path);
     }
     catch (const sdbusplus::exception_t& e)
