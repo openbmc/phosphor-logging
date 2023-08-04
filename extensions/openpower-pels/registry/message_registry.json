@@ -2830,32 +2830,6 @@
                                 ]
                             }
                         ]
-                    },
-                    {
-                        "ADValue": "12P0VB_PG_OK",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    {
-                                        "Priority": "high",
-                                        "SymbolicFRU": "pgood_part"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "12P0VA_PG_OK",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    {
-                                        "Priority": "high",
-                                        "SymbolicFRU": "pgood_part"
-                                    }
-                                ]
-                            }
-                        ]
                     }
                 ]
             },
@@ -3798,6 +3772,19 @@
                         ]
                     },
                     {
+                        "ADValue": "12.0VA",
+                        "Callouts": [
+                            {
+                                "CalloutList": [
+                                    {
+                                        "Priority": "high",
+                                        "SymbolicFRU": "pgood_part"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
                         "ADValue": "5.0VCS",
                         "Callouts": [
                             {
@@ -3808,7 +3795,27 @@
                         ]
                     },
                     {
-                        "ADValue": "PCIE_VDD0",
+                        "ADValue": "1.8V",
+                        "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "0.9V",
+                        "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "3.3V",
                         "Callouts": [
                             {
                                 "CalloutList": [
@@ -3822,13 +3829,90 @@
                         ]
                     },
                     {
-                        "ADValue": "PCIE_CORE",
+                        "ADValue": "1.5V_AVDD",
+                        "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C5" },
+                                    { "Priority": "medium", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "0.65V_VDN",
+                        "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C5" },
+                                    { "Priority": "medium", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "0.7VA_VDD",
+                        "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C5" },
+                                    { "Priority": "medium", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "0.7VB_VDD",
+                        "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C5" },
+                                    { "Priority": "medium", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "0.75V_VCS",
+                        "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C5" },
+                                    { "Priority": "medium", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "0.9V_VIO",
+                        "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C5" },
+                                    { "Priority": "medium", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "0.85V_VPCIE",
+                        "Callouts": [
+                            {
+                                "CalloutList": [
+                                    { "Priority": "high", "LocCode": "P0-C5" },
+                                    { "Priority": "medium", "LocCode": "P0" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValue": "PMIC2_PG",
                         "Callouts": [
                             {
                                 "CalloutList": [
                                     {
                                         "Priority": "high",
-                                        "SymbolicFRU": "pcie_hot_plug"
+                                        "SymbolicFRU": "memory_dimm"
                                     },
                                     { "Priority": "medium", "LocCode": "P0" }
                                 ]
@@ -3836,134 +3920,43 @@
                         ]
                     },
                     {
-                        "ADValue": "AVDD",
+                        "ADValue": "PMIC3_PG",
                         "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C5" },
-                                    { "Priority": "medium", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "VDN",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C5" },
-                                    { "Priority": "medium", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "VDDA",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C5" },
-                                    { "Priority": "medium", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "VDDB",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C5" },
-                                    { "Priority": "medium", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "VCS",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C5" },
-                                    { "Priority": "medium", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "VIO",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C5" },
-                                    { "Priority": "medium", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "VPCIE",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C5" },
-                                    { "Priority": "medium", "LocCode": "P0" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "PMIC2",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0" },
                                     {
-                                        "Priority": "medium",
-                                        "LocCode": "memory_dimm"
-                                    }
+                                        "Priority": "high",
+                                        "SymbolicFRU": "memory_dimm"
+                                    },
+                                    { "Priority": "medium", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "PMIC3",
+                        "ADValue": "VDDR_1.2VB",
                         "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0" },
                                     {
-                                        "Priority": "medium",
-                                        "LocCode": "memory_dimm"
-                                    }
+                                        "Priority": "high",
+                                        "SymbolicFRU": "memory_dimm"
+                                    },
+                                    { "Priority": "medium", "LocCode": "P0" }
                                 ]
                             }
                         ]
                     },
                     {
-                        "ADValue": "VDDR1",
+                        "ADValue": "VDDR_1.2VA",
                         "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0" },
                                     {
-                                        "Priority": "medium",
-                                        "LocCode": "memory_dimm"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "ADValue": "VDDR0",
-                        "Callouts": [
-                            {
-                                "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0" },
-                                    {
-                                        "Priority": "medium",
-                                        "LocCode": "memory_dimm"
-                                    }
+                                        "Priority": "high",
+                                        "SymbolicFRU": "memory_dimm"
+                                    },
+                                    { "Priority": "medium", "LocCode": "P0" }
                                 ]
                             }
                         ]
