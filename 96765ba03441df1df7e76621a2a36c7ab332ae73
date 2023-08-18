@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e9f314e_4e18d16c",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3850,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2023-08-18T19:54:13Z",
+      "side": 0,
+      "message": "So these Vdn, AVdd, Vdda, Vddb etc aren\u0027t used for rainier nor everest? They are named something else there (I see others that are named something close; just want to make sure it was considered that the deleted ones weren\u0027t used in other systems).",
+      "revId": "96765ba03441df1df7e76621a2a36c7ab332ae73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
