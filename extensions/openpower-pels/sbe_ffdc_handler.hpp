@@ -5,6 +5,8 @@
 
 #include <libekb.H>
 
+#include <filesystem>
+
 namespace openpower
 {
 namespace pels
@@ -100,17 +102,21 @@ class SbeFFDC
     {
         try
         {
-            for (auto path : paths)
+            for (const auto& [path, fd] : paths)
             {
                 if (!path.empty())
                 {
                     // Delete temporary file from file system
                     std::error_code ec;
                     std::filesystem::remove(path, ec);
-                    // Clear path to indicate file has been deleted
-                    path.clear();
+                }
+
+                if (fd != -1)
+                {
+                    close(fd);
                 }
             }
+            paths.clear();
         }
         catch (...)
         {
@@ -168,10 +174,10 @@ class SbeFFDC
     void process(const sbeFfdcPacketType& ffdcPkt);
 
     /**
-     * @brief  Temporary files path information created as part of FFDC
+     * @brief  Temporary files path and FD information created as part of FFDC
      *         processing.
      */
-    std::vector<std::filesystem::path> paths;
+    std::vector<std::pair<std::filesystem::path, int>> paths;
 
     /**
      * @brief PEL FFDC files, which includes the user data sections and the
