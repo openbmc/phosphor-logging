@@ -11,61 +11,57 @@
 #include <tuple>
 #include <type_traits>
 
-<% exceptions = [] %>\
+<%
+import inflection
+
+def sdbusplus_name(name):
+    if "example.xyz.openbmc_project" in name:
+        names = name.split(".")
+    else:
+        names = ["sdbusplus", "error" ] + name.split(".")
+
+    classname = inflection.camelize(names[-1])
+    namespace_name = "::".join([inflection.underscore(x) for x in names[:-1]])
+
+    return (namespace_name, classname)
+
+def phosphor_name(name):
+    namespace_name, classname = sdbusplus_name(name)
+    namespace_name = namespace_name.replace("sdbusplus::error::", "")
+
+    return (namespace_name, classname)
+
+def old_phosphor_name(name):
+    names = name.split(".")
+    return ("::".join(names[:-1]), names[-1])
+
+exceptions = sorted(
+    set([x for x in errors if "example.xyz.openbmc_project" not in x]))
+%>\
+% for error in exceptions:
+<%
+    ns, exception_name = sdbusplus_name(error)
+%>\
+namespace ${ns}
+{
+struct ${exception_name};
+} // namespace ${ns}
+% endfor
+
+namespace phosphor::logging
+{
+
 % for name in errors:
 <%
-    if("example.xyz.openbmc_project" not in name):
-        exception = name.replace(".", "::")
-        exception = "sdbusplus::" + exception
-        index = exception.rfind("::")
-        exception = exception[:index] + "::Error::" + exception[index+2:]
-        exceptions.append(exception)
+    namespaces, classname = phosphor_name(name)
+    meta_list = meta.get(name, [])
 %>\
-% endfor
-% for exception in sorted(set(exceptions)):
-<%
-    ns = exception.split("::")
-    exception_name = ns[-1]
-    ns = ns[:-1]
-%>\
-    % for s in ns:
-namespace ${s}
+namespace ${namespaces}
 {
-    % endfor
-struct ${exception_name};
-    % for s in reversed(ns):
-} // namespace ${s}
-    % endfor
-% endfor
-
-namespace phosphor
-{
-
-namespace logging
-{
-
-    % for index, name in enumerate(errors):
-<%
-    ## Ex: name: xyz.openbmc_project.Error.Callout.Device
-    namespaces = name.split('.')
-    ## classname is the last name item (Device)
-    classname = namespaces[-1]
-    ## namespaces are all the name items except the last one
-    namespaces = namespaces[:-1]
-%>\
-    % for s in namespaces:
-namespace ${s}
-{
-    % endfor
+    % if len(meta_list) != 0:
 namespace _${classname}
 {
-<%
-    meta_list = []
-    if(name in meta):
-        meta_list = meta[name]
-%>\
-
-    % for b in meta_list:
+        % for b in meta_list:
 struct ${b}
 {
     /*
@@ -78,15 +74,12 @@ struct ${b}
     explicit constexpr ${b}(${meta_data[b]['type']} a) : _entry(entry("${meta_data[b]['str']}", a)) {};
     type _entry;
 };
-    % endfor
-
+        % endfor
 } // namespace _${classname}
+    % endif
 <%
-    example_yaml = False
-    if("example.xyz.openbmc_project" in name):
-        example_yaml = True
-%>\
-<%
+    example_yaml = "example.xyz.openbmc_project" in name
+
     meta_string = ""
     if(meta_list):
         meta_string = ', '.join(meta_list)
@@ -94,14 +87,12 @@ struct ${b}
 
     parent = parents[name]
     while parent:
-        tmpparent = parent.split('.')
-        ## Name is the last item
-        parent_name = tmpparent[-1]
-        ## namespaces are all the name items except the last one
-        parent_namespace = '::'.join(tmpparent[:-1])
-        parent_meta += [parent_namespace + "::" + parent_name + "::" +
+        parent_ns, parent_class = phosphor_name(parent)
+
+        parent_meta += [parent_ns + "::" + parent_class + "::" +
                         p for p in meta[parent]]
         parent_meta_short = ', '.join(meta[parent])
+
         # The parent may have empty meta,
         # so only add parent meta when it exists
         if (parent_meta_short):
@@ -127,7 +118,8 @@ struct ${error_type}
     using ${b} = _${classname}::${b};
     % endfor
     % for b in parent_meta:
-    using ${b.split("::").pop()} = ${b};
+    using ${b.split("::")[-1]} =
+        phosphor::logging::${b};
     % endfor
     using metadata_types = std::tuple<${meta_string}>;
     % if example_yaml:
@@ -154,39 +146,35 @@ struct ${error_type}
     % endif
 };
 
-% for s in reversed(namespaces):
-} // namespace ${s}
-% endfor
-
+} // namespace ${namespaces}
 <%
-    sdbusplus_name = name
-    if not example_yaml :
-        sdbusplus_name = "sdbusplus." + sdbusplus_name
-        pos = sdbusplus_name.rfind(".")
-        sdbusplus_name = (sdbusplus_name[:pos] + ".Error." +
-                          sdbusplus_name[pos+1:])
-    sdbusplus_type = sdbusplus_name.replace(".", "::")
-    phosphor_type = sdbusplus_type
-    if not example_yaml :
-        phosphor_type = sdbusplus_type.replace("sdbusplus::", "")
-        phosphor_type = phosphor_type.replace("Error::", "")
+    old_ns, old_class = old_phosphor_name(name)
+%>
+    % if old_ns != namespaces or old_class != classname:
+#ifndef SDBUSPP_REMOVE_DEPRECATED_NAMESPACE
+namespace ${old_ns}
+{
+using ${old_class} =
+    phosphor::logging::${namespaces}::${classname};
+}
+#endif
+    % endif
+
+    % if not example_yaml:
+<%
+    sdbusplus_ns, sdbusplus_class = sdbusplus_name(name)
 %>\
-\
-% if sdbusplus_type != phosphor_type:
 namespace details
 {
 
 template <>
-struct map_exception_type<${sdbusplus_type}>
+struct map_exception_type<${sdbusplus_ns}::${sdbusplus_class}>
 {
-    using type = ${phosphor_type};
+    using type =
+        phosphor::logging::${namespaces}::${classname};
 };
 
 } // namespace details
-%endif
-
-    % endfor
-
-} // namespace logging
-
-} // namespace phosphor
+    %endif
+% endfor
+} // namespace phosphor::logging
