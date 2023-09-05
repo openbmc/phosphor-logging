@@ -16,7 +16,7 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    using namespace example::xyz::openbmc_project::Example::Elog;
+    using namespace example::xyz::openbmc_project::example::elog;
     try
     {
         elog<TestCallout>(TestCallout::DEV_ADDR(0xDEADEAD),

@@ -79,7 +79,7 @@ void build(const std::string& match, const std::vector<std::string>& data,
 
 // Example template specialization - we don't want to do anything
 // for this metadata.
-using namespace example::xyz::openbmc_project::Example::Elog;
+using namespace example::xyz::openbmc_project::example::elog;
 template <>
 inline void
     build<TestErrorTwo::DEV_ID>(const std::string& /*match*/,
@@ -89,7 +89,7 @@ inline void
 
 template <>
 inline void
-    build<example::xyz::openbmc_project::Example::Device::Callout::
+    build<example::xyz::openbmc_project::example::device::Callout::
               CALLOUT_DEVICE_PATH_TEST>(const std::string& match,
                                         const std::vector<std::string>& data,
                                         AssociationList& list)
@@ -122,13 +122,13 @@ inline void
 #if defined PROCESS_META
 
 template <>
-void build<xyz::openbmc_project::Common::Callout::Device::CALLOUT_DEVICE_PATH>(
+void build<xyz::openbmc_project::common::callout::Device::CALLOUT_DEVICE_PATH>(
     const std::string& match, const std::vector<std::string>& data,
     AssociationList& list);
 
 template <>
 void build<
-    xyz::openbmc_project::Common::Callout::Inventory::CALLOUT_INVENTORY_PATH>(
+    xyz::openbmc_project::common::callout::Inventory::CALLOUT_INVENTORY_PATH>(
     const std::string& match, const std::vector<std::string>& data,
     AssociationList& list);
 

@@ -106,8 +106,8 @@ constexpr auto invPowerSupply =
     "xyz.openbmc_project.Inventory.Item.PowerSupply";
 } // namespace interface
 
-using namespace sdbusplus::xyz::openbmc_project::State::Boot::server;
-using namespace sdbusplus::xyz::openbmc_project::State::server;
+using namespace sdbusplus::server::xyz::openbmc_project::state::boot;
+using namespace sdbusplus::server::xyz::openbmc_project::state;
 namespace match_rules = sdbusplus::bus::match::rules;
 
 const DBusInterfaceList hotplugInterfaces{interface::invFan,

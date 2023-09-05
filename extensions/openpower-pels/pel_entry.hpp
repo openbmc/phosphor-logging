@@ -6,7 +6,7 @@ namespace openpower
 namespace pels
 {
 
-using PELEntryIface = sdbusplus::org::open_power::Logging::PEL::server::Entry;
+using PELEntryIface = sdbusplus::server::org::open_power::logging::pel::Entry;
 using PropertiesVariant = PELEntryIface::PropertiesVariant;
 
 class PELEntry : public PELEntryIface

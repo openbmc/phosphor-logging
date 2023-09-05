@@ -13,7 +13,7 @@ namespace phal
 {
 
 using EntrySeverity =
-    sdbusplus::xyz::openbmc_project::HardwareIsolation::server::Entry::Type;
+    sdbusplus::server::xyz::openbmc_project::hardware_isolation::Entry::Type;
 
 /**
  * @brief Helper function to create service actions in the PEL

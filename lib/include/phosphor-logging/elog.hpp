@@ -13,7 +13,7 @@ namespace phosphor
 namespace logging
 {
 
-using namespace sdbusplus::xyz::openbmc_project::Logging::server;
+using namespace sdbusplus::server::xyz::openbmc_project::logging;
 
 /**
  * @brief Structure used by callers to indicate they want to use the last value

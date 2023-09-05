@@ -10,14 +10,22 @@
 #include "elog_meta.hpp"
 
 using namespace phosphor::logging;
-using namespace example::xyz::openbmc_project::Example::Elog;
+using namespace example::xyz::openbmc_project::example::elog;
 using namespace std::placeholders;
 
 extern const std::map<metadata::Metadata,
                       std::function<metadata::associations::Type>> meta = {
-    % for key, value in metadata_process.items():
+% for key, value in metadata_process.items():
 <%
-        type = value.replace(".", "::")
+        import inflection
+        def sdbusplus_name(name):
+            names = name.split(".")
+            classname = inflection.camelize(names[-2])
+            metadata_field = names[-1]
+            namespace_name = "::".join([inflection.underscore(x) for x in names[:-2]])
+
+            return "::".join([namespace_name, classname, metadata_field])
+        type = sdbusplus_name(value)
 %>\
     {"${key}", metadata::associations::build<${type}>},
     % endfor
