@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46d237da_2d624119",
+        "filename": "tools/example/xyz/openbmc_project/Example2/Bar.errors.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-09-05T20:40:42Z",
+      "side": 0,
+      "message": "Why do these files all change to \"Example2\"?",
+      "revId": "b508a81cbfeba05178f710938b1cf02aba0f3ae8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
