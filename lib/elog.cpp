@@ -10,7 +10,7 @@ namespace logging
 {
 namespace details
 {
-using namespace sdbusplus::xyz::openbmc_project::Logging::server;
+using namespace sdbusplus::server::xyz::openbmc_project::logging;
 
 auto _prepareMsg(const char* funcName)
 {

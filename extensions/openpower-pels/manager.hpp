@@ -551,7 +551,7 @@ class Manager : public PELInterface
      */
     std::map<std::string,
              std::unique_ptr<
-                 sdbusplus::org::open_power::Logging::PEL::server::Entry>>
+                 sdbusplus::server::org::open_power::logging::pel::Entry>>
         _pelEntries;
 
     /**

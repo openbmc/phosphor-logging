@@ -45,7 +45,7 @@ void save(Archive& a, const Entry& e, const std::uint32_t /*version*/)
 template <class Archive>
 void load(Archive& a, Entry& e, const std::uint32_t version)
 {
-    using namespace sdbusplus::xyz::openbmc_project::Logging::server;
+    using namespace sdbusplus::server::xyz::openbmc_project::logging;
 
     uint32_t id{};
     Entry::Level severity{};
@@ -92,11 +92,11 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
     e.timestamp(timestamp, true);
     e.message(message, true);
     e.additionalData(additionalData, true);
-    e.sdbusplus::xyz::openbmc_project::Logging::server::Entry::resolved(
+    e.sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved(
         resolved, true);
     e.associations(associations, true);
     e.version(fwVersion, true);
-    e.purpose(sdbusplus::xyz::openbmc_project::Software::server::Version::
+    e.purpose(sdbusplus::server::xyz::openbmc_project::software::Version::
                   VersionPurpose::BMC,
               true);
     e.updateTimestamp(updateTimestamp, true);
