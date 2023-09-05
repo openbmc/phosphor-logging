@@ -8,7 +8,7 @@
       - str: FILE_NAME=%s
         type: string
   inherits:
-      - example.xyz.openbmc_project.Example.Elog.TestErrorTwo
+      - example.xyz.openbmc_project.Example2.Elog.TestErrorTwo
 
 - name: TestErrorTwo
   level: ERR
@@ -33,4 +33,4 @@
       - str: DEV_ADDR=0x%.8X
         type: uint32
   inherits:
-      - example.xyz.openbmc_project.Example.Device.Callout
+      - example.xyz.openbmc_project.Example2.Device.Callout

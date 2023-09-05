@@ -17,11 +17,11 @@ namespace logging
 {
 
 using EntryIfaces = sdbusplus::server::object_t<
-    sdbusplus::xyz::openbmc_project::Logging::server::Entry,
-    sdbusplus::xyz::openbmc_project::Object::server::Delete,
-    sdbusplus::xyz::openbmc_project::Association::server::Definitions,
-    sdbusplus::xyz::openbmc_project::Software::server::Version,
-    sdbusplus::xyz::openbmc_project::Common::server::FilePath>;
+    sdbusplus::server::xyz::openbmc_project::logging::Entry,
+    sdbusplus::server::xyz::openbmc_project::object::Delete,
+    sdbusplus::server::xyz::openbmc_project::association::Definitions,
+    sdbusplus::server::xyz::openbmc_project::software::Version,
+    sdbusplus::server::xyz::openbmc_project::common::FilePath>;
 
 using AssociationList =
     std::vector<std::tuple<std::string, std::string, std::string>>;
