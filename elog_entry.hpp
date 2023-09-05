@@ -17,11 +17,11 @@ namespace logging
 {
 
 using EntryIfaces = sdbusplus::server::object_t<
-    sdbusplus::xyz::openbmc_project::Logging::server::Entry,
-    sdbusplus::xyz::openbmc_project::Object::server::Delete,
-    sdbusplus::xyz::openbmc_project::Association::server::Definitions,
-    sdbusplus::xyz::openbmc_project::Software::server::Version,
-    sdbusplus::xyz::openbmc_project::Common::server::FilePath>;
+    sdbusplus::server::xyz::openbmc_project::logging::Entry,
+    sdbusplus::server::xyz::openbmc_project::object::Delete,
+    sdbusplus::server::xyz::openbmc_project::association::Definitions,
+    sdbusplus::server::xyz::openbmc_project::software::Version,
+    sdbusplus::server::xyz::openbmc_project::common::FilePath>;
 
 using AssociationList =
     std::vector<std::tuple<std::string, std::string, std::string>>;
@@ -79,7 +79,7 @@ class Entry : public EntryIfaces
         associations(std::move(objects), true);
         // Store a copy of associations in case we need to recreate
         assocs = associations();
-        sdbusplus::xyz::openbmc_project::Logging::server::Entry::resolved(false,
+        sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved(false,
                                                                           true);
 
         version(fwVersion, true);
@@ -113,7 +113,7 @@ class Entry : public EntryIfaces
      */
     bool resolved(bool value) override;
 
-    using sdbusplus::xyz::openbmc_project::Logging::server::Entry::resolved;
+    using sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved;
 
     /** @brief Update eventId string of the error.
      *  @param[in] value - The eventID
@@ -121,7 +121,7 @@ class Entry : public EntryIfaces
      */
     std::string eventId(std::string value) override;
 
-    using sdbusplus::xyz::openbmc_project::Logging::server::Entry::eventId;
+    using sdbusplus::server::xyz::openbmc_project::logging::Entry::eventId;
 
     /** @brief Update resolution string of the error.
      *  @param[in] value - The resolution
@@ -129,7 +129,7 @@ class Entry : public EntryIfaces
      */
     std::string resolution(std::string value) override;
 
-    using sdbusplus::xyz::openbmc_project::Logging::server::Entry::resolution;
+    using sdbusplus::server::xyz::openbmc_project::logging::Entry::resolution;
 
     /** @brief Delete this d-bus object.
      */

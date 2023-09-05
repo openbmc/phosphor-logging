@@ -46,7 +46,7 @@ namespace rg = openpower::pels::message;
 
 namespace common_error = sdbusplus::xyz::openbmc_project::Common::Error;
 
-using Create = sdbusplus::xyz::openbmc_project::Logging::server::Create;
+using Create = sdbusplus::server::xyz::openbmc_project::logging::Create;
 
 namespace additional_data
 {
@@ -632,7 +632,7 @@ std::tuple<uint32_t, uint32_t> Manager::createPELWithFFDCFiles(
     std::string message, Entry::Level severity,
     std::map<std::string, std::string> additionalData,
     std::vector<std::tuple<
-        sdbusplus::xyz::openbmc_project::Logging::server::Create::FFDCFormat,
+        sdbusplus::server::xyz::openbmc_project::logging::Create::FFDCFormat,
         uint8_t, uint8_t, sdbusplus::message::unix_fd>>
         fFDC)
 {

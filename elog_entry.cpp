@@ -23,12 +23,12 @@ void Entry::delete_()
 bool Entry::resolved(bool value)
 {
     auto current =
-        sdbusplus::xyz::openbmc_project::Logging::server::Entry::resolved();
+        sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved();
     if (value != current)
     {
         value ? associations({}) : associations(assocs);
         current =
-            sdbusplus::xyz::openbmc_project::Logging::server::Entry::resolved(
+            sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved(
                 value);
 
         uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -45,11 +45,11 @@ bool Entry::resolved(bool value)
 std::string Entry::eventId(std::string value)
 {
     auto current =
-        sdbusplus::xyz::openbmc_project::Logging::server::Entry::eventId();
+        sdbusplus::server::xyz::openbmc_project::logging::Entry::eventId();
     if (value != current)
     {
         current =
-            sdbusplus::xyz::openbmc_project::Logging::server::Entry::eventId(
+            sdbusplus::server::xyz::openbmc_project::logging::Entry::eventId(
                 value);
         serialize(*this);
     }
@@ -60,11 +60,11 @@ std::string Entry::eventId(std::string value)
 std::string Entry::resolution(std::string value)
 {
     auto current =
-        sdbusplus::xyz::openbmc_project::Logging::server::Entry::resolution();
+        sdbusplus::server::xyz::openbmc_project::logging::Entry::resolution();
     if (value != current)
     {
         current =
-            sdbusplus::xyz::openbmc_project::Logging::server::Entry::resolution(
+            sdbusplus::server::xyz::openbmc_project::logging::Entry::resolution(
                 value);
         serialize(*this);
     }

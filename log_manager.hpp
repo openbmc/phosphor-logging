@@ -20,9 +20,9 @@ namespace logging
 extern const std::map<std::string, std::vector<std::string>> g_errMetaMap;
 extern const std::map<std::string, level> g_errLevelMap;
 
-using CreateIface = sdbusplus::xyz::openbmc_project::Logging::server::Create;
+using CreateIface = sdbusplus::server::xyz::openbmc_project::logging::Create;
 using DeleteAllIface =
-    sdbusplus::xyz::openbmc_project::Collection::server::DeleteAll;
+    sdbusplus::server::xyz::openbmc_project::collection::DeleteAll;
 
 namespace details
 {
@@ -30,7 +30,7 @@ template <typename... T>
 using ServerObject = typename sdbusplus::server::object_t<T...>;
 
 using ManagerIface =
-    sdbusplus::xyz::openbmc_project::Logging::Internal::server::Manager;
+    sdbusplus::server::xyz::openbmc_project::logging::internal::Manager;
 
 } // namespace details
 
@@ -184,7 +184,7 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     void create(
         const std::string& message,
-        sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level severity,
+        sdbusplus::server::xyz::openbmc_project::logging::Entry::Level severity,
         const std::map<std::string, std::string>& additionalData);
 
     /** @brief Creates an event log, and accepts FFDC files
@@ -203,7 +203,7 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     void createWithFFDC(
         const std::string& message,
-        sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level severity,
+        sdbusplus::server::xyz::openbmc_project::logging::Entry::Level severity,
         const std::map<std::string, std::string>& additionalData,
         const FFDCEntries& ffdc);
 
@@ -381,7 +381,7 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
      */
     void create(
         std::string message,
-        sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level severity,
+        sdbusplus::server::xyz::openbmc_project::logging::Entry::Level severity,
         std::map<std::string, std::string> additionalData) override
     {
         manager.create(message, severity, additionalData);
@@ -399,7 +399,7 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
      */
     void createWithFFDCFiles(
         std::string message,
-        sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level severity,
+        sdbusplus::server::xyz::openbmc_project::logging::Entry::Level severity,
         std::map<std::string, std::string> additionalData,
         std::vector<std::tuple<CreateIface::FFDCFormat, uint8_t, uint8_t,
                                sdbusplus::message::unix_fd>>

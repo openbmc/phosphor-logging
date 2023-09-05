@@ -11,11 +11,11 @@ namespace common_error = sdbusplus::xyz::openbmc_project::Common::Error;
 
 bool PELEntry::managementSystemAck(bool value)
 {
-    auto current = sdbusplus::org::open_power::Logging::PEL::server::Entry::
+    auto current = sdbusplus::server::org::open_power::logging::pel::Entry::
         managementSystemAck();
     if (value != current)
     {
-        current = sdbusplus::org::open_power::Logging::PEL::server::Entry::
+        current = sdbusplus::server::org::open_power::logging::pel::Entry::
             managementSystemAck(value);
 
         Repository::LogID id{Repository::LogID::Obmc(getMyId())};

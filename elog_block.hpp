@@ -14,8 +14,8 @@ namespace logging
 {
 
 using BlockIface = sdbusplus::server::object_t<
-    sdbusplus::xyz::openbmc_project::Logging::server::ErrorBlocksTransition,
-    sdbusplus::xyz::openbmc_project::Association::server::Definitions>;
+    sdbusplus::server::xyz::openbmc_project::logging::ErrorBlocksTransition,
+    sdbusplus::server::xyz::openbmc_project::association::Definitions>;
 
 using AssociationList =
     std::vector<std::tuple<std::string, std::string, std::string>>;

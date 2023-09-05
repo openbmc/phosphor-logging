@@ -335,7 +335,7 @@ void Manager::onEntryResolve(sdbusplus::message_t& msg)
 
 void Manager::checkAndQuiesceHost()
 {
-    using Host = sdbusplus::xyz::openbmc_project::State::server::Host;
+    using Host = sdbusplus::server::xyz::openbmc_project::state::Host;
 
     // First check host state
     std::variant<Host::HostState> property;
