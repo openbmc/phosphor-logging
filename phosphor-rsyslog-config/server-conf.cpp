@@ -24,7 +24,7 @@ namespace rsyslog_config
 
 namespace utils = phosphor::rsyslog_utils;
 using namespace phosphor::logging;
-using namespace sdbusplus::xyz::openbmc_project::Common::Error;
+using namespace sdbusplus::error::xyz::openbmc_project::common;
 
 namespace internal
 {
@@ -123,7 +123,7 @@ std::optional<
 
 std::string Server::address(std::string value)
 {
-    using Argument = xyz::openbmc_project::Common::InvalidArgument;
+    using Argument = xyz::openbmc_project::common::InvalidArgument;
     std::string result{};
 
     try

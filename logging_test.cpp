@@ -92,27 +92,27 @@ int elog_test()
     const char* test_string = "/tmp/test_string/";
     try
     {
-        elog<example::xyz::openbmc_project::Example::Elog::TestErrorOne>(
-            example::xyz::openbmc_project::Example::Elog::TestErrorOne::ERRNUM(
+        elog<example::xyz::openbmc_project::example2::elog::TestErrorOne>(
+            example::xyz::openbmc_project::example2::elog::TestErrorOne::ERRNUM(
                 number),
-            example::xyz::openbmc_project::Example::Elog::TestErrorOne::
+            example::xyz::openbmc_project::example2::elog::TestErrorOne::
                 FILE_PATH(test_string),
-            example::xyz::openbmc_project::Example::Elog::TestErrorOne::
+            example::xyz::openbmc_project::example2::elog::TestErrorOne::
                 FILE_NAME("elog_test_3.txt"),
-            example::xyz::openbmc_project::Example::Elog::TestErrorTwo::
+            example::xyz::openbmc_project::example2::elog::TestErrorTwo::
                 DEV_ADDR(0xDEADDEAD),
-            example::xyz::openbmc_project::Example::Elog::TestErrorTwo::DEV_ID(
+            example::xyz::openbmc_project::example2::elog::TestErrorTwo::DEV_ID(
                 100),
-            example::xyz::openbmc_project::Example::Elog::TestErrorTwo::
+            example::xyz::openbmc_project::example2::elog::TestErrorTwo::
                 DEV_NAME("test case 3"));
     }
-    catch (const example::xyz::openbmc_project::Example::Elog::TestErrorOne& e)
+    catch (const example::xyz::openbmc_project::example2::elog::TestErrorOne& e)
     {
         std::cout << "elog exception caught: " << e.what() << std::endl;
     }
 
     // Reduce our error namespaces
-    using namespace example::xyz::openbmc_project::Example::Elog;
+    using namespace example::xyz::openbmc_project::example2::elog;
 
     // Now read back and verify our data made it into the journal
     std::stringstream stream;
@@ -208,12 +208,12 @@ void commitError(const char* text)
     {
         try
         {
-            elog<example::xyz::openbmc_project::Example::Elog::AutoTestSimple>(
-                example::xyz::openbmc_project::Example::Elog::AutoTestSimple::
+            elog<example::xyz::openbmc_project::example2::elog::AutoTestSimple>(
+                example::xyz::openbmc_project::example2::elog::AutoTestSimple::
                     STRING("FOO"));
         }
         catch (
-            const example::xyz::openbmc_project::Example::Elog::AutoTestSimple&
+            const example::xyz::openbmc_project::example2::elog::AutoTestSimple&
                 e)
         {
             std::cout << "elog exception caught: " << e.what() << std::endl;
@@ -222,8 +222,8 @@ void commitError(const char* text)
     }
     else if (std::strcmp(text, "AutoTestCreateAndCommit") == 0)
     {
-        report<example::xyz::openbmc_project::Example::Elog::AutoTestSimple>(
-            example::xyz::openbmc_project::Example::Elog::AutoTestSimple::
+        report<example::xyz::openbmc_project::example2::elog::AutoTestSimple>(
+            example::xyz::openbmc_project::example2::elog::AutoTestSimple::
                 STRING("FOO"));
     }
 

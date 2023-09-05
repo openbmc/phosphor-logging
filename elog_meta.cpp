@@ -14,7 +14,7 @@ namespace associations
 #if defined PROCESS_META
 
 template <>
-void build<xyz::openbmc_project::Common::Callout::Device::CALLOUT_DEVICE_PATH>(
+void build<xyz::openbmc_project::common::callout::Device::CALLOUT_DEVICE_PATH>(
     const std::string& match, const std::vector<std::string>& data,
     AssociationList& list)
 {
@@ -40,7 +40,7 @@ void build<xyz::openbmc_project::Common::Callout::Device::CALLOUT_DEVICE_PATH>(
 
 template <>
 void build<
-    xyz::openbmc_project::Common::Callout::Inventory::CALLOUT_INVENTORY_PATH>(
+    xyz::openbmc_project::common::callout::Inventory::CALLOUT_INVENTORY_PATH>(
     const std::string& match, const std::vector<std::string>& data,
     AssociationList& list)
 {

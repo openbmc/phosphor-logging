@@ -4,4 +4,4 @@
       - str: "FOO_DATA=%s"
         type: string
   inherits:
-      - example.xyz.openbmc_project.Example.Elog.TestErrorOne
+      - example.xyz.openbmc_project.Example2.Elog.TestErrorOne
