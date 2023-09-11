@@ -6,7 +6,7 @@ extern "C"
 #include "fapi_data_process.hpp"
 
 #include <attributes_info.H>
-#include <fmt/format.h>
+//#include <fmt/format.h>
 #include <libphal.H>
 #include <phal_exception.H>
 
@@ -120,24 +120,24 @@ int pdbgCallbackToGetTgtReqAttrsVal(struct pdbg_target* target,
     catch (const std::exception& e)
     {
         // log message and continue with default data
-        log<level::ERR>(fmt::format("getLocationCode({}): Exception({})",
+        /*log<level::ERR>(fmt::format("getLocationCode({}): Exception({})",
                                     pdbg_target_path(target), e.what())
-                            .c_str());
+                            .c_str());*/
     }
 
     if (DT_GET_PROP(ATTR_PHYS_DEV_PATH, target, targetInfo->physDevPath))
     {
-        log<level::ERR>(
+        /*log<level::ERR>(
             fmt::format("Could not read({}) PHYS_DEV_PATH attribute",
                         pdbg_target_path(target))
-                .c_str());
+                .c_str());*/
     }
 
     if (DT_GET_PROP(ATTR_MRU_ID, target, targetInfo->mruId))
     {
-        log<level::ERR>(fmt::format("Could not read({}) ATTR_MRU_ID attribute",
+        /*log<level::ERR>(fmt::format("Could not read({}) ATTR_MRU_ID attribute",
                                     pdbg_target_path(target))
-                            .c_str());
+                            .c_str());*/
     }
 
     return requireAttrFound;
@@ -167,10 +167,10 @@ bool getTgtReqAttrsVal(const std::vector<uint8_t>& physBinPath,
                                    &targetInfo);
     if (ret == 0)
     {
-        log<level::ERR>(fmt::format("Given ATTR_PHYS_BIN_PATH value({:02x}) "
+        /*log<level::ERR>(fmt::format("Given ATTR_PHYS_BIN_PATH value({:02x}) "
                                     "not found in phal device tree",
                                     fmt::join(targetInfo.physBinPath, ""))
-                            .c_str());
+                            .c_str());*/
         return false;
     }
     else if (ret == requireAttrNotFound)
@@ -202,10 +202,10 @@ static std::string getPelPriority(const std::string& phalPriority)
     auto it = priorityMap.find(phalPriority);
     if (it == priorityMap.end())
     {
-        log<level::ERR>(fmt::format("Unsupported phal priority({}) is given "
+        /*log<level::ERR>(fmt::format("Unsupported phal priority({}) is given "
                                     "to get pel priority format",
                                     phalPriority)
-                            .c_str());
+                            .c_str());*/
         return "H";
     }
 
@@ -255,10 +255,10 @@ void processClockInfoErrorHelper(const FFDC& ffdc,
                                  json& pelJSONFmtCalloutDataList,
                                  FFDCData& ffdcUserData)
 {
-    log<level::INFO>(
+    /*log<level::INFO>(
         fmt::format("processClockInfoErrorHelper: FFDC Message[{}]",
                     ffdc.message)
-            .c_str());
+            .c_str());*/
 
     // Adding hardware procedures return code details
     ffdcUserData.emplace_back("HWP_RC", ffdc.hwp_errorinfo.rc);
@@ -470,10 +470,10 @@ void convertFAPItoPELformat(FFDC& ffdc, json& pelJSONFmtCalloutDataList,
     else if ((ffdc.ffdc_type != FFDC_TYPE_NONE) &&
              (ffdc.ffdc_type != FFDC_TYPE_UNSUPPORTED))
     {
-        log<level::ERR>(fmt::format("Unsupported phal FFDC type to create PEL. "
+        /*log<level::ERR>(fmt::format("Unsupported phal FFDC type to create PEL. "
                                     "MSG: {}",
                                     ffdc.message)
-                            .c_str());
+                            .c_str()); */
     }
 }
 
