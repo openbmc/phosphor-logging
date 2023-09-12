@@ -461,8 +461,8 @@ void HostNotifier::ackPEL(uint32_t id)
 
 void HostNotifier::setHostFull(uint32_t id)
 {
-    lg2::info("Received Host full indication, PEL ID = {ID}", "ID", lg2::hex,
-              id);
+    lg2::debug("Received Host full indication, PEL ID = {ID}", "ID", lg2::hex,
+               id);
 
     _hostFull = true;
 
