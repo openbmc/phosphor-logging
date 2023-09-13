@@ -15,7 +15,6 @@
  */
 #include "bcd_time.hpp"
 
-#include <fmt/format.h>
 #include <time.h>
 
 #include <phosphor-logging/log.hpp>

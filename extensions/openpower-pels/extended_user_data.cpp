@@ -19,9 +19,9 @@
 #ifdef PELTOOL
 #include "user_data_json.hpp"
 #endif
-#include <fmt/format.h>
-
 #include <phosphor-logging/log.hpp>
+
+#include <format>
 
 namespace openpower::pels
 {
@@ -35,7 +35,7 @@ void ExtendedUserData::unflatten(Stream& stream)
     if (_header.size <= SectionHeader::flattenedSize() + 4)
     {
         throw std::out_of_range(
-            fmt::format("ExtendedUserData::unflatten: SectionHeader::size {} "
+            std::format("ExtendedUserData::unflatten: SectionHeader::size {} "
                         "too small",
                         _header.size));
     }
@@ -61,7 +61,7 @@ ExtendedUserData::ExtendedUserData(Stream& pel)
     catch (const std::exception& e)
     {
         log<level::ERR>(
-            fmt::format("Cannot unflatten ExtendedUserData section: {}",
+            std::format("Cannot unflatten ExtendedUserData section: {}",
                         e.what())
                 .c_str());
         _valid = false;
@@ -90,7 +90,7 @@ void ExtendedUserData::validate()
     if (header().id != static_cast<uint16_t>(SectionID::extUserData))
     {
         log<level::ERR>(
-            fmt::format("Invalid ExtendedUserData section ID: {0:#x}",
+            std::format("Invalid ExtendedUserData section ID: {0:#x}",
                         header().id)
                 .c_str());
         _valid = false;

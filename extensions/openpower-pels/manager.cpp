@@ -23,7 +23,6 @@
 #include "service_indicators.hpp"
 #include "severity.hpp"
 
-#include <fmt/format.h>
 #include <sys/inotify.h>
 #include <unistd.h>
 
@@ -32,6 +31,7 @@
 #include <xyz/openbmc_project/Logging/Create/server.hpp>
 
 #include <filesystem>
+#include <format>
 #include <fstream>
 #include <locale>
 
@@ -646,7 +646,7 @@ std::string Manager::getPELJSON(uint32_t obmcLogID)
     // Throws InvalidArgument if not found
     auto pelID = getPELIdFromBMCLogId(obmcLogID);
 
-    auto cmd = fmt::format("/usr/bin/peltool -i {:#x}", pelID);
+    auto cmd = std::format("/usr/bin/peltool -i {:#x}", pelID);
 
     FILE* pipe = popen(cmd.c_str(), "r");
     if (!pipe)

@@ -17,9 +17,9 @@
 
 #include "pel_values.hpp"
 
-#include <fmt/format.h>
-
 #include <phosphor-logging/log.hpp>
+
+#include <format>
 
 using namespace phosphor::logging;
 
@@ -256,7 +256,7 @@ void FRUIdentity::setMaintenanceProcedure(const std::string& procedure,
         else
         {
             log<level::ERR>(
-                fmt::format("Invalid maintenance procedure {}", procedure)
+                std::format("Invalid maintenance procedure {}", procedure)
                     .c_str());
             strncpy(_pnOrProcedureID.data(), "INVALID",
                     _pnOrProcedureID.size());

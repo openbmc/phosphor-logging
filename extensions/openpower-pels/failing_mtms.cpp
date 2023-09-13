@@ -19,9 +19,9 @@
 #include "pel_types.hpp"
 #include "pel_values.hpp"
 
-#include <fmt/format.h>
-
 #include <phosphor-logging/log.hpp>
+
+#include <format>
 
 namespace openpower
 {
@@ -54,7 +54,7 @@ FailingMTMS::FailingMTMS(Stream& pel)
     catch (const std::exception& e)
     {
         log<level::ERR>(
-            fmt::format("Cannot unflatten failing MTM section: {}", e.what())
+            std::format("Cannot unflatten failing MTM section: {}", e.what())
                 .c_str());
         _valid = false;
     }
@@ -67,14 +67,14 @@ void FailingMTMS::validate()
     if (header().id != static_cast<uint16_t>(SectionID::failingMTMS))
     {
         log<level::ERR>(
-            fmt::format("Invalid failing MTMS section ID: {0:#x}", header().id)
+            std::format("Invalid failing MTMS section ID: {0:#x}", header().id)
                 .c_str());
         failed = true;
     }
 
     if (header().version != failingMTMSVersion)
     {
-        log<level::ERR>(fmt::format("Invalid failing MTMS version: {0:#x}",
+        log<level::ERR>(std::format("Invalid failing MTMS version: {0:#x}",
                                     header().version)
                             .c_str());
         failed = true;
