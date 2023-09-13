@@ -17,9 +17,9 @@
 
 #include "util.hpp"
 
-#include <fmt/format.h>
-
 #include <phosphor-logging/log.hpp>
+
+#include <format>
 
 namespace openpower::pels
 {
@@ -64,7 +64,7 @@ void Journal::sync() const
     if (duration.count() > 100)
     {
         log<level::INFO>(
-            fmt::format("Journal sync took {}ms", duration.count()).c_str());
+            std::format("Journal sync took {}ms", duration.count()).c_str());
     }
 }
 

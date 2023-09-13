@@ -15,11 +15,10 @@
  */
 #include "service_indicators.hpp"
 
-#include <fmt/format.h>
-
 #include <phosphor-logging/log.hpp>
 
 #include <bitset>
+#include <format>
 
 namespace openpower::pels::service_indicators
 {
@@ -96,7 +95,7 @@ void LightPath::activate(const PEL& pel)
         catch (const std::exception& e)
         {
             log<level::ERR>(
-                fmt::format("Failed to assert platform SAI LED group: {}",
+                std::format("Failed to assert platform SAI LED group: {}",
                             e.what())
                     .c_str());
         }
@@ -215,7 +214,7 @@ std::vector<std::string> LightPath::getInventoryPaths(
         }
         catch (const std::exception& e)
         {
-            log<level::ERR>(fmt::format("Could not get inventory path for "
+            log<level::ERR>(std::format("Could not get inventory path for "
                                         "location code {} ({}).",
                                         locCode, e.what())
                                 .c_str());
@@ -242,7 +241,7 @@ void LightPath::setNotFunctional(
         catch (const std::exception& e)
         {
             log<level::INFO>(
-                fmt::format("Could not write Functional property on {} ({})",
+                std::format("Could not write Functional property on {} ({})",
                             path, e.what())
                     .c_str());
         }
@@ -261,7 +260,7 @@ void LightPath::createCriticalAssociation(
         catch (const std::exception& e)
         {
             log<level::INFO>(
-                fmt::format(
+                std::format(
                     "Could not set critical association on object path {} ({})",
                     path, e.what())
                     .c_str());

@@ -21,9 +21,9 @@
 #include "manager.hpp"
 #include "pldm_interface.hpp"
 
-#include <fmt/format.h>
-
 #include <phosphor-logging/log.hpp>
+
+#include <format>
 
 namespace openpower
 {
@@ -69,7 +69,7 @@ void pelStartup(internal::Manager& logManager)
         // Log message and continue,
         // This is to help continue creating PEL in raw format.
         log<level::ERR>(
-            fmt::format("Failed to set PDBG_DTB: ({})", strerror(errno))
+            std::format("Failed to set PDBG_DTB: ({})", strerror(errno))
                 .c_str());
     }
 #endif

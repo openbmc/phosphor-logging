@@ -36,12 +36,12 @@
 #include "sbe_ffdc_handler.hpp"
 #endif
 
-#include <fmt/format.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <format>
 #include <iostream>
 
 namespace openpower
@@ -818,7 +818,7 @@ void addIMKeyword(nlohmann::json& json, const DataInterfaceBase& dataIface)
     std::string value{};
 
     std::for_each(keyword.begin(), keyword.end(), [&](const auto& byte) {
-        value += fmt::format("{:02X}", byte);
+        value += std::format("{:02X}", byte);
     });
 
     json["System IM"] = value;
