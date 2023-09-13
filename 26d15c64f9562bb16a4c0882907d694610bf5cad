@@ -16,6 +16,24 @@
       "message": "wouldn\u0027t this do something like:  0x010x020x03...?",
       "revId": "26d15c64f9562bb16a4c0882907d694610bf5cad",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59b65dfa_e68869f2",
+        "filename": "extensions/openpower-pels/fapi_data_process.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2023-09-13T14:55:45Z",
+      "side": 1,
+      "message": "making changes similiar we discussed in openpower-proc-control reveiw",
+      "parentUuid": "83f5d58f_3b678335",
+      "revId": "26d15c64f9562bb16a4c0882907d694610bf5cad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
