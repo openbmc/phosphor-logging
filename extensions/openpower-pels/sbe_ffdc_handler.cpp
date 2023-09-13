@@ -25,11 +25,11 @@ extern "C"
 #include "temporary_file.hpp"
 
 #include <ekb/hwpf/fapi2/include/return_code_defs.H>
-#include <fmt/format.h>
 #include <libekb.H>
 
 #include <phosphor-logging/log.hpp>
 
+#include <format>
 #include <new>
 
 namespace openpower
@@ -62,7 +62,7 @@ SbeFFDC::SbeFFDC(const AdditionalData& aData, const PelFFDC& files) :
     catch (const std::exception& err)
     {
         log<level::ERR>(
-            fmt::format("Conversion failure errormsg({})", err.what()).c_str());
+            std::format("Conversion failure errormsg({})", err.what()).c_str());
         return;
     }
 
@@ -86,7 +86,7 @@ SbeFFDC::SbeFFDC(const AdditionalData& aData, const PelFFDC& files) :
 void SbeFFDC::parse(int fd)
 {
     log<level::INFO>(
-        fmt::format("SBE FFDC file fd:({}), parsing started", fd).c_str());
+        std::format("SBE FFDC file fd:({}), parsing started", fd).c_str());
 
     uint32_t ffdcBufOffset = 0;
     uint32_t pktCount = 0;
@@ -97,7 +97,7 @@ void SbeFFDC::parse(int fd)
     if (ffdcData.empty())
     {
         log<level::ERR>(
-            fmt::format("Empty SBE FFDC file fd:({}), skipping", fd).c_str());
+            std::format("Empty SBE FFDC file fd:({}), skipping", fd).c_str());
         return;
     }
 
@@ -110,7 +110,7 @@ void SbeFFDC::parse(int fd)
         auto lenWords = ntohs(ffdc->lengthinWords);
         auto fapiRc = ntohl(ffdc->fapiRc);
 
-        auto msg = fmt::format("FFDC magic: {} length in words:{} Fapirc:{}",
+        auto msg = std::format("FFDC magic: {} length in words:{} Fapirc:{}",
                                magicBytes, lenWords, fapiRc);
         log<level::INFO>(msg.c_str());
 
@@ -157,7 +157,7 @@ void SbeFFDC::parse(int fd)
     }
     if (pktCount == sbeMaxFfdcPackets)
     {
-        log<level::ERR>(fmt::format("Received more than the limit of ({})"
+        log<level::ERR>(std::format("Received more than the limit of ({})"
                                     " FFDC packets, processing only ({})",
                                     sbeMaxFfdcPackets, pktCount)
                             .c_str());

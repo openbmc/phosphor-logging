@@ -1,10 +1,11 @@
 #include "phal_service_actions.hpp"
 
 #include <attributes_info.H>
-#include <fmt/format.h>
 #include <libphal.H>
 
 #include <phosphor-logging/log.hpp>
+
+#include <format>
 
 namespace openpower
 {
@@ -40,7 +41,7 @@ std::optional<EntrySeverity> getEntrySeverityType(const std::string& guardType)
     else
     {
         log<level::ERR>(
-            fmt::format("GUARD: Unsupported GardType [{}] was given ",
+            std::format("GUARD: Unsupported GardType [{}] was given ",
                         "to get the hardware isolation entry severity type",
                         guardType.c_str())
                 .c_str());
@@ -106,7 +107,7 @@ void createGuardRecords(const nlohmann::json& jsonCallouts,
                 ss << " 0x" << std::hex << static_cast<int>(entityPath[a]);
             }
             std::string s = ss.str();
-            log<level::INFO>(fmt::format("GUARD :({})", s).c_str());
+            log<level::INFO>(std::format("GUARD :({})", s).c_str());
 
             // Get Guard type
             auto severity = EntrySeverity::Warning;
@@ -133,7 +134,7 @@ void createGuardRecords(const nlohmann::json& jsonCallouts,
         catch (const std::exception& e)
         {
             log<level::INFO>(
-                fmt::format("GUARD: Failed entry creation exception:({})",
+                std::format("GUARD: Failed entry creation exception:({})",
                             e.what())
                     .c_str());
         }
@@ -207,7 +208,7 @@ void createDeconfigRecords(const nlohmann::json& jsonCallouts,
         catch (const std::exception& e)
         {
             log<level::INFO>(
-                fmt::format(
+                std::format(
                     "Deconfig: Failed to create records, exception:({})",
                     e.what())
                     .c_str());
