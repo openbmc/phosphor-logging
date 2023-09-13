@@ -19,8 +19,6 @@
 
 #include "util.hpp"
 
-#include <fmt/format.h>
-
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/State/BMC/server.hpp>
 #include <xyz/openbmc_project/State/Boot/Progress/server.hpp>

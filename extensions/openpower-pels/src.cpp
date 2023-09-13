@@ -26,9 +26,9 @@
 
 #include <sstream>
 #endif
-#include <fmt/format.h>
-
 #include <phosphor-logging/lg2.hpp>
+
+#include <format>
 
 namespace openpower
 {
@@ -967,7 +967,7 @@ std::vector<message::RegistryCallout>
         }
         catch (const std::exception& e)
         {
-            addDebugData(fmt::format(
+            addDebugData(std::format(
                 "Error parsing PEL message registry callout JSON: {}",
                 e.what()));
         }
@@ -1059,7 +1059,7 @@ void SRC::addRegistryCallout(
             catch (const std::exception& e)
             {
                 addDebugData(
-                    fmt::format("Could not get location code for {}: {}",
+                    std::format("Could not get location code for {}: {}",
                                 *trustedSymbolicFRUInvPath, e.what()));
                 locCode.clear();
             }
@@ -1196,7 +1196,7 @@ void SRC::addDevicePathCallouts(const AdditionalData& additionalData,
         }
         catch (const std::exception& e)
         {
-            auto msg = fmt::format("Unable to expand location code {}: {}",
+            auto msg = std::format("Unable to expand location code {}: {}",
                                    callout.locationCode, e.what());
             addDebugData(msg);
         }
@@ -1259,7 +1259,7 @@ void SRC::addJSONCallouts(const nlohmann::json& jsonCallouts,
         }
         catch (const std::exception& e)
         {
-            addDebugData(fmt::format(
+            addDebugData(std::format(
                 "Failed extracting callout data from JSON: {}", e.what()));
         }
     }
@@ -1284,7 +1284,7 @@ void SRC::addJSONCallout(const nlohmann::json& jsonCallout,
         }
         catch (const std::exception& e)
         {
-            addDebugData(fmt::format("Unable to expand location code {}: {}",
+            addDebugData(std::format("Unable to expand location code {}: {}",
                                      unexpandedLocCode, e.what()));
             // Use the value from the JSON so at least there's something
             locCode = unexpandedLocCode;
@@ -1356,7 +1356,7 @@ void SRC::addJSONCallout(const nlohmann::json& jsonCallout,
             catch (const std::exception& e)
             {
                 throw std::runtime_error{
-                    fmt::format("Unable to get inventory path from "
+                    std::format("Unable to get inventory path from "
                                 "location code: {}: {}",
                                 unexpandedLocCode, e.what())};
             }
@@ -1421,7 +1421,7 @@ CalloutPriority SRC::getPriorityFromJSON(const nlohmann::json& json)
     if (priorityIt == pv::calloutPriorityValues.end())
     {
         throw std::runtime_error{
-            fmt::format("Invalid priority '{}' found in JSON callout", p)};
+            std::format("Invalid priority '{}' found in JSON callout", p)};
     }
 
     return priority;
@@ -1457,7 +1457,7 @@ std::vector<src::MRU::MRUCallout>
         }
         catch (const std::exception& e)
         {
-            addDebugData(fmt::format("Invalid MRU entry in JSON: {}: {}",
+            addDebugData(std::format("Invalid MRU entry in JSON: {}: {}",
                                      mruCallout.dump(), e.what()));
         }
     }
