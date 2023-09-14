@@ -861,6 +861,46 @@
         },
 
         {
+            "Name": "org.open_power.Faultlog.PoweronTime.ReadFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0xF100",
+
+            "SRC": {
+                "ReasonCode": "0xF101",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Failure to read chassis poweron time from persistent file",
+                "Message": "Failure to read chassis poweron time from persistent file",
+                "Notes": [
+                    "Severity needs to be set based on needs for this registry.",
+                    "Debug traces will be captured in AdditionalData section"
+                ]
+            }
+        },
+
+        {
+            "Name": "org.open_power.Faultlog.PoweronTime.WriteFail",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0xF100",
+
+            "SRC": {
+                "ReasonCode": "0xF102",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Failure to write chassis poweron time to persistent file",
+                "Message": "Failure to write chassis poweron time to persistent file",
+                "Notes": [
+                    "Severity needs to be set based on needs for this registry.",
+                    "Debug traces will be captured in AdditionalData section"
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.Faultlog.Error.DeconfiguredHW",
             "Subsystem": "cec_hardware",
             "Severity": "predictive",
