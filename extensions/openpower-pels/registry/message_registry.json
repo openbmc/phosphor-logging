@@ -859,6 +859,44 @@
                 ]
             }
         },
+        {
+            "Name": "org.open_power.Faultlog.PoweronTime.ReadFail",
+            "Subsystem": "cec_hardware",
+            "ComponentID": "0x3100",
+
+            "SRC": {
+                "ReasonCode": "0x3102",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Failure to read chassis poweron time from persistent file",
+                "Message": "Failure to read chassis poweron time from persistent file",
+                "Notes": [
+                    "Severity needs to be set based on needs for this registry.",
+                    "Debug traces will be captured in AdditionalData section"
+                ]
+            }
+        },
+        {
+            "Name": "org.open_power.Faultlog.PoweronTime.WriteFail",
+            "Subsystem": "cec_hardware",
+            "ComponentID": "0x3100",
+
+            "SRC": {
+                "ReasonCode": "0x3103",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Failure to write chassis poweron time from persistent file",
+                "Message": "Failure to write chassis poweron time from persistent file",
+                "Notes": [
+                    "Severity needs to be set based on needs for this registry.",
+                    "Debug traces will be captured in AdditionalData section"
+                ]
+            }
+        },
 
         {
             "Name": "org.open_power.Faultlog.Error.DeconfiguredHW",
