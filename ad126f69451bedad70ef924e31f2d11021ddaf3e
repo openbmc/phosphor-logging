@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7afda315_f4edbb72",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 864,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2023-09-15T08:04:58Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9554abdf_86051633",
+      "range": {
+        "startLine": 864,
+        "startChar": 26,
+        "endLine": 864,
+        "endChar": 38
+      },
+      "revId": "ad126f69451bedad70ef924e31f2d11021ddaf3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc4f5509_66fb4a8f",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-09-14T21:58:22Z",
       "side": 1,
       "message": "would you want these to be 0xF1 to be in the faultlog component?",
+      "range": {
+        "startLine": 865,
+        "startChar": 30,
+        "endLine": 865,
+        "endChar": 32
+      },
+      "revId": "ad126f69451bedad70ef924e31f2d11021ddaf3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c10e316b_7dc334b6",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2023-09-15T08:04:58Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "cc4f5509_66fb4a8f",
       "range": {
         "startLine": 865,
         "startChar": 30,
