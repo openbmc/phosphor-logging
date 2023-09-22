@@ -171,10 +171,14 @@ void SbeFFDC::process(const sbeFfdcPacketType& ffdcPkt)
     // formated FFDC data structure after FFDC packet processing
     FFDC ffdc;
 
-    if (!pdbg_targets_init(NULL))
+    if (!pdbg_target_root())
     {
-        log<level::ERR>("pdbg_targets_init failed, skipping ffdc processing");
-        return;
+        if (!pdbg_targets_init(NULL))
+        {
+            log<level::ERR>(
+                "pdbg_targets_init failed, skipping ffdc processing");
+            return;
+        }
     }
 
     if (libekb_init())
