@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb2d6b1f_e38053c1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000084
+      },
+      "writtenOn": "2023-09-22T08:27:12Z",
+      "side": 1,
+      "message": "missing a line break here",
+      "revId": "5f463215866ed22e0c2aa5f310856d2f46809c3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fed7936_4355f405",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000084
+      },
+      "writtenOn": "2023-09-22T08:27:12Z",
+      "side": 1,
+      "message": "can you please explain how the re-opening of dev tree is prevented",
+      "revId": "5f463215866ed22e0c2aa5f310856d2f46809c3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9737567_e57690d6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000084
+      },
+      "writtenOn": "2023-09-22T08:27:12Z",
+      "side": 1,
+      "message": "Please add testing details",
+      "revId": "5f463215866ed22e0c2aa5f310856d2f46809c3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
