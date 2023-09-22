@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "27905046_df8d97b2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2023-09-22T10:23:22Z",
+      "side": 1,
+      "message": "you need to explain what problem you are solving rather than fix you are doing. \n\n\"To fix multiple device tree fd open when multiple sbe dumps are created\"\n\nPlease publish before and after fd\u0027s in test results.",
+      "revId": "5f463215866ed22e0c2aa5f310856d2f46809c3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eb2d6b1f_e38053c1",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -48,6 +65,23 @@
       "writtenOn": "2023-09-22T08:27:12Z",
       "side": 1,
       "message": "Please add testing details",
+      "revId": "5f463215866ed22e0c2aa5f310856d2f46809c3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e32347c_030c346e",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2023-09-22T10:23:22Z",
+      "side": 1,
+      "message": "this is kind of lazy intiialization as phosphor-logging service starts ahead of pdbg it could not call pdbg_targets_init at the start of the service. Now this is called for every SBE dump that is generated assuming that pdbg does not intialize if already done. Need to see why pdbg is loading the device tree again and again for every SBE dump that is generated.",
       "revId": "5f463215866ed22e0c2aa5f310856d2f46809c3e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
