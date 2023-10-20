@@ -275,11 +275,11 @@ void processClockInfoErrorHelper(const FFDC& ffdc,
              ffdc.hwp_errorinfo.ffdcs_data.cend(),
              [&ffdcUserData](
                  const std::pair<std::string, std::string>& ele) -> void {
-                 std::string keyWithPrefix("HWP_FFDC_");
-                 keyWithPrefix.append(ele.first);
+        std::string keyWithPrefix("HWP_FFDC_");
+        keyWithPrefix.append(ele.first);
 
-                 ffdcUserData.emplace_back(keyWithPrefix, ele.second);
-             });
+        ffdcUserData.emplace_back(keyWithPrefix, ele.second);
+    });
     // get clock position information
     auto clk_pos = 0xFF; // Invalid position.
     for (auto& hwCallout : ffdc.hwp_errorinfo.hwcallouts)
@@ -296,15 +296,14 @@ void processClockInfoErrorHelper(const FFDC& ffdc,
              ffdc.hwp_errorinfo.cdg_targets.end(),
              [&ffdcUserData, &pelJSONFmtCalloutDataList,
               clk_pos](const CDG_Target& cdg_tgt) -> void {
-                 json jsonCalloutData;
-                 std::string pelPriority = "H";
-                 jsonCalloutData["Priority"] = pelPriority; // Not used
-                 jsonCalloutData["SymbolicFRU"] = "REFCLK" +
-                                                  std::to_string(clk_pos);
-                 jsonCalloutData["Deconfigured"] = cdg_tgt.deconfigure;
-                 jsonCalloutData["EntityPath"] = cdg_tgt.target_entity_path;
-                 pelJSONFmtCalloutDataList.emplace_back(jsonCalloutData);
-             });
+        json jsonCalloutData;
+        std::string pelPriority = "H";
+        jsonCalloutData["Priority"] = pelPriority; // Not used
+        jsonCalloutData["SymbolicFRU"] = "REFCLK" + std::to_string(clk_pos);
+        jsonCalloutData["Deconfigured"] = cdg_tgt.deconfigure;
+        jsonCalloutData["EntityPath"] = cdg_tgt.target_entity_path;
+        pelJSONFmtCalloutDataList.emplace_back(jsonCalloutData);
+    });
 }
 
 void convertFAPItoPELformat(FFDC& ffdc, json& pelJSONFmtCalloutDataList,
@@ -328,126 +327,119 @@ void convertFAPItoPELformat(FFDC& ffdc, json& pelJSONFmtCalloutDataList,
             ffdc.hwp_errorinfo.ffdcs_data.begin(),
             ffdc.hwp_errorinfo.ffdcs_data.end(),
             [&ffdcUserData](std::pair<std::string, std::string>& ele) -> void {
-                std::string keyWithPrefix("HWP_FFDC_");
-                keyWithPrefix.append(ele.first);
+            std::string keyWithPrefix("HWP_FFDC_");
+            keyWithPrefix.append(ele.first);
 
-                ffdcUserData.emplace_back(keyWithPrefix, ele.second);
-            });
+            ffdcUserData.emplace_back(keyWithPrefix, ele.second);
+        });
 
         // Adding hardware callout details
         int calloutCount = 0;
-        for_each(
-            ffdc.hwp_errorinfo.hwcallouts.begin(),
-            ffdc.hwp_errorinfo.hwcallouts.end(),
-            [&ffdcUserData, &calloutCount,
-             &pelJSONFmtCalloutDataList](const HWCallout& hwCallout) -> void {
-                calloutCount++;
-                std::stringstream keyPrefix;
-                keyPrefix << "HWP_HW_CO_" << std::setfill('0') << std::setw(2)
-                          << calloutCount << "_";
+        for_each(ffdc.hwp_errorinfo.hwcallouts.begin(),
+                 ffdc.hwp_errorinfo.hwcallouts.end(),
+                 [&ffdcUserData, &calloutCount, &pelJSONFmtCalloutDataList](
+                     const HWCallout& hwCallout) -> void {
+            calloutCount++;
+            std::stringstream keyPrefix;
+            keyPrefix << "HWP_HW_CO_" << std::setfill('0') << std::setw(2)
+                      << calloutCount << "_";
 
-                ffdcUserData.emplace_back(
-                    std::string(keyPrefix.str()).append("HW_ID"),
-                    hwCallout.hwid);
+            ffdcUserData.emplace_back(
+                std::string(keyPrefix.str()).append("HW_ID"), hwCallout.hwid);
 
-                ffdcUserData.emplace_back(
-                    std::string(keyPrefix.str()).append("PRIORITY"),
-                    hwCallout.callout_priority);
+            ffdcUserData.emplace_back(
+                std::string(keyPrefix.str()).append("PRIORITY"),
+                hwCallout.callout_priority);
 
-                phal::TargetInfo targetInfo;
-                phal::getTgtReqAttrsVal(hwCallout.target_entity_path,
-                                        targetInfo);
+            phal::TargetInfo targetInfo;
+            phal::getTgtReqAttrsVal(hwCallout.target_entity_path, targetInfo);
 
-                std::string locationCode = std::string(targetInfo.locationCode);
-                ffdcUserData.emplace_back(
-                    std::string(keyPrefix.str()).append("LOC_CODE"),
-                    locationCode);
+            std::string locationCode = std::string(targetInfo.locationCode);
+            ffdcUserData.emplace_back(
+                std::string(keyPrefix.str()).append("LOC_CODE"), locationCode);
 
-                std::string physPath = std::string(targetInfo.physDevPath);
-                ffdcUserData.emplace_back(
-                    std::string(keyPrefix.str()).append("PHYS_PATH"), physPath);
+            std::string physPath = std::string(targetInfo.physDevPath);
+            ffdcUserData.emplace_back(
+                std::string(keyPrefix.str()).append("PHYS_PATH"), physPath);
 
-                ffdcUserData.emplace_back(
-                    std::string(keyPrefix.str()).append("CLK_POS"),
-                    std::to_string(hwCallout.clkPos));
+            ffdcUserData.emplace_back(
+                std::string(keyPrefix.str()).append("CLK_POS"),
+                std::to_string(hwCallout.clkPos));
 
-                ffdcUserData.emplace_back(
-                    std::string(keyPrefix.str()).append("CALLOUT_PLANAR"),
-                    (hwCallout.isPlanarCallout == true ? "true" : "false"));
+            ffdcUserData.emplace_back(
+                std::string(keyPrefix.str()).append("CALLOUT_PLANAR"),
+                (hwCallout.isPlanarCallout == true ? "true" : "false"));
 
-                std::string pelPriority =
-                    getPelPriority(hwCallout.callout_priority);
+            std::string pelPriority =
+                getPelPriority(hwCallout.callout_priority);
 
-                if (hwCallout.isPlanarCallout)
-                {
-                    addPlanarCallout(pelJSONFmtCalloutDataList, pelPriority);
-                }
-            });
+            if (hwCallout.isPlanarCallout)
+            {
+                addPlanarCallout(pelJSONFmtCalloutDataList, pelPriority);
+            }
+        });
 
         // Adding CDG (callout, deconfigure and guard) targets details
         calloutCount = 0;
-        for_each(
-            ffdc.hwp_errorinfo.cdg_targets.begin(),
-            ffdc.hwp_errorinfo.cdg_targets.end(),
-            [&ffdcUserData, &calloutCount,
-             &pelJSONFmtCalloutDataList](const CDG_Target& cdg_tgt) -> void {
-                calloutCount++;
-                std::stringstream keyPrefix;
-                keyPrefix << "HWP_CDG_TGT_" << std::setfill('0') << std::setw(2)
-                          << calloutCount << "_";
+        for_each(ffdc.hwp_errorinfo.cdg_targets.begin(),
+                 ffdc.hwp_errorinfo.cdg_targets.end(),
+                 [&ffdcUserData, &calloutCount, &pelJSONFmtCalloutDataList](
+                     const CDG_Target& cdg_tgt) -> void {
+            calloutCount++;
+            std::stringstream keyPrefix;
+            keyPrefix << "HWP_CDG_TGT_" << std::setfill('0') << std::setw(2)
+                      << calloutCount << "_";
 
-                phal::TargetInfo targetInfo;
-                targetInfo.deconfigure = cdg_tgt.deconfigure;
+            phal::TargetInfo targetInfo;
+            targetInfo.deconfigure = cdg_tgt.deconfigure;
 
-                phal::getTgtReqAttrsVal(cdg_tgt.target_entity_path, targetInfo);
+            phal::getTgtReqAttrsVal(cdg_tgt.target_entity_path, targetInfo);
 
-                std::string locationCode = std::string(targetInfo.locationCode);
-                ffdcUserData.emplace_back(
-                    std::string(keyPrefix.str()).append("LOC_CODE"),
-                    locationCode);
-                std::string physPath = std::string(targetInfo.physDevPath);
-                ffdcUserData.emplace_back(
-                    std::string(keyPrefix.str()).append("PHYS_PATH"), physPath);
+            std::string locationCode = std::string(targetInfo.locationCode);
+            ffdcUserData.emplace_back(
+                std::string(keyPrefix.str()).append("LOC_CODE"), locationCode);
+            std::string physPath = std::string(targetInfo.physDevPath);
+            ffdcUserData.emplace_back(
+                std::string(keyPrefix.str()).append("PHYS_PATH"), physPath);
 
-                ffdcUserData.emplace_back(
-                    std::string(keyPrefix.str()).append("CO_REQ"),
-                    (cdg_tgt.callout == true ? "true" : "false"));
+            ffdcUserData.emplace_back(
+                std::string(keyPrefix.str()).append("CO_REQ"),
+                (cdg_tgt.callout == true ? "true" : "false"));
 
-                ffdcUserData.emplace_back(
-                    std::string(keyPrefix.str()).append("CO_PRIORITY"),
-                    cdg_tgt.callout_priority);
+            ffdcUserData.emplace_back(
+                std::string(keyPrefix.str()).append("CO_PRIORITY"),
+                cdg_tgt.callout_priority);
 
-                ffdcUserData.emplace_back(
-                    std::string(keyPrefix.str()).append("DECONF_REQ"),
-                    (cdg_tgt.deconfigure == true ? "true" : "false"));
+            ffdcUserData.emplace_back(
+                std::string(keyPrefix.str()).append("DECONF_REQ"),
+                (cdg_tgt.deconfigure == true ? "true" : "false"));
 
-                ffdcUserData.emplace_back(
-                    std::string(keyPrefix.str()).append("GUARD_REQ"),
-                    (cdg_tgt.guard == true ? "true" : "false"));
+            ffdcUserData.emplace_back(
+                std::string(keyPrefix.str()).append("GUARD_REQ"),
+                (cdg_tgt.guard == true ? "true" : "false"));
 
-                ffdcUserData.emplace_back(
-                    std::string(keyPrefix.str()).append("GUARD_TYPE"),
-                    cdg_tgt.guard_type);
+            ffdcUserData.emplace_back(
+                std::string(keyPrefix.str()).append("GUARD_TYPE"),
+                cdg_tgt.guard_type);
 
-                json jsonCalloutData;
-                jsonCalloutData["LocationCode"] = locationCode;
-                std::string pelPriority =
-                    getPelPriority(cdg_tgt.callout_priority);
-                jsonCalloutData["Priority"] = pelPriority;
+            json jsonCalloutData;
+            jsonCalloutData["LocationCode"] = locationCode;
+            std::string pelPriority = getPelPriority(cdg_tgt.callout_priority);
+            jsonCalloutData["Priority"] = pelPriority;
 
-                if (targetInfo.mruId != 0)
-                {
-                    jsonCalloutData["MRUs"] = json::array({
-                        {{"ID", targetInfo.mruId}, {"Priority", pelPriority}},
-                    });
-                }
-                jsonCalloutData["Deconfigured"] = cdg_tgt.deconfigure;
-                jsonCalloutData["Guarded"] = cdg_tgt.guard;
-                jsonCalloutData["GuardType"] = cdg_tgt.guard_type;
-                jsonCalloutData["EntityPath"] = cdg_tgt.target_entity_path;
+            if (targetInfo.mruId != 0)
+            {
+                jsonCalloutData["MRUs"] = json::array({
+                    {{"ID", targetInfo.mruId}, {"Priority", pelPriority}},
+                });
+            }
+            jsonCalloutData["Deconfigured"] = cdg_tgt.deconfigure;
+            jsonCalloutData["Guarded"] = cdg_tgt.guard;
+            jsonCalloutData["GuardType"] = cdg_tgt.guard_type;
+            jsonCalloutData["EntityPath"] = cdg_tgt.target_entity_path;
 
-                pelJSONFmtCalloutDataList.emplace_back(jsonCalloutData);
-            });
+            pelJSONFmtCalloutDataList.emplace_back(jsonCalloutData);
+        });
 
         // Adding procedure callout
         calloutCount = 0;
@@ -455,23 +447,23 @@ void convertFAPItoPELformat(FFDC& ffdc, json& pelJSONFmtCalloutDataList,
                  ffdc.hwp_errorinfo.procedures_callout.end(),
                  [&ffdcUserData, &calloutCount, &pelJSONFmtCalloutDataList](
                      const ProcedureCallout& procCallout) -> void {
-                     calloutCount++;
-                     std::stringstream keyPrefix;
-                     keyPrefix << "HWP_PROC_CO_" << std::setfill('0')
-                               << std::setw(2) << calloutCount << "_";
-                     ffdcUserData.emplace_back(
-                         std::string(keyPrefix.str()).append("PRIORITY"),
-                         procCallout.callout_priority);
-                     ffdcUserData.emplace_back(
-                         std::string(keyPrefix.str()).append("MAINT_PROCEDURE"),
-                         procCallout.proc_callout);
-                     json jsonCalloutData;
-                     jsonCalloutData["Procedure"] = procCallout.proc_callout;
-                     std::string pelPriority =
-                         getPelPriority(procCallout.callout_priority);
-                     jsonCalloutData["Priority"] = pelPriority;
-                     pelJSONFmtCalloutDataList.emplace_back(jsonCalloutData);
-                 });
+            calloutCount++;
+            std::stringstream keyPrefix;
+            keyPrefix << "HWP_PROC_CO_" << std::setfill('0') << std::setw(2)
+                      << calloutCount << "_";
+            ffdcUserData.emplace_back(
+                std::string(keyPrefix.str()).append("PRIORITY"),
+                procCallout.callout_priority);
+            ffdcUserData.emplace_back(
+                std::string(keyPrefix.str()).append("MAINT_PROCEDURE"),
+                procCallout.proc_callout);
+            json jsonCalloutData;
+            jsonCalloutData["Procedure"] = procCallout.proc_callout;
+            std::string pelPriority =
+                getPelPriority(procCallout.callout_priority);
+            jsonCalloutData["Priority"] = pelPriority;
+            pelJSONFmtCalloutDataList.emplace_back(jsonCalloutData);
+        });
     }
     else if ((ffdc.ffdc_type != FFDC_TYPE_NONE) &&
              (ffdc.ffdc_type != FFDC_TYPE_UNSUPPORTED))

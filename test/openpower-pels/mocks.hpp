@@ -202,8 +202,8 @@ class MockHostInterface : public HostInterface
         int fd = open(_fifo.c_str(), O_NONBLOCK | O_RDWR);
         EXPECT_TRUE(fd >= 0) << "Unable to open FIFO";
 
-        auto callback =
-            [this](sdeventplus::source::IO& source, int fd, uint32_t events) {
+        auto callback = [this](sdeventplus::source::IO& source, int fd,
+                               uint32_t events) {
             this->receive(source, fd, events);
         };
 

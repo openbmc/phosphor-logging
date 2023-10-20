@@ -140,20 +140,20 @@ DataInterface::DataInterface(sdbusplus::bus_t& bus) : _bus(bus)
     _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
         bus, object_path::hostState, interface::bootProgress, "BootProgress",
         *this, [this](const auto& value) {
-            this->_bootState = std::get<std::string>(value);
-            auto status = Progress::convertProgressStagesFromString(
-                std::get<std::string>(value));
+        this->_bootState = std::get<std::string>(value);
+        auto status = Progress::convertProgressStagesFromString(
+            std::get<std::string>(value));
 
-            if ((status == Progress::ProgressStages::SystemInitComplete) ||
-                (status == Progress::ProgressStages::OSRunning))
-            {
-                setHostUp(true);
-            }
-            else
-            {
-                setHostUp(false);
-            }
-        }));
+        if ((status == Progress::ProgressStages::SystemInitComplete) ||
+            (status == Progress::ProgressStages::OSRunning))
+        {
+            setHostUp(true);
+        }
+        else
+        {
+            setHostUp(false);
+        }
+    }));
 
     // Watch the host PEL enable property
     _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
@@ -165,22 +165,22 @@ DataInterface::DataInterface(sdbusplus::bus_t& bus) : _bus(bus)
                       std::get<bool>(value));
         }
         this->_sendPELsToHost = std::get<bool>(value);
-        }));
+    }));
 
     // Watch the BMCState property
     _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
         bus, object_path::bmcState, interface::bmcState, "CurrentBMCState",
         *this, [this](const auto& value) {
-            const auto& state = std::get<std::string>(value);
-            this->_bmcState = state;
+        const auto& state = std::get<std::string>(value);
+        this->_bmcState = state;
 
-            // Wait for BMC ready to start watching for
-            // plugs so things calm down first.
-            if (BMC::convertBMCStateFromString(state) == BMC::BMCState::Ready)
-            {
-                startFruPlugWatch();
-            }
-        }));
+        // Wait for BMC ready to start watching for
+        // plugs so things calm down first.
+        if (BMC::convertBMCStateFromString(state) == BMC::BMCState::Ready)
+        {
+            startFruPlugWatch();
+        }
+    }));
 
     // Watch the chassis current and requested power state properties
     _properties.emplace_back(std::make_unique<InterfaceWatcher<DataInterface>>(
@@ -197,14 +197,14 @@ DataInterface::DataInterface(sdbusplus::bus_t& bus) : _bus(bus)
         {
             this->_chassisTransition = std::get<std::string>(trans->second);
         }
-        }));
+    }));
 
     // Watch the CurrentHostState property
     _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
         bus, object_path::hostState, interface::hostState, "CurrentHostState",
         *this, [this](const auto& value) {
-            this->_hostState = std::get<std::string>(value);
-        }));
+        this->_hostState = std::get<std::string>(value);
+    }));
 
     // Watch the BaseBIOSTable property for the hmc managed attribute
     _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
@@ -223,7 +223,7 @@ DataInterface::DataInterface(sdbusplus::bus_t& bus) : _bus(bus)
                 this->_hmcManaged = (*currentVal == "Enabled") ? true : false;
             }
         }
-        }));
+    }));
 }
 
 DBusPropertyMap
@@ -924,7 +924,7 @@ void DataInterface::inventoryIfaceAdded(sdbusplus::message_t& msg)
                      [](const auto& interfacePair) {
         return std::find(hotplugInterfaces.begin(), hotplugInterfaces.end(),
                          interfacePair.first) != hotplugInterfaces.end();
-        }) == interfaces.end())
+    }) == interfaces.end())
     {
         return;
     }
