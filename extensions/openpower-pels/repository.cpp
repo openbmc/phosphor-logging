@@ -593,10 +593,9 @@ std::vector<Repository::AttributesReference>
 {
     std::vector<Repository::AttributesReference> attributes;
 
-    std::for_each(_pelAttributes.begin(), _pelAttributes.end(),
-                  [&attributes](auto& pelEntry) {
-        attributes.push_back(pelEntry);
-    });
+    std::for_each(
+        _pelAttributes.begin(), _pelAttributes.end(),
+        [&attributes](auto& pelEntry) { attributes.push_back(pelEntry); });
 
     std::sort(attributes.begin(), attributes.end(),
               [order](const auto& left, const auto& right) {
@@ -723,17 +722,17 @@ void Repository::removePELs(const IsOverLimitFunc& isOverLimit,
     static const std::vector<std::function<bool(const PELAttributes& pel)>>
         stateChecks{[](const auto& pel) {
         return pel.hmcState == TransmissionState::acked;
-                    },
+    },
 
                     [](const auto& pel) {
         return pel.hostState == TransmissionState::acked;
-        },
+    },
 
-        [](const auto& pel) {
+                    [](const auto& pel) {
         return pel.hostState == TransmissionState::sent;
-        },
+    },
 
-        [](const auto& /*pel*/) { return true; }};
+                    [](const auto& /*pel*/) { return true; }};
 
     for (const auto& stateCheck : stateChecks)
     {

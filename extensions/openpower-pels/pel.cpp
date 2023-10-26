@@ -553,8 +553,7 @@ void PEL::updateSysInfoInExtendedUserDataSection(
     {
         // Get the ED section from PEL
         auto op = std::find_if(_optionalSections.begin(),
-                               _optionalSections.end(),
-                               [](auto& section) {
+                               _optionalSections.end(), [](auto& section) {
             return section->header().id ==
                    static_cast<uint16_t>(SectionID::extUserData);
         });
