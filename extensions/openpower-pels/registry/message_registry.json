@@ -5681,6 +5681,7 @@
         {
             "Name": "org.open_power.Host.Boot.Error.WatchdogTimedOut",
             "Subsystem": "cec_sp_hostboot_iface",
+            "ComponentID": "0xC100",
 
             "SRC": {
                 "ReasonCode": "0xC101",
