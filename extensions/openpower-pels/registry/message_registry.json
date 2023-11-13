@@ -5699,6 +5699,33 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Dump.Error.Ramoops",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0xC200",
+
+            "SRC": {
+                "ReasonCode": "0xC201",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "BMC rebooted unexpectedly due to kernel panic",
+                "Message": "BMC rebooted unexpectedly resulting in a ramoops dump being collected",
+                "Notes": [
+                    "Investigate the collected BMC dump to identify the reason for the BMC reboot."
+                ]
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.Software.Version.Error.Incompatible",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x3600",
