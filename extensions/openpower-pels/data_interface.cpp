@@ -46,6 +46,7 @@ constexpr auto hwIsolation = "org.open_power.HardwareIsolation";
 constexpr auto biosConfigMgr = "xyz.openbmc_project.BIOSConfigManager";
 constexpr auto bootRawProgress = "xyz.openbmc_project.State.Boot.Raw";
 constexpr auto pldm = "xyz.openbmc_project.PLDM";
+constexpr auto inventoryManager = "xyz.openbmc_project.Inventory.Manager";
 } // namespace service_name
 
 namespace object_path
@@ -104,6 +105,7 @@ constexpr auto invItem = "xyz.openbmc_project.Inventory.Item";
 constexpr auto invFan = "xyz.openbmc_project.Inventory.Item.Fan";
 constexpr auto invPowerSupply =
     "xyz.openbmc_project.Inventory.Item.PowerSupply";
+constexpr auto inventoryManager = "xyz.openbmc_project.Inventory.Manager";
 } // namespace interface
 
 using namespace sdbusplus::server::xyz::openbmc_project::state::boot;
@@ -559,13 +561,22 @@ void DataInterface::assertLEDGroup(const std::string& ledGroup,
 void DataInterface::setFunctional(const std::string& objectPath,
                                   bool value) const
 {
-    DBusValue variant = value;
-    auto service = getService(objectPath, interface::operationalStatus);
+    DBusPropertyMap prop{{"Functional", value}};
+    DBusInterfaceMap iface{{interface::operationalStatus, prop}};
 
-    auto method = _bus.new_method_call(service.c_str(), objectPath.c_str(),
-                                       interface::dbusProperty, "Set");
+    // PIM takes a relative path like /system/chassis so remove
+    // /xyz/openbmc_project/inventory if present.
+    std::string path{objectPath};
+    if (path.starts_with(object_path::baseInv))
+    {
+        path = objectPath.substr(strlen(object_path::baseInv));
+    }
+    DBusObjectMap object{{path, iface}};
 
-    method.append(interface::operationalStatus, "Functional", variant);
+    auto method = _bus.new_method_call(service_name::inventoryManager,
+                                       object_path::baseInv,
+                                       interface::inventoryManager, "Notify");
+    method.append(std::move(object));
     _bus.call(method, dbusTimeout);
 }
 

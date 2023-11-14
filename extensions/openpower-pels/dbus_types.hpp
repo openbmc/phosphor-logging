@@ -1,5 +1,7 @@
 #pragma once
 
+#include <sdbusplus/message.hpp>
+
 #include <cstdint>
 #include <map>
 #include <string>
@@ -30,6 +32,8 @@ using DBusInterfaceList = std::vector<DBusInterface>;
 using DBusPathList = std::vector<DBusPath>;
 using DBusPropertyMap = std::map<DBusProperty, DBusValue>;
 using DBusInterfaceMap = std::map<DBusInterface, DBusPropertyMap>;
+using DBusObjectMap =
+    std::map<sdbusplus::message::object_path, DBusInterfaceMap>;
 using DBusSubTree =
     std::map<DBusPath, std::map<DBusService, DBusInterfaceList>>;
 
