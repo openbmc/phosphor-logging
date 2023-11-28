@@ -190,9 +190,12 @@ class Manager : public details::ServerObject<details::ManagerIface>
      *                     error log to be committed.
      * @param[in] severity - level of the error
      * @param[in] additionalData - The AdditionalData property for the error
+     *
+     * @return object_path - The object path of the newly created event.
      */
-    void create(const std::string& message, Severity severity,
-                const std::map<std::string, std::string>& additionalData);
+    sdbusplus::message::object_path
+        create(const std::string& message, Severity severity,
+               const std::map<std::string, std::string>& additionalData);
 
     /** @brief Creates an event log, and accepts FFDC files
      *
@@ -207,8 +210,10 @@ class Manager : public details::ServerObject<details::ManagerIface>
      * @param[in] severity - level of the error
      * @param[in] additionalData - The AdditionalData property for the error
      * @param[in] ffdc - A vector of FFDC file info
+     *
+     * @return object_path - The object path of the newly created event.
      */
-    void
+    sdbusplus::message::object_path
         createWithFFDC(const std::string& message, Severity severity,
                        const std::map<std::string, std::string>& additionalData,
                        const FFDCEntries& ffdc);
@@ -388,11 +393,14 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
      *                     error log to be committed.
      * @param[in] severity - Level of the error
      * @param[in] additionalData - The AdditionalData property for the error
+     *
+     * @return object_path - The object path of the newly created event.
      */
-    void create(std::string message, Severity severity,
-                std::map<std::string, std::string> additionalData) override
+    sdbusplus::message::object_path
+        create(std::string message, Severity severity,
+               std::map<std::string, std::string> additionalData) override
     {
-        manager.create(message, severity, additionalData);
+        return manager.create(message, severity, additionalData);
     }
 
     /** @brief D-Bus method call implementation to create an event log with FFDC
@@ -404,15 +412,17 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
      * @param[in] severity - Level of the error
      * @param[in] additionalData - The AdditionalData property for the error
      * @param[in] ffdc - A vector of FFDC file info
+     *
+     * @return object_path - The object path of the newly created event.
      */
-    void createWithFFDCFiles(
+    sdbusplus::message::object_path createWithFFDCFiles(
         std::string message, Severity severity,
         std::map<std::string, std::string> additionalData,
         std::vector<std::tuple<CreateIface::FFDCFormat, uint8_t, uint8_t,
                                sdbusplus::message::unix_fd>>
             ffdc) override
     {
-        manager.createWithFFDC(message, severity, additionalData, ffdc);
+        return manager.createWithFFDC(message, severity, additionalData, ffdc);
     }
 
   private:
