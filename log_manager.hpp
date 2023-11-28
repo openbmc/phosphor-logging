@@ -181,8 +181,10 @@ class Manager : public details::ServerObject<details::ManagerIface>
      *                     error log to be committed.
      * @param[in] severity - level of the error
      * @param[in] additionalData - The AdditionalData property for the error
+     *
+     * @return uint32_t - The ID of the newly created event.
      */
-    void create(
+    uint32_t create(
         const std::string& message,
         sdbusplus::server::xyz::openbmc_project::logging::Entry::Level severity,
         const std::map<std::string, std::string>& additionalData);
@@ -200,8 +202,10 @@ class Manager : public details::ServerObject<details::ManagerIface>
      * @param[in] severity - level of the error
      * @param[in] additionalData - The AdditionalData property for the error
      * @param[in] ffdc - A vector of FFDC file info
+     *
+     * @return uint32_t - The ID of the newly created event.
      */
-    void createWithFFDC(
+    uint32_t createWithFFDC(
         const std::string& message,
         sdbusplus::server::xyz::openbmc_project::logging::Entry::Level severity,
         const std::map<std::string, std::string>& additionalData,
@@ -378,13 +382,15 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
      *                     error log to be committed.
      * @param[in] severity - Level of the error
      * @param[in] additionalData - The AdditionalData property for the error
+     *
+     * @return uint32_t - The ID of the newly created event.
      */
-    void create(
+    uint32_t create(
         std::string message,
         sdbusplus::server::xyz::openbmc_project::logging::Entry::Level severity,
         std::map<std::string, std::string> additionalData) override
     {
-        manager.create(message, severity, additionalData);
+        return manager.create(message, severity, additionalData);
     }
 
     /** @brief D-Bus method call implementation to create an event log with FFDC
@@ -396,8 +402,10 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
      * @param[in] severity - Level of the error
      * @param[in] additionalData - The AdditionalData property for the error
      * @param[in] ffdc - A vector of FFDC file info
+     *
+     * @return uint32_t - The ID of the newly created event.
      */
-    void createWithFFDCFiles(
+    uint32_t createWithFFDCFiles(
         std::string message,
         sdbusplus::server::xyz::openbmc_project::logging::Entry::Level severity,
         std::map<std::string, std::string> additionalData,
@@ -405,7 +413,7 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
                                sdbusplus::message::unix_fd>>
             ffdc) override
     {
-        manager.createWithFFDC(message, severity, additionalData, ffdc);
+        return manager.createWithFFDC(message, severity, additionalData, ffdc);
     }
 
   private:
