@@ -19,7 +19,7 @@ extra_sources = []
 extra_dependencies = []
 extra_args = []
 
-build_phal = get_option('phal').enabled()
+build_phal = get_option('phal').allowed()
 
 if build_phal
     extra_sources += [
