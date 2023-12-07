@@ -3,11 +3,7 @@ libpldm_dep = dependency(
     default_options: ['oem-ibm=enabled'],
 )
 
-if cpp.has_header('nlohmann/json.hpp')
-    nlohmann_json_dep = declare_dependency()
-else
-    nlohmann_json_dep = dependency('nlohmann-json')
-endif
+nlohmann_json_dep = dependency('nlohmann_json', include_type: 'system')
 
 python_inst = import('python').find_installation('python3')
 python_ver = python_inst.language_version()
