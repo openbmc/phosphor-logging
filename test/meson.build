@@ -24,8 +24,6 @@ if not get_option('openpower-pel-extension').disabled()
 endif
 
 tests = [
-    'elog_quiesce_test',
-    'elog_update_ts_test',
     'extensions_test',
     'remote_logging_test_address',
     'remote_logging_test_config',
@@ -33,7 +31,6 @@ tests = [
     'sdtest',
     'serialization_test_path',
     'serialization_test_properties',
-    'elog_errorwrap_test',
 ]
 foreach t : tests
     test(
@@ -52,5 +49,32 @@ foreach t : tests
             ],
             include_directories: include_directories('..', '../gen'),
         )
+    )
+endforeach
+
+tests_non_parallel = [
+    'elog_quiesce_test',
+    'elog_update_ts_test',
+    'elog_errorwrap_test',
+]
+
+foreach t : tests_non_parallel
+    test(
+        'test_' + t.underscorify(),
+        executable(
+            'test-' + t.underscorify(),
+            t + '.cpp',
+            'common.cpp',
+            log_manager_sources,
+            '../phosphor-rsyslog-config/server-conf.cpp',
+            dependencies: [
+                gmock_dep,
+                gtest_dep,
+                log_manager_deps,
+                phosphor_logging_dep,
+            ],
+            include_directories: include_directories('..', '../gen'),
+        ),
+        is_parallel: false,
     )
 endforeach
