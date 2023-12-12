@@ -2,6 +2,7 @@
 
 #include <ctype.h>
 #include <stdio.h>
+#include <string.h>
 
 #include <cstdint>
 #include <fstream>
@@ -67,12 +68,13 @@ void jsonInsertArray(std::string& jsonStr, const std::string& fieldName,
 template <typename T>
 std::string getNumberString(const char* format, T number)
 {
-    char* value = nullptr;
+    constexpr size_t valueSize = 100;
+    char value[valueSize];
     std::string numString;
 
     static_assert(std::is_integral<T>::value, "Integral required.");
 
-    int len = asprintf(&value, format, number);
+    int len = snprintf(value, valueSize, format, number);
     if (len >= 0)
     {
         numString = value;
@@ -82,7 +84,6 @@ std::string getNumberString(const char* format, T number)
         throw std::invalid_argument(
             std::string("getNumberString: invalid format string: ") + format);
     }
-    free(value);
 
     return numString;
 }
