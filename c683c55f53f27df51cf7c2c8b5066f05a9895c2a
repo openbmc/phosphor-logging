@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23ee6597_7e9aacdf",
+        "filename": "extensions/openpower-pels/json_utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-12-13T17:37:48Z",
+      "side": 1,
+      "message": "Kind of stinks that to fix an invalid scanner bug, we now need to hard code an arbitrary maximum.  But if we did somehow go over 100, I guess we\u0027ve got bigger issues that would be good to catch.",
+      "range": {
+        "startLine": 71,
+        "startChar": 33,
+        "endLine": 71,
+        "endChar": 36
+      },
+      "revId": "c683c55f53f27df51cf7c2c8b5066f05a9895c2a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
