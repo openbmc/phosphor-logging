@@ -34,6 +34,24 @@
       "parentUuid": "0164cdbb_a81d64f5",
       "revId": "20c4f9656e94f7dff3ecf4397255dbe42c07c7e3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8e0b850_8ffa0f69",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-12-14T17:05:24Z",
+      "side": 1,
+      "message": "was thinking we could get rid of https://github.com/openbmc/phosphor-logging/blob/master/test/elog_update_ts_test.cpp#L87, but I suppose we still have the problem of there being multiple jenkins jobs running at the same time on the same server.",
+      "parentUuid": "2accfd0e_9783be29",
+      "revId": "20c4f9656e94f7dff3ecf4397255dbe42c07c7e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
