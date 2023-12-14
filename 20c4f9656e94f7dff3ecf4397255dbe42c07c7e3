@@ -16,6 +16,24 @@
       "message": "Several years  ago I had to put in some workarounds https://github.com/openbmc/phosphor-logging/commit/7ec2ab7ee75adb7f0ee778c328c27ecc390b6061\n\nI wonder then if we can delete those directories at the end of the tests now.",
       "revId": "20c4f9656e94f7dff3ecf4397255dbe42c07c7e3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2accfd0e_9783be29",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2023-12-14T02:19:09Z",
+      "side": 1,
+      "message": "The issue is due to the parallel execution of the test cases.\nWhen the cases read write the log entries, they save to the same directory, as long as the cases use the same id, they are accessing the same file and we get the race condition.",
+      "parentUuid": "0164cdbb_a81d64f5",
+      "revId": "20c4f9656e94f7dff3ecf4397255dbe42c07c7e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
