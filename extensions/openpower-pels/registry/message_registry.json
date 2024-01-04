@@ -480,6 +480,40 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Logging.Error.LogsCleared",
+            "Subsystem": "bmc_firmware",
+            "Severity": "non_error",
+
+            "SRC": {
+                "ReasonCode": "0x2007",
+                "Words6To9": {
+                    "6": {
+                        "Description": "Number of logs deleted",
+                        "AdditionalDataPropSource": "NUM_LOGS"
+                    }
+                }
+            },
+
+            "Documentation": {
+                "Description": "All event logs were deleted",
+                "Message": "All event logs were deleted",
+                "Notes": [
+                    "This is an informational error noting that ",
+                    "someone deleted all of the event logs."
+                ]
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "systemd",
+                        "NumLines": 10
+                    }
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.PHAL.Error.Boot",
             "Subsystem": "cec_hardware",
             "ComponentID": "0x3000",
