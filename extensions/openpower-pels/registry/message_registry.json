@@ -804,7 +804,7 @@
         },
 
         {
-            "Name": "org.open_power.OCC.Firmware.PresenceMismatch",
+            "Name": "org.open_power.OCC.Firmware.Error.PresenceMismatch",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x2600",
             "Severity": "predictive",
@@ -833,7 +833,7 @@
         },
 
         {
-            "Name": "org.open_power.OCC.Device.SafeState",
+            "Name": "org.open_power.OCC.Device.Error.SafeState",
             "Subsystem": "processor_chip",
             "ComponentID": "0x2600",
             "Severity": "non_error",
@@ -854,7 +854,7 @@
         },
 
         {
-            "Name": "org.open_power.OCC.Device.ReadFailure",
+            "Name": "org.open_power.OCC.Device.Error.ReadFailure",
             "Subsystem": "cec_chip_iface",
             "ComponentID": "0x2600",
             "Severity": "predictive",
@@ -870,6 +870,26 @@
                 "Notes": [
                     "The BMC failed to communicate with the OCC and retried three times.",
                     "The BMC requests that the OCC reset."
+                ]
+            }
+        },
+
+        {
+            "Name": "org.open_power.OCC.Device.Error.OpenFailure",
+            "Subsystem": "cec_chip_iface",
+            "ComponentID": "0x2600",
+            "Severity": "predictive",
+
+            "SRC": {
+                "ReasonCode": "0x2684",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "OCC communication failure",
+                "Message": "BMC failed to communicate with the OCC",
+                "Notes": [
+                    "There was a failure trying to open an OCC device driver file"
                 ]
             }
         },
