@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "config.h"
 
 #include "data_interface.hpp"
 
@@ -22,9 +21,6 @@
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/State/BMC/server.hpp>
 #include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
-
-#include <fstream>
-#include <iterator>
 
 // Use a timeout of 10s for D-Bus calls so if there are
 // timeouts the callers of the PEL creation method won't
@@ -41,7 +37,6 @@ namespace service_name
 constexpr auto objectMapper = "xyz.openbmc_project.ObjectMapper";
 constexpr auto vpdManager = "com.ibm.VPD.Manager";
 constexpr auto ledGroupManager = "xyz.openbmc_project.LED.GroupManager";
-constexpr auto logSetting = "xyz.openbmc_project.Settings";
 constexpr auto hwIsolation = "org.open_power.HardwareIsolation";
 constexpr auto biosConfigMgr = "xyz.openbmc_project.BIOSConfigManager";
 constexpr auto bootRawProgress = "xyz.openbmc_project.State.Boot.Raw";
@@ -53,14 +48,12 @@ namespace object_path
 {
 constexpr auto objectMapper = "/xyz/openbmc_project/object_mapper";
 constexpr auto systemInv = "/xyz/openbmc_project/inventory/system";
-constexpr auto chassisInv = "/xyz/openbmc_project/inventory/system/chassis";
 constexpr auto motherBoardInv =
     "/xyz/openbmc_project/inventory/system/chassis/motherboard";
 constexpr auto baseInv = "/xyz/openbmc_project/inventory";
 constexpr auto bmcState = "/xyz/openbmc_project/state/bmc0";
 constexpr auto chassisState = "/xyz/openbmc_project/state/chassis0";
 constexpr auto hostState = "/xyz/openbmc_project/state/host0";
-constexpr auto pldm = "/xyz/openbmc_project/pldm";
 constexpr auto enableHostPELs =
     "/xyz/openbmc_project/logging/send_event_logs_to_host";
 constexpr auto vpdManager = "/com/ibm/VPD/Manager";
@@ -76,13 +69,10 @@ constexpr auto dbusProperty = "org.freedesktop.DBus.Properties";
 constexpr auto objectMapper = "xyz.openbmc_project.ObjectMapper";
 constexpr auto invAsset = "xyz.openbmc_project.Inventory.Decorator.Asset";
 constexpr auto bootProgress = "xyz.openbmc_project.State.Boot.Progress";
-constexpr auto pldmRequester = "xyz.openbmc_project.PLDM.Requester";
 constexpr auto enable = "xyz.openbmc_project.Object.Enable";
 constexpr auto bmcState = "xyz.openbmc_project.State.BMC";
 constexpr auto chassisState = "xyz.openbmc_project.State.Chassis";
 constexpr auto hostState = "xyz.openbmc_project.State.Host";
-constexpr auto invMotherboard =
-    "xyz.openbmc_project.Inventory.Item.Board.Motherboard";
 constexpr auto viniRecordVPD = "com.ibm.ipzvpd.VINI";
 constexpr auto vsbpRecordVPD = "com.ibm.ipzvpd.VSBP";
 constexpr auto locCode = "xyz.openbmc_project.Inventory.Decorator.LocationCode";
