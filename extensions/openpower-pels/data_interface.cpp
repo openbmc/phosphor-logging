@@ -42,6 +42,7 @@ constexpr auto biosConfigMgr = "xyz.openbmc_project.BIOSConfigManager";
 constexpr auto bootRawProgress = "xyz.openbmc_project.State.Boot.Raw";
 constexpr auto pldm = "xyz.openbmc_project.PLDM";
 constexpr auto inventoryManager = "xyz.openbmc_project.Inventory.Manager";
+constexpr auto entityManager = "xyz.openbmc_project.EntityManager";
 } // namespace service_name
 
 namespace object_path
@@ -77,7 +78,7 @@ constexpr auto viniRecordVPD = "com.ibm.ipzvpd.VINI";
 constexpr auto vsbpRecordVPD = "com.ibm.ipzvpd.VSBP";
 constexpr auto locCode = "xyz.openbmc_project.Inventory.Decorator.LocationCode";
 constexpr auto compatible =
-    "xyz.openbmc_project.Configuration.IBMCompatibleSystem";
+    "xyz.openbmc_project.Inventory.Decorator.Compatible";
 constexpr auto vpdManager = "com.ibm.VPD.Manager";
 constexpr auto ledGroup = "xyz.openbmc_project.Led.Group";
 constexpr auto operationalStatus =
@@ -621,13 +622,20 @@ std::vector<std::string> DataInterface::getSystemNames() const
         throw std::runtime_error("Compatible interface not on D-Bus");
     }
 
-    const auto& object = *(subtree.begin());
-    const auto& path = object.first;
-    const auto& service = object.second.begin()->first;
+    for (const auto& [path, interfaceMap] : subtree)
+    {
+        auto iface = interfaceMap.find(service_name::entityManager);
+        if (iface == interfaceMap.end())
+        {
+            continue;
+        }
 
-    getProperty(service, path, interface::compatible, "Names", names);
+        getProperty(iface->first, path, interface::compatible, "Names", names);
 
-    return std::get<std::vector<std::string>>(names);
+        return std::get<std::vector<std::string>>(names);
+    }
+
+    throw std::runtime_error("EM Compatible interface not on D-Bus");
 }
 
 bool DataInterface::getQuiesceOnError() const
