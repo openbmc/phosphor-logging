@@ -50,7 +50,7 @@
                                 "CalloutList": [
                                     {
                                         "Priority": "high",
-                                        "Procedure": "bmc_code"
+                                        "Procedure": "BMC0001"
                                     }
                                 ]
                             }
