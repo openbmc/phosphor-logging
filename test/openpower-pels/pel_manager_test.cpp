@@ -243,7 +243,7 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
             "Callouts": [
                 {
                     "CalloutList": [
-                        {"Priority": "high", "Procedure": "bmc_code"},
+                        {"Priority": "high", "Procedure": "BMC0001"},
                         {"Priority": "medium", "SymbolicFRU": "service_docs"}
                     ]
                 }

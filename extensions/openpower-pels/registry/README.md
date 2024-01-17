@@ -329,6 +329,17 @@ callouts in the registry.
 
 There is room for up to 10 callouts in a PEL.
 
+Available maintenance procedures are listed [here][1] and in the source code
+[here][2].
+
+[1]:
+  https://github.com/ibm-openbmc/openpower-pel-parsers/blob/master/modules/calloutparsers/ocallouts/ocallouts.py
+[2]:
+  https://github.com/openbmc/phosphor-logging/blob/master/extensions/openpower-pels/pel_values.cpp
+
+If a procedure is needed that doesn't exist yet, please contact the owner of
+this code for instructions.
+
 #### Callouts example based on the system type
 
 ```json
@@ -353,7 +364,7 @@ There is room for up to 10 callouts in a PEL.
         [
             {
                 "Priority": "high",
-                "Procedure": "SVCDOCS"
+                "Procedure": "BMC0002"
             }
         ]
 
@@ -364,7 +375,7 @@ There is room for up to 10 callouts in a PEL.
 
 The above example shows that on system 'system1', the FRU at location P1-C1 will
 be called out with a priority of high, and the FRU at P1 with a priority of low.
-On every other system, the maintenance procedure SVCDOCS is called out.
+On every other system, the maintenance procedure BMC0002 is called out.
 
 #### Callouts example based on an AdditionalData field
 

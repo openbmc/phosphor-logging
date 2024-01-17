@@ -534,18 +534,8 @@
         },
 
         "procedure": {
-            "description": "The maintenance procedure callout.",
-            "type": "string",
-            "enum": [
-                "bmc_code",
-                "next_level_support",
-                "sbe_code",
-                "fsi_path",
-                "power_overcurrent",
-                "find_sue_root_cause",
-                "system_vpd_correction",
-                "detected_issue_need_service"
-            ]
+            "description": "The maintenance procedure callout. List of available procedures is at https://github.com/ibm-openbmc/openpower-pel-parsers/blob/master/modules/calloutparsers/ocallouts/ocallouts.py ",
+            "type": "string"
         },
 
         "useInventoryLocCode": {
