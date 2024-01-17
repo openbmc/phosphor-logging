@@ -1036,8 +1036,8 @@ void SRC::addRegistryCallout(
     if (!regCallout.procedure.empty())
     {
         // Procedure callout
-        callout = std::make_unique<src::Callout>(priority,
-                                                 regCallout.procedure);
+        callout = std::make_unique<src::Callout>(priority, regCallout.procedure,
+                                                 src::CalloutValueType::raw);
     }
     else if (!regCallout.symbolicFRU.empty())
     {
