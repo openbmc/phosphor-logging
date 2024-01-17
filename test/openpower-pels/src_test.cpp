@@ -478,7 +478,7 @@ TEST_F(SRCTest, RegistryCalloutTest)
                 },
                 {
                     "Priority": "medium",
-                    "Procedure": "bmc_code"
+                    "Procedure": "BMC0001"
                 }
             ]
         },
