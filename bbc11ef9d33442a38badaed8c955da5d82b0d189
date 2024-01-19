@@ -34,6 +34,23 @@
       "parentUuid": "a4d6baec_3ff06dbb",
       "revId": "bbc11ef9d33442a38badaed8c955da5d82b0d189",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36cdc5a8_8e0d1bf8",
+        "filename": "extensions/openpower-pels/registry/schema/schema.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2024-01-19T21:30:05Z",
+      "side": 0,
+      "message": "Would it make sense to have the enums described in the README or some other file for reference? Just to know that for example BMC007 i s vpd correction.",
+      "revId": "bbc11ef9d33442a38badaed8c955da5d82b0d189",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
