@@ -280,6 +280,78 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Common.File.Error.Open",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x1000",
+            "SRC": {
+                "ReasonCode": "0x100D",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "Failed to open a file",
+                "Message": "Failed to open a file",
+                "Notes": ["The file name is in a UserData section."]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Common.File.Error.Read",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x1000",
+            "SRC": {
+                "ReasonCode": "0x100E",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "Failed to read a file",
+                "Message": "Failed to read a file",
+                "Notes": ["The file name is in a UserData section."]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Common.File.Error.Seek",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x1000",
+            "SRC": {
+                "ReasonCode": "0x100F",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "bmc_code" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "Failed to seek in a file",
+                "Message": "Failed to seek in a file",
+                "Notes": ["The file name is in a UserData section."]
+            }
+        },
+
+        {
             "Name": "org.open_power.Logging.Error.SentBadPELToHost",
             "Subsystem": "bmc_firmware",
             "Severity": "non_error",
