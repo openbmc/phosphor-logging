@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c565633_952a1354",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-01-19T22:23:38Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "c3643a4b_dd093530",
+      "revId": "bbc11ef9d33442a38badaed8c955da5d82b0d189",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36cdc5a8_8e0d1bf8",
@@ -67,6 +85,24 @@
       "side": 0,
       "message": "Yea I can think of somewhere to add something.  I do have peltool descriptions over at https://github.com/ibm-openbmc/openpower-pel-parsers/blob/master/modules/calloutparsers/ocallouts/ocallouts.py, maybe I can point to those even though they\u0027re at ibm-openbmc since this is IBM only code anyway.",
       "parentUuid": "36cdc5a8_8e0d1bf8",
+      "revId": "bbc11ef9d33442a38badaed8c955da5d82b0d189",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "320c1732_37aa8cde",
+        "filename": "extensions/openpower-pels/registry/schema/schema.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-01-19T22:23:38Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "2bba09b9_4eb5f392",
       "revId": "bbc11ef9d33442a38badaed8c955da5d82b0d189",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
