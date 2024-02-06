@@ -5042,7 +5042,7 @@
             "Name": "xyz.openbmc_project.Sensor.Threshold.Error.TemperatureCriticalHigh",
             "Subsystem": "power",
             "ComponentID": "0x2800",
-            "Severity": "predictive",
+            "Severity": "unrecoverable",
             "ActionFlags": ["service_action", "report"],
 
             "SRC": {
@@ -5296,7 +5296,7 @@
             "Name": "xyz.openbmc_project.Sensor.Threshold.Error.VoltageCriticalLow",
             "Subsystem": "cec_tod",
             "ComponentID": "0x2800",
-            "Severity": "predictive",
+            "Severity": "unrecoverable",
             "ActionFlags": ["service_action", "report"],
 
             "SRC": {
@@ -5376,7 +5376,7 @@
             "Name": "xyz.openbmc_project.Sensor.Threshold.Error.TemperatureCriticalLow",
             "Subsystem": "power",
             "ComponentID": "0x2800",
-            "Severity": "predictive",
+            "Severity": "unrecoverable",
             "ActionFlags": ["service_action", "report"],
 
             "SRC": {
