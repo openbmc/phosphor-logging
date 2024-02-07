@@ -6542,6 +6542,96 @@
                 "Message": "BMC/System/Resource dump has been deleted/offloaded"
             }
         },
+
+        {
+            "Name": "org.open_power.OCNB.Error.SbeChipOpInvalidState",
+            "Subsystem": "ocnb_chip",
+            "ComponentID": "0xF200",
+
+            "SRC": {
+                "ReasonCode": "0xF201",
+                "Words6To9": {
+                    "6": {
+                        "Description": "[0:15] chip position, [16:23] command class, [24:31] command type",
+                        "AdditionalDataPropSource": "SRC6"
+                    },
+                    "7": {
+                        "Description": "Value of OCMB SBE state",
+                        "AdditionalDataPropSource": "SRC7"
+                    }
+                }
+            },
+
+            "Documentation": {
+                "Description": "The OCMB SBE is not in a state where chipOps can be issued",
+                "Message": "OCMB SBE Chipop is not allowed due to invalid OCMB SBE state ",
+                "Notes": ["The severity is set by the creator."]
+            }
+        },
+
+        {
+            "Name": "org.open_power.OCMB.Error.SbeChipOpFailure",
+            "Subsystem": "ocnb_chip",
+            "ComponentID": "0xF200",
+
+            "SRC": {
+                "ReasonCode": "0xF202",
+                "Words6To9": {
+                    "6": {
+                        "Description": "[0:15] chip position, [16:23] command class, [24:31] command type",
+                        "AdditionalDataPropSource": "SRC6"
+                    }
+                }
+            },
+
+            "Documentation": {
+                "Description": "chipop failure with OCMB SBE provided FFDC",
+                "Message": "chipop request failure reported by OCMB SBE",
+                "Notes": [
+                    "The severity is set by the creator.",
+                    "Callouts added based on OCMB SBE provided FFDC.",
+                    "OCMB SBE provided additional debug data included as part of the",
+                    "additional user data section."
+                ]
+            }
+        },
+
+        {
+            "Name": "org.open_power.OCMB.Error.SbeChipOpTimeout",
+            "Subsystem": "ocnb_chip",
+            "ComponentID": "0xF200",
+
+            "SRC": {
+                "ReasonCode": "0xF203",
+                "Words6To9": {
+                    "6": {
+                        "Description": "[0:15] chip position, [16:23] command class, [24:31] command type",
+                        "AdditionalDataPropSource": "SRC6"
+                    }
+                }
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "next_level_support"
+                        }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "OCMB SBE chipop timeout",
+                "Message": "OCMB chipop timeout reported during SBE communication",
+                "Notes": [
+                    "The severity is set by the creator.",
+                    "Check OCMB SBE Dump associated to this error to debug the failure."
+                ]
+            }
+        },
+
         {
             "Name": "xyz.openbmc_project.Memory.MemoryECC.Error.CEThresholdReached",
             "Subsystem": "cec_hardware",
