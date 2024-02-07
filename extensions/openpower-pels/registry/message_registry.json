@@ -6721,6 +6721,77 @@
                 "Description": "Uncorrectable ECC/other uncorrectable memory error.",
                 "Message": "Uncorrectable ECC/other uncorrectable memory error."
             }
+        },
+
+        {
+            "Name": "org.open_power.OCMB.Error.SbeChipOpFailure",
+            "Subsystem": "memory",
+            "ComponentID": "0xF400",
+
+            "SRC": {
+                "ReasonCode": "0xF401",
+                "Words6To9": {
+                    "6": {
+                        "Description": "[0:15] chip position, [16:23] command class, [24:31] command type",
+                        "AdditionalDataPropSource": "SRC6"
+                    },
+                    "7": {
+                        "Description": "Chip Type",
+                        "AdditionalDataPropSource": "CHIP_TYPE"
+                    }
+                }
+            },
+
+            "Documentation": {
+                "Description": "chipop failure with OCMB SBE provided FFDC",
+                "Message": "chipop request failure reported by OCMB SBE",
+                "Notes": [
+                    "The severity is set by the creator.",
+                    "Callouts added based on OCMB SBE provided FFDC.",
+                    "OCMB SBE provided additional debug data included as part of the",
+                    "additional user data section."
+                ]
+            }
+        },
+
+        {
+            "Name": "org.open_power.OCMB.Error.SbeChipOpTimeout",
+            "Subsystem": "memory",
+            "ComponentID": "0xF400",
+
+            "SRC": {
+                "ReasonCode": "0xF402",
+                "Words6To9": {
+                    "6": {
+                        "Description": "[0:15] chip position, [16:23] command class, [24:31] command type",
+                        "AdditionalDataPropSource": "SRC6"
+                    },
+                    "7": {
+                        "Description": "Chip Type",
+                        "AdditionalDataPropSource": "CHIP_TYPE"
+                    }
+                }
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "next_level_support"
+                        }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "OCMB SBE chipop timeout",
+                "Message": "OCMB chipop timeout reported during SBE communication",
+                "Notes": [
+                    "The severity is set by the creator.",
+                    "Check OCMB SBE Dump associated to this error to debug the failure."
+                ]
+            }
         }
     ]
 }
