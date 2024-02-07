@@ -179,6 +179,7 @@
                 "memory_dimm",
                 "memory_fru",
                 "external_cache",
+                "ocmb_chip",
 
                 "io",
                 "io_hub",

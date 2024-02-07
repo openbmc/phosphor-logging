@@ -41,6 +41,7 @@ const PELValues subsystemValues = {
     {0x23, "memory_dimm", "Memory DIMM"},
     {0x24, "memory_fru", "Memory Card/FRU"},
     {0x25, "external_cache", "External Cache"},
+    {0x26, "ocmb_chip", "ocmb chip"},
 
     {0x30, "io", "I/O"},
     {0x31, "io_hub", "I/O Hub"},
