@@ -16,6 +16,24 @@
       "message": "I know this is a WIP still, but I wonder if you could just use \u0027memory_ctlr\u0027 since an OCMB seems close enough to that.",
       "revId": "29220728795de739f9109cb82ecb2f8cc10c600e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "897737c5_41ce7519",
+        "filename": "extensions/openpower-pels/pel_values.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2024-02-13T07:49:26Z",
+      "side": 1,
+      "message": "can i use poz_chip as now SBE came up with new SBE specification which is generic to all chips and it will have CHIP_TYPE additional data to differentiate. For now we have proc and ocmb to support for it.",
+      "parentUuid": "bd80ab02_87128dd2",
+      "revId": "29220728795de739f9109cb82ecb2f8cc10c600e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
