@@ -34,6 +34,64 @@
       "parentUuid": "bd80ab02_87128dd2",
       "revId": "29220728795de739f9109cb82ecb2f8cc10c600e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "917695d7_f7f01539",
+        "filename": "extensions/openpower-pels/pel_values.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-02-13T22:01:56Z",
+      "side": 1,
+      "message": "These are customer viewable as on the web UI it says:  Event BDXXXXXX in subsystem: YYYY\n\nThough the code may be common, for the end user a processor subunit is completely different than a memory subunit, and so we\u0027d probably want separate subsystems there anyway.\n\nAlso, adding this would mean getting a PEL spec update through first.\n\nSo my suggestion now is to just use 0x20 on these fails, which is what hostboot uses for fails on the OCMB.",
+      "parentUuid": "897737c5_41ce7519",
+      "revId": "29220728795de739f9109cb82ecb2f8cc10c600e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85609220_506f0f94",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6547,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-02-13T22:01:56Z",
+      "side": 1,
+      "message": "OCMB I assume",
+      "range": {
+        "startLine": 6547,
+        "startChar": 36,
+        "endLine": 6547,
+        "endChar": 40
+      },
+      "revId": "29220728795de739f9109cb82ecb2f8cc10c600e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0796b762_a3628346",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6568,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-02-13T22:01:56Z",
+      "side": 1,
+      "message": "Is the callout passed in for these?  What is it?\n\nSame question about the other entries below.",
+      "revId": "29220728795de739f9109cb82ecb2f8cc10c600e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
