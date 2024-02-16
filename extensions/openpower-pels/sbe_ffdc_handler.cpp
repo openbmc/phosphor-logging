@@ -25,6 +25,7 @@ extern "C"
 #include "temporary_file.hpp"
 
 #include <ekb/hwpf/fapi2/include/return_code_defs.H>
+#include <ekb/hwpf/fapi2/include/target_types.H>
 #include <libekb.H>
 
 #include <phosphor-logging/log.hpp>
@@ -39,13 +40,13 @@ namespace pels
 namespace sbe
 {
 
-using namespace phosphor::logging;
-
 constexpr uint32_t sbeMaxFfdcPackets = 20;
-constexpr uint32_t ffdcPkgOneWord = 1;
-const uint16_t ffdcMagicCode = 0xFFDC;
+constexpr uint16_t p10FfdcMagicCode = 0xFFDC;
+constexpr uint16_t pozFfdcMagicCode = 0xFBAD;
+constexpr uint16_t p10FfdcSkipWords = 2;
+constexpr uint16_t pozFfdcSkipWords = 3;
 
-typedef struct
+struct p10FfdcHeader
 {
     uint32_t magic_bytes:16;
     uint32_t lengthinWords:16;
@@ -53,10 +54,25 @@ typedef struct
     uint32_t cmdClass:8;
     uint32_t cmd:8;
     uint32_t fapiRc;
-} __attribute__((packed)) fapiFfdcBufType;
+} __attribute__((packed));
+
+struct pozFfdcHeader
+{
+    uint32_t magicByte:16;
+    uint32_t lengthinWords:16;
+    uint32_t seqId:16;
+    uint32_t cmdClass:8;
+    uint32_t cmd:8;
+    uint32_t slid:16;
+    uint32_t severity:8;
+    uint32_t chipId:8;
+    uint32_t fapiRc;
+} __attribute__((packed));
+
+using namespace phosphor::logging;
 
 SbeFFDC::SbeFFDC(const AdditionalData& aData, const PelFFDC& files) :
-    ffdcType(FFDC_TYPE_NONE)
+    ffdcType(FFDC_TYPE_NONE), chipType(fapi2::TARGET_TYPE_PROC_CHIP)
 {
     log<level::INFO>("SBE FFDC processing requested");
 
@@ -71,13 +87,28 @@ SbeFFDC::SbeFFDC(const AdditionalData& aData, const PelFFDC& files) :
     }
     try
     {
-        procPos = (std::stoi(src6.value()) & 0xFFFF0000) >> 16;
+        chipPos = (std::stoi(src6.value()) & 0xFFFF0000) >> 16;
     }
     catch (const std::exception& err)
     {
         log<level::ERR>(
             std::format("Conversion failure errormsg({})", err.what()).c_str());
         return;
+    }
+    auto type = aData.getValue("CHIP_TYPE");
+    if (type != std::nullopt)
+    {
+        try
+        {
+            chipType = std::stoi(type.value());
+        }
+        catch (const std::exception& err)
+        {
+            log<level::ERR>(
+                std::format("Conversion failure errormsg({})", err.what())
+                    .c_str());
+            return;
+        }
     }
 
     if (files.empty())
@@ -117,40 +148,73 @@ void SbeFFDC::parse(int fd)
     while ((ffdcBufOffset < ffdcData.size()) && (sbeMaxFfdcPackets != pktCount))
     {
         sbeFfdcPacketType ffdcPkt;
-
         // Next un-extracted FFDC Packet
-        fapiFfdcBufType* ffdc =
-            reinterpret_cast<fapiFfdcBufType*>(ffdcData.data() + ffdcBufOffset);
-        auto magicBytes = ntohs(ffdc->magic_bytes);
-        auto lenWords = ntohs(ffdc->lengthinWords);
-        auto fapiRc = ntohl(ffdc->fapiRc);
-
-        auto msg = std::format("FFDC magic: {} length in words:{} Fapirc:{}",
-                               magicBytes, lenWords, fapiRc);
-        log<level::INFO>(msg.c_str());
-
-        if (magicBytes != ffdcMagicCode)
+        uint16_t magicBytes =
+            *(reinterpret_cast<uint16_t*>(ffdcData.data() + ffdcBufOffset));
+        magicBytes = ntohs(magicBytes);
+        uint32_t pktLenWords = 0;
+        uint16_t lenWords = 0;
+        if (magicBytes == p10FfdcMagicCode)
         {
-            log<level::ERR>("Invalid FFDC magic code in Header: Skipping ");
-            return;
+            p10FfdcHeader* ffdc = reinterpret_cast<p10FfdcHeader*>(
+                ffdcData.data() + ffdcBufOffset);
+            lenWords = ntohs(ffdc->lengthinWords);
+            auto fapiRc = ntohl(ffdc->fapiRc);
+
+            auto msg =
+                std::format("P10 FFDC magic: {} length in words:{} Fapirc:{}",
+                            magicBytes, lenWords, fapiRc);
+            log<level::INFO>(msg.c_str());
+
+            ffdcPkt.fapiRc = fapiRc;
+            // Not interested in the first 2 words (these are not ffdc)
+            pktLenWords = lenWords - p10FfdcSkipWords;
+            ffdcPkt.ffdcLengthInWords = pktLenWords;
+            if (pktLenWords)
+            {
+                ffdcPkt.ffdcData = new uint32_t[pktLenWords];
+                memcpy(ffdcPkt.ffdcData,
+                       ((reinterpret_cast<uint32_t*>(ffdc)) + p10FfdcSkipWords),
+                       (pktLenWords * sizeof(uint32_t)));
+            }
+            else
+            {
+                log<level::ERR>("FFDC packet size is zero skipping");
+                return;
+            }
         }
-        ffdcPkt.fapiRc = fapiRc;
-        // Not interested in the first 2 words (these are not ffdc)
-        auto pktLenWords = lenWords - (2 * ffdcPkgOneWord);
-        ffdcPkt.ffdcLengthInWords = pktLenWords;
-        if (pktLenWords)
+        else if (magicBytes == pozFfdcMagicCode)
         {
-            // Memory freeing will be taking care by ffdcPkt structure
-            // destructor
-            ffdcPkt.ffdcData = new uint32_t[pktLenWords];
-            memcpy(ffdcPkt.ffdcData,
-                   ((reinterpret_cast<uint32_t*>(ffdc)) +
-                    (2 * ffdcPkgOneWord)), // skip first 2 words
-                   (pktLenWords * sizeof(uint32_t)));
+            pozFfdcHeader* ffdc = reinterpret_cast<pozFfdcHeader*>(
+                ffdcData.data() + ffdcBufOffset);
+            lenWords = ntohs(ffdc->lengthinWords);
+            auto fapiRc = ntohl(ffdc->fapiRc);
+
+            auto msg =
+                std::format("P0Z FFDC magic: {} length in words:{} Fapirc:{}",
+                            magicBytes, lenWords, fapiRc);
+            log<level::INFO>(msg.c_str());
+
+            ffdcPkt.fapiRc = fapiRc;
+            // Not interested in the first 3 words (these are not ffdc)
+            pktLenWords = lenWords - pozFfdcSkipWords;
+            ffdcPkt.ffdcLengthInWords = pktLenWords;
+            if (pktLenWords)
+            {
+                ffdcPkt.ffdcData = new uint32_t[pktLenWords];
+                memcpy(ffdcPkt.ffdcData,
+                       ((reinterpret_cast<uint32_t*>(ffdc)) + pozFfdcSkipWords),
+                       (pktLenWords * sizeof(uint32_t)));
+            }
+            else
+            {
+                log<level::ERR>("FFDC packet size is zero skipping");
+                return;
+            }
         }
         else
         {
-            log<level::ERR>("FFDC packet size is zero skipping");
+            log<level::ERR>("Invalid FFDC magic code in Header: Skipping ");
             return;
         }
 
@@ -202,7 +266,7 @@ void SbeFFDC::process(const sbeFfdcPacketType& ffdcPkt)
     {
         // libekb provided wrapper function to convert SBE FFDC
         // in to known ffdc structure.
-        libekb_get_sbe_ffdc(ffdc, ffdcPkt, procPos);
+        libekb_get_sbe_ffdc(ffdc, ffdcPkt, chipPos, chipType);
     }
     catch (...)
     {
