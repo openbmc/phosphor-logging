@@ -32,7 +32,8 @@ constexpr uint8_t sbeFFDCSubType = 0xCB;
  *    1. A failed hardware procedure (e.g. local variable values
  *       at point of failure) or
  *    2. SBE firmware (e.g. traces, attributes and other information).
- *    ___________________________________________________________
+ *
+ *   -------------------P10 proc-----------------------
  *   |        |  Byte 0   |  Byte 1  |  Byte 2    |    Byte 3   |
  *   |----------------------------------------------------------|
  *   | Word 0 | Magic Bytes : 0xFFDC | Length in words (N+4)    |
@@ -42,6 +43,51 @@ constexpr uint8_t sbeFFDCSubType = 0xCB;
  *   |  ...                                                     |
  *   | Word N+3 |  FFDC Data – Word N                           |
  *    -----------------------------------------------------------
+ *
+ *   --------------POZ - PowerOdysseyZEE-----------------------
+ *   First FFDC packet structure
+ *   --------------------------------------------------------------
+ *   |          |  Byte 0   |  Byte 1  |  Byte 2    |    Byte 3   |
+ *   |------------------------------------------------------------|
+ *   | Word 0   | Magic Bytes : 0xFBAD | Length in words (N+4)    |
+ *   | Word 1   | [Sequence ID]        | Command-Class | Command  |
+ *   | Word 2   | SLID                 | Severity      | Chip ID  |
+ *   | Word 3   |           FAPI RC (HWP)                         |
+ *   | Word 4   | HWP FFDC Dump Fields (Local FFDC | HW Register) |
+ *   | Word 6   | Field ID 0(Local FFDC) | Field ID 0 Length      |
+ *   | Word 7   |          Filed Data 0(Size1, data2)             |
+ *   |  ...                                                       |
+ *   | Word N   |          Filed Data N(Size1, data2)             |
+ *   | Word N+1 | Field ID 1(HW Register) | Field ID 1 Length     |
+ *   | Word N+2 |              Filed Data 0)                      |
+ *   |  ...                                                       |
+ *   | Word Y   |              Filed Data M)                      |
+ *    -------------------------------------------------------------
+ *   Second FFDC packet structure
+ *   --------------------------------------------------------------
+ *   |          |  Byte 0   |  Byte 1  |  Byte 2    |    Byte 3   |
+ *   |------------------------------------------------------------|
+ *   | Word 0   | Magic Bytes : 0xFBAD | Length in words (N+4)    |
+ *   | Word 1   | [Sequence ID]        | Command-Class | Command  |
+ *   | Word 2   | SLID                 | Severity      | Chip ID  |
+ *   | Word 3   |       FAPI RC (PLAT ERR SEE DATA)               |
+ *   | Word 4   | Primary Status       | Secondary Status         |
+ *   | Word 5   |             FW commit ID                        |
+ *   | Word 5   | Reserve | DD Major   | DD Minor      | Thread ID|
+ *   | Word 4   |         SBE FFDC Dump Fields (Bitmaped)         |
+ *   | Word 6   | Field ID 0           | Field ID 0 Length        |
+ *   | Word 7   |              Filed Data 0                       |
+ *   |  ...                                                       |
+ *   | Word N   |              Filed Data N                       |
+ *   | Word N+1 | Field ID 1           | Field ID 1 Length        |
+ *   | Word N+2 |       Filed Data 0)                             |
+ *   |  ...                                                       |
+ *   | Word Y   |       Filed Data M)                             |
+ *   | Word Y+1 | 0xCODE               | 0xA8         | 0x1       |
+ *   | Word Y+2 | Primary Status       | Secondary Status         |
+ *   | Word Y+3 |          Distance to Header                     |
+ *    -------------------------------------------------------------
+ *
  **/
 
 using LogSeverity = phosphor::logging::Entry::Level;
@@ -172,14 +218,19 @@ class SbeFFDC
     PelFFDC ffdcFiles;
 
     /**
-     * @brief Processor position associated to SBE FFDC
+     * @brief Chip position associated to SBE FFDC
      */
-    uint32_t procPos;
+    uint32_t chipPos;
 
     /**
      * @brief Used to get type of ffdc
      */
     FFDC_TYPE ffdcType;
+
+    /**
+     * @brief Chip type associated to SBE FFDC
+     */
+    uint32_t chipType;
 };
 
 } // namespace sbe
