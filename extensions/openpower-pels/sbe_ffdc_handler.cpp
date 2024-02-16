@@ -104,7 +104,6 @@ void SbeFFDC::parse(int fd)
 
     uint32_t ffdcBufOffset = 0;
     uint32_t pktCount = 0;
-    sbeFfdcPacketType ffdcPkt;
 
     // get SBE FFDC data.
     auto ffdcData = util::readFD(fd);
@@ -117,6 +116,8 @@ void SbeFFDC::parse(int fd)
 
     while ((ffdcBufOffset < ffdcData.size()) && (sbeMaxFfdcPackets != pktCount))
     {
+        sbeFfdcPacketType ffdcPkt;
+
         // Next un-extracted FFDC Packet
         fapiFfdcBufType* ffdc =
             reinterpret_cast<fapiFfdcBufType*>(ffdcData.data() + ffdcBufOffset);
