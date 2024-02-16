@@ -41,6 +41,20 @@ namespace sbe
 
 using namespace phosphor::logging;
 
+constexpr uint32_t sbeMaxFfdcPackets = 20;
+constexpr uint32_t ffdcPkgOneWord = 1;
+const uint16_t ffdcMagicCode = 0xFFDC;
+
+typedef struct
+{
+    uint32_t magic_bytes:16;
+    uint32_t lengthinWords:16;
+    uint32_t seqId:16;
+    uint32_t cmdClass:8;
+    uint32_t cmd:8;
+    uint32_t fapiRc;
+} __attribute__((packed)) fapiFfdcBufType;
+
 SbeFFDC::SbeFFDC(const AdditionalData& aData, const PelFFDC& files) :
     ffdcType(FFDC_TYPE_NONE)
 {
