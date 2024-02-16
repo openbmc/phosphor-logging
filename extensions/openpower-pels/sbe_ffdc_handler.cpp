@@ -165,6 +165,7 @@ void SbeFFDC::parse(int fd)
             memcpy(ffdcPkt.ffdcData,
                    ((reinterpret_cast<uint32_t*>(ffdc)) + p10FfdcSkipWords),
                    (pktLenWords * sizeof(uint32_t)));
+            ++pktCount;
         }
         else if (magicBytes == pozFfdcMagicCode)
         {
@@ -208,7 +209,6 @@ void SbeFFDC::parse(int fd)
 
         // Update Buffer offset in Bytes
         ffdcBufOffset += lenWords * sizeof(uint32_t);
-        ++pktCount;
     }
     if (pktCount == sbeMaxFfdcPackets)
     {
