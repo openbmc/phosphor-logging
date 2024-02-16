@@ -182,6 +182,7 @@ void SbeFFDC::parse(int fd)
                 log<level::ERR>("FFDC packet size is zero skipping");
                 return;
             }
+            pktCount++;
         }
         else if (magicBytes == pozFfdcMagicCode)
         {
@@ -232,7 +233,6 @@ void SbeFFDC::parse(int fd)
 
         // Update Buffer offset in Bytes
         ffdcBufOffset += lenWords * sizeof(uint32_t);
-        ++pktCount;
     }
     if (pktCount == sbeMaxFfdcPackets)
     {
