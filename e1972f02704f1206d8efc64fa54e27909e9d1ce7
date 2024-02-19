@@ -16,6 +16,24 @@
       "message": "Not sure I entirely follow how it\u0027s a memory leak, but it\u0027s always good to reduce scope anyway.",
       "revId": "e1972f02704f1206d8efc64fa54e27909e9d1ce7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d8a309d_912b3b57",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2024-02-19T07:34:50Z",
+      "side": 1,
+      "message": "Destructor for sbeFfdcPacketType gets called only when while loop exits, in between we are creating new data and assigning it to same pointer\n\nsbeFfdcPacketType ffdcPkt;\nwhile()\n{\n    ffdcPkt.ffdcData \u003d new uint32_t[pktLenWords];  //line 145\n}\n\n\nlibekb.H\nstruct sbeFfdcPacket {\n\tuint32_t *ffdcData \u003d nullptr;\t    // fapi FFDC data\n\t~sbeFfdcPacket()\n\t{\n\t\t// freeup the ffdcData allocated memory\n\t\tif (ffdcData) {\n\t\t\tdelete[] ffdcData;\n\t\t\tffdcData \u003d nullptr;\n\t\t}\n\t}\n} sbeFfdcPacketType;\n\nhttps://github.com/open-power/libekb_p10/pull/30/commits/f02b22f210c733595b2987ab7afd75a4e0eb5474",
+      "parentUuid": "a7d6b823_83180a04",
+      "revId": "e1972f02704f1206d8efc64fa54e27909e9d1ce7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
