@@ -41,6 +41,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a42b2daa_69b4920c",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2024-02-19T14:42:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4528e21_f34a6191",
+      "revId": "67d27a09fedf88acd7770f6d3d3fd318241332b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d3a2b34_97bbc8e1",
@@ -54,6 +72,24 @@
       "writtenOn": "2024-02-16T19:03:43Z",
       "side": 1,
       "message": "do you still need \u0027if (pktLenWords)\u0027 that was here before?",
+      "revId": "67d27a09fedf88acd7770f6d3d3fd318241332b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22d1d4f7_086aa472",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2024-02-19T14:42:57Z",
+      "side": 1,
+      "message": "thought of adding some extra checking but will do in another commit",
+      "parentUuid": "8d3a2b34_97bbc8e1",
       "revId": "67d27a09fedf88acd7770f6d3d3fd318241332b5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
