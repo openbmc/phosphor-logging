@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8192f79c_4016990b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2024-02-20T03:46:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0be4ebf_e7f93503",
+      "range": {
+        "startLine": 18,
+        "startChar": 38,
+        "endLine": 18,
+        "endChar": 48
+      },
+      "revId": "67d27a09fedf88acd7770f6d3d3fd318241332b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d4528e21_f34a6191",
@@ -90,6 +114,24 @@
       "side": 1,
       "message": "thought of adding some extra checking but will do in another commit",
       "parentUuid": "8d3a2b34_97bbc8e1",
+      "revId": "67d27a09fedf88acd7770f6d3d3fd318241332b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03e4267d_2ec3f636",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2024-02-20T03:46:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22d1d4f7_086aa472",
       "revId": "67d27a09fedf88acd7770f6d3d3fd318241332b5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
