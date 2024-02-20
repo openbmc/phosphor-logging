@@ -16,6 +16,24 @@
       "message": "I\u0027d find this very useful as I was looking at how to determine the ID of any new entry, but I cant follow the CI link to find out why it failed, maybe it was expired?",
       "revId": "fcc4882a13d6561006501b038de16d08107a95d0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c47f72d_6a623e08",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-02-20T15:44:01Z",
+      "side": 1,
+      "message": "It just has a coreq https://gerrit.openbmc.org/c/openbmc/phosphor-dbus-interfaces/+/67854 that needs to go along with it. It does have +1s now and is ready to go when this one is.",
+      "parentUuid": "be86edfb_0231c83a",
+      "revId": "fcc4882a13d6561006501b038de16d08107a95d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
