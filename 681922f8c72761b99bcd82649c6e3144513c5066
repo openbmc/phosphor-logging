@@ -16,6 +16,24 @@
       "message": "In file included from elog-lookup.cpp:5:\n../log_manager.hpp:400:9: error: conflicting return type specified for ‘virtual sdbusplus::message::object_path phosphor::logging::Manager::create(std::string, phosphor::logging::Severity, std::map\u003cstd::__cxx11::basic_string\u003cchar\u003e, std::__cxx11::basic_string\u003cchar\u003e \u003e)’\n  400 |         create(std::string message, Severity severity,\n      |         ^~~~~~\nIn file included from ../log_manager.hpp:6:\n/usr/local/include/xyz/openbmc_project/Logging/Create/server.hpp:57:22: note: overridden function is ‘virtual void sdbusplus::server::xyz::openbmc_project::logging::Create::create(std::string, sdbusplus::common::xyz::openbmc_project::logging::Entry::Level, std::map\u003cstd::__cxx11::basic_string\u003cchar\u003e, std::__cxx11::basic_string\u003cchar\u003e \u003e)’\n   57 |         virtual void create(\n   \n Is there a base class prototype that must change or will this never pass without the other change merging concurrently?",
       "revId": "681922f8c72761b99bcd82649c6e3144513c5066",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "652b3f36_931c9d49",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-02-21T15:25:12Z",
+      "side": 1,
+      "message": "Right, that\u0027s what the other change is.",
+      "parentUuid": "de0876a8_c1e40e2d",
+      "revId": "681922f8c72761b99bcd82649c6e3144513c5066",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
