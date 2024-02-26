@@ -9,6 +9,7 @@
 #include <concepts>
 #include <cstddef>
 #include <filesystem>
+#include <format>
 #include <source_location>
 #include <string_view>
 #include <tuple>
@@ -62,6 +63,10 @@ concept sdbusplus_object_path =
 template <typename T>
 concept has_to_string = requires(T&& t) { to_string(t); };
 
+template <typename T>
+concept is_raw_enum = std::is_enum_v<std::decay_t<T>> && !sdbusplus_enum<T> &&
+                      !has_to_string<T>;
+
 /** Concept listing all of the types we know how to convert into a format
  *  for logging.
  */
@@ -70,7 +75,7 @@ concept unsupported_log_convert_types =
     !(unsigned_integral_except_bool<T> || std::signed_integral<T> ||
       std::same_as<bool, T> || std::floating_point<T> || string_like_type<T> ||
       pointer_type<T> || sdbusplus_enum<T> || exception_type<T> ||
-      sdbusplus_object_path<T> || has_to_string<T>);
+      sdbusplus_object_path<T> || has_to_string<T> || is_raw_enum<T>);
 
 /** Any type we do not know how to convert for logging gives a nicer
  *  static_assert message. */
@@ -297,6 +302,28 @@ static auto log_convert(const char* h, log_flag<Fs...> f, V&& v)
 
     // Treat like a string, but call to_string.
     return std::make_tuple(h, (f | str).value, to_string(std::forward<V>(v)));
+}
+
+template <log_flags... Fs, is_raw_enum V>
+static auto log_convert(const char* h, log_flag<Fs...> f, V&& v)
+{
+    // Compile-time checks for valid formatting flags.
+    prohibit(f, bin);
+    prohibit(f, dec);
+    prohibit(f, field16);
+    prohibit(f, field32);
+    prohibit(f, field64);
+    prohibit(f, field8);
+    prohibit(f, floating);
+    prohibit(f, hex);
+    prohibit(f, signed_val);
+    prohibit(f, unsigned_val);
+
+    // Treat like a string, but convert using std::format.
+    return std::make_tuple(
+        h, (f | str).value,
+        std::format("Enum({})",
+                    static_cast<std::underlying_type_t<std::decay_t<V>>>(v)));
 }
 
 /** Class to facilitate walking through the arguments of the `lg2::log` function
