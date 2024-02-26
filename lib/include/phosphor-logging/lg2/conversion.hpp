@@ -59,6 +59,9 @@ template <typename T>
 concept sdbusplus_object_path =
     std::derived_from<std::decay_t<T>, sdbusplus::message::object_path>;
 
+template <typename T>
+concept has_to_string = requires(T&& t) { to_string(t); };
+
 /** Concept listing all of the types we know how to convert into a format
  *  for logging.
  */
@@ -67,7 +70,7 @@ concept unsupported_log_convert_types =
     !(unsigned_integral_except_bool<T> || std::signed_integral<T> ||
       std::same_as<bool, T> || std::floating_point<T> || string_like_type<T> ||
       pointer_type<T> || sdbusplus_enum<T> || exception_type<T> ||
-      sdbusplus_object_path<T>);
+      sdbusplus_object_path<T> || has_to_string<T>);
 
 /** Any type we do not know how to convert for logging gives a nicer
  *  static_assert message. */
@@ -275,6 +278,25 @@ static auto log_convert(const char* h, log_flag<Fs...> f, V&& v)
 
     // Treat like a string, but get the 'str' from the object path.
     return std::make_tuple(h, (f | str).value, v.str);
+}
+
+template <log_flags... Fs, has_to_string V>
+static auto log_convert(const char* h, log_flag<Fs...> f, V&& v)
+{
+    // Compile-time checks for valid formatting flags.
+    prohibit(f, bin);
+    prohibit(f, dec);
+    prohibit(f, field16);
+    prohibit(f, field32);
+    prohibit(f, field64);
+    prohibit(f, field8);
+    prohibit(f, floating);
+    prohibit(f, hex);
+    prohibit(f, signed_val);
+    prohibit(f, unsigned_val);
+
+    // Treat like a string, but call to_string.
+    return std::make_tuple(h, (f | str).value, to_string(std::forward<V>(v)));
 }
 
 /** Class to facilitate walking through the arguments of the `lg2::log` function
