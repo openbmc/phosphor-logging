@@ -18,7 +18,6 @@
 #include <phosphor-logging/log.hpp>
 
 #include <algorithm>
-#include <map>
 
 namespace openpower
 {
@@ -53,28 +52,41 @@ void Callouts::flatten(Stream& pel) const
 
 void Callouts::addCallout(std::unique_ptr<Callout> callout)
 {
-    if (_callouts.size() < maxNumberOfCallouts)
+    bool shouldAdd = true;
+
+    // Check if there is already a callout for this FRU
+    auto it = std::ranges::find_if(
+        _callouts, [&callout](const auto& c) { return *callout == *c; });
+
+    // If the callout already exists, but the new one has a higher
+    // priority, change the existing callout's priority to this
+    // new value and don't add the new one.
+    if (it != _callouts.end())
     {
-        _callouts.push_back(std::move(callout));
-
-        _subsectionWordLength += _callouts.back()->flattenedSize() / 4;
+        if (*callout > **it)
+        {
+            (*it)->setPriority(callout->priority());
+        }
+        shouldAdd = false;
     }
-    else
+
+    if (shouldAdd)
     {
-        using namespace phosphor::logging;
-        log<level::INFO>("Dropping PEL callout because at max");
+        if (_callouts.size() < maxNumberOfCallouts)
+        {
+            _callouts.push_back(std::move(callout));
+
+            _subsectionWordLength += _callouts.back()->flattenedSize() / 4;
+        }
+        else
+        {
+            using namespace phosphor::logging;
+            log<level::INFO>("Dropping PEL callout because at max");
+        }
     }
 
-    // Mapping including the  3 Medium levels as A,B and C
-    const std::map<std::uint8_t, int> priorities = {
-        {'H', 10}, {'M', 9}, {'A', 8}, {'B', 7}, {'C', 6}, {'L', 5}};
-
-    auto sortPriority = [&priorities](const std::unique_ptr<Callout>& p1,
-                                      const std::unique_ptr<Callout>& p2) {
-        return priorities.at(p1->priority()) > priorities.at(p2->priority());
-    };
-
-    std::sort(_callouts.begin(), _callouts.end(), sortPriority);
+    std::ranges::sort(_callouts,
+                      [](const auto& c1, const auto& c2) { return *c1 > *c2; });
 }
 
 } // namespace src

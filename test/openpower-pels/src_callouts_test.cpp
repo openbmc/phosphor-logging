@@ -16,6 +16,8 @@
 #include "extensions/openpower-pels/callouts.hpp"
 #include "pel_utils.hpp"
 
+#include <format>
+
 #include <gtest/gtest.h>
 
 using namespace openpower::pels;
@@ -99,8 +101,9 @@ TEST(CalloutsTest, TestAddCallouts)
 
     for (size_t i = 0; i < maxNumberOfCallouts; i++)
     {
+        auto loc = std::format("U1-P{}", i);
         auto callout = std::make_unique<Callout>(
-            CalloutPriority::high, "U1-P1", "1234567", "ABCD", "123456789ABC");
+            CalloutPriority::high, loc, "1234567", "ABCD", "123456789ABC");
         auto calloutSize = callout->flattenedSize();
 
         callouts.addCallout(std::move(callout));
@@ -199,4 +202,66 @@ TEST(CalloutsTest, TestSortCallouts)
     EXPECT_EQ(calloutObjects[8]->priority(), 'L');
     EXPECT_EQ(calloutObjects[9]->locationCode(), "U1-P10");
     EXPECT_EQ(calloutObjects[9]->priority(), 'L');
+}
+
+TEST(CalloutsTest, TestDupCallouts)
+{
+    {
+        // Duplicate callouts, keep the high priority one
+        Callouts callouts;
+        auto c0 = std::make_unique<Callout>(CalloutPriority::medium, "U1-P1",
+                                            "1234567", "ABC", "123456789ABC");
+        callouts.addCallout(std::move(c0));
+
+        auto c1 = std::make_unique<Callout>(CalloutPriority::high, "U1-P1",
+                                            "1234567", "ABCD", "123456789ABC");
+        callouts.addCallout(std::move(c1));
+
+        EXPECT_EQ(callouts.callouts().size(), 1);
+        const auto& calloutObjects = callouts.callouts();
+        EXPECT_EQ(calloutObjects[0]->priority(), 'H');
+    }
+
+    {
+        // Different callouts, keep them both
+        Callouts callouts;
+        auto c0 = std::make_unique<Callout>(CalloutPriority::high, "U1-P1",
+                                            "1234567", "ABC", "123456789ABC");
+        callouts.addCallout(std::move(c0));
+
+        auto c1 = std::make_unique<Callout>(CalloutPriority::medium, "U1-P2",
+                                            "1234567", "ABCD", "123456789ABC");
+        callouts.addCallout(std::move(c1));
+
+        EXPECT_EQ(callouts.callouts().size(), 2);
+    }
+
+    {
+        // Two duplicates and two unique.  Needs sorting.
+        Callouts callouts;
+        auto c0 = std::make_unique<Callout>(CalloutPriority::low, "U1-P9",
+                                            "1234567", "ABCD", "123456789ABC");
+        callouts.addCallout(std::move(c0));
+
+        auto c1 = std::make_unique<Callout>(CalloutPriority::low, "U1-P1",
+                                            "1234567", "ABC", "123456789ABC");
+        callouts.addCallout(std::move(c1));
+
+        auto c2 = std::make_unique<Callout>(CalloutPriority::high, "U1-P1",
+                                            "1234567", "ABC", "123456789ABC");
+        callouts.addCallout(std::move(c2));
+
+        auto c3 = std::make_unique<Callout>(CalloutPriority::medium, "U1-P5",
+                                            "1234567", "ABCD", "123456789ABC");
+        callouts.addCallout(std::move(c3));
+
+        const auto& calloutObjects = callouts.callouts();
+        EXPECT_EQ(callouts.callouts().size(), 3);
+        EXPECT_EQ(calloutObjects[0]->priority(), 'H');
+        EXPECT_EQ(calloutObjects[0]->locationCode(), "U1-P1");
+        EXPECT_EQ(calloutObjects[1]->priority(), 'M');
+        EXPECT_EQ(calloutObjects[1]->locationCode(), "U1-P5");
+        EXPECT_EQ(calloutObjects[2]->priority(), 'L');
+        EXPECT_EQ(calloutObjects[2]->locationCode(), "U1-P9");
+    }
 }

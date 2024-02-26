@@ -198,6 +198,16 @@ class Callout
     }
 
     /**
+     * @brief Set the priority of the callout
+     *
+     * @param[in] priority - The priority value
+     */
+    void setPriority(uint8_t priority)
+    {
+        _priority = priority;
+    }
+
+    /**
      * @brief Returns the location code of the callout
      *
      * @return std::string - The location code
@@ -252,6 +262,25 @@ class Callout
     {
         return _mru;
     }
+
+    /**
+     * @brief Operator == used for finding duplicate callouts
+     *
+     * Checks if the location codes then maintenance procedure
+     * value, then symbolic FRU value match.
+     *
+     * @param[in] right - The callout to compare to
+     * @return bool - true if they are the same
+     */
+    bool operator==(const Callout& right) const;
+
+    /**
+     * @brief Operator > used for sorting callouts by priority
+     *
+     * @param[in] right - The callout to compare to
+     * @return bool - true if callout has higher priority than other
+     */
+    bool operator>(const Callout& right) const;
 
   private:
     /**
