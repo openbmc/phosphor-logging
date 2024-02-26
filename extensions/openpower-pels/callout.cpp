@@ -205,6 +205,54 @@ void Callout::flatten(Stream& pel) const
     }
 }
 
+bool Callout::operator==(const Callout& right) const
+{
+    if ((_locationCodeSize != 0) || (right.locationCodeSize() != 0))
+    {
+        return locationCode() == right.locationCode();
+    }
+
+    if (!_fruIdentity || !right.fruIdentity())
+    {
+        return false;
+    }
+
+    auto myProc = _fruIdentity->getMaintProc();
+    auto otherProc = right.fruIdentity()->getMaintProc();
+    if (myProc)
+    {
+        if (otherProc)
+        {
+            return *myProc == *otherProc;
+        }
+        return false;
+    }
+
+    auto myPN = _fruIdentity->getPN();
+    auto otherPN = right.fruIdentity()->getPN();
+    if (myPN && otherPN)
+    {
+        return *myPN == *otherPN;
+    }
+
+    return false;
+}
+
+bool Callout::operator>(const Callout& right) const
+{
+    // Treat all of the mediums the same
+    const std::map<std::uint8_t, int> priorities = {
+        {'H', 10}, {'M', 9}, {'A', 9}, {'B', 9}, {'C', 9}, {'L', 8}};
+
+    if (!priorities.contains(priority()) ||
+        !priorities.contains(right.priority()))
+    {
+        return false;
+    }
+
+    return priorities.at(priority()) > priorities.at(right.priority());
+}
+
 } // namespace src
 } // namespace pels
 } // namespace openpower

@@ -958,7 +958,8 @@ TEST_F(PELTest, CreateWithJSONCalloutsTest)
     ffdcFile.version = 1;
 
     // Write these callouts to a JSON file and pass it into
-    // the PEL as an FFDC file.
+    // the PEL as an FFDC file. Also has a duplicate that
+    // will be removed.
     auto inputJSON = R"([
         {
             "Priority": "H",
@@ -966,6 +967,10 @@ TEST_F(PELTest, CreateWithJSONCalloutsTest)
         },
         {
             "Priority": "M",
+            "Procedure": "PROCEDURE"
+        },
+        {
+            "Priority": "L",
             "Procedure": "PROCEDURE"
         }
     ])"_json;

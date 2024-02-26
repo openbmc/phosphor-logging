@@ -432,3 +432,128 @@ TEST(CalloutTest, TestSymbolicFRUCallout)
         }
     }
 }
+
+TEST(CalloutTest, OperatorEqualTest)
+{
+    {
+        Callout c1{CalloutPriority::high, "A1", "1234567", "ABCD",
+                   "123456789ABC"};
+        Callout c2{CalloutPriority::high, "A1", "1234567", "ABCD",
+                   "123456789ABC"};
+        EXPECT_EQ(c1, c2);
+    }
+
+    {
+        // Different location code
+        Callout c1{CalloutPriority::high, "A1", "1234567", "ABCD",
+                   "123456789ABC"};
+        Callout c2{CalloutPriority::high, "A2", "1234567", "ABCD",
+                   "123456789ABC"};
+        EXPECT_NE(c1, c2);
+    }
+
+    {
+        // maintenance procedure
+        Callout c1{CalloutPriority::medium, "bmc_code"};
+        Callout c2{CalloutPriority::medium, "bmc_code"};
+        EXPECT_EQ(c1, c2);
+    }
+
+    {
+        // different maintenance procedures
+        Callout c1{CalloutPriority::medium, "bmc_code"};
+        Callout c2{CalloutPriority::medium, "sbe_code"};
+        EXPECT_NE(c1, c2);
+    }
+
+    {
+        // symbolic FRU
+        Callout c1{CalloutPriority::high, "service_docs", "", false};
+        Callout c2{CalloutPriority::high, "service_docs", "", false};
+        EXPECT_EQ(c1, c2);
+    }
+
+    {
+        // different symbolic FRUs
+        Callout c1{CalloutPriority::high, "service_docs", "", false};
+        Callout c2{CalloutPriority::high, "air_mover", "", false};
+        EXPECT_NE(c1, c2);
+    }
+
+    {
+        // HW callout vs symbolic FRU
+        Callout c1{CalloutPriority::high, "A1", "1234567", "ABCD",
+                   "123456789ABC"};
+        Callout c2{CalloutPriority::high, "service_docs", "", false};
+        EXPECT_NE(c1, c2);
+    }
+
+    {
+        // HW callout vs maintenance procedure
+        Callout c1{CalloutPriority::high, "A1", "1234567", "ABCD",
+                   "123456789ABC"};
+        Callout c2{CalloutPriority::medium, "bmc_code"};
+        EXPECT_NE(c1, c2);
+    }
+
+    {
+        // symbolic FRU vs maintenance procedure
+        Callout c1{CalloutPriority::high, "service_docs", "", false};
+        Callout c2{CalloutPriority::medium, "bmc_code"};
+        EXPECT_NE(c1, c2);
+    }
+
+    {
+        // HW callout vs symbolic FRU is still considered equal if
+        // the location code is the same
+        Callout c1{CalloutPriority::high, "A1", "1234567", "ABCD",
+                   "123456789ABC"};
+        Callout c2{CalloutPriority::high, "service_docs", "A1", true};
+        EXPECT_EQ(c1, c2);
+    }
+}
+
+TEST(CalloutTest, OperatorGreaterThanTest)
+{
+    {
+        Callout c1{CalloutPriority::high, "bmc_code"};
+        Callout c2{CalloutPriority::medium, "bmc_code"};
+        EXPECT_TRUE(c1 > c2);
+    }
+    {
+        Callout c1{CalloutPriority::high, "bmc_code"};
+        Callout c2{CalloutPriority::low, "bmc_code"};
+        EXPECT_TRUE(c1 > c2);
+    }
+    {
+        Callout c1{CalloutPriority::medium, "bmc_code"};
+        Callout c2{CalloutPriority::low, "bmc_code"};
+        EXPECT_TRUE(c1 > c2);
+    }
+    {
+        Callout c1{CalloutPriority::mediumGroupA, "bmc_code"};
+        Callout c2{CalloutPriority::low, "bmc_code"};
+        EXPECT_TRUE(c1 > c2);
+    }
+    {
+        Callout c1{CalloutPriority::medium, "bmc_code"};
+        Callout c2{CalloutPriority::high, "bmc_code"};
+        EXPECT_FALSE(c1 > c2);
+    }
+    {
+        Callout c1{CalloutPriority::high, "bmc_code"};
+        Callout c2{CalloutPriority::high, "bmc_code"};
+        EXPECT_FALSE(c1 > c2);
+    }
+    {
+        Callout c1{CalloutPriority::low, "bmc_code"};
+        Callout c2{CalloutPriority::high, "bmc_code"};
+        EXPECT_FALSE(c1 > c2);
+    }
+    {
+        // Treat the different mediums the same
+        Callout c1{CalloutPriority::medium, "bmc_code"};
+        Callout c2{CalloutPriority::mediumGroupA, "bmc_code"};
+        EXPECT_FALSE(c1 > c2);
+    }
+}
