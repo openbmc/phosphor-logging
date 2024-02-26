@@ -15,7 +15,7 @@
  */
 #include "callouts.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <algorithm>
 
@@ -80,8 +80,7 @@ void Callouts::addCallout(std::unique_ptr<Callout> callout)
         }
         else
         {
-            using namespace phosphor::logging;
-            log<level::INFO>("Dropping PEL callout because at max");
+            lg2::info("Dropping PEL callout because at max");
         }
     }
 
