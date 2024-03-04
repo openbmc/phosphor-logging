@@ -190,28 +190,14 @@ class Manager : public details::ServerObject<details::ManagerIface>
      *                     error log to be committed.
      * @param[in] severity - level of the error
      * @param[in] additionalData - The AdditionalData property for the error
+     * @param[in] ffdc - A vector of tuples that allows one to pass in file
+     *                   descriptors for files that contain FFDC (First
+     *                   Failure Data Capture). These will be passed to any
+     *                   event logging extensions.
      */
     void create(const std::string& message, Severity severity,
-                const std::map<std::string, std::string>& additionalData);
-
-    /** @brief Creates an event log, and accepts FFDC files
-     *
-     * This is the same as create(), but also takes an FFDC argument.
-     *
-     * The FFDC argument is a vector of tuples that allows one to pass in file
-     * descriptors for files that contain FFDC (First Failure Data Capture).
-     * These will be passed to any event logging extensions.
-     *
-     * @param[in] errMsg - The error exception message associated with the
-     *                     error log to be committed.
-     * @param[in] severity - level of the error
-     * @param[in] additionalData - The AdditionalData property for the error
-     * @param[in] ffdc - A vector of FFDC file info
-     */
-    void
-        createWithFFDC(const std::string& message, Severity severity,
-                       const std::map<std::string, std::string>& additionalData,
-                       const FFDCEntries& ffdc);
+                const std::map<std::string, std::string>& additionalData,
+                const FFDCEntries& ffdc = FFDCEntries{});
 
     /** @brief Common wrapper for creating an Entry object
      *
@@ -412,7 +398,7 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
                                sdbusplus::message::unix_fd>>
             ffdc) override
     {
-        manager.createWithFFDC(message, severity, additionalData, ffdc);
+        manager.create(message, severity, additionalData, ffdc);
     }
 
   private:

@@ -636,7 +636,7 @@ std::tuple<uint32_t, uint32_t> Manager::createPELWithFFDCFiles(
         uint8_t, uint8_t, sdbusplus::message::unix_fd>>
         fFDC)
 {
-    _logManager.createWithFFDC(message, severity, additionalData, fFDC);
+    _logManager.create(message, severity, additionalData, fFDC);
 
     return {_logManager.lastEntryID(), _repo.lastPelID()};
 }

@@ -38,9 +38,10 @@ DISABLE_LOG_ENTRY_CAPS()
 
 void pelStartup(internal::Manager& logManager)
 {
-    EventLogger::LogFunction logger = std::bind(
-        std::mem_fn(&internal::Manager::create), &logManager,
-        std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+    EventLogger::LogFunction logger =
+        std::bind(std::mem_fn(&internal::Manager::create), &logManager,
+                  std::placeholders::_1, std::placeholders::_2,
+                  std::placeholders::_3, phosphor::logging::FFDCEntries{});
 
     std::unique_ptr<DataInterfaceBase> dataIface =
         std::make_unique<DataInterface>(logManager.getBus());
