@@ -620,19 +620,8 @@ std::string Manager::readFWVersion()
 }
 
 void Manager::create(const std::string& message, Entry::Level severity,
-                     const std::map<std::string, std::string>& additionalData)
-{
-    // Convert the map into a vector of "key=value" strings
-    std::vector<std::string> ad;
-    metadata::associations::combine(additionalData, ad);
-
-    createEntry(message, severity, ad);
-}
-
-void Manager::createWithFFDC(
-    const std::string& message, Entry::Level severity,
-    const std::map<std::string, std::string>& additionalData,
-    const FFDCEntries& ffdc)
+                     const std::map<std::string, std::string>& additionalData,
+                     const FFDCEntries& ffdc)
 {
     // Convert the map into a vector of "key=value" strings
     std::vector<std::string> ad;
