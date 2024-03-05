@@ -628,6 +628,20 @@ void Manager::create(const std::string& message, Entry::Level severity,
     metadata::associations::combine(additionalData, ad);
 
     createEntry(message, severity, ad, ffdc);
+
+    auto isev = static_cast<uint8_t>(severity);
+    auto syslog_msg = message;
+    for (auto& i : additionalData)
+    {
+        syslog_msg.append(" ");
+        syslog_msg.append(i.first);
+        syslog_msg.append("=");
+        syslog_msg.append(i.second);
+    }
+    sd_journal_send_with_location(
+        "CODE_FILE=" __FILE__, "CODE_LINE=" _SD_STRINGIFY(__LINE__), __func__,
+        "MESSAGE=%s", syslog_msg.c_str(), "LOG2_FMTMSG=%s", syslog_msg.c_str(),
+        "PRIORITY=%d", isev, NULL);
 }
 
 } // namespace internal
