@@ -628,6 +628,19 @@ void Manager::create(const std::string& message, Entry::Level severity,
     metadata::associations::combine(additionalData, ad);
 
     createEntry(message, severity, ad, ffdc);
+
+    auto isev = static_cast<lg2::level>(severity);
+    auto syslog_msg = message;
+    for (auto& i : additionalData)
+    {
+        syslog_msg.append(" \"");
+        syslog_msg.append(i.first);
+        syslog_msg.append("=");
+        syslog_msg.append(i.second);
+        syslog_msg.append("\"");
+    }
+    lg2::details::do_log(isev, std::source_location::current(),
+                         syslog_msg.c_str(), nullptr);
 }
 
 } // namespace internal
