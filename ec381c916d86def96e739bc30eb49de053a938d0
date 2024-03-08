@@ -16,6 +16,24 @@
       "message": "can you throw in some examples of what the output looks like?",
       "revId": "ec381c916d86def96e739bc30eb49de053a938d0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1930727c_6e869be0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000936
+      },
+      "writtenOn": "2024-03-08T15:17:49Z",
+      "side": 1,
+      "message": "I\u0027m not sure what output exactly you have in mind. With this patch journald gets the message with many fields but journalctl has many different kinds of outputs to represent the log entries. Then rsyslog also gets full information from journald and the end user can do filtering, transformations and redirections with RainerScript.\nHere\u0027s a sample of what rsyslog saves to a file using all defaults:\n```\n2024-03-05T18:09:18.647251+00:00 g2 phosphor-log-manager[267]: Test message arg1\u003d1value1 arg2\u003dvalue2\n```\nproduced by a manual D-Bus call:\n```\n# busctl call xyz.openbmc_project.Logging /xyz/openbmc_project/logging xyz.openbmc_project.Logging.Create Create \u0027ssa{ss}\u0027 \"Test message\" xyz.openbmc_project.Logging.Entry.Level.Error 2 arg1 1value1 arg2 value2\n```\nWould that be enough of an example? Or do you want something from `phosphor-sel-logger` specifically?",
+      "parentUuid": "2d5f0d10_1aa452e1",
+      "revId": "ec381c916d86def96e739bc30eb49de053a938d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
