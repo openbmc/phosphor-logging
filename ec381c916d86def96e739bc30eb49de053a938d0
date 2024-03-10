@@ -34,6 +34,24 @@
       "parentUuid": "2d5f0d10_1aa452e1",
       "revId": "ec381c916d86def96e739bc30eb49de053a938d0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "606e045e_d7f52d83",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-03-10T05:03:37Z",
+      "side": 1,
+      "message": "Actually, I think I\u0027m missing something.  Why aren\u0027t you just using lg2 here?",
+      "parentUuid": "1930727c_6e869be0",
+      "revId": "ec381c916d86def96e739bc30eb49de053a938d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
