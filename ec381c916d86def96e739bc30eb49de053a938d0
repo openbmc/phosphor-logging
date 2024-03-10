@@ -52,6 +52,24 @@
       "parentUuid": "1930727c_6e869be0",
       "revId": "ec381c916d86def96e739bc30eb49de053a938d0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1c1d846_5568efea",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000936
+      },
+      "writtenOn": "2024-03-10T08:47:35Z",
+      "side": 1,
+      "message": "phosphor-sel-logger isn\u0027t using lg2 or other phosphor-logging features because of https://gerrit.openbmc.org/c/openbmc/phosphor-sel-logger/+/62687 . In the current patch we are discussing I could have used something like `lg2::log\u003cisev\u003e(syslog_msg)` I guess if it\u0027s guaranteed to never create a D-Bus entry on its own.\n\nAnd talking about never, I clearly have no idea about the anticipated future of this code. What is the plan with the logging exactly? Will some machinery be added to support multiple hosts SELs? Will that patch to phosphor-sel-logger be eventually reverted? Will phosphor-logging gain full independence from rsyslog for all the available Redfish features?",
+      "parentUuid": "606e045e_d7f52d83",
+      "revId": "ec381c916d86def96e739bc30eb49de053a938d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
