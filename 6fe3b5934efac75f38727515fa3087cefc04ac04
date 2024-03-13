@@ -22,6 +22,30 @@
       },
       "revId": "6fe3b5934efac75f38727515fa3087cefc04ac04",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8e7690c_48af546d",
+        "filename": "extensions/openpower-pels/registry/O_component_ids.json",
+        "patchSetId": 11
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2024-03-13T05:15:35Z",
+      "side": 1,
+      "message": "should i say bmc dimm errors?",
+      "parentUuid": "3065a175_0cafdfa2",
+      "range": {
+        "startLine": 22,
+        "startChar": 13,
+        "endLine": 22,
+        "endChar": 31
+      },
+      "revId": "6fe3b5934efac75f38727515fa3087cefc04ac04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
