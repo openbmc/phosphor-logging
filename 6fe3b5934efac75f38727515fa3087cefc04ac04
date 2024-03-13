@@ -46,6 +46,30 @@
       },
       "revId": "6fe3b5934efac75f38727515fa3087cefc04ac04",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79237093_1b08158b",
+        "filename": "extensions/openpower-pels/registry/O_component_ids.json",
+        "patchSetId": 11
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-03-13T05:42:30Z",
+      "side": 1,
+      "message": "For the current generation of systems (ignoring the future stuff for now) is it just a single app where you\u0027re creating these PELs?  Is it phosphor/openpower-debug-collector?",
+      "parentUuid": "d8e7690c_48af546d",
+      "range": {
+        "startLine": 22,
+        "startChar": 13,
+        "endLine": 22,
+        "endChar": 31
+      },
+      "revId": "6fe3b5934efac75f38727515fa3087cefc04ac04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
