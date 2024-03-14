@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f87906ea_d2e1db6f",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-03-14T03:02:36Z",
+      "side": 1,
+      "message": "what does ZEE stand for?  (just curious)",
+      "range": {
+        "startLine": 47,
+        "startChar": 37,
+        "endLine": 47,
+        "endChar": 40
+      },
+      "revId": "da876617c418d8a94442389bb20d582843a134bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
