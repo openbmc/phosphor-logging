@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b4f0a29_9920703c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000084
+      },
+      "writtenOn": "2024-03-19T12:31:11Z",
+      "side": 1,
+      "message": "Please add more details",
+      "revId": "011039816bc5985f36e88ea31ee28cdf9b9f0d1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
