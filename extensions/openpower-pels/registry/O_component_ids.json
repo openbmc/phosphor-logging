@@ -11,6 +11,7 @@
     "3600": "bmc code management",
     "3700": "bmc debug collector",
     "4000": "bmc vpd",
+    "4500": "bmc POZ PEL parser",
     "5000": "bmc panel",
     "6000": "bmc pldm",
     "C100": "bmc system dump collector",
@@ -18,6 +19,5 @@
     "D100": "bmc hw diags attention handler",
     "E500": "bmc hw diags",
     "F100": "bmc faultlog",
-    "F300": "bmc memory ECC errors",
-    "F400": "bmc ocmb errors"
+    "F300": "bmc memory ECC errors"
 }

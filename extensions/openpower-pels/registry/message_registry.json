@@ -6726,10 +6726,10 @@
         {
             "Name": "org.open_power.OCMB.Error.SbeChipOpFailure",
             "Subsystem": "memory",
-            "ComponentID": "0xF400",
+            "ComponentID": "0x4500",
 
             "SRC": {
-                "ReasonCode": "0xF401",
+                "ReasonCode": "0x4501",
                 "Words6To9": {
                     "6": {
                         "Description": "[0:15] chip position, [16:23] command class, [24:31] command type",
@@ -6757,10 +6757,10 @@
         {
             "Name": "org.open_power.OCMB.Error.SbeChipOpTimeout",
             "Subsystem": "memory",
-            "ComponentID": "0xF400",
+            "ComponentID": "0x4500",
 
             "SRC": {
-                "ReasonCode": "0xF402",
+                "ReasonCode": "0x4502",
                 "Words6To9": {
                     "6": {
                         "Description": "[0:15] chip position, [16:23] command class, [24:31] command type",
