@@ -19,5 +19,6 @@
     "E500": "bmc hw diags",
     "F100": "bmc faultlog",
     "F300": "bmc memory ECC errors",
-    "F400": "bmc ocmb errors"
+    "F400": "bmc ocmb errors",
+    "4500": "bmc POZ PEL parser"
 }
