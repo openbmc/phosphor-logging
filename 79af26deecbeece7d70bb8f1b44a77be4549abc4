@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c72a68d_b2f2e15f",
+        "filename": "extensions/openpower-pels/registry/O_component_ids.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2024-03-19T08:52:15Z",
+      "side": 1,
+      "message": "should be added at line 14",
+      "revId": "79af26deecbeece7d70bb8f1b44a77be4549abc4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
