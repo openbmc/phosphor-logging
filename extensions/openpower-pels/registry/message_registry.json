@@ -2513,7 +2513,7 @@
                     "CalloutList": [
                         {
                             "Priority": "high",
-                            "LocCode": "P0"
+                            "SymbolicFRU": "pgood_part"
                         }
                     ]
                 }
