@@ -2513,7 +2513,7 @@
                     "CalloutList": [
                         {
                             "Priority": "high",
-                            "LocCode": "P0"
+                            "SymbolicFRU": "pgood_part"
                         }
                     ]
                 }
@@ -2521,7 +2521,7 @@
 
             "Documentation": {
                 "Description": "A power off was issued because a regulator for standby power faulted",
-                "Message": "A power off was issued because a regulator for standby power faulted",
+                "Message": '"A power off was issued because a regulator for standby power faulted",
                 "Notes": []
             },
 
