@@ -764,7 +764,7 @@
 
             "Callouts": [
                 {
-                    "System": "ibm,rainier",
+                    "System": "com.ibm.Hardware.Chassis.Model.Rainier",
                     "CalloutList": [
                         {
                             "Priority": "high",
@@ -777,7 +777,7 @@
                     ]
                 },
                 {
-                    "System": "ibm,everest",
+                    "System": "com.ibm.Hardware.Chassis.Model.Everest",
                     "CalloutList": [
                         {
                             "Priority": "high",
@@ -1692,7 +1692,7 @@
 
             "Callouts": [
                 {
-                    "System": "ibm,rainier",
+                    "System": "com.ibm.Hardware.Chassis.Model.Rainier",
                     "CalloutList": [
                         {
                             "Priority": "low",
@@ -1705,7 +1705,7 @@
                     ]
                 },
                 {
-                    "System": "ibm,everest",
+                    "System": "com.ibm.Hardware.Chassis.Model.Everest",
                     "CalloutList": [
                         {
                             "Priority": "low",
@@ -1718,7 +1718,7 @@
                     ]
                 },
                 {
-                    "System": "ibm,bonnell",
+                    "System": "com.ibm.Hardware.Chassis.Model.Bonnell",
                     "CalloutList": [
                         {
                             "Priority": "low",
@@ -2483,7 +2483,7 @@
 
             "Callouts": [
                 {
-                    "System": "ibm,rainier",
+                    "System": "com.ibm.Hardware.Chassis.Model.Rainier",
                     "CalloutList": [
                         {
                             "Priority": "high",
@@ -2496,7 +2496,7 @@
                     ]
                 },
                 {
-                    "System": "ibm,everest",
+                    "System": "com.ibm.Hardware.Chassis.Model.Everest",
                     "CalloutList": [
                         {
                             "Priority": "high",
@@ -2509,7 +2509,7 @@
                     ]
                 },
                 {
-                    "System": "ibm,bonnell",
+                    "System": "com.ibm.Hardware.Chassis.Model.Bonnell",
                     "CalloutList": [
                         {
                             "Priority": "high",
@@ -4636,7 +4636,7 @@
 
             "Callouts": [
                 {
-                    "System": "ibm,rainier",
+                    "System": "com.ibm.Hardware.Chassis.Model.Rainier",
                     "CalloutList": [
                         {
                             "Priority": "high",
@@ -4650,7 +4650,7 @@
                     ]
                 },
                 {
-                    "System": "ibm,everest",
+                    "System": "com.ibm.Hardware.Chassis.Model.Everest",
                     "CalloutList": [
                         {
                             "Priority": "high",
@@ -4664,7 +4664,7 @@
                     ]
                 },
                 {
-                    "System": "ibm,bonnell",
+                    "System": "com.ibm.Hardware.Chassis.Model.Bonnell",
                     "CalloutList": [
                         {
                             "Priority": "high",
@@ -4710,15 +4710,15 @@
 
             "Callouts": [
                 {
-                    "System": "ibm,rainier",
+                    "System": "com.ibm.Hardware.Chassis.Model.Rainier",
                     "CalloutList": [{ "Priority": "medium", "LocCode": "P0" }]
                 },
                 {
-                    "System": "ibm,everest",
+                    "System": "com.ibm.Hardware.Chassis.Model.Everest",
                     "CalloutList": [{ "Priority": "medium", "LocCode": "P1" }]
                 },
                 {
-                    "System": "ibm,bonnell",
+                    "System": "com.ibm.Hardware.Chassis.Model.Bonnell",
                     "CalloutList": [{ "Priority": "medium", "LocCode": "P0" }]
                 }
             ],
@@ -4752,7 +4752,7 @@
 
             "Callouts": [
                 {
-                    "System": "ibm,rainier",
+                    "System": "com.ibm.Hardware.Chassis.Model.Rainier",
                     "CalloutList": [
                         { "Priority": "high", "LocCode": "P0-C5" },
                         {
@@ -4769,7 +4769,7 @@
                     ]
                 },
                 {
-                    "System": "ibm,everest",
+                    "System": "com.ibm.Hardware.Chassis.Model.Everest",
                     "CalloutList": [
                         { "Priority": "high", "LocCode": "P0-C0" },
                         { "Priority": "medium", "LocCode": "P1" },
@@ -4777,7 +4777,7 @@
                     ]
                 },
                 {
-                    "System": "ibm,bonnell",
+                    "System": "com.ibm.Hardware.Chassis.Model.Bonnell",
                     "CalloutList": [{ "Priority": "high", "LocCode": "P0" }]
                 }
             ],
@@ -4809,7 +4809,7 @@
 
             "Callouts": [
                 {
-                    "System": "ibm,rainier",
+                    "System": "com.ibm.Hardware.Chassis.Model.Rainier",
                     "CalloutList": [
                         { "Priority": "high", "LocCode": "P0-C5" },
                         {
@@ -4826,7 +4826,7 @@
                     ]
                 },
                 {
-                    "System": "ibm,everest",
+                    "System": "com.ibm.Hardware.Chassis.Model.Everest",
                     "CalloutList": [
                         { "Priority": "high", "LocCode": "P0-C0" },
                         { "Priority": "medium", "LocCode": "P1" },
@@ -4834,7 +4834,7 @@
                     ]
                 },
                 {
-                    "System": "ibm,bonnell",
+                    "System": "com.ibm.Hardware.Chassis.Model.Bonnell",
                     "CalloutList": [{ "Priority": "high", "LocCode": "P0" }]
                 }
             ],
@@ -6627,7 +6627,7 @@
 
             "Callouts": [
                 {
-                    "System": "ibm,rainier",
+                    "System": "com.ibm.Hardware.Chassis.Model.Rainier",
                     "CalloutList": [
                         {
                             "Priority": "high",
@@ -6636,7 +6636,7 @@
                     ]
                 },
                 {
-                    "System": "ibm,everest",
+                    "System": "com.ibm.Hardware.Chassis.Model.Everest",
                     "CalloutList": [
                         {
                             "Priority": "high",
@@ -6645,7 +6645,7 @@
                     ]
                 },
                 {
-                    "System": "ibm,bonnell",
+                    "System": "com.ibm.Hardware.Chassis.Model.Bonnell",
                     "CalloutList": [
                         {
                             "Priority": "high",
@@ -6689,7 +6689,7 @@
 
             "Callouts": [
                 {
-                    "System": "ibm,rainier",
+                    "System": "com.ibm.Hardware.Chassis.Model.Rainier",
                     "CalloutList": [
                         {
                             "Priority": "high",
@@ -6698,7 +6698,7 @@
                     ]
                 },
                 {
-                    "System": "ibm,everest",
+                    "System": "com.ibm.Hardware.Chassis.Model.Everest",
                     "CalloutList": [
                         {
                             "Priority": "high",
@@ -6707,7 +6707,7 @@
                     ]
                 },
                 {
-                    "System": "ibm,bonnell",
+                    "System": "com.ibm.Hardware.Chassis.Model.Bonnell",
                     "CalloutList": [
                         {
                             "Priority": "high",
