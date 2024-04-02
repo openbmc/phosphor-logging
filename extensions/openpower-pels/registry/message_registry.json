@@ -352,6 +352,34 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Common.File.Error.FileRecoveredOnBmcReboot",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x1000",
+            "SRC": {
+                "ReasonCode": "0x1010",
+                "Words6To9": {
+                    "6": {
+                        "Description": "Size of the File in running partition",
+                        "AdditionalDataPropSource": "CURRENT_FILE_SIZE"
+                    },
+                    "7": {
+                        "Description": "Size of the File in read only partition",
+                        "AdditionalDataPropSource": "EXPECTED_FILE_SIZE"
+                    }
+                }
+            },
+            "Documentation": {
+                "Description": "Recovered the corrupted or empty lid file",
+                "Message": "The lid file is restored from the older copy",
+                "Notes": [
+                    "This error may occur if one of the file marked ",
+                    "PRESERVED or DEVTREE is corrupted and the file ",
+                    "is restored from the readonly version. We may have lost data."
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.Logging.Error.SentBadPELToHost",
             "Subsystem": "bmc_firmware",
             "Severity": "non_error",
