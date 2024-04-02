@@ -1741,7 +1741,32 @@
                 ]
             }
         },
+        {
+            "Name": "org.open_power.Processor.Error.SbeInternalFFDCData",
+            "Subsystem": "memory",
+            "ComponentID": "0x3500",
 
+            "SRC": {
+                "ReasonCode": "0x3505",
+                "Words6To9": {
+                    "6": {
+                        "Description": "[0:15] chip position, [16:23] command class, [24:31] command type",
+                        "AdditionalDataPropSource": "SRC6"
+                    }
+                }
+            },
+
+            "Documentation": {
+                "Description": "SBE internal FFDC data after SBE chipop success",
+                "Message": "SBE internal FFDC data after SBE chipop success",
+                "Notes": [
+                    "The severity is set by the creator.",
+                    "Callouts added based on OCMB SBE provided FFDC.",
+                    "OCMB SBE provided additional debug data included as part of ",
+                    "the additional user data section."
+                ]
+            }
+        },
         {
             "Name": "org.open_power.Attn.Error.Terminate",
             "Subsystem": "cec_hardware",
@@ -6790,6 +6815,36 @@
                 "Notes": [
                     "The severity is set by the creator.",
                     "Check OCMB SBE Dump associated to this error to debug the failure."
+                ]
+            }
+        },
+        {
+            "Name": "org.open_power.OCMB.Error.SbeInternalFFDCData",
+            "Subsystem": "memory",
+            "ComponentID": "0x4500",
+
+            "SRC": {
+                "ReasonCode": "0x4503",
+                "Words6To9": {
+                    "6": {
+                        "Description": "[0:15] chip position, [16:23] command class, [24:31] command type",
+                        "AdditionalDataPropSource": "SRC6"
+                    },
+                    "7": {
+                        "Description": "Chip Type",
+                        "AdditionalDataPropSource": "CHIP_TYPE"
+                    }
+                }
+            },
+
+            "Documentation": {
+                "Description": "SBE internal FFDC data after SBE chipop success",
+                "Message": "SBE internal FFDC data after SBE chipop success",
+                "Notes": [
+                    "The severity is set by the creator.",
+                    "Callouts added based on OCMB SBE provided FFDC.",
+                    "OCMB SBE provided additional debug data included as part of ",
+                    "the additional user data section."
                 ]
             }
         }
