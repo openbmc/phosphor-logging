@@ -207,10 +207,8 @@ static void cerr_extra_output(level l, const std::source_location& s,
     std::cerr << stream.str() << std::endl;
 }
 
-// Use the cerr output method if we are on a TTY or if explicitly set via
-// environment variable.
-static auto extra_output_method = (isatty(fileno(stderr)) ||
-                                   nullptr != getenv("LG2_FORCE_STDERR"))
+// Use the cerr output method if explicitly set via environment variable.
+static auto extra_output_method = (nullptr != getenv("LG2_FORCE_STDERR"))
                                       ? cerr_extra_output
                                       : noop_extra_output;
 
