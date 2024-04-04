@@ -34,6 +34,24 @@
       "parentUuid": "df0ac61a_e410cc01",
       "revId": "8b9ebb4bbe3274244b66889f5059cd4e3a51e997",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d26bd69_59e8ab3a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-04T21:21:09Z",
+      "side": 1,
+      "message": "Do you happen to have examples of why the SBE would would to create this FFDC PEL after a successful chipop?\n\nOnly asking in case we could reword the Message field to give more of an idea of what\u0027s going on.  Otherwise looks good.",
+      "parentUuid": "7f970df2_8925c383",
+      "revId": "8b9ebb4bbe3274244b66889f5059cd4e3a51e997",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
