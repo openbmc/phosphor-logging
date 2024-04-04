@@ -16,6 +16,24 @@
       "message": "just curious, how do you know what severity to pass in?  won\u0027t they usually be informational since this is only called after a chip-op success?",
       "revId": "8b9ebb4bbe3274244b66889f5059cd4e3a51e997",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f970df2_8925c383",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2024-04-04T04:55:39Z",
+      "side": 1,
+      "message": "severity oomes from the sbe ffdc packet",
+      "parentUuid": "df0ac61a_e410cc01",
+      "revId": "8b9ebb4bbe3274244b66889f5059cd4e3a51e997",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
