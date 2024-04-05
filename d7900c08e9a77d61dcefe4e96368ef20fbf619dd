@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac35126b_178c888d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-04-05T16:09:27Z",
+      "side": 1,
+      "message": "This was not what we agreed to on discord.\n\nIt is a pretty common practice for logging libraries to do exactly this. glog does the same thing where it detects the tty.\n\nIn many cases, users _want_ these logs if they are running by hand.",
+      "revId": "d7900c08e9a77d61dcefe4e96368ef20fbf619dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
