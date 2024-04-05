@@ -70,6 +70,24 @@
       "parentUuid": "2f4de9aa_54628223",
       "revId": "d7900c08e9a77d61dcefe4e96368ef20fbf619dd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1848ce34_9ed2a068",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-04-05T20:20:32Z",
+      "side": 1,
+      "message": "\u003e What do you think of implementing the same stderrthreshold environment variable in lg2 such that only errors and above are printed by default and an environment variable can modify the threshold?\n\nThe problem I see is that that subverts the typical reason why we have it send to stderr to begin with, which is that someone had a problem with a daemon and they want to manually run that daemon and poke at it to try to debug the issue (that was the use case that was described to me).\n\nIf we go an environment variable route, can\u0027t the CLI tool set the environment variable before any calls are made to the lg2 library?  Unless the environment variable checking is all done as part of the library loading (I can\u0027t remember).",
+      "parentUuid": "e286c5ad_303a4daf",
+      "revId": "d7900c08e9a77d61dcefe4e96368ef20fbf619dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
