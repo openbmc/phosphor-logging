@@ -16,6 +16,24 @@
       "message": "This was not what we agreed to on discord.\n\nIt is a pretty common practice for logging libraries to do exactly this. glog does the same thing where it detects the tty.\n\nIn many cases, users _want_ these logs if they are running by hand.",
       "revId": "d7900c08e9a77d61dcefe4e96368ef20fbf619dd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fcdfc9d_f5bfd049",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000900
+      },
+      "writtenOn": "2024-04-05T18:02:15Z",
+      "side": 1,
+      "message": "Yeah, I tried all the options we discussed on discord and none of them seemed like an appropriate solution. The CLI application is not even aware of phosphor-logging so it can\u0027t call any lg2 API to disable prints (I wasn\u0027t thinking ahead when I suggested that). And it doesn\u0027t make sense to require the user to always set an environment variable to make the app work correctly.\n\nMaybe the answer here is that libraries should not use lg2?\n\nI just tested glog in a simple program and it does not print anything to stderr by default. It requires a flag or env var: https://github.com/google/glog?tab\u003dreadme-ov-file#setting-flags",
+      "parentUuid": "ac35126b_178c888d",
+      "revId": "d7900c08e9a77d61dcefe4e96368ef20fbf619dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
