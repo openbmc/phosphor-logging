@@ -52,6 +52,24 @@
       "parentUuid": "2fcdfc9d_f5bfd049",
       "revId": "d7900c08e9a77d61dcefe4e96368ef20fbf619dd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e286c5ad_303a4daf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-04-05T20:17:49Z",
+      "side": 1,
+      "message": "What is the library in question?  We don\u0027t generally have libraries, so I\u0027m not sure what code this is.\n\nI would not go so far as to say \"libraries shouldn\u0027t use lg2\".",
+      "parentUuid": "2f4de9aa_54628223",
+      "revId": "d7900c08e9a77d61dcefe4e96368ef20fbf619dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
