@@ -88,6 +88,24 @@
       "parentUuid": "e286c5ad_303a4daf",
       "revId": "d7900c08e9a77d61dcefe4e96368ef20fbf619dd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a498615e_4386dca2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-05T20:29:37Z",
+      "side": 1,
+      "message": "\u003e If we go an environment variable route, can\u0027t the CLI tool set the environment variable before any calls are made to the lg2 library?  Unless the environment variable checking is all done as part of the library loading (I can\u0027t remember).\n\nI\u0027m fairly certain I tried that and it didn\u0027t work.",
+      "parentUuid": "1848ce34_9ed2a068",
+      "revId": "d7900c08e9a77d61dcefe4e96368ef20fbf619dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
