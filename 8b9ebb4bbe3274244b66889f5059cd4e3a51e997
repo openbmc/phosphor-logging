@@ -52,6 +52,24 @@
       "parentUuid": "7f970df2_8925c383",
       "revId": "8b9ebb4bbe3274244b66889f5059cd4e3a51e997",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "167e78d8_bea91506",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2024-04-08T06:47:11Z",
+      "side": 1,
+      "message": "SBE enqueues the FFDC (first failure data capture) corresponding\nto the internal SBE operations and internal hardware procedure FFDC.\n\nSBE team said for any internal non critical errors they will be queueing the FFDC buffer with internal SBE operations data and they want this data to be pulled out after any SBE chip-op operation like scoms/dump and e.t.c.  This is new odyssey requirement. Not sure what data they will be capturing though",
+      "parentUuid": "0d26bd69_59e8ab3a",
+      "revId": "8b9ebb4bbe3274244b66889f5059cd4e3a51e997",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
