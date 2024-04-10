@@ -19,14 +19,12 @@
 #ifdef PELTOOL
 #include "user_data_json.hpp"
 #endif
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <format>
 
 namespace openpower::pels
 {
-
-using namespace phosphor::logging;
 
 void ExtendedUserData::unflatten(Stream& stream)
 {
@@ -60,10 +58,8 @@ ExtendedUserData::ExtendedUserData(Stream& pel)
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>(
-            std::format("Cannot unflatten ExtendedUserData section: {}",
-                        e.what())
-                .c_str());
+        lg2::error("Cannot unflatten ExtendedUserData section: {EXCEPTION}",
+                   "EXCEPTION", e);
         _valid = false;
     }
 }
@@ -89,10 +85,8 @@ void ExtendedUserData::validate()
 {
     if (header().id != static_cast<uint16_t>(SectionID::extUserData))
     {
-        log<level::ERR>(
-            std::format("Invalid ExtendedUserData section ID: {0:#x}",
-                        header().id)
-                .c_str());
+        lg2::error("Invalid ExtendedUserData section ID: {HEADER_ID}",
+                   "HEADER_ID", lg2::hex, header().id);
         _valid = false;
     }
     else

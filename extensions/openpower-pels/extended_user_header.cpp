@@ -19,7 +19,7 @@
 #include "pel_types.hpp"
 #include "pel_values.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <format>
 
@@ -29,7 +29,7 @@ namespace pels
 {
 
 namespace pv = openpower::pels::pel_values;
-using namespace phosphor::logging;
+
 const size_t defaultSymptomIDWord = 3;
 const size_t symptomIDMaxSize = 80;
 
@@ -42,9 +42,8 @@ ExtendedUserHeader::ExtendedUserHeader(Stream& pel)
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>(
-            std::format("Cannot unflatten extended user header: {}", e.what())
-                .c_str());
+        lg2::error("Cannot unflatten extended user header: {EXCEPTION}",
+                   "EXCEPTION", e);
         _valid = false;
     }
 }
@@ -110,19 +109,15 @@ void ExtendedUserHeader::validate()
 
     if (header().id != static_cast<uint16_t>(SectionID::extendedUserHeader))
     {
-        log<level::ERR>(
-            std::format("Invalid ExtendedUserHeader section ID: {0:#x}",
-                        header().id)
-                .c_str());
+        lg2::error("Invalid ExtendedUserHeader section ID: {HEADER_ID}",
+                   "HEADER_ID", lg2::hex, header().id);
         failed = true;
     }
 
     if (header().version != extendedUserHeaderVersion)
     {
-        log<level::ERR>(
-            std::format("Invalid ExtendedUserHeader version: {0:#x}",
-                        header().version)
-                .c_str());
+        lg2::error("Invalid ExtendedUserHeader version: {HEADER_VERSION}",
+                   "HEADER_VERSION", lg2::hex, header().version);
         failed = true;
     }
 

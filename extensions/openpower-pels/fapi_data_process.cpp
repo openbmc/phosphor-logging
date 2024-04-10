@@ -10,6 +10,7 @@ extern "C"
 #include <phal_exception.H>
 
 #include <phosphor-logging/elog.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <algorithm>
 #include <cstdlib>
@@ -28,7 +29,6 @@ namespace pels
 namespace phal
 {
 
-using namespace phosphor::logging;
 using namespace openpower::phal::exception;
 
 /**
@@ -120,24 +120,20 @@ int pdbgCallbackToGetTgtReqAttrsVal(struct pdbg_target* target,
     catch (const std::exception& e)
     {
         // log message and continue with default data
-        log<level::ERR>(std::format("getLocationCode({}): Exception({})",
-                                    pdbg_target_path(target), e.what())
-                            .c_str());
+        lg2::error("getLocationCode({TARGET_PATH}): Exception({EXCEPTION})",
+                   "TARGET_PATH", pdbg_target_path(target), "EXCEPTION", e);
     }
 
     if (DT_GET_PROP(ATTR_PHYS_DEV_PATH, target, targetInfo->physDevPath))
     {
-        log<level::ERR>(
-            std::format("Could not read({}) PHYS_DEV_PATH attribute",
-                        pdbg_target_path(target))
-                .c_str());
+        lg2::error("Could not read({TARGET_PATH}) PHYS_DEV_PATH attribute",
+                   "TARGET_PATH", pdbg_target_path(target));
     }
 
     if (DT_GET_PROP(ATTR_MRU_ID, target, targetInfo->mruId))
     {
-        log<level::ERR>(std::format("Could not read({}) ATTR_MRU_ID attribute",
-                                    pdbg_target_path(target))
-                            .c_str());
+        lg2::error("Could not read({TARGET_PATH}) ATTR_MRU_ID attribute",
+                   "TARGET_PATH", pdbg_target_path(target));
     }
 
     return requireAttrFound;
@@ -173,10 +169,9 @@ bool getTgtReqAttrsVal(const std::vector<uint8_t>& physBinPath,
             fmt += std::format("{:02X} ", value);
         }
 
-        log<level::ERR>(std::format("Given ATTR_PHYS_BIN_PATH value {} "
-                                    "not found in phal device tree",
-                                    fmt)
-                            .c_str());
+        lg2::error(
+            "Given ATTR_PHYS_BIN_PATH value {ATTR_PHYS_BIN_PATH} not found in phal device tree",
+            "ATTR_PHYS_BIN_PATH", fmt);
         return false;
     }
     else if (ret == requireAttrNotFound)
@@ -208,10 +203,9 @@ static std::string getPelPriority(const std::string& phalPriority)
     auto it = priorityMap.find(phalPriority);
     if (it == priorityMap.end())
     {
-        log<level::ERR>(std::format("Unsupported phal priority({}) is given "
-                                    "to get pel priority format",
-                                    phalPriority)
-                            .c_str());
+        lg2::error(
+            "Unsupported phal priority({PHAL_PRIORITY}) is given to get pel priority format",
+            "PHAL_PRIORITY", phalPriority);
         return "H";
     }
 
@@ -261,10 +255,8 @@ void processClockInfoErrorHelper(const FFDC& ffdc,
                                  json& pelJSONFmtCalloutDataList,
                                  FFDCData& ffdcUserData)
 {
-    log<level::INFO>(
-        std::format("processClockInfoErrorHelper: FFDC Message[{}]",
-                    ffdc.message)
-            .c_str());
+    lg2::info("processClockInfoErrorHelper: FFDC Message[{FFDC_MSG}]",
+              "FFDC_MSG", ffdc.message);
 
     // Adding hardware procedures return code details
     ffdcUserData.emplace_back("HWP_RC", ffdc.hwp_errorinfo.rc);
@@ -468,10 +460,8 @@ void convertFAPItoPELformat(FFDC& ffdc, json& pelJSONFmtCalloutDataList,
     else if ((ffdc.ffdc_type != FFDC_TYPE_NONE) &&
              (ffdc.ffdc_type != FFDC_TYPE_UNSUPPORTED))
     {
-        log<level::ERR>(std::format("Unsupported phal FFDC type to create PEL. "
-                                    "MSG: {}",
-                                    ffdc.message)
-                            .c_str());
+        lg2::error("Unsupported phal FFDC type to create PEL. MSG: {FFDC_MSG}",
+                   "FFDC_MSG", ffdc.message);
     }
 }
 

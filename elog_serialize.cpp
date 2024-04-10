@@ -6,7 +6,7 @@
 #include <cereal/types/string.hpp>
 #include <cereal/types/tuple.hpp>
 #include <cereal/types/vector.hpp>
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <fstream>
 
@@ -133,7 +133,7 @@ bool deserialize(const fs::path& path, Entry& e)
     }
     catch (const cereal::Exception& ex)
     {
-        log<level::ERR>(ex.what());
+        lg2::error("{EXCEPTION}", "EXCEPTION", ex);
         fs::remove(path);
         return false;
     }
@@ -145,7 +145,7 @@ bool deserialize(const fs::path& path, Entry& e)
         // possibly associations ??. But handling it here for
         // now since we are anyway tossing the log
         // TODO: openbmc/phosphor-logging#8
-        log<level::ERR>(ex.what());
+        lg2::error("{EXCEPTION}", "EXCEPTION", ex);
         fs::remove(path);
         return false;
     }

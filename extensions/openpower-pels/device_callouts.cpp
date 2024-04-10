@@ -17,7 +17,7 @@
 
 #include "paths.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <fstream>
 #include <regex>
@@ -29,7 +29,6 @@ constexpr auto debugFilePath = "/etc/phosphor-logging/";
 constexpr auto calloutFileSuffix = "_dev_callouts.json";
 
 namespace fs = std::filesystem;
-using namespace phosphor::logging;
 
 namespace util
 {
@@ -56,7 +55,7 @@ fs::path getJSONFilename(const std::vector<std::string>& compatibleList)
 
         if (fs::exists(path))
         {
-            log<level::INFO>("Found device callout debug file");
+            lg2::info("Found device callout debug file");
             fullPath = path;
             break;
         }

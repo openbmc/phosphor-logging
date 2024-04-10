@@ -28,7 +28,7 @@ extern "C"
 #include <ekb/hwpf/fapi2/include/target_types.H>
 #include <libekb.H>
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <format>
 #include <new>
@@ -74,7 +74,7 @@ using namespace phosphor::logging;
 SbeFFDC::SbeFFDC(const AdditionalData& aData, const PelFFDC& files) :
     ffdcType(FFDC_TYPE_NONE), chipType(fapi2::TARGET_TYPE_PROC_CHIP)
 {
-    log<level::INFO>("SBE FFDC processing requested");
+    lg2::info("SBE FFDC processing requested");
 
     // SRC6 field in the additional data contains Processor position
     // associated to the SBE FFDC
@@ -82,7 +82,7 @@ SbeFFDC::SbeFFDC(const AdditionalData& aData, const PelFFDC& files) :
     auto src6 = aData.getValue("SRC6");
     if (src6 == std::nullopt)
     {
-        log<level::ERR>("Fail to extract SRC6 data: failing to get proc index");
+        lg2::error("Fail to extract SRC6 data: failing to get proc index");
         return;
     }
     try
@@ -91,8 +91,7 @@ SbeFFDC::SbeFFDC(const AdditionalData& aData, const PelFFDC& files) :
     }
     catch (const std::exception& err)
     {
-        log<level::ERR>(
-            std::format("Conversion failure errormsg({})", err.what()).c_str());
+        lg2::error("Conversion failure errormsg({ERR})", "ERR", err);
         return;
     }
     auto type = aData.getValue("CHIP_TYPE");
@@ -104,16 +103,14 @@ SbeFFDC::SbeFFDC(const AdditionalData& aData, const PelFFDC& files) :
         }
         catch (const std::exception& err)
         {
-            log<level::ERR>(
-                std::format("Conversion failure errormsg({})", err.what())
-                    .c_str());
+            lg2::error("Conversion failure errormsg({ERR})", "ERR", err);
             return;
         }
     }
 
     if (files.empty())
     {
-        log<level::INFO>("SbeFFDC : No files found, skipping ffdc processing");
+        lg2::info("SbeFFDC : No files found, skipping ffdc processing");
         return;
     }
 
@@ -130,8 +127,7 @@ SbeFFDC::SbeFFDC(const AdditionalData& aData, const PelFFDC& files) :
 
 void SbeFFDC::parse(int fd)
 {
-    log<level::INFO>(
-        std::format("SBE FFDC file fd:({}), parsing started", fd).c_str());
+    lg2::info("SBE FFDC file fd:({FD}), parsing started", "FD", fd);
 
     uint32_t ffdcBufOffset = 0;
     uint32_t pktCount = 0;
@@ -140,8 +136,7 @@ void SbeFFDC::parse(int fd)
     auto ffdcData = util::readFD(fd);
     if (ffdcData.empty())
     {
-        log<level::ERR>(
-            std::format("Empty SBE FFDC file fd:({}), skipping", fd).c_str());
+        lg2::error("Empty SBE FFDC file fd:({FD}), skipping", "FD", fd);
         return;
     }
 
@@ -161,10 +156,11 @@ void SbeFFDC::parse(int fd)
             lenWords = ntohs(ffdc->lengthinWords);
             auto fapiRc = ntohl(ffdc->fapiRc);
 
-            auto msg =
-                std::format("P10 FFDC magic: {} length in words:{} Fapirc:{}",
-                            magicBytes, lenWords, fapiRc);
-            log<level::INFO>(msg.c_str());
+            lg2::info(
+                "P10 FFDC magic: {MAGIC_BYTES} length in words:{LEN_WORDS} "
+                "Fapirc:{FAPI_RC}",
+                "MAGIC_BYTES", magicBytes, "LEN_WORDS", lenWords, "FAPI_RC",
+                fapiRc);
 
             ffdcPkt.fapiRc = fapiRc;
             // Not interested in the first 2 words (these are not ffdc)
@@ -179,7 +175,7 @@ void SbeFFDC::parse(int fd)
             }
             else
             {
-                log<level::ERR>("FFDC packet size is zero skipping");
+                lg2::error("FFDC packet size is zero skipping");
                 return;
             }
             pktCount++;
@@ -191,10 +187,11 @@ void SbeFFDC::parse(int fd)
             lenWords = ntohs(ffdc->lengthinWords);
             auto fapiRc = ntohl(ffdc->fapiRc);
 
-            auto msg =
-                std::format("P0Z FFDC magic: {} length in words:{} Fapirc:{}",
-                            magicBytes, lenWords, fapiRc);
-            log<level::INFO>(msg.c_str());
+            lg2::info(
+                "P0Z FFDC magic: {MAGIC_BYTES} length in words:{LEN_WORDS} "
+                "Fapirc:{FAPI_RC}",
+                "MAGIC_BYTES", magicBytes, "LEN_WORDS", lenWords, "FAPI_RC",
+                fapiRc);
 
             ffdcPkt.fapiRc = fapiRc;
             // Not interested in the first 3 words (these are not ffdc)
@@ -209,13 +206,13 @@ void SbeFFDC::parse(int fd)
             }
             else
             {
-                log<level::ERR>("FFDC packet size is zero skipping");
+                lg2::error("FFDC packet size is zero skipping");
                 return;
             }
         }
         else
         {
-            log<level::ERR>("Invalid FFDC magic code in Header: Skipping ");
+            lg2::error("Invalid FFDC magic code in Header: Skipping ");
             return;
         }
 
@@ -228,7 +225,7 @@ void SbeFFDC::parse(int fd)
         }
         else
         {
-            log<level::INFO>("SBE FFDC: Internal FFDC packet");
+            lg2::info("SBE FFDC: Internal FFDC packet");
         }
 
         // Update Buffer offset in Bytes
@@ -236,10 +233,10 @@ void SbeFFDC::parse(int fd)
     }
     if (pktCount == sbeMaxFfdcPackets)
     {
-        log<level::ERR>(std::format("Received more than the limit of ({})"
-                                    " FFDC packets, processing only ({})",
-                                    sbeMaxFfdcPackets, pktCount)
-                            .c_str());
+        lg2::error("Received more than the limit of ({SBEMAXFFDCPACKETS}) FFDC "
+                   "packets, processing only ({PKTCOUNT})",
+                   "SBEMAXFFDCPACKETS", sbeMaxFfdcPackets, "PKTCOUNT",
+                   pktCount);
     }
 }
 
@@ -252,13 +249,13 @@ void SbeFFDC::process(const sbeFfdcPacketType& ffdcPkt)
 
     if (!pdbg_targets_init(NULL))
     {
-        log<level::ERR>("pdbg_targets_init failed, skipping ffdc processing");
+        lg2::error("pdbg_targets_init failed, skipping ffdc processing");
         return;
     }
 
     if (libekb_init())
     {
-        log<level::ERR>("libekb_init failed, skipping ffdc processing");
+        lg2::error("libekb_init failed, skipping ffdc processing");
         return;
     }
 
@@ -270,7 +267,7 @@ void SbeFFDC::process(const sbeFfdcPacketType& ffdcPkt)
     }
     catch (...)
     {
-        log<level::ERR>("libekb_get_sbe_ffdc failed, skipping ffdc processing");
+        lg2::error("libekb_get_sbe_ffdc failed, skipping ffdc processing");
         return;
     }
 
@@ -325,7 +322,7 @@ std::optional<LogSeverity> SbeFFDC::getSeverity()
 {
     if (ffdcType == FFDC_TYPE_SPARE_CLOCK_INFO)
     {
-        log<level::INFO>(
+        lg2::info(
             "Found spare clock error, changing severity to informational");
         return LogSeverity::Informational;
     }

@@ -20,7 +20,7 @@
 #include "pel_types.hpp"
 #include "pel_values.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <format>
 
@@ -30,7 +30,6 @@ namespace pels
 {
 
 namespace pv = openpower::pels::pel_values;
-using namespace phosphor::logging;
 
 PrivateHeader::PrivateHeader(uint16_t componentID, uint32_t obmcLogID,
                              uint64_t timestamp)
@@ -79,9 +78,8 @@ PrivateHeader::PrivateHeader(Stream& pel) :
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>(
-            std::format("Cannot unflatten private header: {}", e.what())
-                .c_str());
+        lg2::error("Cannot unflatten private header: {EXCEPTION}", "EXCEPTION",
+                   e);
         _valid = false;
     }
 }
@@ -129,26 +127,22 @@ void PrivateHeader::validate()
 
     if (header().id != static_cast<uint16_t>(SectionID::privateHeader))
     {
-        log<level::ERR>(std::format("Invalid private header section ID: {0:#x}",
-                                    header().id)
-                            .c_str());
+        lg2::error("Invalid private header section ID: {HEADER_ID}",
+                   "HEADER_ID", lg2::hex, header().id);
         failed = true;
     }
 
     if (header().version != privateHeaderVersion)
     {
-        log<level::ERR>(std::format("Invalid private header version: {0:#x}",
-                                    header().version)
-                            .c_str());
+        lg2::error("Invalid private header version: {HEADER_VERSION}",
+                   "HEADER_VERSION", lg2::hex, header().version);
         failed = true;
     }
 
     if (_sectionCount < minSectionCount)
     {
-        log<level::ERR>(
-            std::format("Invalid section count in private header: {0:#x}",
-                        _sectionCount)
-                .c_str());
+        lg2::error("Invalid section count in private header: {SECTION_COUNT}",
+                   "SECTION_COUNT", lg2::hex, _sectionCount);
         failed = true;
     }
 
