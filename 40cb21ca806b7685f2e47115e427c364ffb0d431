@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6956dc8_80b13a62",
+        "filename": "elog_entry.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-10T18:05:34Z",
+      "side": 1,
+      "message": "lg2 can handle strings, so you don\u0027t need the c_str()",
+      "range": {
+        "startLine": 84,
+        "startChar": 45,
+        "endLine": 84,
+        "endChar": 53
+      },
+      "revId": "40cb21ca806b7685f2e47115e427c364ffb0d431",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e09d9f9_9acba8c8",
+        "filename": "elog_serialize.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-10T18:05:34Z",
+      "side": 1,
+      "message": "lg2 can also handle exceptions, so you can just pass in \u0027ex\u0027\n\nhttps://github.com/openbmc/phosphor-logging/blob/master/lib/include/phosphor-logging/lg2/conversion.hpp#L265",
+      "range": {
+        "startLine": 136,
+        "startChar": 19,
+        "endLine": 136,
+        "endChar": 28
+      },
+      "revId": "40cb21ca806b7685f2e47115e427c364ffb0d431",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
