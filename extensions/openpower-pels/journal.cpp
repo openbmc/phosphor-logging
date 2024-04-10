@@ -17,7 +17,7 @@
 
 #include "util.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <format>
 
@@ -63,8 +63,8 @@ void Journal::sync() const
 
     if (duration.count() > 100)
     {
-        log<level::INFO>(
-            std::format("Journal sync took {}ms", duration.count()).c_str());
+        lg2::info("Journal sync took {DURATION}ms", "DURATION",
+                  duration.count());
     }
 }
 
@@ -74,7 +74,7 @@ std::vector<std::string> Journal::getMessages(const std::string& syslogID,
     // The message registry JSON schema will also fail if a zero is in the JSON
     if (0 == maxMessages)
     {
-        log<level::ERR>(
+        lg2::error(
             "maxMessages value of zero passed into Journal::getMessages");
         return std::vector<std::string>{};
     }
