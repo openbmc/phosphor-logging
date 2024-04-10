@@ -19,7 +19,7 @@
 #include "pel_types.hpp"
 #include "pel_values.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <format>
 
@@ -29,7 +29,7 @@ namespace pels
 {
 
 namespace pv = openpower::pels::pel_values;
-using namespace phosphor::logging;
+
 static constexpr uint8_t failingMTMSVersion = 0x01;
 
 FailingMTMS::FailingMTMS(const DataInterfaceBase& dataIface) :
@@ -53,9 +53,8 @@ FailingMTMS::FailingMTMS(Stream& pel)
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>(
-            std::format("Cannot unflatten failing MTM section: {}", e.what())
-                .c_str());
+        lg2::error("Cannot unflatten failing MTM section: {EXCEPTION}",
+                   "EXCEPTION", e);
         _valid = false;
     }
 }
@@ -66,17 +65,15 @@ void FailingMTMS::validate()
 
     if (header().id != static_cast<uint16_t>(SectionID::failingMTMS))
     {
-        log<level::ERR>(
-            std::format("Invalid failing MTMS section ID: {0:#x}", header().id)
-                .c_str());
+        lg2::error("Invalid failing MTMS section ID: {HEADER_ID}", "HEADER_ID",
+                   lg2::hex, header().id);
         failed = true;
     }
 
     if (header().version != failingMTMSVersion)
     {
-        log<level::ERR>(std::format("Invalid failing MTMS version: {0:#x}",
-                                    header().version)
-                            .c_str());
+        lg2::error("Invalid failing MTMS version: {HEADER_VERSION}",
+                   "HEADER_VERSION", lg2::hex, header().version);
         failed = true;
     }
 

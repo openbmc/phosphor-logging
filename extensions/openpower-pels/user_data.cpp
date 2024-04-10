@@ -22,7 +22,7 @@
 #include "user_data_json.hpp"
 #endif
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <format>
 
@@ -30,8 +30,6 @@ namespace openpower
 {
 namespace pels
 {
-
-using namespace phosphor::logging;
 
 void UserData::unflatten(Stream& stream)
 {
@@ -63,8 +61,7 @@ UserData::UserData(Stream& pel)
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>(
-            std::format("Cannot unflatten user data: {}", e.what()).c_str());
+        lg2::error("Cannot unflatten user data: {EXCEPTION}", "EXCEPTION", e);
         _valid = false;
     }
 }
@@ -87,9 +84,8 @@ void UserData::validate()
 {
     if (header().id != static_cast<uint16_t>(SectionID::userData))
     {
-        log<level::ERR>(
-            std::format("Invalid UserData section ID: {0:#x}", header().id)
-                .c_str());
+        lg2::error("Invalid UserData section ID: {HEADER_ID}", "HEADER_ID",
+                   lg2::hex, header().id);
         _valid = false;
     }
     else

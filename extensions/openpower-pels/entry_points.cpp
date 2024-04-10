@@ -21,7 +21,7 @@
 #include "manager.hpp"
 #include "pldm_interface.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <format>
 
@@ -69,9 +69,8 @@ void pelStartup(internal::Manager& logManager)
     {
         // Log message and continue,
         // This is to help continue creating PEL in raw format.
-        log<level::ERR>(
-            std::format("Failed to set PDBG_DTB: ({})", strerror(errno))
-                .c_str());
+        lg2::error("Failed to set PDBG_DTB: ({ERRNO})", "ERRNO",
+                   strerror(errno));
     }
 #endif
 }

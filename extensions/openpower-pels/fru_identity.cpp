@@ -17,11 +17,9 @@
 
 #include "pel_values.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <format>
-
-using namespace phosphor::logging;
 
 namespace openpower
 {
@@ -255,9 +253,8 @@ void FRUIdentity::setMaintenanceProcedure(const std::string& procedure,
         }
         else
         {
-            log<level::ERR>(
-                std::format("Invalid maintenance procedure {}", procedure)
-                    .c_str());
+            lg2::error("Invalid maintenance procedure {PROCEDURE}", "PROCEDURE",
+                       procedure);
             strncpy(_pnOrProcedureID.data(), "INVALID",
                     _pnOrProcedureID.size());
         }
@@ -287,8 +284,7 @@ void FRUIdentity::setSymbolicFRU(const std::string& symbolicFRU,
         }
         else
         {
-            log<level::ERR>("Invalid symbolic FRU",
-                            entry("FRU=%s", symbolicFRU.c_str()));
+            lg2::error("Invalid symbolic FRU {FRU}", "FRU", symbolicFRU);
             strncpy(_pnOrProcedureID.data(), "INVALID",
                     _pnOrProcedureID.size());
         }

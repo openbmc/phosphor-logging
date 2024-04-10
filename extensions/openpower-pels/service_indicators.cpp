@@ -15,15 +15,13 @@
  */
 #include "service_indicators.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <bitset>
 #include <format>
 
 namespace openpower::pels::service_indicators
 {
-
-using namespace phosphor::logging;
 
 static constexpr auto platformSaiLedGroup =
     "/xyz/openbmc_project/led/groups/platform_system_attention_indicator";
@@ -94,10 +92,8 @@ void LightPath::activate(const PEL& pel)
         }
         catch (const std::exception& e)
         {
-            log<level::ERR>(
-                std::format("Failed to assert platform SAI LED group: {}",
-                            e.what())
-                    .c_str());
+            lg2::error("Failed to assert platform SAI LED group: {EXCEPTION}",
+                       "EXCEPTION", e);
         }
     }
 }
@@ -214,10 +210,9 @@ std::vector<std::string> LightPath::getInventoryPaths(
         }
         catch (const std::exception& e)
         {
-            log<level::ERR>(std::format("Could not get inventory path for "
-                                        "location code {} ({}).",
-                                        locCode, e.what())
-                                .c_str());
+            lg2::error("Could not get inventory path for "
+                       "location code {LOCCODE} ({EXCEPTION}).",
+                       "LOCCODE", locCode, "EXCEPTION", e);
 
             // Unless we can set the LEDs for all FRUs, we can't turn
             // on any of them, so clear the list and quit.
@@ -240,10 +235,9 @@ void LightPath::setNotFunctional(
         }
         catch (const std::exception& e)
         {
-            log<level::INFO>(
-                std::format("Could not write Functional property on {} ({})",
-                            path, e.what())
-                    .c_str());
+            lg2::info(
+                "Could not write Functional property on {PATH} ({EXCEPTION})",
+                "PATH", path, "EXCEPTION", e);
         }
     }
 }
@@ -259,11 +253,9 @@ void LightPath::createCriticalAssociation(
         }
         catch (const std::exception& e)
         {
-            log<level::INFO>(
-                std::format(
-                    "Could not set critical association on object path {} ({})",
-                    path, e.what())
-                    .c_str());
+            lg2::info(
+                "Could not set critical association on object path {PATH} ({EXCEPTION})",
+                "PATH", path, "EXCEPTION", e);
         }
     }
 }

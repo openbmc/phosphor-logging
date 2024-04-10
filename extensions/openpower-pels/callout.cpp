@@ -15,7 +15,9 @@
  */
 #include "callout.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
+
+#include <map>
 
 namespace openpower
 {
@@ -23,8 +25,6 @@ namespace pels
 {
 namespace src
 {
-
-using namespace phosphor::logging;
 
 constexpr size_t locationCodeMaxSize = 80;
 
@@ -70,8 +70,8 @@ Callout::Callout(Stream& pel)
                 break;
             }
             default:
-                log<level::ERR>("Invalid Callout subsection type",
-                                entry("CALLOUT_TYPE=0x%X", type));
+                lg2::error("Invalid Callout subsection type {CALLOUT_TYPE}",
+                           "CALLOUT_TYPE", lg2::hex, type);
                 throw std::runtime_error("Invalid Callout subsection type");
                 break;
         }

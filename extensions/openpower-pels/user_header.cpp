@@ -20,7 +20,7 @@
 #include "pel_values.hpp"
 #include "severity.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <format>
 #include <iostream>
@@ -31,7 +31,6 @@ namespace pels
 {
 
 namespace pv = openpower::pels::pel_values;
-using namespace phosphor::logging;
 
 void UserHeader::unflatten(Stream& stream)
 {
@@ -69,11 +68,9 @@ UserHeader::UserHeader(const message::Entry& entry,
                                                    pel_values::subsystemValues);
         if (subsystemString == "invalid")
         {
-            log<level::WARNING>(
-                std::format(
-                    "UH: Invalid SubSystem value in PEL_SUBSYSTEM: {:#X}",
-                    eventSubsystem)
-                    .c_str());
+            lg2::warning(
+                "UH: Invalid SubSystem value in PEL_SUBSYSTEM: {PEL_SUBSYSTEM}",
+                "PEL_SUBSYSTEM", lg2::hex, eventSubsystem);
         }
         else
         {
@@ -92,7 +89,7 @@ UserHeader::UserHeader(const message::Entry& entry,
     else
     {
         // Gotta use something, how about 'others'.
-        log<level::WARNING>(
+        lg2::warning(
             "No PEL subystem value supplied for error, using 'others'");
         _eventSubsystem = 0x70;
     }
@@ -162,10 +159,9 @@ UserHeader::UserHeader(const message::Entry& entry,
                 {
                     // Either someone  screwed up the message registry
                     // or getSystemNames failed.
-                    log<level::ERR>(
-                        "Failed finding the severity in the message registry",
-                        phosphor::logging::entry("ERROR=%s",
-                                                 entry.name.c_str()));
+                    lg2::error(
+                        "Failed finding the severity in the message registry ERROR={ERROR}",
+                        "ERROR", entry.name);
 
                     // Have to choose something, just use informational.
                     _eventSeverity = 0;
@@ -228,8 +224,7 @@ UserHeader::UserHeader(Stream& pel)
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>(
-            std::format("Cannot unflatten user header: {}", e.what()).c_str());
+        lg2::error("Cannot unflatten user header: {EXCEPTION}", "EXCEPTION", e);
         _valid = false;
     }
 }
@@ -239,17 +234,15 @@ void UserHeader::validate()
     bool failed = false;
     if (header().id != static_cast<uint16_t>(SectionID::userHeader))
     {
-        log<level::ERR>(
-            std::format("Invalid user header section ID: {0:#x}", header().id)
-                .c_str());
+        lg2::error("Invalid user header section ID: {HEADER_ID}", "HEADER_ID",
+                   lg2::hex, header().id);
         failed = true;
     }
 
     if (header().version != userHeaderVersion)
     {
-        log<level::ERR>(
-            std::format("Invalid user header version: {0:#x}", header().version)
-                .c_str());
+        lg2::error("Invalid user header version: {HEADER_VERSION}",
+                   "HEADER_VERSION", lg2::hex, header().version);
         failed = true;
     }
 
@@ -319,8 +312,9 @@ std::optional<uint8_t> UserHeader::getSeverity(
         }
         catch (const std::exception& e)
         {
-            log<level::ERR>("Failed trying to look up system names on D-Bus",
-                            entry("ERROR=%s", e.what()));
+            lg2::error(
+                "Failed trying to look up system names on D-Bus ERROR={ERROR}",
+                "ERROR", e);
             return std::nullopt;
         }
     }

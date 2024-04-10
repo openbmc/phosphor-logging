@@ -3,7 +3,7 @@
 #include <attributes_info.H>
 #include <libphal.H>
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <format>
 
@@ -13,7 +13,6 @@ namespace pels
 {
 namespace phal
 {
-using namespace phosphor::logging;
 
 /**
  * @brief Helper function to get EntrySeverity based on
@@ -40,11 +39,10 @@ std::optional<EntrySeverity> getEntrySeverityType(const std::string& guardType)
     }
     else
     {
-        log<level::ERR>(
-            std::format("GUARD: Unsupported GardType [{}] was given ",
-                        "to get the hardware isolation entry severity type",
-                        guardType.c_str())
-                .c_str());
+        lg2::error(
+            "GUARD: Unsupported GuardType [{GUARD_TYPE}] was given to get the "
+            "hardware isolation entry severity type",
+            "GUARD_TYPE", guardType);
     }
     return std::nullopt;
 }
@@ -73,7 +71,7 @@ void createGuardRecords(const nlohmann::json& jsonCallouts,
 
     if (!jsonCallouts.is_array())
     {
-        log<level::ERR>("GUARD: Callout JSON isn't an array");
+        lg2::error("GUARD: Callout JSON isn't an array");
         return;
     }
     for (const auto& _callout : jsonCallouts)
@@ -93,7 +91,7 @@ void createGuardRecords(const nlohmann::json& jsonCallouts,
             // "CreateWithEntityPath"
             if (!_callout.contains("EntityPath"))
             {
-                log<level::ERR>(
+                lg2::error(
                     "GUARD: Callout data, missing EntityPath information");
                 continue;
             }
@@ -107,14 +105,13 @@ void createGuardRecords(const nlohmann::json& jsonCallouts,
                 ss << " 0x" << std::hex << static_cast<int>(entityPath[a]);
             }
             std::string s = ss.str();
-            log<level::INFO>(std::format("GUARD :({})", s).c_str());
+            lg2::info("GUARD: ({GUARD_TARGET})", "GUARD_TARGET", s);
 
             // Get Guard type
             auto severity = EntrySeverity::Warning;
             if (!_callout.contains("GuardType"))
             {
-                log<level::ERR>(
-                    "GUARD: doesn't have Severity, setting to warning");
+                lg2::error("GUARD: doesn't have Severity, setting to warning");
             }
             else
             {
@@ -133,10 +130,8 @@ void createGuardRecords(const nlohmann::json& jsonCallouts,
         }
         catch (const std::exception& e)
         {
-            log<level::INFO>(
-                std::format("GUARD: Failed entry creation exception:({})",
-                            e.what())
-                    .c_str());
+            lg2::info("GUARD: Failed entry creation exception:({EXCEPTION})",
+                      "EXCEPTION", e);
         }
     }
 }
@@ -166,7 +161,7 @@ void createDeconfigRecords(const nlohmann::json& jsonCallouts,
 
     if (!jsonCallouts.is_array())
     {
-        log<level::ERR>("Deconfig: Callout JSON isn't an array");
+        lg2::error("Deconfig: Callout JSON isn't an array");
         return;
     }
     for (const auto& _callout : jsonCallouts)
@@ -186,32 +181,30 @@ void createDeconfigRecords(const nlohmann::json& jsonCallouts,
 
             if (!_callout.contains("EntityPath"))
             {
-                log<level::ERR>(
+                lg2::error(
                     "Deconfig: Callout data missing EntityPath information");
                 continue;
             }
             using EntityPath = std::vector<uint8_t>;
             auto entityPath = _callout.at("EntityPath").get<EntityPath>();
-            log<level::INFO>("Deconfig: adding deconfigure record");
+            lg2::info("Deconfig: adding deconfigure record");
             // convert to libphal required format.
             ATTR_PHYS_BIN_PATH_Type physBinPath;
             std::copy(entityPath.begin(), entityPath.end(), physBinPath);
             // libphal api to deconfigure the target
             if (!pdbg_targets_init(NULL))
             {
-                log<level::ERR>("pdbg_targets_init failed, skipping deconfig "
-                                "record update");
+                lg2::error(
+                    "pdbg_targets_init failed, skipping deconfig record update");
                 return;
             }
             openpower::phal::pdbg::deconfigureTgt(physBinPath, plid);
         }
         catch (const std::exception& e)
         {
-            log<level::INFO>(
-                std::format(
-                    "Deconfig: Failed to create records, exception:({})",
-                    e.what())
-                    .c_str());
+            lg2::info(
+                "Deconfig: Failed to create records, exception:({EXCEPTION})",
+                "EXCEPTION", e);
         }
     }
 }
