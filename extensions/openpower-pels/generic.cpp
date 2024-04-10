@@ -15,7 +15,7 @@
  */
 #include "generic.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <format>
 
@@ -23,8 +23,6 @@ namespace openpower
 {
 namespace pels
 {
-
-using namespace phosphor::logging;
 
 void Generic::unflatten(Stream& stream)
 {
@@ -56,9 +54,8 @@ Generic::Generic(Stream& pel)
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>(
-            std::format("Cannot unflatten generic section: {}", e.what())
-                .c_str());
+        lg2::error("Cannot unflatten generic section: {EXCEPTION}", "EXCEPTION",
+                   e);
         _valid = false;
     }
 }

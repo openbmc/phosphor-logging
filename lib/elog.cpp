@@ -1,6 +1,7 @@
 #include "config.h"
 
 #include <phosphor-logging/elog.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <stdexcept>
 
@@ -54,7 +55,7 @@ uint32_t commit(const char* name, Entry::Level level)
 
 uint32_t commit(std::string&& name)
 {
-    log<level::ERR>("method is deprecated, use commit() with exception type");
+    lg2::error("method is deprecated, use commit() with exception type");
     return phosphor::logging::details::commit(name.c_str());
 }
 

@@ -17,7 +17,7 @@
 
 #include "paths.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <chrono>
 #include <filesystem>
@@ -29,7 +29,6 @@ namespace pels
 {
 
 namespace fs = std::filesystem;
-using namespace phosphor::logging;
 
 constexpr uint32_t startingLogID = 1;
 constexpr uint32_t bmcLogIDPrefix = 0x50000000;
@@ -87,7 +86,7 @@ uint32_t generatePELID()
         if (idFile.fail())
         {
             // Just make up an ID
-            log<level::ERR>("Unable to read PEL ID File!");
+            lg2::error("Unable to read PEL ID File!");
             return detail::getTimeBasedLogID();
         }
     }
@@ -103,7 +102,7 @@ uint32_t generatePELID()
     if (idFile.fail())
     {
         // Just make up an ID so we don't reuse one next time
-        log<level::ERR>("Unable to write PEL ID File!");
+        lg2::error("Unable to write PEL ID File!");
         return detail::getTimeBasedLogID();
     }
 
@@ -123,8 +122,7 @@ void checkFileForZeroData(const std::string& filename)
             if (rf.eof())
             {
                 fs::remove(filename);
-                log<level::WARNING>(
-                    "PEL ID file seems corrupted. Deleting it.");
+                lg2::warning("PEL ID file seems corrupted. Deleting it.");
                 break;
             }
             rf.read(&ch, sizeof(ch));
