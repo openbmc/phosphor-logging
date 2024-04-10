@@ -6,6 +6,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include <phosphor-logging/lg2.hpp>
+
 #include <xyz/openbmc_project/Common/File/error.hpp>
 
 namespace phosphor
@@ -78,8 +80,8 @@ sdbusplus::message::unix_fd Entry::getEntry()
     if (fd == -1)
     {
         auto e = errno;
-        log<level::ERR>("Failed to open Entry File", entry("ERRNO=%d", e),
-                        entry("PATH=%s", path().c_str()));
+        lg2::error("Failed to open Entry File ERRNO={ERRNO}, PATH={PATH}",
+                   "ERRNO", e, "PATH", path().c_str());
         throw sdbusplus::xyz::openbmc_project::Common::File::Error::Open();
     }
 
