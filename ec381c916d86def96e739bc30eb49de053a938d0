@@ -123,6 +123,23 @@
       "parentUuid": "1d0a9471_45d79510",
       "revId": "ec381c916d86def96e739bc30eb49de053a938d0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4995f4d8_94b8651c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-11T21:27:07Z",
+      "side": 1,
+      "message": "also, I had asked earlier - can you put a real example in the commit message of a journal entry that shows up from this code when a log entry from existing code is created?",
+      "revId": "ec381c916d86def96e739bc30eb49de053a938d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
