@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b96b377_2acd6840",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000936
+      },
+      "writtenOn": "2024-04-11T11:25:34Z",
+      "side": 1,
+      "message": "Hello,\nThis patch and the next after it are waiting for review for more than a month by now. Please provide feedback so that I can act on it.",
+      "revId": "a6e40550e6c48e8a1437bb392e84c0fd72d44d58",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
