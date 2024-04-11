@@ -70,6 +70,23 @@
       "parentUuid": "606e045e_d7f52d83",
       "revId": "ec381c916d86def96e739bc30eb49de053a938d0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cf048f6_3c8f174a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000936
+      },
+      "writtenOn": "2024-04-11T19:32:54Z",
+      "side": 1,
+      "message": "I would appreciate more feedback on this one. Should I just remove [RFC] and re-submit, have we discussed enough? Or did I fail to clarify some point?",
+      "revId": "ec381c916d86def96e739bc30eb49de053a938d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
