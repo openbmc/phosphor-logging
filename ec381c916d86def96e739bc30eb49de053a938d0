@@ -105,6 +105,24 @@
       "parentUuid": "5cf048f6_3c8f174a",
       "revId": "ec381c916d86def96e739bc30eb49de053a938d0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce0050ce_8e00b36e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000936
+      },
+      "writtenOn": "2024-04-11T20:12:03Z",
+      "side": 1,
+      "message": "Thank you, now we\u0027re talking :) Let me clarify inline.\n\n\u003e What has been confusing me here is you mention the syslog in the commit message, but not the journal, but all this commit does is write to the journal, and for a reason that isn\u0027t clear to me doesn\u0027t use lg2 to do it.\n\nIndeed I see now how the commit message is confusing in this regard, I will make it clearer. The main idea was that we need those messages to eventually get to rsyslog for further processing (sending out via the syslog protocol, probably e-mails and what\u0027s not), and with the current configuration we have rsyslog getting everything from systemd journal so indeed the patch actually sends the message to the journal rather than rsyslog directly but the final aim is to get it into rsyslog.\n\nI will reword to set that straight.\n\n\n\u003e and then also use lg2 to do it, or explain why it can\u0027t, it would help my understanding.\n\nFirst question about using lg2 here is whether we\u0027re guaranteed to not get infinite recursion here in case you later decide that lg2 should be creating D-Bus objects when called. I find that unlikely but feel a need to ask.\n\nAnother point is that I can\u0027t call `lg2::log\u003cisev\u003e(syslog_msg)` as it is because `isev` isn\u0027t constant. I can try using `lg2::details::do_log(..)` internal function, does this sound OK to you?",
+      "parentUuid": "1d0a9471_45d79510",
+      "revId": "ec381c916d86def96e739bc30eb49de053a938d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
