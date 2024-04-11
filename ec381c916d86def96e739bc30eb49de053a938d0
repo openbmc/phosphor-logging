@@ -87,6 +87,24 @@
       "message": "I would appreciate more feedback on this one. Should I just remove [RFC] and re-submit, have we discussed enough? Or did I fail to clarify some point?",
       "revId": "ec381c916d86def96e739bc30eb49de053a938d0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d0a9471_45d79510",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-11T19:46:15Z",
+      "side": 1,
+      "message": "What has been confusing me here is you mention the syslog in the commit message, but not the journal, but all this commit does is write to the journal, and for a reason that isn\u0027t clear to me doesn\u0027t use lg2 to do it.\n\nIf you were to redo the commit message to state that it writes the log entry fields to the journal, and why, and then also use lg2 to do it, or explain why it can\u0027t, it would help my understanding.",
+      "parentUuid": "5cf048f6_3c8f174a",
+      "revId": "ec381c916d86def96e739bc30eb49de053a938d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
