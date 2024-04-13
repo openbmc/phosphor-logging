@@ -74,6 +74,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "d1b6ddc9_dc29f57e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000936
+      },
+      "writtenOn": "2024-04-13T12:41:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1c1d846_5568efea",
+      "revId": "ec381c916d86def96e739bc30eb49de053a938d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "5cf048f6_3c8f174a",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -156,6 +174,41 @@
       "side": 1,
       "message": "\u003e also, I had asked earlier - can you put a real example in the commit message of a journal entry that shows up from this code when a log entry from existing code is created?\n\nNoted, I will.",
       "parentUuid": "4995f4d8_94b8651c",
+      "revId": "ec381c916d86def96e739bc30eb49de053a938d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4174708_e86a68b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000936
+      },
+      "writtenOn": "2024-04-13T12:41:41Z",
+      "side": 1,
+      "message": "I hope this new version resolves all the comments.",
+      "revId": "ec381c916d86def96e739bc30eb49de053a938d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "104ed9d6_f82ec773",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000936
+      },
+      "writtenOn": "2024-04-13T12:41:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca194e30_3bf2a465",
       "revId": "ec381c916d86def96e739bc30eb49de053a938d0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
