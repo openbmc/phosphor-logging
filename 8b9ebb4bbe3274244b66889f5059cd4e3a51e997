@@ -160,6 +160,24 @@
       "parentUuid": "3eacb292_8bbe7e40",
       "revId": "8b9ebb4bbe3274244b66889f5059cd4e3a51e997",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a6aa95c_72408564",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000084
+      },
+      "writtenOn": "2024-04-15T07:30:56Z",
+      "side": 1,
+      "message": "so, do we need to add a generic procedure callout? to cover the case if there is no HW callout?",
+      "parentUuid": "bca3be12_6f3068e7",
+      "revId": "8b9ebb4bbe3274244b66889f5059cd4e3a51e997",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
