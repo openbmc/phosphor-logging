@@ -178,6 +178,24 @@
       "parentUuid": "bca3be12_6f3068e7",
       "revId": "8b9ebb4bbe3274244b66889f5059cd4e3a51e997",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcda65ac_27bbea0e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2024-04-15T08:33:16Z",
+      "side": 1,
+      "message": "SBE can set severity to anything if so can I add below callout as part of the code when the severity of the pel is predictible/unrecoverabe.\n            \"Callouts\": [\n                {\n                    \"CalloutList\": [\n                        {\n                            \"Priority\": \"high\",\n                            \"Procedure\": \"next_level_support\"\n                        }\n                    ]\n                }\n            ]\n            \nor should I simply add here irrespective of the severity?",
+      "parentUuid": "bca3be12_6f3068e7",
+      "revId": "8b9ebb4bbe3274244b66889f5059cd4e3a51e997",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
