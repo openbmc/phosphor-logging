@@ -1,0 +1,261 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b5d3dbd_456f6dca",
+        "filename": "extensions/openpower-pels/fapi_data_process.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-15T16:37:53Z",
+      "side": 1,
+      "message": "I don\u0027t think a break this way would print right, but clang-format should be smart enough to allow unbroken strings go over 80 characters - https://github.com/openbmc/phosphor-logging/blob/master/.clang-format#L51\n\nif it\u0027s too long, you can also break it like how it previously was.  here is the same using lg2 already https://github.com/openbmc/phosphor-logging/blob/master/extensions/openpower-pels/pel.cpp#L910",
+      "range": {
+        "startLine": 206,
+        "startChar": 78,
+        "endLine": 206,
+        "endChar": 80
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4b21c87_070190c5",
+        "filename": "extensions/openpower-pels/fru_identity.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-15T16:37:53Z",
+      "side": 1,
+      "message": "can remove the c_str() here.",
+      "range": {
+        "startLine": 288,
+        "startChar": 35,
+        "endLine": 288,
+        "endChar": 40
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d4d9a4e_d9a86b06",
+        "filename": "extensions/openpower-pels/mru.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-15T16:37:53Z",
+      "side": 1,
+      "message": "same comment about the line breaks as before",
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c74d8dd7_1c90b3ac",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-15T16:37:53Z",
+      "side": 1,
+      "message": "line break",
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef5f3dc8_c99ab6be",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-15T16:37:53Z",
+      "side": 1,
+      "message": "this would be a good opportunity to combine this line with the line above it and just do it all with lg2",
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f1439a4_d9618805",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-15T16:37:53Z",
+      "side": 1,
+      "message": "same comment as above, can combine.",
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1eb485cf_c88b7496",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-15T16:37:53Z",
+      "side": 1,
+      "message": "same comment about line break",
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33a50071_f7bbbbd4",
+        "filename": "extensions/openpower-pels/service_indicators.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-15T16:37:53Z",
+      "side": 1,
+      "message": "yea, here\u0027s another example that shows a good way to line break",
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3235550_9c464d0d",
+        "filename": "extensions/openpower-pels/service_indicators.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-15T16:37:53Z",
+      "side": 1,
+      "message": "line break",
+      "range": {
+        "startLine": 255,
+        "startChar": 79,
+        "endLine": 255,
+        "endChar": 80
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe309a9b_6153dbc5",
+        "filename": "extensions/openpower-pels/user_header.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-15T16:37:53Z",
+      "side": 1,
+      "message": "line break",
+      "range": {
+        "startLine": 162,
+        "startChar": 75,
+        "endLine": 162,
+        "endChar": 76
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "564adc99_c9f8aeae",
+        "filename": "extensions/openpower-pels/user_header.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-15T16:37:53Z",
+      "side": 1,
+      "message": "tabs got in here somehow.",
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6d4dd28_4be26ec4",
+        "filename": "extensions/openpower-pels/user_header.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-15T16:37:53Z",
+      "side": 1,
+      "message": "don\u0027t need the c_str()",
+      "range": {
+        "startLine": 164,
+        "startChar": 51,
+        "endLine": 164,
+        "endChar": 56
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "810bcb40_148324ce",
+        "filename": "extensions/openpower-pels/user_header.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-15T16:37:53Z",
+      "side": 1,
+      "message": "line break and tabs",
+      "range": {
+        "startLine": 315,
+        "startChar": 71,
+        "endLine": 315,
+        "endChar": 72
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
