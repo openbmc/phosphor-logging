@@ -16,6 +16,144 @@
       "message": "Addressed the review comments",
       "revId": "215e1e624da4d9c1f567b532897c1cebe386c19c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5674a3ee_1c608b64",
+        "filename": "extensions/openpower-pels/callout.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-16T16:08:55Z",
+      "side": 1,
+      "message": "You can leave out the \u0027CALLOUT_TYPE\u003d\u0027 since you already have that in the text before it.",
+      "range": {
+        "startLine": 74,
+        "startChar": 53,
+        "endLine": 74,
+        "endChar": 67
+      },
+      "revId": "215e1e624da4d9c1f567b532897c1cebe386c19c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0399a56_08b802fa",
+        "filename": "extensions/openpower-pels/fru_identity.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-16T16:08:55Z",
+      "side": 1,
+      "message": "you can just do:  invalid symbolic FRU {FRU}",
+      "range": {
+        "startLine": 287,
+        "startChar": 40,
+        "endLine": 287,
+        "endChar": 56
+      },
+      "revId": "215e1e624da4d9c1f567b532897c1cebe386c19c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "094e1a2d_4027180b",
+        "filename": "extensions/openpower-pels/mru.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-16T16:08:55Z",
+      "side": 1,
+      "message": "nit: this would flow a bit better like:\n\nMRU callout section in PEL with \u003cnum\u003e MRUs has listed size \u003csize\u003e that doesn\u0027t match actual size \u003cactual size\u003e",
+      "range": {
+        "startLine": 50,
+        "startChar": 37,
+        "endLine": 50,
+        "endChar": 61
+      },
+      "revId": "215e1e624da4d9c1f567b532897c1cebe386c19c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4b134a0_1ae527ce",
+        "filename": "extensions/openpower-pels/mru.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-16T16:08:55Z",
+      "side": 1,
+      "message": "you\u0027ll want trailing spaces on the end of these so when they\u0027re concatentated it\u0027ll look right.",
+      "range": {
+        "startLine": 50,
+        "startChar": 74,
+        "endLine": 50,
+        "endChar": 75
+      },
+      "revId": "215e1e624da4d9c1f567b532897c1cebe386c19c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d70ac65a_ac4bdf1b",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-16T16:08:55Z",
+      "side": 1,
+      "message": "same comment about trailing spaces needed when you break strings like this",
+      "range": {
+        "startLine": 43,
+        "startChar": 76,
+        "endLine": 43,
+        "endChar": 77
+      },
+      "revId": "215e1e624da4d9c1f567b532897c1cebe386c19c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00a39028_3e7ad886",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-16T16:08:55Z",
+      "side": 1,
+      "message": "nit:  looks like a typo in the original trace, would look better as\n\"GUARD: \" instead of \"GUARD :\"",
+      "range": {
+        "startLine": 108,
+        "startChar": 28,
+        "endLine": 108,
+        "endChar": 30
+      },
+      "revId": "215e1e624da4d9c1f567b532897c1cebe386c19c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
