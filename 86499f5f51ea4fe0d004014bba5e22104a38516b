@@ -3,6 +3,103 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e64ec110_99e59d70",
+        "filename": "elog_serialize.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-04-16T02:52:22Z",
+      "side": 1,
+      "message": "Suggestion: \"EXCEPTION\" is more readable than \"EXC\".\n\nThe same comment is applicable everywhere.",
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2989448_431217f7",
+        "filename": "extensions/openpower-pels/failing_mtms.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-04-16T02:52:22Z",
+      "side": 1,
+      "message": "Missed lg2::hex?",
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff124c44_ef7636ee",
+        "filename": "extensions/openpower-pels/failing_mtms.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-04-16T02:52:22Z",
+      "side": 1,
+      "message": "Missed lg2::hex?",
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2afd068_b04ac1f0",
+        "filename": "extensions/openpower-pels/fapi_data_process.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-04-16T02:52:22Z",
+      "side": 1,
+      "message": "I think, it is pdbg target path, not location code so we should define like below `TARGET_PATH`",
+      "range": {
+        "startLine": 123,
+        "startChar": 37,
+        "endLine": 123,
+        "endChar": 45
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c45244a4_1fcb0b7a",
+        "filename": "extensions/openpower-pels/fapi_data_process.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-04-16T02:52:22Z",
+      "side": 1,
+      "message": "We could use attribute name itself. `ATTR_PHYS_BIN_PATH`",
+      "range": {
+        "startLine": 172,
+        "startChar": 52,
+        "endLine": 172,
+        "endChar": 55
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9b5d3dbd_456f6dca",
         "filename": "extensions/openpower-pels/fapi_data_process.cpp",
         "patchSetId": 4
@@ -26,6 +123,53 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "66d51ae7_997df9d4",
+        "filename": "extensions/openpower-pels/fapi_data_process.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-04-16T02:52:22Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "9b5d3dbd_456f6dca",
+      "range": {
+        "startLine": 206,
+        "startChar": 78,
+        "endLine": 206,
+        "endChar": 80
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f948c82c_ff007aef",
+        "filename": "extensions/openpower-pels/fapi_data_process.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-04-16T02:52:22Z",
+      "side": 1,
+      "message": "I feel it is duplicate data since lg2 supports to print function name natively.\n\nCould please check this?\n\nFYR: https://github.com/openbmc/phosphor-logging/blob/master/lib/lg2_logger.cpp#L231",
+      "range": {
+        "startLine": 258,
+        "startChar": 15,
+        "endLine": 258,
+        "endChar": 42
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e4b21c87_070190c5",
         "filename": "extensions/openpower-pels/fru_identity.cpp",
         "patchSetId": 4
@@ -42,6 +186,29 @@
         "startChar": 35,
         "endLine": 288,
         "endChar": 40
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0f97477_ea75ecc7",
+        "filename": "extensions/openpower-pels/journal.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-04-16T02:52:22Z",
+      "side": 1,
+      "message": "Same as mentioned in other place. lg2 print function name natively.",
+      "range": {
+        "startLine": 78,
+        "startChar": 51,
+        "endLine": 78,
+        "endChar": 71
       },
       "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
@@ -83,6 +250,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a2a5b1fb_7f8618d8",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-04-16T02:52:22Z",
+      "side": 1,
+      "message": "GUARD_TARGET?",
+      "range": {
+        "startLine": 107,
+        "startChar": 32,
+        "endLine": 107,
+        "endChar": 37
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14651509_d559c904",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-04-16T02:52:22Z",
+      "side": 1,
+      "message": "line break in trace is not required as mentioned in other place.",
+      "range": {
+        "startLine": 196,
+        "startChar": 73,
+        "endLine": 196,
+        "endChar": 74
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64f165fe_13785a28",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-04-16T02:52:22Z",
+      "side": 1,
+      "message": "FFDC_FD? The same comment is applicable in all places.",
+      "range": {
+        "startLine": 130,
+        "startChar": 34,
+        "endLine": 130,
+        "endChar": 36
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ef5f3dc8_c99ab6be",
         "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
         "patchSetId": 4
@@ -94,6 +330,24 @@
       "writtenOn": "2024-04-15T16:37:53Z",
       "side": 1,
       "message": "this would be a good opportunity to combine this line with the line above it and just do it all with lg2",
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e988f70d_5dfdf479",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-04-16T02:52:22Z",
+      "side": 1,
+      "message": "+1 and we could avoid `c_str()` as well.",
+      "parentUuid": "ef5f3dc8_c99ab6be",
       "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -168,6 +422,23 @@
         "endLine": 255,
         "endChar": 80
       },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02d3efd0_72f31fbc",
+        "filename": "extensions/openpower-pels/user_data.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-04-16T02:52:22Z",
+      "side": 1,
+      "message": "lg2:hex missed?",
       "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
