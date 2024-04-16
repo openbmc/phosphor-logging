@@ -216,6 +216,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "db1fdb43_39b028fc",
+        "filename": "extensions/openpower-pels/journal.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-16T14:03:50Z",
+      "side": 1,
+      "message": "it does but you have to look at the verbose journal to see it which is painful.",
+      "parentUuid": "e0f97477_ea75ecc7",
+      "range": {
+        "startLine": 78,
+        "startChar": 51,
+        "endLine": 78,
+        "endChar": 71
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5d4d9a4e_d9a86b06",
         "filename": "extensions/openpower-pels/mru.cpp",
         "patchSetId": 4
