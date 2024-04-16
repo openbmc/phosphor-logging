@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef5ea7ec_ffc6420b",
+        "filename": "elog_serialize.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e64ec110_99e59d70",
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b2989448_431217f7",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60635539_d56ab017",
+        "filename": "extensions/openpower-pels/failing_mtms.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b2989448_431217f7",
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff124c44_ef7636ee",
@@ -48,6 +84,24 @@
       "writtenOn": "2024-04-16T02:52:22Z",
       "side": 1,
       "message": "Missed lg2::hex?",
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cbf8981_6d2e4f3b",
+        "filename": "extensions/openpower-pels/failing_mtms.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "Yes. Addressed",
+      "parentUuid": "ff124c44_ef7636ee",
       "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -75,6 +129,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aaf85c52_fc55f211",
+        "filename": "extensions/openpower-pels/fapi_data_process.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2afd068_b04ac1f0",
+      "range": {
+        "startLine": 123,
+        "startChar": 37,
+        "endLine": 123,
+        "endChar": 45
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c45244a4_1fcb0b7a",
@@ -88,6 +166,30 @@
       "writtenOn": "2024-04-16T02:52:22Z",
       "side": 1,
       "message": "We could use attribute name itself. `ATTR_PHYS_BIN_PATH`",
+      "range": {
+        "startLine": 172,
+        "startChar": 52,
+        "endLine": 172,
+        "endChar": 55
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a007b8b_1f33175d",
+        "filename": "extensions/openpower-pels/fapi_data_process.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c45244a4_1fcb0b7a",
       "range": {
         "startLine": 172,
         "startChar": 52,
@@ -145,6 +247,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ef98b2c_da8a4f1b",
+        "filename": "extensions/openpower-pels/fapi_data_process.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "ok got it. Removed line breaks.",
+      "parentUuid": "66d51ae7_997df9d4",
+      "range": {
+        "startLine": 206,
+        "startChar": 78,
+        "endLine": 206,
+        "endChar": 80
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f948c82c_ff007aef",
@@ -170,6 +296,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "659985e3_672af62c",
+        "filename": "extensions/openpower-pels/fapi_data_process.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "On my analysis it is observed that the binary/daemon name along with PID is getting printed natively. Function name is not getting printed.",
+      "parentUuid": "f948c82c_ff007aef",
+      "range": {
+        "startLine": 258,
+        "startChar": 15,
+        "endLine": 258,
+        "endChar": 42
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e4b21c87_070190c5",
         "filename": "extensions/openpower-pels/fru_identity.cpp",
         "patchSetId": 4
@@ -181,6 +331,30 @@
       "writtenOn": "2024-04-15T16:37:53Z",
       "side": 1,
       "message": "can remove the c_str() here.",
+      "range": {
+        "startLine": 288,
+        "startChar": 35,
+        "endLine": 288,
+        "endChar": 40
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "238993c3_cc22e23f",
+        "filename": "extensions/openpower-pels/fru_identity.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4b21c87_070190c5",
       "range": {
         "startLine": 288,
         "startChar": 35,
@@ -240,6 +414,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "16607349_4e8c4e75",
+        "filename": "extensions/openpower-pels/journal.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "On my analysis it is observed that the binary/daemon name along with PID is getting printed natively. Function name is not getting printed.",
+      "parentUuid": "db1fdb43_39b028fc",
+      "range": {
+        "startLine": 78,
+        "startChar": 51,
+        "endLine": 78,
+        "endChar": 71
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5d4d9a4e_d9a86b06",
         "filename": "extensions/openpower-pels/mru.cpp",
         "patchSetId": 4
@@ -251,6 +449,24 @@
       "writtenOn": "2024-04-15T16:37:53Z",
       "side": 1,
       "message": "same comment about the line breaks as before",
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f29eb4d4_d14b1e52",
+        "filename": "extensions/openpower-pels/mru.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d4d9a4e_d9a86b06",
       "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -272,6 +488,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "68cafc8b_537c9c27",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c74d8dd7_1c90b3ac",
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2a5b1fb_7f8618d8",
@@ -285,6 +519,30 @@
       "writtenOn": "2024-04-16T02:52:22Z",
       "side": 1,
       "message": "GUARD_TARGET?",
+      "range": {
+        "startLine": 107,
+        "startChar": 32,
+        "endLine": 107,
+        "endChar": 37
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96e29ca3_589ba6af",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2a5b1fb_7f8618d8",
       "range": {
         "startLine": 107,
         "startChar": 32,
@@ -318,6 +576,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d721c15f_24db1345",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14651509_d559c904",
+      "range": {
+        "startLine": 196,
+        "startChar": 73,
+        "endLine": 196,
+        "endChar": 74
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "64f165fe_13785a28",
@@ -331,6 +613,30 @@
       "writtenOn": "2024-04-16T02:52:22Z",
       "side": 1,
       "message": "FFDC_FD? The same comment is applicable in all places.",
+      "range": {
+        "startLine": 130,
+        "startChar": 34,
+        "endLine": 130,
+        "endChar": 36
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3061fab_54a92c27",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "Used FD because in old trace also variable name was \u0027fd\u0027",
+      "parentUuid": "64f165fe_13785a28",
       "range": {
         "startLine": 130,
         "startChar": 34,
@@ -376,6 +682,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb602a95_e5f77de4",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e988f70d_5dfdf479",
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f1439a4_d9618805",
@@ -389,6 +713,24 @@
       "writtenOn": "2024-04-15T16:37:53Z",
       "side": 1,
       "message": "same comment as above, can combine.",
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb835607_c0e77a5d",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f1439a4_d9618805",
       "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -410,6 +752,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74efc029_ad344e81",
+        "filename": "extensions/openpower-pels/sbe_ffdc_handler.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1eb485cf_c88b7496",
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33a50071_f7bbbbd4",
@@ -423,6 +783,24 @@
       "writtenOn": "2024-04-15T16:37:53Z",
       "side": 1,
       "message": "yea, here\u0027s another example that shows a good way to line break",
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08e4af34_5bb4f17d",
+        "filename": "extensions/openpower-pels/service_indicators.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "33a50071_f7bbbbd4",
       "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -450,6 +828,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a44f93a8_65a8b86b",
+        "filename": "extensions/openpower-pels/service_indicators.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3235550_9c464d0d",
+      "range": {
+        "startLine": 255,
+        "startChar": 79,
+        "endLine": 255,
+        "endChar": 80
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02d3efd0_72f31fbc",
@@ -463,6 +865,24 @@
       "writtenOn": "2024-04-16T02:52:22Z",
       "side": 1,
       "message": "lg2:hex missed?",
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "914e64e2_a52306b8",
+        "filename": "extensions/openpower-pels/user_data.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02d3efd0_72f31fbc",
       "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -490,6 +910,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cf21070_a42b591e",
+        "filename": "extensions/openpower-pels/user_header.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe309a9b_6153dbc5",
+      "range": {
+        "startLine": 162,
+        "startChar": 75,
+        "endLine": 162,
+        "endChar": 76
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "564adc99_c9f8aeae",
@@ -503,6 +947,24 @@
       "writtenOn": "2024-04-15T16:37:53Z",
       "side": 1,
       "message": "tabs got in here somehow.",
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bede983_089a2bc4",
+        "filename": "extensions/openpower-pels/user_header.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "564adc99_c9f8aeae",
       "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -530,6 +992,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82f9b5ae_6e7acb9e",
+        "filename": "extensions/openpower-pels/user_header.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6d4dd28_4be26ec4",
+      "range": {
+        "startLine": 164,
+        "startChar": 51,
+        "endLine": 164,
+        "endChar": 56
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "810bcb40_148324ce",
@@ -543,6 +1029,30 @@
       "writtenOn": "2024-04-15T16:37:53Z",
       "side": 1,
       "message": "line break and tabs",
+      "range": {
+        "startLine": 315,
+        "startChar": 71,
+        "endLine": 315,
+        "endChar": 72
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79f24c80_c5690f63",
+        "filename": "extensions/openpower-pels/user_header.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-16T15:27:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "810bcb40_148324ce",
       "range": {
         "startLine": 315,
         "startChar": 71,
