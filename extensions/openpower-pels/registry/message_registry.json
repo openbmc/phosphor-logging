@@ -1743,7 +1743,7 @@
         },
         {
             "Name": "org.open_power.Processor.Error.SbeInternalFFDCData",
-            "Subsystem": "memory",
+            "Subsystem": "processor_chip",
             "ComponentID": "0x3500",
 
             "SRC": {
