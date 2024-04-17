@@ -318,6 +318,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "830b55b0_b84694f5",
+        "filename": "extensions/openpower-pels/fapi_data_process.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-04-17T01:27:16Z",
+      "side": 1,
+      "message": "We cannot see it in the pretty format, we need to see in the verbose mode\n\nFor example\n```\njournalctl -u \u003cservice_name\u003e -o verbose\n\nCODE_FILE\u003d..\nCODE_FUNC\u003d..\nCODE_LINE\u003d..\n```\n\nAnyway, its pain to see from the verbose mode so we need to include in the MESSAGE itself but, thats out of the scope.\n\nand we will get verbose traces from the BMC dump so, I am good if need to find out the location of the traces. https://github.com/openbmc/phosphor-debug-collector/blob/master/tools/dreport.d/plugins.d/journalpid",
+      "parentUuid": "659985e3_672af62c",
+      "range": {
+        "startLine": 258,
+        "startChar": 15,
+        "endLine": 258,
+        "endChar": 42
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4b21c87_070190c5",
@@ -426,6 +450,30 @@
       "side": 1,
       "message": "On my analysis it is observed that the binary/daemon name along with PID is getting printed natively. Function name is not getting printed.",
       "parentUuid": "db1fdb43_39b028fc",
+      "range": {
+        "startLine": 78,
+        "startChar": 51,
+        "endLine": 78,
+        "endChar": 71
+      },
+      "revId": "86499f5f51ea4fe0d004014bba5e22104a38516b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c0214d2_f1449985",
+        "filename": "extensions/openpower-pels/journal.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-04-17T01:27:16Z",
+      "side": 1,
+      "message": "Replied in the another similar comment.As Matt pointed out, its pain to see in verbose mode.",
+      "parentUuid": "16607349_4e8c4e75",
       "range": {
         "startLine": 78,
         "startChar": 51,
