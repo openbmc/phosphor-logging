@@ -58,6 +58,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82d9cf2c_36eabb95",
+        "filename": "extensions/openpower-pels/callout.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-17T07:48:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5674a3ee_1c608b64",
+      "range": {
+        "startLine": 74,
+        "startChar": 53,
+        "endLine": 74,
+        "endChar": 67
+      },
+      "revId": "215e1e624da4d9c1f567b532897c1cebe386c19c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a0399a56_08b802fa",
@@ -71,6 +95,30 @@
       "writtenOn": "2024-04-16T16:08:55Z",
       "side": 1,
       "message": "you can just do:  invalid symbolic FRU {FRU}",
+      "range": {
+        "startLine": 287,
+        "startChar": 40,
+        "endLine": 287,
+        "endChar": 56
+      },
+      "revId": "215e1e624da4d9c1f567b532897c1cebe386c19c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0c7deed_3cb54b3d",
+        "filename": "extensions/openpower-pels/fru_identity.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-17T07:48:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0399a56_08b802fa",
       "range": {
         "startLine": 287,
         "startChar": 40,
@@ -151,6 +199,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e87a9da7_d0166d68",
+        "filename": "extensions/openpower-pels/mru.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-17T07:48:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3478de1_d9571d97",
+      "range": {
+        "startLine": 50,
+        "startChar": 74,
+        "endLine": 50,
+        "endChar": 75
+      },
+      "revId": "215e1e624da4d9c1f567b532897c1cebe386c19c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fad45b03_a6d6b85c",
+        "filename": "extensions/openpower-pels/mru.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-17T07:48:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "094e1a2d_4027180b",
+      "range": {
+        "startLine": 50,
+        "startChar": 37,
+        "endLine": 50,
+        "endChar": 61
+      },
+      "revId": "215e1e624da4d9c1f567b532897c1cebe386c19c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d70ac65a_ac4bdf1b",
@@ -174,6 +270,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5744c318_ffbb12a3",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-17T07:48:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d70ac65a_ac4bdf1b",
+      "range": {
+        "startLine": 43,
+        "startChar": 76,
+        "endLine": 43,
+        "endChar": 77
+      },
+      "revId": "215e1e624da4d9c1f567b532897c1cebe386c19c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00a39028_3e7ad886",
@@ -187,6 +307,30 @@
       "writtenOn": "2024-04-16T16:08:55Z",
       "side": 1,
       "message": "nit:  looks like a typo in the original trace, would look better as\n\"GUARD: \" instead of \"GUARD :\"",
+      "range": {
+        "startLine": 108,
+        "startChar": 28,
+        "endLine": 108,
+        "endChar": 30
+      },
+      "revId": "215e1e624da4d9c1f567b532897c1cebe386c19c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56706487_510e22f5",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-04-17T07:48:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00a39028_3e7ad886",
       "range": {
         "startLine": 108,
         "startChar": 28,
