@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5afd252_761703e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-17T14:50:43Z",
+      "side": 1,
+      "message": "Thanks for the updates.\n\nSo there are multiple event log implementations today:\n\nThe original one, phosphor-logging, that uses the Logging.Entry interface on D-Bus for each entry.  And that one has 2 APIs for creating events, its original one, which which uses the journal, and the newer dbus one (see https://github.com/openbmc/phosphor-logging/blob/master/README.md#creating-event-logs-in-code)\n\nAnd then the newer one that also writes to the journal, but then has rsyslog set up to pull those out into a separate file so that redfish can get them.  In fact, I can see that can also already be used by phosphor-sel-logger: https://github.com/openbmc/phosphor-sel-logger/blob/master/include/threshold_event_monitor.hpp#L327\n\nWith whats above, there\u0027s already 2 ways event logs can already be written to the journal today.  So I don\u0027t think we can just enable this across the board, because even for people that using phosphor-logging for their event logs they would get duplicate journal entries per log when they use the original report\u003c\u003e() and commit\u003c\u003e() APIs, which a lot of older code does.  Also I heard there is a revamp coming that will make  people want to use it if they aren\u0027t already so they can get better redfish logs.\n\nAll of that being said, if this would just be hidden behind a meson option I wouldn\u0027t be against it.",
+      "revId": "3a60f58e66abe5baa4fcb4e4f513a15fefb2c1ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
