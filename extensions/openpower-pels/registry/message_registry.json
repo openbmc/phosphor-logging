@@ -967,6 +967,37 @@
         },
 
         {
+            "Name": "org.open_power.OCC.Firmware.Error.MissingOCCSensors",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x2600",
+
+            "SRC": {
+                "ReasonCode": "0x2685",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "medium", "Procedure": "BMC0001" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "OCC PDR records not found",
+                "Message": "BMC firmware was not able to find the OCC sensor ID records",
+                "Notes": [
+                    "The OCC sensor ID records for the OCCs were not found which will prevent the BMC from ",
+                    "communicating with the OCCs. Firmware will continue to try searching for the records."
+                ]
+            },
+            "JournalCapture": {
+                "NumLines": 40
+            }
+        },
+
+        {
             "Name": "org.open_power.HardwareIsolation.Error",
             "Subsystem": "cec_hardware",
             "ComponentID": "0x3100",
