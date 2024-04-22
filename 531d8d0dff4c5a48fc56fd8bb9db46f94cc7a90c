@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4d853d7_0c445d35",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 908,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-04-22T18:42:41Z",
+      "side": 1,
+      "message": "Could you move the entry down to below 0x2684?",
+      "revId": "531d8d0dff4c5a48fc56fd8bb9db46f94cc7a90c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
