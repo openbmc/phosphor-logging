@@ -359,8 +359,9 @@ std::string genPELJSON(T itr, bool hidden, bool includeInfo, bool critSysTerm,
         }
         if (hexDump)
         {
-            std::cout << dumpHex(std::data(pel.data()), pel.size(), 0, false)
-                      << std::endl;
+            std::cout
+                << dumpHex(std::data(pel.data()), pel.size(), 0, false).get()
+                << std::endl;
         }
         else if (fullPEL)
         {
@@ -681,8 +682,8 @@ void displayPEL(const PEL& pel, bool hexDump)
     {
         if (hexDump)
         {
-            std::string dstr = dumpHex(std::data(pel.data()), pel.size(), 0,
-                                       false);
+            std::string dstr =
+                dumpHex(std::data(pel.data()), pel.size(), 0, false).get();
             std::cout << dstr << std::endl;
         }
         else
@@ -888,8 +889,8 @@ int main(int argc, char** argv)
             PEL pel{data};
             if (hexDump)
             {
-                std::string dstr = dumpHex(std::data(pel.data()), pel.size(), 0,
-                                           false);
+                std::string dstr =
+                    dumpHex(std::data(pel.data()), pel.size(), 0, false).get();
                 std::cout << dstr << std::endl;
             }
             else
