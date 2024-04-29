@@ -60,9 +60,8 @@ size_t getFileDiskSize(const std::filesystem::path& file)
 
 Repository::Repository(const std::filesystem::path& basePath, size_t repoSize,
                        size_t maxNumPELs) :
-    _logPath(basePath / "logs"),
-    _maxRepoSize(repoSize), _maxNumPELs(maxNumPELs),
-    _archivePath(basePath / "logs" / "archive")
+    _logPath(basePath / "logs"), _maxRepoSize(repoSize),
+    _maxNumPELs(maxNumPELs), _archivePath(basePath / "logs" / "archive")
 {
     if (!fs::exists(_logPath))
     {

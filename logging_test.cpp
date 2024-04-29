@@ -62,8 +62,7 @@ int validate_journal(const char* i_entry, const char* i_value)
     if (rc)
     {
         std::cerr << "Failed to find " << i_entry << " with value " << i_value
-                  << " in journal!"
-                  << "\n";
+                  << " in journal!" << "\n";
     }
 
     return rc;

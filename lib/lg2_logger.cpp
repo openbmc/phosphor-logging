@@ -295,9 +295,8 @@ void do_log(level l, const std::source_location& s, const char* m, ...)
 
     // Trasform strings -> iovec.
     std::vector<iovec> iov{};
-    std::ranges::transform(strings, std::back_inserter(iov), [](auto& s) {
-        return iovec{s.data(), s.length()};
-    });
+    std::ranges::transform(strings, std::back_inserter(iov),
+                           [](auto& s) { return iovec{s.data(), s.length()}; });
 
     // Output the iovec.
     sd_journal_sendv(iov.data(), strings.size());

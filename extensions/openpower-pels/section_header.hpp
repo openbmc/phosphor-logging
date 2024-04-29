@@ -34,8 +34,8 @@ struct SectionHeader
      */
     SectionHeader(uint16_t id, uint16_t size, uint8_t version, uint8_t subType,
                   uint16_t componentID) :
-        id(id),
-        size(size), version(version), subType(subType), componentID(componentID)
+        id(id), size(size), version(version), subType(subType),
+        componentID(componentID)
     {}
 
     /**

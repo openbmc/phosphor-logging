@@ -46,8 +46,7 @@ class Repository
                       uint16_t flags, TransmissionState hostState,
                       TransmissionState hmcState, uint32_t plid, bool deconfig,
                       bool guard, uint64_t creationTime) :
-            path(p),
-            sizeOnDisk(size), creator(creator), subsystem(subsystem),
+            path(p), sizeOnDisk(size), creator(creator), subsystem(subsystem),
             severity(sev), actionFlags(flags), hostState(hostState),
             hmcState(hmcState), plid(plid), deconfig(deconfig), guard(guard),
             creationTime(creationTime)

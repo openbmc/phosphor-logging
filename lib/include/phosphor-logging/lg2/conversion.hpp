@@ -29,8 +29,8 @@ namespace lg2::details
 template <typename T>
 concept string_like_type =
     (std::constructible_from<std::string_view, T> ||
-     std::same_as<std::filesystem::path,
-                  std::decay_t<T>>)&&!std::same_as<std::nullptr_t, T>;
+     std::same_as<std::filesystem::path, std::decay_t<T>>) &&
+    !std::same_as<std::nullptr_t, T>;
 
 /** Concept to determine if an item acts like a pointer.
  *
@@ -38,8 +38,9 @@ concept string_like_type =
  *  pointer.
  */
 template <typename T>
-concept pointer_type = (std::is_pointer_v<T> ||
-                        std::same_as<std::nullptr_t, T>)&&!string_like_type<T>;
+concept pointer_type =
+    (std::is_pointer_v<T> || std::same_as<std::nullptr_t, T>) &&
+    !string_like_type<T>;
 
 /** Concept to determine if an item acts like an unsigned_integral.
  *
@@ -362,9 +363,9 @@ class log_conversion
             }
         };
 
-        std::apply([squash_string](
-                       const auto&... args) { done(squash_string(args)...); },
-                   args_tuple);
+        std::apply([squash_string](const auto&... args) {
+            done(squash_string(args)...);
+        }, args_tuple);
     }
 
     /** Handle conversion of a { Header, Flags, Value } argument set. */
