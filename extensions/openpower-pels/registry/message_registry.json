@@ -1,4 +1,4 @@
-{
+
     "PELs": [
         {
             "Name": "xyz.openbmc_project.Common.Error.Timeout",
@@ -6834,7 +6834,7 @@
                     "CalloutList": [
                         {
                             "Priority": "high",
-                            "Procedure": "next_level_support"
+                            "Procedure": "BMC0002"
                         }
                     ]
                 }
