@@ -6492,7 +6492,7 @@
             "Name": "xyz.openbmc_project.PLDM.Error.SetHostEffecterFailed",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
-            "Severity": "unrecoverable",
+            "Severity": "non_error",
             "SRC": {
                 "ReasonCode": "0x6017",
                 "Words6To9": {}
