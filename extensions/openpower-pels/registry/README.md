@@ -329,6 +329,16 @@ callouts in the registry.
 
 There is room for up to 10 callouts in a PEL.
 
+The callouts based on system type can be added in two ways, by using either a
+key called `System` or by `Systems`.
+
+The `System` key will accept the system name as a string and the user can add
+the callouts specific to that system under the `System`.
+
+Suppose if multiple systems have same callouts, the `Systems` key can be used.
+The `Systems` can accept the system names as an array of strings and the list of
+callouts common to those systems can be listed under the key.
+
 Available maintenance procedures are listed [here][1] and in the source code
 [here][2].
 
@@ -373,9 +383,60 @@ this code for instructions.
 
 ```
 
-The above example shows that on system 'system1', the FRU at location P1-C1 will
+The above example shows that on system `system1`, the FRU at location P1-C1 will
 be called out with a priority of high, and the FRU at P1 with a priority of low.
 On every other system, the maintenance procedure BMC0002 is called out.
+
+#### Callouts example based on the Systems type
+
+```json
+"Callouts":
+[
+    {
+        "Systems": ["system1", "system2"],
+        "CalloutList":
+        [
+            {
+                "Priority": "high",
+                "LocCode": "P1-C1"
+            },
+            {
+                "Priority": "low",
+                "LocCode": "P1"
+            }
+        ]
+    },
+    {
+        "System": "system1",
+        "CalloutList":
+        [
+            {
+                "Priority": "low",
+                "SymbolicFRU": "service_docs"
+            },
+            {
+                "Priority": "low",
+                "SymbolicFRUTrusted": "air_mover",
+                "UseInventoryLocCode": true
+            }
+        ]
+    },
+    {
+        "CalloutList":
+        [
+            {
+                "Priority": "medium",
+                "Procedure": "BMC0001"
+            }
+        ]
+    }
+]
+```
+
+The above example shows that on `system1`, the FRU at location P1-C1, P1,
+service_docs and air_mover will be called out. For `system2`, the FRU at
+location P1-C1, P1 will be called out. On every other system, the maintenance
+procedure BMC0001 is called out.
 
 #### Callouts example based on an AdditionalData field
 

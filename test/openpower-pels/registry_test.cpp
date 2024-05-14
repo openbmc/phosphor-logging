@@ -423,7 +423,7 @@ TEST_F(RegistryTest, TestGetComponentID)
 // Test when callouts are in the JSON.
 TEST_F(RegistryTest, TestGetCallouts)
 {
-    std::vector<std::string> names;
+    std::vector<std::string> systemNames;
 
     {
         // Callouts without AD, that depend on system type,
@@ -471,9 +471,9 @@ TEST_F(RegistryTest, TestGetCallouts)
         ])"_json;
 
         AdditionalData ad;
-        names.push_back("system1");
+        systemNames.push_back("system1");
 
-        auto callouts = Registry::getCallouts(json, names, ad);
+        auto callouts = Registry::getCallouts(json, systemNames, ad);
         EXPECT_EQ(callouts.size(), 4);
         EXPECT_EQ(callouts[0].priority, "high");
         EXPECT_EQ(callouts[0].locCode, "P1-C1");
@@ -498,8 +498,8 @@ TEST_F(RegistryTest, TestGetCallouts)
         EXPECT_EQ(callouts[3].useInventoryLocCode, true);
 
         // system2 isn't in the JSON, so it will pick the default one
-        names[0] = "system2";
-        callouts = Registry::getCallouts(json, names, ad);
+        systemNames[0] = "system2";
+        callouts = Registry::getCallouts(json, systemNames, ad);
         EXPECT_EQ(callouts.size(), 2);
         EXPECT_EQ(callouts[0].priority, "medium");
         EXPECT_EQ(callouts[0].locCode, "");
@@ -517,8 +517,8 @@ TEST_F(RegistryTest, TestGetCallouts)
     {
         auto json = R"([])"_json;
         AdditionalData ad;
-        names[0] = "system1";
-        EXPECT_THROW(Registry::getCallouts(json, names, ad),
+        systemNames[0] = "system1";
+        EXPECT_THROW(Registry::getCallouts(json, systemNames, ad),
                      std::runtime_error);
     }
 
@@ -557,9 +557,9 @@ TEST_F(RegistryTest, TestGetCallouts)
         ])"_json;
 
         AdditionalData ad;
-        names[0] = "system1";
+        systemNames[0] = "system1";
 
-        auto callouts = Registry::getCallouts(json, names, ad);
+        auto callouts = Registry::getCallouts(json, systemNames, ad);
         EXPECT_EQ(callouts.size(), 2);
         EXPECT_EQ(callouts[0].priority, "high");
         EXPECT_EQ(callouts[0].locCode, "P1-C1");
@@ -572,8 +572,8 @@ TEST_F(RegistryTest, TestGetCallouts)
         EXPECT_EQ(callouts[1].symbolicFRU, "1234567");
         EXPECT_EQ(callouts[1].symbolicFRUTrusted, "");
 
-        names[0] = "system2";
-        callouts = Registry::getCallouts(json, names, ad);
+        systemNames[0] = "system2";
+        callouts = Registry::getCallouts(json, systemNames, ad);
         EXPECT_EQ(callouts.size(), 1);
         EXPECT_EQ(callouts[0].priority, "medium");
         EXPECT_EQ(callouts[0].locCode, "P7");
@@ -583,8 +583,8 @@ TEST_F(RegistryTest, TestGetCallouts)
 
         // There is no entry for system3 or a default system,
         // so this should fail.
-        names[0] = "system3";
-        EXPECT_THROW(Registry::getCallouts(json, names, ad),
+        systemNames[0] = "system3";
+        EXPECT_THROW(Registry::getCallouts(json, systemNames, ad),
                      std::runtime_error);
     }
 
@@ -655,9 +655,9 @@ TEST_F(RegistryTest, TestGetCallouts)
             // Find callouts for PROC_NUM 0 on system3
             std::vector<std::string> adData{"PROC_NUM=0"};
             AdditionalData ad{adData};
-            names[0] = "system3";
+            systemNames[0] = "system3";
 
-            auto callouts = Registry::getCallouts(json, names, ad);
+            auto callouts = Registry::getCallouts(json, systemNames, ad);
             EXPECT_EQ(callouts.size(), 3);
             EXPECT_EQ(callouts[0].priority, "high");
             EXPECT_EQ(callouts[0].locCode, "P1-C5");
@@ -676,9 +676,9 @@ TEST_F(RegistryTest, TestGetCallouts)
             EXPECT_EQ(callouts[2].symbolicFRUTrusted, "");
 
             // Find callouts for PROC_NUM 0 that uses the default system entry.
-            names[0] = "system99";
+            systemNames[0] = "system99";
 
-            callouts = Registry::getCallouts(json, names, ad);
+            callouts = Registry::getCallouts(json, systemNames, ad);
             EXPECT_EQ(callouts.size(), 1);
             EXPECT_EQ(callouts[0].priority, "low");
             EXPECT_EQ(callouts[0].locCode, "P55");
@@ -690,9 +690,9 @@ TEST_F(RegistryTest, TestGetCallouts)
             // Find callouts for PROC_NUM 1 that uses a default system entry.
             std::vector<std::string> adData{"PROC_NUM=1"};
             AdditionalData ad{adData};
-            names[0] = "system1";
+            systemNames[0] = "system1";
 
-            auto callouts = Registry::getCallouts(json, names, ad);
+            auto callouts = Registry::getCallouts(json, systemNames, ad);
             EXPECT_EQ(callouts.size(), 1);
             EXPECT_EQ(callouts[0].priority, "high");
             EXPECT_EQ(callouts[0].locCode, "P1-C6");
@@ -705,7 +705,7 @@ TEST_F(RegistryTest, TestGetCallouts)
             std::vector<std::string> adData{"PROC_NUM=2"};
             AdditionalData ad{adData};
 
-            auto callouts = Registry::getCallouts(json, names, ad);
+            auto callouts = Registry::getCallouts(json, systemNames, ad);
             EXPECT_TRUE(callouts.empty());
         }
     }
@@ -750,13 +750,387 @@ TEST_F(RegistryTest, TestGetCallouts)
         // so it should choose the P1-C1 callout.
         std::vector<std::string> adData{"PROC_NUM=8"};
         AdditionalData ad{adData};
-        names.clear();
+        systemNames.clear();
 
-        auto callouts = Registry::getCallouts(json, names, ad);
+        auto callouts = Registry::getCallouts(json, systemNames, ad);
         EXPECT_EQ(callouts.size(), 1);
         EXPECT_EQ(callouts[0].priority, "medium");
         EXPECT_EQ(callouts[0].locCode, "P1-C1");
     }
+}
+
+TEST_F(RegistryTest, TestGetCalloutsWithSystems)
+{
+    std::vector<std::string> systemNames;
+
+    auto json = R"(
+        [
+        {
+            "Systems": ["system1", "system2"],
+            "CalloutList":
+            [
+                {
+                    "Priority": "high",
+                    "LocCode": "P1-C1"
+                },
+                {
+                    "Priority": "low",
+                    "LocCode": "P1"
+                },
+                {
+                    "Priority": "low",
+                    "SymbolicFRU": "service_docs"
+                },
+                {
+                    "Priority": "low",
+                    "SymbolicFRUTrusted": "air_mover",
+                    "UseInventoryLocCode": true
+                }
+            ]
+        },
+        {
+            "CalloutList":
+            [
+                {
+                    "Priority": "medium",
+                    "Procedure": "BMC0001"
+                },
+                {
+                    "Priority": "low",
+                    "LocCode": "P3-C8",
+                    "SymbolicFRUTrusted": "service_docs"
+                }
+            ]
+
+        }
+        ])"_json;
+
+    AdditionalData ad;
+    systemNames.push_back("system1");
+
+    auto callouts = Registry::getCallouts(json, systemNames, ad);
+    EXPECT_EQ(callouts.size(), 4);
+    EXPECT_EQ(callouts[0].priority, "high");
+    EXPECT_EQ(callouts[0].locCode, "P1-C1");
+    EXPECT_EQ(callouts[0].procedure, "");
+    EXPECT_EQ(callouts[0].symbolicFRU, "");
+    EXPECT_EQ(callouts[0].symbolicFRUTrusted, "");
+    EXPECT_EQ(callouts[1].priority, "low");
+    EXPECT_EQ(callouts[1].locCode, "P1");
+    EXPECT_EQ(callouts[1].procedure, "");
+    EXPECT_EQ(callouts[1].symbolicFRU, "");
+    EXPECT_EQ(callouts[1].symbolicFRUTrusted, "");
+    EXPECT_EQ(callouts[2].priority, "low");
+    EXPECT_EQ(callouts[2].locCode, "");
+    EXPECT_EQ(callouts[2].procedure, "");
+    EXPECT_EQ(callouts[2].symbolicFRU, "service_docs");
+    EXPECT_EQ(callouts[2].symbolicFRUTrusted, "");
+    EXPECT_EQ(callouts[3].priority, "low");
+    EXPECT_EQ(callouts[3].locCode, "");
+    EXPECT_EQ(callouts[3].procedure, "");
+    EXPECT_EQ(callouts[3].symbolicFRU, "");
+    EXPECT_EQ(callouts[3].symbolicFRUTrusted, "air_mover");
+    EXPECT_EQ(callouts[3].useInventoryLocCode, true);
+
+    // System3 isn't in the JSON, so it will pick the default one
+    systemNames[0] = "system3";
+
+    callouts = Registry::getCallouts(json, systemNames, ad);
+    EXPECT_EQ(callouts.size(), 2);
+    EXPECT_EQ(callouts[0].priority, "medium");
+    EXPECT_EQ(callouts[0].locCode, "");
+    EXPECT_EQ(callouts[0].procedure, "BMC0001");
+    EXPECT_EQ(callouts[0].symbolicFRU, "");
+    EXPECT_EQ(callouts[1].priority, "low");
+    EXPECT_EQ(callouts[1].locCode, "P3-C8");
+    EXPECT_EQ(callouts[1].procedure, "");
+    EXPECT_EQ(callouts[1].symbolicFRU, "");
+    EXPECT_EQ(callouts[1].symbolicFRUTrusted, "service_docs");
+    EXPECT_EQ(callouts[1].useInventoryLocCode, false);
+}
+
+TEST_F(RegistryTest, TestGetCalloutsWithSystemAndSystems)
+{
+    std::vector<std::string> systemNames;
+
+    auto json = R"(
+        [
+        {
+            "Systems": ["system1", "system2"],
+            "CalloutList":
+            [
+                {
+                    "Priority": "high",
+                    "LocCode": "P1-C1"
+                },
+                {
+                    "Priority": "low",
+                    "LocCode": "P1"
+                }
+            ]
+        },
+        {
+            "System": "system1",
+            "CalloutList":
+            [
+                {
+                    "Priority": "low",
+                    "SymbolicFRU": "service_docs"
+                },
+                {
+                    "Priority": "low",
+                    "SymbolicFRUTrusted": "air_mover",
+                    "UseInventoryLocCode": true
+                }
+            ]
+        },
+        {
+            "CalloutList":
+            [
+                {
+                    "Priority": "medium",
+                    "Procedure": "BMC0001"
+                },
+                {
+                    "Priority": "low",
+                    "LocCode": "P3-C8",
+                    "SymbolicFRUTrusted": "service_docs"
+                }
+            ]
+        }
+        ])"_json;
+
+    AdditionalData ad;
+    systemNames.push_back("system1");
+
+    auto callouts = Registry::getCallouts(json, systemNames, ad);
+    EXPECT_EQ(callouts.size(), 4);
+    EXPECT_EQ(callouts[0].priority, "high");
+    EXPECT_EQ(callouts[0].locCode, "P1-C1");
+    EXPECT_EQ(callouts[0].procedure, "");
+    EXPECT_EQ(callouts[0].symbolicFRU, "");
+    EXPECT_EQ(callouts[0].symbolicFRUTrusted, "");
+    EXPECT_EQ(callouts[1].priority, "low");
+    EXPECT_EQ(callouts[1].locCode, "P1");
+    EXPECT_EQ(callouts[1].procedure, "");
+    EXPECT_EQ(callouts[1].symbolicFRU, "");
+    EXPECT_EQ(callouts[1].symbolicFRUTrusted, "");
+    EXPECT_EQ(callouts[2].priority, "low");
+    EXPECT_EQ(callouts[2].locCode, "");
+    EXPECT_EQ(callouts[2].procedure, "");
+    EXPECT_EQ(callouts[2].symbolicFRU, "service_docs");
+    EXPECT_EQ(callouts[2].symbolicFRUTrusted, "");
+    EXPECT_EQ(callouts[3].priority, "low");
+    EXPECT_EQ(callouts[3].locCode, "");
+    EXPECT_EQ(callouts[3].procedure, "");
+    EXPECT_EQ(callouts[3].symbolicFRU, "");
+    EXPECT_EQ(callouts[3].symbolicFRUTrusted, "air_mover");
+    EXPECT_EQ(callouts[3].useInventoryLocCode, true);
+
+    // if system name is "System2"
+    systemNames[0] = "system2";
+
+    callouts = Registry::getCallouts(json, systemNames, ad);
+    EXPECT_EQ(callouts.size(), 2);
+    EXPECT_EQ(callouts[0].priority, "high");
+    EXPECT_EQ(callouts[0].locCode, "P1-C1");
+    EXPECT_EQ(callouts[0].procedure, "");
+    EXPECT_EQ(callouts[0].symbolicFRU, "");
+    EXPECT_EQ(callouts[0].symbolicFRUTrusted, "");
+    EXPECT_EQ(callouts[1].priority, "low");
+    EXPECT_EQ(callouts[1].locCode, "P1");
+    EXPECT_EQ(callouts[1].procedure, "");
+    EXPECT_EQ(callouts[1].symbolicFRU, "");
+    EXPECT_EQ(callouts[1].symbolicFRUTrusted, "");
+
+    // system name is System3 which is not in json thereby will take default
+    systemNames[0] = "system3";
+
+    callouts = Registry::getCallouts(json, systemNames, ad);
+    EXPECT_EQ(callouts.size(), 2);
+    EXPECT_EQ(callouts[0].priority, "medium");
+    EXPECT_EQ(callouts[0].locCode, "");
+    EXPECT_EQ(callouts[0].procedure, "BMC0001");
+    EXPECT_EQ(callouts[0].symbolicFRU, "");
+    EXPECT_EQ(callouts[1].priority, "low");
+    EXPECT_EQ(callouts[1].locCode, "P3-C8");
+    EXPECT_EQ(callouts[1].procedure, "");
+    EXPECT_EQ(callouts[1].symbolicFRU, "");
+    EXPECT_EQ(callouts[1].symbolicFRUTrusted, "service_docs");
+    EXPECT_EQ(callouts[1].useInventoryLocCode, false);
+}
+
+TEST_F(RegistryTest, TestGetCalloutsWithOnlySystemAndSystems)
+{
+    std::vector<std::string> systemNames;
+
+    auto json = R"(
+        [
+        {
+            "Systems": ["system1", "system2"],
+            "CalloutList":
+            [
+                {
+                    "Priority": "high",
+                    "LocCode": "P1-C1"
+                },
+                {
+                    "Priority": "low",
+                    "LocCode": "P1"
+                }
+            ]
+        },
+        {
+            "System": "system1",
+            "CalloutList":
+            [
+                {
+                    "Priority": "low",
+                    "SymbolicFRU": "service_docs"
+                },
+                {
+                    "Priority": "low",
+                    "SymbolicFRUTrusted": "air_mover",
+                    "UseInventoryLocCode": true
+                }
+            ]
+        }
+        ])"_json;
+
+    AdditionalData ad;
+    systemNames.push_back("system1");
+
+    auto callouts = Registry::getCallouts(json, systemNames, ad);
+    EXPECT_EQ(callouts.size(), 4);
+    EXPECT_EQ(callouts[0].priority, "high");
+    EXPECT_EQ(callouts[0].locCode, "P1-C1");
+    EXPECT_EQ(callouts[0].procedure, "");
+    EXPECT_EQ(callouts[0].symbolicFRU, "");
+    EXPECT_EQ(callouts[0].symbolicFRUTrusted, "");
+    EXPECT_EQ(callouts[1].priority, "low");
+    EXPECT_EQ(callouts[1].locCode, "P1");
+    EXPECT_EQ(callouts[1].procedure, "");
+    EXPECT_EQ(callouts[1].symbolicFRU, "");
+    EXPECT_EQ(callouts[1].symbolicFRUTrusted, "");
+    EXPECT_EQ(callouts[2].priority, "low");
+    EXPECT_EQ(callouts[2].locCode, "");
+    EXPECT_EQ(callouts[2].procedure, "");
+    EXPECT_EQ(callouts[2].symbolicFRU, "service_docs");
+    EXPECT_EQ(callouts[2].symbolicFRUTrusted, "");
+    EXPECT_EQ(callouts[3].priority, "low");
+    EXPECT_EQ(callouts[3].locCode, "");
+    EXPECT_EQ(callouts[3].procedure, "");
+    EXPECT_EQ(callouts[3].symbolicFRU, "");
+    EXPECT_EQ(callouts[3].symbolicFRUTrusted, "air_mover");
+    EXPECT_EQ(callouts[3].useInventoryLocCode, true);
+
+    // if system name is "System2"
+    systemNames[0] = "system2";
+
+    callouts = Registry::getCallouts(json, systemNames, ad);
+    EXPECT_EQ(callouts.size(), 2);
+    EXPECT_EQ(callouts[0].priority, "high");
+    EXPECT_EQ(callouts[0].locCode, "P1-C1");
+    EXPECT_EQ(callouts[0].procedure, "");
+    EXPECT_EQ(callouts[0].symbolicFRU, "");
+    EXPECT_EQ(callouts[0].symbolicFRUTrusted, "");
+    EXPECT_EQ(callouts[1].priority, "low");
+    EXPECT_EQ(callouts[1].locCode, "P1");
+    EXPECT_EQ(callouts[1].procedure, "");
+    EXPECT_EQ(callouts[1].symbolicFRU, "");
+    EXPECT_EQ(callouts[1].symbolicFRUTrusted, "");
+
+    // There is no entry for system3 or a default system,
+    // so this should fail.
+    systemNames[0] = "system3";
+    EXPECT_THROW(Registry::getCallouts(json, systemNames, ad),
+                 std::runtime_error);
+}
+
+TEST_F(RegistryTest, TestGetCalloutsWithOnlySystems)
+{
+    std::vector<std::string> systemNames;
+
+    auto json = R"(
+        [
+        {
+            "Systems": ["system1", "system2"],
+            "CalloutList":
+            [
+                {
+                    "Priority": "high",
+                    "LocCode": "P1-C1"
+                },
+                {
+                    "Priority": "low",
+                    "LocCode": "P1"
+                }
+            ]
+        }
+        ])"_json;
+
+    AdditionalData ad;
+    systemNames.push_back("system1");
+
+    // system1 is available in JSON array
+    auto callouts = Registry::getCallouts(json, systemNames, ad);
+    EXPECT_EQ(callouts.size(), 2);
+    EXPECT_EQ(callouts[0].priority, "high");
+    EXPECT_EQ(callouts[0].locCode, "P1-C1");
+    EXPECT_EQ(callouts[0].procedure, "");
+    EXPECT_EQ(callouts[0].symbolicFRU, "");
+    EXPECT_EQ(callouts[0].symbolicFRUTrusted, "");
+    EXPECT_EQ(callouts[1].priority, "low");
+    EXPECT_EQ(callouts[1].locCode, "P1");
+    EXPECT_EQ(callouts[1].procedure, "");
+    EXPECT_EQ(callouts[1].symbolicFRU, "");
+    EXPECT_EQ(callouts[1].symbolicFRUTrusted, "");
+
+    // There is no entry for system3 or a default system,
+    // so this should fail.
+    systemNames[0] = "system3";
+    EXPECT_THROW(Registry::getCallouts(json, systemNames, ad),
+                 std::runtime_error);
+}
+
+TEST_F(RegistryTest, TestGetCalloutsWithOnlyDefaults)
+{
+    std::vector<std::string> systemNames;
+
+    auto json = R"(
+        [
+        {
+            "CalloutList":
+            [
+                {
+                    "Priority": "high",
+                    "LocCode": "P1-C1"
+                },
+                {
+                    "Priority": "low",
+                    "LocCode": "P1"
+                }
+            ]
+        }
+        ])"_json;
+
+    AdditionalData ad;
+    systemNames.push_back("system1");
+
+    // Since neither System or Systems available, it will pick the default one
+    // only
+    auto callouts = Registry::getCallouts(json, systemNames, ad);
+    EXPECT_EQ(callouts.size(), 2);
+    EXPECT_EQ(callouts[0].priority, "high");
+    EXPECT_EQ(callouts[0].locCode, "P1-C1");
+    EXPECT_EQ(callouts[0].procedure, "");
+    EXPECT_EQ(callouts[0].symbolicFRU, "");
+    EXPECT_EQ(callouts[0].symbolicFRUTrusted, "");
+    EXPECT_EQ(callouts[1].priority, "low");
+    EXPECT_EQ(callouts[1].locCode, "P1");
+    EXPECT_EQ(callouts[1].procedure, "");
+    EXPECT_EQ(callouts[1].symbolicFRU, "");
+    EXPECT_EQ(callouts[1].symbolicFRUTrusted, "");
 }
 
 TEST_F(RegistryTest, TestNoSubsystem)

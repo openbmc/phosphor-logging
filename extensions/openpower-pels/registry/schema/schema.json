@@ -642,6 +642,15 @@
             "minLength": 1
         },
 
+        "systems": {
+            "description": "The Systems key can be defined and can be used to keep the name of the systems as an array of string if the systems possess same callout list.",
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "minItems": 1
+        },
+
         "callouts": {
             "description": "This contains callouts that can vary based on system type.  Each entry contains an optional System property and a required CalloutList property.  If the System property is left out it indicates that the CalloutList callouts are valid for every system type, unless there is another Callouts entry that has a matching System property, in which case that entry is valid.",
             "type": "array",
@@ -650,11 +659,22 @@
 
                 "properties": {
                     "System": { "$ref": "#/definitions/system" },
+                    "Systems": { "$ref": "#/definitions/systems" },
                     "CalloutList": { "$ref": "#/definitions/calloutList" }
                 },
-                "required": ["CalloutList"],
                 "additionalProperties": false
             },
+            "anyOf": [
+                {
+                    "required": ["System", "CalloutList"]
+                },
+                {
+                    "required": ["Systems", "CalloutList"]
+                },
+                {
+                    "required": ["CalloutList"]
+                }
+            ],
             "minItems": 1,
             "maxItems": 10,
 
@@ -663,6 +683,10 @@
                     {
                         "System": "system1",
                         "CalloutList": [{ "Priority": "high", "LocCode": "P1" }]
+                    },
+                    {
+                        "Systems": ["system1", "system2"],
+                        "CalloutList": [{ "Priority": "low", "LocCode": "P2" }]
                     },
                     {
                         "CalloutList": [
