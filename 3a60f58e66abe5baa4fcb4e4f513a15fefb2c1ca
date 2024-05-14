@@ -1,6 +1,40 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "52e9102e_a6d61996",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-05-14T19:14:32Z",
+      "side": 1,
+      "message": "One can also use event log subscriptions via Redfish to get event log notifications (I don\u0027t know the exact details).",
+      "revId": "3a60f58e66abe5baa4fcb4e4f513a15fefb2c1ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "414e601a_75afa292",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-05-14T19:14:32Z",
+      "side": 1,
+      "message": "This is certainly ugly with all of the field duplication ...\n\nI suppose you want it in case the message from sellogger doesn\u0027t include the relevant info?",
+      "revId": "3a60f58e66abe5baa4fcb4e4f513a15fefb2c1ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "e5afd252_761703e1",
@@ -50,6 +84,23 @@
       "side": 1,
       "message": "Hello Matt,\n\nPlease do not let this one slip through the cracks again, if there\u0027s something wrong about my understanding please help me see it so we can continue with the cleanest way possible.",
       "parentUuid": "8d93cef9_5524fd1d",
+      "revId": "3a60f58e66abe5baa4fcb4e4f513a15fefb2c1ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bbfa754_48c8876f",
+        "filename": "log_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-05-14T19:14:32Z",
+      "side": 1,
+      "message": "I think this should have a meson option to enable it, and would prefer it default to disabled.\n\nAs of now there\u0027s pretty much no chance my systems would ever use rsyslog functionality to scrape event logs, so would rather not have these take up space in the journal.  Also, some event logs have fairly large additional data properties that would be a mess to have to deal with when trying to manually debug using the journal.",
       "revId": "3a60f58e66abe5baa4fcb4e4f513a15fefb2c1ca",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
