@@ -21,6 +21,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <algorithm>
 #include <fstream>
 
 namespace openpower
@@ -330,10 +331,19 @@ bool calloutUsesAdditionalData(const nlohmann::json& json)
  * @brief Finds the callouts to use when there is no AdditionalData,
  *        but the system type may be used as a key.
  *
- * One entry in the array looks like the following.  The System key
- * is optional and if not present it means that entry applies to
- * every configuration that doesn't have another entry with a matching
- * System key.
+ * A sample calloutList array looks like the following.  The System and Systems
+ * key are optional.
+ *
+ * System key - Value of the key will be the system name as a string. The
+ * callouts for a specific system can define under this key.
+ *
+ * Systems key - Value of the key will be an array of system names in the form
+ * of string. The callouts common to the systems mentioned in the array can
+ * define under this key.
+ *
+ * If both System and Systems not present it means that entry applies to every
+ * configuration that doesn't have another entry with a matching System and
+ * Systems key.
  *
  *    {
  *        "System": "system1",
@@ -348,42 +358,85 @@ bool calloutUsesAdditionalData(const nlohmann::json& json)
  *                "LocCode": "P1"
  *            }
  *        ]
+ *    },
+ *    {
+ *        "Systems": ["system1", 'system2"],
+ *        "CalloutList":
+ *        [
+ *            {
+ *                "Priority": "high",
+ *                "LocCode": "P0-C1"
+ *            },
+ *            {
+ *                "Priority": "low",
+ *                "LocCode": "P0"
+ *            }
+ *        ]
  *    }
+ *
+ * @param[in] json - The callout JSON
+ * @param[in] systemNames - List of compatible system type names
+ * @param[out] calloutLists - The JSON array which will hold the calloutlist to
+ * use specific to the system.
+ *
+ * @return - Throws runtime exception if json is not an array or if calloutLists
+ *           is empty.
  */
-const nlohmann::json&
-    findCalloutList(const nlohmann::json& json,
-                    const std::vector<std::string>& systemNames)
+static void findCalloutList(const nlohmann::json& json,
+                            const std::vector<std::string>& systemNames,
+                            nlohmann::json& calloutLists)
 {
-    const nlohmann::json* callouts = nullptr;
-
     if (!json.is_array())
     {
         throw std::runtime_error{"findCalloutList was not passed a JSON array"};
     }
 
-    // The entry with the system type match will take precedence over the entry
-    // without any "System" field in it at all, which will match all other
-    // cases.
-    for (const auto& calloutList : json)
+    // Flag to indicate whether system specific callouts found or not
+    bool foundCallouts = false;
+
+    for (const auto& callouts : json)
     {
-        if (calloutList.contains("System"))
+        if (callouts.contains("System"))
         {
-            if (std::find(systemNames.begin(), systemNames.end(),
-                          calloutList["System"].get<std::string>()) !=
+            if (std::ranges::find(systemNames,
+                                  callouts["System"].get<std::string>()) !=
                 systemNames.end())
             {
-                callouts = &calloutList["CalloutList"];
-                break;
+                calloutLists.insert(calloutLists.end(),
+                                    callouts["CalloutList"].begin(),
+                                    callouts["CalloutList"].end());
+                foundCallouts = true;
             }
+            continue;
         }
-        else
+
+        if (callouts.contains("Systems"))
         {
-            // Any entry with no System key
-            callouts = &calloutList["CalloutList"];
+            std::vector<std::string> systems =
+                callouts["Systems"].get<std::vector<std::string>>();
+            auto inSystemNames = [systemNames](const auto& system) {
+                return (std::ranges::find(systemNames, system) !=
+                        systemNames.end());
+            };
+            if (std::ranges::any_of(systems, inSystemNames))
+            {
+                calloutLists.insert(calloutLists.end(),
+                                    callouts["CalloutList"].begin(),
+                                    callouts["CalloutList"].end());
+                foundCallouts = true;
+            }
+            continue;
+        }
+
+        // Any entry if neither System/Systems key matches with system name
+        if (!foundCallouts)
+        {
+            calloutLists.insert(calloutLists.end(),
+                                callouts["CalloutList"].begin(),
+                                callouts["CalloutList"].end());
         }
     }
-
-    if (!callouts)
+    if (calloutLists.empty())
     {
         std::string types;
         std::for_each(systemNames.begin(), systemNames.end(),
@@ -396,8 +449,6 @@ const nlohmann::json&
         throw std::runtime_error{
             "Could not find a CalloutList JSON for this error and system name"};
     }
-
-    return *callouts;
 }
 
 /**
@@ -464,18 +515,34 @@ RegistryCallout makeRegistryCallout(const nlohmann::json& json)
  *       everything.
  *
  * The JSON looks like:
- *    [
- *        {
- *            "System": "systemA",
- *            "CalloutList":
- *            [
- *                {
- *                    "Priority": "high",
- *                    "LocCode": "P1-C5"
- *                }
- *            ]
- *         }
- *    ]
+ *    {
+ *        "System": "system1",
+ *        "CalloutList":
+ *        [
+ *            {
+ *                "Priority": "high",
+ *                "LocCode": "P1-C1"
+ *            },
+ *            {
+ *                "Priority": "low",
+ *                "LocCode": "P1"
+ *            }
+ *        ]
+ *    },
+ *    {
+ *        "Systems": ["system1", 'system2"],
+ *        "CalloutList":
+ *        [
+ *            {
+ *                "Priority": "high",
+ *                "LocCode": "P0-C1"
+ *            },
+ *            {
+ *                "Priority": "low",
+ *                "LocCode": "P0"
+ *            }
+ *        ]
+ *    }
  *
  * @param[in] json - The callout JSON
  * @param[in] systemNames - List of compatible system type names
@@ -488,11 +555,13 @@ std::vector<RegistryCallout>
 {
     std::vector<RegistryCallout> calloutEntries;
 
+    nlohmann::json calloutLists = nlohmann::json::array();
+
     // Find the CalloutList to use based on the system type
-    const auto& calloutList = findCalloutList(json, systemNames);
+    findCalloutList(json, systemNames, calloutLists);
 
     // We finally found the callouts, make the objects.
-    for (const auto& callout : calloutList)
+    for (const auto& callout : calloutLists)
     {
         calloutEntries.push_back(std::move(makeRegistryCallout(callout)));
     }
