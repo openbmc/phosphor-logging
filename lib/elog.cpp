@@ -51,6 +51,19 @@ uint32_t commit(const char* name, Entry::Level level)
     reply.read(entryID);
     return entryID;
 }
+
+uint32_t commit(const char* name, std::vector<std::string>& metadata)
+{
+    auto msg = _prepareMsg("CommitWithMetadata");
+    uint64_t id = sdbusplus::server::transaction::get_id();
+    msg.append(id, name, metadata);
+    auto bus = sdbusplus::bus::new_default();
+    auto reply = bus.call(msg);
+    uint32_t entryID;
+    reply.read(entryID);
+    return entryID;
+}
+
 } // namespace details
 
 uint32_t commit(std::string&& name)
