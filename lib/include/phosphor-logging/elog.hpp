@@ -6,6 +6,7 @@
 
 #include <tuple>
 #include <utility>
+#include <vector>
 
 namespace phosphor
 {
@@ -107,6 +108,12 @@ uint32_t commit(const char* name);
  */
 uint32_t commit(const char* name, Entry::Level level);
 
+/** @fn commit() - override that accepts metadata
+ *
+ *  @return The entry ID
+ */
+uint32_t commit(const char* name, const std::vector<std::string>& metadata);
+
 } // namespace details
 
 /** @fn commit()
@@ -156,6 +163,21 @@ uint32_t commit(Entry::Level level)
         "T must NOT be an sdbusplus::generated_event");
 
     return details::commit(T::errName, level);
+}
+
+/** @fn commit()
+ *  @brief Create an error log entry don't based on journal
+ *  @param[in] level - level of the error
+ *
+ *  @return The entry ID
+ */
+template <typename T>
+uint32_t commit(std::vector<std::string>& metadata)
+{
+    // Validate if the exception is derived from sdbusplus::exception.
+    static_assert(std::is_base_of<sdbusplus::exception_t, T>::value,
+                  "T must be a descendant of sdbusplus::exception_t");
+    return details::commit(T::errName, metadata);
 }
 
 /** @fn elog()
@@ -247,6 +269,58 @@ uint32_t report(Entry::Level level, Args... i_args)
         T::errDesc, details::deduce_entry_type<Args>{i_args}.get()...);
 
     return commit<T>(level);
+}
+
+template <typename T>
+void add_to_metadata(std::vector<std::string>& metadata, const T& arg)
+{
+    static_assert(std::is_same<decltype(arg.to_string()), std::string>::value,
+                  "The argument must have a to_string() method");
+
+    metadata.push_back(arg.to_string());
+}
+
+/** @fn report()
+ *  @brief Create a journal log entry based on predefined
+ *         error log information and commit the error. generate
+ *         metadata from the arguments passed in and commit to dbus.
+ *  @tparam T - exception
+ *  @param[in] i_args - Metadata fields to be added to the journal entry
+ *
+ *  @return The entry ID
+ */
+
+template <typename T, typename... Args>
+uint32_t report_metadata(Args... i_args)
+{
+    // validate if the exception is derived from sdbusplus::exception.
+    static_assert(std::is_base_of<sdbusplus::exception_t, T>::value,
+                  "T must be a descendant of sdbusplus::exception_t");
+
+    // Validate the caller passed in the required parameters
+    static_assert(
+        std::is_same<typename details::map_exception_type_t<T>::metadata_types,
+                     std::tuple<details::deduce_entry_type_t<Args>...>>::value,
+        "You are not passing in required arguments for this error");
+
+    std::vector<std::string> metadata;
+
+    (add_to_metadata(metadata, i_args), ...);
+
+    /* some app need to know the PID (inherit from journal) */
+    auto pid = std::find_if(metadata.begin(), metadata.end(),
+                            [](const std::string& str) {
+                                return str.find("_PID=") != std::string::npos;
+                            });
+    if (pid == metadata.end())
+    {
+        metadata.push_back("_PID=" + std::to_string(getpid()));
+    }
+
+    log<details::map_exception_type_t<T>::L>(
+        T::errDesc, details::deduce_entry_type<Args>{i_args}.get()...);
+
+    return commit<T>(metadata);
 }
 
 } // namespace logging

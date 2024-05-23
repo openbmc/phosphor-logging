@@ -10,6 +10,7 @@
 #include <string>
 #include <tuple>
 #include <type_traits>
+#include <inttypes.h>
 
 <%
 import inflection
@@ -72,6 +73,22 @@ struct ${b}
     static constexpr auto str_short = "${meta_data[b]['str_short']}";
     using type = std::tuple<std::decay_t<decltype("${meta_data[b]['str']}")>,${meta_data[b]['type']}>;
     explicit constexpr ${b}(${meta_data[b]['type']} a) : _entry(entry("${meta_data[b]['str']}", a)) {};
+    std::string to_string() const
+    {
+        std::array<char, 512> buf;
+        % if meta_data[b]['type'] == "uint64_t":
+            int n = std::snprintf(buf.data(), buf.size(), "%" PRIu64, std::get<1>(_entry));
+        % elif meta_data[b]['type'] == "int64_t":
+            int n = std::snprintf(buf.data(), buf.size(), "%" PRId64, std::get<1>(_entry));
+        % else:
+            int n = std::snprintf(buf.data(), buf.size(), "${meta_data[b]['str']}", std::get<1>(_entry));
+        % endif
+        if (n < 0)
+        {
+            return std::string();
+        }
+        return std::string(buf.data(), n);
+    }
     type _entry;
 };
         % endfor
