@@ -72,6 +72,16 @@ struct ${b}
     static constexpr auto str_short = "${meta_data[b]['str_short']}";
     using type = std::tuple<std::decay_t<decltype("${meta_data[b]['str']}")>,${meta_data[b]['type']}>;
     explicit constexpr ${b}(${meta_data[b]['type']} a) : _entry(entry("${meta_data[b]['str']}", a)) {};
+    std::string to_string() const
+    {
+        std::array<char, 512> buf;
+        int n = std::snprintf(buf.data(), buf.size(), "${meta_data[b]['str']}", std::get<1>(_entry)); // NOLINT
+        if (n < 0)
+        {
+            return std::string();
+        }
+        return std::string(buf.data(), n);
+    }
     type _entry;
 };
         % endfor
