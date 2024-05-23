@@ -80,6 +80,41 @@ uint32_t Manager::commitWithLvl(uint64_t transactionId, std::string errMsg,
     return entryId;
 }
 
+uint32_t Manager::commitWithMetadata(uint64_t transactionId [[maybe_unused]],
+                                     std::string errMsg,
+                                     std::vector<std::string> metadata)
+{
+    std::vector<std::string> additionalData{};
+    std::set<std::string> metalist;
+    auto level = getLevel(errMsg);
+
+    auto metamap = g_errMetaMap.find(errMsg);
+    if (metamap != g_errMetaMap.end())
+    {
+        metalist.insert(metamap->second.begin(), metamap->second.end());
+    }
+
+    for (auto i = metalist.cbegin(); i != metalist.cend(); i++)
+    {
+        auto meta = std::find_if(
+            metadata.cbegin(), metadata.cend(),
+            [&](const std::string& s) { return s.starts_with(*i + "="); });
+        if (meta != metadata.cend())
+        {
+            additionalData.emplace_back(*meta);
+        }
+        else
+        {
+            lg2::info("Failed to find metadata: {META_FIELD}", "META_FIELD",
+                      *i);
+        }
+    }
+
+    createEntry(errMsg, level, additionalData);
+
+    return entryId;
+}
+
 void Manager::_commit(uint64_t transactionId [[maybe_unused]],
                       std::string&& errMsg, Entry::Level errLvl)
 {

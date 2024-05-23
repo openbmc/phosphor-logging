@@ -101,6 +101,9 @@ class Manager : public details::ServerObject<details::ManagerIface>
     uint32_t commitWithLvl(uint64_t transactionId, std::string errMsg,
                            uint32_t errLvl) override;
 
+    uint32_t commitWithMetadata(uint64_t transactionId, std::string errMsg,
+                                std::vector<std::string> metadata) override;
+
     /** @brief Erase specified entry d-bus object
      *
      * @param[in] entryId - unique identifier of the entry

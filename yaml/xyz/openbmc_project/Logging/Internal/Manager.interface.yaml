@@ -47,3 +47,25 @@ methods:
             type: uint32
             description: >
                 The ID of the entry.
+    - name: CommitWithMetadata
+      description: >
+          Write the requested error/event entry with its associated metadata
+      parameters:
+          - name: transactionId
+            type: uint64
+            description: >
+                The unique identifier of the journal entry(ies) to be committed.
+          - name: errMsg
+            type: string
+            description: >
+                The error exception message associated with the error event log
+                to be committed.
+          - name: metadata
+            type: array[string]
+            description: >
+                The error metadata fields associated with the error event log
+      returns:
+          - name: entryID
+            type: uint32
+            description: >
+                The ID of the entry.
