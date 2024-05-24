@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bb7a67d3_e34b3121",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1001371
+      },
+      "writtenOn": "2024-05-24T05:55:14Z",
+      "side": 1,
+      "message": "yup, currently the log chain is:\n1, log generate app -\u003e journald\u0027\n2, log generate app -\u003e (dbus-call) logging\n3, logging notify(dbus) systemd sent signal to journald\n4, journald write file to local storage\n5, logging wait journald write done (we expect it, but in reality it is not.)\n6, get metadata...\n\nthe chain is too long, there are often difficult to diagnose and reproduce.",
+      "parentUuid": "88343574_3c102664",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 46
+      },
+      "revId": "422dd7f8fd094b3a00c189033280832c1eba4d1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "619f95eb_9b813c29",
         "filename": "lib/include/phosphor-logging/elog.hpp",
         "patchSetId": 3
