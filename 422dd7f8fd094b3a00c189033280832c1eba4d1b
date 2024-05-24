@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88343574_3c102664",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2024-05-24T02:52:14Z",
+      "side": 1,
+      "message": "This approach can mitigate issues by creating the log entry directly with metadata as the parameters of the call, instead of consuming the sd-journal.",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 46
+      },
+      "revId": "422dd7f8fd094b3a00c189033280832c1eba4d1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "619f95eb_9b813c29",
+        "filename": "lib/include/phosphor-logging/elog.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2024-05-24T02:52:14Z",
+      "side": 1,
+      "message": "Possibly `const \u0026`",
+      "range": {
+        "startLine": 115,
+        "startChar": 34,
+        "endLine": 115,
+        "endChar": 68
+      },
+      "revId": "422dd7f8fd094b3a00c189033280832c1eba4d1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d1c787b_1d150c56",
+        "filename": "tools/phosphor-logging/templates/elog-gen-template.mako.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2024-05-24T02:52:14Z",
+      "side": 1,
+      "message": "Need to check `if (n \u003c 0)` to handle the error case.",
+      "revId": "422dd7f8fd094b3a00c189033280832c1eba4d1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
