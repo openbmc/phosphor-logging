@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2caf9cbe_d6c8cbcb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-05-29T21:59:44Z",
+      "side": 1,
+      "message": "Have you seen https://gerrit.openbmc.org/c/openbmc/docs/+/71489 that also proposes removing the journal from event logs?  Maybe that never comes to fruition, or maybe it takes a very long time, but if nothing else is there anything in that doc that could help here?",
+      "revId": "422dd7f8fd094b3a00c189033280832c1eba4d1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d223b5c6_7e92f3c6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-05-29T21:59:44Z",
+      "side": 1,
+      "message": "So no changes needed at the call sites, right?",
+      "revId": "422dd7f8fd094b3a00c189033280832c1eba4d1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "88343574_3c102664",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
@@ -61,6 +95,23 @@
       "writtenOn": "2024-05-29T06:53:50Z",
       "side": 1,
       "message": "Hi, Friendly ping",
+      "revId": "422dd7f8fd094b3a00c189033280832c1eba4d1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94a38754_975bdcf4",
+        "filename": "lib/elog.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-05-29T21:59:44Z",
+      "side": 1,
+      "message": "I kinda liked how the other versions would automatically add _PID to the additional data by pulling it from the journal.  I there a way to still get that here?",
       "revId": "422dd7f8fd094b3a00c189033280832c1eba4d1b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
