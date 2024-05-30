@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fd87efd_37a61bf5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-05-30T08:37:34Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a05541b6_2b4418f4",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 7
+      },
+      "revId": "5d942adfd798bd3cad520056b8340530722ab9b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "47e9a6b6_016cbdd8",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-30T02:39:29Z",
       "side": 1,
       "message": "Suggestion: I think you could rephrase this sentence.\n\nThe `Systems` key can be used to define shared callouts for a group of systems.",
+      "range": {
+        "startLine": 13,
+        "startChar": 30,
+        "endLine": 14,
+        "endChar": 51
+      },
+      "revId": "5d942adfd798bd3cad520056b8340530722ab9b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd224535_b26549a9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-05-30T08:37:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "47e9a6b6_016cbdd8",
       "range": {
         "startLine": 13,
         "startChar": 30,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d971b174_6cbf76fb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-05-30T08:37:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6db1a58_54c2ac19",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 10
+      },
+      "revId": "5d942adfd798bd3cad520056b8340530722ab9b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c898ddbd_e1ae1d13",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-05-30T02:39:29Z",
       "side": 1,
       "message": "then default calloutList will be taken if configured??",
+      "range": {
+        "startLine": 18,
+        "startChar": 22,
+        "endLine": 18,
+        "endChar": 60
+      },
+      "revId": "5d942adfd798bd3cad520056b8340530722ab9b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7dedc62_5b94e27a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-05-30T08:37:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c898ddbd_e1ae1d13",
       "range": {
         "startLine": 18,
         "startChar": 22,
@@ -144,6 +240,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "308bf6e6_2a265679",
+        "filename": "extensions/openpower-pels/registry.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-05-30T08:37:34Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6e73e812_b6809f5f",
+      "revId": "5d942adfd798bd3cad520056b8340530722ab9b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b2f576f_ac9bafbb",
@@ -157,6 +271,30 @@
       "writtenOn": "2024-05-29T16:28:32Z",
       "side": 1,
       "message": "nit:  inSystemNames",
+      "range": {
+        "startLine": 408,
+        "startChar": 17,
+        "endLine": 408,
+        "endChar": 30
+      },
+      "revId": "5d942adfd798bd3cad520056b8340530722ab9b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71943545_86bc4f47",
+        "filename": "extensions/openpower-pels/registry.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-05-30T08:37:34Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3b2f576f_ac9bafbb",
       "range": {
         "startLine": 408,
         "startChar": 17,
@@ -190,6 +328,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc8477c4_39ed808f",
+        "filename": "extensions/openpower-pels/registry.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-05-30T08:37:34Z",
+      "side": 1,
+      "message": "In C++23, std::ranges::any_of is defined in header \u003calgorithm\u003e which I used in the findCalloutList() API (LN: 412).",
+      "parentUuid": "82cea9da_a7df5db6",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 20
+      },
+      "revId": "5d942adfd798bd3cad520056b8340530722ab9b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6d213d4b_a0a6a778",
@@ -203,6 +365,30 @@
       "writtenOn": "2024-05-30T02:39:29Z",
       "side": 1,
       "message": "Suggestion: Use backticks instead of quotes so that markdown can render and highlight the text properly.\n\nThe same comment applicable to everywhere.",
+      "range": {
+        "startLine": 333,
+        "startChar": 11,
+        "endLine": 333,
+        "endChar": 19
+      },
+      "revId": "5d942adfd798bd3cad520056b8340530722ab9b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01e02d4c_36fe8607",
+        "filename": "extensions/openpower-pels/registry/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-05-30T08:37:34Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6d213d4b_a0a6a778",
       "range": {
         "startLine": 333,
         "startChar": 11,
@@ -236,6 +422,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e96a318e_68bfc288",
+        "filename": "extensions/openpower-pels/registry/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-05-30T08:37:34Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "90f83b3b_8fb3bc17",
+      "range": {
+        "startLine": 339,
+        "startChar": 4,
+        "endLine": 339,
+        "endChar": 6
+      },
+      "revId": "5d942adfd798bd3cad520056b8340530722ab9b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a231e728_72d9164e",
@@ -249,6 +459,30 @@
       "writtenOn": "2024-05-30T02:39:29Z",
       "side": 1,
       "message": "Typo: BMC0001",
+      "range": {
+        "startLine": 439,
+        "startChar": 10,
+        "endLine": 439,
+        "endChar": 17
+      },
+      "revId": "5d942adfd798bd3cad520056b8340530722ab9b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b320c6c_a03db164",
+        "filename": "extensions/openpower-pels/registry/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-05-30T08:37:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a231e728_72d9164e",
       "range": {
         "startLine": 439,
         "startChar": 10,
@@ -276,6 +510,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c063388_3f22ebb3",
+        "filename": "test/openpower-pels/registry_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-05-30T08:37:34Z",
+      "side": 1,
+      "message": "empty callouts case is handled already in https://github.com/openbmc/phosphor-logging/blob/e8026679f89642e3336b8c5e495f6ab694988e7a/test/openpower-pels/registry_test.cpp#L516",
+      "parentUuid": "49dfaa1a_e8549af9",
+      "revId": "5d942adfd798bd3cad520056b8340530722ab9b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b7ef39b8_dd7de956",
@@ -299,6 +551,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "28045695_28788df9",
+        "filename": "test/openpower-pels/registry_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 764,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-05-30T08:37:34Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b7ef39b8_dd7de956",
+      "range": {
+        "startLine": 764,
+        "startChar": 29,
+        "endLine": 764,
+        "endChar": 34
+      },
+      "revId": "5d942adfd798bd3cad520056b8340530722ab9b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be56dd8f_2fc68ed7",
@@ -312,6 +588,24 @@
       "writtenOn": "2024-05-30T02:39:29Z",
       "side": 1,
       "message": "Why do we need to throw an error in this case?\n\nThe registry user is attempting to commit an error without any callout for a set of systems for the same error.\n\nI don\u0027t think we will have such a use case, so we could revisit this later as well. The old codebase also throws an error, so I assume you want to maintain the same behavior.\n\n@Matt, Any thoughts???",
+      "revId": "5d942adfd798bd3cad520056b8340530722ab9b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e469f1a_5cb052b9",
+        "filename": "test/openpower-pels/registry_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1046,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-05-30T08:37:34Z",
+      "side": 1,
+      "message": "Here only system specific callouts(only for system1 and system2) are listed, that means default calloutList is not present. So as per the current implementation, for systems other than system1 and system2, we will be getting empty calloutlist which will throws error. This behaviour exists in previous implementation also.\n\nI also agree on the point whether it\u0027s really an error scenario. In that case we need to modify the logic.",
+      "parentUuid": "be56dd8f_2fc68ed7",
       "revId": "5d942adfd798bd3cad520056b8340530722ab9b7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
