@@ -354,6 +354,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "646a5427_ff96b32b",
+        "filename": "extensions/openpower-pels/registry.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-05-30T08:46:51Z",
+      "side": 1,
+      "message": "We only need to include the file in the corresponding .cpp file. Including it in the header (.hpp) file would result in it being included everywhere the header is included, which is not recommended. While C++20/23 introduced the module concept to address such issues, I\u0027m unsure if it\u0027s supported yet.",
+      "parentUuid": "bc8477c4_39ed808f",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 20
+      },
+      "revId": "5d942adfd798bd3cad520056b8340530722ab9b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6d213d4b_a0a6a778",
         "filename": "extensions/openpower-pels/registry/README.md",
         "patchSetId": 3
@@ -528,6 +552,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "14182b37_437aeba8",
+        "filename": "test/openpower-pels/registry_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-05-30T08:46:51Z",
+      "side": 1,
+      "message": "Ah ok,",
+      "parentUuid": "8c063388_3f22ebb3",
+      "revId": "5d942adfd798bd3cad520056b8340530722ab9b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b7ef39b8_dd7de956",
@@ -606,6 +648,24 @@
       "side": 1,
       "message": "Here only system specific callouts(only for system1 and system2) are listed, that means default calloutList is not present. So as per the current implementation, for systems other than system1 and system2, we will be getting empty calloutlist which will throws error. This behaviour exists in previous implementation also.\n\nI also agree on the point whether it\u0027s really an error scenario. In that case we need to modify the logic.",
       "parentUuid": "be56dd8f_2fc68ed7",
+      "revId": "5d942adfd798bd3cad520056b8340530722ab9b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a342261_29dffee6",
+        "filename": "test/openpower-pels/registry_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1046,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-05-30T08:46:51Z",
+      "side": 1,
+      "message": "Hmm...Lets wait for Matt to understand the motive of the previous behaviour.",
+      "parentUuid": "8e469f1a_5cb052b9",
       "revId": "5d942adfd798bd3cad520056b8340530722ab9b7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
