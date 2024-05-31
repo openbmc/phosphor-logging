@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ef8ead4d_cf168dc4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001371
+      },
+      "writtenOn": "2024-05-31T02:31:26Z",
+      "side": 1,
+      "message": "Sorry, I haven\u0027t noticed it yet, I‘ll look into it.",
+      "parentUuid": "2caf9cbe_d6c8cbcb",
+      "revId": "422dd7f8fd094b3a00c189033280832c1eba4d1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d223b5c6_7e92f3c6",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
@@ -31,6 +49,24 @@
       "writtenOn": "2024-05-29T21:59:44Z",
       "side": 1,
       "message": "So no changes needed at the call sites, right?",
+      "revId": "422dd7f8fd094b3a00c189033280832c1eba4d1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0622de03_4dbb17bb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1001371
+      },
+      "writtenOn": "2024-05-31T02:31:26Z",
+      "side": 1,
+      "message": "If we accept directly overriding the original function (instead of using a new API report_metadata), no modifications are needed at the call sites. The current changes have undergone extensive stress testing, and no log loss has been observed.",
+      "parentUuid": "d223b5c6_7e92f3c6",
       "revId": "422dd7f8fd094b3a00c189033280832c1eba4d1b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -112,6 +148,24 @@
       "writtenOn": "2024-05-29T21:59:44Z",
       "side": 1,
       "message": "I kinda liked how the other versions would automatically add _PID to the additional data by pulling it from the journal.  I there a way to still get that here?",
+      "revId": "422dd7f8fd094b3a00c189033280832c1eba4d1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20a89449_f6231ad6",
+        "filename": "lib/elog.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1001371
+      },
+      "writtenOn": "2024-05-31T02:31:26Z",
+      "side": 1,
+      "message": "all right, we could.",
+      "parentUuid": "94a38754_975bdcf4",
       "revId": "422dd7f8fd094b3a00c189033280832c1eba4d1b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
