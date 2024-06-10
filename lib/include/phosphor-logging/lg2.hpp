@@ -59,21 +59,14 @@ explicit log(const std::source_location&, const char*, Ts&&...)
 
 /** Macro to define aliases for lg2::level(...) -> lg2::log<level>(...)
  *
- *  Creates a simple inherited structure and corresponding deduction guides.
+ *  Creates a simple inherited structure.
  */
 #define PHOSPHOR_LOG2_DECLARE_LEVEL(levelval)                                  \
     template <typename... Ts>                                                  \
     struct levelval : public log<level::levelval, Ts...>                       \
     {                                                                          \
         using log<level::levelval, Ts...>::log;                                \
-    };                                                                         \
-                                                                               \
-    template <typename... Ts>                                                  \
-    explicit levelval(const char*, Ts&&...) -> levelval<Ts...>;                \
-                                                                               \
-    template <typename... Ts>                                                  \
-    explicit levelval(const std::source_location&, const char*, Ts&&...)       \
-        ->levelval<Ts...>
+    };
 
 // Enumerate the aliases for each log level.
 PHOSPHOR_LOG2_DECLARE_LEVEL(emergency);
