@@ -61,6 +61,14 @@ explicit log(const std::source_location&, const char*, Ts&&...)
  *
  *  Creates a simple inherited structure and corresponding deduction guides.
  */
+#if __GNUC__ >= 14
+#define PHOSPHOR_LOG2_DECLARE_LEVEL(levelval)                                  \
+    template <typename... Ts>                                                  \
+    struct levelval : public log<level::levelval, Ts...>                       \
+    {                                                                          \
+        using log<level::levelval, Ts...>::log;                                \
+    };
+#else
 #define PHOSPHOR_LOG2_DECLARE_LEVEL(levelval)                                  \
     template <typename... Ts>                                                  \
     struct levelval : public log<level::levelval, Ts...>                       \
@@ -74,6 +82,7 @@ explicit log(const std::source_location&, const char*, Ts&&...)
     template <typename... Ts>                                                  \
     explicit levelval(const std::source_location&, const char*, Ts&&...)       \
         ->levelval<Ts...>
+#endif
 
 // Enumerate the aliases for each log level.
 PHOSPHOR_LOG2_DECLARE_LEVEL(emergency);
