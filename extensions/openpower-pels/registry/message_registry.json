@@ -6657,7 +6657,7 @@
                 "Message": "Host failed to complete the power off gracefully within the timeout."
             }
         },
-        {
+	{
             "Name": "xyz.openbmc_project.Dump.Error.Invalidate",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
@@ -6668,6 +6668,20 @@
             "Documentation": {
                 "Description": "Dump has been deleted/offloaded",
                 "Message": "BMC/System/Resource dump has been deleted/offloaded"
+            }
+        },
+	{
+            "Name": "xyz.openbmc_project.PLDM.Error.GetPDR.PDRExchangeTimeout",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "unrecoverable",
+            "SRC": {
+                "ReasonCode": "0x6026",
+                "Words6To9": {}
+            },
+            "Documentation": {
+                "Description": "Failed to collect PDR from Host within the timeout of BMC PDR Exchange.",
+                "Message": "Failed to collect PDR from Host within the timeout of BMC PDR Exchange."
             }
         },
         {
