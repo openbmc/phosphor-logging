@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84361818_b923c5a9",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6660,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-06-13T14:00:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4a6d8e7_873c8cf3",
+      "revId": "0fabbd8874b39cdc2e696001be94691f18b51856",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "062dc594_f323d61d",
@@ -49,6 +67,24 @@
       "side": 1,
       "message": "We don\u0027t have any HW involved, that\u0027s why I did not add the callout.",
       "parentUuid": "062dc594_f323d61d",
+      "revId": "0fabbd8874b39cdc2e696001be94691f18b51856",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c57fca86_b0ea97b7",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6685,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-06-13T14:00:04Z",
+      "side": 1,
+      "message": "All PELs have to have a callout, unless they are informational.  It\u0027s so that if it happens, a customer would know how to fix the issue.  Usually for code problems we just call out the BMC code which is what the BMC0001 procedure is.",
+      "parentUuid": "7e737edd_d3ff8d1c",
       "revId": "0fabbd8874b39cdc2e696001be94691f18b51856",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
