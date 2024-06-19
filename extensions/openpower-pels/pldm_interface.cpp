@@ -16,7 +16,7 @@
 #include "pldm_interface.hpp"
 
 #include <libpldm/base.h>
-#include <libpldm/file_io.h>
+#include <libpldm/oem/ibm/file_io.h>
 #include <systemd/sd-bus.h>
 #include <unistd.h>
 
