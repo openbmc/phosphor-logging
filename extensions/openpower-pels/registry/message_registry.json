@@ -4306,7 +4306,7 @@
         },
 
         {
-            "Name": "xyz.openbmc_project.Sensor.Threshold.Error.TemperaturePerfLossHigh",
+            "Name": "xyz.openbmc_project.Sensor.Threshold.Error.TemperaturePerformanceLossHigh",
             "Subsystem": "power",
             "ComponentID": "0x2800",
             "Severity": "predictive",
@@ -4359,7 +4359,7 @@
         },
 
         {
-            "Name": "xyz.openbmc_project.Sensor.Threshold.Error.TemperaturePerfLossHighClear",
+            "Name": "xyz.openbmc_project.Sensor.Threshold.Error.TemperaturePerformanceLossHighClear",
             "Subsystem": "power",
             "ComponentID": "0x2800",
             "Severity": "non_error",
