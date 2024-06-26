@@ -267,6 +267,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "24e584de_ab1e6a60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000936
+      },
+      "writtenOn": "2024-06-26T23:24:06Z",
+      "side": 1,
+      "message": "\u003e \u003e However please note how this very phosphor-logging repository has means to configure remote syslog destinations and they\u0027re hooked into Redfish and I think people expect to receive all the SELs when that feature is used. So I guess that flag that disables sending to journal should also disable the possibility to add remote syslog destinations?\n\u003e \n\u003e Can you elaborate what you mean by this?  I do see phosphor-rsyslog-config here, but I have no idea what it does. \n\nBasically it just creates a config file for `rsyslog` to forward everything it gets from journal to a remote syslog instance using classical syslog protocol. It\u0027s controlled over a `phosphor-dbus-interfaces`-specified API and `bmcweb` has support for it. So if essential messages are not going to journal then this should be turned off too to avoid confusion.\n\n\u003e Is there really a case where \"all the SELs\" go out [whatever that means]?\n \nIt used to be that all important messages were unconditionally present in the journal, fetched by custom rsyslog config and exported in a weird way to files for `bmcweb` and host ipmi daemon consumption. Judging by e.g. `meta-intel-openbmc/./meta-common/recipes-extended/rsyslog/rsyslog/rsyslog.conf` some companies still rely on that. And if they are all available to rsyslog they will all get sent to remote syslog if that\u0027s configured.\n\n\u003e The use of \"SEL\" is a bit confusing...\n\nIndeed, sorry about that. In fact I really meant all the important events about the host and BMC systems available via Redfish Events, that\u0027s what I care about. `bmcweb` can already send them to configured Redfish-aware HTTP destinations, but also it offers other possibilities such as regular remote syslog or SNMP traps. I\u0027ve heard some people even want mails with them to be sent over SMTP.",
+      "parentUuid": "3b845812_f3207a03",
+      "revId": "3a60f58e66abe5baa4fcb4e4f513a15fefb2c1ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4bbfa754_48c8876f",
         "filename": "log_manager.cpp",
         "patchSetId": 4
