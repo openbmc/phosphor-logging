@@ -174,6 +174,24 @@
       "parentUuid": "4bbfa754_48c8876f",
       "revId": "3a60f58e66abe5baa4fcb4e4f513a15fefb2c1ca",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b396787d_4e19bf68",
+        "filename": "log_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 1000936
+      },
+      "writtenOn": "2024-06-26T11:05:27Z",
+      "side": 1,
+      "message": "Ping, it\u0027s been more than a whole month now. I think I answered all current questions and provided good rationale, please tell what\u0027s missing.",
+      "parentUuid": "e30d4037_a59931c9",
+      "revId": "3a60f58e66abe5baa4fcb4e4f513a15fefb2c1ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
