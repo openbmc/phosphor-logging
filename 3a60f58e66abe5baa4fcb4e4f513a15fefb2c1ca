@@ -249,6 +249,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3b845812_f3207a03",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-06-26T23:06:41Z",
+      "side": 1,
+      "message": "\u003e However please note how this very phosphor-logging repository has means to configure remote syslog destinations and they\u0027re hooked into Redfish and I think people expect to receive all the SELs when that feature is used. So I guess that flag that disables sending to journal should also disable the possibility to add remote syslog destinations?\n\nCan you elaborate what you mean by this?  I do see phosphor-rsyslog-config here, but I have no idea what it does.  I do know that phosphor-sel-logger has some rsyslog config stuff as well which is what pulls out specific pieces of the journal and forwards them to rsyslog.  Is there really a case where \"all the SELs\" go out [whatever that means]?\n\n(The use of \"SEL\" is a bit confusing.  \"System Event Log\" is some specific wording used in the IPMI spec, but then people tend to overload it to mean the \"stuff held by the BMC\".  phosphor-sel-logger has some strange mixture of both of these.  I assume you are using it to refer to the \"stuff held by the BMC\" and not the IPMI-generated events?)",
+      "parentUuid": "32e9fe86_e3ea907e",
+      "revId": "3a60f58e66abe5baa4fcb4e4f513a15fefb2c1ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4bbfa754_48c8876f",
         "filename": "log_manager.cpp",
         "patchSetId": 4
