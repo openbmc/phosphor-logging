@@ -2,6 +2,7 @@
 
 #include "host_interface.hpp"
 
+#include <libpldm/instance-id.h>
 #include <libpldm/pldm.h>
 
 #include <sdeventplus/clock.hpp>
@@ -43,7 +44,7 @@ class PLDMInterface : public HostInterface
             event,
             std::bind(std::mem_fn(&PLDMInterface::receiveTimerExpired), this))
     {
-        sd_bus_default(&_bus);
+        pldm_instance_db_init_default(&_pldm_idb);
 
         readEID();
     }
@@ -81,17 +82,6 @@ class PLDMInterface : public HostInterface
      * Does not clear the instance ID.
      */
     void cleanupCmd();
-
-    /**
-     * @brief Gets called on the async D-Bus method response to
-     *        getting the PLDM instance ID.
-     *
-     * It will read the instance ID out of the message and then
-     * continue on with sending the new log command to the host.
-     *
-     * @param[in] msg - The message containing the instance ID.
-     */
-    void instanceIDCallback(sd_bus_message* msg);
 
   private:
     /**
@@ -134,12 +124,6 @@ class PLDMInterface : public HostInterface
     void open();
 
     /**
-     * @brief Makes the async D-Bus method call to read the PLDM instance
-     *        ID needed to send PLDM commands.
-     */
-    void startReadInstanceID();
-
-    /**
      * @brief Encodes and sends the PLDM 'new file available' cmd
      */
     void doSend();
@@ -157,6 +141,16 @@ class PLDMInterface : public HostInterface
     void startCommand();
 
     /**
+     * @brief Allocates the instance id.
+     */
+    void allocIID();
+
+    /**
+     * @brief Frees the instance id.
+     */
+    void freeIID();
+
+    /**
      * @brief The MCTP endpoint ID
      */
     mctp_eid_t _eid;
@@ -169,7 +163,7 @@ class PLDMInterface : public HostInterface
      * If there are command failures, the same instance ID can be
      * used on retries only if the host didn't respond.
      */
-    std::optional<uint8_t> _instanceID;
+    std::optional<pldm_instance_id_t> _instanceID;
 
     /**
      * @brief The PLDM command file descriptor for the current command
@@ -193,9 +187,9 @@ class PLDMInterface : public HostInterface
     const std::chrono::milliseconds _receiveTimeout{10000};
 
     /**
-     * @brief The D-Bus connection needed for the async method call.
+     * @brief The libpldm instance ID database.
      */
-    sd_bus* _bus = nullptr;
+    pldm_instance_db* _pldm_idb = nullptr;
 
     /**
      * @brief The ID of the PEL to notify the host of.
