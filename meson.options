@@ -41,3 +41,10 @@ option(
     value: '/etc/rsyslog.d/server.conf',
     description: 'Path to rsyslog server conf file',
 )
+
+option(
+    'transport-implementation',
+    type: 'combo',
+    choices: ['mctp-demux', 'af-mctp'],
+    description: 'transport via af-mctp or mctp-demux'
+)
