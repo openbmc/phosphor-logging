@@ -123,6 +123,11 @@ class PLDMInterface : public HostInterface
      */
     void open();
 
+    /** @brief Opens the MCTP socket for sending and receiving messages.
+     *
+     */
+    int openMctpDemuxTransport();
+
     /**
      * @brief Encodes and sends the PLDM 'new file available' cmd
      */
