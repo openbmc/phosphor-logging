@@ -5,6 +5,7 @@
 #include <libpldm/instance-id.h>
 #include <libpldm/pldm.h>
 #include <libpldm/transport.h>
+#include <libpldm/transport/af-mctp.h>
 #include <libpldm/transport/mctp-demux.h>
 
 #include <sdeventplus/clock.hpp>
@@ -131,6 +132,11 @@ class PLDMInterface : public HostInterface
      */
     int openMctpDemuxTransport();
 
+    /** @brief Opens the MCTP AF_MCTP for sending and receiving messages.
+     *
+     */
+    int openAfMctpTransport();
+
     /**
      * @brief Encodes and sends the PLDM 'new file available' cmd
      */
@@ -214,7 +220,12 @@ class PLDMInterface : public HostInterface
      */
     pldm_transport* pldmTransport = nullptr;
 
-    pldm_transport_mctp_demux* mctpDemux = nullptr;
+    union TransportImpl
+    {
+        pldm_transport_mctp_demux* mctpDemux;
+        pldm_transport_af_mctp* afMctp;
+    };
+    TransportImpl impl;
 };
 
 } // namespace openpower::pels
