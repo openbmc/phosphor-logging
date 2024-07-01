@@ -128,6 +128,11 @@ class PLDMInterface : public HostInterface
      */
     int openMctpDemuxTransport();
 
+    /** @brief Opens the MCTP AF_MCTP for sending and receiving messages.
+     *
+     */
+    int openAfMctpTransport();
+
     /**
      * @brief Encodes and sends the PLDM 'new file available' cmd
      */
