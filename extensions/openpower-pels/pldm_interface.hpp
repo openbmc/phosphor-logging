@@ -93,9 +93,10 @@ class PLDMInterface : public HostInterface
      * @param[in] io - The event source object
      * @param[in] fd - The FD used
      * @param[in] revents - The event bits
+     * @param[in] transport - The transport data pointer
      */
-    void receive(sdeventplus::source::IO& io, int fd,
-                 uint32_t revents) override;
+    void receive(sdeventplus::source::IO& io, int fd, uint32_t revents,
+                 pldm_transport* transport) override;
 
     /**
      * @brief Function called when the receive timer expires.
@@ -122,6 +123,11 @@ class PLDMInterface : public HostInterface
      * @brief Opens the PLDM file descriptor
      */
     void open();
+
+    /** @brief Opens the MCTP socket for sending and receiving messages.
+     *
+     */
+    int openMctpDemuxTransport();
 
     /**
      * @brief Encodes and sends the PLDM 'new file available' cmd
