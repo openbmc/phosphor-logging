@@ -17,6 +17,9 @@
 
 #include <libpldm/base.h>
 #include <libpldm/oem/ibm/file_io.h>
+#include <libpldm/transport.h>
+#include <libpldm/transport/mctp-demux.h>
+#include <poll.h>
 #include <unistd.h>
 
 #include <phosphor-logging/lg2.hpp>
@@ -43,11 +46,10 @@ PLDMInterface::~PLDMInterface()
 
 void PLDMInterface::closeFD()
 {
-    if (_fd >= 0)
-    {
-        close(_fd);
-        _fd = -1;
-    }
+    pldm_transport_mctp_demux_destroy(mctpDemux);
+    mctpDemux = nullptr;
+    _fd = -1;
+    pldmTransport = nullptr;
 }
 
 void PLDMInterface::readEID()
@@ -76,14 +78,54 @@ void PLDMInterface::readEID()
 
 void PLDMInterface::open()
 {
-    _fd = pldm_open();
+    if (pldmTransport)
+    {
+        lg2::error("open: pldmTransport already setup!");
+        throw std::runtime_error{"open failed"};
+    }
+
+    _fd = openMctpDemuxTransport();
     if (_fd < 0)
     {
         auto e = errno;
-        lg2::error("pldm_open failed.  errno = {ERRNO}, rc = {RC}", "ERRNO", e,
-                   "RC", _fd);
-        throw std::runtime_error{"pldm_open failed"};
+        lg2::error("Transport open failed. errno = {ERRNO}, rc = {RC}", "ERRNO",
+                   e, "RC", _fd);
+        throw std::runtime_error{"Transport open failed"};
     }
+}
+
+int PLDMInterface::openMctpDemuxTransport()
+{
+    int rc = pldm_transport_mctp_demux_init(&mctpDemux);
+    if (rc)
+    {
+        lg2::error(
+            "openMctpDemuxTransport: Failed to init MCTP demux transport. rc = {RC}",
+            "RC", rc);
+        return rc;
+    }
+
+    rc = pldm_transport_mctp_demux_map_tid(mctpDemux, _eid, _eid);
+    if (rc)
+    {
+        lg2::error(
+            "openMctpDemuxTransport: Failed to setup tid to eid mapping. rc = {RC}",
+            "RC", rc);
+        cleanupCmd();
+        return rc;
+    }
+    pldmTransport = pldm_transport_mctp_demux_core(mctpDemux);
+
+    struct pollfd pollfd;
+    rc = pldm_transport_mctp_demux_init_pollfd(pldmTransport, &pollfd);
+    if (rc)
+    {
+        lg2::error("openMctpDemuxTransport: Failed to get pollfd. rc = {RC}",
+                   "RC", rc);
+        cleanupCmd();
+        return rc;
+    }
+    return pollfd.fd;
 }
 
 void PLDMInterface::startCommand()
@@ -185,7 +227,7 @@ void PLDMInterface::registerReceiveCallback()
         _event, _fd, EPOLLIN,
         std::bind(std::mem_fn(&PLDMInterface::receive), this,
                   std::placeholders::_1, std::placeholders::_2,
-                  std::placeholders::_3));
+                  std::placeholders::_3, pldmTransport));
 }
 
 void PLDMInterface::doSend()
@@ -203,37 +245,42 @@ void PLDMInterface::doSend()
         lg2::error("encode_new_file_req failed, rc = {RC}", "RC", rc);
         throw std::runtime_error{"encode_new_file_req failed"};
     }
-
-    rc = pldm_send(_eid, _fd, requestMsg.data(), requestMsg.size());
+    pldm_tid_t pldmTID = static_cast<pldm_tid_t>(_eid);
+    rc = pldm_transport_send_msg(pldmTransport, pldmTID, requestMsg.data(),
+                                 requestMsg.size());
     if (rc < 0)
     {
         auto e = errno;
-        lg2::error("pldm_send failed, rc = {RC}, errno = {ERRNO}", "RC", rc,
-                   "ERRNO", e);
-        throw std::runtime_error{"pldm_send failed"};
+        lg2::error("pldm_transport_send_msg failed, rc = {RC}, errno = {ERRNO}",
+                   "RC", rc, "ERRNO", e);
+        throw std::runtime_error{"pldm_transport_send_msg failed"};
     }
 }
 
-void PLDMInterface::receive(IO& /*io*/, int fd, uint32_t revents)
+void PLDMInterface::receive(IO& /*io*/, int /*fd*/, uint32_t revents,
+                            pldm_transport* transport)
+
 {
     if (!(revents & EPOLLIN))
     {
         return;
     }
 
-    uint8_t* responseMsg = nullptr;
+    void* responseMsg = nullptr;
     size_t responseSize = 0;
     ResponseStatus status = ResponseStatus::success;
 
-    auto rc = pldm_recv(_eid, fd, *_instanceID, &responseMsg, &responseSize);
-    if (rc < 0)
+    pldm_tid_t pldmTID;
+    auto rc = pldm_transport_recv_msg(transport, &pldmTID, &responseMsg,
+                                      &responseSize);
+    if (pldmTID != _eid)
     {
-        if (rc == PLDM_REQUESTER_INSTANCE_ID_MISMATCH)
-        {
-            // We got a response to someone else's message. Ignore it.
-            return;
-        }
-        else if (rc == PLDM_REQUESTER_NOT_RESP_MSG)
+        // We got a response to someone else's message. Ignore it.
+        return;
+    }
+    if (rc)
+    {
+        if (rc == PLDM_REQUESTER_NOT_RESP_MSG)
         {
             // Due to the MCTP loopback, we may get notified of the message
             // we just sent.
@@ -241,7 +288,8 @@ void PLDMInterface::receive(IO& /*io*/, int fd, uint32_t revents)
         }
 
         auto e = errno;
-        lg2::error("pldm_recv failed, rc = {RC}, errno = {ERRNO}", "RC",
+        lg2::error("pldm_transport_recv_msg failed, rc = {RC}, errno = {ERRNO}",
+                   "RC",
                    static_cast<std::underlying_type_t<pldm_requester_rc_t>>(rc),
                    "ERRNO", e);
         status = ResponseStatus::failure;
@@ -259,7 +307,7 @@ void PLDMInterface::receive(IO& /*io*/, int fd, uint32_t revents)
         uint8_t completionCode = 0;
         auto response = reinterpret_cast<pldm_msg*>(responseMsg);
 
-        auto decodeRC = decode_new_file_resp(response, PLDM_NEW_FILE_RESP_BYTES,
+        auto decodeRC = decode_new_file_resp(response, responseSize,
                                              &completionCode);
         if (decodeRC < 0)
         {
