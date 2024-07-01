@@ -204,7 +204,7 @@ class MockHostInterface : public HostInterface
 
         auto callback = [this](sdeventplus::source::IO& source, int fd,
                                uint32_t events) {
-            this->receive(source, fd, events);
+            this->receive(source, fd, events, nullptr);
         };
 
         try
@@ -242,7 +242,7 @@ class MockHostInterface : public HostInterface
      * @param[in] events - The event bits
      */
     void receive(sdeventplus::source::IO& /*source*/, int /*fd*/,
-                 uint32_t events) override
+                 uint32_t events, pldm_transport* /*transport*/) override
     {
         if (!(events & EPOLLIN))
         {
