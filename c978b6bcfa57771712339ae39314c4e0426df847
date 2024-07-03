@@ -16,6 +16,24 @@
       "message": "Can you add more to this commit message?  I don\u0027t know anything about those APIs.  Were they recently added?  Any prereqs/coreqs?  \n\nAlso, how did you test this?  I think the best way is to start the daemon from the command line (after stopping the service) so debug traces are output, and then booting all the way up so it shows the traces of all the event log exchanging with the host.",
       "revId": "c978b6bcfa57771712339ae39314c4e0426df847",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "388e6d81_6d1c27f2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1001633
+      },
+      "writtenOn": "2024-07-03T23:08:07Z",
+      "side": 1,
+      "message": "This change is a prerequisite for enabling kernel MCTP. It removes the dependency on pldm and uses the newly introduced libpldm APIs. The pldm code has already been migrated to the new libpldm APIs, and the kernel MCTP option has been added. I am working on updating the other repositories.\n\nI tested this on the 1060 system by enabling the libpldm APIs and applying the phosphor-logging changes, successfully bringing the host up.\n\nI updated the commit message.",
+      "parentUuid": "6bd62c42_2fd50f3b",
+      "revId": "c978b6bcfa57771712339ae39314c4e0426df847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
