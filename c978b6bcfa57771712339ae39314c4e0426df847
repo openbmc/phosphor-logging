@@ -34,6 +34,24 @@
       "parentUuid": "6bd62c42_2fd50f3b",
       "revId": "c978b6bcfa57771712339ae39314c4e0426df847",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9afcefc4_4c1c058e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-07-09T21:37:32Z",
+      "side": 1,
+      "message": "If this didn\u0027t work the host would still boot.  What would be good to see is that on a boot phosphor-logging doesn\u0027t complain about not being able to send PELs to PHYP, and also that all of the created PELs say they\u0027ve either been sent or Acked by PHYP in the \u0027Host Transmission\u0027 field, which you can see from a peltool -afh.\n\nIt starts trying to send them a minute after system gets to at least PHYP standby.",
+      "parentUuid": "388e6d81_6d1c27f2",
+      "revId": "c978b6bcfa57771712339ae39314c4e0426df847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
