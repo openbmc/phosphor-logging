@@ -52,6 +52,24 @@
       "parentUuid": "388e6d81_6d1c27f2",
       "revId": "c978b6bcfa57771712339ae39314c4e0426df847",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "242386d5_e7debdd3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1001633
+      },
+      "writtenOn": "2024-07-09T22:14:40Z",
+      "side": 1,
+      "message": "I see so many \"Sent\", \"Acked\" and few \"Not Sent\". I will take a at look of each of them.\n\nI am looking at phosphor-logging PELs and they got acknowledge\n\nphosphor-log-manager[379]: Created PEL 0x500025b8 (BMC ID 1027) with SRC BD8D3416\nphosphor-log-manager[379]: Created PEL 0x500025b9 (BMC ID 1028) with SRC BD58300A\nphosphor-log-manager[379]: Created PEL 0x50002619 (BMC ID 1179) with SRC BD8D6025\n\n\n\u003epeltool -i  0x50002619 | grep \"Host Transmission\"\n    \"Host Transmission\":        \"Sent\",\n\u003epeltool -i   0x500025b9 | grep \"Host Transmission\"\n    \"Host Transmission\":        \"Acked\",\n\u003epeltool -i   0x500025b8 | grep \"Host Transmission\"\n    \"Host Transmission\":        \"Acked\",",
+      "parentUuid": "9afcefc4_4c1c058e",
+      "revId": "c978b6bcfa57771712339ae39314c4e0426df847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
