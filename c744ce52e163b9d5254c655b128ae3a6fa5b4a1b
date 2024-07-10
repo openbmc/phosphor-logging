@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5f48976_e8b0740d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001633
+      },
+      "writtenOn": "2024-07-10T22:20:41Z",
+      "side": 1,
+      "message": "Fix the message. thx",
+      "parentUuid": "9aaf1030_99cd5c51",
+      "range": {
+        "startLine": 9,
+        "startChar": 64,
+        "endLine": 10,
+        "endChar": 32
+      },
+      "revId": "c744ce52e163b9d5254c655b128ae3a6fa5b4a1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ea431753_abf8ebcb",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-07-10T06:46:47Z",
       "side": 1,
       "message": "I\u0027d rather say:\n\n\u003e This change migrates the application off of the deprecated \"requester\" APIs in libpldm.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 34
+      },
+      "revId": "c744ce52e163b9d5254c655b128ae3a6fa5b4a1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cacf69a6_fb5197a3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001633
+      },
+      "writtenOn": "2024-07-10T22:20:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea431753_abf8ebcb",
       "range": {
         "startLine": 15,
         "startChar": 0,
