@@ -39,6 +39,30 @@
       },
       "revId": "72c9d93b720745621ed404eecfca110c923d152e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f021e6f_e597c037",
+        "filename": "extensions/openpower-pels/pldm_interface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1001633
+      },
+      "writtenOn": "2024-07-11T20:24:32Z",
+      "side": 1,
+      "message": "Yes, we no longer need the fd parameter. However, I cannot remove it due to function signature requirements. Instead of commenting out the parameter, I initially added a check but have now removed it.",
+      "parentUuid": "f872e59e_b81d484a",
+      "range": {
+        "startLine": 264,
+        "startChar": 38,
+        "endLine": 264,
+        "endChar": 46
+      },
+      "revId": "72c9d93b720745621ed404eecfca110c923d152e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
