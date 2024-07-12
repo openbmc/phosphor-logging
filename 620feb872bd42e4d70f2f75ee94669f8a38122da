@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43fbac76_0cf2bd75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-12T21:07:42Z",
+      "side": 1,
+      "message": "This now appears to work with GCC 14 (from latest Yocto sync) and also works with GCC 13.",
+      "revId": "620feb872bd42e4d70f2f75ee94669f8a38122da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
