@@ -63,6 +63,30 @@
       },
       "revId": "72c9d93b720745621ed404eecfca110c923d152e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a38c8cf_d05c7e7d",
+        "filename": "extensions/openpower-pels/pldm_interface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-07-12T04:38:07Z",
+      "side": 1,
+      "message": "It\u0027s not clear to me how you can add the `transport` parameter but not remove `fd`. Whatever works though 😊",
+      "parentUuid": "5f021e6f_e597c037",
+      "range": {
+        "startLine": 264,
+        "startChar": 38,
+        "endLine": 264,
+        "endChar": 46
+      },
+      "revId": "72c9d93b720745621ed404eecfca110c923d152e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
