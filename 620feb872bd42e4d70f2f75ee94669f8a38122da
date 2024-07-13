@@ -33,6 +33,23 @@
       "message": "Hold off on it...  Might not be totally fixed.",
       "revId": "620feb872bd42e4d70f2f75ee94669f8a38122da",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6d25c86_d189a9b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-13T21:08:22Z",
+      "side": 1,
+      "message": "This causes issues in other repositories by taking this approach, where they still can not figure out the template deduction automatically.\n\nThis commit is an alternative that appears to remove the issue in phosphor-logging without causing issues in using repositories.\n\nremote:   https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/72745 Remove lg2 template deduction guides [NEW]",
+      "revId": "620feb872bd42e4d70f2f75ee94669f8a38122da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
