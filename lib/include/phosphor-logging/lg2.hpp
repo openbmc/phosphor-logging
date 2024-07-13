@@ -48,15 +48,6 @@ struct log
     log() = delete;
 };
 
-// Deducation guides to help the compiler out...
-
-template <level S = level::debug, typename... Ts>
-explicit log(const char*, Ts&&...) -> log<S, Ts...>;
-
-template <level S = level::debug, typename... Ts>
-explicit log(const std::source_location&, const char*, Ts&&...)
-    -> log<S, Ts...>;
-
 /** Macro to define aliases for lg2::level(...) -> lg2::log<level>(...)
  *
  *  Creates a simple inherited structure and corresponding deduction guides.
