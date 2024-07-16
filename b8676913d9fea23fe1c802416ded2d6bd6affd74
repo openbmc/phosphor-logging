@@ -22,6 +22,30 @@
       },
       "revId": "b8676913d9fea23fe1c802416ded2d6bd6affd74",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc94654a_3e10f5a5",
+        "filename": "extensions/openpower-pels/pldm_interface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1001633
+      },
+      "writtenOn": "2024-07-16T01:53:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c82d0097_341d8070",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 6
+      },
+      "revId": "b8676913d9fea23fe1c802416ded2d6bd6affd74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
