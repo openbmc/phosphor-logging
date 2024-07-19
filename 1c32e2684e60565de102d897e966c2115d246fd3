@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98e5c65c_f128c8ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-07-19T12:48:40Z",
+      "side": 1,
+      "message": "Pushed as WIP patch for the reference on production code changes. Working on the UT area. Will push the final working patch soon.",
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffc525f8_5c794b05",
+        "filename": "test/openpower-pels/meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-07-19T12:48:40Z",
+      "side": 1,
+      "message": "Hard coded the value for the time being in order to pass the existing UT cases. Working on the UT area. Will fix this also.",
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
