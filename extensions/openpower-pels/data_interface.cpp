@@ -880,6 +880,96 @@ std::vector<uint8_t> DataInterface::getRawProgressSRC(void) const
     return std::get<1>(rawProgress);
 }
 
+std::optional<std::vector<uint8_t>>
+    DataInterface::getDIProperty(const std::string& locationCode) const
+{
+    std::vector<uint8_t> viniDI;
+
+    try
+    {
+        // Note : The hardcoded value 0 should be changed when comes to
+        // multinode system.
+        auto objectPath = getInventoryFromLocCode(locationCode, 0, true);
+
+        DBusValue value;
+        getProperty(service_name::inventoryManager, objectPath[0],
+                    interface::viniRecordVPD, "DI", value);
+
+        viniDI = std::get<std::vector<uint8_t>>(value);
+    }
+    catch (const std::exception& e)
+    {
+        lg2::warning(
+            "Failed reading DI property for the location code : {LOC_CODE} from "
+            "interface: {IFACE} exception: {ERROR}",
+            "LOC_CODE", locationCode, "IFACE", interface::viniRecordVPD,
+            "ERROR", e);
+        return std::nullopt;
+    }
+
+    return viniDI;
+}
+
+bool DataInterfaceBase::isDIMMLocCode(const std::string& locCode) const
+{
+    return _dimmsLocCode.contains(locCode);
+}
+
+void DataInterfaceBase::addDIMMLocCode(const std::string& locCode)
+{
+    _dimmsLocCode.emplace(locCode);
+}
+
+std::expected<bool, std::string>
+    DataInterfaceBase::isDIMM(const std::string& locCode)
+{
+    if (isDIMMLocCode(locCode))
+    {
+        return true;
+    }
+#ifndef PEL_ENABLE_PHAL
+    return std::unexpected<std::string>(
+        std::format("PHAL feature is not enabled, so the LocationCode:[{}] "
+                    "cannot be determined as DIMM",
+                    locCode));
+#else
+    else
+    {
+        // Invoke pHAL API inorder to fetch the FRU Type
+        auto fruType = openpower::phal::pdbg::getFRUType(locCode);
+        if (fruType.has_value())
+        {
+            if (fruType.value() == ENUM_ATTR_TYPE_DIMM)
+            {
+                addDIMMLocCode(locCode);
+                return true;
+            }
+            return false;
+        }
+        else
+        {
+            std::string msg{std::format("Failed to determine the HW Type, "
+                                        "LocationCode:[{}]",
+                                        locCode)};
+            if (openpower::phal::exception::errMsgMap.contains(fruType.error()))
+            {
+                msg = std::format(
+                    "{} PHALErrorMsg:[{}]", msg,
+                    openpower::phal::exception::errMsgMap.at(fruType.error()));
+            }
+            else
+            {
+                msg = std::format(
+                    "{} PHALErrorMsg:[Unknown PHALErrorCode:{}]", msg,
+                    std::to_underlying<openpower::phal::exception::ERR_TYPE>(
+                        fruType.error()));
+            }
+            return std::unexpected<std::string>(msg);
+        }
+    }
+#endif
+}
+
 void DataInterface::startFruPlugWatch()
 {
     // Add a watch on inventory InterfacesAdded and then find all
