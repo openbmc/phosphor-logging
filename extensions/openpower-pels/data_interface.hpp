@@ -7,8 +7,10 @@
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
 
+#include <expected>
 #include <filesystem>
 #include <fstream>
+#include <unordered_set>
 
 namespace openpower
 {
@@ -488,6 +490,44 @@ class DataInterfaceBase
      */
     virtual std::vector<uint8_t> getRawProgressSRC() const = 0;
 
+    /**
+     * @brief Returns the FRUs DI property value hosted on the VINI iterface for
+     * the given location code.
+     *
+     * @param[in] locationCode - The location code of the FRU
+     *
+     * @return std::optional<std::vector<uint8_t>> -  The FRUs DI or
+     * std::nullopt
+     */
+    virtual std::optional<std::vector<uint8_t>>
+        getDIProperty(const std::string& locationCode) const = 0;
+
+    /**
+     * @brief Wrpper API to call pHAL getFRUType() and check whether the given
+     * location code is DIMM or not
+     *
+     */
+    std::expected<bool, std::string> isDIMM(const std::string& locCode);
+
+    /**
+     * @brief Check whether the given location code present in the DIMM cache
+     * memory
+     *
+     * @param[in] locCode - The location code of the FRU
+     *
+     * @return true, if the given location code present in DIMM cache
+     *         false, if the given location code not present in DIMM cache
+     */
+    bool isDIMMLocCode(const std::string& locCode) const;
+
+    /**
+     * @brief add the given location code to the DIMM cache memory
+     *
+     * @param[in] locCode - The location code of the FRU
+     *
+     */
+    void addDIMMLocCode(const std::string& locCode);
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
@@ -602,6 +642,11 @@ class DataInterfaceBase
      * @brief The boot state property
      */
     std::string _bootState;
+
+    /**
+     * @brief A cache storage for DIMMs location code
+     */
+    std::unordered_set<std::string> _dimmsLocCode;
 };
 
 /**
@@ -837,6 +882,18 @@ class DataInterface : public DataInterfaceBase
      * @return std::vector<uint8_t>: The progress SRC bytes
      */
     std::vector<uint8_t> getRawProgressSRC() const override;
+
+    /**
+     * @brief Returns the FRUs DI property value hosted on the VINI iterface for
+     * the given location code.
+     *
+     * @param[in] locationCode - The location code of the FRU
+     *
+     * @return std::optional<std::vector<uint8_t>> -  The FRUs DI or
+     * std::nullopt
+     */
+    std::optional<std::vector<uint8_t>>
+        getDIProperty(const std::string& locationCode) const override;
 
   private:
     /**

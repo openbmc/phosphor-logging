@@ -136,6 +136,7 @@ peltool_sources = files(
     'src.cpp',
     'user_data.cpp',
     'user_data_json.cpp',
+    '../../util.cpp',
 )
 
 peltool_deps = [

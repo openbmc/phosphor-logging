@@ -25,6 +25,11 @@
 
 #include <format>
 
+#ifdef PEL_ENABLE_PHAL
+#include "libekb.H"
+#include "libpdbg.h"
+#endif
+
 namespace openpower
 {
 namespace pels
@@ -72,6 +77,19 @@ void pelStartup(internal::Manager& logManager)
         lg2::error("Failed to set PDBG_DTB: ({ERRNO})", "ERRNO",
                    strerror(errno));
     }
+
+    if (!pdbg_targets_init(NULL))
+    {
+        lg2::error("pdbg_targets_init failed");
+        return;
+    }
+
+    if (libekb_init())
+    {
+        lg2::error("libekb_init failed, skipping ffdc processing");
+        return;
+    }
+
 #endif
 }
 
