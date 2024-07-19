@@ -883,6 +883,44 @@ std::vector<uint8_t> DataInterface::getRawProgressSRC(void) const
     return std::get<1>(rawProgress);
 }
 
+std::optional<std::vector<uint8_t>>
+    DataInterface::getDIProperty(const std::string& locationCode) const
+{
+    std::vector<uint8_t> viniDI;
+
+    try
+    {
+        auto objectPath = getInventoryFromLocCode(locationCode, 0, true);
+
+        DBusValue value;
+        getProperty(service_name::inventoryManager, objectPath[0],
+                    interface::viniRecordVPD, "DI", value);
+
+        viniDI = std::get<std::vector<uint8_t>>(value);
+    }
+    catch (const std::exception& e)
+    {
+        lg2::warning(
+            "Failed reading DI property for the location code : {LOC_CODE} from "
+            "interface: {IFACE} exception: {ERROR}",
+            "LOC_CODE", locationCode, "IFACE", interface::viniRecordVPD,
+            "ERROR", e);
+        return std::nullopt;
+    }
+
+    return viniDI;
+}
+
+bool DataInterface::isDIMMLocCode(const std::string& locCode) const
+{
+    return _dimmsLocCode.contains(locCode);
+}
+
+void DataInterface::addDIMMLocCode(const std::string& locCode)
+{
+    _dimmsLocCode.emplace(locCode);
+}
+
 void DataInterface::startFruPlugWatch()
 {
     // Add a watch on inventory InterfacesAdded and then find all

@@ -76,6 +76,7 @@ openpower_test_lib = static_library(
         '../../',
         '../../gen',
     ),
+    cpp_args: ['-DPEL_ENABLE_PHAL'],
     dependencies: [
         libpel_deps,
         peltool_deps,

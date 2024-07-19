@@ -34,6 +34,8 @@
 #ifdef PEL_ENABLE_PHAL
 #include "phal_service_actions.hpp"
 #include "sbe_ffdc_handler.hpp"
+
+#include <libphal.H>
 #endif
 
 #include <sys/stat.h>
@@ -41,8 +43,10 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <expected>
 #include <format>
 #include <iostream>
+#include <ranges>
 
 namespace openpower
 {
@@ -51,6 +55,7 @@ namespace pels
 namespace pv = openpower::pels::pel_values;
 
 constexpr auto unknownValue = "Unknown";
+constexpr auto dramInfoFetchError = "DRAMs Info Fetch Error";
 
 PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
          phosphor::logging::Entry::Level severity,
@@ -112,6 +117,12 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
     auto src = std::make_unique<SRC>(regEntry, additionalData, callouts,
                                      dataIface);
 
+    nlohmann::json adSysInfoData(nlohmann::json::value_t::object);
+
+#ifdef PEL_ENABLE_PHAL
+    getDIMMCalloutsManufInfo(src, dataIface, adSysInfoData, debugData);
+#endif
+
     if (!src->getDebugData().empty())
     {
         // Something didn't go as planned
@@ -126,7 +137,8 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
     auto mtms = std::make_unique<FailingMTMS>(dataIface);
     _optionalSections.push_back(std::move(mtms));
 
-    auto ud = util::makeSysInfoUserDataSection(additionalData, dataIface);
+    auto ud = util::makeSysInfoUserDataSection(additionalData, dataIface, true,
+                                               adSysInfoData);
     addUserDataSection(std::move(ud));
 
     //  Check for pel severity of type - 0x51 = critical error, system
@@ -722,6 +734,108 @@ void PEL::addJournalSections(const message::Entry& regEntry,
     }
 }
 
+void PEL::getDIMMCalloutsManufInfo(
+    const std::unique_ptr<SRC>& src, const DataInterfaceBase& dataIface,
+    nlohmann::json& adSysInfoData,
+    std::map<std::string, std::vector<std::string>>& debugData)
+{
+    auto dimmsCallout = [&dataIface, &debugData](const auto& callout) {
+        auto locCode{callout->locationCode()};
+
+        if (locCode.empty())
+        {
+            // Not a hardware callout. No action required
+            return false;
+        }
+        else if (dataIface.isDIMMLocCode(locCode))
+        {
+            // locCode already exists in DIMM cache
+            return true;
+        }
+        else
+        {
+#if 0
+                auto fruType = PHAL::getFRUType(locCode);
+#else
+            /**
+             * To Test / Mock PHAL API functionality
+             * Note: Its only for IT, need to remove once the PHAL API is
+             *ready... For UT, we need to mock PHAL API by using gmock
+             **/
+            std::map<
+                std::string,
+                std::expected<uint8_t, openpower::phal::exception::ERR_TYPE>>
+                frusList{
+                    {"U78DA.ND0.WZS004A-P0-C27", ENUM_ATTR_TYPE_DIMM},
+                    {"U78DA.ND0.WZS004A-P0-C16", ENUM_ATTR_TYPE_DIMM},
+                    {"P0", ENUM_ATTR_TYPE_PROC},
+                    {"L4", std::unexpected(
+                               openpower::phal::exception::ERR_TYPE::
+                                   PDBG_TARGET_INVALID)}, // Not valid location
+                                                          // code value
+                    {"L5", std::unexpected(
+                               openpower::phal::exception::ERR_TYPE::
+                                   PDBG_TARGET_NOT_FOUND)}}; // Location Code is
+                                                             // not found
+            auto fruType = frusList.find(locCode)->second;
+#endif
+
+            if (fruType.has_value())
+            {
+                if (fruType.value() == ENUM_ATTR_TYPE_DIMM)
+                {
+                    // Add to DIMM cache storage
+                    const_cast<DataInterfaceBase&>(dataIface).addDIMMLocCode(
+                        locCode);
+                    return true;
+                }
+            }
+            else
+            {
+                if (openpower::phal::exception::errMsgMap.contains(
+                        fruType.error()))
+                {
+                    std::string msg = std::format(
+                        "Failed to determine the HW Type, LocationCode:[{}] PHALErrorMsg: [{}]",
+                        locCode,
+                        openpower::phal::exception::errMsgMap.at(
+                            fruType.error()));
+                    debugData[dramInfoFetchError].emplace_back(msg);
+                }
+                else
+                {
+                    std::string msg = std::format(
+                        "Failed to determine the HW Type, LocationCode: [{}] PHALErrorMsg: [Unknown PHAL Error Code : {}]",
+                        locCode, static_cast<uint8_t>(fruType.error()));
+                    debugData[dramInfoFetchError].emplace_back(msg);
+                }
+            }
+            return false;
+        }
+    };
+
+    auto dimmsWithManufInfo = [&dataIface, &adSysInfoData,
+                               &debugData](const auto& callout) {
+        auto dimmLocCode{callout->locationCode()};
+
+        auto diPropVal = dataIface.getDIProperty(dimmLocCode);
+        if (!diPropVal.has_value())
+        {
+            debugData.emplace(
+                dramInfoFetchError,
+                std::vector<std::string>{
+                    "Failed reading DI property from VINI Interface"});
+        }
+        else
+            util::addDRAMInfo(dimmLocCode, diPropVal.value(), adSysInfoData);
+    };
+
+    auto dimmsCallouts = src->callouts()->callouts() |
+                         std::views::filter(dimmsCallout);
+
+    std::ranges::for_each(dimmsCallouts, dimmsWithManufInfo);
+}
+
 namespace util
 {
 
@@ -846,10 +960,9 @@ void addBMCUptime(nlohmann::json& json, const DataInterfaceBase& dataIface)
     json["BMCLoad"] = dataIface.getBMCLoadAvg();
 }
 
-std::unique_ptr<UserData>
-    makeSysInfoUserDataSection(const AdditionalData& ad,
-                               const DataInterfaceBase& dataIface,
-                               bool addUptime)
+std::unique_ptr<UserData> makeSysInfoUserDataSection(
+    const AdditionalData& ad, const DataInterfaceBase& dataIface,
+    bool addUptime, const nlohmann::json& adSysInfoData)
 {
     nlohmann::json json;
 
@@ -861,6 +974,11 @@ std::unique_ptr<UserData>
     if (addUptime)
     {
         addBMCUptime(json, dataIface);
+    }
+
+    if (!adSysInfoData.empty())
+    {
+        json.update(adSysInfoData);
     }
 
     return makeJSONUserDataSection(json);
@@ -993,6 +1111,20 @@ std::vector<uint8_t> flattenLines(const std::vector<std::string>& lines)
     }
 
     return out;
+}
+
+void addDRAMInfo(const std::string& locationCode,
+                 const std::vector<std::uint8_t>& diPropVal,
+                 nlohmann::json& adSysInfoData)
+{
+    nlohmann::json dramInfoObj;
+    dramInfoObj["Location Code"] = locationCode;
+    std::ranges::transform(diPropVal,
+                           std::back_inserter(dramInfoObj["Manufacturer ID"]),
+                           [](const auto& diPropEachByte) {
+        return std::format("{:#02x}", diPropEachByte);
+    });
+    adSysInfoData["DRAMs Manufacturer Info"] += dramInfoObj;
 }
 
 } // namespace util

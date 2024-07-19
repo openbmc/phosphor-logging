@@ -9,6 +9,7 @@
 
 #include <filesystem>
 #include <fstream>
+#include <unordered_set>
 
 namespace openpower
 {
@@ -488,6 +489,37 @@ class DataInterfaceBase
      */
     virtual std::vector<uint8_t> getRawProgressSRC() const = 0;
 
+    /**
+     * @brief Returns the FRUs DI property value hosted on the VINI iterface for
+     * the given location code.
+     *
+     * @param[in] locationCode - The location code of the FRU
+     *
+     * @return std::optional<std::vector<uint8_t>> -  The FRUs DI or
+     * std::nullopt
+     */
+    virtual std::optional<std::vector<uint8_t>>
+        getDIProperty(const std::string& locationCode) const = 0;
+
+    /**
+     * @brief Check whether the given location code present in the DIMM cache
+     * memory
+     *
+     * @param[in] locCode - The location code of the FRU
+     *
+     * @return true, if the given location code present
+     *         false, if the given location code not present
+     */
+    virtual bool isDIMMLocCode(const std::string& locCode) const = 0;
+
+    /**
+     * @brief add the given location code to the DIMM cache memory
+     *
+     * @param[in] locCode - The location code of the FRU
+     *
+     */
+    virtual void addDIMMLocCode(const std::string& locCode) = 0;
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
@@ -602,6 +634,11 @@ class DataInterfaceBase
      * @brief The boot state property
      */
     std::string _bootState;
+
+    /**
+     * @brief A cache storage for DIMMs location code
+     */
+    std::unordered_set<std::string> _dimmsLocCode;
 };
 
 /**
@@ -837,6 +874,31 @@ class DataInterface : public DataInterfaceBase
      * @return std::vector<uint8_t>: The progress SRC bytes
      */
     std::vector<uint8_t> getRawProgressSRC() const override;
+
+    /**
+     * @brief Returns the FRUs DI property value hosted on the VINI iterface for
+     * the given location code.
+     *
+     * @param[in] locationCode - The location code of the FRU
+     *
+     * @return std::optional<std::vector<uint8_t>> -  The FRUs DI or
+     * std::nullopt
+     */
+    std::optional<std::vector<uint8_t>>
+        getDIProperty(const std::string& locationCode) const override;
+
+    /**
+     * @brief Check whether the given location code present in the cache
+     *
+     * @return bool true, if the given location code present
+     *         bool false, if the given location code not present
+     */
+    bool isDIMMLocCode(const std::string& locCode) const override;
+
+    /**
+     * @brief add the given location code to the dimm cache memory
+     */
+    void addDIMMLocCode(const std::string& locCode) override;
 
   private:
     /**
