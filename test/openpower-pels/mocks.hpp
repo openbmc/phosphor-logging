@@ -66,6 +66,8 @@ class MockDataInterface : public DataInterfaceBase
     MOCK_METHOD(std::vector<uint32_t>, getLogIDWithHwIsolation, (),
                 (const override));
     MOCK_METHOD(std::vector<uint8_t>, getRawProgressSRC, (), (const override));
+    MOCK_METHOD(std::optional<std::vector<uint8_t>>, getDIProperty,
+                (const std::string&), (const override));
 
     void changeHostState(bool newState)
     {
