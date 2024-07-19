@@ -192,12 +192,6 @@ void createDeconfigRecords(const nlohmann::json& jsonCallouts,
             ATTR_PHYS_BIN_PATH_Type physBinPath;
             std::copy(entityPath.begin(), entityPath.end(), physBinPath);
             // libphal api to deconfigure the target
-            if (!pdbg_targets_init(NULL))
-            {
-                lg2::error(
-                    "pdbg_targets_init failed, skipping deconfig record update");
-                return;
-            }
             openpower::phal::pdbg::deconfigureTgt(physBinPath, plid);
         }
         catch (const std::exception& e)

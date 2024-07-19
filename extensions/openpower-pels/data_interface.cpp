@@ -22,6 +22,10 @@
 #include <xyz/openbmc_project/State/BMC/server.hpp>
 #include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
 
+#ifdef PEL_ENABLE_PHAL
+#include <libphal.H>
+#endif
+
 // Use a timeout of 10s for D-Bus calls so if there are
 // timeouts the callers of the PEL creation method won't
 // also timeout.
@@ -878,6 +882,107 @@ std::vector<uint8_t> DataInterface::getRawProgressSRC(void) const
 
     const auto& rawProgress = std::get<RawProgressProperty>(value);
     return std::get<1>(rawProgress);
+}
+
+std::optional<std::vector<uint8_t>>
+    DataInterface::getDIProperty(const std::string& locationCode) const
+{
+    std::vector<uint8_t> viniDI;
+
+    try
+    {
+        // Note : The hardcoded value 0 should be changed when comes to
+        // multinode system.
+        auto objectPath = getInventoryFromLocCode(locationCode, 0, true);
+
+        DBusValue value;
+        getProperty(service_name::inventoryManager, objectPath[0],
+                    interface::viniRecordVPD, "DI", value);
+
+        viniDI = std::get<std::vector<uint8_t>>(value);
+    }
+    catch (const std::exception& e)
+    {
+        lg2::warning(
+            "Failed reading DI property for the location code : {LOC_CODE} from "
+            "interface: {IFACE} exception: {ERROR}",
+            "LOC_CODE", locationCode, "IFACE", interface::viniRecordVPD,
+            "ERROR", e);
+        return std::nullopt;
+    }
+
+    return viniDI;
+}
+
+std::optional<bool>
+    DataInterfaceBase::isDIMMLocCode(const std::string& locCode) const
+{
+    if (_locationCache.contains(locCode))
+    {
+        return _locationCache.at(locCode);
+    }
+    else
+    {
+        return std::nullopt;
+    }
+}
+
+void DataInterfaceBase::addDIMMLocCode(const std::string& locCode,
+                                       bool isFRUDIMM)
+{
+    _locationCache.insert({locCode, isFRUDIMM});
+}
+
+std::expected<bool, std::string>
+    DataInterfaceBase::isDIMM(const std::string& locCode)
+{
+    auto isDIMMType = isDIMMLocCode(locCode);
+    if (isDIMMType.has_value())
+    {
+        return isDIMMType.value();
+    }
+#ifndef PEL_ENABLE_PHAL
+    return std::unexpected<std::string>(
+        std::format("PHAL feature is not enabled, so the LocationCode:[{}] "
+                    "cannot be determined as DIMM",
+                    locCode));
+#else
+    else
+    {
+        // Invoke pHAL API inorder to fetch the FRU Type
+        auto fruType = openpower::phal::pdbg::getFRUType(locCode);
+        if (fruType.has_value())
+        {
+            bool isDIMMFRU{false};
+            if (fruType.value() == ENUM_ATTR_TYPE_DIMM)
+            {
+                isDIMMFRU = true;
+            }
+            addDIMMLocCode(locCode, isDIMMFRU);
+            return isDIMMFRU;
+        }
+        else
+        {
+            std::string msg{std::format("Failed to determine the HW Type, "
+                                        "LocationCode:[{}]",
+                                        locCode)};
+            if (openpower::phal::exception::errMsgMap.contains(fruType.error()))
+            {
+                msg = std::format(
+                    "{} PHALErrorMsg:[{}]", msg,
+                    openpower::phal::exception::errMsgMap.at(fruType.error()));
+            }
+            else
+            {
+                msg = std::format(
+                    "{} PHALErrorMsg:[Unknown PHALErrorCode:{}]", msg,
+                    std::to_underlying<openpower::phal::exception::ERR_TYPE>(
+                        fruType.error()));
+            }
+            return std::unexpected<std::string>(msg);
+        }
+    }
+#endif
 }
 
 void DataInterface::startFruPlugWatch()

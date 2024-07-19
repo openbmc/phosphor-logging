@@ -68,6 +68,7 @@ libpel_sources = files(
     'severity.cpp',
     'user_header.cpp',
     'temporary_file.cpp',
+    '../../util.cpp',
     extra_sources,
 )
 

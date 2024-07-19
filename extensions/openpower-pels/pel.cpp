@@ -43,6 +43,7 @@
 
 #include <format>
 #include <iostream>
+#include <ranges>
 
 namespace openpower
 {
@@ -51,6 +52,7 @@ namespace pels
 namespace pv = openpower::pels::pel_values;
 
 constexpr auto unknownValue = "Unknown";
+constexpr auto AdDIMMInfoFetchError = "DIMMs Info Fetch Error";
 
 PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
          phosphor::logging::Entry::Level severity,
@@ -87,7 +89,7 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
     }
 #endif
 
-    std::map<std::string, std::vector<std::string>> debugData;
+    DebugData debugData;
     nlohmann::json callouts;
 
     _ph = std::make_unique<PrivateHeader>(regEntry.componentID, obmcLogID,
@@ -112,6 +114,9 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
     auto src =
         std::make_unique<SRC>(regEntry, additionalData, callouts, dataIface);
 
+    nlohmann::json adSysInfoData(nlohmann::json::value_t::object);
+    addAdDetailsForDIMMsCallout(src, dataIface, adSysInfoData, debugData);
+
     if (!src->getDebugData().empty())
     {
         // Something didn't go as planned
@@ -126,7 +131,8 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
     auto mtms = std::make_unique<FailingMTMS>(dataIface);
     _optionalSections.push_back(std::move(mtms));
 
-    auto ud = util::makeSysInfoUserDataSection(additionalData, dataIface);
+    auto ud = util::makeSysInfoUserDataSection(additionalData, dataIface, true,
+                                               adSysInfoData);
     addUserDataSection(std::move(ud));
 
     //  Check for pel severity of type - 0x51 = critical error, system
@@ -722,6 +728,60 @@ void PEL::addJournalSections(const message::Entry& regEntry,
     }
 }
 
+void PEL::addAdDetailsForDIMMsCallout(
+    const std::unique_ptr<SRC>& src, const DataInterfaceBase& dataIface,
+    nlohmann::json& adSysInfoData, DebugData& debugData)
+{
+    if (!src->callouts())
+    {
+        // No callouts
+        return;
+    }
+
+    auto isDIMMCallout = [&dataIface, &debugData](const auto& callout) {
+        auto locCode{callout->locationCode()};
+        if (locCode.empty())
+        {
+            // Not a hardware callout. No action required
+            return false;
+        }
+        else
+        {
+            auto isDIMMLocCode =
+                const_cast<DataInterfaceBase&>(dataIface).isDIMM(locCode);
+            if (isDIMMLocCode.has_value())
+            {
+                return isDIMMLocCode.value();
+            }
+            debugData[AdDIMMInfoFetchError].emplace_back(isDIMMLocCode.error());
+            return false;
+        }
+    };
+    auto addAdDIMMDetails = [&dataIface, &adSysInfoData,
+                             &debugData](const auto& callout) {
+        auto dimmLocCode{callout->locationCode()};
+
+        auto diPropVal = dataIface.getDIProperty(dimmLocCode);
+        if (!diPropVal.has_value())
+        {
+            std::string errMsg{
+                std::format("Failed reading DI property from "
+                            "VINI Interface for the LocationCode:[{}]",
+                            dimmLocCode)};
+            debugData[AdDIMMInfoFetchError].emplace_back(errMsg);
+        }
+        else
+        {
+            util::addDIMMInfo(dimmLocCode, diPropVal.value(), adSysInfoData);
+        }
+    };
+
+    auto DIMMsCallouts = src->callouts()->callouts() |
+                         std::views::filter(isDIMMCallout);
+
+    std::ranges::for_each(DIMMsCallouts, addAdDIMMDetails);
+}
+
 namespace util
 {
 
@@ -848,7 +908,7 @@ void addBMCUptime(nlohmann::json& json, const DataInterfaceBase& dataIface)
 
 std::unique_ptr<UserData> makeSysInfoUserDataSection(
     const AdditionalData& ad, const DataInterfaceBase& dataIface,
-    bool addUptime)
+    bool addUptime, const nlohmann::json& adSysInfoData)
 {
     nlohmann::json json;
 
@@ -860,6 +920,11 @@ std::unique_ptr<UserData> makeSysInfoUserDataSection(
     if (addUptime)
     {
         addBMCUptime(json, dataIface);
+    }
+
+    if (!adSysInfoData.empty())
+    {
+        json.update(adSysInfoData);
     }
 
     return makeJSONUserDataSection(json);
@@ -992,6 +1057,20 @@ std::vector<uint8_t> flattenLines(const std::vector<std::string>& lines)
     }
 
     return out;
+}
+
+void addDIMMInfo(const std::string& locationCode,
+                 const std::vector<std::uint8_t>& diPropVal,
+                 nlohmann::json& adSysInfoData)
+{
+    nlohmann::json dimmInfoObj;
+    dimmInfoObj["Location Code"] = locationCode;
+    std::ranges::transform(
+        diPropVal, std::back_inserter(dimmInfoObj["DRAM Manufacturer ID"]),
+        [](const auto& diPropEachByte) {
+            return std::format("{:#04x}", diPropEachByte);
+        });
+    adSysInfoData["DIMMs Additional Info"] += dimmInfoObj;
 }
 
 } // namespace util

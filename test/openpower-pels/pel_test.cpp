@@ -21,6 +21,7 @@
 
 #include <filesystem>
 #include <fstream>
+#include <optional>
 
 #include <gtest/gtest.h>
 
@@ -908,7 +909,10 @@ TEST_F(PELTest, CreateWithDevCalloutsTest)
             }
         )"_json;
 
-        EXPECT_EQ(actualJSON, expectedJSON);
+        EXPECT_TRUE(
+            actualJSON.contains("/PEL Internal Debug Data/SRC"_json_pointer));
+        EXPECT_EQ(actualJSON["PEL Internal Debug Data"]["SRC"],
+                  expectedJSON["PEL Internal Debug Data"]["SRC"]);
     }
 
     {
@@ -946,7 +950,10 @@ TEST_F(PELTest, CreateWithDevCalloutsTest)
             "[\"Problem looking up I2C callouts on 14 153: "
             "[json.exception.out_of_range.403] key '153' not found\"]}}"_json;
 
-        EXPECT_EQ(actualJSON, expectedJSON);
+        EXPECT_TRUE(
+            actualJSON.contains("/PEL Internal Debug Data/SRC"_json_pointer));
+        EXPECT_EQ(actualJSON["PEL Internal Debug Data"]["SRC"],
+                  expectedJSON["PEL Internal Debug Data"]["SRC"]);
     }
 
     fs::remove_all(dataPath);
@@ -1265,5 +1272,252 @@ TEST_F(PELTest, CaptureJournalTest)
         ASSERT_EQ(pel.privateHeader().sectionCount(), pelSectsWithOneUD);
 
         checkJournalSection(pel.optionalSections().back(), expected4);
+    }
+}
+
+// API to collect and parse the User Data section of the PEL.
+nlohmann::json getDIMMInfo(const auto& pel)
+{
+    nlohmann::json dimmInfo{};
+    auto hasDIMMInfo = [&dimmInfo](const auto& optionalSection) {
+        if (optionalSection->header().id !=
+            static_cast<uint16_t>(SectionID::userData))
+        {
+            return false;
+        }
+        else
+        {
+            auto userData = static_cast<UserData*>(optionalSection.get());
+
+            // convert the userdata section to string and then parse in to json
+            // format
+            std::string userDataString{userData->data().begin(),
+                                       userData->data().end()};
+            nlohmann::json userDataJson = nlohmann::json::parse(userDataString);
+
+            if (userDataJson.contains("DIMMs Additional Info"))
+            {
+                dimmInfo = userDataJson.at("DIMMs Additional Info");
+            }
+            else if (
+                userDataJson.contains(
+                    "/PEL Internal Debug Data/DIMMs Info Fetch Error"_json_pointer))
+            {
+                dimmInfo = userDataJson.at(
+                    "/PEL Internal Debug Data/DIMMs Info Fetch Error"_json_pointer);
+            }
+            else
+            {
+                return false;
+            }
+            return true;
+        }
+    };
+    std::ranges::any_of(pel.optionalSections(), hasDIMMInfo);
+
+    return dimmInfo;
+}
+
+// Test whether the DIMM callouts manufacturing info is getting added to the
+// SysInfo User Data section of the PEL
+TEST_F(PELTest, TestDimmsCalloutInfo)
+{
+    {
+        message::Entry entry;
+        uint64_t timestamp = 5;
+        AdditionalData ad;
+        NiceMock<MockDataInterface> dataIface;
+        NiceMock<MockJournal> journal;
+        PelFFDC ffdc;
+
+        // When callouts contain DIMM callouts.
+        entry.callouts = R"(
+        [
+            {
+                "CalloutList": [
+                    {
+                        "Priority": "high",
+                        "LocCode": "P0-DIMM0"
+                    },
+                    {
+                        "Priority": "low",
+                        "LocCode": "P0-DIMM1"
+                    }
+                ]
+            }
+        ]
+        )"_json;
+
+        EXPECT_CALL(dataIface, expandLocationCode("P0-DIMM0", 0))
+            .WillOnce(Return("U98D-P0-DIMM0"));
+        EXPECT_CALL(dataIface, expandLocationCode("P0-DIMM1", 0))
+            .WillOnce(Return("U98D-P0-DIMM1"));
+
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-DIMM0", 0, false))
+            .WillOnce(Return(std::vector<std::string>{
+                "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm0"}));
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-DIMM1", 0, false))
+            .WillOnce(Return(std::vector<std::string>{
+                "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm1"}));
+
+        std::vector<uint8_t> diValue{128, 74};
+        EXPECT_CALL(dataIface, getDIProperty("U98D-P0-DIMM0"))
+            .WillOnce(Return(diValue));
+        EXPECT_CALL(dataIface, getDIProperty("U98D-P0-DIMM1"))
+            .WillOnce(Return(diValue));
+
+        // Add some location code in expanded format to DIMM cache memory
+        dataIface.addDIMMLocCode("U98D-P0-DIMM0", true);
+        dataIface.addDIMMLocCode("U98D-P0-DIMM1", true);
+
+        PEL pel{entry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
+                ad,    ffdc, dataIface, journal};
+        nlohmann::json dimmInfoJson = getDIMMInfo(pel);
+
+        nlohmann::json expected_data = R"(
+        [
+            {
+                "Location Code": "U98D-P0-DIMM0",
+                "DRAM Manufacturer ID": [
+                    "0x80",
+                    "0x4a"
+                ]
+            },
+            {
+                "Location Code": "U98D-P0-DIMM1",
+                "DRAM Manufacturer ID": [
+                    "0x80",
+                    "0x4a"
+                ]
+            }
+        ]
+        )"_json;
+        EXPECT_EQ(expected_data, dimmInfoJson);
+    }
+}
+
+// When PEL has FRU callouts but PHAL is not enabled.
+TEST_F(PELTest, TestDimmsCalloutInfoWithNoPHAL)
+{
+    message::Entry entry;
+    uint64_t timestamp = 5;
+    AdditionalData ad;
+    NiceMock<MockDataInterface> dataIface;
+    NiceMock<MockJournal> journal;
+    PelFFDC ffdc;
+
+    entry.callouts = R"(
+        [
+            {
+                "CalloutList": [
+                    {
+                        "Priority": "high",
+                        "LocCode": "P0-DIMM0"
+                    },
+                    {
+                        "Priority": "low",
+                        "LocCode": "P0-DIMM1"
+                    }
+                ]
+            }
+        ]
+        )"_json;
+
+    EXPECT_CALL(dataIface, expandLocationCode("P0-DIMM0", 0))
+        .WillOnce(Return("U98D-P0-DIMM0"));
+    EXPECT_CALL(dataIface, expandLocationCode("P0-DIMM1", 0))
+        .WillOnce(Return("U98D-P0-DIMM1"));
+
+    EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-DIMM0", 0, false))
+        .WillOnce(Return(std::vector<std::string>{
+            "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm0"}));
+    EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-DIMM1", 0, false))
+        .WillOnce(Return(std::vector<std::string>{
+            "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm1"}));
+
+    PEL pel{entry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
+            ad,    ffdc, dataIface, journal};
+
+    nlohmann::json dimmInfoJson = getDIMMInfo(pel);
+
+    nlohmann::json expected_data = R"(
+        [
+            "PHAL feature is not enabled, so the LocationCode:[U98D-P0-DIMM0] cannot be determined as DIMM",
+            "PHAL feature is not enabled, so the LocationCode:[U98D-P0-DIMM1] cannot be determined as DIMM"
+        ]
+    )"_json;
+
+    EXPECT_EQ(expected_data, dimmInfoJson);
+}
+
+// When the PEL doesn't contain any type of callouts
+TEST_F(PELTest, TestDimmsCalloutInfoWithNoCallouts)
+{
+    message::Entry entry;
+    uint64_t timestamp = 5;
+    AdditionalData ad;
+    NiceMock<MockDataInterface> dataIface;
+    NiceMock<MockJournal> journal;
+    PelFFDC ffdc;
+
+    PEL pel{entry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
+            ad,    ffdc, dataIface, journal};
+
+    nlohmann::json dimmInfoJson = getDIMMInfo(pel);
+
+    nlohmann::json expected_data{};
+
+    EXPECT_EQ(expected_data, dimmInfoJson);
+}
+
+// When the PEL has DIMM callouts, but failed to fetch DI property value
+TEST_F(PELTest, TestDimmsCalloutInfoDIFailure)
+{
+    {
+        message::Entry entry;
+        uint64_t timestamp = 5;
+        AdditionalData ad;
+        NiceMock<MockDataInterface> dataIface;
+        NiceMock<MockJournal> journal;
+        PelFFDC ffdc;
+
+        entry.callouts = R"(
+        [
+            {
+                "CalloutList": [
+                    {
+                        "Priority": "high",
+                        "LocCode": "P0-DIMM0"
+                    }
+                ]
+            }
+        ]
+        )"_json;
+
+        EXPECT_CALL(dataIface, expandLocationCode("P0-DIMM0", 0))
+            .WillOnce(Return("U98D-P0-DIMM0"));
+
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-DIMM0", 0, false))
+            .WillOnce(Return(std::vector<std::string>{
+                "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm0"}));
+
+        EXPECT_CALL(dataIface, getDIProperty("U98D-P0-DIMM0"))
+            .WillOnce(Return(std::nullopt));
+
+        // Add some location code in expanded format to DIMM cache memory
+        dataIface.addDIMMLocCode("U98D-P0-DIMM0", true);
+
+        PEL pel{entry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
+                ad,    ffdc, dataIface, journal};
+
+        nlohmann::json dimmInfoJson = getDIMMInfo(pel);
+
+        nlohmann::json expected_data = R"(
+            [
+                "Failed reading DI property from VINI Interface for the LocationCode:[U98D-P0-DIMM0]"
+            ]
+        )"_json;
+
+        EXPECT_EQ(expected_data, dimmInfoJson);
     }
 }
