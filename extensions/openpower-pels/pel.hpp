@@ -30,6 +30,7 @@ struct PelFFDCfile
 };
 
 using PelFFDC = std::vector<PelFFDCfile>;
+using DebugData = std::map<std::string, std::vector<std::string>>;
 
 constexpr uint8_t jsonCalloutSubtype = 0xCA;
 
@@ -416,6 +417,20 @@ class PEL
                             const JournalBase& journal);
 
     /**
+     * @brief API to collect the addditional details of the DIMM callouts in
+     * the PEL as a JSON object in adSysInfoData.
+     *
+     * @param[in] src - Unique pointer to the SRC object
+     * @param[in] dataIface - The data interface object
+     * @param[out] adSysInfoData - The additional data to SysInfo in json format
+     * @param[out] debugData - The map of string and vector of string to store
+     * the debug data if any.
+     */
+    void addAdDetailsForDIMMsCallout(
+        const std::unique_ptr<SRC>& src, const DataInterfaceBase& dataIface,
+        nlohmann::json& adSysInfoData, DebugData& debugData);
+
+    /**
      * @brief The PEL Private Header section
      */
     std::unique_ptr<PrivateHeader> _ph;
@@ -466,12 +481,16 @@ std::unique_ptr<UserData> makeADUserDataSection(const AdditionalData& ad);
  * @param[in] dataIface - The data interface object
  * @param[in] addUptime - Whether to add the uptime attribute the default is
  *                        true
+ * @param[in] adSysInfoData - The additional data to SysInfo in json format.
+ *                            Default value will be empty.
  *
  * @return std::unique_ptr<UserData> - The section
  */
 std::unique_ptr<UserData> makeSysInfoUserDataSection(
     const AdditionalData& ad, const DataInterfaceBase& dataIface,
-    bool addUptime = true);
+    bool addUptime = true,
+    const nlohmann::json& adSysInfoData =
+        nlohmann::json(nlohmann::json::value_t::object));
 
 /**
  * @brief Reads data from an opened file descriptor.
@@ -491,6 +510,19 @@ std::vector<uint8_t> readFD(int fd);
  */
 std::unique_ptr<UserData>
     makeFFDCuserDataSection(uint16_t componentID, const PelFFDCfile& file);
+
+/**
+ * @brief To create JSON object with the given location code and the hex
+ * converted value of the given DI property.
+ *
+ * @param[in] locationCode - The location code of the DIMM
+ * @param[in] diPropVal - The DI property value of the DIMM
+ * @param[out] adSysInfoData - Holds the created JSON object
+ */
+
+void addDIMMInfo(const std::string& locationCode,
+                 const std::vector<std::uint8_t>& diPropVal,
+                 nlohmann::json& adSysInfoData);
 
 /**
  * @brief Flattens a vector of strings into a vector of bytes suitable
