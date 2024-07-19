@@ -7,8 +7,10 @@
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
 
+#include <expected>
 #include <filesystem>
 #include <fstream>
+#include <unordered_map>
 
 namespace openpower
 {
@@ -487,6 +489,56 @@ class DataInterfaceBase
      */
     virtual std::vector<uint8_t> getRawProgressSRC() const = 0;
 
+    /**
+     * @brief Returns the FRUs DI property value hosted on the VINI iterface for
+     * the given location code.
+     *
+     * @param[in] locationCode - The location code of the FRU
+     *
+     * @return std::optional<std::vector<uint8_t>> -  The FRUs DI or
+     * std::nullopt
+     */
+    virtual std::optional<std::vector<uint8_t>>
+        getDIProperty(const std::string& locationCode) const = 0;
+
+    /**
+     * @brief Wrpper API to call pHAL API 'getFRUType()' and check whether the
+     * given location code is DIMM or not
+     *
+     * @param[in] locCode - The location code of the FRU
+     *
+     * @return std::expected<bool, std::string>
+     *       - Returns bool value if FRU type is able to determine successfully.
+     *              - true , if the given locCode is DIMM
+     *              - false, if the given locCode is not a DIMM
+     *       - Returns an error message in string format if an error occurs.
+     */
+    std::expected<bool, std::string> isDIMM(const std::string& locCode);
+
+    /**
+     * @brief Check whether the given location code present in the cache
+     * memory
+     *
+     * @param[in] locCode - The location code of the FRU
+     *
+     * @return true, if the given location code present in cache and is a DIMM
+     *         false, if the given location code present in cache, but a non
+     *         DIMM FRU
+     *         std::nullopt, if the given location code is not present in the
+     *         cache.
+     */
+    std::optional<bool> isDIMMLocCode(const std::string& locCode) const;
+
+    /**
+     * @brief add the given location code to the cache memory
+     *
+     * @param[in] locCode - The location code of the FRU
+     * @param[in] isFRUDIMM - true indicates the FRU is a DIMM
+     *                        false indicates the FRU is a non DIMM
+     *
+     */
+    void addDIMMLocCode(const std::string& locCode, bool isFRUDIMM);
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
@@ -601,6 +653,14 @@ class DataInterfaceBase
      * @brief The boot state property
      */
     std::string _bootState;
+
+    /**
+     * @brief A cache storage for location code and its FRU Type
+     *  - The key 'std::string' represents the locationCode of the FRU
+     *  - The bool value - true indicates the FRU is a DIMM
+     *                     false indicates the FRU is a non DIMM.
+     */
+    std::unordered_map<std::string, bool> _locationCache;
 };
 
 /**
@@ -836,6 +896,18 @@ class DataInterface : public DataInterfaceBase
      * @return std::vector<uint8_t>: The progress SRC bytes
      */
     std::vector<uint8_t> getRawProgressSRC() const override;
+
+    /**
+     * @brief Returns the FRUs DI property value hosted on the VINI iterface for
+     * the given location code.
+     *
+     * @param[in] locationCode - The location code of the FRU
+     *
+     * @return std::optional<std::vector<uint8_t>> -  The FRUs DI or
+     * std::nullopt
+     */
+    std::optional<std::vector<uint8_t>>
+        getDIProperty(const std::string& locationCode) const override;
 
   private:
     /**
