@@ -20,6 +20,189 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "99ef8912_f063e0aa",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 887,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-07-20T03:57:07Z",
+      "side": 1,
+      "message": "Suggestion: we could use `std::string_view` instead of `const std::string\u0026`. Any issues with that here? The same comment applies everywhere.\n\nFYR: https://stackoverflow.com/questions/40127965/how-exactly-is-stdstring-view-faster-than-const-stdstring\n\n\nIt not be allowing due to the existing API signature used in this API implementation? (we cannot convert string_view into string)",
+      "range": {
+        "startLine": 887,
+        "startChar": 33,
+        "endLine": 887,
+        "endChar": 51
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8e358a1_5f892e69",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 893,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-07-20T03:57:07Z",
+      "side": 1,
+      "message": "I believe the getDIProperty API has a restriction due to these specified arguments value, correct?\n\n- This API currently expects only the expanded location code, so we should specify this in the API documentation. If there is a need to support unexpanded location codes, we can enhance the API in the future.\n\n- This API won\u0027t work in a multi-node system because it currently passes the node number as 0. While this isn\u0027t an issue now since we\u0027re using expanded location codes, it could become problematic if we decide to support unexpanded location codes in the future.",
+      "range": {
+        "startLine": 893,
+        "startChar": 64,
+        "endLine": 893,
+        "endChar": 71
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c10957b2_0f1fa6c4",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-07-20T03:57:07Z",
+      "side": 1,
+      "message": "Please avoid hard-coding the service name. The given location code object could be hosted by PIM, EM, PLDM, or any other application, so we should determine the service name based on the object path and interface name.\n\nUse `DataInterface::getService` API",
+      "range": {
+        "startLine": 896,
+        "startChar": 20,
+        "endLine": 896,
+        "endChar": 50
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c286c73b_ce10c011",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-07-20T03:57:07Z",
+      "side": 1,
+      "message": "I believe we don\u0027t need to include the return data type in the API documentation. It\u0027s sufficient to describe what will be returned in both success and error cases.\n\nsomething like\n```\n* @return The DI property value on success or no value on failure\n```",
+      "range": {
+        "startLine": 498,
+        "startChar": 15,
+        "endLine": 498,
+        "endChar": 50
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6d9aed6_465bf6c2",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-07-20T03:57:07Z",
+      "side": 1,
+      "message": "How about below return description?\n\n```\n* @return true if the given location code belongs to DIMM; otherwise, return false.\n```",
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ab125a2_1a14039c",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 884,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-07-20T03:57:07Z",
+      "side": 1,
+      "message": "Same as mentioned in LN498",
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e246486_8147d665",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 893,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-07-20T03:57:07Z",
+      "side": 1,
+      "message": "Same as mentioned LN510",
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e3cd9ac_ad8f29e3",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-07-20T03:57:07Z",
+      "side": 1,
+      "message": "Remove unwanted new line.",
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0f02f1f_de3495c2",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-07-20T03:57:07Z",
+      "side": 1,
+      "message": "`dimmInfoFetchError` and `DIMMs` to make more generic?",
+      "range": {
+        "startLine": 58,
+        "startChar": 37,
+        "endLine": 58,
+        "endChar": 41
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4b004ccd_0519b21f",
         "filename": "extensions/openpower-pels/pel.cpp",
         "patchSetId": 1
@@ -31,6 +214,231 @@
       "writtenOn": "2024-07-19T12:54:30Z",
       "side": 1,
       "message": "This is just to mimic the pHAL API response for testing. Will remove once the pHAL API is ready.",
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93d16cb4_7f80b921",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 765,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-07-20T03:57:07Z",
+      "side": 1,
+      "message": "I think when you are removing this code, you need to remove LN46.",
+      "parentUuid": "4b004ccd_0519b21f",
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1896c1c8_a5d1d25f",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 788,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-07-20T03:57:07Z",
+      "side": 1,
+      "message": "We are violating the API signature; the caller assumes that the dataIface object won\u0027t be modified, but we are making changes to it.\n\nI understand that updating all instances in this API call flow would be significant. Therefore, we have two options: either document this exception in the API documentation or change the argument to be non-const in the API flow.",
+      "range": {
+        "startLine": 788,
+        "startChar": 20,
+        "endLine": 788,
+        "endChar": 31
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d25888b9_54dd957e",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-07-20T03:57:07Z",
+      "side": 1,
+      "message": "We could use `std::to_underlying` without assuming it will be `uint8_t`.\n\nFor example:\n\n```\nstd::to_underlying\u003copenpower::phal::exception::ERR_TYPE\u003e(fruType.error())\n```",
+      "range": {
+        "startLine": 809,
+        "startChar": 33,
+        "endLine": 809,
+        "endChar": 53
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "994f6037_099764a3",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 827,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-07-20T03:57:07Z",
+      "side": 1,
+      "message": "It could be written like LN803/810 and add location code in the trace as well to improve debuggability. \n\n```\ndebugData[dramInfoFetchError].emplace_back(\"Failed reading DI property from VINI Interface\");\n```",
+      "range": {
+        "startLine": 824,
+        "startChar": 12,
+        "endLine": 827,
+        "endChar": 71
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27ad3d2f_347de44f",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 836,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-07-20T03:57:07Z",
+      "side": 1,
+      "message": "addAdDIMMDetails?",
+      "range": {
+        "startLine": 836,
+        "startChar": 41,
+        "endLine": 836,
+        "endChar": 59
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2cea359_ed86a895",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 836,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-07-20T03:57:07Z",
+      "side": 1,
+      "message": "Suggestion: It could also be written as follows.\n\n```\nstd::ranges::for_each(src-\u003ecallouts()-\u003ecallouts() | std::views::filter(dimmsCallout), addAdDIMMDetails);\n```\n\n(I understand you did not prefer `std::views::transform` because you are not transferring the callouts object. Instead, you are extracting DIMM callouts and adding additional details in a separate section, rather than in the callout section.)",
+      "range": {
+        "startLine": 833,
+        "startChar": 4,
+        "endLine": 836,
+        "endChar": 61
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "762d8759_b98aa89c",
+        "filename": "extensions/openpower-pels/pel.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-07-20T03:57:07Z",
+      "side": 1,
+      "message": "I believe this API collects data and adds it to the provided adSysInfoData. We should update the description to reflect this accurately.",
+      "range": {
+        "startLine": 420,
+        "startChar": 21,
+        "endLine": 420,
+        "endChar": 28
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d7d55e0_154482ec",
+        "filename": "extensions/openpower-pels/pel.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-07-20T03:57:07Z",
+      "side": 1,
+      "message": "It\u0027s not just getting data; it\u0027s also adding it to the `adSysInfoData` argument.\n\nHow about renaming it to `addAdDetailsForDIMMsCallout`?",
+      "range": {
+        "startLine": 429,
+        "startChar": 9,
+        "endLine": 429,
+        "endChar": 33
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23f0b378_7ac0435b",
+        "filename": "extensions/openpower-pels/pel.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-07-20T03:57:07Z",
+      "side": 1,
+      "message": "Suggestion: I think we could add a `using` alias for this data type in `pel.hpp` and use it throughout the codebase.",
+      "range": {
+        "startLine": 432,
+        "startChar": 8,
+        "endLine": 432,
+        "endChar": 55
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0190aa60_67e8152c",
+        "filename": "extensions/openpower-pels/pel.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-07-20T03:57:07Z",
+      "side": 1,
+      "message": "DIMM?",
+      "range": {
+        "startLine": 524,
+        "startChar": 8,
+        "endLine": 524,
+        "endChar": 12
+      },
       "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
