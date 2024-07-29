@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "12a37c3a_9185359e",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 887,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-07-29T14:23:06Z",
+      "side": 1,
+      "message": "to be consistent with all of the other calls, it may be better to just keep it how it is.",
+      "parentUuid": "99ef8912_f063e0aa",
+      "range": {
+        "startLine": 887,
+        "startChar": 33,
+        "endLine": 887,
+        "endChar": 51
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f8e358a1_5f892e69",
         "filename": "extensions/openpower-pels/data_interface.cpp",
         "patchSetId": 1
@@ -66,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7c380c1b_f089ba1c",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 893,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-07-29T14:23:06Z",
+      "side": 1,
+      "message": "there\u0027s going to need to be a lot of changes to support multiple nodes, so we can handle that all at a later time.",
+      "parentUuid": "f8e358a1_5f892e69",
+      "range": {
+        "startLine": 893,
+        "startChar": 64,
+        "endLine": 893,
+        "endChar": 71
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c10957b2_0f1fa6c4",
         "filename": "extensions/openpower-pels/data_interface.cpp",
         "patchSetId": 1
@@ -77,6 +125,30 @@
       "writtenOn": "2024-07-20T03:57:07Z",
       "side": 1,
       "message": "Please avoid hard-coding the service name. The given location code object could be hosted by PIM, EM, PLDM, or any other application, so we should determine the service name based on the object path and interface name.\n\nUse `DataInterface::getService` API",
+      "range": {
+        "startLine": 896,
+        "startChar": 20,
+        "endLine": 896,
+        "endChar": 50
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eddad478_70439163",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-07-29T14:23:06Z",
+      "side": 1,
+      "message": "for consistency, i\u0027d prefer it\u0027s just kept how it is.  Also, this will be called for every callout so we can reduce the dbus calls.",
+      "parentUuid": "c10957b2_0f1fa6c4",
       "range": {
         "startLine": 896,
         "startChar": 20,
@@ -147,6 +219,23 @@
       "writtenOn": "2024-07-20T03:57:07Z",
       "side": 1,
       "message": "How about below return description?\n\n```\n* @return true if the given location code belongs to DIMM; otherwise, return false.\n```",
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecfabb0e_00e6f543",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-07-29T14:23:06Z",
+      "side": 1,
+      "message": "The reason for the pure virtual functions is just for the unit tests, where we can use EXPECT_CALL on the MockDataInterface to handle calls that do things we don\u0027t have in test, like D-Bus.\n\nSince that is not the case for these functions that deal with the cache and you do want to test these, you can make them non virtual.",
       "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -325,6 +414,23 @@
         "endLine": 827,
         "endChar": 71
       },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "062164be_807ad776",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 829,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-07-29T14:23:06Z",
+      "side": 1,
+      "message": "the code guidelines want { } even for single line statements",
       "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
