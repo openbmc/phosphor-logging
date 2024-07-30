@@ -65,6 +65,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a32bc5a_ad911ed7",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 887,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-07-30T04:08:35Z",
+      "side": 1,
+      "message": "Okay, it\u0027s not easy to change because many APIs use `const std::string\u0026`, so we can\u0027t convert from `std::string_view` to `const std::string\u0026`.",
+      "parentUuid": "12a37c3a_9185359e",
+      "range": {
+        "startLine": 887,
+        "startChar": 33,
+        "endLine": 887,
+        "endChar": 51
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f8e358a1_5f892e69",
@@ -114,6 +138,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "af099cda_57675230",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 893,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-07-30T04:08:35Z",
+      "side": 1,
+      "message": "Agreed, it would require significant changes. Recommended to add some notes in the API documentation for future reference.",
+      "parentUuid": "7c380c1b_f089ba1c",
+      "range": {
+        "startLine": 893,
+        "startChar": 64,
+        "endLine": 893,
+        "endChar": 71
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c10957b2_0f1fa6c4",
         "filename": "extensions/openpower-pels/data_interface.cpp",
         "patchSetId": 1
@@ -149,6 +197,30 @@
       "side": 1,
       "message": "for consistency, i\u0027d prefer it\u0027s just kept how it is.  Also, this will be called for every callout so we can reduce the dbus calls.",
       "parentUuid": "c10957b2_0f1fa6c4",
+      "range": {
+        "startLine": 896,
+        "startChar": 20,
+        "endLine": 896,
+        "endChar": 50
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d782d599_a72b2ac7",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-07-30T04:08:35Z",
+      "side": 1,
+      "message": "ok :)",
+      "parentUuid": "eddad478_70439163",
       "range": {
         "startLine": 896,
         "startChar": 20,
