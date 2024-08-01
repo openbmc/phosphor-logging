@@ -6093,6 +6093,48 @@
             }
         },
         {
+            "Name": "xyz.openbmc_project.PLDM.Error.ReportResourceDumpFail.NewFileAvailableRequest",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "predictive",
+            "SRC": {
+                "ReasonCode": "0x6027",
+                "Words6To9": {}
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "BMC0001" }
+                    ]
+                }
+            ],
+            "Documentation": {
+                "Description": "Failed to send NewFileAvailable request to remote terminus.",
+                "Message": "Failed to send NewFileAvailable request to remote terminus."
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.PLDM.Error.ReportResourceDumpFail.DecodeNewFileResp",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "predictive",
+            "SRC": {
+                "ReasonCode": "0x6028",
+                "Words6To9": {}
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "BMC0001" }
+                    ]
+                }
+            ],
+            "Documentation": {
+                "Description": "Failed to decode NewFileAvailable response",
+                "Message": "Failed to decode NewFileAvailable response"
+            }
+        },
+        {
             "Name": "xyz.openbmc_project.Memory.MemoryECC.Error.CEThresholdReached",
             "Subsystem": "cec_hardware",
             "ComponentID": "0xF300",
