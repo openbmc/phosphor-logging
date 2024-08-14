@@ -176,6 +176,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c154b7f5_5649b4b3",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 939,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-08-14T15:53:29Z",
+      "side": 1,
+      "message": "PHAL will always be enabled on a real system. I think just not in CI which is why the compile flags were put in.\n\nI like the map idea.",
+      "parentUuid": "77b76a33_80913bfc",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ac5698ec_306842f7",
         "filename": "extensions/openpower-pels/data_interface.cpp",
         "patchSetId": 4
