@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "69fe0607_bf657ec1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-14T15:43:09Z",
+      "side": 1,
+      "message": "How about `PEL: Add DIMMs DRAM Manufacturer Info`?",
+      "parentUuid": "36e28f68_5a477d60",
+      "range": {
+        "startLine": 7,
+        "startChar": 4,
+        "endLine": 7,
+        "endChar": 11
+      },
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "115e4235_1f4e69db",
         "filename": "/COMMIT_MSG",
         "patchSetId": 4
@@ -60,6 +84,64 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "69f91057_95b1f821",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-14T15:43:09Z",
+      "side": 1,
+      "message": "+1 and I feel a few statement repeated.\n\nAlso, please add why are you adding these details now like describe problem statement in generic for this solution.",
+      "parentUuid": "2fdd3b8d_21edef32",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd311259_b49ae05c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-14T15:43:09Z",
+      "side": 1,
+      "message": "Ah you added here. I feel, we could describe the purpose \"why\" of this commit in beginning.",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccee9b1e_c075d10d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-14T15:43:09Z",
+      "side": 1,
+      "message": "Please avoid internal terms in the OpenSource project.",
+      "range": {
+        "startLine": 21,
+        "startChar": 35,
+        "endLine": 21,
+        "endChar": 47
+      },
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6d2b433c_79105e06",
         "filename": "/COMMIT_MSG",
         "patchSetId": 4
@@ -71,6 +153,23 @@
       "writtenOn": "2024-08-14T14:21:01Z",
       "side": 1,
       "message": "I think your code now has \u0027DIMMs Manu...\u0027  now?",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77b76a33_80913bfc",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 939,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-14T15:43:09Z",
+      "side": 1,
+      "message": "I think we will always use the PHAL API for non-DIMM callouts.\n\nOne of the goals of implementing a cache is to avoid the overhead of walking the PHAL device tree or repeated PHAL interactions when the same location code is called out multiple times for different reasons or at different times, right?.\n\nTherefore, I suggest maintaining a cache for all location codes and checking for DIMM-related ones.\n\nFor example, we could use something like:\n\n```\nstd::unordered_map\u003cLocationCode, bool\u003e locationCache;\n```\n\n@Matt, any thoughts on this approach? Or would it be better to stick with the PHAL API for non-DIMM cases?",
       "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -94,6 +193,41 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "16a37061_6058b749",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 954,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-14T15:43:09Z",
+      "side": 1,
+      "message": "+1, or in the caller places with returned unexpected value.\n\nPeople might sometimes overlook the PEL debug data section.",
+      "parentUuid": "ac5698ec_306842f7",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60d98d33_87dced38",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-14T15:43:09Z",
+      "side": 1,
+      "message": "Please document about the function parameters and returns.",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4c607c6d_33f7d8cb",
         "filename": "extensions/openpower-pels/entry_points.cpp",
         "patchSetId": 4
@@ -105,6 +239,24 @@
       "writtenOn": "2024-08-14T14:21:01Z",
       "side": 1,
       "message": "ideally, this would have been a standalone commit, but at this point isn\u0027t necessary.\n\nIt would be good it add it to the commit message how you\u0027re changing this.",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcf2fe83_f16928ae",
+        "filename": "extensions/openpower-pels/entry_points.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-14T15:43:09Z",
+      "side": 1,
+      "message": "+1, My preference would be a separate commit. I am fine either way :)",
+      "parentUuid": "4c607c6d_33f7d8cb",
       "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -168,6 +320,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "02ef8d0e_13b27ef8",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1067,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-14T15:43:09Z",
+      "side": 1,
+      "message": "I feel `DRAM Manufacturer ID` more readable since the parent key contains `DIMMs`.",
+      "range": {
+        "startLine": 1067,
+        "startChar": 59,
+        "endLine": 1067,
+        "endChar": 74
+      },
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d002332_256a073c",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1071,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-14T15:43:09Z",
+      "side": 1,
+      "message": "`DIMMs Additional Info` to make it more generic?",
+      "range": {
+        "startLine": 1071,
+        "startChar": 19,
+        "endLine": 1071,
+        "endChar": 42
+      },
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f375683c_a7878f50",
         "filename": "test/openpower-pels/pel_test.cpp",
         "patchSetId": 4
@@ -185,6 +383,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f2317215_e799f7e6",
+        "filename": "test/openpower-pels/pel_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 910,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-14T15:43:09Z",
+      "side": 1,
+      "message": "I think we will enter [here](https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/72970/4/extensions/openpower-pels/data_interface.cpp#933) for the existing test case since the caller invoke `isDIMM` API always and cache will be empty.",
+      "parentUuid": "f375683c_a7878f50",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "898784d2_d3da20b2",
         "filename": "test/openpower-pels/pel_test.cpp",
         "patchSetId": 4
@@ -196,6 +412,30 @@
       "writtenOn": "2024-08-14T14:21:01Z",
       "side": 1,
       "message": "why are you using any_of here and not checking the result? i guess because it stops after find an entry?",
+      "range": {
+        "startLine": 1309,
+        "startChar": 4,
+        "endLine": 1309,
+        "endChar": 23
+      },
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5555e6cb_89edae37",
+        "filename": "test/openpower-pels/pel_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1309,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-14T15:43:09Z",
+      "side": 1,
+      "message": "I think so,\n\nIt could be tune a bit better\n\n```\nstd::pair\u003cbool, nlohmann::json\u003e getDimmInfo(const auto\u0026 pel)\n{\n   ...\n   bool hasDIMMInfo \u003d std::ranges::any_of(pel.optionalSections(), hasDimmInfo);\n   return std::make_pair(hasDIMMInfo, hasDimmInfo);\n}\n```\n\nThis boolean could be used as an additional check within the EXPECT_X() for various test cases. Just a suggestion—I\u0027m fine with the current implementation as well since your EXPECT_EQ will fail with an empty JSON object.",
+      "parentUuid": "898784d2_d3da20b2",
       "range": {
         "startLine": 1309,
         "startChar": 4,

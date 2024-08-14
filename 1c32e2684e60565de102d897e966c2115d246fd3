@@ -742,6 +742,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe7dd6fb_9ebee705",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 827,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-14T15:43:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "994f6037_099764a3",
+      "range": {
+        "startLine": 824,
+        "startChar": 12,
+        "endLine": 827,
+        "endChar": 71
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "062164be_807ad776",
@@ -824,6 +848,30 @@
         "startChar": 41,
         "endLine": 836,
         "endChar": 59
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6899c4e_f498be62",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 836,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-14T15:43:09Z",
+      "side": 1,
+      "message": "Just suggestion comment. I am fine with either way.",
+      "parentUuid": "f2cea359_ed86a895",
+      "range": {
+        "startLine": 833,
+        "startChar": 4,
+        "endLine": 836,
+        "endChar": 61
       },
       "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
