@@ -3,6 +3,154 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "36e28f68_5a477d60",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-08-14T14:21:01Z",
+      "side": 1,
+      "message": "nit: how about just \u0027Add\u0027",
+      "range": {
+        "startLine": 7,
+        "startChar": 4,
+        "endLine": 7,
+        "endChar": 11
+      },
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "115e4235_1f4e69db",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-08-14T14:21:01Z",
+      "side": 1,
+      "message": "nit:  how about:  When a PEL calls out a DIMM FRU.",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fdd3b8d_21edef32",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-08-14T14:21:01Z",
+      "side": 1,
+      "message": "nit:  I think this needs to be split up into another sentence, I don\u0027t quite follow it as one.",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d2b433c_79105e06",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-08-14T14:21:01Z",
+      "side": 1,
+      "message": "I think your code now has \u0027DIMMs Manu...\u0027  now?",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac5698ec_306842f7",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 954,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-08-14T14:21:01Z",
+      "side": 1,
+      "message": "would have also been fine to put the error into the journal.  it\u0027s no more likely to fail than line 905.",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c607c6d_33f7d8cb",
+        "filename": "extensions/openpower-pels/entry_points.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-08-14T14:21:01Z",
+      "side": 1,
+      "message": "ideally, this would have been a standalone commit, but at this point isn\u0027t necessary.\n\nIt would be good it add it to the commit message how you\u0027re changing this.",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d2b8cc9_a1632c45",
+        "filename": "extensions/openpower-pels/meson.build",
+        "patchSetId": 4
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-08-14T14:21:01Z",
+      "side": 1,
+      "message": "why did this need to be added?",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1892f3a_4aa87c09",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 742,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-08-14T14:21:01Z",
+      "side": 1,
+      "message": "nit:  the guidelines say to always capitalize acronyms, so about about \u0027isDIMMCallout\u0027",
+      "range": {
+        "startLine": 742,
+        "startChar": 9,
+        "endLine": 742,
+        "endChar": 21
+      },
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "69684e1d_bcc0edec",
         "filename": "extensions/openpower-pels/pel.cpp",
         "patchSetId": 4
@@ -14,6 +162,80 @@
       "writtenOn": "2024-08-14T14:08:06Z",
       "side": 1,
       "message": "Missed adding the location code value here so that in case of multiple DIMM callouts, user could identify for which location code it failed. Will incorporate this also in next patch",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f375683c_a7878f50",
+        "filename": "test/openpower-pels/pel_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 910,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-08-14T14:21:01Z",
+      "side": 1,
+      "message": "why change this one and the one below?",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "898784d2_d3da20b2",
+        "filename": "test/openpower-pels/pel_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1309,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-08-14T14:21:01Z",
+      "side": 1,
+      "message": "why are you using any_of here and not checking the result? i guess because it stops after find an entry?",
+      "range": {
+        "startLine": 1309,
+        "startChar": 4,
+        "endLine": 1309,
+        "endChar": 23
+      },
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b55b4bb_cb548dae",
+        "filename": "test/openpower-pels/pel_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1372,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-08-14T14:21:01Z",
+      "side": 1,
+      "message": "nit:  these are tabs.  if there aren\u0027t tabs anywhere else in this file then please convert them to spaces to be consistent.",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61915ea5_80816c54",
+        "filename": "test/openpower-pels/pel_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1439,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-08-14T14:21:01Z",
+      "side": 1,
+      "message": "nit: trailing space",
       "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
