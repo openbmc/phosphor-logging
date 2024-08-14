@@ -160,6 +160,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a747e6ed_482257ae",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 893,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-14T12:24:12Z",
+      "side": 1,
+      "message": "Added a note.",
+      "parentUuid": "af099cda_57675230",
+      "range": {
+        "startLine": 893,
+        "startChar": 64,
+        "endLine": 893,
+        "endChar": 71
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c10957b2_0f1fa6c4",
@@ -278,6 +302,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d303450e_f050d2d5",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-14T12:24:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef62c072_3973dbe5",
+      "range": {
+        "startLine": 498,
+        "startChar": 15,
+        "endLine": 498,
+        "endChar": 50
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6d9aed6_465bf6c2",
@@ -291,6 +339,24 @@
       "writtenOn": "2024-07-20T03:57:07Z",
       "side": 1,
       "message": "How about below return description?\n\n```\n* @return true if the given location code belongs to DIMM; otherwise, return false.\n```",
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a2ec23b_c4b301c0",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-14T12:24:12Z",
+      "side": 1,
+      "message": "Slightly modified. Avoid the phrase \u0027belongs to DIMM\u0027 as there is a case which the location code is not present in cache but still is a DIMM",
+      "parentUuid": "f6d9aed6_465bf6c2",
       "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -312,6 +378,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90d5dca2_070d62d5",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-14T12:24:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ecfabb0e_00e6f543",
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2ab125a2_1a14039c",
@@ -325,6 +409,24 @@
       "writtenOn": "2024-07-20T03:57:07Z",
       "side": 1,
       "message": "Same as mentioned in LN498",
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e58e05c_3bd14bbf",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 884,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-14T12:24:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ab125a2_1a14039c",
       "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -346,6 +448,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e308d63e_489de6f3",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 893,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-14T12:24:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e246486_8147d665",
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e3cd9ac_ad8f29e3",
@@ -363,6 +483,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f54dd839_633e2822",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-14T12:24:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e3cd9ac_ad8f29e3",
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0f02f1f_de3495c2",
@@ -376,6 +514,30 @@
       "writtenOn": "2024-07-20T03:57:07Z",
       "side": 1,
       "message": "`dimmInfoFetchError` and `DIMMs` to make more generic?",
+      "range": {
+        "startLine": 58,
+        "startChar": 37,
+        "endLine": 58,
+        "endChar": 41
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1549d8a9_36890ab4",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-14T12:24:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0f02f1f_de3495c2",
       "range": {
         "startLine": 58,
         "startChar": 37,
@@ -421,6 +583,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4664ceb7_835678ed",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 765,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-14T12:24:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93d16cb4_7f80b921",
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1896c1c8_a5d1d25f",
@@ -444,6 +624,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07565b84_ae2806d8",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 788,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-14T12:24:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1896c1c8_a5d1d25f",
+      "range": {
+        "startLine": 788,
+        "startChar": 20,
+        "endLine": 788,
+        "endChar": 31
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "415aa43d_4fb4e5df",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 788,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-14T12:24:12Z",
+      "side": 1,
+      "message": "Removed the line itself as part of new changes",
+      "parentUuid": "1896c1c8_a5d1d25f",
+      "range": {
+        "startLine": 788,
+        "startChar": 20,
+        "endLine": 788,
+        "endChar": 31
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d25888b9_54dd957e",
@@ -457,6 +685,30 @@
       "writtenOn": "2024-07-20T03:57:07Z",
       "side": 1,
       "message": "We could use `std::to_underlying` without assuming it will be `uint8_t`.\n\nFor example:\n\n```\nstd::to_underlying\u003copenpower::phal::exception::ERR_TYPE\u003e(fruType.error())\n```",
+      "range": {
+        "startLine": 809,
+        "startChar": 33,
+        "endLine": 809,
+        "endChar": 53
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2024246a_eb63d9ca",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-14T12:24:12Z",
+      "side": 1,
+      "message": "I agree . But kept it unchanged by thinking std::to_underlying requires adding one more header called utility.And it will work fine until phal error codes less than 256 in numbers",
+      "parentUuid": "d25888b9_54dd957e",
       "range": {
         "startLine": 809,
         "startChar": 33,
@@ -553,6 +805,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b252973b_8199cc13",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 836,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-14T12:24:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "27ad3d2f_347de44f",
+      "range": {
+        "startLine": 836,
+        "startChar": 41,
+        "endLine": 836,
+        "endChar": 59
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "762d8759_b98aa89c",
@@ -566,6 +842,30 @@
       "writtenOn": "2024-07-20T03:57:07Z",
       "side": 1,
       "message": "I believe this API collects data and adds it to the provided adSysInfoData. We should update the description to reflect this accurately.",
+      "range": {
+        "startLine": 420,
+        "startChar": 21,
+        "endLine": 420,
+        "endChar": 28
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca24d793_3d37d4ac",
+        "filename": "extensions/openpower-pels/pel.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-14T12:24:12Z",
+      "side": 1,
+      "message": "Modified",
+      "parentUuid": "762d8759_b98aa89c",
       "range": {
         "startLine": 420,
         "startChar": 21,
@@ -622,6 +922,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fce9719f_47fc5dbd",
+        "filename": "extensions/openpower-pels/pel.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-14T12:24:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "23f0b378_7ac0435b",
+      "range": {
+        "startLine": 432,
+        "startChar": 8,
+        "endLine": 432,
+        "endChar": 55
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0190aa60_67e8152c",
@@ -645,6 +969,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "577c429e_a7e34704",
+        "filename": "extensions/openpower-pels/pel.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-14T12:24:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0190aa60_67e8152c",
+      "range": {
+        "startLine": 524,
+        "startChar": 8,
+        "endLine": 524,
+        "endChar": 12
+      },
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ffc525f8_5c794b05",
@@ -658,6 +1006,24 @@
       "writtenOn": "2024-07-19T12:48:40Z",
       "side": 1,
       "message": "Hard coded the value for the time being in order to pass the existing UT cases. Working on the UT area. Will fix this also.",
+      "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1a43d96_14145674",
+        "filename": "test/openpower-pels/meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-14T12:24:12Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "ffc525f8_5c794b05",
       "revId": "1c32e2684e60565de102d897e966c2115d246fd3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
