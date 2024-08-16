@@ -624,9 +624,9 @@ TEST_F(SRCTest, RegistryCalloutTest)
                 "/xyz/openbmc_project/inventory/chassis/motherboard/cpu0", _, _,
                 _))
             .Times(1)
-            .WillOnce(DoAll(SetArgReferee<1>("1234567"),
-                            SetArgReferee<2>("CCCC"),
-                            SetArgReferee<3>("123456789ABC")));
+            .WillOnce(
+                DoAll(SetArgReferee<1>("1234567"), SetArgReferee<2>("CCCC"),
+                      SetArgReferee<3>("123456789ABC")));
 
         EXPECT_CALL(
             dataIface,
@@ -634,9 +634,9 @@ TEST_F(SRCTest, RegistryCalloutTest)
                 "/xyz/openbmc_project/inventory/chassis/motherboard/cpu1", _, _,
                 _))
             .Times(1)
-            .WillOnce(DoAll(SetArgReferee<1>("2345678"),
-                            SetArgReferee<2>("DDDD"),
-                            SetArgReferee<3>("23456789ABCD")));
+            .WillOnce(
+                DoAll(SetArgReferee<1>("2345678"), SetArgReferee<2>("DDDD"),
+                      SetArgReferee<3>("23456789ABCD")));
 
         SRC src{entry, ad, dataIface};
 
@@ -843,30 +843,30 @@ TEST_F(SRCTest, DevicePathCalloutTest)
         .Times(3)
         .WillRepeatedly(Return("Ufcs-P1-C15"));
 
-    EXPECT_CALL(
-        dataIface,
-        getHWCalloutFields(
-            "/xyz/openbmc_project/inventory/chassis/motherboard/cpu0", _, _, _))
+    EXPECT_CALL(dataIface,
+                getHWCalloutFields(
+                    "/xyz/openbmc_project/inventory/chassis/motherboard/cpu0",
+                    _, _, _))
         .Times(3)
-        .WillRepeatedly(DoAll(SetArgReferee<1>("1234567"),
-                              SetArgReferee<2>("CCCC"),
-                              SetArgReferee<3>("123456789ABC")));
+        .WillRepeatedly(
+            DoAll(SetArgReferee<1>("1234567"), SetArgReferee<2>("CCCC"),
+                  SetArgReferee<3>("123456789ABC")));
     EXPECT_CALL(
         dataIface,
         getHWCalloutFields("/xyz/openbmc_project/inventory/chassis/motherboard",
                            _, _, _))
         .Times(3)
-        .WillRepeatedly(DoAll(SetArgReferee<1>("7654321"),
-                              SetArgReferee<2>("MMMM"),
-                              SetArgReferee<3>("CBA987654321")));
-    EXPECT_CALL(
-        dataIface,
-        getHWCalloutFields(
-            "/xyz/openbmc_project/inventory/chassis/motherboard/bmc", _, _, _))
+        .WillRepeatedly(
+            DoAll(SetArgReferee<1>("7654321"), SetArgReferee<2>("MMMM"),
+                  SetArgReferee<3>("CBA987654321")));
+    EXPECT_CALL(dataIface,
+                getHWCalloutFields(
+                    "/xyz/openbmc_project/inventory/chassis/motherboard/bmc", _,
+                    _, _))
         .Times(3)
-        .WillRepeatedly(DoAll(SetArgReferee<1>("7123456"),
-                              SetArgReferee<2>("BBBB"),
-                              SetArgReferee<3>("C123456789AB")));
+        .WillRepeatedly(
+            DoAll(SetArgReferee<1>("7123456"), SetArgReferee<2>("BBBB"),
+                  SetArgReferee<3>("C123456789AB")));
 
     // Call this below with different AdditionalData values that
     // result in the same callouts.
@@ -1042,9 +1042,9 @@ TEST_F(SRCTest, JsonCalloutsTest)
             dataIface,
             getHWCalloutFields("/inv/system/chassis/motherboard/bmc", _, _, _))
             .Times(1)
-            .WillOnce(DoAll(SetArgReferee<1>("1234567"),
-                            SetArgReferee<2>("CCCC"),
-                            SetArgReferee<3>("123456789ABC")));
+            .WillOnce(
+                DoAll(SetArgReferee<1>("1234567"), SetArgReferee<2>("CCCC"),
+                      SetArgReferee<3>("123456789ABC")));
     }
     // Callout 1 mock calls
     {
@@ -1055,9 +1055,9 @@ TEST_F(SRCTest, JsonCalloutsTest)
             dataIface,
             getHWCalloutFields("/inv/system/chassis/motherboard/cpu0", _, _, _))
             .Times(1)
-            .WillOnce(DoAll(SetArgReferee<1>("2345678"),
-                            SetArgReferee<2>("DDDD"),
-                            SetArgReferee<3>("23456789ABCD")));
+            .WillOnce(
+                DoAll(SetArgReferee<1>("2345678"), SetArgReferee<2>("DDDD"),
+                      SetArgReferee<3>("23456789ABCD")));
     }
     // Callout 3 mock calls
     {
@@ -1230,9 +1230,9 @@ TEST_F(SRCTest, JsonBadCalloutsTest)
             dataIface,
             getHWCalloutFields("/inv/system/chassis/motherboard/bmc", _, _, _))
             .Times(1)
-            .WillOnce(DoAll(SetArgReferee<1>("1234567"),
-                            SetArgReferee<2>("CCCC"),
-                            SetArgReferee<3>("123456789ABC")));
+            .WillOnce(
+                DoAll(SetArgReferee<1>("1234567"), SetArgReferee<2>("CCCC"),
+                      SetArgReferee<3>("123456789ABC")));
     }
 
     // Callout 1 mock calls

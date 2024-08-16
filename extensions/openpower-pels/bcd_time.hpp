@@ -30,9 +30,8 @@ struct BCDTime
     BCDTime(uint8_t yearMSB, uint8_t yearLSB, uint8_t month, uint8_t day,
             uint8_t hour, uint8_t minutes, uint8_t seconds,
             uint8_t hundredths) :
-        yearMSB(yearMSB),
-        yearLSB(yearLSB), month(month), day(day), hour(hour), minutes(minutes),
-        seconds(seconds), hundredths(hundredths)
+        yearMSB(yearMSB), yearLSB(yearLSB), month(month), day(day), hour(hour),
+        minutes(minutes), seconds(seconds), hundredths(hundredths)
     {}
 
     bool operator==(const BCDTime& right) const;

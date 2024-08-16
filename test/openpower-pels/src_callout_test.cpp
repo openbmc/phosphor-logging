@@ -284,9 +284,9 @@ TEST(CalloutTest, TestHardwareCallout)
         Callout callout{CalloutPriority::high, "U99-P5", "1234567", "ABCD",
                         "123456789ABC",        mruList};
 
-        EXPECT_EQ(callout.flags(), Callout::calloutType |
-                                       Callout::fruIdentIncluded |
-                                       Callout::mruIncluded);
+        EXPECT_EQ(callout.flags(),
+                  Callout::calloutType | Callout::fruIdentIncluded |
+                      Callout::mruIncluded);
 
         EXPECT_EQ(callout.priority(), 'H');
         EXPECT_EQ(callout.locationCode(), "U99-P5");

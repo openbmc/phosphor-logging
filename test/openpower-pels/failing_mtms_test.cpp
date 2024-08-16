@@ -84,10 +84,10 @@ TEST(FailingMTMSTest, ConstructorTest)
 
 TEST(FailingMTMSTest, StreamConstructorTest)
 {
-    std::vector<uint8_t> data{0x4D, 0x54, 0x00, 0x1C, 0x01, 0x00, 0x20,
-                              0x00, 'T',  'T',  'T',  'T',  '-',  'M',
-                              'M',  'M',  '1',  '2',  '3',  '4',  '5',
-                              '6',  '7',  '8',  '9',  'A',  'B',  'C'};
+    std::vector<uint8_t> data{
+        0x4D, 0x54, 0x00, 0x1C, 0x01, 0x00, 0x20, 0x00, 'T', 'T',
+        'T',  'T',  '-',  'M',  'M',  'M',  '1',  '2',  '3', '4',
+        '5',  '6',  '7',  '8',  '9',  'A',  'B',  'C'};
     Stream stream{data};
     FailingMTMS fm{stream};
 
@@ -117,10 +117,10 @@ TEST(FailingMTMSTest, BadStreamConstructorTest)
 
 TEST(FailingMTMSTest, FlattenTest)
 {
-    std::vector<uint8_t> data{0x4D, 0x54, 0x00, 0x1C, 0x01, 0x00, 0x20,
-                              0x00, 'T',  'T',  'T',  'T',  '-',  'M',
-                              'M',  'M',  '1',  '2',  '3',  '4',  '5',
-                              '6',  '7',  '8',  '9',  'A',  'B',  'C'};
+    std::vector<uint8_t> data{
+        0x4D, 0x54, 0x00, 0x1C, 0x01, 0x00, 0x20, 0x00, 'T', 'T',
+        'T',  'T',  '-',  'M',  'M',  'M',  '1',  '2',  '3', '4',
+        '5',  '6',  '7',  '8',  '9',  'A',  'B',  'C'};
     Stream stream{data};
     FailingMTMS fm{stream};
 

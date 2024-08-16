@@ -55,8 +55,9 @@ void Callouts::addCallout(std::unique_ptr<Callout> callout)
     bool shouldAdd = true;
 
     // Check if there is already a callout for this FRU
-    auto it = std::ranges::find_if(
-        _callouts, [&callout](const auto& c) { return *callout == *c; });
+    auto it = std::ranges::find_if(_callouts, [&callout](const auto& c) {
+        return *callout == *c;
+    });
 
     // If the callout already exists, but the new one has a higher
     // priority, change the existing callout's priority to this

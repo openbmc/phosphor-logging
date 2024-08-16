@@ -70,7 +70,7 @@ class MockJournal : public Manager
 {
   public:
     MockJournal(sdbusplus::bus_t& bus, const char* objPath) :
-        Manager(bus, objPath){};
+        Manager(bus, objPath) {};
     MOCK_METHOD0(journalSync, void());
     MOCK_METHOD2(sd_journal_open, int(sd_journal**, int));
     MOCK_METHOD4(sd_journal_get_data,

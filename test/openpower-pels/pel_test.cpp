@@ -211,9 +211,10 @@ TEST_F(PELTest, CreateFromRegistryTest)
         // in the registry, so the constructor should set them.
         regEntry.actionFlags = std::nullopt;
 
-        PEL pel2{
-            regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
-            ad,       ffdc, dataIface, journal};
+        PEL pel2{regEntry,  42,
+                 timestamp, phosphor::logging::Entry::Level::Error,
+                 ad,        ffdc,
+                 dataIface, journal};
 
         EXPECT_EQ(pel2.userHeader().actionFlags(), 0xA800);
     }
@@ -251,11 +252,11 @@ TEST_F(PELTest, CreateTooBigADTest)
 
     // Make sure that there are still 2 UD sections.
     const auto& optSections = pel.optionalSections();
-    auto udCount = std::count_if(optSections.begin(), optSections.end(),
-                                 [](const auto& section) {
-        return section->header().id ==
-               static_cast<uint16_t>(SectionID::userData);
-    });
+    auto udCount = std::count_if(
+        optSections.begin(), optSections.end(), [](const auto& section) {
+            return section->header().id ==
+                   static_cast<uint16_t>(SectionID::userData);
+        });
 
     EXPECT_EQ(udCount, 2); // AD section and sysInfo section
 }
@@ -266,15 +267,15 @@ TEST_F(PELTest, GenericSectionTest)
 {
     auto data = pelDataFactory(TestPELType::pelSimple);
 
-    std::vector<uint8_t> section1{0x58, 0x58, // ID 'XX'
-                                  0x00, 0x18, // Size
-                                  0x01, 0x02, // version, subtype
-                                  0x03, 0x04, // comp ID
+    std::vector<uint8_t> section1{
+        0x58, 0x58, // ID 'XX'
+        0x00, 0x18, // Size
+        0x01, 0x02, // version, subtype
+        0x03, 0x04, // comp ID
 
-                                  // some data
-                                  0x20, 0x30, 0x05, 0x09, 0x11, 0x1E, 0x1, 0x63,
-                                  0x20, 0x31, 0x06, 0x0F, 0x09, 0x22, 0x3A,
-                                  0x00};
+        // some data
+        0x20, 0x30, 0x05, 0x09, 0x11, 0x1E, 0x1, 0x63, 0x20, 0x31, 0x06, 0x0F,
+        0x09, 0x22, 0x3A, 0x00};
 
     std::vector<uint8_t> section2{
         0x59, 0x59, // ID 'YY'
@@ -848,10 +849,10 @@ TEST_F(PELTest, CreateWithDevCalloutsTest)
         .WillOnce(Return(std::vector<std::string>{
             "/xyz/openbmc_project/inventory/chassis/motherboard/cpu0"}));
 
-    EXPECT_CALL(
-        dataIface,
-        getHWCalloutFields(
-            "/xyz/openbmc_project/inventory/chassis/motherboard/cpu0", _, _, _))
+    EXPECT_CALL(dataIface,
+                getHWCalloutFields(
+                    "/xyz/openbmc_project/inventory/chassis/motherboard/cpu0",
+                    _, _, _))
         .WillOnce(DoAll(SetArgReferee<1>("1234567"), SetArgReferee<2>("CCCC"),
                         SetArgReferee<3>("123456789ABC")));
 
@@ -868,9 +869,10 @@ TEST_F(PELTest, CreateWithDevCalloutsTest)
 
         AdditionalData ad{data};
 
-        PEL pel{
-            regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
-            ad,       ffdc, dataIface, journal};
+        PEL pel{regEntry,  42,
+                timestamp, phosphor::logging::Entry::Level::Error,
+                ad,        ffdc,
+                dataIface, journal};
 
         ASSERT_TRUE(pel.primarySRC().value()->callouts());
         auto& callouts = pel.primarySRC().value()->callouts()->callouts();
@@ -918,9 +920,10 @@ TEST_F(PELTest, CreateWithDevCalloutsTest)
 
         AdditionalData ad{data};
 
-        PEL pel{
-            regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
-            ad,       ffdc, dataIface, journal};
+        PEL pel{regEntry,  42,
+                timestamp, phosphor::logging::Entry::Level::Error,
+                ad,        ffdc,
+                dataIface, journal};
 
         // no callouts
         EXPECT_FALSE(pel.primarySRC().value()->callouts());
@@ -1157,9 +1160,10 @@ TEST_F(PELTest, CaptureJournalTest)
 
         EXPECT_CALL(journal, getMessages("", 5)).WillOnce(Return(msgs));
 
-        PEL pel{
-            regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
-            ad,       ffdc, dataIface, journal};
+        PEL pel{regEntry,  42,
+                timestamp, phosphor::logging::Entry::Level::Error,
+                ad,        ffdc,
+                dataIface, journal};
 
         // Check the generated UserData section
         std::string expected{"test1 test2\ntest3 test4\ntest5 test6\n4\n5\n"};
@@ -1183,9 +1187,10 @@ TEST_F(PELTest, CaptureJournalTest)
             .WillOnce(
                 Return(std::vector<std::string>{std::string(20000, 'x')}));
 
-        PEL pel{
-            regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
-            ad,       ffdc, dataIface, journal};
+        PEL pel{regEntry,  42,
+                timestamp, phosphor::logging::Entry::Level::Error,
+                ad,        ffdc,
+                dataIface, journal};
 
         // Check for 1 fewer sections than in the previous PEL
         EXPECT_EQ(pel.privateHeader().sectionCount(), pelSectsWithOneUD - 1);
@@ -1214,9 +1219,10 @@ TEST_F(PELTest, CaptureJournalTest)
         EXPECT_CALL(journal, getMessages("app2", 4)).WillOnce(Return(app2));
         EXPECT_CALL(journal, getMessages("app3", 1)).WillOnce(Return(app3));
 
-        PEL pel{
-            regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
-            ad,       ffdc, dataIface, journal};
+        PEL pel{regEntry,  42,
+                timestamp, phosphor::logging::Entry::Level::Error,
+                ad,        ffdc,
+                dataIface, journal};
 
         // Two more sections than the 1 extra UD section in the first testcase
         ASSERT_EQ(pel.privateHeader().sectionCount(), pelSectsWithOneUD + 2);
@@ -1250,9 +1256,10 @@ TEST_F(PELTest, CaptureJournalTest)
             .WillOnce(
                 Return(std::vector<std::string>{std::string(20000, 'x')}));
 
-        PEL pel{
-            regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
-            ad,       ffdc, dataIface, journal};
+        PEL pel{regEntry,  42,
+                timestamp, phosphor::logging::Entry::Level::Error,
+                ad,        ffdc,
+                dataIface, journal};
 
         // The last section should have been dropped, so same as first TC
         ASSERT_EQ(pel.privateHeader().sectionCount(), pelSectsWithOneUD);

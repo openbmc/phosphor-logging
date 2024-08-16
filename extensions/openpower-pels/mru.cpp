@@ -41,9 +41,9 @@ MRU::MRU(Stream& pel)
         _mrus.push_back(std::move(mru));
     }
 
-    size_t actualSize = sizeof(_type) + sizeof(_size) + sizeof(_flags) +
-                        sizeof(_reserved4B) +
-                        (sizeof(MRUCallout) * _mrus.size());
+    size_t actualSize =
+        sizeof(_type) + sizeof(_size) + sizeof(_flags) + sizeof(_reserved4B) +
+        (sizeof(MRUCallout) * _mrus.size());
     if (_size != actualSize)
     {
         lg2::warning(

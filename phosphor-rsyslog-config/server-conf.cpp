@@ -87,8 +87,8 @@ std::optional<
                 // There is no ':', or no more content after ':', invalid config
                 return {};
             }
-            serverAddress = line.substr(posColonLeft + 1,
-                                        posColonRight - posColonLeft - 1);
+            serverAddress =
+                line.substr(posColonLeft + 1, posColonRight - posColonLeft - 1);
             serverPort = line.substr(posColonRight + 2);
         }
         else

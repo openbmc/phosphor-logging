@@ -25,16 +25,15 @@ const size_t maxRetryAttempts = 15;
 
 HostNotifier::HostNotifier(Repository& repo, DataInterfaceBase& dataIface,
                            std::unique_ptr<HostInterface> hostIface) :
-    _repo(repo),
-    _dataIface(dataIface), _hostIface(std::move(hostIface)),
+    _repo(repo), _dataIface(dataIface), _hostIface(std::move(hostIface)),
     _retryTimer(_hostIface->getEvent(),
                 std::bind(std::mem_fn(&HostNotifier::retryTimerExpired), this)),
     _hostFullTimer(
         _hostIface->getEvent(),
         std::bind(std::mem_fn(&HostNotifier::hostFullTimerExpired), this)),
-    _hostUpTimer(
-        _hostIface->getEvent(),
-        std::bind(std::mem_fn(&HostNotifier::hostUpTimerExpired), this))
+    _hostUpTimer(_hostIface->getEvent(),
+                 std::bind(std::mem_fn(&HostNotifier::hostUpTimerExpired),
+                           this))
 {
     // Subscribe to be told about new PELs.
     _repo.subscribeToAdds(subscriptionName,

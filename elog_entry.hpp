@@ -79,8 +79,8 @@ class Entry : public EntryIfaces
         associations(std::move(objects), true);
         // Store a copy of associations in case we need to recreate
         assocs = associations();
-        sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved(false,
-                                                                          true);
+        sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved(
+            false, true);
 
         version(fwVersion, true);
         purpose(VersionPurpose::BMC, true);

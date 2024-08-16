@@ -126,8 +126,8 @@ int elog_test()
     if (rc)
         return (rc);
 
-    rc = validate_journal(TestErrorOne::FILE_NAME::str_short,
-                          "elog_test_3.txt");
+    rc =
+        validate_journal(TestErrorOne::FILE_NAME::str_short, "elog_test_3.txt");
     if (rc)
         return (rc);
 
@@ -171,8 +171,8 @@ int elog_test()
     if (rc)
         return (rc);
 
-    rc = validate_journal(TestErrorOne::FILE_NAME::str_short,
-                          "elog_test_4.txt");
+    rc =
+        validate_journal(TestErrorOne::FILE_NAME::str_short, "elog_test_4.txt");
     if (rc)
         return (rc);
 

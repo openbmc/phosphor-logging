@@ -73,7 +73,7 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     Manager(sdbusplus::bus_t& bus, const char* objPath) :
         details::ServerObject<details::ManagerIface>(bus, objPath), busLog(bus),
-        entryId(0), fwVersion(readFWVersion()){};
+        entryId(0), fwVersion(readFWVersion()) {};
 
     /*
      * @fn commit()
@@ -354,7 +354,7 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
             bus, path.c_str(),
             details::ServerObject<DeleteAllIface,
                                   CreateIface>::action::defer_emit),
-        manager(manager){};
+        manager(manager) {};
 
     /** @brief Delete all d-bus objects.
      */

@@ -100,8 +100,7 @@ class PropertyWatcher : public DBusWatcher
                     const std::string& interface,
                     const std::string& propertyName, const std::string& service,
                     const DataIface& dataIface, PropertySetFunc func) :
-        DBusWatcher(path, interface),
-        _name(propertyName), _setFunc(func)
+        DBusWatcher(path, interface), _name(propertyName), _setFunc(func)
     {
         _matches.emplace_back(
             bus, match_rules::propertiesChanged(_path, _interface),
@@ -279,8 +278,7 @@ class InterfaceWatcher : public DBusWatcher
     InterfaceWatcher(sdbusplus::bus_t& bus, const std::string& path,
                      const std::string& interface, const DataIface& dataIface,
                      InterfaceSetFunc func) :
-        DBusWatcher(path, interface),
-        _setFunc(func)
+        DBusWatcher(path, interface), _setFunc(func)
     {
         _matches.emplace_back(
             bus, match_rules::propertiesChanged(_path, _interface),
@@ -314,8 +312,8 @@ class InterfaceWatcher : public DBusWatcher
         auto service = dataIface.getService(_path, _interface);
         if (!service.empty())
         {
-            auto properties = dataIface.getAllProperties(service, _path,
-                                                         _interface);
+            auto properties =
+                dataIface.getAllProperties(service, _path, _interface);
 
             _setFunc(properties);
         }

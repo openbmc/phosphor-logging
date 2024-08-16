@@ -265,8 +265,7 @@ class Registry
      */
     explicit Registry(const std::filesystem::path& registryFile,
                       bool loadCallouts) :
-        _registryFile(registryFile),
-        _loadCallouts(loadCallouts)
+        _registryFile(registryFile), _loadCallouts(loadCallouts)
     {}
 
     /**

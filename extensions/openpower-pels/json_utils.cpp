@@ -176,8 +176,8 @@ std::unique_ptr<char[]> dumpHex(const void* data, size_t size,
 void jsonInsert(std::string& jsonStr, const std::string& fieldName,
                 const std::string& fieldValue, uint8_t indentCount)
 {
-    const int8_t spacesToAppend = colAlign - (indentCount * indentLevel) -
-                                  fieldName.length() - 3;
+    const int8_t spacesToAppend =
+        colAlign - (indentCount * indentLevel) - fieldName.length() - 3;
     const std::string jsonIndent(indentCount * indentLevel, 0x20);
     jsonStr.append(jsonIndent + "\"" + fieldName + "\":");
     if (spacesToAppend >= 0)
@@ -215,8 +215,8 @@ void jsonInsertArray(std::string& jsonStr, const std::string& fieldName,
     }
     else
     {
-        const int8_t spacesToAppend = colAlign - (indentCount * indentLevel) -
-                                      fieldName.length() - 3;
+        const int8_t spacesToAppend =
+            colAlign - (indentCount * indentLevel) - fieldName.length() - 3;
         jsonStr.append(jsonIndent + "\"" + fieldName + "\":");
         if (spacesToAppend > 0)
         {
@@ -252,14 +252,14 @@ std::string trimEnd(std::string s)
  * @param[in] creatorID - The creator ID for the PEL
  * @return optional<string> - The comp name, or std::nullopt
  */
-static std::optional<std::string> lookupComponentName(uint16_t compID,
-                                                      char creatorID)
+static std::optional<std::string>
+    lookupComponentName(uint16_t compID, char creatorID)
 {
     static std::map<char, nlohmann::json> jsonCache;
     nlohmann::json jsonData;
     nlohmann::json* jsonPtr = &jsonData;
-    std::filesystem::path filename{std::string{creatorID} +
-                                   "_component_ids.json"};
+    std::filesystem::path filename{
+        std::string{creatorID} + "_component_ids.json"};
     filename = getPELReadOnlyDataPath() / filename;
 
     auto jsonIt = jsonCache.find(creatorID);

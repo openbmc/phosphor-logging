@@ -20,14 +20,14 @@
 
 using namespace openpower::pels;
 
-std::vector<uint8_t> udSectionData{0x55, 0x44, // ID 'UD'
-                                   0x00, 0x10, // Size
-                                   0x01, 0x02, // version, subtype
-                                   0x03, 0x04, // comp ID
+std::vector<uint8_t> udSectionData{
+    0x55, 0x44, // ID 'UD'
+    0x00, 0x10, // Size
+    0x01, 0x02, // version, subtype
+    0x03, 0x04, // comp ID
 
-                                   // Data
-                                   0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
-                                   0x18};
+    // Data
+    0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18};
 
 TEST(UserDataTest, UnflattenFlattenTest)
 {

@@ -36,8 +36,7 @@ uint8_t convertOBMCSeverityToPEL(phosphor::logging::Entry::Level severity);
  *         found, otherwise std::nullopt which means the original one
  *         is good enough.
  */
-std::optional<phosphor::logging::Entry::Level>
-    fixupLogSeverity(phosphor::logging::Entry::Level obmcSeverity,
-                     SeverityType pelSeverity);
+std::optional<phosphor::logging::Entry::Level> fixupLogSeverity(
+    phosphor::logging::Entry::Level obmcSeverity, SeverityType pelSeverity);
 } // namespace pels
 } // namespace openpower

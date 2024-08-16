@@ -51,9 +51,8 @@ class Manager : public PELInterface
             std::unique_ptr<DataInterfaceBase> dataIface,
             EventLogger::LogFunction creatorFunc,
             std::unique_ptr<JournalBase> journal) :
-        PELInterface(logManager.getBus(), OBJ_LOGGING),
-        _logManager(logManager), _eventLogger(std::move(creatorFunc)),
-        _repo(getPELRepoPath()),
+        PELInterface(logManager.getBus(), OBJ_LOGGING), _logManager(logManager),
+        _eventLogger(std::move(creatorFunc)), _repo(getPELRepoPath()),
         _registry(getPELReadOnlyDataPath() / message::registryFileName),
         _event(sdeventplus::Event::get_default()),
         _dataIface(std::move(dataIface)), _journal(std::move(journal))

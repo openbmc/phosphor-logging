@@ -20,10 +20,9 @@ namespace openpower::pels::user_data
  * @return std::optional<std::string> - The JSON string if it could be created,
  *                                      else std::nullopt.
  */
-std::optional<std::string> getJSON(uint16_t componentID, uint8_t subType,
-                                   uint8_t version,
-                                   const std::vector<uint8_t>& data,
-                                   uint8_t creatorID,
-                                   const std::vector<std::string>& plugins);
+std::optional<std::string>
+    getJSON(uint16_t componentID, uint8_t subType, uint8_t version,
+            const std::vector<uint8_t>& data, uint8_t creatorID,
+            const std::vector<std::string>& plugins);
 
 } // namespace openpower::pels::user_data

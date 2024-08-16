@@ -158,8 +158,8 @@ std::optional<std::string> getPythonJSON(std::vector<std::string>& hexwords,
     }
     else
     {
-        std::unique_ptr<PyObject, decltype(&pyDecRef)> modPtr(pModule,
-                                                              &pyDecRef);
+        std::unique_ptr<PyObject, decltype(&pyDecRef)> modPtr(
+            pModule, &pyDecRef);
         std::string funcToCall = "parseSRCToJson";
         PyObject* pKey = PyUnicode_FromString(funcToCall.c_str());
         std::unique_ptr<PyObject, decltype(&pyDecRef)> keyPtr(pKey, &pyDecRef);
@@ -179,8 +179,8 @@ std::optional<std::string> getPythonJSON(std::vector<std::string>& hexwords,
         if (PyCallable_Check(pFunc))
         {
             PyObject* pArgs = PyTuple_New(9);
-            std::unique_ptr<PyObject, decltype(&pyDecRef)> argPtr(pArgs,
-                                                                  &pyDecRef);
+            std::unique_ptr<PyObject, decltype(&pyDecRef)> argPtr(
+                pArgs, &pyDecRef);
             for (size_t i = 0; i < 9; i++)
             {
                 std::string arg{"00000000"};
@@ -196,8 +196,8 @@ std::optional<std::string> getPythonJSON(std::vector<std::string>& hexwords,
             {
                 std::unique_ptr<PyObject, decltype(&pyDecRef)> resPtr(
                     pResult, &pyDecRef);
-                PyObject* pBytes = PyUnicode_AsEncodedString(pResult, "utf-8",
-                                                             "~E~");
+                PyObject* pBytes =
+                    PyUnicode_AsEncodedString(pResult, "utf-8", "~E~");
                 std::unique_ptr<PyObject, decltype(&pyDecRef)> pyBytePtr(
                     pBytes, &pyDecRef);
                 const char* output = PyBytes_AS_STRING(pBytes);
@@ -363,8 +363,8 @@ SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
     if (ss)
     {
         auto eventSubsystem = std::stoul(*ss, NULL, 16);
-        std::string subsystem = pv::getValue(eventSubsystem,
-                                             pel_values::subsystemValues);
+        std::string subsystem =
+            pv::getValue(eventSubsystem, pel_values::subsystemValues);
         if (subsystem == "invalid")
         {
             lg2::warning("SRC: Invalid SubSystem value: {VAL}", "VAL", lg2::hex,
@@ -400,8 +400,8 @@ void SRC::setUserDefinedHexWords(const message::Entry& regEntry,
         // Can only set words 6 - 9
         if (!isUserDefinedWord(wordNum))
         {
-            std::string msg = "SRC user data word out of range: " +
-                              std::to_string(wordNum);
+            std::string msg =
+                "SRC user data word out of range: " + std::to_string(wordNum);
             addDebugData(msg);
             continue;
         }
@@ -489,9 +489,8 @@ bool SRC::isHostbootSRC() const
     return false;
 }
 
-std::optional<std::string> SRC::getErrorDetails(message::Registry& registry,
-                                                DetailLevel type,
-                                                bool toCache) const
+std::optional<std::string> SRC::getErrorDetails(
+    message::Registry& registry, DetailLevel type, bool toCache) const
 {
     const std::string jsonIndent(indentLevel, 0x20);
     std::string errorOut;
@@ -709,10 +708,10 @@ std::optional<std::string> SRC::getCallouts() const
     return printOut;
 }
 
-std::optional<std::string> SRC::getJSON(message::Registry& registry,
-                                        const std::vector<std::string>& plugins
-                                        [[maybe_unused]],
-                                        uint8_t creatorID) const
+std::optional<std::string>
+    SRC::getJSON(message::Registry& registry,
+                 const std::vector<std::string>& plugins [[maybe_unused]],
+                 uint8_t creatorID) const
 {
     std::string ps;
     std::vector<std::string> hexwords;
@@ -759,8 +758,8 @@ std::optional<std::string> SRC::getJSON(message::Registry& registry,
 
         jsonInsert(
             ps, "Guarded",
-            pv::boolString.at(_hexData[3] &
-                              static_cast<uint32_t>(ErrorStatusFlags::guarded)),
+            pv::boolString.at(
+                _hexData[3] & static_cast<uint32_t>(ErrorStatusFlags::guarded)),
             1);
     }
 
@@ -828,8 +827,8 @@ void SRC::addCallouts(const message::Entry& regEntry,
                       const nlohmann::json& jsonCallouts,
                       const DataInterfaceBase& dataIface)
 {
-    auto registryCallouts = getRegistryCallouts(regEntry, additionalData,
-                                                dataIface);
+    auto registryCallouts =
+        getRegistryCallouts(regEntry, additionalData, dataIface);
 
     auto item = additionalData.getValue("CALLOUT_INVENTORY_PATH");
     auto priority = additionalData.getValue("CALLOUT_PRIORITY");
@@ -897,16 +896,16 @@ void SRC::addInventoryCallout(const std::string& inventoryPath,
         {
             dataIface.getHWCalloutFields(inventoryPath, fn, ccin, sn);
 
-            CalloutPriority p = priority ? priority.value()
-                                         : CalloutPriority::high;
+            CalloutPriority p =
+                priority ? priority.value() : CalloutPriority::high;
 
-            callout = std::make_unique<src::Callout>(p, locCode, fn, ccin, sn,
-                                                     mrus);
+            callout =
+                std::make_unique<src::Callout>(p, locCode, fn, ccin, sn, mrus);
         }
         catch (const sdbusplus::exception_t& e)
         {
-            std::string msg = "No VPD found for " + inventoryPath + ": " +
-                              e.what();
+            std::string msg =
+                "No VPD found for " + inventoryPath + ": " + e.what();
             addDebugData(msg);
 
             // Just create the callout with empty FRU fields
@@ -940,10 +939,9 @@ void SRC::addInventoryCallout(const std::string& inventoryPath,
     }
 }
 
-std::vector<message::RegistryCallout>
-    SRC::getRegistryCallouts(const message::Entry& regEntry,
-                             const AdditionalData& additionalData,
-                             const DataInterfaceBase& dataIface)
+std::vector<message::RegistryCallout> SRC::getRegistryCallouts(
+    const message::Entry& regEntry, const AdditionalData& additionalData,
+    const DataInterfaceBase& dataIface)
 {
     std::vector<message::RegistryCallout> registryCallouts;
 
@@ -996,8 +994,8 @@ void SRC::addRegistryCallouts(
     }
     catch (const std::exception& e)
     {
-        std::string msg = "Error parsing PEL message registry callout JSON: "s +
-                          e.what();
+        std::string msg =
+            "Error parsing PEL message registry callout JSON: "s + e.what();
         addDebugData(msg);
     }
 }
@@ -1027,8 +1025,8 @@ void SRC::addRegistryCallout(
 
     // Via the PEL values table, get the priority enum.
     // The schema will have validated the priority was a valid value.
-    auto priorityIt = pv::findByName(regCallout.priority,
-                                     pv::calloutPriorityValues);
+    auto priorityIt =
+        pv::findByName(regCallout.priority, pv::calloutPriorityValues);
     assert(priorityIt != pv::calloutPriorityValues.end());
     auto priority =
         static_cast<CalloutPriority>(std::get<pv::fieldValuePos>(*priorityIt));
@@ -1145,9 +1143,9 @@ void SRC::addDevicePathCallouts(const AdditionalData& additionalData,
         }
         catch (const std::exception& e)
         {
-            std::string msg = "Invalid CALLOUT_IIC_BUS " + *i2cBus +
-                              " or CALLOUT_IIC_ADDR " + *i2cAddr +
-                              " in AdditionalData property";
+            std::string msg =
+                "Invalid CALLOUT_IIC_BUS " + *i2cBus + " or CALLOUT_IIC_ADDR " +
+                *i2cAddr + " in AdditionalData property";
             addDebugData(msg);
             return;
         }
@@ -1566,8 +1564,8 @@ uint32_t SRC::getProgressCode(std::vector<uint8_t>& rawProgressSRC)
 
         if (std::all_of(progressCodeString.begin(), progressCodeString.end(),
                         [](char c) {
-            return std::isxdigit(static_cast<unsigned char>(c));
-        }))
+                            return std::isxdigit(static_cast<unsigned char>(c));
+                        }))
         {
             progressCode = std::stoul(progressCodeString, nullptr, 16);
         }

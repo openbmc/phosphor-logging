@@ -198,8 +198,8 @@ std::vector<std::string> LightPath::getInventoryPaths(
     {
         try
         {
-            auto inventoryPaths = _dataIface.getInventoryFromLocCode(locCode, 0,
-                                                                     true);
+            auto inventoryPaths =
+                _dataIface.getInventoryFromLocCode(locCode, 0, true);
             for (const auto& path : inventoryPaths)
             {
                 if (std::find(paths.begin(), paths.end(), path) == paths.end())

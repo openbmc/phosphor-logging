@@ -201,11 +201,11 @@ class DataInterfaceBase
         time_t t(seconds);
         tm* p = gmtime(&t);
 
-        std::string uptime = std::to_string(p->tm_year - 70) + "y " +
-                             std::to_string(p->tm_yday) + "d " +
-                             std::to_string(p->tm_hour) + "h " +
-                             std::to_string(p->tm_min) + "m " +
-                             std::to_string(p->tm_sec) + "s";
+        std::string uptime =
+            std::to_string(p->tm_year - 70) + "y " +
+            std::to_string(p->tm_yday) + "d " + std::to_string(p->tm_hour) +
+            "h " + std::to_string(p->tm_min) + "m " +
+            std::to_string(p->tm_sec) + "s";
 
         return uptime;
     }
@@ -332,10 +332,9 @@ class DataInterfaceBase
      * @param[out] ccin - Filled in with the VINI/CC keyword
      * @param[out] serialNumber - Filled in with the VINI/SN keyword
      */
-    virtual void getHWCalloutFields(const std::string& inventoryPath,
-                                    std::string& fruPartNumber,
-                                    std::string& ccin,
-                                    std::string& serialNumber) const = 0;
+    virtual void getHWCalloutFields(
+        const std::string& inventoryPath, std::string& fruPartNumber,
+        std::string& ccin, std::string& serialNumber) const = 0;
 
     /**
      * @brief Get the location code for an inventory item.

@@ -133,96 +133,96 @@ DataInterface::DataInterface(sdbusplus::bus_t& bus) : _bus(bus)
     _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
         bus, object_path::hostState, interface::bootProgress, "BootProgress",
         *this, [this](const auto& value) {
-        this->_bootState = std::get<std::string>(value);
-        auto status = Progress::convertProgressStagesFromString(
-            std::get<std::string>(value));
+            this->_bootState = std::get<std::string>(value);
+            auto status = Progress::convertProgressStagesFromString(
+                std::get<std::string>(value));
 
-        if ((status == Progress::ProgressStages::SystemInitComplete) ||
-            (status == Progress::ProgressStages::OSRunning))
-        {
-            setHostUp(true);
-        }
-        else
-        {
-            setHostUp(false);
-        }
-    }));
+            if ((status == Progress::ProgressStages::SystemInitComplete) ||
+                (status == Progress::ProgressStages::OSRunning))
+            {
+                setHostUp(true);
+            }
+            else
+            {
+                setHostUp(false);
+            }
+        }));
 
     // Watch the host PEL enable property
     _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
         bus, object_path::enableHostPELs, interface::enable, "Enabled", *this,
         [this](const auto& value) {
-        if (std::get<bool>(value) != this->_sendPELsToHost)
-        {
-            lg2::info("The send PELs to host setting changed to {VAL}", "VAL",
-                      std::get<bool>(value));
-        }
-        this->_sendPELsToHost = std::get<bool>(value);
-    }));
+            if (std::get<bool>(value) != this->_sendPELsToHost)
+            {
+                lg2::info("The send PELs to host setting changed to {VAL}",
+                          "VAL", std::get<bool>(value));
+            }
+            this->_sendPELsToHost = std::get<bool>(value);
+        }));
 
     // Watch the BMCState property
     _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
         bus, object_path::bmcState, interface::bmcState, "CurrentBMCState",
         *this, [this](const auto& value) {
-        const auto& state = std::get<std::string>(value);
-        this->_bmcState = state;
+            const auto& state = std::get<std::string>(value);
+            this->_bmcState = state;
 
-        // Wait for BMC ready to start watching for
-        // plugs so things calm down first.
-        if (BMC::convertBMCStateFromString(state) == BMC::BMCState::Ready)
-        {
-            startFruPlugWatch();
-        }
-    }));
+            // Wait for BMC ready to start watching for
+            // plugs so things calm down first.
+            if (BMC::convertBMCStateFromString(state) == BMC::BMCState::Ready)
+            {
+                startFruPlugWatch();
+            }
+        }));
 
     // Watch the chassis current and requested power state properties
     _properties.emplace_back(std::make_unique<InterfaceWatcher<DataInterface>>(
         bus, object_path::chassisState, interface::chassisState, *this,
         [this](const auto& properties) {
-        auto state = properties.find("CurrentPowerState");
-        if (state != properties.end())
-        {
-            this->_chassisState = std::get<std::string>(state->second);
-        }
+            auto state = properties.find("CurrentPowerState");
+            if (state != properties.end())
+            {
+                this->_chassisState = std::get<std::string>(state->second);
+            }
 
-        auto trans = properties.find("RequestedPowerTransition");
-        if (trans != properties.end())
-        {
-            this->_chassisTransition = std::get<std::string>(trans->second);
-        }
-    }));
+            auto trans = properties.find("RequestedPowerTransition");
+            if (trans != properties.end())
+            {
+                this->_chassisTransition = std::get<std::string>(trans->second);
+            }
+        }));
 
     // Watch the CurrentHostState property
     _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
         bus, object_path::hostState, interface::hostState, "CurrentHostState",
         *this, [this](const auto& value) {
-        this->_hostState = std::get<std::string>(value);
-    }));
+            this->_hostState = std::get<std::string>(value);
+        }));
 
     // Watch the BaseBIOSTable property for the hmc managed attribute
     _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
         bus, object_path::biosConfigMgr, interface::biosConfigMgr,
         "BaseBIOSTable", service_name::biosConfigMgr, *this,
         [this](const auto& value) {
-        const auto& attributes = std::get<BiosAttributes>(value);
+            const auto& attributes = std::get<BiosAttributes>(value);
 
-        auto it = attributes.find("pvm_hmc_managed");
-        if (it != attributes.end())
-        {
-            const auto& currentValVariant = std::get<5>(it->second);
-            auto currentVal = std::get_if<std::string>(&currentValVariant);
-            if (currentVal)
+            auto it = attributes.find("pvm_hmc_managed");
+            if (it != attributes.end())
             {
-                this->_hmcManaged = (*currentVal == "Enabled") ? true : false;
+                const auto& currentValVariant = std::get<5>(it->second);
+                auto currentVal = std::get_if<std::string>(&currentValVariant);
+                if (currentVal)
+                {
+                    this->_hmcManaged =
+                        (*currentVal == "Enabled") ? true : false;
+                }
             }
-        }
-    }));
+        }));
 }
 
-DBusPropertyMap
-    DataInterface::getAllProperties(const std::string& service,
-                                    const std::string& objectPath,
-                                    const std::string& interface) const
+DBusPropertyMap DataInterface::getAllProperties(
+    const std::string& service, const std::string& objectPath,
+    const std::string& interface) const
 {
     DBusPropertyMap properties;
 
@@ -236,11 +236,10 @@ DBusPropertyMap
     return properties;
 }
 
-void DataInterface::getProperty(const std::string& service,
-                                const std::string& objectPath,
-                                const std::string& interface,
-                                const std::string& property,
-                                DBusValue& value) const
+void DataInterface::getProperty(
+    const std::string& service, const std::string& objectPath,
+    const std::string& interface, const std::string& property,
+    DBusValue& value) const
 {
     auto method = _bus.new_method_call(service.c_str(), objectPath.c_str(),
                                        interface::dbusProperty, "Get");
@@ -367,8 +366,8 @@ std::string DataInterface::getMotherboardCCIN() const
 
     try
     {
-        auto service = getService(object_path::motherBoardInv,
-                                  interface::viniRecordVPD);
+        auto service =
+            getService(object_path::motherBoardInv, interface::viniRecordVPD);
         if (!service.empty())
         {
             DBusValue value;
@@ -395,8 +394,8 @@ std::vector<uint8_t> DataInterface::getSystemIMKeyword() const
 
     try
     {
-        auto service = getService(object_path::motherBoardInv,
-                                  interface::vsbpRecordVPD);
+        auto service =
+            getService(object_path::motherBoardInv, interface::vsbpRecordVPD);
         if (!service.empty())
         {
             DBusValue value;
@@ -416,10 +415,9 @@ std::vector<uint8_t> DataInterface::getSystemIMKeyword() const
     return systemIM;
 }
 
-void DataInterface::getHWCalloutFields(const std::string& inventoryPath,
-                                       std::string& fruPartNumber,
-                                       std::string& ccin,
-                                       std::string& serialNumber) const
+void DataInterface::getHWCalloutFields(
+    const std::string& inventoryPath, std::string& fruPartNumber,
+    std::string& ccin, std::string& serialNumber) const
 {
     // For now, attempt to get all of the properties directly on the path
     // passed in.  In the future, may need to make use of an algorithm
@@ -430,8 +428,8 @@ void DataInterface::getHWCalloutFields(const std::string& inventoryPath,
 
     auto service = getService(inventoryPath, interface::viniRecordVPD);
 
-    auto properties = getAllProperties(service, inventoryPath,
-                                       interface::viniRecordVPD);
+    auto properties =
+        getAllProperties(service, inventoryPath, interface::viniRecordVPD);
 
     auto value = std::get<std::vector<uint8_t>>(properties["FN"]);
     fruPartNumber = std::string{value.begin(), value.end()};
@@ -498,9 +496,8 @@ std::string DataInterface::expandLocationCode(const std::string& locationCode,
     return expandedLocationCode;
 }
 
-std::vector<std::string>
-    DataInterface::getInventoryFromLocCode(const std::string& locationCode,
-                                           uint16_t node, bool expanded) const
+std::vector<std::string> DataInterface::getInventoryFromLocCode(
+    const std::string& locationCode, uint16_t node, bool expanded) const
 {
     std::string methodName = expanded ? "GetFRUsByExpandedLocationCode"
                                       : "GetFRUsByUnexpandedLocationCode";
@@ -542,9 +539,9 @@ void DataInterface::assertLEDGroup(const std::string& ledGroup,
                                    bool value) const
 {
     DBusValue variant = value;
-    auto method = _bus.new_method_call(service_name::ledGroupManager,
-                                       ledGroup.c_str(),
-                                       interface::dbusProperty, "Set");
+    auto method =
+        _bus.new_method_call(service_name::ledGroupManager, ledGroup.c_str(),
+                             interface::dbusProperty, "Set");
     method.append(interface::ledGroup, "Asserted", variant);
     _bus.call(method, dbusTimeout);
 }
@@ -644,8 +641,8 @@ bool DataInterface::getQuiesceOnError() const
 
     try
     {
-        auto service = getService(object_path::logSetting,
-                                  interface::logSetting);
+        auto service =
+            getService(object_path::logSetting, interface::logSetting);
         if (!service.empty())
         {
             DBusValue value;
@@ -813,8 +810,8 @@ std::vector<uint32_t> DataInterface::getLogIDWithHwIsolation() const
                 // If the entry isn't resolved
                 if (!status)
                 {
-                    auto assocService = getService(path,
-                                                   interface::association);
+                    auto assocService =
+                        getService(path, interface::association);
                     if (!assocService.empty())
                     {
                         DBusValue endpoints;
@@ -931,9 +928,11 @@ void DataInterface::inventoryIfaceAdded(sdbusplus::message_t& msg)
     // Check if any of the new interfaces are for hot pluggable FRUs.
     if (std::find_if(interfaces.begin(), interfaces.end(),
                      [](const auto& interfacePair) {
-        return std::find(hotplugInterfaces.begin(), hotplugInterfaces.end(),
-                         interfacePair.first) != hotplugInterfaces.end();
-    }) == interfaces.end())
+                         return std::find(hotplugInterfaces.begin(),
+                                          hotplugInterfaces.end(),
+                                          interfacePair.first) !=
+                                hotplugInterfaces.end();
+                     }) == interfaces.end())
     {
         return;
     }

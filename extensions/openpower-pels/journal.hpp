@@ -30,8 +30,8 @@ class JournalBase
      *
      * @return The messages
      */
-    virtual std::vector<std::string> getMessages(const std::string& syslogID,
-                                                 size_t maxMessages) const = 0;
+    virtual std::vector<std::string>
+        getMessages(const std::string& syslogID, size_t maxMessages) const = 0;
 
     /**
      * @brief Call journalctl --sync to write unwritten journal data to disk

@@ -60,9 +60,8 @@ size_t getFileDiskSize(const std::filesystem::path& file)
 
 Repository::Repository(const std::filesystem::path& basePath, size_t repoSize,
                        size_t maxNumPELs) :
-    _logPath(basePath / "logs"),
-    _maxRepoSize(repoSize), _maxNumPELs(maxNumPELs),
-    _archivePath(basePath / "logs" / "archive")
+    _logPath(basePath / "logs"), _maxRepoSize(repoSize),
+    _maxNumPELs(maxNumPELs), _archivePath(basePath / "logs" / "archive")
 {
     if (!fs::exists(_logPath))
     {
@@ -495,8 +494,8 @@ bool Repository::updatePEL(const fs::path& path, PELUpdateFunc updateFunc)
 bool Repository::isServiceableSev(const PELAttributes& pel)
 {
     auto sevType = static_cast<SeverityType>(pel.severity & 0xF0);
-    auto sevPVEntry = pel_values::findByValue(pel.severity,
-                                              pel_values::severityValues);
+    auto sevPVEntry =
+        pel_values::findByValue(pel.severity, pel_values::severityValues);
     std::string sevName = std::get<pel_values::registryNamePos>(*sevPVEntry);
 
     bool check1 = (sevType == SeverityType::predictive) ||
@@ -593,18 +592,19 @@ std::vector<Repository::AttributesReference>
 {
     std::vector<Repository::AttributesReference> attributes;
 
-    std::for_each(
-        _pelAttributes.begin(), _pelAttributes.end(),
-        [&attributes](auto& pelEntry) { attributes.push_back(pelEntry); });
+    std::for_each(_pelAttributes.begin(), _pelAttributes.end(),
+                  [&attributes](auto& pelEntry) {
+                      attributes.push_back(pelEntry);
+                  });
 
     std::sort(attributes.begin(), attributes.end(),
               [order](const auto& left, const auto& right) {
-        if (order == SortOrder::ascending)
-        {
-            return left.get().second.path < right.get().second.path;
-        }
-        return left.get().second.path > right.get().second.path;
-    });
+                  if (order == SortOrder::ascending)
+                  {
+                      return left.get().second.path < right.get().second.path;
+                  }
+                  return left.get().second.path > right.get().second.path;
+              });
 
     return attributes;
 }
@@ -721,16 +721,16 @@ void Repository::removePELs(const IsOverLimitFunc& isOverLimit,
     //   Pass 4: delete all PELs
     static const std::vector<std::function<bool(const PELAttributes& pel)>>
         stateChecks{[](const auto& pel) {
-        return pel.hmcState == TransmissionState::acked;
-    },
+                        return pel.hmcState == TransmissionState::acked;
+                    },
 
                     [](const auto& pel) {
-        return pel.hostState == TransmissionState::acked;
-    },
+                        return pel.hostState == TransmissionState::acked;
+                    },
 
                     [](const auto& pel) {
-        return pel.hostState == TransmissionState::sent;
-    },
+                        return pel.hostState == TransmissionState::sent;
+                    },
 
                     [](const auto& /*pel*/) { return true; }};
 

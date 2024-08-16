@@ -81,18 +81,16 @@ void build(const std::string& match, const std::vector<std::string>& data,
 // for this metadata.
 using namespace example::xyz::openbmc_project::example::elog;
 template <>
-inline void
-    build<TestErrorTwo::DEV_ID>(const std::string& /*match*/,
-                                const std::vector<std::string>& /*data*/,
-                                AssociationList& /*list*/)
+inline void build<TestErrorTwo::DEV_ID>(
+    const std::string& /*match*/, const std::vector<std::string>& /*data*/,
+    AssociationList& /*list*/)
 {}
 
 template <>
-inline void
-    build<example::xyz::openbmc_project::example::device::Callout::
-              CALLOUT_DEVICE_PATH_TEST>(const std::string& match,
-                                        const std::vector<std::string>& data,
-                                        AssociationList& list)
+inline void build<example::xyz::openbmc_project::example::device::Callout::
+                      CALLOUT_DEVICE_PATH_TEST>(
+    const std::string& match, const std::vector<std::string>& data,
+    AssociationList& list)
 {
     std::map<std::string, std::string> metadata;
     parse(data, metadata);

@@ -68,8 +68,8 @@ void Journal::sync() const
     }
 }
 
-std::vector<std::string> Journal::getMessages(const std::string& syslogID,
-                                              size_t maxMessages) const
+std::vector<std::string>
+    Journal::getMessages(const std::string& syslogID, size_t maxMessages) const
 {
     // The message registry JSON schema will also fail if a zero is in the JSON
     if (0 == maxMessages)
@@ -83,8 +83,8 @@ std::vector<std::string> Journal::getMessages(const std::string& syslogID,
     int rc = sd_journal_open(&journal, SD_JOURNAL_LOCAL_ONLY);
     if (rc < 0)
     {
-        throw std::runtime_error{std::string{"Failed to open journal: "} +
-                                 strerror(-rc)};
+        throw std::runtime_error{
+            std::string{"Failed to open journal: "} + strerror(-rc)};
     }
 
     JournalCloser closer{journal};

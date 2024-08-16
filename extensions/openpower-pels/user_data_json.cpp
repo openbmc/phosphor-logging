@@ -253,10 +253,9 @@ std::optional<std::string>
  * @return std::optional<std::string> - The JSON string if it could be created,
  *                                      else std::nullopt
  */
-std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
-                                         uint8_t version,
-                                         const std::vector<uint8_t>& data,
-                                         uint8_t creatorID)
+std::optional<std::string>
+    getPythonJSON(uint16_t componentID, uint8_t subType, uint8_t version,
+                  const std::vector<uint8_t>& data, uint8_t creatorID)
 {
     PyObject *pName, *pModule, *eType, *eValue, *eTraceback, *pKey;
     std::string pErrStr;
@@ -291,8 +290,8 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
     }
     else
     {
-        std::unique_ptr<PyObject, decltype(&pyDecRef)> modPtr(pModule,
-                                                              &pyDecRef);
+        std::unique_ptr<PyObject, decltype(&pyDecRef)> modPtr(
+            pModule, &pyDecRef);
         std::string funcToCall = "parseUDToJson";
         pKey = PyUnicode_FromString(funcToCall.c_str());
         std::unique_ptr<PyObject, decltype(&pyDecRef)> keyPtr(pKey, &pyDecRef);
@@ -315,8 +314,8 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
         {
             auto ud = data.data();
             PyObject* pArgs = PyTuple_New(3);
-            std::unique_ptr<PyObject, decltype(&pyDecRef)> argPtr(pArgs,
-                                                                  &pyDecRef);
+            std::unique_ptr<PyObject, decltype(&pyDecRef)> argPtr(
+                pArgs, &pyDecRef);
             PyTuple_SetItem(pArgs, 0,
                             PyLong_FromUnsignedLong((unsigned long)subType));
             PyTuple_SetItem(pArgs, 1,
@@ -331,8 +330,8 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
             {
                 std::unique_ptr<PyObject, decltype(&pyDecRef)> resPtr(
                     pResult, &pyDecRef);
-                PyObject* pBytes = PyUnicode_AsEncodedString(pResult, "utf-8",
-                                                             "~E~");
+                PyObject* pBytes =
+                    PyUnicode_AsEncodedString(pResult, "utf-8", "~E~");
                 std::unique_ptr<PyObject, decltype(&pyDecRef)> pyBytePtr(
                     pBytes, &pyDecRef);
                 const char* output = PyBytes_AS_STRING(pBytes);
@@ -393,11 +392,10 @@ std::optional<std::string> getPythonJSON(uint16_t componentID, uint8_t subType,
     return std::nullopt;
 }
 
-std::optional<std::string> getJSON(uint16_t componentID, uint8_t subType,
-                                   uint8_t version,
-                                   const std::vector<uint8_t>& data,
-                                   uint8_t creatorID,
-                                   const std::vector<std::string>& plugins)
+std::optional<std::string>
+    getJSON(uint16_t componentID, uint8_t subType, uint8_t version,
+            const std::vector<uint8_t>& data, uint8_t creatorID,
+            const std::vector<std::string>& plugins)
 {
     std::string subsystem = getNumberString("%c", tolower(creatorID));
     std::string component = getNumberString("%04x", componentID);

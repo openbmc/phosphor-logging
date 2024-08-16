@@ -99,9 +99,8 @@ struct Callout
  *                             system.
  * @return std::vector<Callout> - The list of callouts
  */
-std::vector<Callout>
-    getCallouts(const std::string& devPath,
-                const std::vector<std::string>& compatibleList);
+std::vector<Callout> getCallouts(
+    const std::string& devPath, const std::vector<std::string>& compatibleList);
 
 /**
  * @brief Looks up the callouts to add to a PEL for when the path
@@ -153,9 +152,8 @@ std::filesystem::path
  *
  * @return std::vector<Callout> - The callouts
  */
-std::vector<device_callouts::Callout>
-    calloutI2C(size_t i2CBus, uint8_t i2cAddress,
-               const nlohmann::json& calloutJSON);
+std::vector<device_callouts::Callout> calloutI2C(
+    size_t i2CBus, uint8_t i2cAddress, const nlohmann::json& calloutJSON);
 
 /**
  * @brief Determines the type of the path (FSI, I2C, etc) based

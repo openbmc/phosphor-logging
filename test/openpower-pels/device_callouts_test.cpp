@@ -519,9 +519,9 @@ TEST_F(DeviceCalloutsTest, getCalloutsTest)
             "slave@01:00/01:01:00:06/sbefifo2-dev0/occ-hwmon.2",
             systemTypes);
 
-        std::vector<Callout> expected{{"H", "P1-C19",
-                                       "/chassis/motherboard/cpu0", "core",
-                                       "FSI: links: 0-1 dest: proc-0 target"}};
+        std::vector<Callout> expected{
+            {"H", "P1-C19", "/chassis/motherboard/cpu0", "core",
+             "FSI: links: 0-1 dest: proc-0 target"}};
 
         EXPECT_EQ(callouts, expected);
 

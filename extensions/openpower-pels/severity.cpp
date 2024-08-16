@@ -78,8 +78,8 @@ uint8_t convertOBMCSeverityToPEL(LogSeverity severity)
     return pelSeverity;
 }
 
-std::optional<LogSeverity> fixupLogSeverity(LogSeverity obmcSeverity,
-                                            SeverityType pelSeverity)
+std::optional<LogSeverity>
+    fixupLogSeverity(LogSeverity obmcSeverity, SeverityType pelSeverity)
 {
     bool isNonErrPelSev = (pelSeverity == SeverityType::nonError) ||
                           (pelSeverity == SeverityType::recovered);

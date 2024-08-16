@@ -95,10 +95,9 @@ void ExtendedUserData::validate()
     }
 }
 
-std::optional<std::string>
-    ExtendedUserData::getJSON(uint8_t /*creatorID*/,
-                              const std::vector<std::string>& plugins
-                              [[maybe_unused]]) const
+std::optional<std::string> ExtendedUserData::getJSON(
+    uint8_t /*creatorID*/,
+    const std::vector<std::string>& plugins [[maybe_unused]]) const
 {
     // Use the creator ID value from the section.
 #ifdef PELTOOL

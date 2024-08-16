@@ -272,9 +272,9 @@ class SRC : public Section
      * @param[in] toCache - boolean to cache registry in memory, default=false
      * @return std::optional<std::string> - Error details
      */
-    std::optional<std::string> getErrorDetails(message::Registry& registry,
-                                               DetailLevel type,
-                                               bool toCache = false) const;
+    std::optional<std::string>
+        getErrorDetails(message::Registry& registry, DetailLevel type,
+                        bool toCache = false) const;
 
     /**
      * @brief Says if this SRC was created by the BMC (i.e. this code).
@@ -470,12 +470,12 @@ class SRC : public Section
      * @param[in] dataIface - The DataInterface object
      * @param[in] mrus - The MRUs to add to the callout
      */
-    void
-        addInventoryCallout(const std::string& inventoryPath,
-                            const std::optional<CalloutPriority>& priority,
-                            const std::optional<std::string>& locationCode,
-                            const DataInterfaceBase& dataIface,
-                            const std::vector<src::MRU::MRUCallout>& mrus = {});
+    void addInventoryCallout(
+        const std::string& inventoryPath,
+        const std::optional<CalloutPriority>& priority,
+        const std::optional<std::string>& locationCode,
+        const DataInterfaceBase& dataIface,
+        const std::vector<src::MRU::MRUCallout>& mrus = {});
 
     /**
      * @brief Returns the callouts to use from the registry entry.
@@ -484,10 +484,9 @@ class SRC : public Section
      * @param[in] additionalData - The AdditionalData property
      * @param[in] dataIface - The DataInterface object
      */
-    std::vector<message::RegistryCallout>
-        getRegistryCallouts(const message::Entry& regEntry,
-                            const AdditionalData& additionalData,
-                            const DataInterfaceBase& dataIface);
+    std::vector<message::RegistryCallout> getRegistryCallouts(
+        const message::Entry& regEntry, const AdditionalData& additionalData,
+        const DataInterfaceBase& dataIface);
 
     /**
      * @brief Adds the FRU callouts from the list of registry callouts

@@ -43,11 +43,11 @@ class Block : public BlockIface
     Block(sdbusplus::bus_t& bus, const std::string& path, uint32_t entryId) :
         BlockIface(bus, path.c_str()), entryId(entryId)
     {
-        std::string entryPath{std::string(OBJ_ENTRY) + '/' +
-                              std::to_string(entryId)};
-        AssociationList assoc{std::make_tuple(std::string{"blocking_error"},
-                                              std::string{"blocking_obj"},
-                                              entryPath)};
+        std::string entryPath{
+            std::string(OBJ_ENTRY) + '/' + std::to_string(entryId)};
+        AssociationList assoc{
+            std::make_tuple(std::string{"blocking_error"},
+                            std::string{"blocking_obj"}, entryPath)};
         associations(std::move(assoc));
     };
 

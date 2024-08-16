@@ -47,8 +47,8 @@ class HostNotifierTest : public CleanPELFiles
 
         ON_CALL(dataIface, getHostPELEnablement).WillByDefault(Return(true));
 
-        hostIface = std::make_unique<NiceMock<MockHostInterface>>(event,
-                                                                  dataIface);
+        hostIface =
+            std::make_unique<NiceMock<MockHostInterface>>(event, dataIface);
 
         mockHostIface = reinterpret_cast<MockHostInterface*>(hostIface.get());
 
@@ -121,11 +121,11 @@ TEST_F(HostNotifierTest, TestHostStateChange)
 {
     bool hostState = false;
     bool called = false;
-    DataInterfaceBase::HostStateChangeFunc func = [&hostState,
-                                                   &called](bool state) {
-        hostState = state;
-        called = true;
-    };
+    DataInterfaceBase::HostStateChangeFunc func =
+        [&hostState, &called](bool state) {
+            hostState = state;
+            called = true;
+        };
 
     dataIface.subscribeToHostStateChange("test", func);
 

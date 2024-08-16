@@ -63,18 +63,18 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
 #ifdef PEL_ENABLE_PHAL
     // Add sbe ffdc processed data into ffdcfiles.
     namespace sbe = openpower::pels::sbe;
-    auto processReq = std::any_of(ffdcFiles.begin(), ffdcFiles.end(),
-                                  [](const auto& file) {
-        return file.format == UserDataFormat::custom &&
-               file.subType == sbe::sbeFFDCSubType;
-    });
+    auto processReq =
+        std::any_of(ffdcFiles.begin(), ffdcFiles.end(), [](const auto& file) {
+            return file.format == UserDataFormat::custom &&
+                   file.subType == sbe::sbeFFDCSubType;
+        });
     // sbeFFDC can't be destroyed until the end of the PEL constructor
     // because it needs to keep around the FFDC Files to be used below.
     std::unique_ptr<sbe::SbeFFDC> sbeFFDCPtr;
     if (processReq)
     {
-        sbeFFDCPtr = std::make_unique<sbe::SbeFFDC>(additionalData,
-                                                    ffdcFilesIn);
+        sbeFFDCPtr =
+            std::make_unique<sbe::SbeFFDC>(additionalData, ffdcFilesIn);
         const auto& sbeFFDCFiles = sbeFFDCPtr->getSbeFFDC();
         ffdcFiles.insert(ffdcFiles.end(), sbeFFDCFiles.begin(),
                          sbeFFDCFiles.end());
@@ -109,8 +109,8 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
         }
     }
 
-    auto src = std::make_unique<SRC>(regEntry, additionalData, callouts,
-                                     dataIface);
+    auto src =
+        std::make_unique<SRC>(regEntry, additionalData, callouts, dataIface);
 
     if (!src->getDebugData().empty())
     {
@@ -307,11 +307,11 @@ size_t PEL::size() const
 
 std::optional<SRC*> PEL::primarySRC() const
 {
-    auto src = std::find_if(_optionalSections.begin(), _optionalSections.end(),
-                            [](auto& section) {
-        return section->header().id ==
-               static_cast<uint16_t>(SectionID::primarySRC);
-    });
+    auto src = std::find_if(
+        _optionalSections.begin(), _optionalSections.end(), [](auto& section) {
+            return section->header().id ==
+                   static_cast<uint16_t>(SectionID::primarySRC);
+        });
     if (src != _optionalSections.end())
     {
         return static_cast<SRC*>(src->get());
@@ -327,19 +327,18 @@ void PEL::checkRulesAndFix()
     // assume the user knows what they are doing.
     if (_uh->actionFlags() == actionFlagsDefault)
     {
-        auto [actionFlags, eventType] = pel_rules::check(0, _uh->eventType(),
-                                                         _uh->severity());
+        auto [actionFlags, eventType] =
+            pel_rules::check(0, _uh->eventType(), _uh->severity());
 
         _uh->setActionFlags(actionFlags);
         _uh->setEventType(eventType);
     }
 }
 
-void PEL::printSectionInJSON(const Section& section, std::string& buf,
-                             std::map<uint16_t, size_t>& pluralSections,
-                             message::Registry& registry,
-                             const std::vector<std::string>& plugins,
-                             uint8_t creatorID) const
+void PEL::printSectionInJSON(
+    const Section& section, std::string& buf,
+    std::map<uint16_t, size_t>& pluralSections, message::Registry& registry,
+    const std::vector<std::string>& plugins, uint8_t creatorID) const
 {
     char tmpB[5];
     uint8_t id[] = {static_cast<uint8_t>(section.header().id >> 8),
@@ -553,11 +552,12 @@ void PEL::updateSysInfoInExtendedUserDataSection(
     if (_ph->creatorID() == static_cast<uint8_t>(CreatorID::hostboot))
     {
         // Get the ED section from PEL
-        auto op = std::find_if(_optionalSections.begin(),
-                               _optionalSections.end(), [](auto& section) {
-            return section->header().id ==
-                   static_cast<uint16_t>(SectionID::extUserData);
-        });
+        auto op = std::find_if(
+            _optionalSections.begin(), _optionalSections.end(),
+            [](auto& section) {
+                return section->header().id ==
+                       static_cast<uint16_t>(SectionID::extUserData);
+            });
 
         // Check for ED section found and its not the last section of PEL
         if (op != _optionalSections.end())
@@ -846,10 +846,9 @@ void addBMCUptime(nlohmann::json& json, const DataInterfaceBase& dataIface)
     json["BMCLoad"] = dataIface.getBMCLoadAvg();
 }
 
-std::unique_ptr<UserData>
-    makeSysInfoUserDataSection(const AdditionalData& ad,
-                               const DataInterfaceBase& dataIface,
-                               bool addUptime)
+std::unique_ptr<UserData> makeSysInfoUserDataSection(
+    const AdditionalData& ad, const DataInterfaceBase& dataIface,
+    bool addUptime)
 {
     nlohmann::json json;
 
@@ -916,8 +915,8 @@ std::vector<uint8_t> readFD(int fd)
     return data;
 }
 
-std::unique_ptr<UserData> makeFFDCuserDataSection(uint16_t componentID,
-                                                  const PelFFDCfile& file)
+std::unique_ptr<UserData>
+    makeFFDCuserDataSection(uint16_t componentID, const PelFFDCfile& file)
 {
     auto data = readFD(file.fd);
 

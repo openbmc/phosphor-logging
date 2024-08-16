@@ -96,8 +96,8 @@ Callout::Callout(CalloutPriority priority, const std::string& locationCode,
 
     setLocationCode(locationCode);
 
-    _fruIdentity = std::make_unique<FRUIdentity>(partNumber, ccin,
-                                                 serialNumber);
+    _fruIdentity =
+        std::make_unique<FRUIdentity>(partNumber, ccin, serialNumber);
 
     if (!mrus.empty())
     {
@@ -132,8 +132,8 @@ Callout::Callout(CalloutPriority priority, const std::string& symbolicFRU,
 
     setLocationCode(locationCode);
 
-    _fruIdentity = std::make_unique<FRUIdentity>(symbolicFRU, type,
-                                                 trustedLocationCode);
+    _fruIdentity =
+        std::make_unique<FRUIdentity>(symbolicFRU, type, trustedLocationCode);
 
     _size = flattenedSize();
 }

@@ -49,9 +49,9 @@ void build<
     auto iter = metadata.find(match);
     if (metadata.end() != iter)
     {
-        list.emplace_back(std::make_tuple(CALLOUT_FWD_ASSOCIATION,
-                                          CALLOUT_REV_ASSOCIATION,
-                                          std::string(iter->second.c_str())));
+        list.emplace_back(
+            std::make_tuple(CALLOUT_FWD_ASSOCIATION, CALLOUT_REV_ASSOCIATION,
+                            std::string(iter->second.c_str())));
     }
 }
 

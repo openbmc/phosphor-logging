@@ -382,11 +382,10 @@ class PEL
      * @param[in] plugins - Vector of strings of plugins found in filesystem
      * @param[in] creatorID - Creator Subsystem ID (only for UserData section)
      */
-    void printSectionInJSON(const Section& section, std::string& buf,
-                            std::map<uint16_t, size_t>& pluralSections,
-                            message::Registry& registry,
-                            const std::vector<std::string>& plugins,
-                            uint8_t creatorID = 0) const;
+    void printSectionInJSON(
+        const Section& section, std::string& buf,
+        std::map<uint16_t, size_t>& pluralSections, message::Registry& registry,
+        const std::vector<std::string>& plugins, uint8_t creatorID = 0) const;
 
     /**
      * @brief Returns any callout JSON found in the FFDC files.
@@ -470,10 +469,9 @@ std::unique_ptr<UserData> makeADUserDataSection(const AdditionalData& ad);
  *
  * @return std::unique_ptr<UserData> - The section
  */
-std::unique_ptr<UserData>
-    makeSysInfoUserDataSection(const AdditionalData& ad,
-                               const DataInterfaceBase& dataIface,
-                               bool addUptime = true);
+std::unique_ptr<UserData> makeSysInfoUserDataSection(
+    const AdditionalData& ad, const DataInterfaceBase& dataIface,
+    bool addUptime = true);
 
 /**
  * @brief Reads data from an opened file descriptor.
@@ -491,8 +489,8 @@ std::vector<uint8_t> readFD(int fd);
  * @param[in] componentID - The component ID of the PEL creator
  * @param[in] file - The FFDC file information
  */
-std::unique_ptr<UserData> makeFFDCuserDataSection(uint16_t componentID,
-                                                  const PelFFDCfile& file);
+std::unique_ptr<UserData>
+    makeFFDCuserDataSection(uint16_t componentID, const PelFFDCfile& file);
 
 /**
  * @brief Flattens a vector of strings into a vector of bytes suitable

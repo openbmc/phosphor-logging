@@ -187,9 +187,9 @@ void PLDMInterface::freeIID()
 
     if (rc == -EINVAL)
     {
-        throw std::runtime_error("Instance ID " + std::to_string(*_instanceID) +
-                                 " for TID " + std::to_string(_eid) +
-                                 " was not previously allocated");
+        throw std::runtime_error(
+            "Instance ID " + std::to_string(*_instanceID) + " for TID " +
+            std::to_string(_eid) + " was not previously allocated");
     }
     else if (rc)
     {
@@ -309,8 +309,8 @@ void PLDMInterface::receive(IO& /*io*/, int /*fd*/, uint32_t revents,
         uint8_t completionCode = 0;
         auto response = reinterpret_cast<pldm_msg*>(responseMsg);
 
-        auto decodeRC = decode_new_file_resp(response, responseSize,
-                                             &completionCode);
+        auto decodeRC =
+            decode_new_file_resp(response, responseSize, &completionCode);
         if (decodeRC < 0)
         {
             lg2::error("decode_new_file_resp failed, rc = {RC}", "RC",

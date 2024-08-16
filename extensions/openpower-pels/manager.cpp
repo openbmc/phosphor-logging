@@ -338,12 +338,11 @@ PelFFDC Manager::convertToPelFFDC(const FFDCEntries& ffdc)
     return pelFFDC;
 }
 
-void Manager::createPEL(const std::string& message, uint32_t obmcLogID,
-                        uint64_t timestamp,
-                        phosphor::logging::Entry::Level severity,
-                        const std::vector<std::string>& additionalData,
-                        const std::vector<std::string>& /*associations*/,
-                        const FFDCEntries& ffdc)
+void Manager::createPEL(
+    const std::string& message, uint32_t obmcLogID, uint64_t timestamp,
+    phosphor::logging::Entry::Level severity,
+    const std::vector<std::string>& additionalData,
+    const std::vector<std::string>& /*associations*/, const FFDCEntries& ffdc)
 {
     auto entry = _registry.lookup(message, rg::LookupType::name);
     auto pelFFDC = convertToPelFFDC(ffdc);
@@ -860,8 +859,8 @@ void Manager::updateDBusSeverity(const openpower::pels::PEL& pel)
     auto entryN = _logManager.entries.find(pel.obmcLogID());
     if (entryN != _logManager.entries.end())
     {
-        auto newSeverity = fixupLogSeverity(entryN->second->severity(),
-                                            sevType);
+        auto newSeverity =
+            fixupLogSeverity(entryN->second->severity(), sevType);
         if (newSeverity)
         {
             lg2::info("Changing event log {ID} severity from {OLD} "
@@ -1001,8 +1000,8 @@ void Manager::updateProgressSRC(
             // Read bytes from offset [40-47] e.g. BD8D1001
             for (int i = 0; i < 8; i++)
             {
-                srcRefCode |= (static_cast<uint64_t>(asciiSRC[40 + i])
-                               << (8 * i));
+                srcRefCode |=
+                    (static_cast<uint64_t>(asciiSRC[40 + i]) << (8 * i));
             }
 
             try
@@ -1084,8 +1083,8 @@ void Manager::hardwarePresent(const std::string& locationCode)
 {
     Repository::PELUpdateFunc handlePowerThermalHardwarePresent =
         [locationCode](openpower::pels::PEL& pel) {
-        return Manager::clearPowerThermalDeconfigFlag(locationCode, pel);
-    };
+            return Manager::clearPowerThermalDeconfigFlag(locationCode, pel);
+        };
 
     // If the PEL was created by the BMC and has the deconfig flag set,
     // it's a candidate to have the deconfig flag cleared.

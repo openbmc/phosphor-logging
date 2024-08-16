@@ -392,11 +392,11 @@ TEST_F(ManagerTest, TestDBusMethods)
 
     std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
 
-    Manager manager{logManager, std::move(dataIface),
-                    std::bind(std::mem_fn(&TestLogger::log), &logger,
-                              std::placeholders::_1, std::placeholders::_2,
-                              std::placeholders::_3),
-                    std::move(journal)};
+    Manager manager{
+        logManager, std::move(dataIface),
+        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
+                  std::placeholders::_2, std::placeholders::_3),
+        std::move(journal)};
 
     // Create a PEL, write it to a file, and pass that filename into
     // the create function so there's one in the repo.

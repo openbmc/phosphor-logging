@@ -38,9 +38,8 @@ bool deserialize(const fs::path& path, Entry& e);
  *                   be placed.
  *  @return fs::path - pathname of persisted error file
  */
-fs::path
-    getEntrySerializePath(uint32_t id,
-                          const fs::path& dir = fs::path(ERRLOG_PERSIST_PATH));
+fs::path getEntrySerializePath(
+    uint32_t id, const fs::path& dir = fs::path(ERRLOG_PERSIST_PATH));
 
 } // namespace logging
 } // namespace phosphor

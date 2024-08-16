@@ -269,8 +269,8 @@ TEST_F(RegistryTest, TestFindEntryMinimal)
     auto path = RegistryTest::writeData(registryData);
     Registry registry{path};
 
-    auto entry = registry.lookup("xyz.openbmc_project.Power.Fault",
-                                 LookupType::name);
+    auto entry =
+        registry.lookup("xyz.openbmc_project.Power.Fault", LookupType::name);
     ASSERT_TRUE(entry);
     EXPECT_EQ(entry->name, "xyz.openbmc_project.Power.Fault");
     EXPECT_EQ(entry->subsystem, 0x61);
@@ -407,8 +407,8 @@ TEST_F(RegistryTest, TestGetComponentID)
     using namespace openpower::pels::message::helper;
 
     // Get it from the JSON
-    auto id = getComponentID(0xBD, 0x4200, R"({"ComponentID":"0x4200"})"_json,
-                             "foo");
+    auto id =
+        getComponentID(0xBD, 0x4200, R"({"ComponentID":"0x4200"})"_json, "foo");
     EXPECT_EQ(id, 0x4200);
 
     // Get it from the reason code on a 0xBD SRC
