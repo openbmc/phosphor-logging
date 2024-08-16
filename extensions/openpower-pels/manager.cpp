@@ -301,8 +301,23 @@ void Manager::erase(uint32_t obmcLogID)
     _repo.remove(id);
 }
 
-bool Manager::isDeleteProhibited(uint32_t /*obmcLogID*/)
+bool Manager::isDeleteProhibited(uint32_t obmcLogID)
 {
+    Repository::LogID id{Repository::LogID::Obmc(obmcLogID)};
+
+    auto objPath = std::string(OBJ_ENTRY) + '/' + std::to_string(id.obmcID.id);
+    auto entryN = _pelEntries.find(objPath);
+    if (entryN != _pelEntries.end())
+    {
+        if(entryN->second->guard())
+        {
+            auto associatedPath = std::string(OBJ_ENTRY) + '/' + std::to_string(obmcLogID) + "/isolated_hw_entry";
+            std::vector<std::string> interfaces = {"xyz.openbmc_project.HardwareIsolation.Entry"};
+            auto associatedPaths = _dataIface->getAssociatedPaths(associatedPath, interfaces);
+            if (!associatedPaths.empty())
+                return true;
+        }
+    }
     return false;
 }
 

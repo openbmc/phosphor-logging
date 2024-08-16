@@ -124,9 +124,23 @@ class Manager : public details::ServerObject<details::ManagerIface>
         {
             auto e = iter->first;
             ++iter;
-            erase(e);
+            try
+            {
+                erase(e);
+            }
+            catch (const sdbusplus::xyz::openbmc_project::Common::Error::NotAllowed& e)
+            {
+                entriesSize--;
+            }
         }
-        entryId = 0;
+        if (!entries.empty())
+        {
+            unsigned int maxId = std::max_element(entries.begin(), entries.end(),
+                                        [](const auto& a, const auto& b) { return a.first < b.first; })->first;
+            entryId = maxId;
+        }
+        else
+            entryId = 0;
 
         return entriesSize;
     }

@@ -500,9 +500,12 @@ void Manager::erase(uint32_t entryId)
                 func(entryId, prohibited);
                 if (prohibited)
                 {
-                    // Future work remains to throw an error here.
-                    return;
+                    throw sdbusplus::xyz::openbmc_project::Common::Error::NotAllowed();
                 }
+            }
+            catch (const sdbusplus::xyz::openbmc_project::Common::Error::NotAllowed& e)
+            {
+                throw;
             }
             catch (const std::exception& e)
             {

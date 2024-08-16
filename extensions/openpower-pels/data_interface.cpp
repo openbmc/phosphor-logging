@@ -883,6 +883,20 @@ std::vector<uint8_t> DataInterface::getRawProgressSRC(void) const
     return std::get<1>(rawProgress);
 }
 
+DBusPathList DataInterface::getAssociatedPaths(const std::string& associatedPath, const DBusInterfaceList& interfaces) const
+{
+    auto method = _bus.new_method_call(
+        service_name::objectMapper, object_path::objectMapper,
+        interface::objectMapper, "GetAssociatedSubTreePaths");
+    method.append(sdbusplus::message::object_path(associatedPath), sdbusplus::message::object_path(std::string{"/"}), 0, interfaces);
+
+    auto reply = _bus.call(method, dbusTimeout);
+    std::vector<std::string> paths;
+    reply.read(paths);
+
+    return paths;
+}
+
 void DataInterface::startFruPlugWatch()
 {
     // Add a watch on inventory InterfacesAdded and then find all
