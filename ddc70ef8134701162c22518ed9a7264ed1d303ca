@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c37d837_ba67d009",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-19T15:32:36Z",
+      "side": 1,
+      "message": "I felt \u0027DIMMs DRAM\u0027 phrase might be redundant. hence slightly modified",
+      "parentUuid": "69fe0607_bf657ec1",
+      "range": {
+        "startLine": 7,
+        "startChar": 4,
+        "endLine": 7,
+        "endChar": 11
+      },
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "115e4235_1f4e69db",
@@ -100,6 +124,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5097276b_498db7c9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-19T15:32:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69f91057_95b1f821",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fd311259_b49ae05c",
@@ -140,6 +182,48 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "15f7e73e_63b125fd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-19T15:32:36Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ccee9b1e_c075d10d",
+      "range": {
+        "startLine": 21,
+        "startChar": 35,
+        "endLine": 21,
+        "endChar": 47
+      },
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f50bef4_ec5eb839",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-19T15:32:36Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "fd311259_b49ae05c",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6d2b433c_79105e06",
@@ -153,6 +237,24 @@
       "writtenOn": "2024-08-14T14:21:01Z",
       "side": 1,
       "message": "I think your code now has \u0027DIMMs Manu...\u0027  now?",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfc9d067_93f97bbf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-19T15:32:36Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6d2b433c_79105e06",
       "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -194,6 +296,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f78d8646_f2cb35f0",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 939,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-19T15:32:36Z",
+      "side": 1,
+      "message": "Yes I also agree the map can reduce the overhead further more. Will try to incorporate",
+      "parentUuid": "c154b7f5_5649b4b3",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ac5698ec_306842f7",
         "filename": "extensions/openpower-pels/data_interface.cpp",
         "patchSetId": 4
@@ -227,6 +347,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "53204b97_2351fcc4",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 954,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-19T15:32:36Z",
+      "side": 1,
+      "message": "Added journal trace at the caller.",
+      "parentUuid": "16a37061_6058b749",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60d98d33_87dced38",
@@ -240,6 +378,24 @@
       "writtenOn": "2024-08-14T15:43:09Z",
       "side": 1,
       "message": "Please document about the function parameters and returns.",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "836fdd30_fd0d6bba",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-19T15:32:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60d98d33_87dced38",
       "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -275,6 +431,24 @@
       "side": 1,
       "message": "+1, My preference would be a separate commit. I am fine either way :)",
       "parentUuid": "4c607c6d_33f7d8cb",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aea7f9a4_312b0dca",
+        "filename": "extensions/openpower-pels/entry_points.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-19T15:32:36Z",
+      "side": 1,
+      "message": "ok will mention in the commit msg",
+      "parentUuid": "bcf2fe83_f16928ae",
       "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -319,6 +493,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "764ea0d2_b18ece6f",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 742,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-19T15:32:36Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a1892f3a_4aa87c09",
+      "range": {
+        "startLine": 742,
+        "startChar": 9,
+        "endLine": 742,
+        "endChar": 21
+      },
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "69684e1d_bcc0edec",
@@ -332,6 +530,24 @@
       "writtenOn": "2024-08-14T14:08:06Z",
       "side": 1,
       "message": "Missed adding the location code value here so that in case of multiple DIMM callouts, user could identify for which location code it failed. Will incorporate this also in next patch",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1efa351_1c30b3f8",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 771,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-19T15:32:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69684e1d_bcc0edec",
       "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -361,6 +577,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0de79f8d_080fe617",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1067,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-19T15:32:36Z",
+      "side": 1,
+      "message": "Do we have separate manufacturers for DIMM and DRAMs?",
+      "parentUuid": "02ef8d0e_13b27ef8",
+      "range": {
+        "startLine": 1067,
+        "startChar": 59,
+        "endLine": 1067,
+        "endChar": 74
+      },
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1d002332_256a073c",
         "filename": "extensions/openpower-pels/pel.cpp",
         "patchSetId": 4
@@ -372,6 +612,30 @@
       "writtenOn": "2024-08-14T15:43:09Z",
       "side": 1,
       "message": "`DIMMs Additional Info` to make it more generic?",
+      "range": {
+        "startLine": 1071,
+        "startChar": 19,
+        "endLine": 1071,
+        "endChar": 42
+      },
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1f64cd2_d7788626",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1071,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-19T15:32:36Z",
+      "side": 1,
+      "message": "Yes..Modified.",
+      "parentUuid": "1d002332_256a073c",
       "range": {
         "startLine": 1071,
         "startChar": 19,
@@ -466,6 +730,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "46d5bde0_59c28112",
+        "filename": "test/openpower-pels/pel_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1309,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-19T15:32:36Z",
+      "side": 1,
+      "message": "@Matt , Yes since some PELs have multiple user data section and our intention find the UD with DIMM info . Hence stopping the further search once it finds the match.\n\n@Ramesh, It seems some typo here , return std::make_pair(hasDIMMInfo, hasDimmInfo); Did you meant \u0027dimmInfo\u0027 instead of \u0027hasDimmInfo\u0027?\nAs per the current logic , I feel return value of any_of is less important as I am comparing the fetched JSON object from the UD section with the expected json object.",
+      "parentUuid": "5555e6cb_89edae37",
+      "range": {
+        "startLine": 1309,
+        "startChar": 4,
+        "endLine": 1309,
+        "endChar": 23
+      },
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7b55b4bb_cb548dae",
         "filename": "test/openpower-pels/pel_test.cpp",
         "patchSetId": 4
@@ -494,6 +782,24 @@
       "writtenOn": "2024-08-14T14:21:01Z",
       "side": 1,
       "message": "nit: trailing space",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d1c9d99_20b33810",
+        "filename": "test/openpower-pels/pel_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1439,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-19T15:32:36Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "61915ea5_80816c54",
       "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
