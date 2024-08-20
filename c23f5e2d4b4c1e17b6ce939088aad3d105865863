@@ -1,6 +1,75 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "156c6652_c709f05a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-20T06:41:06Z",
+      "side": 1,
+      "message": "How about \"Prevent deletion if it is associated with HWIsolation\"?",
+      "range": {
+        "startLine": 7,
+        "startChar": 5,
+        "endLine": 7,
+        "endChar": 49
+      },
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c7415fe_a3fa5b1a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-20T06:41:06Z",
+      "side": 1,
+      "message": "hardware isolation - Lets use openbmc terms instead of guard.\n\nand please include the purpose (\"why\") or the problem statement for this change in the generic description.",
+      "range": {
+        "startLine": 10,
+        "startChar": 27,
+        "endLine": 10,
+        "endChar": 32
+      },
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c10cd3e_745a5dfd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-20T06:41:06Z",
+      "side": 1,
+      "message": "Please avoid internal planning details in the open source project.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 38
+      },
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "ab1f4822_18f11826",
@@ -20,6 +89,161 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dffa7cc6_2c0dbe06",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 891,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-20T06:41:06Z",
+      "side": 1,
+      "message": "I would suggest defining arguments for these DBus parameters as well, as it would provide more flexibility to the caller.",
+      "range": {
+        "startLine": 891,
+        "startChar": 67,
+        "endLine": 891,
+        "endChar": 119
+      },
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adcf5cf1_baaf57c8",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 895,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-20T06:41:06Z",
+      "side": 1,
+      "message": "Please enclose this in a try/catch block since it\u0027s a generic API. This way, any DBus exceptions can be caught and handled, allowing the operation to continue and return control to the caller. The PEL operation should proceed even if an error occurs, as it operates on a \"best effort\" basis.\n\n\nFor example,\n\n```\nstd::optional\u003cDBusPathList\u003e DataInterface::getAssociatedPaths(const std::string\u0026 associatedPath, const DBusInterfaceList\u0026 interfaces)\n{\n  try\n  {\n    ...\n  }\n  catch (const std::exception\u0026 e)\n  {\n    //add trace\n    return std::nullopt;\n  } \n}\n```",
+      "range": {
+        "startLine": 888,
+        "startChar": 4,
+        "endLine": 895,
+        "endChar": 22
+      },
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "060b240b_16fef84c",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-20T06:41:06Z",
+      "side": 1,
+      "message": "You could use `DBusPath` for associatedPath as well since it is path value.",
+      "range": {
+        "startLine": 500,
+        "startChar": 50,
+        "endLine": 500,
+        "endChar": 61
+      },
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef096d2d_52169315",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-20T06:41:06Z",
+      "side": 1,
+      "message": "entryPath?",
+      "range": {
+        "startLine": 308,
+        "startChar": 9,
+        "endLine": 308,
+        "endChar": 16
+      },
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8f4392e_ff105e5c",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-20T06:41:06Z",
+      "side": 1,
+      "message": "entry?",
+      "range": {
+        "startLine": 309,
+        "startChar": 9,
+        "endLine": 309,
+        "endChar": 15
+      },
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44b7e439_1b8a74a5",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-20T06:41:06Z",
+      "side": 1,
+      "message": "You can simply use the entry variable by appending `/isolated_hw_entry` to it since the variable isn\u0027t being reused.\n\nFor example,\n```\nauto entry +\u003d \"/isolated_hw_entry\";\n```",
+      "range": {
+        "startLine": 314,
+        "startChar": 12,
+        "endLine": 314,
+        "endChar": 114
+      },
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7b257b4_31fd8f46",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-20T06:41:06Z",
+      "side": 1,
+      "message": "Just a suggestion: You could directly pass interfaces in the below call to avoid additional variable.",
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "88c39efe_8cdfbf40",
         "filename": "extensions/openpower-pels/manager.cpp",
         "patchSetId": 1
@@ -31,6 +255,87 @@
       "writtenOn": "2024-08-16T13:28:43Z",
       "side": 1,
       "message": "we can hold up to 3000 PELs, so when deleting all won\u0027t this make 3000 D-Bus calls?  \nThat sounds horribly slow for something that should be fast.  Or, to prove it isn\u0027t, can you create 3000 PELs and then get timings of doing a delete all with and without this code?\n\n I was thinking it would do something like maintain a cache of the hwIsolation\u0027s D-Bus model by watching signals so it wouldn\u0027t have to make any calls at all.",
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4aed0978_50243c13",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-20T06:41:06Z",
+      "side": 1,
+      "message": "I think caching with DBus signals would be more complex, so I would prefer to consider that option last.\n\nWhat I\u0027m thinking is, can we use `GetAssociatedSubTreePaths` to retrieve a list of entry paths associated with HWIsolation? If yes, then we could define a callback or refactor getLogIDWithHwIsolation to obtain a list of prohibited entries and use it while attempting to call erase() to delete each PEL.",
+      "parentUuid": "88c39efe_8cdfbf40",
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16595ad4_0023875a",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-20T06:41:06Z",
+      "side": 1,
+      "message": "Please add trace with necessary data so that it will help debuggability.",
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d38bf2a_a385b1fa",
+        "filename": "log_manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-20T06:41:06Z",
+      "side": 1,
+      "message": "How did you determine that it will be `unsigned int`? its `uint32_t` since your are return the greatest entry id, right?\n\nI would recommend using `auto`.",
+      "range": {
+        "startLine": 138,
+        "startChar": 12,
+        "endLine": 138,
+        "endChar": 24
+      },
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fab16623_48fd923a",
+        "filename": "log_manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-20T06:41:06Z",
+      "side": 1,
+      "message": "You could use `std::ranges::max_element`.\n\nFor example,\n```\nauto maxEntryIdIt \u003d std::ranges::max_element(entries, [](const auto\u0026 a, const auto\u0026 b) { return a.first \u003c b.first; });\n```",
+      "range": {
+        "startLine": 138,
+        "startChar": 33,
+        "endLine": 139,
+        "endChar": 103
+      },
       "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
