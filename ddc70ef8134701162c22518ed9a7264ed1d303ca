@@ -314,6 +314,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "086ab34c_8467dc9b",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 939,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-20T04:28:54Z",
+      "side": 1,
+      "message": "Thanks for accepting.",
+      "parentUuid": "f78d8646_f2cb35f0",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ac5698ec_306842f7",
         "filename": "extensions/openpower-pels/data_interface.cpp",
         "patchSetId": 4
@@ -601,6 +619,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "57207e97_ff081a38",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1067,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-20T04:28:54Z",
+      "side": 1,
+      "message": "It could be. The DI property is primarily intended for DRAM within the DIMM inventory object, so we could have a separate manufacturer ID for the DIMM module.",
+      "parentUuid": "0de79f8d_080fe617",
+      "range": {
+        "startLine": 1067,
+        "startChar": 59,
+        "endLine": 1067,
+        "endChar": 74
+      },
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1d002332_256a073c",
         "filename": "extensions/openpower-pels/pel.cpp",
         "patchSetId": 4
@@ -742,6 +784,30 @@
       "side": 1,
       "message": "@Matt , Yes since some PELs have multiple user data section and our intention find the UD with DIMM info . Hence stopping the further search once it finds the match.\n\n@Ramesh, It seems some typo here , return std::make_pair(hasDIMMInfo, hasDimmInfo); Did you meant \u0027dimmInfo\u0027 instead of \u0027hasDimmInfo\u0027?\nAs per the current logic , I feel return value of any_of is less important as I am comparing the fetched JSON object from the UD section with the expected json object.",
       "parentUuid": "5555e6cb_89edae37",
+      "range": {
+        "startLine": 1309,
+        "startChar": 4,
+        "endLine": 1309,
+        "endChar": 23
+      },
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2163c1ba_66b1d91c",
+        "filename": "test/openpower-pels/pel_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1309,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-20T04:28:54Z",
+      "side": 1,
+      "message": "\u003e @Ramesh, It seems some typo here , return std::make_pair(hasDIMMInfo, hasDimmInfo); Did you meant \u0027dimmInfo\u0027 instead of \u0027hasDimmInfo\u0027?\n\nah my bad, correct `dimmInfo`.\n\n\u003e I feel return value of any_of is less important as I am comparing the fetched JSON object from the UD section with the expected json object.\n\nHmm ok...",
+      "parentUuid": "46d5bde0_59c28112",
       "range": {
         "startLine": 1309,
         "startChar": 4,
