@@ -87,6 +87,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cc4032b_fc4c8a4e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-08-20T14:28:22Z",
+      "side": 1,
+      "message": "I think you could write a unit test for this using something similar to the area here: https://github.com/openbmc/phosphor-logging/blob/master/test/openpower-pels/pel_manager_test.cpp#L171",
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dffa7cc6_2c0dbe06",
