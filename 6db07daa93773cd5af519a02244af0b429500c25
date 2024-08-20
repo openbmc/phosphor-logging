@@ -1,6 +1,52 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "6de6129a_3b88e909",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-20T04:54:19Z",
+      "side": 1,
+      "message": "the faulty DRAMs packaged within the DIMM module? the applies to the commit message header since we are adding the DRAM manufacturer info, not the DIMM one.",
+      "range": {
+        "startLine": 11,
+        "startChar": 16,
+        "endLine": 11,
+        "endChar": 31
+      },
+      "revId": "6db07daa93773cd5af519a02244af0b429500c25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d57aa134_166893ee",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-20T04:54:19Z",
+      "side": 1,
+      "message": "the DRAM manufacturer ID?",
+      "range": {
+        "startLine": 18,
+        "startChar": 32,
+        "endLine": 18,
+        "endChar": 51
+      },
+      "revId": "6db07daa93773cd5af519a02244af0b429500c25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "19f48807_317addf6",
@@ -31,6 +77,80 @@
       "writtenOn": "2024-08-20T04:28:54Z",
       "side": 1,
       "message": "I haven\u0027t reviewed it yet. I\u0027ll wait for the CI fix.\n\n(I\u0027ve just responded to some of the open comments.)",
+      "revId": "6db07daa93773cd5af519a02244af0b429500c25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "702f2af6_bce4ab45",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-20T04:54:19Z",
+      "side": 1,
+      "message": "A few minor suggestions you could address in your CI fix patch if you agree with them.",
+      "revId": "6db07daa93773cd5af519a02244af0b429500c25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee8a01bf_26e8fd6c",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-20T04:54:19Z",
+      "side": 1,
+      "message": "May be I missed this in the previous patch..\n\nwhy is it required here? Please include in the .cpp file based on the needs.",
+      "revId": "6db07daa93773cd5af519a02244af0b429500c25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45a9d10e_612b6f23",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 659,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-20T04:54:19Z",
+      "side": 1,
+      "message": "I thought you were planning to use unordered_map as discussed in another comment.\n\nAre you planning to fix this separately?",
+      "revId": "6db07daa93773cd5af519a02244af0b429500c25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df502583_fc781ff6",
+        "filename": "extensions/openpower-pels/pel.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-20T04:54:19Z",
+      "side": 1,
+      "message": "additional?",
+      "range": {
+        "startLine": 420,
+        "startChar": 33,
+        "endLine": 420,
+        "endChar": 45
+      },
       "revId": "6db07daa93773cd5af519a02244af0b429500c25",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
