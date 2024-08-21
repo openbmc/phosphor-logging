@@ -542,6 +542,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "11f8d87f_041b58c0",
+        "filename": "extensions/openpower-pels/meson.build",
+        "patchSetId": 4
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-08-21T18:48:12Z",
+      "side": 1,
+      "message": "I guess I don\u0027t follow why it stopped working?\n\nBut, it isn\u0027t really that big of a deal.",
+      "parentUuid": "76968e7e_53d4bb17",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1892f3a_4aa87c09",
@@ -803,6 +821,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1f6dc7be_46d0542a",
+        "filename": "test/openpower-pels/pel_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 910,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-08-21T18:48:12Z",
+      "side": 1,
+      "message": "I don\u0027t follow.  Are you saying that there is going to be extra fields added to this JSON so it won\u0027t match on how it was?",
+      "parentUuid": "f2317215_e799f7e6",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "898784d2_d3da20b2",
         "filename": "test/openpower-pels/pel_test.cpp",
         "patchSetId": 4
@@ -886,6 +922,30 @@
       "side": 1,
       "message": "\u003e @Ramesh, It seems some typo here , return std::make_pair(hasDIMMInfo, hasDimmInfo); Did you meant \u0027dimmInfo\u0027 instead of \u0027hasDimmInfo\u0027?\n\nah my bad, correct `dimmInfo`.\n\n\u003e I feel return value of any_of is less important as I am comparing the fetched JSON object from the UD section with the expected json object.\n\nHmm ok...",
       "parentUuid": "46d5bde0_59c28112",
+      "range": {
+        "startLine": 1309,
+        "startChar": 4,
+        "endLine": 1309,
+        "endChar": 23
+      },
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7829a8d0_450187e0",
+        "filename": "test/openpower-pels/pel_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1309,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-08-21T18:48:12Z",
+      "side": 1,
+      "message": "I think find_if may be more readable, but it would accomplish the same thing so it\u0027s fine how it is.",
+      "parentUuid": "2163c1ba_66b1d91c",
       "range": {
         "startLine": 1309,
         "startChar": 4,

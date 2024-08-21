@@ -16,6 +16,86 @@
       "message": "Addressed all the review comments.",
       "revId": "52f2dff670c2e5ca5a74e3163ba22729129c9f6a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c343fb35_4a7bb9d2",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 741,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-08-21T18:48:12Z",
+      "side": 1,
+      "message": "Why is this marked mutable? dataIface and debugData are captured by reference so I don\u0027t think it would be needed for them.",
+      "range": {
+        "startLine": 741,
+        "startChar": 71,
+        "endLine": 741,
+        "endChar": 79
+      },
+      "revId": "52f2dff670c2e5ca5a74e3163ba22729129c9f6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "334920e3_50b36081",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 757,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-08-21T18:48:12Z",
+      "side": 1,
+      "message": "PEL debug data will already be printed here: https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/72970/11/extensions/openpower-pels/pel.cpp#197",
+      "revId": "52f2dff670c2e5ca5a74e3163ba22729129c9f6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6a3557d_35a13150",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1073,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-08-21T18:48:12Z",
+      "side": 1,
+      "message": "note: unexpectedly, that length includes the 0x it adds, for example from here: https://en.cppreference.com/w/cpp/utility/format/spec\n\nauto s2 \u003d std::format(\"{:#06x}\", 0xa); // value of s2 is \"0x000a\"\n\n\nlooks like it won\u0027t truncate a value, but it does mean a 7 will print as 0x7 instead of 0x07 like one would think.\n\nUp to you if you want to change it.",
+      "range": {
+        "startLine": 1073,
+        "startChar": 33,
+        "endLine": 1073,
+        "endChar": 39
+      },
+      "revId": "52f2dff670c2e5ca5a74e3163ba22729129c9f6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45bc7a0d_d75cfbbf",
+        "filename": "test/openpower-pels/pel_test.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1379,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-08-21T18:48:12Z",
+      "side": 1,
+      "message": "looks like these are still tabs",
+      "revId": "52f2dff670c2e5ca5a74e3163ba22729129c9f6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
