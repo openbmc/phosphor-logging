@@ -51,6 +51,24 @@
       "parentUuid": "08609253_69cb89ea",
       "revId": "427d4cacd68ab74f84798963e1c2c71a965d56be",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8105983_f37a4668",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-21T04:43:53Z",
+      "side": 1,
+      "message": "\u0027DIMMsCallouts\u0027 is not throwing errors from clang formatting. Hence going with this approach. Thanks for the suggestion",
+      "parentUuid": "3a46bcaa_fb77b989",
+      "revId": "427d4cacd68ab74f84798963e1c2c71a965d56be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

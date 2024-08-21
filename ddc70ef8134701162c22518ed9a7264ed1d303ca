@@ -89,6 +89,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f544ca5_54a4d96c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-21T04:43:53Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "115e4235_1f4e69db",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2fdd3b8d_21edef32",
@@ -490,6 +508,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "76968e7e_53d4bb17",
+        "filename": "extensions/openpower-pels/meson.build",
+        "patchSetId": 4
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-21T04:43:53Z",
+      "side": 1,
+      "message": "The util.cpp file is added to resolve the linking error faced during development stage.\n\nDuring the peltool binary compilation, the DataInterface class constructor is invoking an util API getOSReleaseValue() which is defined in utils.cpp. Hence absence of util.cpp among the source file list throwed the linking error. \n\nOn further checking we noticed it is noticed the adding the util.cpp among \u0027libpel_sources\u0027 will be more accurate and hence moved to \u0027libpel_sources\u0027 from \u0027peltool_sources\u0027\n\nAdding the linking error faced also for reference \n\n\u003e [1/1] Linking target extensions/openpower-pels/peltool\nFAILED: extensions/openpower-pels/peltool c++  -o extensions/openpower-pels/peltool extensions/openpower-pels/peltool.p/tools_peltool.cpp.o extensions/openpower-pels/peltool.p/extended_user_data.cpp.o extensions/openpower-pels/peltool.p/src.cpp.o extensions/openpower-pels/peltool.p/user_data.cpp.o extensions/openpower-pels/peltool.p/user_data_json.cpp.o -Wl,--as-needed -Wl,--no-undefined \u0027-Wl,-rpath,$ORIGIN/../../lib:/usr/local/lib/x86_64-linux-gnu:/usr/local/lib\u0027 -Wl,-rpath-link,/esw/san5/arya/DIMM_ID/1060_june21_build/1060_Aug_6/ramesh/commit/phosphor-logging/buildTestsDisabled/lib -Wl,-rpath-link,/usr/local/lib/x86_64-linux-gnu -Wl,-rpath-link,/usr/local/lib -Wl,--start-group extensions/openpower-pels/libpel.a lib/libphosphor_logging.so.1.0.0 -lpython3.12 /usr/local/lib/x86_64-linux-gnu/libpldm.so /usr/local/lib/x86_64-linux-gnu/libsdbusplus.so /usr/lib/x86_64-linux-gnu/libsystemd.so /usr/local/lib/x86_64-linux-gnu/libsdeventplus.so /usr/local/lib/x86_64-linux-gnu/libstdplus.so /usr/local/lib/libfmt.so /usr/local/lib/x86_64-linux-gnu/libphosphor_dbus.so -Wl,--end-group -pthread\n/usr/bin/ld: extensions/openpower-pels/libpel.a.p/data_interface.cpp.o: in function `openpower::pels::DataInterface::readBMCFWVersion()\u0027:\n/esw/san5/arya/DIMM_ID/1060_june21_build/1060_Aug_6/commit/phosphor-logging/buildTestsDisabled/../extensions/openpower-pels/data_interface.cpp:297:(.text+0x582): undefined reference to `phosphor::logging::util::getOSReleaseValue(std::__cxx11::basic_string\u003cchar, std::char_traits\u003cchar\u003e, std::allocator\u003cchar\u003e \u003e const\u0026)\u0027",
+      "parentUuid": "8d2b8cc9_a1632c45",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a1892f3a_4aa87c09",
         "filename": "extensions/openpower-pels/pel.cpp",
         "patchSetId": 4
@@ -631,6 +667,30 @@
       "side": 1,
       "message": "It could be. The DI property is primarily intended for DRAM within the DIMM inventory object, so we could have a separate manufacturer ID for the DIMM module.",
       "parentUuid": "0de79f8d_080fe617",
+      "range": {
+        "startLine": 1067,
+        "startChar": 59,
+        "endLine": 1067,
+        "endChar": 74
+      },
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "367b0fb0_a069e89e",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1067,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-21T04:43:53Z",
+      "side": 1,
+      "message": "Ok got your point. Modified as \u0027DRAM Manufacturer ID\u0027",
+      "parentUuid": "57207e97_ff081a38",
       "range": {
         "startLine": 1067,
         "startChar": 59,
@@ -831,6 +891,24 @@
       "writtenOn": "2024-08-14T14:21:01Z",
       "side": 1,
       "message": "nit:  these are tabs.  if there aren\u0027t tabs anywhere else in this file then please convert them to spaces to be consistent.",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a2c5f38_f024b688",
+        "filename": "test/openpower-pels/pel_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1372,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-21T04:43:53Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7b55b4bb_cb548dae",
       "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },

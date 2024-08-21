@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f181d75_87e07e69",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-21T04:43:53Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6de6129a_3b88e909",
+      "range": {
+        "startLine": 11,
+        "startChar": 16,
+        "endLine": 11,
+        "endChar": 31
+      },
+      "revId": "6db07daa93773cd5af519a02244af0b429500c25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d57aa134_166893ee",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-08-20T04:54:19Z",
       "side": 1,
       "message": "the DRAM manufacturer ID?",
+      "range": {
+        "startLine": 18,
+        "startChar": 32,
+        "endLine": 18,
+        "endChar": 51
+      },
+      "revId": "6db07daa93773cd5af519a02244af0b429500c25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "310f0a67_af6f8770",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-21T04:43:53Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d57aa134_166893ee",
       "range": {
         "startLine": 18,
         "startChar": 32,
@@ -115,6 +163,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a079a150_238e516c",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-21T04:43:53Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ee8a01bf_26e8fd6c",
+      "revId": "6db07daa93773cd5af519a02244af0b429500c25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45a9d10e_612b6f23",
@@ -132,6 +198,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "746d6736_ca3ab5ac",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 659,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-21T04:43:53Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "45a9d10e_612b6f23",
+      "revId": "6db07daa93773cd5af519a02244af0b429500c25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df502583_fc781ff6",
@@ -145,6 +229,30 @@
       "writtenOn": "2024-08-20T04:54:19Z",
       "side": 1,
       "message": "additional?",
+      "range": {
+        "startLine": 420,
+        "startChar": 33,
+        "endLine": 420,
+        "endChar": 45
+      },
+      "revId": "6db07daa93773cd5af519a02244af0b429500c25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77b209b8_a0e6d6e5",
+        "filename": "extensions/openpower-pels/pel.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-21T04:43:53Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "df502583_fc781ff6",
       "range": {
         "startLine": 420,
         "startChar": 33,
