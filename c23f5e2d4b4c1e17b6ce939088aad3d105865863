@@ -314,6 +314,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "13ea42cf_c17a0686",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-08-22T14:00:50Z",
+      "side": 1,
+      "message": "So just the one call on an eraseAll?  Yea that sounds good, assuming log_manager can be modified in a way that isn\u0027t just IBM specific and doesn\u0027t affect others (though I guess we could use compile flags if we had to)",
+      "parentUuid": "74c32570_b0a82314",
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "16595ad4_0023875a",
         "filename": "extensions/openpower-pels/manager.cpp",
         "patchSetId": 1
