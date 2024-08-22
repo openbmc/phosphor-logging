@@ -296,6 +296,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "74c32570_b0a82314",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-08-22T11:18:21Z",
+      "side": 1,
+      "message": "The `GetAssociatedSubTreePaths` method is intended for handling single associations, so we need to use `GetAssociatedSubTreePathsById`. You can refer to [GetAssociatedSubTreePathsById](https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/ObjectMapper.interface.yaml#L203) for more details. Also, there\u0027s a [backend implementation (under review)](https://gerrit.openbmc.org/c/openbmc/phosphor-objmgr/+/70699), but it\u0027s not functioning as expected for our needs. I have [proposed some changes](https://gerrit.openbmc.org/c/openbmc/phosphor-objmgr/+/70699/8/src/handler.cpp#369) in the backend, which resolve the issue, and it now works as expected.\n\nFor example:\n\n```\nbusctl call -j xyz.openbmc_project.ObjectMapper /xyz/openbmc_project/object_mapper xyz.openbmc_project.ObjectMapper GetAssociatedSubTreePathsById ssassas entry /xyz/openbmc_project 1 xyz.openbmc_project.HardwareIsolation.Entry isolated_hw_errorlog 2 xyz.openbmc_project.Logging.Entry org.open_power.Logging.PEL.Entry\n{\n\t\"type\" : \"as\",\n\t\"data\" : [\n\t\t[\n\t\t\t\"/xyz/openbmc_project/logging/entry/599\",\n\t\t\t\"/xyz/openbmc_project/logging/entry/600\"\n\t\t]\n\t]\n}\n```\n\nWe can define a new callback `ProhibitedErrorLogsToDelete`, which will call the above DBus method to return a list of error log IDs. These IDs can then be used in [this location](https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/73730/1/log_manager.hpp#129) to avoid the erase call. For non-guard-associated error logs, the `GetAssociatedSubTreePaths` method will not be invoked as the Guard flag will remain false.\n\n@Matt Any thoughts?",
+      "parentUuid": "4aed0978_50243c13",
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "16595ad4_0023875a",
         "filename": "extensions/openpower-pels/manager.cpp",
         "patchSetId": 1
