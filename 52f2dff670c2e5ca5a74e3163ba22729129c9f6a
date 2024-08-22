@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "339e2730_a279a017",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 741,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-22T08:58:52Z",
+      "side": 1,
+      "message": "Added when I faced compilation error during dev stage. Also agree your point and verified. Hence removing.",
+      "parentUuid": "c343fb35_4a7bb9d2",
+      "range": {
+        "startLine": 741,
+        "startChar": 71,
+        "endLine": 741,
+        "endChar": 79
+      },
+      "revId": "52f2dff670c2e5ca5a74e3163ba22729129c9f6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "334920e3_50b36081",
@@ -54,6 +78,24 @@
       "writtenOn": "2024-08-21T18:48:12Z",
       "side": 1,
       "message": "PEL debug data will already be printed here: https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/72970/11/extensions/openpower-pels/pel.cpp#197",
+      "revId": "52f2dff670c2e5ca5a74e3163ba22729129c9f6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e3ade2f_a682728d",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 757,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-22T08:58:52Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "334920e3_50b36081",
       "revId": "52f2dff670c2e5ca5a74e3163ba22729129c9f6a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -81,6 +123,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a6f0e1f_2527a0e2",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1073,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-22T08:58:52Z",
+      "side": 1,
+      "message": "Agree. \nSince the value is a byte of integer value, changing to \":#04x\"",
+      "parentUuid": "b6a3557d_35a13150",
+      "range": {
+        "startLine": 1073,
+        "startChar": 33,
+        "endLine": 1073,
+        "endChar": 39
+      },
+      "revId": "52f2dff670c2e5ca5a74e3163ba22729129c9f6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45bc7a0d_d75cfbbf",
@@ -94,6 +160,24 @@
       "writtenOn": "2024-08-21T18:48:12Z",
       "side": 1,
       "message": "looks like these are still tabs",
+      "revId": "52f2dff670c2e5ca5a74e3163ba22729129c9f6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "441f166b_d4dcb698",
+        "filename": "test/openpower-pels/pel_test.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1379,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-22T08:58:52Z",
+      "side": 1,
+      "message": "Acknowledged.\n\nSorry for missing out.",
+      "parentUuid": "45bc7a0d_d75cfbbf",
       "revId": "52f2dff670c2e5ca5a74e3163ba22729129c9f6a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }

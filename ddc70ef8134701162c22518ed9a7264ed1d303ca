@@ -839,6 +839,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "36f60797_6d7b7bbc",
+        "filename": "test/openpower-pels/pel_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 910,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-08-22T08:58:52Z",
+      "side": 1,
+      "message": "Yes . Earlier we had only \u0027SRC\u0027 Key for \u0027PEL Internal Debug Data\u0027. Hence checking the contents of \u0027PEL Internal Debug Data\u0027 will always pass.\n\nBut now we introduced \u0027DIMMs Info Fetch Error\u0027 also . Since PHAL is not enabled, we will be having the error log under \u0027DIMMs Info Fetch Error\u0027. Hence these test cases will fail if checked for \u0027PEL Internal Debug Data\u0027 only",
+      "parentUuid": "1f6dc7be_46d0542a",
+      "revId": "ddc70ef8134701162c22518ed9a7264ed1d303ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "898784d2_d3da20b2",
         "filename": "test/openpower-pels/pel_test.cpp",
         "patchSetId": 4
