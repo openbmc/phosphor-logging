@@ -1002,6 +1002,37 @@ class DataInterface : public DataInterfaceBase
      */
     static std::string addLocationCodePrefix(const std::string& locationCode);
 
+#ifdef PEL_ENABLE_PHAL
+    /**
+     * @brief A helper API to check whether the PHAL device tree is exists,
+     *        ensuring the PHAL init API can be invoked.
+     *
+     * @return true if the PHAL device tree is exists, otherwise false
+     */
+    bool isPHALDevTreeExist() const;
+
+    /**
+     * @brief A helper API to init PHAL libraries
+     *
+     * @return None
+     */
+    void initPHAL();
+
+    /**
+     * @brief A helper API to subscribe to systemd signals
+     *
+     * @return None
+     */
+    void subscribeToSystemdSignals();
+
+    /**
+     * @brief A helper API to unsubscribe to systemd signals
+     *
+     * @return None
+     */
+    void unsubscribeFromSystemdSignals();
+#endif // PEL_ENABLE_PHAL
+
     /**
      * @brief The D-Bus property or interface watchers that have callbacks
      *        registered that will set members in this class when
@@ -1023,6 +1054,19 @@ class DataInterface : public DataInterfaceBase
      * @brief The sdbusplus bus object for making D-Bus calls.
      */
     sdbusplus::bus_t& _bus;
+
+#ifdef PEL_ENABLE_PHAL
+    /**
+     * @brief Watcher to check "openpower-update-bios-attr-table" service
+     *        is "done" to init PHAL libraires
+     */
+    std::unique_ptr<sdbusplus::bus::match_t> _systemdMatch;
+#endif // PEL_ENABLE_PHAL
+
+    /**
+     * @brief A slot object for async dbus call
+     */
+    sdbusplus::slot_t _systemdSlot;
 };
 
 } // namespace pels
