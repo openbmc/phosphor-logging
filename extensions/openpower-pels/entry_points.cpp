@@ -25,11 +25,6 @@
 
 #include <format>
 
-#ifdef PEL_ENABLE_PHAL
-#include "libekb.H"
-#include "libpdbg.h"
-#endif
-
 namespace openpower
 {
 namespace pels
@@ -63,33 +58,6 @@ void pelStartup(internal::Manager& logManager)
 #else
     manager = std::make_unique<Manager>(logManager, std::move(dataIface),
                                         std::move(logger), std::move(journal));
-#endif
-
-#ifdef PEL_ENABLE_PHAL
-    // PDBG_DTB environment variable set to CEC device tree path
-    static constexpr auto PDBG_DTB_PATH =
-        "/var/lib/phosphor-software-manager/pnor/rw/DEVTREE";
-
-    if (setenv("PDBG_DTB", PDBG_DTB_PATH, 1))
-    {
-        // Log message and continue,
-        // This is to help continue creating PEL in raw format.
-        lg2::error("Failed to set PDBG_DTB: ({ERRNO})", "ERRNO",
-                   strerror(errno));
-    }
-
-    if (!pdbg_targets_init(NULL))
-    {
-        lg2::error("pdbg_targets_init failed");
-        return;
-    }
-
-    if (libekb_init())
-    {
-        lg2::error("libekb_init failed, skipping ffdc processing");
-        return;
-    }
-
 #endif
 }
 
