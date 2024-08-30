@@ -22,7 +22,11 @@
 #include <xyz/openbmc_project/State/BMC/server.hpp>
 #include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
 
+#include <filesystem>
+
 #ifdef PEL_ENABLE_PHAL
+#include <libekb.H>
+#include <libpdbg.h>
 #include <libphal.H>
 #endif
 
@@ -47,6 +51,7 @@ constexpr auto bootRawProgress = "xyz.openbmc_project.State.Boot.Raw";
 constexpr auto pldm = "xyz.openbmc_project.PLDM";
 constexpr auto inventoryManager = "xyz.openbmc_project.Inventory.Manager";
 constexpr auto entityManager = "xyz.openbmc_project.EntityManager";
+constexpr auto systemd = "org.freedesktop.systemd1";
 } // namespace service_name
 
 namespace object_path
@@ -66,6 +71,7 @@ constexpr auto logSetting = "/xyz/openbmc_project/logging/settings";
 constexpr auto hwIsolation = "/xyz/openbmc_project/hardware_isolation";
 constexpr auto biosConfigMgr = "/xyz/openbmc_project/bios_config/manager";
 constexpr auto bootRawProgress = "/xyz/openbmc_project/state/boot/raw0";
+constexpr auto systemd = "/org/freedesktop/systemd1";
 } // namespace object_path
 
 namespace interface
@@ -101,6 +107,7 @@ constexpr auto invFan = "xyz.openbmc_project.Inventory.Item.Fan";
 constexpr auto invPowerSupply =
     "xyz.openbmc_project.Inventory.Item.PowerSupply";
 constexpr auto inventoryManager = "xyz.openbmc_project.Inventory.Manager";
+constexpr auto systemdMgr = "org.freedesktop.systemd1.Manager";
 } // namespace interface
 
 using namespace sdbusplus::server::xyz::openbmc_project::state::boot;
@@ -109,6 +116,8 @@ namespace match_rules = sdbusplus::bus::match::rules;
 
 const DBusInterfaceList hotplugInterfaces{interface::invFan,
                                           interface::invPowerSupply};
+static constexpr auto PDBG_DTB_PATH =
+    "/var/lib/phosphor-software-manager/hostfw/running/DEVTREE";
 
 std::pair<std::string, std::string>
     DataInterfaceBase::extractConnectorFromLocCode(
@@ -222,6 +231,41 @@ DataInterface::DataInterface(sdbusplus::bus_t& bus) : _bus(bus)
                 }
             }
         }));
+
+#ifdef PEL_ENABLE_PHAL
+    if (isPHALDevTreeExist())
+    {
+        initPHAL();
+    }
+    else
+    {
+        // Watch the "openpower-update-bios-attr-table" service to init
+        // PHAL libraires
+        subscribeToSystemdSignals();
+
+        namespace sdbusRule = sdbusplus::bus::match::rules;
+        _systemdMatch = std::make_unique<decltype(_systemdMatch)::element_type>(
+            bus,
+            sdbusRule::type::signal() + sdbusRule::member("JobRemoved") +
+                sdbusRule::path(object_path::systemd) +
+                sdbusRule::interface(interface::systemdMgr),
+            [this](sdbusplus::message_t& msg) {
+                uint32_t jobID;
+                sdbusplus::message::object_path jobObjPath;
+                std::string jobUnitName, jobUnitResult;
+
+                msg.read(jobID, jobObjPath, jobUnitName, jobUnitResult);
+                if (jobUnitName == "openpower-update-bios-attr-table.service")
+                {
+                    if (jobUnitResult == "done")
+                    {
+                        this->unsubscribeToSystemdSignals();
+                        this->initPHAL();
+                    }
+                }
+            });
+    }
+#endif // PEL_ENABLE_PHAL
 }
 
 DBusPropertyMap DataInterface::getAllProperties(
@@ -1111,5 +1155,99 @@ void DataInterface::notifyPresenceSubsribers(const std::string& path,
     // Tell the subscribers.
     setFruPresent(locCode);
 }
+
+#ifdef PEL_ENABLE_PHAL
+bool DataInterface::isPHALDevTreeExist() const
+{
+    try
+    {
+        if (std::filesystem::exists(PDBG_DTB_PATH))
+        {
+            return true;
+        }
+    }
+    catch (const std::exception& e)
+    {
+        lg2::error("Failed to check device tree {PHAL_DEVTREE_PATH} existence, "
+                   "{ERROR}",
+                   "PHAL_DEVTREE_PATH", PDBG_DTB_PATH, "ERROR", e);
+    }
+    return false;
+}
+
+void DataInterface::initPHAL()
+{
+    if (setenv("PDBG_DTB", PDBG_DTB_PATH, 1))
+    {
+        // Log message and continue,
+        // This is to help continue creating PEL in raw format.
+        lg2::error("Failed to set PDBG_DTB: ({ERRNO})", "ERRNO",
+                   strerror(errno));
+    }
+
+    if (!pdbg_targets_init(NULL))
+    {
+        lg2::error("pdbg_targets_init failed");
+        return;
+    }
+
+    if (libekb_init())
+    {
+        lg2::error("libekb_init failed, skipping ffdc processing");
+        return;
+    }
+}
+
+void DataInterface::subscribeToSystemdSignals()
+{
+    try
+    {
+        auto method =
+            _bus.new_method_call(service_name::systemd, object_path::systemd,
+                                 interface::systemdMgr, "Subscribe");
+        // On OpenBMC based systems, systemd has had a few situations where it
+        // has been unable to respond to this call within the default d-bus
+        // timeout of 25 seconds. This is due to the large amount of work being
+        // done by systemd during OpenBMC startup. Set the timeout for this call
+        // to 60 seconds (worst case seen was around 30s so double it).
+        _bus.call(method, 60000000);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        lg2::error("Failed to call Subscribe for systemd signal, "
+                   "serviceName: {SERVICE_NAME}, objPath: {OBJ_PATH}, "
+                   "interface: {INTERFACE} exception: {ERROR}",
+                   "SERVICE_NAME", service_name::systemd, "OBJ_PATH",
+                   object_path::systemd, "INTERFACE", interface::systemdMgr,
+                   "ERROR", e);
+    }
+}
+
+void DataInterface::unsubscribeToSystemdSignals()
+{
+    try
+    {
+        auto method =
+            _bus.new_method_call(service_name::systemd, object_path::systemd,
+                                 interface::systemdMgr, "Unsubscribe");
+        // On OpenBMC based systems, systemd has had a few situations where it
+        // has been unable to respond to this call within the default d-bus
+        // timeout of 25 seconds. This is due to the large amount of work being
+        // done by systemd during OpenBMC startup. Set the timeout for this call
+        // to 60 seconds (worst case seen was around 30s so double it).
+        _bus.call(method, 60000000);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        lg2::error("Failed to call Unsubscribe for systemd signal, "
+                   "serviceName: {SERVICE_NAME}, objPath: {OBJ_PATH}, "
+                   "interface: {INTERFACE} exception: {ERROR}",
+                   "SERVICE_NAME", service_name::systemd, "OBJ_PATH",
+                   object_path::systemd, "INTERFACE", interface::systemdMgr,
+                   "ERROR", e);
+    }
+}
+#endif // PEL_ENABLE_PHAL
+
 } // namespace pels
 } // namespace openpower
