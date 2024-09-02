@@ -513,7 +513,7 @@ class DataInterfaceBase
      *              - false, if the given locCode is not a DIMM
      *       - Returns an error message in string format if an error occurs.
      */
-    std::expected<bool, std::string> isDIMM(const std::string& locCode);
+    bool isDIMM(const std::string& locCode);
 
     /**
      * @brief Check whether the given location code present in the cache
