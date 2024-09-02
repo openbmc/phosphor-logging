@@ -1397,7 +1397,7 @@ TEST_F(PELTest, TestDimmsCalloutInfo)
 }
 
 // When PEL has FRU callouts but PHAL is not enabled.
-TEST_F(PELTest, TestDimmsCalloutInfoWithNoPHAL)
+TEST_F(PELTest, TestNoDimmsCallout)
 {
     message::Entry entry;
     uint64_t timestamp = 5;
@@ -1412,40 +1412,29 @@ TEST_F(PELTest, TestDimmsCalloutInfoWithNoPHAL)
                 "CalloutList": [
                     {
                         "Priority": "high",
-                        "LocCode": "P0-DIMM0"
-                    },
-                    {
-                        "Priority": "low",
-                        "LocCode": "P0-DIMM1"
+                        "LocCode": "P0-PROC0"
                     }
                 ]
             }
         ]
         )"_json;
 
-    EXPECT_CALL(dataIface, expandLocationCode("P0-DIMM0", 0))
-        .WillOnce(Return("U98D-P0-DIMM0"));
-    EXPECT_CALL(dataIface, expandLocationCode("P0-DIMM1", 0))
-        .WillOnce(Return("U98D-P0-DIMM1"));
+    EXPECT_CALL(dataIface, expandLocationCode("P0-PROC0", 0))
+        .WillOnce(Return("U98D-P0-PROC0"));
 
-    EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-DIMM0", 0, false))
+    EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-PROC0", 0, false))
         .WillOnce(Return(std::vector<std::string>{
-            "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm0"}));
-    EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-DIMM1", 0, false))
-        .WillOnce(Return(std::vector<std::string>{
-            "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm1"}));
+            "/xyz/openbmc_project/inventory/system/chassis/motherboard/dcm0/cpu0"}));
+
+    // Add some location code in expanded format to DIMM cache memory
+    dataIface.addDIMMLocCode("U98D-P0-PROC0", false);
 
     PEL pel{entry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
             ad,    ffdc, dataIface, journal};
 
     nlohmann::json dimmInfoJson = getDIMMInfo(pel);
 
-    nlohmann::json expected_data = R"(
-        [
-            "PHAL feature is not enabled, so the LocationCode:[U98D-P0-DIMM0] cannot be determined as DIMM",
-            "PHAL feature is not enabled, so the LocationCode:[U98D-P0-DIMM1] cannot be determined as DIMM"
-        ]
-    )"_json;
+    nlohmann::json expected_data{};
 
     EXPECT_EQ(expected_data, dimmInfoJson);
 }

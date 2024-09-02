@@ -747,14 +747,7 @@ void PEL::addAdDetailsForDIMMsCallout(
         }
         else
         {
-            auto isDIMMLocCode =
-                const_cast<DataInterfaceBase&>(dataIface).isDIMM(locCode);
-            if (isDIMMLocCode.has_value())
-            {
-                return isDIMMLocCode.value();
-            }
-            debugData[AdDIMMInfoFetchError].emplace_back(isDIMMLocCode.error());
-            return false;
+            return const_cast<DataInterfaceBase&>(dataIface).isDIMM(locCode);
         }
     };
     auto addAdDIMMDetails = [&dataIface, &adSysInfoData,

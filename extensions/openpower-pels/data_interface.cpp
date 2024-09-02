@@ -956,8 +956,7 @@ void DataInterfaceBase::addDIMMLocCode(const std::string& locCode,
     _locationCache.insert({locCode, isFRUDIMM});
 }
 
-std::expected<bool, std::string>
-    DataInterfaceBase::isDIMM(const std::string& locCode)
+bool DataInterfaceBase::isDIMM(const std::string& locCode)
 {
     auto isDIMMType = isDIMMLocCode(locCode);
     if (isDIMMType.has_value())
@@ -965,45 +964,22 @@ std::expected<bool, std::string>
         return isDIMMType.value();
     }
 #ifndef PEL_ENABLE_PHAL
-    return std::unexpected<std::string>(
-        std::format("PHAL feature is not enabled, so the LocationCode:[{}] "
-                    "cannot be determined as DIMM",
-                    locCode));
+    return false;
 #else
     else
     {
         // Invoke pHAL API inorder to fetch the FRU Type
         auto fruType = openpower::phal::pdbg::getFRUType(locCode);
+        bool isDIMMFRU{false};
         if (fruType.has_value())
         {
-            bool isDIMMFRU{false};
             if (fruType.value() == ENUM_ATTR_TYPE_DIMM)
             {
                 isDIMMFRU = true;
             }
             addDIMMLocCode(locCode, isDIMMFRU);
-            return isDIMMFRU;
         }
-        else
-        {
-            std::string msg{std::format("Failed to determine the HW Type, "
-                                        "LocationCode:[{}]",
-                                        locCode)};
-            if (openpower::phal::exception::errMsgMap.contains(fruType.error()))
-            {
-                msg = std::format(
-                    "{} PHALErrorMsg:[{}]", msg,
-                    openpower::phal::exception::errMsgMap.at(fruType.error()));
-            }
-            else
-            {
-                msg = std::format(
-                    "{} PHALErrorMsg:[Unknown PHALErrorCode:{}]", msg,
-                    std::to_underlying<openpower::phal::exception::ERR_TYPE>(
-                        fruType.error()));
-            }
-            return std::unexpected<std::string>(msg);
-        }
+        return isDIMMFRU;
     }
 #endif
 }
