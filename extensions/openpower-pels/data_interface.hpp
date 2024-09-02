@@ -507,13 +507,11 @@ class DataInterfaceBase
      *
      * @param[in] locCode - The location code of the FRU
      *
-     * @return std::expected<bool, std::string>
-     *       - Returns bool value if FRU type is able to determine successfully.
-     *              - true , if the given locCode is DIMM
-     *              - false, if the given locCode is not a DIMM
-     *       - Returns an error message in string format if an error occurs.
+     * @return - true, if the given location code is DIMM
+     *         - false, if the given location code is not DIMM or if it fails to
+     *         determine the FRU type.
      */
-    std::expected<bool, std::string> isDIMM(const std::string& locCode);
+    bool isDIMM(const std::string& locCode);
 
     /**
      * @brief Check whether the given location code present in the cache
