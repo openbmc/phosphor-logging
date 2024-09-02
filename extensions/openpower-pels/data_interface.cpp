@@ -951,9 +951,9 @@ std::expected<bool, std::string>
     {
         // Invoke pHAL API inorder to fetch the FRU Type
         auto fruType = openpower::phal::pdbg::getFRUType(locCode);
+        bool isDIMMFRU{false};
         if (fruType.has_value())
         {
-            bool isDIMMFRU{false};
             if (fruType.value() == ENUM_ATTR_TYPE_DIMM)
             {
                 isDIMMFRU = true;
@@ -961,26 +961,7 @@ std::expected<bool, std::string>
             addDIMMLocCode(locCode, isDIMMFRU);
             return isDIMMFRU;
         }
-        else
-        {
-            std::string msg{std::format("Failed to determine the HW Type, "
-                                        "LocationCode:[{}]",
-                                        locCode)};
-            if (openpower::phal::exception::errMsgMap.contains(fruType.error()))
-            {
-                msg = std::format(
-                    "{} PHALErrorMsg:[{}]", msg,
-                    openpower::phal::exception::errMsgMap.at(fruType.error()));
-            }
-            else
-            {
-                msg = std::format(
-                    "{} PHALErrorMsg:[Unknown PHALErrorCode:{}]", msg,
-                    std::to_underlying<openpower::phal::exception::ERR_TYPE>(
-                        fruType.error()));
-            }
-            return std::unexpected<std::string>(msg);
-        }
+        return isDIMMFRU;
     }
 #endif
 }
