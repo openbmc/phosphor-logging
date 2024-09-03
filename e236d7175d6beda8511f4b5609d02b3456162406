@@ -172,6 +172,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7cbbe3bf_71ce551d",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1215,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-09-03T12:40:11Z",
+      "side": 1,
+      "message": "We have a 5 or 6 apps that do this (subscribe to all JobRemoved signals) so I wouldn\u0027t worry about it. I do think it\u0027s a good idea to just unsubscribe though once you find it. I see the discussion below but that doesn\u0027t sound like something we were supporting before so I wouldn\u0027t worry about it.",
+      "parentUuid": "9cabb47f_3de8336b",
+      "revId": "e236d7175d6beda8511f4b5609d02b3456162406",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "184ffe4a_171d06e6",
         "filename": "extensions/openpower-pels/data_interface.cpp",
         "patchSetId": 3
