@@ -7,9 +7,9 @@ subdir('include/phosphor-logging')
 threads_dep = dependency('threads')
 
 phosphor_logging_deps = [
+    libsystemd_dep,
     pdi_dep,
     sdbusplus_dep,
-    systemd_dep,
     threads_dep
 ]
 
