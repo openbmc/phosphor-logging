@@ -37,6 +37,16 @@ void deleteProhibited2(uint32_t /*id*/, bool& prohibited)
     prohibited = true;
 }
 
+void logIDWithHwIsolation1(std::vector<uint32_t>& logIDs)
+{
+    logIDs.push_back(1);
+}
+
+void logIDWithHwIsolation2(std::vector<uint32_t>& logIDs)
+{
+    logIDs.push_back(2);
+}
+
 DISABLE_LOG_ENTRY_CAPS()
 REGISTER_EXTENSION_FUNCTION(startup1)
 REGISTER_EXTENSION_FUNCTION(startup2)
@@ -44,6 +54,8 @@ REGISTER_EXTENSION_FUNCTION(create1)
 REGISTER_EXTENSION_FUNCTION(create2)
 REGISTER_EXTENSION_FUNCTION(deleteProhibited1)
 REGISTER_EXTENSION_FUNCTION(deleteProhibited2)
+REGISTER_EXTENSION_FUNCTION(logIDWithHwIsolation1)
+REGISTER_EXTENSION_FUNCTION(logIDWithHwIsolation2)
 REGISTER_EXTENSION_FUNCTION(deleteLog1)
 REGISTER_EXTENSION_FUNCTION(deleteLog2)
 
@@ -80,6 +92,25 @@ TEST(ExtensionsTest, FunctionCallTest)
         bool prohibited = false;
         p(5, prohibited);
         EXPECT_TRUE(prohibited);
+    }
+
+    EXPECT_EQ(Extensions::getLogIDWithHwIsolationFunctions().size(), 2);
+    std::vector<uint32_t> ids;
+    for (size_t i = 0; i < 2; ++i)
+    {
+        auto getLogIDWithHwIsolation =
+            Extensions::getLogIDWithHwIsolationFunctions()[i];
+        getLogIDWithHwIsolation(ids);
+        if (i == 0)
+        {
+            EXPECT_EQ(ids.size(), 1);
+            EXPECT_EQ(ids[0], 1);
+        }
+        if (i == 1)
+        {
+            EXPECT_EQ(ids.size(), 2);
+            EXPECT_EQ(ids[1], 2);
+        }
     }
 
     EXPECT_TRUE(Extensions::disableDefaultLogCaps());
