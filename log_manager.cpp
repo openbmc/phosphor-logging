@@ -487,6 +487,69 @@ void Manager::checkAndRemoveBlockingError(uint32_t entryId)
     return;
 }
 
+size_t Manager::eraseAll()
+{
+    std::vector<uint32_t> logIDWithHwIsolation;
+    for (auto& func : Extensions::getLogIDWithHwIsolationFunctions())
+    {
+        try
+        {
+            func(logIDWithHwIsolation);
+        }
+        catch (const std::exception& e)
+        {
+            lg2::error("An extension's LogIDWithHwIsolation function threw an "
+                       "exception: {ERROR}",
+                       "ERROR", e);
+        }
+    }
+    size_t entriesSize = entries.size();
+    auto iter = entries.begin();
+    if(logIDWithHwIsolation.empty())
+    {
+        while (iter != entries.end())
+        {
+            auto e = iter->first;
+            ++iter;
+            erase(e);
+        }
+        entryId = 0;
+    }
+    else
+    {
+        while (iter != entries.end())
+        {
+            auto e = iter->first;
+            ++iter;
+            try
+            {
+                if (!std::ranges::contains(logIDWithHwIsolation, e))
+                    erase(e);
+                else
+                    entriesSize--;
+            }
+            catch (
+                const sdbusplus::xyz::openbmc_project::Common::Error::Unavailable& e)
+            {
+                entriesSize--;
+            }
+        }
+        if (!entries.empty())
+        {
+            auto maxEntryId =
+                std::ranges::max_element(entries, [](const auto& a, const auto& b) {
+                    return a.first < b.first;
+                })->first;
+            entryId = maxEntryId;
+        }
+        else
+        {
+            entryId = 0;
+        }
+    }
+    return entriesSize;
+}
+
 void Manager::erase(uint32_t entryId)
 {
     auto entryFound = entries.find(entryId);
@@ -500,9 +563,14 @@ void Manager::erase(uint32_t entryId)
                 func(entryId, prohibited);
                 if (prohibited)
                 {
-                    // Future work remains to throw an error here.
-                    return;
+                    throw sdbusplus::xyz::openbmc_project::Common::Error::
+                        Unavailable();
                 }
+            }
+            catch (const sdbusplus::xyz::openbmc_project::Common::Error::
+                       Unavailable& e)
+            {
+                throw;
             }
             catch (const std::exception& e)
             {
