@@ -539,6 +539,23 @@ class DataInterfaceBase
      */
     void addDIMMLocCode(const std::string& locCode, bool isFRUDIMM);
 
+    /**
+     * @brief Finds all D-Bus Associated paths that contain any of the
+     *        interfaces passed in, by using GetAssociatedSubTreePaths.
+     *
+     * @param[in] associatedPath - The D-Bus object path
+     * @param[in] subtree - The subtree path for which the result should be
+     *                      fetched
+     * @param[in] depth - The maximum subtree depth for which results should be
+     *                    fetched
+     * @param[in] interfaces - The desired interfaces
+     *
+     * @return The D-Bus paths.
+     */
+    virtual DBusPathList getAssociatedPaths(
+        const DBusPath& associatedPath, const DBusPath& subtree, int32_t depth,
+        const DBusInterfaceList& interfaces) const = 0;
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
@@ -908,6 +925,23 @@ class DataInterface : public DataInterfaceBase
      */
     std::optional<std::vector<uint8_t>>
         getDIProperty(const std::string& locationCode) const override;
+
+    /**
+     * @brief Finds all D-Bus Associated paths that contain any of the
+     *        interfaces passed in, by using GetAssociatedSubTreePaths.
+     *
+     * @param[in] associatedPath - The D-Bus object path
+     * @param[in] subtree - The subtree path for which the result should be
+     *                      fetched
+     * @param[in] depth - The maximum subtree depth for which results should be
+     *                    fetched
+     * @param[in] interfaces - The desired interfaces
+     *
+     * @return The D-Bus paths.
+     */
+    DBusPathList getAssociatedPaths(
+        const DBusPath& associatedPath, const DBusPath& subtree, int32_t depth,
+        const DBusInterfaceList& interfaces) const override;
 
   private:
     /**

@@ -29,6 +29,12 @@ DeleteProhibitedFunctions& Extensions::getDeleteProhibitedFunctions()
     return deleteProhibitedFunctions;
 }
 
+LogIDsWithHwIsolationFunctions& Extensions::getLogIDWithHwIsolationFunctions()
+{
+    static LogIDsWithHwIsolationFunctions logIDWithHwIsolationFunctions{};
+    return logIDWithHwIsolationFunctions;
+}
+
 Extensions::DefaultErrorCaps& Extensions::getDefaultErrorCaps()
 {
     static DefaultErrorCaps defaultErrorCaps = DefaultErrorCaps::enable;

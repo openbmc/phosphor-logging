@@ -125,6 +125,14 @@ class Manager : public PELInterface
      */
     void erase(uint32_t obmcLogID);
 
+    /**
+     * @brief Get the list of event log ids that have an associated
+     *        hardware isolation entry.
+     *
+     * @param[in] idsWithHwIsoEntry - List to store the list of log ids
+     */
+    void logIDWithHwIsolation(std::vector<uint32_t>& idsWithHwIsoEntry);
+
     /** @brief Says if an OpenBMC event log may not be manually deleted at this
      *         time because its corresponding PEL cannot be.
      *
