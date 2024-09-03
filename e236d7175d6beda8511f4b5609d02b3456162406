@@ -35,6 +35,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e80d2aa_81f8e736",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-09-03T07:58:51Z",
+      "side": 1,
+      "message": "I missed one thing to check...",
+      "revId": "e236d7175d6beda8511f4b5609d02b3456162406",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c6c65ac3_742c73e2",
@@ -71,6 +88,41 @@
       "writtenOn": "2024-09-03T07:43:12Z",
       "side": 1,
       "message": "I think we\u0027ll receive a lot of systemd job removed signals, but it shouldn’t have a significant impact.",
+      "revId": "e236d7175d6beda8511f4b5609d02b3456162406",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cabb47f_3de8336b",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1215,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-09-03T07:58:51Z",
+      "side": 1,
+      "message": "@Andrew, do you have any thoughts on this?",
+      "parentUuid": "9aee3d22_eb8a6404",
+      "revId": "e236d7175d6beda8511f4b5609d02b3456162406",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "184ffe4a_171d06e6",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1219,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-09-03T07:58:51Z",
+      "side": 1,
+      "message": "I’m wondering if we need to continue monitoring the openpower-update-bios-attr-table.service. Does it provide any benefits?\n\nSince it\u0027s a one-shot service, it might help to reinitialize the PHAL device tree if the openpower-update-bios-attr-table.service restarts for any reason. However, to dynamically reinitialize the PHAL device tree, we should use pdbg_release_dt_root.\n\nCould we consider resetting this-\u003e_systemdMatch? Also, I don\u0027t think we\u0027ll receive any systemd signals since we\u0027re unsubscribing in the below.\n\n@Adriana, do you have any thoughts on this?",
       "revId": "e236d7175d6beda8511f4b5609d02b3456162406",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
