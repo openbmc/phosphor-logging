@@ -50,6 +50,16 @@ using DeleteFunction = std::function<void(uint32_t)>;
  */
 using DeleteProhibitedFunction = std::function<void(uint32_t, bool&)>;
 
+/**
+ * @brief The function type that will return list of Hw Isolated
+ *        log IDs
+ * @param[out] std::vector<uint32_t>& - Hw Isolated log IDs
+ */
+using LogIDWithHwIsolationFunction =
+    std::function<void(std::vector<uint32_t>&)>;
+using LogIDsWithHwIsolationFunctions =
+    std::vector<LogIDWithHwIsolationFunction>;
+
 using StartupFunctions = std::vector<StartupFunction>;
 using CreateFunctions = std::vector<CreateFunction>;
 using DeleteFunctions = std::vector<DeleteFunction>;
@@ -159,6 +169,19 @@ class Extensions
     }
 
     /**
+     * @brief Constructor to register a LogID with HwIsolation function
+     *
+     * Functions registered with this contructor will be called
+     * before phosphor-log-manager deletes all event log.
+     *
+     * @param[in] func - The function to register
+     */
+    explicit Extensions(LogIDWithHwIsolationFunction func)
+    {
+        getLogIDWithHwIsolationFunctions().push_back(func);
+    }
+
+    /**
      * @brief Constructor to disable event log capping
      *
      * This constructor should only be called by the
@@ -195,6 +218,13 @@ class Extensions
      * @return DeleteProhibitedFunctions - the DeleteProhibited functions
      */
     static DeleteProhibitedFunctions& getDeleteProhibitedFunctions();
+
+    /**
+     * @brief Returns the LogIDWithHwIsolationFunction functions
+     * @return LogIDsWithHwIsolationFunctions - the LogIDWithHwIsolationFunction
+     * functions
+     */
+    static LogIDsWithHwIsolationFunctions& getLogIDWithHwIsolationFunctions();
 
     /**
      * @brief Returns the DefaultErrorCaps value

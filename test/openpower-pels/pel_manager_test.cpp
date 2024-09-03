@@ -31,6 +31,7 @@ namespace fs = std::filesystem;
 
 using ::testing::NiceMock;
 using ::testing::Return;
+using json = nlohmann::json;
 
 class TestLogger
 {
@@ -1234,4 +1235,233 @@ TEST_F(ManagerTest, TestFruPlug)
     checkDeconfigured(true);
     mockIface->fruPresent("U1234-A4");
     checkDeconfigured(true);
+}
+
+int createHWIsolatedCalloutFile()
+{
+    json jsonCalloutDataList;
+    jsonCalloutDataList = json::array();
+    json jsonProcCallout;
+
+    jsonProcCallout["LocationCode"] = "Ufcs-P0-C12";
+    jsonProcCallout["EntityPath"] = {35, 1, 0, 2, 0, 3, 0, 0, 0, 0, 0,
+                                     0,  0, 0, 0, 0, 0, 0, 0, 0, 0};
+    jsonProcCallout["GuardType"] = "GARD_Predictive";
+    jsonProcCallout["Deconfigured"] = false;
+    jsonProcCallout["Guarded"] = true;
+    jsonProcCallout["Priority"] = "M";
+    jsonCalloutDataList.emplace_back(std::move(jsonProcCallout));
+
+    std::string calloutData(jsonCalloutDataList.dump());
+    std::string calloutFile("/tmp/phalPELCalloutsJson.XXXXXX");
+    int fileFD = -1;
+
+    fileFD = mkostemp(const_cast<char*>(calloutFile.c_str()), O_RDWR);
+    if (fileFD == -1)
+    {
+        perror("Failed to create PELCallouts file");
+        return -1;
+    }
+
+    ssize_t rc = write(fileFD, calloutData.c_str(), calloutData.size());
+    if (rc == -1)
+    {
+        perror("Failed to write PELCallouts file");
+        close(fileFD);
+        return -1;
+    }
+
+    // Ensure we seek to the beginning of the file
+    rc = lseek(fileFD, 0, SEEK_SET);
+    if (rc == -1)
+    {
+        perror("Failed to set SEEK_SET for PELCallouts file");
+        close(fileFD);
+        return -1;
+    }
+    return fileFD;
+}
+
+phosphor::logging::FFDCEntries
+    createFFDCEntries(int fd, uint8_t subType, uint8_t version)
+{
+    phosphor::logging::FFDCEntry ffdcEntry =
+        std::make_tuple(sdbusplus::xyz::openbmc_project::Logging::server::
+                            Create::FFDCFormat::JSON,
+                        subType, version, fd);
+    phosphor::logging::FFDCEntries ffdcEntries;
+    ffdcEntries.push_back(ffdcEntry);
+    return ffdcEntries;
+}
+
+TEST_F(ManagerTest, TestPELDeleteWithHWIsolation)
+{
+    const auto registry = R"(
+    {
+        "PELs":
+        [{
+            "Name": "xyz.openbmc_project.Error.Test",
+            "Subsystem": "power_supply",
+            "Severity": "critical_system_term",
+            "SRC":
+            {
+                "ReasonCode": "0x2030",
+                "Guarded": true
+            },
+
+            "Documentation": {
+                "Description": "A PGOOD Fault",
+                "Message": "PS had a PGOOD Fault"
+            }
+        }]
+    }
+    )";
+
+    auto path = getPELReadOnlyDataPath();
+    fs::create_directories(path);
+    path /= "message_registry.json";
+
+    std::ofstream registryFile{path};
+    registryFile << registry;
+    registryFile.close();
+
+    std::unique_ptr<DataInterfaceBase> dataIface =
+        std::make_unique<MockDataInterface>();
+
+    MockDataInterface* mockIface =
+        reinterpret_cast<MockDataInterface*>(dataIface.get());
+
+    EXPECT_CALL(*mockIface, getInventoryFromLocCode("Ufcs-P0-C12", 0, false))
+        .WillOnce(
+            Return(std::vector<std::string>{"/system/chassis/processor"}));
+
+    EXPECT_CALL(
+        *mockIface,
+        getAssociatedPaths(
+            ::testing::StrEq(
+                "/xyz/openbmc_project/logging/entry/42/isolated_hw_entry"),
+            ::testing::StrEq("/"), 0,
+            ::testing::ElementsAre(
+                "xyz.openbmc_project.HardwareIsolation.Entry")))
+        .WillRepeatedly(Return(std::vector<std::string>{
+            "/xyz/openbmc_project/hardware_isolation/entry/1"}));
+
+    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+    openpower::pels::Manager manager{
+        logManager, std::move(dataIface),
+        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
+                  std::placeholders::_2, std::placeholders::_3),
+        std::move(journal)};
+    std::vector<std::string> additionalData;
+    std::vector<std::string> associations;
+
+    EXPECT_FALSE(manager.isDeleteProhibited(42));
+
+    manager.create("xyz.openbmc_project.Error.Test", 42, 0,
+                   phosphor::logging::Entry::Level::Error, additionalData,
+                   associations);
+    auto pelFile = findAnyPELInRepo();
+    auto data = readPELFile(*pelFile);
+    PEL pel_unguarded(*data);
+    EXPECT_FALSE(pel_unguarded.getGuardFlag());
+    EXPECT_FALSE(manager.isDeleteProhibited(42));
+    manager.erase(42);
+    EXPECT_FALSE(findAnyPELInRepo());
+
+    int fd = createHWIsolatedCalloutFile();
+    uint8_t subType = 0xCA;
+    uint8_t version = 0x01;
+    phosphor::logging::FFDCEntries ffdcEntries =
+        createFFDCEntries(fd, subType, version);
+    manager.create("xyz.openbmc_project.Error.Test", 42, 0,
+                   phosphor::logging::Entry::Level::Error, additionalData,
+                   associations, ffdcEntries);
+
+    pelFile = findAnyPELInRepo();
+    EXPECT_TRUE(pelFile);
+    data = readPELFile(*pelFile);
+    PEL pel(*data);
+    EXPECT_TRUE(pel.valid());
+
+    EXPECT_TRUE(pel.getGuardFlag());
+    EXPECT_TRUE(manager.isDeleteProhibited(42));
+    manager.erase(42);
+}
+
+TEST_F(ManagerTest, TestPELDeleteWithoutHWIsolation)
+{
+    const auto registry = R"(
+    {
+        "PELs":
+        [{
+            "Name": "xyz.openbmc_project.Error.Test",
+            "Subsystem": "power_supply",
+            "Severity": "critical_system_term",
+            "SRC":
+            {
+                "ReasonCode": "0x2030",
+                "Guarded": true
+            },
+
+            "Documentation": {
+                "Description": "A PGOOD Fault",
+                "Message": "PS had a PGOOD Fault"
+            }
+        }]
+    }
+    )";
+
+    auto path = getPELReadOnlyDataPath();
+    fs::create_directories(path);
+    path /= "message_registry.json";
+
+    std::ofstream registryFile{path};
+    registryFile << registry;
+    registryFile.close();
+
+    std::unique_ptr<DataInterfaceBase> dataIface =
+        std::make_unique<MockDataInterface>();
+
+    MockDataInterface* mockIface =
+        reinterpret_cast<MockDataInterface*>(dataIface.get());
+
+    EXPECT_CALL(*mockIface, getInventoryFromLocCode("Ufcs-P0-C12", 0, false))
+        .WillOnce(
+            Return(std::vector<std::string>{"/system/chassis/processor"}));
+
+    EXPECT_CALL(
+        *mockIface,
+        getAssociatedPaths(
+            ::testing::StrEq(
+                "/xyz/openbmc_project/logging/entry/42/isolated_hw_entry"),
+            ::testing::StrEq("/"), 0,
+            ::testing::ElementsAre(
+                "xyz.openbmc_project.HardwareIsolation.Entry")))
+        .WillRepeatedly(Return(std::vector<std::string>{}));
+
+    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+    openpower::pels::Manager manager{
+        logManager, std::move(dataIface),
+        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
+                  std::placeholders::_2, std::placeholders::_3),
+        std::move(journal)};
+    std::vector<std::string> additionalData;
+    std::vector<std::string> associations;
+
+    int fd = createHWIsolatedCalloutFile();
+    uint8_t subType = 0xCA;
+    uint8_t version = 0x01;
+    phosphor::logging::FFDCEntries ffdcEntries =
+        createFFDCEntries(fd, subType, version);
+    manager.create("xyz.openbmc_project.Error.Test", 42, 0,
+                   phosphor::logging::Entry::Level::Error, additionalData,
+                   associations, ffdcEntries);
+
+    auto pelPathInRepo = findAnyPELInRepo();
+    auto unguardedData = readPELFile(*pelPathInRepo);
+    PEL pel_unguarded(*unguardedData);
+
+    EXPECT_TRUE(pel_unguarded.getGuardFlag());
+    EXPECT_FALSE(manager.isDeleteProhibited(42));
+    manager.erase(42);
 }
