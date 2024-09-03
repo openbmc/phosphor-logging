@@ -1,0 +1,158 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f969c41_88649b28",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-09-03T07:43:12Z",
+      "side": 1,
+      "message": "Nice commit message!\n\nJust a suggestion: you could also include an explanation of why you chose not to use systemd’s After\u003dopenpower-update-bios-attr-table.service in the logging service file, as that would have been a simpler approach. This could be helpful for future reference.",
+      "revId": "e236d7175d6beda8511f4b5609d02b3456162406",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bad260f4_8fa0b849",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-09-03T07:43:12Z",
+      "side": 1,
+      "message": "Looks good to me. Just a few suggestions to add more comments. If you agree, please make the changes and push them; otherwise, I\u0027ll go ahead and score it.",
+      "revId": "e236d7175d6beda8511f4b5609d02b3456162406",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6c65ac3_742c73e2",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1187,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-09-03T07:43:12Z",
+      "side": 1,
+      "message": "Just a suggestion—adding some notes would be helpful to explain why you\u0027re assigning it with a null slot.",
+      "range": {
+        "startLine": 1187,
+        "startChar": 37,
+        "endLine": 1187,
+        "endChar": 52
+      },
+      "revId": "e236d7175d6beda8511f4b5609d02b3456162406",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9aee3d22_eb8a6404",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1215,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-09-03T07:43:12Z",
+      "side": 1,
+      "message": "I think we\u0027ll receive a lot of systemd job removed signals, but it shouldn’t have a significant impact.",
+      "revId": "e236d7175d6beda8511f4b5609d02b3456162406",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48c00e53_90555cc1",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1221,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-09-03T07:43:12Z",
+      "side": 1,
+      "message": "Just a suggestion—add a comment explaining the reasoning behind initializing the PHAL libraries only after the systemd unsubscribe method succeeds.\n\nIt might cause confusion as to why we\u0027re subscribing and immediately unsubscribing without performing any actions after receiving the expected JobRemoved signal.",
+      "revId": "e236d7175d6beda8511f4b5609d02b3456162406",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b90d204_f80ed3f5",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1246,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-09-03T07:43:12Z",
+      "side": 1,
+      "message": "Same as suggested in LN1187.",
+      "range": {
+        "startLine": 1246,
+        "startChar": 37,
+        "endLine": 1246,
+        "endChar": 52
+      },
+      "revId": "e236d7175d6beda8511f4b5609d02b3456162406",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dece39ac_e24e3525",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1250,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-09-03T07:43:12Z",
+      "side": 1,
+      "message": "Unsubscribe?",
+      "range": {
+        "startLine": 1250,
+        "startChar": 38,
+        "endLine": 1250,
+        "endChar": 47
+      },
+      "revId": "e236d7175d6beda8511f4b5609d02b3456162406",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "201daf18_7ad9e611",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1067,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-09-03T07:43:12Z",
+      "side": 1,
+      "message": "I think we should mention the purpose of _slot, specifying that it is intended for systemd subscribe and unsubscribe methods.\n\nIf _slot is used for any other async call during systemd subscribe/unsubscribe methods, those async calls may be lost.\n\nSo, I suggest renaming it to _systemdSlot or adding a note about the constraints regarding async calls.",
+      "revId": "e236d7175d6beda8511f4b5609d02b3456162406",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
