@@ -119,5 +119,12 @@ void pelDeleteProhibited(uint32_t id, bool& prohibited)
 
 REGISTER_EXTENSION_FUNCTION(pelDeleteProhibited)
 
+void logIDWithHwIsolation(std::vector<uint32_t>& logIDs)
+{
+    manager->logIDWithHwIsolation(logIDs);
+}
+
+REGISTER_EXTENSION_FUNCTION(logIDWithHwIsolation)
+
 } // namespace pels
 } // namespace openpower

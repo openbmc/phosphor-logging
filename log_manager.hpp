@@ -116,20 +116,7 @@ class Manager : public details::ServerObject<details::ManagerIface>
      *
      *  @return size_t - count of erased entries
      */
-    size_t eraseAll()
-    {
-        size_t entriesSize = entries.size();
-        auto iter = entries.begin();
-        while (iter != entries.end())
-        {
-            auto e = iter->first;
-            ++iter;
-            erase(e);
-        }
-        entryId = 0;
-
-        return entriesSize;
-    }
+    size_t eraseAll();
 
     /** @brief Returns the count of high severity errors
      *
