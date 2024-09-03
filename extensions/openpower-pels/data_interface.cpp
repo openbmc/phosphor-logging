@@ -985,6 +985,42 @@ std::expected<bool, std::string>
 #endif
 }
 
+DBusPathList DataInterface::getAssociatedPaths(
+    const DBusPath& associatedPath, const DBusPath& subtree, int32_t depth,
+    const DBusInterfaceList& interfaces) const
+{
+    DBusPathList paths;
+    try
+    {
+        auto method = _bus.new_method_call(
+            service_name::objectMapper, object_path::objectMapper,
+            interface::objectMapper, "GetAssociatedSubTreePaths");
+        method.append(sdbusplus::message::object_path(associatedPath),
+                      sdbusplus::message::object_path(subtree), depth,
+                      interfaces);
+
+        auto reply = _bus.call(method, dbusTimeout);
+        reply.read(paths);
+    }
+    catch (const std::exception& e)
+    {
+        std::string ifaces(
+            std::ranges::fold_left_first(
+                interfaces,
+                [](std::string ifaces, const std::string& iface) {
+                    return ifaces + ", " + iface;
+                })
+                .value_or(""));
+
+        lg2::error("Failed getting associated paths: {ERROR}. "
+                   "AssociatedPath: {ASSOIC_PATH} Subtree: {SUBTREE} "
+                   "Interfaces: {IFACES}",
+                   "ERROR", e, "ASSOIC_PATH", associatedPath, "SUBTREE",
+                   subtree, "IFACES", ifaces);
+    }
+    return paths;
+}
+
 void DataInterface::startFruPlugWatch()
 {
     // Add a watch on inventory InterfacesAdded and then find all
