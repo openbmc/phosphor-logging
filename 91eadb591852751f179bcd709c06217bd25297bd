@@ -16,6 +16,155 @@
       "message": "Addressing review comments...",
       "revId": "91eadb591852751f179bcd709c06217bd25297bd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcb72f54_892082de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-09-03T18:51:47Z",
+      "side": 1,
+      "message": "just minor stuff",
+      "revId": "91eadb591852751f179bcd709c06217bd25297bd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97d4ba7c_7c55cb04",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-09-03T18:51:47Z",
+      "side": 1,
+      "message": "nit: spelling",
+      "range": {
+        "startLine": 244,
+        "startChar": 16,
+        "endLine": 244,
+        "endChar": 25
+      },
+      "revId": "91eadb591852751f179bcd709c06217bd25297bd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9683e2d_80972112",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1200,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-09-03T18:51:47Z",
+      "side": 1,
+      "message": "in general, I don\u0027t tend to print constants that are hardcoded in the code.  doing this all over the place just makes the code more verbose and harder to read.",
+      "range": {
+        "startLine": 1198,
+        "startChar": 0,
+        "endLine": 1200,
+        "endChar": 61
+      },
+      "revId": "91eadb591852751f179bcd709c06217bd25297bd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fee7555_39ccc421",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1222,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-09-03T18:51:47Z",
+      "side": 1,
+      "message": "can just combine these 2 if statements into 1?",
+      "range": {
+        "startLine": 1219,
+        "startChar": 0,
+        "endLine": 1222,
+        "endChar": 56
+      },
+      "revId": "91eadb591852751f179bcd709c06217bd25297bd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54602c1f_bcc20fcb",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1236,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-09-03T18:51:47Z",
+      "side": 1,
+      "message": "same comments as before. could probably get this down to a 1 liner\nlg2::error(\"Error while handling JobRemoved: {ERR}, \"ERR\", e)",
+      "revId": "91eadb591852751f179bcd709c06217bd25297bd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4ad06e7_0396bdb9",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1015,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-09-03T18:51:47Z",
+      "side": 1,
+      "message": "spelling",
+      "range": {
+        "startLine": 1015,
+        "startChar": 40,
+        "endLine": 1015,
+        "endChar": 49
+      },
+      "revId": "91eadb591852751f179bcd709c06217bd25297bd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9d02692_55b868b2",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1033,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-09-03T18:51:47Z",
+      "side": 1,
+      "message": "with unsubscribe, it\u0027s \u0027unsubscribe from\u0027.",
+      "range": {
+        "startLine": 1033,
+        "startChar": 9,
+        "endLine": 1033,
+        "endChar": 22
+      },
+      "revId": "91eadb591852751f179bcd709c06217bd25297bd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
