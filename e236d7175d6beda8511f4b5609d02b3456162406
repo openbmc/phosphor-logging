@@ -241,6 +241,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5cff626_0c6f1ed3",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1219,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-09-04T15:51:21Z",
+      "side": 1,
+      "message": "\u003e I think I\u0027d prefer if it was reset. Though its a bit unsettling to delete it while inside a callback from it.\n\nIt likely won\u0027t have much impact. I think we could do it after the initPHAL call, but we can revisit releasing _systemdMatch later to avoid catching the JobRemoved signal, as we won\u0027t receive it from systemd after unsubscribing, if any issues arise.\n\n\u003e I\u0027m not sure phosphor-logging would care?\n\nAgreed, it depends on whether that service restarts. I don’t think it will, since it’s a one-shot service. If something were to restart and affect the PNOR partition symlink, it would need to be considered, but from my understanding of PNOR management, that scenario isn’t applicable. Restarting would have broader impacts, so I believe we’re fine.",
+      "parentUuid": "1e62a650_17f01529",
+      "revId": "e236d7175d6beda8511f4b5609d02b3456162406",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "48c00e53_90555cc1",
