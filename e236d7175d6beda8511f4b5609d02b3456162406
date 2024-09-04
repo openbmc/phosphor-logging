@@ -225,6 +225,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1e62a650_17f01529",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1219,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-09-04T15:37:06Z",
+      "side": 1,
+      "message": "\u003e Could we consider resetting this-\u003e_systemdMatch? Also, I don\u0027t think we\u0027ll receive any systemd signals since we\u0027re unsubscribing in the below.\n\nI think I\u0027d prefer if it was reset.  Though its a bit unsettling to delete it while inside a callback from it.\n\n\n\u003e it might help to reinitialize the PHAL device tree if the openpower-update-bios-attr-table.service restarts for any reason.\n\nI\u0027m not sure phosphor-logging would care?",
+      "parentUuid": "184ffe4a_171d06e6",
+      "revId": "e236d7175d6beda8511f4b5609d02b3456162406",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "48c00e53_90555cc1",
         "filename": "extensions/openpower-pels/data_interface.cpp",
         "patchSetId": 3
