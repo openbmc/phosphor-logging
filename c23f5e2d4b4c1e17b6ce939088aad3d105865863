@@ -599,6 +599,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71bd6163_2fd09b81",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-09-04T08:04:31Z",
+      "side": 1,
+      "message": "Not required, it seems code changed a bit.",
+      "parentUuid": "16595ad4_0023875a",
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1d38bf2a_a385b1fa",
