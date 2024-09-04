@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "88c57c94_a9a6e29c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-04T04:28:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "156c6652_c709f05a",
+      "range": {
+        "startLine": 7,
+        "startChar": 5,
+        "endLine": 7,
+        "endChar": 49
+      },
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c7415fe_a3fa5b1a",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "629b49cb_5b4e5c6c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-04T04:28:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c7415fe_a3fa5b1a",
+      "range": {
+        "startLine": 10,
+        "startChar": 27,
+        "endLine": 10,
+        "endChar": 32
+      },
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c10cd3e_745a5dfd",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-08-20T06:41:06Z",
       "side": 1,
       "message": "Please avoid internal planning details in the open source project.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 38
+      },
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffe4596d_45b0e9d2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-04T04:28:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c10cd3e_745a5dfd",
       "range": {
         "startLine": 11,
         "startChar": 0,
@@ -127,6 +199,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "988d008b_b0f09d11",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 891,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-04T04:28:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dffa7cc6_2c0dbe06",
+      "range": {
+        "startLine": 891,
+        "startChar": 67,
+        "endLine": 891,
+        "endChar": 119
+      },
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "adcf5cf1_baaf57c8",
@@ -140,6 +236,30 @@
       "writtenOn": "2024-08-20T06:41:06Z",
       "side": 1,
       "message": "Please enclose this in a try/catch block since it\u0027s a generic API. This way, any DBus exceptions can be caught and handled, allowing the operation to continue and return control to the caller. The PEL operation should proceed even if an error occurs, as it operates on a \"best effort\" basis.\n\n\nFor example,\n\n```\nstd::optional\u003cDBusPathList\u003e DataInterface::getAssociatedPaths(const std::string\u0026 associatedPath, const DBusInterfaceList\u0026 interfaces)\n{\n  try\n  {\n    ...\n  }\n  catch (const std::exception\u0026 e)\n  {\n    //add trace\n    return std::nullopt;\n  } \n}\n```",
+      "range": {
+        "startLine": 888,
+        "startChar": 4,
+        "endLine": 895,
+        "endChar": 22
+      },
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c04150b_608cc955",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 895,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-04T04:28:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "adcf5cf1_baaf57c8",
       "range": {
         "startLine": 888,
         "startChar": 4,
@@ -173,6 +293,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "edc38d92_08cd22e8",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-04T04:28:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "060b240b_16fef84c",
+      "range": {
+        "startLine": 500,
+        "startChar": 50,
+        "endLine": 500,
+        "endChar": 61
+      },
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ef096d2d_52169315",
@@ -186,6 +330,30 @@
       "writtenOn": "2024-08-20T06:41:06Z",
       "side": 1,
       "message": "entryPath?",
+      "range": {
+        "startLine": 308,
+        "startChar": 9,
+        "endLine": 308,
+        "endChar": 16
+      },
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65cdf51d_bf045b44",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-04T04:28:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef096d2d_52169315",
       "range": {
         "startLine": 308,
         "startChar": 9,
@@ -219,6 +387,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a87c9759_0992fefa",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-04T04:28:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8f4392e_ff105e5c",
+      "range": {
+        "startLine": 309,
+        "startChar": 9,
+        "endLine": 309,
+        "endChar": 15
+      },
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44b7e439_1b8a74a5",
@@ -242,6 +434,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54dd27c0_1cf75fcc",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-04T04:28:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44b7e439_1b8a74a5",
+      "range": {
+        "startLine": 314,
+        "startChar": 12,
+        "endLine": 314,
+        "endChar": 114
+      },
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c7b257b4_31fd8f46",
@@ -255,6 +471,24 @@
       "writtenOn": "2024-08-20T06:41:06Z",
       "side": 1,
       "message": "Just a suggestion: You could directly pass interfaces in the below call to avoid additional variable.",
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7087d79b_45b611fd",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-04T04:28:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c7b257b4_31fd8f46",
       "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -370,6 +604,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aca8bdbc_9e4563ed",
+        "filename": "log_manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-04T04:28:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d38bf2a_a385b1fa",
+      "range": {
+        "startLine": 138,
+        "startChar": 12,
+        "endLine": 138,
+        "endChar": 24
+      },
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fab16623_48fd923a",
@@ -383,6 +641,30 @@
       "writtenOn": "2024-08-20T06:41:06Z",
       "side": 1,
       "message": "You could use `std::ranges::max_element`.\n\nFor example,\n```\nauto maxEntryIdIt \u003d std::ranges::max_element(entries, [](const auto\u0026 a, const auto\u0026 b) { return a.first \u003c b.first; });\n```",
+      "range": {
+        "startLine": 138,
+        "startChar": 33,
+        "endLine": 139,
+        "endChar": 103
+      },
+      "revId": "c23f5e2d4b4c1e17b6ce939088aad3d105865863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da24c6fd_caed7736",
+        "filename": "log_manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-04T04:28:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fab16623_48fd923a",
       "range": {
         "startLine": 138,
         "startChar": 33,

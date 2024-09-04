@@ -16,6 +16,40 @@
       "message": "Unit test cases will be addressed in the future patch.",
       "revId": "b0174ec95398a77803b858f5ab473ea0dad1eed2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66d1b864_a95eadcc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-04T04:28:17Z",
+      "side": 1,
+      "message": "Unit test cases will be addressed in the future patch.",
+      "revId": "b0174ec95398a77803b858f5ab473ea0dad1eed2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e528c7ff_497bd3ef",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1007,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-04T04:28:17Z",
+      "side": 1,
+      "message": "Change to error",
+      "revId": "b0174ec95398a77803b858f5ab473ea0dad1eed2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
