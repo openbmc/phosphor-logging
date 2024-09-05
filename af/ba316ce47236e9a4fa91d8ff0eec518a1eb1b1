@@ -1,0 +1,10 @@
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Ramesh Iyyar <rameshi1@in.ibm.com>
+Code-Review+2: Matt Spinler <spinler@us.ibm.com>
+Code-Review+1: Adriana Kobylak <anoo@us.ibm.com>
+Submitted-by: Arya K Padman <aryakpadman@gmail.com>
+Submitted-at: Thu, 05 Sep 2024 05:51:38 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/74178
+Comments-Total: 36
+Project: openbmc/phosphor-logging
+Branch: refs/heads/master
