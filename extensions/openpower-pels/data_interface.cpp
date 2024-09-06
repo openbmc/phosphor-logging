@@ -233,10 +233,11 @@ DataInterface::DataInterface(sdbusplus::bus_t& bus) :
             }
         }));
 
-#ifdef PEL_ENABLE_PHAL
     if (isPHALDevTreeExist())
     {
+#ifdef PEL_ENABLE_PHAL
         initPHAL();
+#endif
     }
     else
     {
@@ -244,7 +245,6 @@ DataInterface::DataInterface(sdbusplus::bus_t& bus) :
         // PHAL libraries
         subscribeToSystemdSignals();
     }
-#endif // PEL_ENABLE_PHAL
 }
 
 DBusPropertyMap DataInterface::getAllProperties(
@@ -1111,7 +1111,6 @@ void DataInterface::notifyPresenceSubsribers(const std::string& path,
     setFruPresent(locCode);
 }
 
-#ifdef PEL_ENABLE_PHAL
 bool DataInterface::isPHALDevTreeExist() const
 {
     try
@@ -1130,6 +1129,7 @@ bool DataInterface::isPHALDevTreeExist() const
     return false;
 }
 
+#ifdef PEL_ENABLE_PHAL
 void DataInterface::initPHAL()
 {
     if (setenv("PDBG_DTB", PDBG_DTB_PATH, 1))
@@ -1152,6 +1152,7 @@ void DataInterface::initPHAL()
         return;
     }
 }
+#endif
 
 void DataInterface::subscribeToSystemdSignals()
 {
@@ -1168,9 +1169,8 @@ void DataInterface::subscribeToSystemdSignals()
             {
                 auto* error = msg.get_error();
                 lg2::error("Failed to subscribe JobRemoved systemd signal, "
-                           "errorName: {ERR_NAME}, errorMsg: {ERR_MSG}, "
-                           "ERR_NAME",
-                           error->name, "ERR_MSG", error->message);
+                           "errorName: {ERR_NAME}, errorMsg: {ERR_MSG}, ",
+                           "ERR_NAME", error->name, "ERR_MSG", error->message);
                 return;
             }
 
@@ -1225,12 +1225,13 @@ void DataInterface::unsubscribeFromSystemdSignals()
                 auto* error = msg.get_error();
                 lg2::error(
                     "Failed to unsubscribe from JobRemoved systemd signal, "
-                    "errorName: {ERR_NAME}, errorMsg: {ERR_MSG}, "
-                    "ERR_NAME",
-                    error->name, "ERR_MSG", error->message);
+                    "errorName: {ERR_NAME}, errorMsg: {ERR_MSG}, ",
+                    "ERR_NAME", error->name, "ERR_MSG", error->message);
                 return;
             }
+#ifdef PEL_ENABLE_PHAL
             this->initPHAL();
+#endif
         });
     }
     catch (const sdbusplus::exception_t& e)
@@ -1241,7 +1242,6 @@ void DataInterface::unsubscribeFromSystemdSignals()
             "ERROR", e);
     }
 }
-#endif // PEL_ENABLE_PHAL
 
 } // namespace pels
 } // namespace openpower

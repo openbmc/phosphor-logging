@@ -1000,7 +1000,6 @@ class DataInterface : public DataInterfaceBase
      */
     static std::string addLocationCodePrefix(const std::string& locationCode);
 
-#ifdef PEL_ENABLE_PHAL
     /**
      * @brief A helper API to check whether the PHAL device tree is exists,
      *        ensuring the PHAL init API can be invoked.
@@ -1009,12 +1008,14 @@ class DataInterface : public DataInterfaceBase
      */
     bool isPHALDevTreeExist() const;
 
+#ifdef PEL_ENABLE_PHAL
     /**
      * @brief A helper API to init PHAL libraries
      *
      * @return None
      */
     void initPHAL();
+#endif // PEL_ENABLE_PHAL
 
     /**
      * @brief A helper API to subscribe to systemd signals
@@ -1029,7 +1030,6 @@ class DataInterface : public DataInterfaceBase
      * @return None
      */
     void unsubscribeFromSystemdSignals();
-#endif // PEL_ENABLE_PHAL
 
     /**
      * @brief The D-Bus property or interface watchers that have callbacks
@@ -1053,13 +1053,11 @@ class DataInterface : public DataInterfaceBase
      */
     sdbusplus::bus_t& _bus;
 
-#ifdef PEL_ENABLE_PHAL
     /**
      * @brief Watcher to check "openpower-update-bios-attr-table" service
      *        is "done" to init PHAL libraires
      */
     std::unique_ptr<sdbusplus::bus::match_t> _systemdMatch;
-#endif // PEL_ENABLE_PHAL
 
     /**
      * @brief A slot object for async dbus call
