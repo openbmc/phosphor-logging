@@ -37,6 +37,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f2e7a413_df62ae44",
+        "filename": "extensions.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-09-09T19:20:12Z",
+      "side": 1,
+      "message": "how about \u0027LogIDs\u0027 everywhere you have this, since it\u0027s a vector?",
+      "range": {
+        "startLine": 58,
+        "startChar": 5,
+        "endLine": 58,
+        "endChar": 11
+      },
+      "revId": "b0174ec95398a77803b858f5ab473ea0dad1eed2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e528c7ff_497bd3ef",
         "filename": "extensions/openpower-pels/data_interface.cpp",
         "patchSetId": 2
@@ -48,6 +71,92 @@
       "writtenOn": "2024-09-04T04:28:17Z",
       "side": 1,
       "message": "Change to error",
+      "revId": "b0174ec95398a77803b858f5ab473ea0dad1eed2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e282f283_02288d7c",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-09-09T19:20:12Z",
+      "side": 1,
+      "message": "nit: vars should be lower case, so hwIsolation...",
+      "range": {
+        "startLine": 317,
+        "startChar": 17,
+        "endLine": 317,
+        "endChar": 19
+      },
+      "revId": "b0174ec95398a77803b858f5ab473ea0dad1eed2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "187084cf_17cb36cb",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-09-09T19:20:12Z",
+      "side": 1,
+      "message": "the guidelines still want braces around single line if statements.  Alternatively, you could also do:  return !paths.empty()",
+      "range": {
+        "startLine": 320,
+        "startChar": 12,
+        "endLine": 321,
+        "endChar": 28
+      },
+      "revId": "b0174ec95398a77803b858f5ab473ea0dad1eed2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "734cc7dd_b5119cf3",
+        "filename": "extensions/openpower-pels/manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-09-09T19:20:12Z",
+      "side": 1,
+      "message": "I don\u0027t see the code checking the Resolved property?  is it supposed to, or can the comment just be removed.",
+      "range": {
+        "startLine": 129,
+        "startChar": 28,
+        "endLine": 129,
+        "endChar": 54
+      },
+      "revId": "b0174ec95398a77803b858f5ab473ea0dad1eed2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ecc9f45_2fcdf73b",
+        "filename": "log_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-09-09T19:20:12Z",
+      "side": 1,
+      "message": "I think I\u0027d feel better if you kept the original code in the normal path like:\n\nif (Extensions::getLogIDWithHwIsolationFunctions().empty())\n   do original eraseAll code\nelse\n   this new stuff\n   \n   \nSince we\u0027re the only users of this, I feel like it would have the ability to impact others less.",
       "revId": "b0174ec95398a77803b858f5ab473ea0dad1eed2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
