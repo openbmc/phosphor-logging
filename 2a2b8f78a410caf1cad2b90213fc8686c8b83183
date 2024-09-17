@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2db67ff3_6d610421",
+        "filename": "extensions/openpower-pels/entry_points.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-09-17T15:53:17Z",
+      "side": 1,
+      "message": "I think this may be a bit more clear with a \u0027get\u0027 on front.  This goes for manager\u0027s implementation too.",
+      "range": {
+        "startLine": 122,
+        "startChar": 5,
+        "endLine": 122,
+        "endChar": 25
+      },
+      "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feb00c77_d5e86663",
+        "filename": "log_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-09-17T15:53:17Z",
+      "side": 1,
+      "message": "nit: The guidelines ask for  { } even for 1 liners here.",
+      "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f8b5a28_b1bb20d9",
+        "filename": "log_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-09-17T15:53:17Z",
+      "side": 1,
+      "message": "could you just skip the temporary and do:\nentryId \u003d std::ranges...",
+      "range": {
+        "startLine": 539,
+        "startChar": 12,
+        "endLine": 539,
+        "endChar": 29
+      },
+      "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f145928_470ac035",
+        "filename": "test/extensions_test.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-09-17T15:53:17Z",
+      "side": 1,
+      "message": "Not that it matters that much since we don\u0027t use the multiple plugins, but if you just had the extension functions up above push_back a unique number and not do a clear you\u0027d be able to test that it called both of them.",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 29
+      },
+      "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e223f2ec_ca5c6aa7",
+        "filename": "test/openpower-pels/pel_manager_test.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1258,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-09-17T15:53:17Z",
+      "side": 1,
+      "message": "could you also just do calloutFile.data() here?",
+      "range": {
+        "startLine": 1258,
+        "startChar": 22,
+        "endLine": 1258,
+        "endChar": 60
+      },
+      "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
