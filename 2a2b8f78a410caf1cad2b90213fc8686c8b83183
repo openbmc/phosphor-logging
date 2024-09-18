@@ -295,6 +295,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "97cb6eff_bc591a9a",
+        "filename": "extensions/openpower-pels/manager.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-09-18T12:31:26Z",
+      "side": 1,
+      "message": "IMO...Its filling the value in the given reference argument so it need to be `out`.",
+      "parentUuid": "88e0d82e_8ec3faa0",
+      "range": {
+        "startLine": 132,
+        "startChar": 14,
+        "endLine": 132,
+        "endChar": 16
+      },
+      "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "feb00c77_d5e86663",

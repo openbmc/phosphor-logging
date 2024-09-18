@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31e909f9_4796d7e7",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1010,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-09-18T12:31:26Z",
+      "side": 1,
+      "message": "Suggestion: It might need some adjustment, and the main focus for debugging should be the interfaces, as they are key to retrieving the associated object path.\n\n```\nstd::string ifaces(std::ranges::fold_left_first(interfaces,\n                   [](std::string ifaces, const std::string\u0026 iface) { return ifaces + \", \" + iface; }));\nlg2::error(\"Failed getting associated paths: {ERROR}. \"\n           \"AssociatedPath: {ASSOIC_PATH} Subtree: {SUBTREE} \"\n           \"Interfaces: {IFACES}\", \n           \"ERROR\", e, \"ASSOIC_PATH\", associatedPath, \"SUBTREE\", subtree,\n           \"IFACES\", ifaces);\n```\n\nOr you could wait for Matt\u0027s input. I believe he\u0027s hesitant to add more details to the trace, especially if it involves hard-coded values, to maintain code readability.\n\n(Noticed somewhere his comment on the similar line)",
+      "range": {
+        "startLine": 1007,
+        "startChar": 8,
+        "endLine": 1010,
+        "endChar": 75
+      },
+      "revId": "950b5abe8541b6e7501d2c7709f30d416502aa3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e20bf4b6_d6cdb4bc",
+        "filename": "extensions/openpower-pels/entry_points.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-09-18T12:31:26Z",
+      "side": 1,
+      "message": "\u003e This goes for manager\u0027s implementation too.\n\nI think you missed to update manager function name",
+      "range": {
+        "startLine": 124,
+        "startChar": 13,
+        "endLine": 124,
+        "endChar": 33
+      },
+      "revId": "950b5abe8541b6e7501d2c7709f30d416502aa3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "559722b7_e2d52dec",
+        "filename": "test/openpower-pels/pel_manager_test.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1304,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-09-18T12:31:26Z",
+      "side": 1,
+      "message": "I don\u0027t think it\u0027s necessary, as the Guarded field isn\u0027t supported in the message registry JSON, and including it might cause confusion when reviewing the `TestPELDeleteWithoutHWIsolation` test case name.",
+      "range": {
+        "startLine": 1304,
+        "startChar": 16,
+        "endLine": 1304,
+        "endChar": 31
+      },
+      "revId": "950b5abe8541b6e7501d2c7709f30d416502aa3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9c8e087_0b2562f0",
+        "filename": "test/openpower-pels/pel_manager_test.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1409,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-09-18T12:31:26Z",
+      "side": 1,
+      "message": "Same as LN1304.",
+      "revId": "950b5abe8541b6e7501d2c7709f30d416502aa3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
