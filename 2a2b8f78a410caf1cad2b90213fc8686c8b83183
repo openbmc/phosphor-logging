@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa1f154d_1d945934",
+        "filename": "extensions.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-18T12:11:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "540e0a82_2120029c",
+      "range": {
+        "startLine": 181,
+        "startChar": 43,
+        "endLine": 181,
+        "endChar": 52
+      },
+      "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c3879fb0_a2ddc925",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-09-18T02:53:54Z",
       "side": 1,
       "message": "Suggestion: You can use `DBusPathList`.",
+      "range": {
+        "startLine": 992,
+        "startChar": 4,
+        "endLine": 992,
+        "endChar": 28
+      },
+      "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c0a9fda_8de63264",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 992,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-18T12:11:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3879fb0_a2ddc925",
       "range": {
         "startLine": 992,
         "startChar": 4,
@@ -64,6 +112,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6e1d45b_65b5664a",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1007,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-18T12:11:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28c1a862_d8089c5a",
+      "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c3b6fca5_0c0a916c",
@@ -77,6 +143,30 @@
       "writtenOn": "2024-09-18T02:53:54Z",
       "side": 1,
       "message": "Suggestion: You can use `DBusPath`, and the same applies to other places.",
+      "range": {
+        "startLine": 556,
+        "startChar": 46,
+        "endLine": 556,
+        "endChar": 57
+      },
+      "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b680378f_cd05656c",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-18T12:11:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3b6fca5_0c0a916c",
       "range": {
         "startLine": 556,
         "startChar": 46,
@@ -134,6 +224,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "742ea94a_9de6af35",
+        "filename": "extensions/openpower-pels/entry_points.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-18T12:11:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e7f9c50_011db770",
+      "range": {
+        "startLine": 122,
+        "startChar": 5,
+        "endLine": 122,
+        "endChar": 25
+      },
+      "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2b30a4c_24f01fdb",
@@ -147,6 +261,30 @@
       "writtenOn": "2024-09-18T02:53:54Z",
       "side": 1,
       "message": "`out`?",
+      "range": {
+        "startLine": 132,
+        "startChar": 14,
+        "endLine": 132,
+        "endChar": 16
+      },
+      "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88e0d82e_8ec3faa0",
+        "filename": "extensions/openpower-pels/manager.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-18T12:11:39Z",
+      "side": 1,
+      "message": "The function doesn\u0027t return anything, hence left \u0027out\u0027, following older pattern",
+      "parentUuid": "c2b30a4c_24f01fdb",
       "range": {
         "startLine": 132,
         "startChar": 14,
@@ -174,6 +312,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eefc216c_c44c5fca",
+        "filename": "log_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-18T12:11:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "feb00c77_d5e86663",
+      "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f8b5a28_b1bb20d9",
@@ -187,6 +343,30 @@
       "writtenOn": "2024-09-17T15:53:17Z",
       "side": 1,
       "message": "could you just skip the temporary and do:\nentryId \u003d std::ranges...",
+      "range": {
+        "startLine": 539,
+        "startChar": 12,
+        "endLine": 539,
+        "endChar": 29
+      },
+      "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38596ab0_0d3d3f99",
+        "filename": "log_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-18T12:11:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f8b5a28_b1bb20d9",
       "range": {
         "startLine": 539,
         "startChar": 12,
@@ -220,6 +400,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f64982b_8d818faf",
+        "filename": "test/extensions_test.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-18T12:11:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f145928_470ac035",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 29
+      },
+      "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2b772433_f7801d5b",
@@ -233,6 +437,30 @@
       "writtenOn": "2024-09-18T02:53:54Z",
       "side": 1,
       "message": "Its not readable, you are calling out the DIMM, not the proc.",
+      "range": {
+        "startLine": 1243,
+        "startChar": 9,
+        "endLine": 1243,
+        "endChar": 24
+      },
+      "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a368b81a_f1c368c5",
+        "filename": "test/openpower-pels/pel_manager_test.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1243,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-18T12:11:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b772433_f7801d5b",
       "range": {
         "startLine": 1243,
         "startChar": 9,
@@ -266,6 +494,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c94c3d40_96f3d7d7",
+        "filename": "test/openpower-pels/pel_manager_test.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1258,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-18T12:11:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e223f2ec_ca5c6aa7",
+      "range": {
+        "startLine": 1258,
+        "startChar": 22,
+        "endLine": 1258,
+        "endChar": 60
+      },
+      "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b72817b_0807c9b1",
@@ -283,6 +535,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce03e2ae_77c47a0b",
+        "filename": "test/openpower-pels/pel_manager_test.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1294,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-18T12:11:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9b72817b_0807c9b1",
+      "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b5bce5f4_2e9f3c09",
@@ -296,6 +566,24 @@
       "writtenOn": "2024-09-18T02:53:54Z",
       "side": 1,
       "message": "Could be something meaningful. PGOOD is not relevant here. The same applies to below TC.",
+      "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fee96aa5_c5325e62",
+        "filename": "test/openpower-pels/pel_manager_test.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1306,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-18T12:11:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5bce5f4_2e9f3c09",
       "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -323,6 +611,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1809c37_d7d4a5eb",
+        "filename": "test/openpower-pels/pel_manager_test.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1330,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-18T12:11:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24062809_08def545",
+      "range": {
+        "startLine": 1330,
+        "startChar": 61,
+        "endLine": 1330,
+        "endChar": 70
+      },
+      "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb345bd1_826734e2",
@@ -340,6 +652,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "193d4c1e_3b622ff9",
+        "filename": "test/openpower-pels/pel_manager_test.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1386,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-18T12:11:39Z",
+      "side": 1,
+      "message": "Covered in LN1366",
+      "parentUuid": "fb345bd1_826734e2",
+      "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a40e45d_c54f566b",
@@ -353,6 +683,24 @@
       "writtenOn": "2024-09-18T02:53:54Z",
       "side": 1,
       "message": "Move this after PEL create. LN1378. The same applies to below TC.",
+      "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e31b9bb_0839016d",
+        "filename": "test/openpower-pels/pel_manager_test.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1390,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-18T12:11:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a40e45d_c54f566b",
       "revId": "2a2b8f78a410caf1cad2b90213fc8686c8b83183",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
