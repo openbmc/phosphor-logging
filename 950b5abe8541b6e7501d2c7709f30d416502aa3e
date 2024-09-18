@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "762ee092_555f4cf9",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1010,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-09-18T14:40:45Z",
+      "side": 1,
+      "message": "Not a huge deal, since there\u0027s not a lot of users of this utility function we can figure out what was passed in, but Ramesh\u0027s example is a bit more complete, so we could go with that.\n\nAlso I just learned about fold_left_first!",
+      "parentUuid": "31e909f9_4796d7e7",
+      "range": {
+        "startLine": 1007,
+        "startChar": 8,
+        "endLine": 1010,
+        "endChar": 75
+      },
+      "revId": "950b5abe8541b6e7501d2c7709f30d416502aa3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e20bf4b6_d6cdb4bc",
         "filename": "extensions/openpower-pels/entry_points.cpp",
         "patchSetId": 6
