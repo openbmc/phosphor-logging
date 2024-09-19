@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e721c8f_67a8f6af",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1010,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-19T05:35:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "762ee092_555f4cf9",
+      "range": {
+        "startLine": 1007,
+        "startChar": 8,
+        "endLine": 1010,
+        "endChar": 75
+      },
+      "revId": "950b5abe8541b6e7501d2c7709f30d416502aa3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e20bf4b6_d6cdb4bc",
@@ -61,6 +85,30 @@
       "writtenOn": "2024-09-18T12:31:26Z",
       "side": 1,
       "message": "\u003e This goes for manager\u0027s implementation too.\n\nI think you missed to update manager function name",
+      "range": {
+        "startLine": 124,
+        "startChar": 13,
+        "endLine": 124,
+        "endChar": 33
+      },
+      "revId": "950b5abe8541b6e7501d2c7709f30d416502aa3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dc27cd9_a2b97575",
+        "filename": "extensions/openpower-pels/entry_points.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-19T05:35:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e20bf4b6_d6cdb4bc",
       "range": {
         "startLine": 124,
         "startChar": 13,
@@ -94,6 +142,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b9103d3_e25c6932",
+        "filename": "test/openpower-pels/pel_manager_test.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1304,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-19T05:35:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "559722b7_e2d52dec",
+      "range": {
+        "startLine": 1304,
+        "startChar": 16,
+        "endLine": 1304,
+        "endChar": 31
+      },
+      "revId": "950b5abe8541b6e7501d2c7709f30d416502aa3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9c8e087_0b2562f0",
@@ -107,6 +179,24 @@
       "writtenOn": "2024-09-18T12:31:26Z",
       "side": 1,
       "message": "Same as LN1304.",
+      "revId": "950b5abe8541b6e7501d2c7709f30d416502aa3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fc159d8_b5e52fe5",
+        "filename": "test/openpower-pels/pel_manager_test.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1409,
+      "author": {
+        "id": 1001992
+      },
+      "writtenOn": "2024-09-19T05:35:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9c8e087_0b2562f0",
       "revId": "950b5abe8541b6e7501d2c7709f30d416502aa3e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
