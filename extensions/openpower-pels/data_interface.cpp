@@ -1169,7 +1169,7 @@ void DataInterface::subscribeToSystemdSignals()
             {
                 auto* error = msg.get_error();
                 lg2::error("Failed to subscribe JobRemoved systemd signal, "
-                           "errorName: {ERR_NAME}, errorMsg: {ERR_MSG}, ",
+                           "errorName: {ERR_NAME}, errorMsg: {ERR_MSG} ",
                            "ERR_NAME", error->name, "ERR_MSG", error->message);
                 return;
             }
@@ -1192,10 +1192,11 @@ void DataInterface::subscribeToSystemdSignals()
                              "openpower-update-bios-attr-table.service") &&
                             (jobUnitResult == "done"))
                         {
-                            // Unsubscribe immediately after the signal is
-                            // received to avoid unwanted signal
-                            // reception. And initialize PHAL once the
-                            // unsubscription is success.
+#ifdef PEL_ENABLE_PHAL
+                            this->initPHAL();
+#endif
+                            //Invoke unsubscribe method to stop monitoring for
+                            //JobRemoved signals.
                             this->unsubscribeFromSystemdSignals();
                         }
                     });
@@ -1225,13 +1226,13 @@ void DataInterface::unsubscribeFromSystemdSignals()
                 auto* error = msg.get_error();
                 lg2::error(
                     "Failed to unsubscribe from JobRemoved systemd signal, "
-                    "errorName: {ERR_NAME}, errorMsg: {ERR_MSG}, ",
+                    "errorName: {ERR_NAME}, errorMsg: {ERR_MSG} ",
                     "ERR_NAME", error->name, "ERR_MSG", error->message);
                 return;
             }
-#ifdef PEL_ENABLE_PHAL
-            this->initPHAL();
-#endif
+            //Reset _systemdMatch to avoid reception of further JobRemoved
+            //signals
+            this->_systemdMatch.reset();
         });
     }
     catch (const sdbusplus::exception_t& e)
