@@ -806,7 +806,7 @@
             "Subsystem": "cec_clocks",
             "ComponentID": "0x3000",
             "Severity": "non_error",
-            "ActionFlags": ["report", "call_home"],
+            "ActionFlags": ["report", "call_home", "heartbeat_call_home"],
 
             "SRC": {
                 "ReasonCode": "0x300A",
@@ -3648,7 +3648,7 @@
             "Subsystem": "power",
             "Severity": "non_error",
             "MfgSeverity": "predictive_redundancy_loss",
-            "ActionFlags": ["report"],
+            "ActionFlags": ["report", "heartbeat_call_home"],
             "MfgActionFlags": ["service_action", "report", "call_home"],
             "ComponentID": "0x2700",
 

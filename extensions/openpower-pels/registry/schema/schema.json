@@ -389,7 +389,8 @@
                     "dont_report",
                     "call_home",
                     "isolation_incomplete",
-                    "termination"
+                    "termination",
+                    "heartbeat_call_home"
                 ]
             }
         },
