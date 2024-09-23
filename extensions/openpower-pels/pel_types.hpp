@@ -117,7 +117,8 @@ enum ActionFlagsBits
     isolationIncompleteFlagBit = 10, // 0x0400
     spCallHomeFlagBit = 8,           // 0x0100
     osSWErrorBit = 7,                // 0x0080
-    osHWErrorBit = 6                 // 0x0040
+    osHWErrorBit = 6,                // 0x0040
+    heartbeatCallHomeFlagBit = 5     // 0x0020
 };
 
 /**
