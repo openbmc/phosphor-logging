@@ -153,6 +153,29 @@ const auto registryData = R"(
                     }
                 ]
             }
+        },
+
+        {
+            "Name": "org.open_power.PHAL.Info.ClockDailyLog",
+            "Subsystem": "cec_clocks",
+            "ComponentID": "0x3000",
+            "Severity": "non_error",
+            "ActionFlags": ["report", "call_home", "heartbeat_call_home"],
+
+            "SRC":
+            {
+                "ReasonCode": "0x300A",
+                "Words6To9": {}
+            },
+
+            "Documentation":
+            {
+                "Description": "Informational error to house clock debug info",
+                "Message": "Informational error to house clock debug info",
+                "Notes": [
+                    "User data includes processor and clock register state information."
+                ]
+            }
         }
     ]
 }
@@ -261,6 +284,12 @@ TEST_F(RegistryTest, TestFindEntry)
     entry = registry.lookup("0x2333", LookupType::reasonCode);
     ASSERT_TRUE(entry);
     EXPECT_EQ(entry->name, "xyz.openbmc_project.Power.OverVoltage");
+
+    entry = registry.lookup("org.open_power.PHAL.Info.ClockDailyLog",
+                            LookupType::name);
+    ASSERT_TRUE(entry);
+    EXPECT_EQ(entry->name, "org.open_power.PHAL.Info.ClockDailyLog");
+    EXPECT_EQ(*(entry->actionFlags), 0x2820);
 }
 
 // Check the entry that mostly uses defaults
@@ -318,6 +347,12 @@ TEST_F(RegistryTest, TestHelperFunctions)
     std::vector<std::string> flags{"service_action", "dont_report",
                                    "termination"};
     EXPECT_EQ(getActionFlags(flags), 0x9100);
+
+    flags.push_back("heartbeat_call_home");
+    EXPECT_EQ(getActionFlags(flags), 0x9120);
+    flags.clear();
+    flags.push_back("heartbeat_call_home");
+    EXPECT_EQ(getActionFlags(flags), 0x0020);
 
     flags.clear();
     flags.push_back("foo");
