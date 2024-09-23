@@ -199,7 +199,8 @@ const PELValues actionFlagsValues = {
     {0x0800, "call_home", "HMC Call Home"},
     {0x0400, "isolation_incomplete",
      "Isolation Incomplete, further analysis required"},
-    {0x0100, "termination", "Service Processor Call Home Required"}};
+    {0x0100, "termination", "Service Processor Call Home Required"},
+    {0x0020, "heartbeat_call_home", "Heartbeat Call Home Event"}};
 
 /**
  * The possible values for the Callout Priority field in the SRC.
