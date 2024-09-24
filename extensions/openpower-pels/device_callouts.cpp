@@ -506,7 +506,7 @@ CalloutType getCalloutType(const std::string& devPath)
         return CalloutType::fsi;
     }
 
-    if (devPath.find("i2c-bus/i2c-") != std::string::npos)
+    if (devPath.find("i2c-") != std::string::npos)
     {
         return CalloutType::i2c;
     }
