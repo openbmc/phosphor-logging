@@ -192,7 +192,7 @@ class PLDMInterface : public HostInterface
     /**
      * @brief The command timeout value
      */
-    const std::chrono::milliseconds _receiveTimeout{10000};
+    const std::chrono::milliseconds _receiveTimeout{45000};
 
     /**
      * @brief The libpldm instance ID database.
