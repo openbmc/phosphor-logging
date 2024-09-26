@@ -2,6 +2,7 @@
 
 #include "elog_entry.hpp"
 #include "elog_serialize.hpp"
+#include "extensions.hpp"
 #include "log_manager.hpp"
 
 #include <filesystem>
@@ -18,6 +19,16 @@ namespace test
 
 using namespace std::chrono_literals;
 namespace fs = std::filesystem;
+
+void deleteProhibited_true(uint32_t /*id*/, bool& prohibited)
+{
+    prohibited = true;
+}
+
+void deleteProhibited_false(uint32_t /*id*/, bool& prohibited)
+{
+    prohibited = false;
+}
 
 // Test that the update timestamp changes when the resolved property changes
 TEST(TestUpdateTS, testChangeResolved)
@@ -88,6 +99,62 @@ TEST(TestUpdateTS, testChangeResolved)
     fs::remove(fs::path{ERRLOG_PERSIST_PATH} / std::to_string(id));
 }
 
+TEST(TestResolveProhibited, testResolveFlagChange)
+{
+    // Setting resolved will serialize, so need this directory.
+    fs::create_directory(ERRLOG_PERSIST_PATH);
+
+    if (!fs::exists(ERRLOG_PERSIST_PATH))
+    {
+        ADD_FAILURE() << "Could not create " << ERRLOG_PERSIST_PATH << "\n";
+        exit(1);
+    }
+
+    auto bus = sdbusplus::bus::new_default();
+    phosphor::logging::internal::Manager manager(bus, OBJ_INTERNAL);
+
+    // Use a random number for the ID to avoid other CI
+    // testcases running in parallel.
+    std::srand(std::time(nullptr));
+    uint32_t id = std::rand();
+
+    if (fs::exists(fs::path{ERRLOG_PERSIST_PATH} / std::to_string(id)))
+    {
+        std::cerr << "Another testcase is using ID " << id << "\n";
+        id = std::rand();
+    }
+
+    uint64_t timestamp{100};
+    std::string message{"test error"};
+    std::string fwLevel{"level42"};
+    std::string path{"/tmp/99"};
+    std::vector<std::string> testData{"additional", "data"};
+    phosphor::logging::AssociationList associations{};
+
+    Entry elog{bus,
+               std::string(OBJ_ENTRY) + '/' + std::to_string(id),
+               id,
+               timestamp,
+               Entry::Level::Informational,
+               std::move(message),
+               std::move(testData),
+               std::move(associations),
+               fwLevel,
+               path,
+               manager};
+
+    Extensions ext{deleteProhibited_true};
+
+    EXPECT_THROW(elog.resolved(true),
+                 sdbusplus::xyz::openbmc_project::Common::Error::Unavailable);
+
+    Extensions::getDeleteProhibitedFunctions().clear();
+
+    Extensions e{deleteProhibited_false};
+
+    EXPECT_NO_THROW(elog.resolved(true));
+    EXPECT_EQ(elog.resolved(), true);
+}
 } // namespace test
 } // namespace logging
 } // namespace phosphor
