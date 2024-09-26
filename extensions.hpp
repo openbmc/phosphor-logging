@@ -45,6 +45,10 @@ using DeleteFunction = std::function<void(uint32_t)>;
 /**
  * @brief The function type that will to check if an event log is prohibited
  *        from being deleted.
+ *        The same function is used to check if an event log is prohibited from
+ *        setting Resolved flag, as Resolve is prohibited as long as Delete is
+ *        prohibited.
+ *
  * @param[in] uint32_t - The event log ID
  * @param[out] bool - set to true if the delete is prohibited
  */
