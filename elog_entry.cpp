@@ -1,6 +1,7 @@
 #include "elog_entry.hpp"
 
 #include "elog_serialize.hpp"
+#include "extensions.hpp"
 #include "log_manager.hpp"
 
 #include <fcntl.h>
@@ -27,6 +28,33 @@ bool Entry::resolved(bool value)
         sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved();
     if (value != current)
     {
+        // Resolve operation will be prohibited if delete operation is
+        // prohibited.
+        for (auto& func : Extensions::getDeleteProhibitedFunctions())
+        {
+            try
+            {
+                bool prohibited = false;
+                func(id(), prohibited);
+
+                if (prohibited)
+                {
+                    throw sdbusplus::xyz::openbmc_project::Common::Error::
+                        Unavailable();
+                }
+            }
+            catch (const sdbusplus::xyz::openbmc_project::Common::Error::
+                       Unavailable& e)
+            {
+                throw;
+            }
+            catch (const std::exception& e)
+            {
+                lg2::error("An extension's deleteProhibited function threw an "
+                           "exception: {ERROR}",
+                           "ERROR", e);
+            }
+        }
         value ? associations({}) : associations(assocs);
         current =
             sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved(
