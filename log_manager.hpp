@@ -182,9 +182,10 @@ class Manager : public details::ServerObject<details::ManagerIface>
      *                   Failure Data Capture). These will be passed to any
      *                   event logging extensions.
      */
-    void create(const std::string& message, Severity severity,
+    auto create(const std::string& message, Severity severity,
                 const std::map<std::string, std::string>& additionalData,
-                const FFDCEntries& ffdc = FFDCEntries{});
+                const FFDCEntries& ffdc = FFDCEntries{})
+        -> sdbusplus::message::object_path;
 
     /** @brief Common wrapper for creating an Entry object
      *
@@ -262,9 +263,10 @@ class Manager : public details::ServerObject<details::ManagerIface>
      * @param[in] ffdc - A vector of FFDC file info. Defaults to an empty
      * vector.
      */
-    void createEntry(std::string errMsg, Entry::Level errLvl,
+    auto createEntry(std::string errMsg, Entry::Level errLvl,
                      std::vector<std::string> additionalData,
-                     const FFDCEntries& ffdc = FFDCEntries{});
+                     const FFDCEntries& ffdc = FFDCEntries{})
+        -> sdbusplus::message::object_path;
 
     /** @brief Notified on entry property changes
      *
@@ -362,10 +364,11 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
      * @param[in] severity - Level of the error
      * @param[in] additionalData - The AdditionalData property for the error
      */
-    void create(std::string message, Severity severity,
-                std::map<std::string, std::string> additionalData) override
+    auto create(std::string message, Severity severity,
+                std::map<std::string, std::string> additionalData)
+        -> sdbusplus::message::object_path override
     {
-        manager.create(message, severity, additionalData);
+        return manager.create(message, severity, additionalData);
     }
 
     /** @brief D-Bus method call implementation to create an event log with FFDC
