@@ -195,9 +195,10 @@ void Manager::_commit(uint64_t transactionId [[maybe_unused]],
     createEntry(errMsg, errLvl, additionalData);
 }
 
-void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
-                          std::vector<std::string> additionalData,
-                          const FFDCEntries& ffdc)
+auto Manager::createEntry(
+    std::string errMsg, Entry::Level errLvl,
+    std::vector<std::string> additionalData,
+    const FFDCEntries& ffdc) -> sdbusplus::message::object_path
 {
     if (!Extensions::disableDefaultLogCaps())
     {
@@ -254,6 +255,8 @@ void Manager::createEntry(std::string errMsg, Entry::Level errLvl,
     doExtensionLogCreate(*entries.find(entryId)->second, ffdc);
 
     // Note: No need to close the file descriptors in the FFDC.
+
+    return objPath;
 }
 
 bool Manager::isQuiesceOnErrorEnabled()
@@ -691,15 +694,15 @@ std::string Manager::readFWVersion()
     return version.value_or("");
 }
 
-void Manager::create(const std::string& message, Entry::Level severity,
+auto Manager::create(const std::string& message, Entry::Level severity,
                      const std::map<std::string, std::string>& additionalData,
-                     const FFDCEntries& ffdc)
+                     const FFDCEntries& ffdc) -> sdbusplus::message::object_path
 {
     // Convert the map into a vector of "key=value" strings
     std::vector<std::string> ad;
     metadata::associations::combine(additionalData, ad);
 
-    createEntry(message, severity, ad, ffdc);
+    return createEntry(message, severity, ad, ffdc);
 }
 
 } // namespace internal
