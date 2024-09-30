@@ -65,7 +65,7 @@ constexpr auto logging = "/xyz/openbmc_project/logging";
 
 std::string pelLogDir()
 {
-    return std::string(EXTENSION_PERSIST_DIR) + "/pels/logs";
+    return std::string(phosphor::logging::paths::extension()) + "/pels/logs";
 }
 
 /**

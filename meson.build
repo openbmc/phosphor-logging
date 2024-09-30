@@ -128,6 +128,7 @@ log_manager_sources = [
         'elog_serialize.cpp',
         'extensions.cpp',
         'log_manager.cpp',
+        'paths.cpp',
         'util.cpp',
     )
 ]

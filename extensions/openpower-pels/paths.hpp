@@ -1,4 +1,6 @@
 #pragma once
+#include "../../paths.hpp"
+
 #include <filesystem>
 
 namespace openpower
