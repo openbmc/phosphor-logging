@@ -212,10 +212,13 @@ void FRUIdentity::setPartNumber(const std::string& partNumber)
 
     auto pn = partNumber;
 
-    // Strip leading whitespace on this one.
-    while (' ' == pn.front())
+    if (!pn.empty())
     {
-        pn = pn.substr(1);
+        // Strip leading whitespace on this one.
+        while (' ' == pn.front())
+        {
+            pn = pn.substr(1);
+        }
     }
 
     fillArray(pn, _pnOrProcedureID);
