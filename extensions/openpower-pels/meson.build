@@ -68,6 +68,7 @@ libpel_sources = files(
     'severity.cpp',
     'user_header.cpp',
     'temporary_file.cpp',
+    '../../paths.cpp',
     '../../util.cpp',
     extra_sources,
 )
@@ -86,7 +87,7 @@ libpel_deps = [
 libpel_lib = static_library(
     'pel',
     libpel_sources,
-    'paths.cpp', # paths is separate because it is overridden during test.
+    'pel_paths.cpp', # paths is separate because it is overridden during test.
     include_directories: include_directories('../..', '../../gen'),
     cpp_args: extra_args,
     dependencies: [

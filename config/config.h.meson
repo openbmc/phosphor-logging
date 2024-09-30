@@ -25,8 +25,6 @@
 
 #define RSYSLOG_SERVER_CONFIG_FILE "@rsyslog_server_conf@"
 
-extern const char *ERRLOG_PERSIST_PATH;
-extern const char *EXTENSION_PERSIST_DIR;
 extern const bool IS_UNIT_TEST;
 
 static constexpr size_t ERROR_CAP = @error_cap@;

@@ -3,6 +3,7 @@
 #include "elog_entry.hpp"
 #include "elog_serialize.hpp"
 #include "log_manager.hpp"
+#include "paths.hpp"
 
 #include <filesystem>
 #include <thread>
@@ -23,11 +24,11 @@ namespace fs = std::filesystem;
 TEST(TestUpdateTS, testChangeResolved)
 {
     // Setting resolved will serialize, so need this directory.
-    fs::create_directory(ERRLOG_PERSIST_PATH);
+    fs::create_directories(paths::error());
 
-    if (!fs::exists(ERRLOG_PERSIST_PATH))
+    if (!fs::exists(paths::error()))
     {
-        ADD_FAILURE() << "Could not create " << ERRLOG_PERSIST_PATH << "\n";
+        ADD_FAILURE() << "Could not create " << paths::error() << "\n";
         exit(1);
     }
 
@@ -39,7 +40,7 @@ TEST(TestUpdateTS, testChangeResolved)
     std::srand(std::time(nullptr));
     uint32_t id = std::rand();
 
-    if (fs::exists(fs::path{ERRLOG_PERSIST_PATH} / std::to_string(id)))
+    if (fs::exists(fs::path{paths::error()} / std::to_string(id)))
     {
         std::cerr << "Another testcase is using ID " << id << "\n";
         id = std::rand();
@@ -85,7 +86,7 @@ TEST(TestUpdateTS, testChangeResolved)
     EXPECT_EQ(updateTS, elog.updateTimestamp());
 
     // Leave the directory in case other CI instances are running
-    fs::remove(fs::path{ERRLOG_PERSIST_PATH} / std::to_string(id));
+    fs::remove(fs::path{paths::error()} / std::to_string(id));
 }
 
 } // namespace test
