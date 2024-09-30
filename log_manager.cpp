@@ -6,6 +6,7 @@
 #include "elog_meta.hpp"
 #include "elog_serialize.hpp"
 #include "extensions.hpp"
+#include "paths.hpp"
 #include "util.hpp"
 
 #include <systemd/sd-bus.h>
@@ -584,7 +585,7 @@ void Manager::erase(uint32_t entryId)
         }
 
         // Delete the persistent representation of this error.
-        fs::path errorPath(ERRLOG_PERSIST_PATH);
+        fs::path errorPath(paths::error());
         errorPath /= std::to_string(entryId);
         fs::remove(errorPath);
 
@@ -633,7 +634,7 @@ void Manager::restore()
         return id == restoredId;
     };
 
-    fs::path dir(ERRLOG_PERSIST_PATH);
+    fs::path dir(paths::error());
     if (!fs::exists(dir) || fs::is_empty(dir))
     {
         return;

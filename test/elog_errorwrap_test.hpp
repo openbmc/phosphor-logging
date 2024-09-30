@@ -2,6 +2,7 @@
 
 #include "elog_serialize.hpp"
 #include "log_manager.hpp"
+#include "paths.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <phosphor-logging/elog-errors.hpp>
@@ -87,7 +88,7 @@ class TestLogManager : public testing::Test
         bus(sdbusplus::bus::new_default()),
         manager(bus, "/xyz/openbmc_test/abc")
     {
-        fs::create_directories(ERRLOG_PERSIST_PATH);
+        fs::create_directories(paths::error());
     }
 
     ~TestLogManager()

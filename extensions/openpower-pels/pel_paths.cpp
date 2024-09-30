@@ -30,14 +30,14 @@ static constexpr size_t defaultMaxNumPELs = 3000;
 
 fs::path getPELIDFile()
 {
-    fs::path logIDPath{EXTENSION_PERSIST_DIR};
+    fs::path logIDPath{phosphor::logging::paths::extension()};
     logIDPath /= fs::path{"pels"} / fs::path{"pelID"};
     return logIDPath;
 }
 
 fs::path getPELRepoPath()
 {
-    std::filesystem::path repoPath{EXTENSION_PERSIST_DIR};
+    std::filesystem::path repoPath{phosphor::logging::paths::extension()};
     repoPath /= "pels";
     return repoPath;
 }

@@ -3,6 +3,7 @@
 #include "elog_serialize.hpp"
 #include "extensions.hpp"
 #include "log_manager.hpp"
+#include "paths.hpp"
 
 #include <fcntl.h>
 #include <unistd.h>

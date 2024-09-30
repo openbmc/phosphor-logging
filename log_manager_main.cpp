@@ -4,6 +4,7 @@
 
 #include "extensions.hpp"
 #include "log_manager.hpp"
+#include "paths.hpp"
 
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
@@ -12,9 +13,15 @@
 
 #include <filesystem>
 
-int main(int /*argc*/, char* /*argv*/[])
+int main(int argc, char* argv[])
 {
     PHOSPHOR_LOG2_USING_WITH_FLAGS;
+
+    if (argc >= 1)
+    {
+        PERSIST_PATH_ROOT = strdup(argv[1]);
+        info("Using temporary {PATH} for logs", "PATH", PERSIST_PATH_ROOT);
+    }
 
     auto bus = sdbusplus::bus::new_default();
     auto event = sdeventplus::Event::get_default();
@@ -28,7 +35,7 @@ int main(int /*argc*/, char* /*argv*/[])
     phosphor::logging::Manager mgr(bus, OBJ_LOGGING, iMgr);
 
     // Create a directory to persist errors.
-    std::filesystem::create_directories(ERRLOG_PERSIST_PATH);
+    std::filesystem::create_directories(phosphor::logging::paths::error());
 
     // Recreate error d-bus objects from persisted errors.
     iMgr.restore();

@@ -3,6 +3,7 @@
 #include "config.h"
 
 #include "elog_entry.hpp"
+#include "paths.hpp"
 
 #include <filesystem>
 #include <string>
@@ -22,7 +23,7 @@ namespace fs = std::filesystem;
  *  @return fs::path - pathname of persisted error file
  */
 fs::path serialize(const Entry& e,
-                   const fs::path& dir = fs::path(ERRLOG_PERSIST_PATH));
+                   const fs::path& dir = fs::path(paths::error()));
 
 /** @brief Deserialze a persisted error into a d-bus object
  *  @param[in] path - pathname of persisted error file
@@ -38,8 +39,8 @@ bool deserialize(const fs::path& path, Entry& e);
  *                   be placed.
  *  @return fs::path - pathname of persisted error file
  */
-fs::path getEntrySerializePath(
-    uint32_t id, const fs::path& dir = fs::path(ERRLOG_PERSIST_PATH));
+fs::path getEntrySerializePath(uint32_t id,
+                               const fs::path& dir = fs::path(paths::error()));
 
 } // namespace logging
 } // namespace phosphor
