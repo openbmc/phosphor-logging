@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "735a3fd9_98cfef31",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-09-30T09:17:24Z",
+      "side": 1,
+      "message": "Just minor suggestion.",
+      "revId": "645e2c10be2e78ec68de0c93659f64c798467bdf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72af7897_b0e8826b",
+        "filename": "elog_entry.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-09-30T09:17:24Z",
+      "side": 1,
+      "message": "we could use `id()`  directly, right?",
+      "range": {
+        "startLine": 39,
+        "startChar": 21,
+        "endLine": 39,
+        "endChar": 28
+      },
+      "revId": "645e2c10be2e78ec68de0c93659f64c798467bdf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96e63bda_063bbdf9",
+        "filename": "test/elog_update_ts_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-09-30T09:17:24Z",
+      "side": 1,
+      "message": "deleteIsProhibitedMock?",
+      "range": {
+        "startLine": 23,
+        "startChar": 5,
+        "endLine": 23,
+        "endChar": 26
+      },
+      "revId": "645e2c10be2e78ec68de0c93659f64c798467bdf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48e54f72_3cf35d01",
+        "filename": "test/elog_update_ts_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2024-09-30T09:17:24Z",
+      "side": 1,
+      "message": "deleteIsNotProhibitedMock?",
+      "range": {
+        "startLine": 28,
+        "startChar": 5,
+        "endLine": 28,
+        "endChar": 27
+      },
+      "revId": "645e2c10be2e78ec68de0c93659f64c798467bdf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
