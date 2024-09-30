@@ -1580,6 +1580,7 @@
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x3400",
             "Severity": "non_error",
+            "ActionFlags": ["report", "heartbeat_call_home"],
             "SRC": {
                 "ReasonCode": "0x3416",
                 "Words6To9": {}
