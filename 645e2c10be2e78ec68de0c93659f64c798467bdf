@@ -18,6 +18,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fab0c01f_e45b9d67",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-09-30T11:07:29Z",
+      "side": 1,
+      "message": "Will address the review comments in the next patch by incorporating the comments from others also if any.",
+      "revId": "645e2c10be2e78ec68de0c93659f64c798467bdf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72af7897_b0e8826b",
@@ -31,6 +48,30 @@
       "writtenOn": "2024-09-30T09:17:24Z",
       "side": 1,
       "message": "we could use `id()`  directly, right?",
+      "range": {
+        "startLine": 39,
+        "startChar": 21,
+        "endLine": 39,
+        "endChar": 28
+      },
+      "revId": "645e2c10be2e78ec68de0c93659f64c798467bdf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "917e72fd_c58b0efe",
+        "filename": "elog_entry.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-09-30T11:07:29Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "72af7897_b0e8826b",
       "range": {
         "startLine": 39,
         "startChar": 21,
@@ -66,6 +107,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f18957cd_1047081a",
+        "filename": "test/elog_update_ts_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-09-30T11:07:29Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "96e63bda_063bbdf9",
+      "range": {
+        "startLine": 23,
+        "startChar": 5,
+        "endLine": 23,
+        "endChar": 26
+      },
+      "revId": "645e2c10be2e78ec68de0c93659f64c798467bdf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "48e54f72_3cf35d01",
         "filename": "test/elog_update_ts_test.cpp",
         "patchSetId": 1
@@ -77,6 +142,30 @@
       "writtenOn": "2024-09-30T09:17:24Z",
       "side": 1,
       "message": "deleteIsNotProhibitedMock?",
+      "range": {
+        "startLine": 28,
+        "startChar": 5,
+        "endLine": 28,
+        "endChar": 27
+      },
+      "revId": "645e2c10be2e78ec68de0c93659f64c798467bdf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33f18c9f_4c1e976d",
+        "filename": "test/elog_update_ts_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-09-30T11:07:29Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "48e54f72_3cf35d01",
       "range": {
         "startLine": 28,
         "startChar": 5,
