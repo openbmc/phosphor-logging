@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e6a4843_6b1af8ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-10-01T07:32:12Z",
+      "side": 1,
+      "message": "Pushed new patch after addressing the review comments.",
+      "revId": "cfde2980900aec031ff7ba53d6ad5b1b1ee1d6ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
