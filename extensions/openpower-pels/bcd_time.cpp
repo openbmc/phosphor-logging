@@ -43,17 +43,17 @@ BCDTime getBCDTime(std::chrono::time_point<std::chrono::system_clock>& time)
 
     using namespace std::chrono;
     time_t t = system_clock::to_time_t(time);
-    tm* localTime = localtime(&t);
-    assert(localTime != nullptr);
+    tm* gmTime = gmtime(&t);
+    assert(gmTime != nullptr);
 
-    int year = 1900 + localTime->tm_year;
+    int year = 1900 + gmTime->tm_year;
     bcd.yearMSB = toBCD(year / 100);
     bcd.yearLSB = toBCD(year % 100);
-    bcd.month = toBCD(localTime->tm_mon + 1);
-    bcd.day = toBCD(localTime->tm_mday);
-    bcd.hour = toBCD(localTime->tm_hour);
-    bcd.minutes = toBCD(localTime->tm_min);
-    bcd.seconds = toBCD(localTime->tm_sec);
+    bcd.month = toBCD(gmTime->tm_mon + 1);
+    bcd.day = toBCD(gmTime->tm_mday);
+    bcd.hour = toBCD(gmTime->tm_hour);
+    bcd.minutes = toBCD(gmTime->tm_min);
+    bcd.seconds = toBCD(gmTime->tm_sec);
 
     auto ms = duration_cast<milliseconds>(time.time_since_epoch()).count();
     int hundredths = (ms % 1000) / 10;
