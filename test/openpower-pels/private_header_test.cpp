@@ -156,7 +156,7 @@ TEST_F(PrivateHeaderTest, ConstructionTest)
     time_tm.tm_isdst = 0;
 
     // Convert the above time into a uint64_t in ms since the epoch time
-    auto timepoint = std::chrono::system_clock::from_time_t(mktime(&time_tm));
+    auto timepoint = std::chrono::system_clock::from_time_t(timegm(&time_tm));
     auto timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(
                          timepoint.time_since_epoch())
                          .count();

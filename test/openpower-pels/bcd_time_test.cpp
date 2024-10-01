@@ -81,7 +81,7 @@ TEST(BCDTimeTest, ConvertTest)
     time_tm.tm_sec = 42;
     time_tm.tm_isdst = 0;
 
-    auto timepoint = std::chrono::system_clock::from_time_t(mktime(&time_tm));
+    auto timepoint = std::chrono::system_clock::from_time_t(timegm(&time_tm));
     auto timeInBCD = getBCDTime(timepoint);
 
     EXPECT_EQ(timeInBCD.yearMSB, 0x20);

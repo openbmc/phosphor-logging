@@ -177,7 +177,7 @@ std::string Journal::getTimeStamp(sd_journal* journal) const
     time_t secs = usec / 1000000;
 
     // Convert seconds to tm struct required by strftime()
-    struct tm* timeStruct = localtime(&secs);
+    struct tm* timeStruct = gmtime(&secs);
     if (timeStruct == nullptr)
     {
         throw std::runtime_error{
