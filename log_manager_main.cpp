@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 {
     PHOSPHOR_LOG2_USING_WITH_FLAGS;
 
-    if (argc >= 1)
+    if (argc >= 2)
     {
         PERSIST_PATH_ROOT = strdup(argv[1]);
         info("Using temporary {PATH} for logs", "PATH", PERSIST_PATH_ROOT);
