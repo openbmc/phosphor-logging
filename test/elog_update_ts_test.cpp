@@ -102,12 +102,15 @@ TEST(TestUpdateTS, testChangeResolved)
 
 TEST(TestResolveProhibited, testResolveFlagChange)
 {
-    // Setting resolved will serialize, so need this directory.
-    fs::create_directory(ERRLOG_PERSIST_PATH);
+    auto persist_path = phosphor::logging::paths::error();
 
-    if (!fs::exists(ERRLOG_PERSIST_PATH))
+    // Setting resolved will serialize, so need this directory.
+    fs::create_directories(persist_path);
+
+    if (!fs::exists(persist_path))
     {
-        ADD_FAILURE() << "Could not create " << ERRLOG_PERSIST_PATH << "\n";
+        ADD_FAILURE() << "Could not create "
+                      << phosphor::logging::paths::error() << "\n";
         exit(1);
     }
 
@@ -119,7 +122,7 @@ TEST(TestResolveProhibited, testResolveFlagChange)
     std::srand(std::time(nullptr));
     uint32_t id = std::rand();
 
-    if (fs::exists(fs::path{ERRLOG_PERSIST_PATH} / std::to_string(id)))
+    if (fs::exists(persist_path / std::to_string(id)))
     {
         std::cerr << "Another testcase is using ID " << id << "\n";
         id = std::rand();
@@ -157,7 +160,7 @@ TEST(TestResolveProhibited, testResolveFlagChange)
     EXPECT_EQ(elog.resolved(), true);
 
     // Leave the directory in case other CI instances are running
-    fs::remove(fs::path{ERRLOG_PERSIST_PATH} / std::to_string(id));
+    fs::remove(persist_path / std::to_string(id));
 }
 } // namespace test
 } // namespace logging
