@@ -129,8 +129,12 @@ template <typename T>
 uint32_t commit()
 {
     // Validate if the exception is derived from sdbusplus::exception.
-    static_assert(std::is_base_of<sdbusplus::exception_t, T>::value,
+    static_assert(std::is_base_of_v<sdbusplus::exception_t, T>,
                   "T must be a descendant of sdbusplus::exception_t");
+    static_assert(
+        !std::is_base_of_v<sdbusplus::exception::generated_event<T>, T>,
+        "T must NOT be an sdbusplus::generated_event");
+
     return details::commit(T::errName);
 }
 
@@ -145,8 +149,12 @@ template <typename T>
 uint32_t commit(Entry::Level level)
 {
     // Validate if the exception is derived from sdbusplus::exception.
-    static_assert(std::is_base_of<sdbusplus::exception_t, T>::value,
+    static_assert(std::is_base_of_v<sdbusplus::exception_t, T>,
                   "T must be a descendant of sdbusplus::exception_t");
+    static_assert(
+        !std::is_base_of_v<sdbusplus::exception::generated_event<T>, T>,
+        "T must NOT be an sdbusplus::generated_event");
+
     return details::commit(T::errName, level);
 }
 
@@ -160,14 +168,17 @@ template <typename T, typename... Args>
 [[noreturn]] void elog(Args... i_args)
 {
     // Validate if the exception is derived from sdbusplus::exception.
-    static_assert(std::is_base_of<sdbusplus::exception_t, T>::value,
+    static_assert(std::is_base_of_v<sdbusplus::exception_t, T>,
                   "T must be a descendant of sdbusplus::exception_t");
+    static_assert(
+        !std::is_base_of_v<sdbusplus::exception::generated_event<T>, T>,
+        "T must NOT be an sdbusplus::generated_event");
 
     // Validate the caller passed in the required parameters
-    static_assert(
-        std::is_same<typename details::map_exception_type_t<T>::metadata_types,
-                     std::tuple<details::deduce_entry_type_t<Args>...>>::value,
-        "You are not passing in required arguments for this error");
+    static_assert(std::is_same_v<
+                      typename details::map_exception_type_t<T>::metadata_types,
+                      std::tuple<details::deduce_entry_type_t<Args>...>>,
+                  "You are not passing in required arguments for this error");
 
     log<details::map_exception_type_t<T>::L>(
         T::errDesc, details::deduce_entry_type<Args>{i_args}.get()...);
@@ -188,14 +199,17 @@ template <typename T, typename... Args>
 uint32_t report(Args... i_args)
 {
     // validate if the exception is derived from sdbusplus::exception.
-    static_assert(std::is_base_of<sdbusplus::exception_t, T>::value,
+    static_assert(std::is_base_of_v<sdbusplus::exception_t, T>,
                   "T must be a descendant of sdbusplus::exception_t");
+    static_assert(
+        !std::is_base_of_v<sdbusplus::exception::generated_event<T>, T>,
+        "T must NOT be an sdbusplus::generated_event");
 
     // Validate the caller passed in the required parameters
-    static_assert(
-        std::is_same<typename details::map_exception_type_t<T>::metadata_types,
-                     std::tuple<details::deduce_entry_type_t<Args>...>>::value,
-        "You are not passing in required arguments for this error");
+    static_assert(std::is_same_v<
+                      typename details::map_exception_type_t<T>::metadata_types,
+                      std::tuple<details::deduce_entry_type_t<Args>...>>,
+                  "You are not passing in required arguments for this error");
 
     log<details::map_exception_type_t<T>::L>(
         T::errDesc, details::deduce_entry_type<Args>{i_args}.get()...);
@@ -217,14 +231,17 @@ template <typename T, typename... Args>
 uint32_t report(Entry::Level level, Args... i_args)
 {
     // validate if the exception is derived from sdbusplus::exception.
-    static_assert(std::is_base_of<sdbusplus::exception_t, T>::value,
+    static_assert(std::is_base_of_v<sdbusplus::exception_t, T>,
                   "T must be a descendant of sdbusplus::exception_t");
+    static_assert(
+        !std::is_base_of_v<sdbusplus::exception::generated_event<T>, T>,
+        "T must NOT be an sdbusplus::generated_event");
 
     // Validate the caller passed in the required parameters
-    static_assert(
-        std::is_same<typename details::map_exception_type_t<T>::metadata_types,
-                     std::tuple<details::deduce_entry_type_t<Args>...>>::value,
-        "You are not passing in required arguments for this error");
+    static_assert(std::is_same_v<
+                      typename details::map_exception_type_t<T>::metadata_types,
+                      std::tuple<details::deduce_entry_type_t<Args>...>>,
+                  "You are not passing in required arguments for this error");
 
     log<details::map_exception_type_t<T>::L>(
         T::errDesc, details::deduce_entry_type<Args>{i_args}.get()...);
