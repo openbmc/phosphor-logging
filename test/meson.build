@@ -24,6 +24,7 @@ if not get_option('openpower-pel-extension').disabled()
 endif
 
 tests = [
+    'basic_event_commit',
     'extensions_test',
     'remote_logging_test_address',
     'remote_logging_test_config',
@@ -45,6 +46,7 @@ foreach t : tests
                 gmock_dep,
                 gtest_dep,
                 log_manager_deps,
+                pdi_dep,
                 phosphor_logging_dep,
             ],
             include_directories: include_directories('..', '../gen'),
