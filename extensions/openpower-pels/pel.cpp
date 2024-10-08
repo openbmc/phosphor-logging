@@ -780,7 +780,17 @@ namespace util
 
 std::unique_ptr<UserData> makeJSONUserDataSection(const nlohmann::json& json)
 {
-    auto jsonString = json.dump();
+    nlohmann::json jsonString;
+    try
+    {
+        jsonString = json.dump();
+    }
+    catch (const std::exception& e)
+    {
+        lg2::error("json.dump() failed with: {ERROR}", "ERROR", e);
+        jsonString = "Invalid JSON passed to makeJSONUserDataSection!";
+    }
+
     std::vector<uint8_t> jsonData(jsonString.begin(), jsonString.end());
 
     // Pad to a 4 byte boundary
