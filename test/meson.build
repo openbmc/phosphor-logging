@@ -24,8 +24,8 @@ if not get_option('openpower-pel-extension').disabled()
 endif
 
 tests = [
-    'basic_event_commit',
     'extensions_test',
+    'log_manager_dbus_tests',
     'remote_logging_test_address',
     'remote_logging_test_config',
     'remote_logging_test_port',
