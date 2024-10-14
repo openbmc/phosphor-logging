@@ -1316,64 +1316,6 @@ TEST_F(SRCTest, InventoryCalloutTestPriority)
     EXPECT_EQ(callout->priority(), 'M');
 }
 
-// Test for bmc & platform dump status bits
-TEST_F(SRCTest, DumpStatusBitsCheck)
-{
-    message::Entry entry;
-    entry.src.type = 0xBD;
-    entry.src.reasonCode = 0xABCD;
-    entry.subsystem = 0x42;
-
-    AdditionalData ad;
-    NiceMock<MockDataInterface> dataIface;
-    std::vector<std::string> dumpType{"bmc/entry", "resource/entry",
-                                      "system/entry"};
-
-    {
-        EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
-            .WillOnce(Return(std::vector<bool>{true, false, false}));
-
-        SRC src{entry, ad, dataIface};
-        EXPECT_TRUE(src.valid());
-
-        const auto& hexwords = src.hexwordData();
-        EXPECT_EQ(0x00080055, hexwords[0]);
-    }
-
-    {
-        EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
-            .WillOnce(Return(std::vector<bool>{false, true, false}));
-
-        SRC src{entry, ad, dataIface};
-        EXPECT_TRUE(src.valid());
-
-        const auto& hexwords = src.hexwordData();
-        EXPECT_EQ(0x00000255, hexwords[0]);
-    }
-
-    {
-        EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
-            .WillOnce(Return(std::vector<bool>{false, false, true}));
-
-        SRC src{entry, ad, dataIface};
-        EXPECT_TRUE(src.valid());
-
-        const auto& hexwords = src.hexwordData();
-        EXPECT_EQ(0x00000455, hexwords[0]);
-    }
-
-    {
-        EXPECT_CALL(dataIface, checkDumpStatus(dumpType))
-            .WillOnce(Return(std::vector<bool>{true, true, true}));
-
-        SRC src{entry, ad, dataIface};
-        EXPECT_TRUE(src.valid());
-
-        const auto& hexwords = src.hexwordData();
-        EXPECT_EQ(0x00080655, hexwords[0]);
-    }
-}
-
 // Test SRC with additional data - PEL_SUBSYSTEM
 TEST_F(SRCTest, TestPELSubsystem)
 {

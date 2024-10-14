@@ -444,14 +444,6 @@ class DataInterfaceBase
         extractConnectorFromLocCode(const std::string& locationCode);
 
     /**
-     * @brief Returns the dump status
-     *
-     * @return bool dump status
-     */
-    virtual std::vector<bool>
-        checkDumpStatus(const std::vector<std::string>& type) const = 0;
-
-    /**
      * @brief Create guard record
      *
      *  @param[in] binPath: phal devtree binary path used as key
@@ -863,16 +855,6 @@ class DataInterface : public DataInterfaceBase
      * @return bool - Manufacturing QuiesceOnError property
      */
     bool getQuiesceOnError() const override;
-
-    /**
-     * @brief Returns the dump status
-     *
-     * @param[in] type - The dump type to check for
-     *
-     * @return bool dump status
-     */
-    std::vector<bool>
-        checkDumpStatus(const std::vector<std::string>& type) const override;
 
     /**
      * @brief Create guard record

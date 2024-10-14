@@ -585,13 +585,6 @@ class SRC : public Section
         getMRUsFromJSON(const nlohmann::json& mruJSON);
 
     /**
-     * @brief Sets the dump status
-     *
-     * @param[in] dataIface - The DataInterface object
-     */
-    void setDumpStatus(const DataInterfaceBase& dataIface);
-
-    /**
      * @brief The SRC version field
      */
     uint8_t _version;
