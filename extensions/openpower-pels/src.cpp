@@ -338,7 +338,6 @@ SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
     //  FF: SRC format, set below
 
     setProgressCode(dataIface);
-    setDumpStatus(dataIface);
     setBMCFormat();
     setBMCPosition();
     setMotherboardCCIN(dataIface);
@@ -1461,28 +1460,6 @@ std::vector<src::MRU::MRUCallout>
     }
 
     return mrus;
-}
-
-void SRC::setDumpStatus(const DataInterfaceBase& dataIface)
-{
-    std::vector<bool> dumpStatus{false, false, false};
-
-    try
-    {
-        std::vector<std::string> dumpType = {"bmc/entry", "resource/entry",
-                                             "system/entry"};
-        dumpStatus = dataIface.checkDumpStatus(dumpType);
-
-        // For bmc      - set bit 0 of nibble [4-7] bits of byte-1 SP dump
-        // For resource - set bit 2 of nibble [4-7] bits of byte-2 Hypervisor
-        // For system   - set bit 1 of nibble [4-7] bits of byte-2 HW dump
-        _hexData[0] |= ((dumpStatus[0] << 19) | (dumpStatus[1] << 9) |
-                        (dumpStatus[2] << 10));
-    }
-    catch (const std::exception& e)
-    {
-        lg2::error("Checking dump status failed: {ERROR}", "ERROR", e);
-    }
 }
 
 std::vector<uint8_t> SRC::getSrcStruct()
