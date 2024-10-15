@@ -12,6 +12,12 @@
 #include <fstream>
 #include <unordered_map>
 
+#include <libguard/guard_interface.hpp>
+#include <libguard/include/guard_record.hpp>
+
+using GardType = openpower::guard::GardType;
+namespace libguard = openpower::guard;
+
 namespace openpower
 {
 namespace pels
@@ -455,12 +461,12 @@ class DataInterfaceBase
      * @brief Create guard record
      *
      *  @param[in] binPath: phal devtree binary path used as key
-     *  @param[in] type: Guard type
-     *  @param[in] logPath: error log entry object path
+     *  @param[in] eGardType: Guard type enum value
+     *  @param[in] plid: Pel ID
      */
     virtual void createGuardRecord(const std::vector<uint8_t>& binPath,
-                                   const std::string& type,
-                                   const std::string& logPath) const = 0;
+                                   GardType &eGardType,
+                                   const uint32_t plid) const = 0;
 
     /**
      * @brief Create Progress SRC property on the boot progress
@@ -878,12 +884,12 @@ class DataInterface : public DataInterfaceBase
      * @brief Create guard record
      *
      *  @param[in] binPath: phal devtree binary path used as key
-     *  @param[in] type: Guard type
-     *  @param[in] logPath: error log entry object path
+     *  @param[in] eGardType: Guard type enum value
+     *   @param[in] plid: pel id to be associated to the guard record
      */
     void createGuardRecord(const std::vector<uint8_t>& binPath,
-                           const std::string& type,
-                           const std::string& logPath) const override;
+                           GardType &eGardType,
+                           const uint32_t plid) const override;
 
     /**
      * @brief Create Progress SRC property on the boot progress
