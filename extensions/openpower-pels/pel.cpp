@@ -39,11 +39,15 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+#include <libguard/guard_interface.hpp>
+#include <libguard/include/guard_record.hpp>
 #include <phosphor-logging/lg2.hpp>
 
 #include <format>
 #include <iostream>
 #include <ranges>
+
+namespace libguard = openpower::guard;
 
 namespace openpower
 {
@@ -174,9 +178,9 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
     }
 
 #ifdef PEL_ENABLE_PHAL
+    libguard::libguard_init(false);
     auto path = std::string(OBJ_ENTRY) + '/' + std::to_string(obmcLogID);
-    openpower::pels::phal::createServiceActions(callouts, path, dataIface,
-                                                plid());
+    openpower::pels::phal::createServiceActions(callouts, dataIface, plid());
 #endif
 
     // Store in the PEL any important debug data created while
