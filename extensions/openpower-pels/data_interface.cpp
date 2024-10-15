@@ -95,7 +95,6 @@ constexpr auto operationalStatus =
     "xyz.openbmc_project.State.Decorator.OperationalStatus";
 constexpr auto logSetting = "xyz.openbmc_project.Logging.Settings";
 constexpr auto associationDef = "xyz.openbmc_project.Association.Definitions";
-constexpr auto hwIsolationCreate = "org.open_power.HardwareIsolation.Create";
 constexpr auto hwIsolationEntry = "xyz.openbmc_project.HardwareIsolation.Entry";
 constexpr auto association = "xyz.openbmc_project.Association";
 constexpr auto biosConfigMgr = "xyz.openbmc_project.BIOSConfig.Manager";
@@ -235,6 +234,15 @@ DataInterface::DataInterface(sdbusplus::bus_t& bus) :
     {
 #ifdef PEL_ENABLE_PHAL
         initPHAL();
+        try
+        {
+            libguard::libguard_init(false);
+        }
+        catch (libguard::exception::GuardException& e)
+        {
+            lg2::error("Exception to init the guard {ERROR}", "ERROR",
+                       e.what());
+        }
 #endif
     }
     else
@@ -687,38 +695,20 @@ bool DataInterface::getQuiesceOnError() const
     return ret;
 }
 
+#ifdef PEL_ENABLE_PHAL
 void DataInterface::createGuardRecord(const std::vector<uint8_t>& binPath,
-                                      const std::string& type,
-                                      const std::string& logPath) const
+                                      GardType eGardType, uint32_t plid) const
 {
     try
     {
-        auto method = _bus.new_method_call(
-            service_name::hwIsolation, object_path::hwIsolation,
-            interface::hwIsolationCreate, "CreateWithEntityPath");
-        method.append(binPath, type, sdbusplus::message::object_path(logPath));
-        // Note: hw isolation "CreateWithEntityPath" got dependency on logging
-        // api's. Making d-bus call no reply type to avoid cyclic dependency.
-        // Added minimal timeout to catch initial failures.
-        // Need to revisit this design later to avoid cyclic dependency.
-        constexpr auto hwIsolationTimeout = 100000; // in micro seconds
-        _bus.call_noreply(method, hwIsolationTimeout);
+        libguard::create(binPath, plid, eGardType);
     }
-
-    catch (const sdbusplus::exception_t& e)
+    catch (libguard::exception::GuardException& e)
     {
-        std::string errName = e.name();
-        // SD_BUS_ERROR_TIMEOUT error is expected, due to PEL api dependency
-        // mentioned above. Ignoring the error.
-        if (errName != SD_BUS_ERROR_TIMEOUT)
-        {
-            lg2::error("GUARD D-Bus call exception. Path={PATH}, "
-                       "interface = {IFACE}, exception = {ERROR}",
-                       "PATH", object_path::hwIsolation, "IFACE",
-                       interface::hwIsolationCreate, "ERROR", e);
-        }
+        lg2::error("Exception to create the guard {ERROR}", "ERROR", e.what());
     }
 }
+#endif
 
 void DataInterface::createProgressSRC(
     const uint64_t& priSRC, const std::vector<uint8_t>& srcStruct) const

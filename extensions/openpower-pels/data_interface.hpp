@@ -3,6 +3,11 @@
 #include "dbus_types.hpp"
 #include "dbus_watcher.hpp"
 
+#ifdef PEL_ENABLE_PHAL
+#include <libguard/guard_interface.hpp>
+#include <libguard/include/guard_record.hpp>
+#endif
+
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
@@ -11,6 +16,11 @@
 #include <filesystem>
 #include <fstream>
 #include <unordered_map>
+
+#ifdef PEL_ENABLE_PHAL
+using GardType = openpower::guard::GardType;
+namespace libguard = openpower::guard;
+#endif
 
 namespace openpower
 {
@@ -443,16 +453,17 @@ class DataInterfaceBase
     static std::pair<std::string, std::string>
         extractConnectorFromLocCode(const std::string& locationCode);
 
+#ifdef PEL_ENABLE_PHAL
     /**
      * @brief Create guard record
      *
      *  @param[in] binPath: phal devtree binary path used as key
-     *  @param[in] type: Guard type
-     *  @param[in] logPath: error log entry object path
+     *  @param[in] eGardType: Guard type enum value
+     *  @param[in] plid: Pel ID
      */
     virtual void createGuardRecord(const std::vector<uint8_t>& binPath,
-                                   const std::string& type,
-                                   const std::string& logPath) const = 0;
+                                   GardType eGardType, uint32_t plid) const = 0;
+#endif
 
     /**
      * @brief Create Progress SRC property on the boot progress
@@ -856,16 +867,17 @@ class DataInterface : public DataInterfaceBase
      */
     bool getQuiesceOnError() const override;
 
+#ifdef PEL_ENABLE_PHAL
     /**
      * @brief Create guard record
      *
      *  @param[in] binPath: phal devtree binary path used as key
-     *  @param[in] type: Guard type
-     *  @param[in] logPath: error log entry object path
+     *  @param[in] eGardType: Guard type enum value
+     *   @param[in] plid: pel id to be associated to the guard record
      */
     void createGuardRecord(const std::vector<uint8_t>& binPath,
-                           const std::string& type,
-                           const std::string& logPath) const override;
+                           GardType eGardType, uint32_t plid) const override;
+#endif
 
     /**
      * @brief Create Progress SRC property on the boot progress
