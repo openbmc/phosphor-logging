@@ -32,6 +32,7 @@ if build_phal
         cpp.find_library('pdbg'),
         cpp.find_library('ekb'),
         cpp.find_library('phal'),
+        cpp.find_library('libguard'),
     ]
     extra_args += [
         '-DPEL_ENABLE_PHAL',
