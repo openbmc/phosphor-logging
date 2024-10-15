@@ -45,6 +45,11 @@
 #include <iostream>
 #include <ranges>
 
+#include <libguard/guard_interface.hpp>
+#include <libguard/include/guard_record.hpp>
+
+namespace libguard = openpower::guard;
+
 namespace openpower
 {
 namespace pels
@@ -174,8 +179,9 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
     }
 
 #ifdef PEL_ENABLE_PHAL
+    libguard::libguard_init(false);
     auto path = std::string(OBJ_ENTRY) + '/' + std::to_string(obmcLogID);
-    openpower::pels::phal::createServiceActions(callouts, path, dataIface,
+    openpower::pels::phal::createServiceActions(callouts, dataIface,
                                                 plid());
 #endif
 

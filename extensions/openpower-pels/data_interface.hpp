@@ -456,11 +456,11 @@ class DataInterfaceBase
      *
      *  @param[in] binPath: phal devtree binary path used as key
      *  @param[in] type: Guard type
-     *  @param[in] logPath: error log entry object path
+     *  @param[in] plid: Pel ID
      */
     virtual void createGuardRecord(const std::vector<uint8_t>& binPath,
                                    const std::string& type,
-                                   const std::string& logPath) const = 0;
+                                   const uint32_t plid) const = 0;
 
     /**
      * @brief Create Progress SRC property on the boot progress
@@ -879,11 +879,11 @@ class DataInterface : public DataInterfaceBase
      *
      *  @param[in] binPath: phal devtree binary path used as key
      *  @param[in] type: Guard type
-     *  @param[in] logPath: error log entry object path
+     *   @param[in] plid: pel id to be associated to the guard record
      */
     void createGuardRecord(const std::vector<uint8_t>& binPath,
                            const std::string& type,
-                           const std::string& logPath) const override;
+                           const uint32_t plid) const override;
 
     /**
      * @brief Create Progress SRC property on the boot progress

@@ -15,39 +15,6 @@ namespace phal
 {
 
 /**
- * @brief Helper function to get EntrySeverity based on
- *        the given GardType
- *
- * @param[in] guardType openpower gard type
- *
- * @return EntrySeverity on success
- *         Empty optional on failure
- */
-std::optional<EntrySeverity> getEntrySeverityType(const std::string& guardType)
-{
-    if ((guardType == "GARD_Unrecoverable") || (guardType == "GARD_Fatal"))
-    {
-        return EntrySeverity::Critical;
-    }
-    else if (guardType == "GARD_User_Manual")
-    {
-        return EntrySeverity::Manual;
-    }
-    else if (guardType == "GARD_Predictive")
-    {
-        return EntrySeverity::Warning;
-    }
-    else
-    {
-        lg2::error(
-            "GUARD: Unsupported GuardType [{GUARD_TYPE}] was given to get the "
-            "hardware isolation entry severity type",
-            "GUARD_TYPE", guardType);
-    }
-    return std::nullopt;
-}
-
-/**
  * @brief Helper function to create guard records.
  *
  * User need to fill the JSON callouts array with below keywords/data
@@ -57,11 +24,11 @@ std::optional<EntrySeverity> getEntrySeverityType(const std::string& guardType)
  * "Guarded": boolean, true to create gurad records.
  *
  * @param[in] jsonCallouts - The array of JSON callouts, or an empty object.
- * @param[in] path - The BMC error log object path
+ * @param[in] plid - The PEL ID to be associated with the guard
  * @param[in] dataIface - The DataInterface object
  */
 void createGuardRecords(const nlohmann::json& jsonCallouts,
-                        const std::string& path,
+                        const uint32_t plid,
                         const DataInterfaceBase& dataIface)
 {
     if (jsonCallouts.empty())
@@ -100,33 +67,24 @@ void createGuardRecords(const nlohmann::json& jsonCallouts,
             auto entityPath = _callout.at("EntityPath").get<EntityPath>();
 
             std::stringstream ss;
-            for (uint32_t a = 0; a < sizeof(ATTR_PHYS_BIN_PATH_Type); a++)
-            {
-                ss << " 0x" << std::hex << static_cast<int>(entityPath[a]);
-            }
+            std::for_each(entityPath.begin(), entityPath.end(), [&ss](const auto& ele) {
+                ss << std::setw(2) << std::setfill('0') << std::hex << (int)ele << " ";
+            });
+            
             std::string s = ss.str();
             lg2::info("GUARD: ({GUARD_TARGET})", "GUARD_TARGET", s);
 
             // Get Guard type
-            auto severity = EntrySeverity::Warning;
+            std::string guardType = "GARD_Predictive";
             if (!_callout.contains("GuardType"))
             {
                 lg2::error("GUARD: doesn't have Severity, setting to warning");
             }
             else
             {
-                auto guardType = _callout.at("GuardType").get<std::string>();
-                // convert GuardType to severity type.
-                auto sType = getEntrySeverityType(guardType);
-                if (sType.has_value())
-                {
-                    severity = sType.value();
-                }
+                guardType = _callout.at("GuardType").get<std::string>();
             }
-            // Create guard record
-            auto type = sdbusplus::xyz::openbmc_project::HardwareIsolation::
-                server::convertForMessage(severity);
-            dataIface.createGuardRecord(entityPath, type, path);
+            dataIface.createGuardRecord(entityPath, guardType, plid);
         }
         catch (const std::exception& e)
         {
@@ -204,12 +162,11 @@ void createDeconfigRecords(const nlohmann::json& jsonCallouts,
 }
 
 void createServiceActions(const nlohmann::json& jsonCallouts,
-                          const std::string& path,
                           const DataInterfaceBase& dataIface,
                           const uint32_t plid)
 {
     // Create Guard records.
-    createGuardRecords(jsonCallouts, path, dataIface);
+    createGuardRecords(jsonCallouts, plid, dataIface);
     // Create Deconfigure records.
     createDeconfigRecords(jsonCallouts, plid);
 }
