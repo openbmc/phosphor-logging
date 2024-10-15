@@ -95,7 +95,8 @@ constexpr auto operationalStatus =
     "xyz.openbmc_project.State.Decorator.OperationalStatus";
 constexpr auto logSetting = "xyz.openbmc_project.Logging.Settings";
 constexpr auto associationDef = "xyz.openbmc_project.Association.Definitions";
-constexpr auto hwIsolationCreate = "org.open_power.HardwareIsolation.Create";
+constexpr auto dumpEntry = "xyz.openbmc_project.Dump.Entry";
+constexpr auto dumpProgress = "xyz.openbmc_project.Common.Progress";
 constexpr auto hwIsolationEntry = "xyz.openbmc_project.HardwareIsolation.Entry";
 constexpr auto association = "xyz.openbmc_project.Association";
 constexpr auto biosConfigMgr = "xyz.openbmc_project.BIOSConfig.Manager";
@@ -235,6 +236,7 @@ DataInterface::DataInterface(sdbusplus::bus_t& bus) :
     {
 #ifdef PEL_ENABLE_PHAL
         initPHAL();
+        libguard::libguard_init(false);
 #endif
     }
     else
@@ -687,38 +689,88 @@ bool DataInterface::getQuiesceOnError() const
     return ret;
 }
 
+std::vector<bool>
+    DataInterface::checkDumpStatus(const std::vector<std::string>& type) const
+{
+    DBusSubTree subtree;
+    std::vector<bool> result(type.size(), false);
+
+    // Query GetSubTree for the availability of dump interface
+    auto method = _bus.new_method_call(service_name::objectMapper,
+                                       object_path::objectMapper,
+                                       interface::objectMapper, "GetSubTree");
+    method.append(std::string{"/"}, 0,
+                  std::vector<std::string>{interface::dumpEntry});
+    auto reply = _bus.call(method, dbusTimeout);
+
+    reply.read(subtree);
+
+    if (subtree.empty())
+    {
+        return result;
+    }
+
+    std::vector<bool>::iterator itDumpStatus = result.begin();
+    uint8_t count = 0;
+    for (const auto& [path, serviceInfo] : subtree)
+    {
+        const auto& service = serviceInfo.begin()->first;
+        // Check for dump type on the object path
+        for (const auto& it : type)
+        {
+            if (path.find(it) != std::string::npos)
+            {
+                DBusValue value, progress;
+
+                // If dump type status is already available go for next path
+                if (*itDumpStatus)
+                {
+                    break;
+                }
+
+                // Check for valid dump to be available if following
+                // conditions are met for the dump entry path -
+                // Offloaded == false and Status == Completed
+                getProperty(service, path, interface::dumpEntry, "Offloaded",
+                            value);
+                getProperty(service, path, interface::dumpProgress, "Status",
+                            progress);
+                auto offload = std::get<bool>(value);
+                auto status = std::get<std::string>(progress);
+                if (!offload && (status.find("Completed") != std::string::npos))
+                {
+                    *itDumpStatus = true;
+                    count++;
+                    if (count >= type.size())
+                    {
+                        return result;
+                    }
+                    break;
+                }
+            }
+            ++itDumpStatus;
+        }
+        itDumpStatus = result.begin();
+    }
+
+    return result;
+}
+
+#ifdef PEL_ENABLE_PHAL
 void DataInterface::createGuardRecord(const std::vector<uint8_t>& binPath,
-                                      const std::string& type,
-                                      const std::string& logPath) const
+                                      GardType& eGardType,
+                                      const uint32_t plid) const
 {
     try
     {
-        auto method = _bus.new_method_call(
-            service_name::hwIsolation, object_path::hwIsolation,
-            interface::hwIsolationCreate, "CreateWithEntityPath");
-        method.append(binPath, type, sdbusplus::message::object_path(logPath));
-        // Note: hw isolation "CreateWithEntityPath" got dependency on logging
-        // api's. Making d-bus call no reply type to avoid cyclic dependency.
-        // Added minimal timeout to catch initial failures.
-        // Need to revisit this design later to avoid cyclic dependency.
-        constexpr auto hwIsolationTimeout = 100000; // in micro seconds
-        _bus.call_noreply(method, hwIsolationTimeout);
+        libguard::create(binPath, plid, eGardType);
     }
-
-    catch (const sdbusplus::exception_t& e)
+    catch (libguard::exception::GuardException& e)
     {
-        std::string errName = e.name();
-        // SD_BUS_ERROR_TIMEOUT error is expected, due to PEL api dependency
-        // mentioned above. Ignoring the error.
-        if (errName != SD_BUS_ERROR_TIMEOUT)
-        {
-            lg2::error("GUARD D-Bus call exception. Path={PATH}, "
-                       "interface = {IFACE}, exception = {ERROR}",
-                       "PATH", object_path::hwIsolation, "IFACE",
-                       interface::hwIsolationCreate, "ERROR", e);
-        }
+        lg2::error("Exception to create the guard {ERROR}", "ERROR", e.what());
     }
 }
+#endif
 
 void DataInterface::createProgressSRC(
     const uint64_t& priSRC, const std::vector<uint8_t>& srcStruct) const

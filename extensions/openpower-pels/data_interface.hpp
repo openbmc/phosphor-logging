@@ -3,6 +3,11 @@
 #include "dbus_types.hpp"
 #include "dbus_watcher.hpp"
 
+#ifdef PEL_ENABLE_PHAL
+#include <libguard/guard_interface.hpp>
+#include <libguard/include/guard_record.hpp>
+#endif
+
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
@@ -11,6 +16,11 @@
 #include <filesystem>
 #include <fstream>
 #include <unordered_map>
+
+#ifdef PEL_ENABLE_PHAL
+using GardType = openpower::guard::GardType;
+namespace libguard = openpower::guard;
+#endif
 
 namespace openpower
 {
@@ -444,15 +454,25 @@ class DataInterfaceBase
         extractConnectorFromLocCode(const std::string& locationCode);
 
     /**
+     * @brief Returns the dump status
+     *
+     * @return bool dump status
+     */
+    virtual std::vector<bool>
+        checkDumpStatus(const std::vector<std::string>& type) const = 0;
+
+#ifdef PEL_ENABLE_PHAL
+    /**
      * @brief Create guard record
      *
      *  @param[in] binPath: phal devtree binary path used as key
-     *  @param[in] type: Guard type
-     *  @param[in] logPath: error log entry object path
+     *  @param[in] eGardType: Guard type enum value
+     *  @param[in] plid: Pel ID
      */
     virtual void createGuardRecord(const std::vector<uint8_t>& binPath,
-                                   const std::string& type,
-                                   const std::string& logPath) const = 0;
+                                   GardType& eGardType,
+                                   const uint32_t plid) const = 0;
+#endif
 
     /**
      * @brief Create Progress SRC property on the boot progress
@@ -857,15 +877,27 @@ class DataInterface : public DataInterfaceBase
     bool getQuiesceOnError() const override;
 
     /**
+     * @brief Returns the dump status
+     *
+     * @param[in] type - The dump type to check for
+     *
+     * @return bool dump status
+     */
+    std::vector<bool>
+        checkDumpStatus(const std::vector<std::string>& type) const override;
+
+#ifdef PEL_ENABLE_PHAL
+    /**
      * @brief Create guard record
      *
      *  @param[in] binPath: phal devtree binary path used as key
-     *  @param[in] type: Guard type
-     *  @param[in] logPath: error log entry object path
+     *  @param[in] eGardType: Guard type enum value
+     *   @param[in] plid: pel id to be associated to the guard record
      */
     void createGuardRecord(const std::vector<uint8_t>& binPath,
-                           const std::string& type,
-                           const std::string& logPath) const override;
+                           GardType& eGardType,
+                           const uint32_t plid) const override;
+#endif
 
     /**
      * @brief Create Progress SRC property on the boot progress

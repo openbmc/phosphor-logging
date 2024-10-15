@@ -34,6 +34,11 @@
 #ifdef PEL_ENABLE_PHAL
 #include "phal_service_actions.hpp"
 #include "sbe_ffdc_handler.hpp"
+
+#include <libguard/guard_interface.hpp>
+#include <libguard/include/guard_record.hpp>
+
+namespace libguard = openpower::guard;
 #endif
 
 #include <sys/stat.h>
@@ -175,8 +180,7 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
 
 #ifdef PEL_ENABLE_PHAL
     auto path = std::string(OBJ_ENTRY) + '/' + std::to_string(obmcLogID);
-    openpower::pels::phal::createServiceActions(callouts, path, dataIface,
-                                                plid());
+    openpower::pels::phal::createServiceActions(callouts, dataIface, plid());
 #endif
 
     // Store in the PEL any important debug data created while
