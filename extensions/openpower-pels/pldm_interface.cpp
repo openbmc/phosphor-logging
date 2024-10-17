@@ -275,6 +275,7 @@ void PLDMInterface::receive(IO& /*io*/, int /*fd*/, uint32_t revents,
     pldm_tid_t pldmTID;
     auto rc = pldm_transport_recv_msg(transport, &pldmTID, &responseMsg,
                                       &responseSize);
+    struct pldm_msg_hdr* hdr = (struct pldm_msg_hdr*)responseMsg;
     if (pldmTID != _eid)
     {
         // We got a response to someone else's message. Ignore it.
@@ -297,6 +298,11 @@ void PLDMInterface::receive(IO& /*io*/, int /*fd*/, uint32_t revents,
         status = ResponseStatus::failure;
 
         responseMsg = nullptr;
+    }
+    if (hdr && (hdr->request || hdr->datagram))
+    {
+        free(responseMsg);
+        return;
     }
 
     cleanupCmd();
