@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c667ed72_ffb171e5",
+        "filename": "extensions/openpower-pels/pel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000089
+      },
+      "writtenOn": "2024-10-22T06:47:00Z",
+      "side": 1,
+      "message": "PEL object is created for every PEL probably we should add this init in phosphor logging main method?",
+      "revId": "31fad2b01236d1219e8a0248cdfd6a3cca33b5be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
