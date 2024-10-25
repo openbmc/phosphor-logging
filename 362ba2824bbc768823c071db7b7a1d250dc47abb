@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "593d5ba2_cae73224",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1001592
+      },
+      "writtenOn": "2024-10-25T14:23:17Z",
+      "side": 1,
+      "message": "mistake while rebasing. Fixed it.",
+      "parentUuid": "40f368a1_109990ff",
+      "revId": "362ba2824bbc768823c071db7b7a1d250dc47abb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ba68878f_7c224bf8",
         "filename": "extensions/openpower-pels/data_interface.hpp",
         "patchSetId": 13
@@ -31,6 +49,30 @@
       "writtenOn": "2024-10-24T14:52:01Z",
       "side": 1,
       "message": "Since this is an enum, you don\u0027t need to pass by reference",
+      "range": {
+        "startLine": 465,
+        "startChar": 35,
+        "endLine": 465,
+        "endChar": 43
+      },
+      "revId": "362ba2824bbc768823c071db7b7a1d250dc47abb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c97d3e60_01dc8746",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 1001592
+      },
+      "writtenOn": "2024-10-25T14:23:17Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "ba68878f_7c224bf8",
       "range": {
         "startLine": 465,
         "startChar": 35,
@@ -66,6 +108,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3f963547_63ad138a",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 1001592
+      },
+      "writtenOn": "2024-10-25T14:23:17Z",
+      "side": 1,
+      "message": "passed by reference",
+      "parentUuid": "b8c193a1_9e81a892",
+      "range": {
+        "startLine": 466,
+        "startChar": 35,
+        "endLine": 466,
+        "endChar": 40
+      },
+      "revId": "362ba2824bbc768823c071db7b7a1d250dc47abb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ccdc088c_35be559a",
         "filename": "extensions/openpower-pels/phal_service_actions.cpp",
         "patchSetId": 13
@@ -77,6 +143,30 @@
       "writtenOn": "2024-10-24T14:52:01Z",
       "side": 1,
       "message": "if you use std::ranges::for_each you can just pass in the container and not the iterators",
+      "range": {
+        "startLine": 104,
+        "startChar": 12,
+        "endLine": 104,
+        "endChar": 25
+      },
+      "revId": "362ba2824bbc768823c071db7b7a1d250dc47abb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbadf62e_c1ef1e30",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1001592
+      },
+      "writtenOn": "2024-10-25T14:23:17Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "ccdc088c_35be559a",
       "range": {
         "startLine": 104,
         "startChar": 12,
@@ -112,6 +202,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8549c3d9_26a5b435",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1001592
+      },
+      "writtenOn": "2024-10-25T14:23:17Z",
+      "side": 1,
+      "message": "used stf::format instead",
+      "parentUuid": "c9bd2c9c_20037da7",
+      "range": {
+        "startLine": 107,
+        "startChar": 48,
+        "endLine": 107,
+        "endChar": 53
+      },
+      "revId": "362ba2824bbc768823c071db7b7a1d250dc47abb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "83c91427_8a219205",
         "filename": "extensions/openpower-pels/phal_service_actions.cpp",
         "patchSetId": 13
@@ -135,6 +249,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f3206084_1e1e09fb",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1001592
+      },
+      "writtenOn": "2024-10-25T14:23:17Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "83c91427_8a219205",
+      "range": {
+        "startLine": 117,
+        "startChar": 69,
+        "endLine": 117,
+        "endChar": 77
+      },
+      "revId": "362ba2824bbc768823c071db7b7a1d250dc47abb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cee8354b_0bfb5dad",
         "filename": "extensions/openpower-pels/phal_service_actions.cpp",
         "patchSetId": 13
@@ -146,6 +284,30 @@
       "writtenOn": "2024-10-24T14:52:01Z",
       "side": 1,
       "message": "nit: can do this all in one line with:\n\nGardType eGuardType \u003d getGardType(guardTypeStr).value_or(Predictive)",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 129,
+        "endChar": 13
+      },
+      "revId": "362ba2824bbc768823c071db7b7a1d250dc47abb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bc60b09_5fbb16bb",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1001592
+      },
+      "writtenOn": "2024-10-25T14:23:17Z",
+      "side": 1,
+      "message": "Thanks. Done",
+      "parentUuid": "cee8354b_0bfb5dad",
       "range": {
         "startLine": 124,
         "startChar": 0,
