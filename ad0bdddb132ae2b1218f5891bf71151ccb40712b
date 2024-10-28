@@ -16,6 +16,29 @@
       "message": "done",
       "revId": "ad0bdddb132ae2b1218f5891bf71151ccb40712b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0550ff0e_0315cbb2",
+        "filename": "extensions/openpower-pels/phal_service_actions.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-10-28T14:09:26Z",
+      "side": 1,
+      "message": "Could remove this as well, but will +2 anyway",
+      "range": {
+        "startLine": 204,
+        "startChar": 25,
+        "endLine": 204,
+        "endChar": 32
+      },
+      "revId": "ad0bdddb132ae2b1218f5891bf71151ccb40712b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
