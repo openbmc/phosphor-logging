@@ -552,7 +552,7 @@
         },
 
         {
-            "Name": "xyz.openbmc_project.Logging.Error.LogsCleared",
+            "Name": "xyz.openbmc_project.Logging.Cleared",
             "Subsystem": "bmc_firmware",
             "Severity": "non_error",
 
@@ -561,7 +561,7 @@
                 "Words6To9": {
                     "6": {
                         "Description": "Number of logs deleted",
-                        "AdditionalDataPropSource": "NUM_LOGS"
+                        "AdditionalDataPropSource": "NUMBER_OF_LOGS"
                     }
                 }
             },
