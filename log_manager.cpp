@@ -6,6 +6,7 @@
 #include "elog_meta.hpp"
 #include "elog_serialize.hpp"
 #include "extensions.hpp"
+#include "lib/lg2_commit.hpp"
 #include "paths.hpp"
 #include "util.hpp"
 
@@ -257,6 +258,13 @@ auto Manager::createEntry(
     // Note: No need to close the file descriptors in the FFDC.
 
     return objPath;
+}
+
+auto Manager::createFromEvent(sdbusplus::exception::generated_event_base&&
+                                  event) -> sdbusplus::message::object_path
+{
+    auto [msg, level, data] = lg2::details::extractEvent(std::move(event));
+    return this->createEntry(msg, level, std::move(data));
 }
 
 bool Manager::isQuiesceOnErrorEnabled()

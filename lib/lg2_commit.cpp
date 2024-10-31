@@ -1,3 +1,5 @@
+#include "lg2_commit.hpp"
+
 #include <sys/syslog.h>
 
 #include <nlohmann/json.hpp>
@@ -115,6 +117,21 @@ auto commit(sdbusplus::async::context& ctx,
         .path(Create::instance_path)
         .create(t.name(), severity_from_syslog(t.severity()),
                 data_from_json(t));
+}
+
+auto extractEvent(sdbusplus::exception::generated_event_base&& t)
+    -> std::tuple<std::string, Entry::Level, std::vector<std::string>>
+{
+    auto data = data_from_json(t);
+    std::vector<std::string> additional_data = {};
+
+    for (auto& [key, data] : data)
+    {
+        additional_data.emplace_back(key + "=" + data);
+    }
+
+    return {t.name(), severity_from_syslog(t.severity()),
+            std::move(additional_data)};
 }
 
 } // namespace lg2::details

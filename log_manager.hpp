@@ -2,14 +2,14 @@
 
 #include "elog_block.hpp"
 #include "elog_entry.hpp"
-#include "xyz/openbmc_project/Collection/DeleteAll/server.hpp"
-#include "xyz/openbmc_project/Logging/Create/server.hpp"
-#include "xyz/openbmc_project/Logging/Entry/server.hpp"
 #include "xyz/openbmc_project/Logging/Internal/Manager/server.hpp"
-#include "xyz/openbmc_project/Logging/error.hpp"
 
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
+#include <xyz/openbmc_project/Collection/DeleteAll/server.hpp>
+#include <xyz/openbmc_project/Logging/Create/server.hpp>
+#include <xyz/openbmc_project/Logging/Entry/server.hpp>
+#include <xyz/openbmc_project/Logging/event.hpp>
 
 #include <list>
 
@@ -26,8 +26,7 @@ using DeleteAllIface =
     sdbusplus::server::xyz::openbmc_project::collection::DeleteAll;
 
 using Severity = sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level;
-using LogsCleared =
-    sdbusplus::xyz::openbmc_project::Logging::Error::LogsCleared;
+using LoggingCleared = sdbusplus::event::xyz::openbmc_project::Logging::Cleared;
 
 namespace details
 {
@@ -185,6 +184,13 @@ class Manager : public details::ServerObject<details::ManagerIface>
     auto create(const std::string& message, Severity severity,
                 const std::map<std::string, std::string>& additionalData,
                 const FFDCEntries& ffdc = FFDCEntries{})
+        -> sdbusplus::message::object_path;
+
+    /** @brief Create an internal event log from the sdbusplus generated event
+     *
+     *  @param[in] event - The event to create.
+     */
+    auto createFromEvent(sdbusplus::exception::generated_event_base&& event)
         -> sdbusplus::message::object_path;
 
     /** @brief Common wrapper for creating an Entry object
@@ -351,10 +357,8 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
     {
         log<level::INFO>("Deleting all log entries");
         auto numbersOfLogs = manager.eraseAll();
-        std::map<std::string, std::string> additionalData;
-        additionalData.emplace("NUM_LOGS", std::to_string(numbersOfLogs));
-        manager.create(LogsCleared::errName, Severity::Informational,
-                       additionalData);
+        manager.createFromEvent(
+            LoggingCleared("NUMBER_OF_LOGS", numbersOfLogs));
     }
 
     /** @brief D-Bus method call implementation to create an event log.
