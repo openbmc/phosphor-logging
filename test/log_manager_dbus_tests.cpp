@@ -113,8 +113,10 @@ TEST_F(TestLogManagerDbus, CallCommitAsync)
 {
     sdbusplus::message::object_path path{};
     std::string log_count{};
+    pid_t pid = 0;
+    std::string source_file{};
 
-    auto create_log = [this, &path, &log_count]() -> sdbusplus::async::task<> {
+    auto create_log = [&, this]() -> sdbusplus::async::task<> {
         // Log an event.
         path = co_await lg2::commit(data->client_ctx,
                                     LoggingCleared("NUMBER_OF_LOGS", 6));
@@ -125,12 +127,24 @@ TEST_F(TestLogManagerDbus, CallCommitAsync)
                                   .path(path.str)
                                   .additional_data();
 
-        // Extract the NUMBER_OF_LOGS.
+        // Extract the NUMBER_OF_LOGS, PID, and CODE_FILE.
         for (const auto& value : additionalData)
         {
+            auto getValue = [&value]() {
+                return value.substr(value.find_first_of('=') + 1);
+            };
+
             if (value.starts_with("NUMBER_OF_LOGS="))
             {
-                log_count = value.substr(value.find_first_of('=') + 1);
+                log_count = getValue();
+            }
+            if (value.starts_with("_PID="))
+            {
+                pid = std::stoull(getValue());
+            }
+            if (value.starts_with("_CODE_FILE="))
+            {
+                source_file = getValue();
             }
         }
 
@@ -148,6 +162,8 @@ TEST_F(TestLogManagerDbus, CallCommitAsync)
                     LoggingEntry::namespace_path::entry));
 
     EXPECT_EQ(log_count, "6");
+    EXPECT_EQ(pid, getpid());
+    EXPECT_EQ(source_file, std::source_location::current().file_name());
 }
 
 } // namespace phosphor::logging::test
