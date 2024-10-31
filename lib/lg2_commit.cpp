@@ -56,6 +56,36 @@ static auto data_from_json(sdbusplus::exception::generated_event_base& t)
     auto j = t.to_json()[t.name()];
     for (const auto& item : j.items())
     {
+        // Special cases for the "_SOURCE" fields, which contain debug
+        // information about the origin of the event.
+        if (item.key() == "_SOURCE")
+        {
+            for (const auto& source_item : item.value().items())
+            {
+                if (source_item.key() == "PID")
+                {
+                    result.emplace("_PID", source_item.value().dump());
+                    continue;
+                }
+                if (source_item.key() == "FILE")
+                {
+                    result.emplace("_CODE_FILE", source_item.value());
+                    continue;
+                }
+                if (source_item.key() == "FUNCTION")
+                {
+                    result.emplace("_CODE_FUNC", source_item.value());
+                    continue;
+                }
+                if (source_item.key() == "LINE")
+                {
+                    result.emplace("_CODE_LINE", source_item.value().dump());
+                    continue;
+                }
+            }
+            continue;
+        }
+
         result.emplace(item.key(), item.value().dump());
     }
 
