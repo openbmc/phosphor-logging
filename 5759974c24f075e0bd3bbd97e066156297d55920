@@ -16,6 +16,24 @@
       "message": "It was useful having the PID of the creator automatically added to the additional data.  Is there any way to do that here?",
       "revId": "5759974c24f075e0bd3bbd97e066156297d55920",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adc535c7_bcb5727c",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-11-01T15:35:47Z",
+      "side": 1,
+      "message": "Done in the next commit.",
+      "parentUuid": "9d5f9eee_902fa763",
+      "revId": "5759974c24f075e0bd3bbd97e066156297d55920",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
