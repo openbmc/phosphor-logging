@@ -18,6 +18,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "178e5911_fbe46a7d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-11-05T07:38:21Z",
+      "side": 1,
+      "message": "I wonder how can I add a lg2::commit message which will be shown in the Redfish as \"OpenBMC.0.1.BIOSFirmwarePanicReason.Warning\" registry log?\nAs my understanding, I will need to set the `severity` as warning, but still not sure about `BIOSFirmwarePanicReason` reason.",
+      "revId": "472f2cb2cf2fc6aec3a19bdc4a9be4d82799dfa4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f60f2e0_7ebbb547",
