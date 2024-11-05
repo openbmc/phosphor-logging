@@ -60,11 +60,28 @@ for details.
 
 ### Creating Event Logs In Code
 
-There are two approaches to creating event logs in OpenBMC code. The first makes
-use of the systemd journal to store metadata needed for the log, and the second
-is a plain D-Bus method call.
+The preferred method for creating event logs is specified in the project-level
+[event log design][event-log-design]. Events are defined using YAML in the
+phosphor-dbus-interfaces repository, such as the
+[Logging.Cleared][logging-cleared] event, which will generate a C++ class for
+the event. Then a call to `lg2::commit` is made on a constructed event to add it
+to the event log.
 
-#### Journal Based Event Log Creation
+```cpp
+lg2::commit(sdbusplus::event::xyz::openbmc_project::Logging::Cleared(
+    "NUMBER_OF_LOGS", count));
+```
+
+There are two other, but now deprecated, methods to creating event logs in
+OpenBMC code. The first makes use of the systemd journal to store metadata
+needed for the log, and the second is a plain D-Bus method call.
+
+[event-log-design]:
+  https://github.com/openbmc/docs/blob/master/designs/event-logging.md#phosphor-logging
+[logging-cleared]:
+  https://github.com/openbmc/phosphor-dbus-interfaces/blob/6a8507d06e172d8d29c0459f0a0d078553d2ecc7/yaml/xyz/openbmc_project/Logging.events.yaml#L4
+
+#### Journal Based Event Log Creation [deprecated]
 
 Event logs can be created by using phosphor-logging APIs to commit sdbusplus
 exceptions. These APIs write to the journal, and then call a `Commit` D-Bus
@@ -149,7 +166,7 @@ In the above example, the AdditionalData property would look like:
 
 Note that the metadata fields must be all uppercase.
 
-##### Event Log Definition
+##### Event Log Definition [deprecated]
 
 As mentioned above, both sdbusplus and phosphor-logging must know about the
 event logs in their header files, or the code that uses them will not even
@@ -185,7 +202,7 @@ that uses them. To do that, one must:
       phosphor-logging can find it during the build. See [here][led-link] for an
       example.
 
-#### D-Bus Event Log Creation
+#### D-Bus Event Log Creation [deprecated]
 
 There is also a [D-Bus method][log-create-link] to create event logs:
 
