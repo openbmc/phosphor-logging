@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7259dba1_e0588f7d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-11-05T07:29:31Z",
+      "side": 1,
+      "message": "Do we any plan to support `add a compile option and Yocto DISTRO_FEATURE that can turn lg2::commit behavior into an OPENBMC_MESSAGE_ID record in the journal` Patrick?",
+      "revId": "472f2cb2cf2fc6aec3a19bdc4a9be4d82799dfa4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f60f2e0_7ebbb547",
