@@ -116,6 +116,30 @@
       },
       "revId": "472f2cb2cf2fc6aec3a19bdc4a9be4d82799dfa4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90fbde61_d35d418a",
+        "filename": "test/log_manager_dbus_tests.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-11-05T11:56:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4d711ca0_16fcedfe",
+      "range": {
+        "startLine": 101,
+        "startChar": 9,
+        "endLine": 101,
+        "endChar": 13
+      },
+      "revId": "472f2cb2cf2fc6aec3a19bdc4a9be4d82799dfa4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
