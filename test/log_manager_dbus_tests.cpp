@@ -85,6 +85,43 @@ class TestLogManagerDbus : public ::testing::Test
     };
 
     std::unique_ptr<fixture_data> data;
+
+    static constexpr auto journal_unavailable = "UNAVAILABLE";
+    std::string last_journal_entry()
+    {
+        if constexpr (LG2_COMMIT_JOURNAL)
+        {
+            // When running under Docker, the journal is not available and
+            // sd-journal calls just silently pass.  Return a string to make
+            // it obvious.
+            if (!std::filesystem::exists("/run/systemd/journal/socket"))
+            {
+                return journal_unavailable;
+            }
+
+            sd_journal* j = nullptr;
+
+            sd_journal_open(&j, SD_JOURNAL_LOCAL_ONLY);
+            sd_journal_add_match(j, "SYSLOG_IDENTIFIER=test_manager_dbus_tests",
+                                 SIZE_MAX);
+
+            SD_JOURNAL_FOREACH_BACKWARDS(j)
+            {
+                const char* data = nullptr;
+                size_t length = 0;
+
+                sd_journal_get_data(j, "MESSAGE", (const void**)&data, &length);
+
+                std::string entry(data, length);
+                if (entry.contains("OPENBMC_MESSAGE_ID="))
+                {
+                    return entry;
+                }
+            }
+        }
+
+        return "";
+    }
 };
 
 // Ensure we can successfully create and throw an sdbusplus event.
@@ -100,11 +137,27 @@ TEST_F(TestLogManagerDbus, GenerateSimpleEvent)
 TEST_F(TestLogManagerDbus, CallCommitSync)
 {
     auto path = lg2::commit(LoggingCleared("NUMBER_OF_LOGS", 3));
-    ASSERT_FALSE(path.str.empty());
-    EXPECT_THAT(path.str,
-                ::testing::StartsWith(
-                    std::filesystem::path(LoggingEntry::namespace_path::value) /
-                    LoggingEntry::namespace_path::entry));
+
+    if constexpr (LG2_COMMIT_DBUS)
+    {
+        ASSERT_FALSE(path.str.empty());
+        EXPECT_THAT(
+            path.str,
+            ::testing::StartsWith(
+                std::filesystem::path(LoggingEntry::namespace_path::value) /
+                LoggingEntry::namespace_path::entry));
+    }
+
+    if constexpr (LG2_COMMIT_JOURNAL)
+    {
+        auto entry = last_journal_entry();
+        if (entry != journal_unavailable)
+        {
+            EXPECT_THAT(entry, ::testing::HasSubstr(
+                                   "\"xyz.openbmc_project.Logging.Cleared\":"));
+            EXPECT_THAT(entry, ::testing::HasSubstr("\"NUMBER_OF_LOGS\":3"));
+        }
+    }
 }
 
 // Call the asynchronous version of the commit function and verify that the
@@ -121,30 +174,33 @@ TEST_F(TestLogManagerDbus, CallCommitAsync)
         path = co_await lg2::commit(data->client_ctx,
                                     LoggingCleared("NUMBER_OF_LOGS", 6));
 
-        // Grab the additional data.
-        auto additionalData = co_await LoggingEntry(data->client_ctx)
-                                  .service(Entry::default_service)
-                                  .path(path.str)
-                                  .additional_data();
-
-        // Extract the NUMBER_OF_LOGS, PID, and CODE_FILE.
-        for (const auto& value : additionalData)
+        if constexpr (LG2_COMMIT_DBUS)
         {
-            auto getValue = [&value]() {
-                return value.substr(value.find_first_of('=') + 1);
-            };
+            // Grab the additional data.
+            auto additionalData = co_await LoggingEntry(data->client_ctx)
+                                      .service(Entry::default_service)
+                                      .path(path.str)
+                                      .additional_data();
 
-            if (value.starts_with("NUMBER_OF_LOGS="))
+            // Extract the NUMBER_OF_LOGS, PID, and CODE_FILE.
+            for (const auto& value : additionalData)
             {
-                log_count = getValue();
-            }
-            if (value.starts_with("_PID="))
-            {
-                pid = std::stoull(getValue());
-            }
-            if (value.starts_with("_CODE_FILE="))
-            {
-                source_file = getValue();
+                auto getValue = [&value]() {
+                    return value.substr(value.find_first_of('=') + 1);
+                };
+
+                if (value.starts_with("NUMBER_OF_LOGS="))
+                {
+                    log_count = getValue();
+                }
+                if (value.starts_with("_PID="))
+                {
+                    pid = std::stoull(getValue());
+                }
+                if (value.starts_with("_CODE_FILE="))
+                {
+                    source_file = getValue();
+                }
             }
         }
 
@@ -153,17 +209,32 @@ TEST_F(TestLogManagerDbus, CallCommitAsync)
 
     run(create_log());
 
-    ASSERT_FALSE(path.str.empty());
-    ASSERT_FALSE(log_count.empty());
+    if constexpr (LG2_COMMIT_DBUS)
+    {
+        ASSERT_FALSE(path.str.empty());
+        ASSERT_FALSE(log_count.empty());
 
-    EXPECT_THAT(path.str,
-                ::testing::StartsWith(
-                    std::filesystem::path(LoggingEntry::namespace_path::value) /
-                    LoggingEntry::namespace_path::entry));
+        EXPECT_THAT(
+            path.str,
+            ::testing::StartsWith(
+                std::filesystem::path(LoggingEntry::namespace_path::value) /
+                LoggingEntry::namespace_path::entry));
 
-    EXPECT_EQ(log_count, "6");
-    EXPECT_EQ(pid, getpid());
-    EXPECT_EQ(source_file, std::source_location::current().file_name());
+        EXPECT_EQ(log_count, "6");
+        EXPECT_EQ(pid, getpid());
+        EXPECT_EQ(source_file, std::source_location::current().file_name());
+    }
+
+    if constexpr (LG2_COMMIT_JOURNAL)
+    {
+        auto entry = last_journal_entry();
+        if (entry != journal_unavailable)
+        {
+            EXPECT_THAT(entry, ::testing::HasSubstr(
+                                   "\"xyz.openbmc_project.Logging.Cleared\":"));
+            EXPECT_THAT(entry, ::testing::HasSubstr("\"NUMBER_OF_LOGS\":6"));
+        }
+    }
 }
 
 } // namespace phosphor::logging::test

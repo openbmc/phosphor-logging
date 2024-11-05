@@ -1,8 +1,11 @@
+#include "config.h"
+
 #include "lg2_commit.hpp"
 
 #include <sys/syslog.h>
 
 #include <nlohmann/json.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <phosphor-logging/lg2/commit.hpp>
 #include <sdbusplus/async.hpp>
 #include <sdbusplus/exception.hpp>
@@ -97,26 +100,47 @@ static auto data_from_json(sdbusplus::exception::generated_event_base& t)
 auto commit(sdbusplus::exception::generated_event_base&& t)
     -> sdbusplus::message::object_path
 {
-    auto b = sdbusplus::bus::new_default();
-    auto m = b.new_method_call(Create::default_service, Create::instance_path,
-                               Create::interface, "Create");
+    if constexpr (LG2_COMMIT_JOURNAL)
+    {
+        lg2::error("OPENBMC_MESSAGE_ID={DATA}", "DATA", t.to_json().dump());
+    }
 
-    m.append(t.name(), severity_from_syslog(t.severity()), data_from_json(t));
+    if constexpr (LG2_COMMIT_DBUS)
+    {
+        auto b = sdbusplus::bus::new_default();
+        auto m =
+            b.new_method_call(Create::default_service, Create::instance_path,
+                              Create::interface, "Create");
 
-    auto reply = b.call(m);
+        m.append(t.name(), severity_from_syslog(t.severity()),
+                 data_from_json(t));
 
-    return reply.unpack<sdbusplus::message::object_path>();
+        auto reply = b.call(m);
+
+        return reply.unpack<sdbusplus::message::object_path>();
+    }
+
+    return {};
 }
 
 auto commit(sdbusplus::async::context& ctx,
             sdbusplus::exception::generated_event_base&& t)
     -> sdbusplus::async::task<sdbusplus::message::object_path>
 {
-    co_return co_await Create(ctx)
-        .service(Create::default_service)
-        .path(Create::instance_path)
-        .create(t.name(), severity_from_syslog(t.severity()),
-                data_from_json(t));
+    if constexpr (LG2_COMMIT_JOURNAL)
+    {
+        lg2::error("OPENBMC_MESSAGE_ID={DATA}", "DATA", t.to_json().dump());
+    }
+
+    if constexpr (LG2_COMMIT_DBUS)
+    {
+        co_return co_await Create(ctx)
+            .service(Create::default_service)
+            .path(Create::instance_path)
+            .create(t.name(), severity_from_syslog(t.severity()),
+                    data_from_json(t));
+    }
+    co_return {};
 }
 
 auto extractEvent(sdbusplus::exception::generated_event_base&& t)
