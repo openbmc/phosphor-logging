@@ -41,3 +41,10 @@ option(
     value: '/etc/rsyslog.d/server.conf',
     description: 'Path to rsyslog server conf file',
 )
+
+option(
+    'lg2_commit_strategy',
+    type: 'combo',
+    choices: ['dbus', 'journal', 'both'],
+    value: 'both'
+)
