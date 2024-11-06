@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d85bb52_ced4a6eb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-11-06T19:40:54Z",
+      "side": 1,
+      "message": "Are you just omitting the FilePath, SoftwareVersion, and Delete interfaces for the sake of brevity or are they really not there?",
+      "revId": "9ca4d137ad0f0dd03074652c55186a035fba27d1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
