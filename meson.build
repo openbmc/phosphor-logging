@@ -60,6 +60,15 @@ if not has_cereal
     cereal_dep = cereal_proj.dependency('cereal')
 endif
 
+# Get CLI11 dependency
+if cpp.has_header('CLI/CLI.hpp')
+    CLI11_dep = declare_dependency()
+else
+    CLI11_dep = dependency('CLI11')
+endif
+
+nlohmann_json_dep = dependency('nlohmann_json', include_type: 'system')
+
 # Generate sdbus++ files.
 generated_sources = []
 generated_others = []
@@ -152,6 +161,19 @@ executable('phosphor-log-manager',
     ],
     install: true,
 )
+
+executable('log-create',
+    'log_create_main.cpp',
+    dependencies: [
+        CLI11_dep,
+        nlohmann_json_dep,
+        pdi_dep,
+        phosphor_logging_dep,
+        sdbusplus_dep,
+    ],
+    install: true,
+)
+
 # Generate test executables which run in obmc env (qemu, real hardware).
 executable('logging-test',
     'logging_test.cpp',

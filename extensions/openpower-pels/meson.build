@@ -3,17 +3,9 @@ libpldm_dep = dependency(
     default_options: ['oem-ibm=enabled'],
 )
 
-nlohmann_json_dep = dependency('nlohmann_json', include_type: 'system')
-
 python_inst = import('python').find_installation('python3')
 python_ver = python_inst.language_version()
 python_dep = python_inst.dependency()
-
-if cpp.has_header('CLI/CLI.hpp')
-    CLI11_dep = declare_dependency()
-else
-    CLI11_dep = dependency('CLI11')
-endif
 
 extra_sources = []
 extra_dependencies = []
