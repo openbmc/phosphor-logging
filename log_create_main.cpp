@@ -35,7 +35,7 @@ int generate_event(const std::string& event_id, const nlohmann::json& data)
     }
     catch (sdbusplus::exception::generated_event_base& e)
     {
-        auto path = lg2::details::commit(std::move(e));
+        auto path = lg2::commit(std::move(e));
         std::cout << path.str << std::endl;
         return 0;
     }
