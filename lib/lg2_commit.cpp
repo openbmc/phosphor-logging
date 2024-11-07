@@ -5,14 +5,16 @@
 #include <sys/syslog.h>
 
 #include <nlohmann/json.hpp>
+#include <phosphor-logging/commit.hpp>
 #include <phosphor-logging/lg2.hpp>
-#include <phosphor-logging/lg2/commit.hpp>
 #include <sdbusplus/async.hpp>
 #include <sdbusplus/exception.hpp>
 #include <xyz/openbmc_project/Logging/Create/client.hpp>
 #include <xyz/openbmc_project/Logging/Entry/client.hpp>
 
-namespace lg2::details
+namespace lg2
+{
+namespace details
 {
 
 using Create = sdbusplus::client::xyz::openbmc_project::logging::Create<>;
@@ -97,52 +99,6 @@ static auto data_from_json(sdbusplus::exception::generated_event_base& t)
     return result;
 }
 
-auto commit(sdbusplus::exception::generated_event_base&& t)
-    -> sdbusplus::message::object_path
-{
-    if constexpr (LG2_COMMIT_JOURNAL)
-    {
-        lg2::error("OPENBMC_MESSAGE_ID={DATA}", "DATA", t.to_json().dump());
-    }
-
-    if constexpr (LG2_COMMIT_DBUS)
-    {
-        auto b = sdbusplus::bus::new_default();
-        auto m =
-            b.new_method_call(Create::default_service, Create::instance_path,
-                              Create::interface, "Create");
-
-        m.append(t.name(), severity_from_syslog(t.severity()),
-                 data_from_json(t));
-
-        auto reply = b.call(m);
-
-        return reply.unpack<sdbusplus::message::object_path>();
-    }
-
-    return {};
-}
-
-auto commit(sdbusplus::async::context& ctx,
-            sdbusplus::exception::generated_event_base&& t)
-    -> sdbusplus::async::task<sdbusplus::message::object_path>
-{
-    if constexpr (LG2_COMMIT_JOURNAL)
-    {
-        lg2::error("OPENBMC_MESSAGE_ID={DATA}", "DATA", t.to_json().dump());
-    }
-
-    if constexpr (LG2_COMMIT_DBUS)
-    {
-        co_return co_await Create(ctx)
-            .service(Create::default_service)
-            .path(Create::instance_path)
-            .create(t.name(), severity_from_syslog(t.severity()),
-                    data_from_json(t));
-    }
-    co_return {};
-}
-
 auto extractEvent(sdbusplus::exception::generated_event_base&& t)
     -> std::tuple<std::string, Entry::Level, std::vector<std::string>>
 {
@@ -158,4 +114,56 @@ auto extractEvent(sdbusplus::exception::generated_event_base&& t)
             std::move(additional_data)};
 }
 
-} // namespace lg2::details
+} // namespace details
+
+auto commit(sdbusplus::exception::generated_event_base&& t)
+    -> sdbusplus::message::object_path
+{
+    if constexpr (LG2_COMMIT_JOURNAL)
+    {
+        lg2::error("OPENBMC_MESSAGE_ID={DATA}", "DATA", t.to_json().dump());
+    }
+
+    if constexpr (LG2_COMMIT_DBUS)
+    {
+        using details::Create;
+
+        auto b = sdbusplus::bus::new_default();
+        auto m =
+            b.new_method_call(Create::default_service, Create::instance_path,
+                              Create::interface, "Create");
+
+        m.append(t.name(), details::severity_from_syslog(t.severity()),
+                 details::data_from_json(t));
+
+        auto reply = b.call(m);
+
+        return reply.unpack<sdbusplus::message::object_path>();
+    }
+
+    return {};
+}
+
+auto commit(sdbusplus::async::context& ctx,
+            sdbusplus::exception::generated_event_base&& t)
+    -> sdbusplus::async::task<sdbusplus::message::object_path>
+{
+    using details::Create;
+
+    if constexpr (LG2_COMMIT_JOURNAL)
+    {
+        lg2::error("OPENBMC_MESSAGE_ID={DATA}", "DATA", t.to_json().dump());
+    }
+
+    if constexpr (LG2_COMMIT_DBUS)
+    {
+        co_return co_await Create(ctx)
+            .service(Create::default_service)
+            .path(Create::instance_path)
+            .create(t.name(), details::severity_from_syslog(t.severity()),
+                    details::data_from_json(t));
+    }
+    co_return {};
+}
+
+} // namespace lg2
