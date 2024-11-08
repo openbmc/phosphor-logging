@@ -63,6 +63,24 @@
       "message": "will there need to be a recipe change to add this to FILES?",
       "revId": "b88cfc032e806ab17446fe4c74b29c0241f9cec7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0d15bda_eac1df42",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-11-08T17:54:29Z",
+      "side": 1,
+      "message": "I don\u0027t think so.  This should end up automatically in the base package since it is just a /usr/bin executable.",
+      "parentUuid": "e8386776_a186d91c",
+      "revId": "b88cfc032e806ab17446fe4c74b29c0241f9cec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
