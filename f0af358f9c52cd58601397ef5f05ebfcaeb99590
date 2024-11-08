@@ -16,6 +16,24 @@
       "message": "You mentioned in that mbox review that commit() should be noexcept.  Can\u0027t these D-Bus calls throw on a fail?",
       "revId": "f0af358f9c52cd58601397ef5f05ebfcaeb99590",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "740cfb30_ae58d9f6",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-11-08T17:59:23Z",
+      "side": 1,
+      "message": "Good point.  I wasn\u0027t thinking about that when I wrote it but was just following what the existing `commit` already did.  We can potentially follow up and change both of them.\n\nI don\u0027t really want people sprinkling around try/catch around every commit call (either old ones or new ones).  I kind of think we should mark all those functions `noexcept` and let std::terminate be called if we have a catastrophic failure with phosphor-logging.\n\nI suspect right now people are either already ending up with the std::terminate handler called or they are ending up with an inadvertent catch because they wrapped a bunch of code in a generic try/catch(sdbusplus::exception).\n\nWhat are your thoughts?\n\n(This seems fairly minor and follows the existing code so I\u0027d rather handle what ever conclusions we have as a minor commit.)",
+      "parentUuid": "cc5af33e_10f457ec",
+      "revId": "f0af358f9c52cd58601397ef5f05ebfcaeb99590",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
