@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e4194f31_890dc4e2",
+        "filename": "log_create_main.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-11-08T17:48:26Z",
+      "side": 1,
+      "message": "I can switch to camelCase for consistency.\n\nI\u0027ve tended to switch to \"use lower_snake_case everywhere\" since that seems to be what modern C++ practice is now.  The whole \"Classes are UpperCamelCase\" and \"functions are lower_snake_case\" has gone away elsewhere partially because the difference between a `class_constructor()` and `function_call()` are fairly irrelevant especially with \"almost-always-auto\" conventions (and language-server support in your editor).\n\nOur guidelines have this kind of exception everywhere (which, I guess this isn\u0027t):  A library API may use lower_snake_case to match conventions of the STL or an underlying C library it is abstracting.",
+      "parentUuid": "609808dc_d0206889",
+      "range": {
+        "startLine": 51,
+        "startChar": 16,
+        "endLine": 51,
+        "endChar": 24
+      },
+      "revId": "b88cfc032e806ab17446fe4c74b29c0241f9cec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e8386776_a186d91c",
         "filename": "meson.build",
         "patchSetId": 1
