@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "609808dc_d0206889",
+        "filename": "log_create_main.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-11-08T17:30:16Z",
+      "side": 1,
+      "message": "I don\u0027t really care that much, but don\u0027t our C++ guidelines call for camel case?",
+      "range": {
+        "startLine": 51,
+        "startChar": 16,
+        "endLine": 51,
+        "endChar": 24
+      },
+      "revId": "b88cfc032e806ab17446fe4c74b29c0241f9cec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8386776_a186d91c",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-11-08T17:30:16Z",
+      "side": 1,
+      "message": "will there need to be a recipe change to add this to FILES?",
+      "revId": "b88cfc032e806ab17446fe4c74b29c0241f9cec7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
