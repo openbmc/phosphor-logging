@@ -1,0 +1,3 @@
+# xyz.openbmc_project.Logging.Error
+- name: LogsCleared
+  description: Indicate the user cleared all the logs

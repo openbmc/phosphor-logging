@@ -15,6 +15,11 @@ phosphor_logging_gen += custom_target(
 )
 
 install_headers(
+    'audit/audit.hpp',
+    subdir: 'phosphor-logging/audit'
+)
+
+install_headers(
     'elog.hpp',
     'lg2.hpp',
     'log.hpp',
