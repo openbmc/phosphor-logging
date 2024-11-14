@@ -234,15 +234,6 @@ DataInterface::DataInterface(sdbusplus::bus_t& bus) :
     {
 #ifdef PEL_ENABLE_PHAL
         initPHAL();
-        try
-        {
-            libguard::libguard_init(false);
-        }
-        catch (libguard::exception::GuardException& e)
-        {
-            lg2::error("Exception to init the guard {ERROR}", "ERROR",
-                       e.what());
-        }
 #endif
     }
     else
@@ -701,11 +692,12 @@ void DataInterface::createGuardRecord(const std::vector<uint8_t>& binPath,
 {
     try
     {
+        libguard::libguard_init(false);
         libguard::create(binPath, plid, eGardType);
     }
     catch (libguard::exception::GuardException& e)
     {
-        lg2::error("Exception to create the guard {ERROR}", "ERROR", e.what());
+        lg2::error("Exception in libguard {ERROR}", "ERROR", e);
     }
 }
 #endif
