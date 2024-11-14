@@ -1,5 +1,7 @@
 phosphor_logging_includes = include_directories('include')
 
+phosphor_logging_includes_gen = include_directories('../../build/gen')
+
 phosphor_logging_gen = []
 
 subdir('include/phosphor-logging')
@@ -15,13 +17,17 @@ phosphor_logging_deps = [
 
 phosphor_logging_lib = library(
     'phosphor_logging',
+    'audit.cpp',
     'elog.cpp',
     'lg2_commit.cpp',
     'lg2_logger.cpp',
     'sdjournal.cpp',
     phosphor_logging_gen,
     implicit_include_directories: false,
-    include_directories: phosphor_logging_includes,
+    include_directories: [
+        phosphor_logging_includes,
+        phosphor_logging_includes_gen
+    ],
     dependencies: [
         phosphor_logging_deps,
         conf_h_dep,
@@ -46,7 +52,10 @@ import('pkgconfig').generate(
 )
 
 phosphor_logging_dep = declare_dependency(
-    include_directories: phosphor_logging_includes,
+    include_directories: [
+        phosphor_logging_includes,
+        phosphor_logging_includes_gen
+    ],
     link_with: phosphor_logging_lib,
     sources: phosphor_logging_gen,
     dependencies: phosphor_logging_deps,

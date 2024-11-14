@@ -34,6 +34,13 @@ endif
 
 subdir('config')
 subdir('tools')
+
+# Generate sdbus++ files.
+generated_sources = []
+generated_others = []
+subdir('gen')
+subdir('gen/xyz')
+
 subdir('lib')
 
 if get_option('libonly')
@@ -68,12 +75,6 @@ else
 endif
 
 nlohmann_json_dep = dependency('nlohmann_json', include_type: 'system')
-
-# Generate sdbus++ files.
-generated_sources = []
-generated_others = []
-subdir('gen')
-subdir('gen/xyz')
 
 # Generate callouts-gen.hpp.
 callouts_gen = custom_target('callouts-gen.hpp'.underscorify(),
@@ -201,3 +202,5 @@ subdir('dist')
 if not get_option('tests').disabled()
     subdir('test')
 endif
+
+#subdir('example')
