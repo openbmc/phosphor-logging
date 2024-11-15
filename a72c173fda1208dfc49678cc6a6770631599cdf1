@@ -1,0 +1,221 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dea65f64_05c34da6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000182
+      },
+      "writtenOn": "2024-11-15T13:21:35Z",
+      "side": 1,
+      "message": "Check commentaries, please.",
+      "revId": "a72c173fda1208dfc49678cc6a6770631599cdf1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26e94683_8cac85cd",
+        "filename": "example/audit_api/audit_api_usage.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000182
+      },
+      "writtenOn": "2024-11-15T13:21:35Z",
+      "side": 1,
+      "message": "Use argparse",
+      "revId": "a72c173fda1208dfc49678cc6a6770631599cdf1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "918d22e6_032ac238",
+        "filename": "example/audit_api/meson.build",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000182
+      },
+      "writtenOn": "2024-11-15T13:21:35Z",
+      "side": 1,
+      "message": "remove tab/space",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 6
+      },
+      "revId": "a72c173fda1208dfc49678cc6a6770631599cdf1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d620520a_f63c8520",
+        "filename": "example/audit_daemon/include/audit_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000182
+      },
+      "writtenOn": "2024-11-15T13:21:35Z",
+      "side": 1,
+      "message": "I don\u0027t like LinuxAuditIface, maybe better something like AuditdIface.",
+      "range": {
+        "startLine": 29,
+        "startChar": 6,
+        "endLine": 29,
+        "endChar": 21
+      },
+      "revId": "a72c173fda1208dfc49678cc6a6770631599cdf1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb8342d8_f77f6abb",
+        "filename": "example/audit_daemon/meson.build",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000182
+      },
+      "writtenOn": "2024-11-15T13:21:35Z",
+      "side": 1,
+      "message": "remove space",
+      "range": {
+        "startLine": 34,
+        "startChar": 6,
+        "endLine": 34,
+        "endChar": 7
+      },
+      "revId": "a72c173fda1208dfc49678cc6a6770631599cdf1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38d674e7_8493e5f3",
+        "filename": "example/audit_daemon/meson.build",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000182
+      },
+      "writtenOn": "2024-11-15T13:21:35Z",
+      "side": 1,
+      "message": "remove space/tab",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 6
+      },
+      "revId": "a72c173fda1208dfc49678cc6a6770631599cdf1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "514ff806_b85f2adf",
+        "filename": "example/audit_daemon/src/audit_config.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000182
+      },
+      "writtenOn": "2024-11-15T13:21:35Z",
+      "side": 1,
+      "message": "use phosphor-logging here instead of std::cout",
+      "revId": "a72c173fda1208dfc49678cc6a6770631599cdf1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20c83527_f45f3ba2",
+        "filename": "example/audit_daemon/src/audit_config.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000182
+      },
+      "writtenOn": "2024-11-15T13:21:35Z",
+      "side": 1,
+      "message": "Singleton nowadays is anti-pattern",
+      "revId": "a72c173fda1208dfc49678cc6a6770631599cdf1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "caf9e051_26323ad5",
+        "filename": "example/audit_daemon/src/linux_audit.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000182
+      },
+      "writtenOn": "2024-11-15T13:21:35Z",
+      "side": 1,
+      "message": "I don\u0027t think that need to mention copyright here.",
+      "revId": "a72c173fda1208dfc49678cc6a6770631599cdf1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "586f91e1_99843164",
+        "filename": "lib/audit.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000182
+      },
+      "writtenOn": "2024-11-15T13:21:35Z",
+      "side": 1,
+      "message": "did you use clang-formatter?",
+      "revId": "a72c173fda1208dfc49678cc6a6770631599cdf1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69c39a36_d703f364",
+        "filename": "yaml/xyz/openbmc_project/Logging/Audit/Manager.interface.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000182
+      },
+      "writtenOn": "2024-11-15T13:21:35Z",
+      "side": 1,
+      "message": "handler",
+      "range": {
+        "startLine": 22,
+        "startChar": 18,
+        "endLine": 22,
+        "endChar": 26
+      },
+      "revId": "a72c173fda1208dfc49678cc6a6770631599cdf1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
