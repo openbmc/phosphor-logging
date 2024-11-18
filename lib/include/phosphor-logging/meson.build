@@ -15,6 +15,7 @@ phosphor_logging_gen += custom_target(
 )
 
 install_headers(
+    'commit.hpp',
     'elog.hpp',
     'lg2.hpp',
     'log.hpp',
