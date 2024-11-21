@@ -707,8 +707,7 @@ auto Manager::create(const std::string& message, Entry::Level severity,
                      const FFDCEntries& ffdc) -> sdbusplus::message::object_path
 {
     // Convert the map into a vector of "key=value" strings
-    std::vector<std::string> ad;
-    metadata::associations::combine(additionalData, ad);
+    auto ad = util::additional_data::combine(additionalData);
 
     return createEntry(message, severity, ad, ffdc);
 }

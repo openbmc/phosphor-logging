@@ -197,4 +197,42 @@ void journalSync()
     return;
 }
 
+namespace additional_data
+{
+auto parse(const std::vector<std::string>& data)
+    -> std::map<std::string, std::string>
+{
+    std::map<std::string, std::string> metadata{};
+
+    constexpr auto separator = '=';
+    for (const auto& entryItem : data)
+    {
+        auto pos = entryItem.find(separator);
+        if (std::string::npos != pos)
+        {
+            auto key = entryItem.substr(0, entryItem.find(separator));
+            auto value = entryItem.substr(entryItem.find(separator) + 1);
+            metadata.emplace(std::move(key), std::move(value));
+        }
+    }
+
+    return metadata;
+}
+
+auto combine(const std::map<std::string, std::string>& data) ->
+             std::vector<std::string>
+{
+    std::vector<std::string> metadata{};
+
+    for (const auto& [key, value] : data)
+    {
+        std::string line{key};
+        line += "=" + value;
+        metadata.emplace_back(std::move(line));
+    }
+
+    return metadata;
+}
+} // namespace additional_data
+
 } // namespace phosphor::logging::util
