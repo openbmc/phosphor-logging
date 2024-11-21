@@ -2,6 +2,8 @@
 
 #include "elog_meta.hpp"
 
+#include "util.hpp"
+
 namespace phosphor
 {
 namespace logging
@@ -18,8 +20,7 @@ void build<xyz::openbmc_project::common::callout::Device::CALLOUT_DEVICE_PATH>(
     const std::string& match, const std::vector<std::string>& data,
     AssociationList& list)
 {
-    std::map<std::string, std::string> metadata;
-    parse(data, metadata);
+    auto metadata = util::additional_data::parse(data);
     auto iter = metadata.find(match);
     if (metadata.end() != iter)
     {
@@ -44,8 +45,7 @@ void build<
     const std::string& match, const std::vector<std::string>& data,
     AssociationList& list)
 {
-    std::map<std::string, std::string> metadata;
-    parse(data, metadata);
+    auto metadata = util::additional_data::parse(data);
     auto iter = metadata.find(match);
     if (metadata.end() != iter)
     {

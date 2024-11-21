@@ -4,6 +4,7 @@
 
 #include "callouts-gen.hpp"
 #include "elog_entry.hpp"
+#include "util.hpp"
 
 #include <phosphor-logging/elog-errors.hpp>
 
@@ -27,44 +28,6 @@ namespace associations
 
 using Type = void(const std::string&, const std::vector<std::string>&,
                   AssociationList& list);
-
-/** @brief Pull out metadata name and value from the string
- *         <metadata name>=<metadata value>
- *  @param [in] data - metadata key=value entries
- *  @param [out] metadata - map of metadata name:value
- */
-inline void parse(const std::vector<std::string>& data,
-                  std::map<std::string, std::string>& metadata)
-{
-    constexpr auto separator = '=';
-    for (const auto& entryItem : data)
-    {
-        auto pos = entryItem.find(separator);
-        if (std::string::npos != pos)
-        {
-            auto key = entryItem.substr(0, entryItem.find(separator));
-            auto value = entryItem.substr(entryItem.find(separator) + 1);
-            metadata.emplace(std::move(key), std::move(value));
-        }
-    }
-}
-
-/** @brief Combine the metadata keys and values from the map
- *         into a vector of strings that look like:
- *            "<metadata name>=<metadata value>"
- *  @param [in] data - metadata key:value map
- *  @param [out] metadata - vector of "key=value" strings
- */
-inline void combine(const std::map<std::string, std::string>& data,
-                    std::vector<std::string>& metadata)
-{
-    for (const auto& [key, value] : data)
-    {
-        std::string line{key};
-        line += "=" + value;
-        metadata.push_back(std::move(line));
-    }
-}
 
 /** @brief Build error associations specific to metadata. Specialize this
  *         template for handling a specific type of metadata.
@@ -92,8 +55,7 @@ inline void build<example::xyz::openbmc_project::example::device::Callout::
     const std::string& match, const std::vector<std::string>& data,
     AssociationList& list)
 {
-    std::map<std::string, std::string> metadata;
-    parse(data, metadata);
+    auto metadata = util::additional_data::parse(data);
     auto iter = metadata.find(match);
     if (metadata.end() != iter)
     {

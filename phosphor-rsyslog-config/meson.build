@@ -2,6 +2,7 @@ executable('phosphor-rsyslog-conf',
     'main.cpp',
     'server-conf.cpp',
     '../elog_meta.cpp',
+    '../util.cpp',
     elog_process_gen,
     include_directories: include_directories('..'),
     dependencies: [
