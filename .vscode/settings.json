@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "algorithm": "cpp",
+        "bitset": "cpp",
+        "sstream": "cpp",
+        "*.ipp": "cpp"
+    }
+}

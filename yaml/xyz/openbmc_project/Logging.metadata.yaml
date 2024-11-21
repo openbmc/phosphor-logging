@@ -1,0 +1,5 @@
+- name: LogsCleared
+  level: INFO
+  meta:
+      - str: "NUM_LOGS=%u"
+        type: size_t

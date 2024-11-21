@@ -37,3 +37,8 @@ install_headers(
     'test/sdjournal_mock.hpp',
     subdir: 'phosphor-logging/test',
 )
+
+install_headers(
+    'audit/audit.hpp',
+    subdir: 'phosphor-logging/audit'
+)
