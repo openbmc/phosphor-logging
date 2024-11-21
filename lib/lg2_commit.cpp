@@ -93,7 +93,14 @@ static auto data_from_json(sdbusplus::exception::generated_event_base& t)
             continue;
         }
 
-        result.emplace(item.key(), item.value().dump());
+        if (item.value().type() == nlohmann::json::value_t::string)
+        {
+            result.emplace(item.key(), item.value());
+        }
+        else
+        {
+            result.emplace(item.key(), item.value().dump());
+        }
     }
 
     return result;
