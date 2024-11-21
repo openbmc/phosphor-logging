@@ -1,6 +1,6 @@
 /**
- * @brief Phosphor Audit manager processing changes properties and call methods on
- * interfaces
+ * @brief Phosphor Audit manager processing changes properties and call methods
+ * on interfaces
  *
  * This file is part of the phosphor-audit project.
  *
@@ -26,7 +26,7 @@ using ManagerIface =
     sdbusplus::xyz::openbmc_project::Logging::Audit::server::Manager;
 } // namespace details
 
-using LinuxAuditIface = phosphor::logging::audit::LinuxAudit;
+using AuditdIface = phosphor::logging::audit::LinuxAudit;
 
 class Manager : public details::ServerObject<details::ManagerIface> {
 public:
@@ -56,8 +56,7 @@ public:
               std::string user) override;
 
 private:
-  std::unique_ptr<LinuxAuditIface> _linuxAudit =
-      std::make_unique<LinuxAuditIface>();
+  std::unique_ptr<AuditdIface> _linuxAudit = std::make_unique<AuditdIface>();
   ;
 };
 

@@ -36,13 +36,15 @@
 int main(int argc, char *argv[]) {
   using namespace phosphor::logging;
 
-  audit::Config *config = audit::Config::GetInstance();
+  auto config = std::make_shared<audit::Config::>(conf_file_path);
+
+  config->ReadConfigurationFile();
 
   static constexpr auto busName = "xyz.openbmc_project.Logging.Audit";
   static constexpr auto objPath = "/xyz/openbmc_project/logging/audit";
   static constexpr auto objMgr = "/xyz/openbmc_project/logging/audit/manager";
 
-  //config->ShowConfigs();
+  config->ShowConfigs();
 
   auto bus = sdbusplus::bus::new_default();
   auto event = sdeventplus::Event::get_default();

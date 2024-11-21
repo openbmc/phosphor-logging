@@ -31,7 +31,7 @@ cxx = meson.get_compiler('cpp')
       '-pipe',
       '-fpic',
       '-feliminate-unused-debug-types',
-    ], 
+    ],
     language: 'cpp'
   )
 
@@ -84,7 +84,7 @@ auditd_dep = declare_dependency(
 
       # stdplus
       #'-lstdplus',
-      
+
       # phosphor
       #'-lphosphor_dbus',
       '-lphosphor_logging',

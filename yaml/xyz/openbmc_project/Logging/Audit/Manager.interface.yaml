@@ -19,7 +19,7 @@ methods:
         - name: rc
           type: uint64
           description: >
-              The handleer return code.
+              The handler return code.
         - name: user
           type: string
           description: >

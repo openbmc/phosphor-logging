@@ -16,16 +16,14 @@ namespace logging {
 namespace audit {
 
 class Config {
-public:
-  static Config *GetInstance();
-  void ShowConfigs();
+  public:
+    void ShowConfigs();
 
-private:
-  Config(const std::string &path);
-  void ReadConfigurationFile();
-  static Config *instance;
-  std::string configuration_file_path;
-  bool enabled;
+  private:
+    Config(const std::string& path);
+    void ReadConfigurationFile();
+    std::string configuration_file_path;
+    bool enabled;
 };
 
 } // namespace audit

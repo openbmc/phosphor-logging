@@ -21,7 +21,6 @@
 #include <phosphor-logging/audit/audit.hpp>
 #include <xyz/openbmc_project/Logging/Audit/Manager/server.hpp>
 
-
 namespace phosphor {
 namespace logging {
 namespace audit {

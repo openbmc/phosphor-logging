@@ -3,8 +3,6 @@
  *
  * This file is part of the phosphor-audit project.
  *
- * Copyright (c) 2024 GAGAR>N
- *
  */
 #include <cstdint>
 #include <string>
@@ -31,7 +29,8 @@ int LinuxAudit::LogEvent(const std::string &msg, const std::string &hostname,
   if ((rc = audit_log_user_message(_fd, AUDIT_TEST, msg.c_str(),
                                    hostname.c_str(), addr.c_str(), tty.c_str(),
                                    0)) <= 0) {
-    std::cout << "linux audit: error writing log: " << std::strerror(errno);
+      std::cout << "linux auditd: error writing to logs: "
+                << std::strerror(errno);
   }
 
   return rc;
@@ -40,8 +39,9 @@ int LinuxAudit::LogEvent(const std::string &msg, const std::string &hostname,
 bool LinuxAudit::Init() {
   _fd = audit_open();
   if (_fd < 0) {
-    std::cout << "linux audit: failed to initialize: " << std::strerror(errno);
-    return false;
+      std::cout << "linux auditd: failed to initialize: "
+                << std::strerror(errno);
+      return false;
   }
 
   return true;

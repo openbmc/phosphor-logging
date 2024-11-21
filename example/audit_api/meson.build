@@ -23,7 +23,7 @@ audit_api_usage_dep = declare_dependency(
 
       # stdplus
       #'-lstdplus',
-      
+
       # phosphor
       '-lphosphor_logging',
 

@@ -1,6 +1,6 @@
 /**
- * @brief Phosphor Audit manager processing changes specific methods/properties
- * on a D-bus and call methods on interfaces
+ * @brief The phosphor audit manager processing changes specific
+ * methods/properties on a D-bus and call methods on interfaces
  *
  * This file is part of the phosphor-logging audit project.
  *
