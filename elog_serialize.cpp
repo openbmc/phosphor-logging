@@ -92,6 +92,7 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
     e.timestamp(timestamp, true);
     e.message(message, true);
     e.additionalData(additionalData, true);
+    e.additionalData2(util::additional_data::parse(additionalData), true);
     e.sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved(
         resolved, true);
     e.associations(associations, true);
