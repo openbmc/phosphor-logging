@@ -2919,7 +2919,14 @@
                         "Callouts": [
                             {
                                 "CalloutList": [
-                                    { "Priority": "high", "LocCode": "P0-C17" },
+                                    {
+                                        "Priority": "high",
+                                        "Procedure": "BMC0005"
+                                    },
+                                    {
+                                        "Priority": "medium",
+                                        "LocCode": "P0-C17"
+                                    },
                                     {
                                         "Priority": "medium",
                                         "LocCode": "P0-C96"
