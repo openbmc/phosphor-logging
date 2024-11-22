@@ -3,6 +3,7 @@
 #include "elog_serialize.hpp"
 
 #include <cereal/archives/binary.hpp>
+#include <cereal/types/map.hpp>
 #include <cereal/types/string.hpp>
 #include <cereal/types/tuple.hpp>
 #include <cereal/types/vector.hpp>
@@ -30,7 +31,7 @@ namespace logging
 template <class Archive>
 void save(Archive& a, const Entry& e, const std::uint32_t /*version*/)
 {
-    a(e.id(), e.severity(), e.timestamp(), e.message(), e.additionalData(),
+    a(e.id(), e.severity(), e.timestamp(), e.message(), e.additionalData2(),
       e.associations(), e.resolved(), e.version(), e.updateTimestamp(),
       e.eventId(), e.resolution());
 }
@@ -51,7 +52,7 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
     Entry::Level severity{};
     uint64_t timestamp{};
     std::string message{};
-    std::vector<std::string> additionalData{};
+    std::map<std::string, std::string> additionalData{};
     bool resolved{};
     AssociationList associations{};
     std::string fwVersion{};
@@ -61,25 +62,41 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
 
     if (version < std::stoul(FIRST_CEREAL_CLASS_VERSION_WITH_FWLEVEL))
     {
-        a(id, severity, timestamp, message, additionalData, associations,
+        std::vector<std::string> additionalData_old{};
+        a(id, severity, timestamp, message, additionalData_old, associations,
           resolved);
         updateTimestamp = timestamp;
+        additionalData = util::additional_data::parse(additionalData_old);
     }
     else if (version < std::stoul(FIRST_CEREAL_CLASS_VERSION_WITH_UPDATE_TS))
     {
-        a(id, severity, timestamp, message, additionalData, associations,
+        std::vector<std::string> additionalData_old{};
+        a(id, severity, timestamp, message, additionalData_old, associations,
           resolved, fwVersion);
         updateTimestamp = timestamp;
+        additionalData = util::additional_data::parse(additionalData_old);
     }
     else if (version < std::stoul(FIRST_CEREAL_CLASS_VERSION_WITH_EVENTID))
     {
-        a(id, severity, timestamp, message, additionalData, associations,
+        std::vector<std::string> additionalData_old{};
+        a(id, severity, timestamp, message, additionalData_old, associations,
           resolved, fwVersion, updateTimestamp);
+        additionalData = util::additional_data::parse(additionalData_old);
     }
     else if (version < std::stoul(FIRST_CEREAL_CLASS_VERSION_WITH_RESOLUTION))
     {
-        a(id, severity, timestamp, message, additionalData, associations,
+        std::vector<std::string> additionalData_old{};
+        a(id, severity, timestamp, message, additionalData_old, associations,
           resolved, fwVersion, updateTimestamp, eventId);
+        additionalData = util::additional_data::parse(additionalData_old);
+    }
+    else if (version <
+             std::stoul(FIRST_CEREAL_CLASS_VERSION_WITH_METADATA_DICT))
+    {
+        std::vector<std::string> additionalData_old{};
+        a(id, severity, timestamp, message, additionalData_old, associations,
+          resolved, fwVersion, updateTimestamp, eventId, resolution);
+        additionalData = util::additional_data::parse(additionalData_old);
     }
     else
     {
@@ -91,8 +108,8 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
     e.severity(severity, true);
     e.timestamp(timestamp, true);
     e.message(message, true);
-    e.additionalData(additionalData, true);
-    e.additionalData2(util::additional_data::parse(additionalData), true);
+    e.additionalData(util::additional_data::combine(additionalData), true);
+    e.additionalData2(additionalData, true);
     e.sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved(
         resolved, true);
     e.associations(associations, true);
