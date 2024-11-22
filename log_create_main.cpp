@@ -55,7 +55,7 @@ int main(int argc, char** argv)
     std::string event{};
     auto event_option = app.add_option("event", event, "Event name");
 
-    bool listOnly;
+    bool listOnly = false;
     app.add_flag("-l,--list", listOnly, "List all events")
         ->excludes(event_option);
 
