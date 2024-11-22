@@ -17,6 +17,7 @@ using Entry = sdbusplus::client::xyz::openbmc_project::logging::Entry<>;
  *  @return A tuple containing the message, level, and additional data.
  */
 auto extractEvent(sdbusplus::exception::generated_event_base&&)
-    -> std::tuple<std::string, Entry::Level, std::vector<std::string>>;
+    -> std::tuple<std::string, Entry::Level,
+                  std::map<std::string, std::string>>;
 
 } // namespace lg2::details

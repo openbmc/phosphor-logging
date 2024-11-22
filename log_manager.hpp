@@ -270,7 +270,7 @@ class Manager : public details::ServerObject<details::ManagerIface>
      * vector.
      */
     auto createEntry(std::string errMsg, Entry::Level errLvl,
-                     std::vector<std::string> additionalData,
+                     std::map<std::string, std::string> additionalData,
                      const FFDCEntries& ffdc = FFDCEntries{})
         -> sdbusplus::message::object_path;
 

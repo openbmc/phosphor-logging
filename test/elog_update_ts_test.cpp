@@ -61,7 +61,7 @@ TEST(TestUpdateTS, testChangeResolved)
     std::string message{"test error"};
     std::string fwLevel{"level42"};
     std::string path{"/tmp/99"};
-    std::vector<std::string> testData{"additional", "data"};
+    std::map<std::string, std::string> testData{{"additional", "data"}};
     phosphor::logging::AssociationList associations{};
 
     Entry elog{bus,
@@ -132,7 +132,7 @@ TEST(TestResolveProhibited, testResolveFlagChange)
     std::string message{"test error"};
     std::string fwLevel{"level42"};
     std::string path{"/tmp/99"};
-    std::vector<std::string> testData{"additional", "data"};
+    std::map<std::string, std::string> testData{{"additional", "data"}};
     phosphor::logging::AssociationList associations{};
 
     Entry elog{bus,
