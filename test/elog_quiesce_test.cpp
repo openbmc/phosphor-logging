@@ -41,7 +41,8 @@ TEST_F(TestQuiesceOnError, testNoCallout)
     std::string message{"test error"};
     std::string fwLevel{"level42"};
     std::string path{"/tmp/99"};
-    std::vector<std::string> testData{"no", "callout"};
+    std::map<std::string, std::string> testData{{"no", "no"},
+                                                {"callout", "callout"}};
     phosphor::logging::AssociationList associations{};
 
     Entry elog{mockedBus,
@@ -67,9 +68,9 @@ TEST_F(TestQuiesceOnError, testCallout)
     std::string message{"test error"};
     std::string fwLevel{"level42"};
     std::string path{"/tmp/99"};
-    std::vector<std::string> testData{
-        "CALLOUT_INVENTORY_PATH=/xyz/openbmc_project/inventory/system/chassis/"
-        "motherboard/powersupply0/"};
+    std::map<std::string, std::string> testData{
+        {"CALLOUT_INVENTORY_PATH",
+         "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply0/"}};
     phosphor::logging::AssociationList associations{};
 
     Entry elog{mockedBus,
@@ -95,9 +96,9 @@ TEST_F(TestQuiesceOnError, testBlockingErrorsCreated)
     std::string message{"test error"};
     std::string fwLevel{"level42"};
     std::string path{"/tmp/99"};
-    std::vector<std::string> testData{
-        "CALLOUT_INVENTORY_PATH=/xyz/openbmc_project/inventory/system/chassis/"
-        "motherboard/powersupply0/"};
+    std::map<std::string, std::string> testData{
+        {"CALLOUT_INVENTORY_PATH",
+         "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply0/"}};
     phosphor::logging::AssociationList associations{};
 
     // Ensure D-Bus object created for this blocking error
@@ -152,9 +153,9 @@ TEST_F(TestQuiesceOnError, testBlockingErrorsResolved)
     std::string message{"test error"};
     std::string fwLevel{"level42"};
     std::string path{"/tmp/99"};
-    std::vector<std::string> testData{
-        "CALLOUT_INVENTORY_PATH=/xyz/openbmc_project/inventory/system/chassis/"
-        "motherboard/powersupply0/"};
+    std::map<std::string, std::string> testData{
+        {"CALLOUT_INVENTORY_PATH",
+         "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply0/"}};
     phosphor::logging::AssociationList associations{};
 
     // Ensure D-Bus object created for this blocking error
@@ -211,9 +212,9 @@ TEST_F(TestQuiesceOnError, testBlockingErrorTwice)
     std::string message{"test error"};
     std::string fwLevel{"level42"};
     std::string path{"/tmp/99"};
-    std::vector<std::string> testData{
-        "CALLOUT_INVENTORY_PATH=/xyz/openbmc_project/inventory/system/chassis/"
-        "motherboard/powersupply0/"};
+    std::map<std::string, std::string> testData{
+        {"CALLOUT_INVENTORY_PATH",
+         "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply0/"}};
     phosphor::logging::AssociationList associations{};
 
     // Ensure D-Bus object created for this blocking error
