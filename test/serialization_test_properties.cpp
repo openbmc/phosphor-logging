@@ -13,7 +13,8 @@ TEST_F(TestSerialization, testProperties)
 {
     auto id = 99;
     phosphor::logging::AssociationList assocations{};
-    std::vector<std::string> testData{"additional=1", "data=yes"};
+    std::map<std::string, std::string> testData = {{"additional", "1"},
+                                                   {"data", "yes"}};
     uint64_t timestamp{100};
     std::string message{"test error"};
     std::string fwLevel{"level42"};

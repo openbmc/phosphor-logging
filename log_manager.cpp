@@ -193,12 +193,12 @@ void Manager::_commit(uint64_t transactionId [[maybe_unused]],
 
         sd_journal_close(j);
     }
-    createEntry(errMsg, errLvl, additionalData);
+    createEntry(errMsg, errLvl, util::additional_data::parse(additionalData));
 }
 
 auto Manager::createEntry(
     std::string errMsg, Entry::Level errLvl,
-    std::vector<std::string> additionalData,
+    std::map<std::string, std::string> additionalData,
     const FFDCEntries& ffdc) -> sdbusplus::message::object_path
 {
     if (!Extensions::disableDefaultLogCaps())
@@ -234,7 +234,8 @@ auto Manager::createEntry(
     auto objPath = std::string(OBJ_ENTRY) + '/' + std::to_string(entryId);
 
     AssociationList objects{};
-    processMetadata(errMsg, additionalData, objects);
+    auto additionalDataVec = util::additional_data::combine(additionalData);
+    processMetadata(errMsg, additionalDataVec, objects);
 
     auto e = std::make_unique<Entry>(
         busLog, objPath, entryId,
@@ -706,10 +707,7 @@ auto Manager::create(const std::string& message, Entry::Level severity,
                      const std::map<std::string, std::string>& additionalData,
                      const FFDCEntries& ffdc) -> sdbusplus::message::object_path
 {
-    // Convert the map into a vector of "key=value" strings
-    auto ad = util::additional_data::combine(additionalData);
-
-    return createEntry(message, severity, ad, ffdc);
+    return createEntry(message, severity, additionalData, ffdc);
 }
 
 } // namespace internal
