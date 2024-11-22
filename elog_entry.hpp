@@ -65,7 +65,7 @@ class Entry : public EntryIfaces
      */
     Entry(sdbusplus::bus_t& bus, const std::string& objectPath, uint32_t idErr,
           uint64_t timestampErr, Level severityErr, std::string&& msgErr,
-          std::vector<std::string>&& additionalDataErr,
+          std::map<std::string, std::string>&& additionalDataErr,
           AssociationList&& objects, const std::string& fwVersion,
           const std::string& filePath, internal::Manager& parent) :
         EntryIfaces(bus, objectPath.c_str(), EntryIfaces::action::defer_emit),
@@ -76,8 +76,8 @@ class Entry : public EntryIfaces
         timestamp(timestampErr, true);
         updateTimestamp(timestampErr, true);
         message(std::move(msgErr), true);
-        additionalData(std::move(additionalDataErr), true);
-        additionalData2(util::additional_data::parse(additionalData()), true);
+        additionalData2(std::move(additionalDataErr), true);
+        additionalData(util::additional_data::combine(additionalData2()), true);
         associations(std::move(objects), true);
         // Store a copy of associations in case we need to recreate
         assocs = associations();

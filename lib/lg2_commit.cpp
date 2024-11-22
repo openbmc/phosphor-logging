@@ -107,18 +107,9 @@ static auto data_from_json(sdbusplus::exception::generated_event_base& t)
 }
 
 auto extractEvent(sdbusplus::exception::generated_event_base&& t)
-    -> std::tuple<std::string, Entry::Level, std::vector<std::string>>
+    -> std::tuple<std::string, Entry::Level, std::map<std::string, std::string>>
 {
-    auto data = data_from_json(t);
-    std::vector<std::string> additional_data = {};
-
-    for (auto& [key, data] : data)
-    {
-        additional_data.emplace_back(key + "=" + data);
-    }
-
-    return {t.name(), severity_from_syslog(t.severity()),
-            std::move(additional_data)};
+    return {t.name(), severity_from_syslog(t.severity()), data_from_json(t)};
 }
 
 } // namespace details
