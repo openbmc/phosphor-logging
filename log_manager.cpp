@@ -85,7 +85,7 @@ uint32_t Manager::commitWithLvl(uint64_t transactionId, std::string errMsg,
 void Manager::_commit(uint64_t transactionId [[maybe_unused]],
                       std::string&& errMsg, Entry::Level errLvl)
 {
-    std::vector<std::string> additionalData{};
+    std::map<std::string, std::string> additionalData{};
 
     // When running as a test-case, the system may have a LOT of journal
     // data and we may not have permissions to do some of the journal sync
@@ -172,7 +172,13 @@ void Manager::_commit(uint64_t transactionId [[maybe_unused]],
                 }
 
                 // Metadata variable found, save it and remove it from the set.
-                additionalData.emplace_back(data, length);
+                std::string metadata(data, length);
+                if (auto pos = metadata.find('='); pos != std::string::npos)
+                {
+                    auto key = metadata.substr(0, pos);
+                    auto value = metadata.substr(pos + 1);
+                    additionalData.emplace(std::move(key), std::move(value));
+                }
                 i = metalist.erase(i);
             }
             if (metalist.empty())
@@ -193,7 +199,7 @@ void Manager::_commit(uint64_t transactionId [[maybe_unused]],
 
         sd_journal_close(j);
     }
-    createEntry(errMsg, errLvl, util::additional_data::parse(additionalData));
+    createEntry(errMsg, errLvl, additionalData);
 }
 
 auto Manager::createEntry(
