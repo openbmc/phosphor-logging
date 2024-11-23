@@ -38,19 +38,9 @@ class AdditionalData
      * @param[in] ad - the AdditionalData property vector with
      *                 entries of "KEY=VALUE"
      */
-    explicit AdditionalData(const std::vector<std::string>& ad)
-    {
-        for (auto& item : ad)
-        {
-            auto pos = item.find_first_of('=');
-            if (pos == std::string::npos || pos == 0)
-            {
-                continue;
-            }
-
-            _data[item.substr(0, pos)] = std::move(item.substr(pos + 1));
-        }
-    }
+    explicit AdditionalData(const std::map<std::string, std::string>& ad) :
+        _data(ad)
+    {}
 
     /**
      * @brief Returns the value of the AdditionalData item for the

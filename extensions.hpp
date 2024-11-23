@@ -17,7 +17,7 @@ namespace logging
  */
 using StartupFunction = std::function<void(internal::Manager&)>;
 
-using AdditionalDataArg = std::vector<std::string>;
+using AdditionalDataArg = std::map<std::string, std::string>;
 using AssociationEndpointsArg = std::vector<std::string>;
 using FFDCArg = FFDCEntries;
 

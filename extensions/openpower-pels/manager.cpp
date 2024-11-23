@@ -73,7 +73,7 @@ Manager::~Manager()
 
 void Manager::create(const std::string& message, uint32_t obmcLogID,
                      uint64_t timestamp, Entry::Level severity,
-                     const std::vector<std::string>& additionalData,
+                     const std::map<std::string, std::string>& additionalData,
                      const std::vector<std::string>& associations,
                      const FFDCEntries& ffdc)
 {
@@ -361,7 +361,7 @@ PelFFDC Manager::convertToPelFFDC(const FFDCEntries& ffdc)
 void Manager::createPEL(
     const std::string& message, uint32_t obmcLogID, uint64_t timestamp,
     phosphor::logging::Entry::Level severity,
-    const std::vector<std::string>& additionalData,
+    const std::map<std::string, std::string>& additionalData,
     const std::vector<std::string>& /*associations*/, const FFDCEntries& ffdc)
 {
     auto entry = _registry.lookup(message, rg::LookupType::name);
