@@ -113,7 +113,7 @@ class Manager : public PELInterface
      */
     void create(const std::string& message, uint32_t obmcLogID,
                 uint64_t timestamp, phosphor::logging::Entry::Level severity,
-                const std::vector<std::string>& additionalData,
+                const std::map<std::string, std::string>& additionalData,
                 const std::vector<std::string>& associations,
                 const phosphor::logging::FFDCEntries& ffdc =
                     phosphor::logging::FFDCEntries{});
@@ -319,7 +319,7 @@ class Manager : public PELInterface
      */
     void createPEL(const std::string& message, uint32_t obmcLogID,
                    uint64_t timestamp, phosphor::logging::Entry::Level severity,
-                   const std::vector<std::string>& additionalData,
+                   const std::map<std::string, std::string>& additionalData,
                    const std::vector<std::string>& associations,
                    const phosphor::logging::FFDCEntries& ffdc);
 

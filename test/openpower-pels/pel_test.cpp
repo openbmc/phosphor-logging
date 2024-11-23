@@ -162,7 +162,7 @@ TEST_F(PELTest, CreateFromRegistryTest)
     regEntry.src.type = 0xBD;
     regEntry.src.reasonCode = 0x1234;
 
-    std::vector<std::string> data{"KEY1=VALUE1"};
+    std::map<std::string, std::string> data{{"KEY1", "VALUE1"}};
     AdditionalData ad{data};
     NiceMock<MockDataInterface> dataIface;
     NiceMock<MockJournal> journal;
@@ -237,10 +237,7 @@ TEST_F(PELTest, CreateTooBigADTest)
     PelFFDC ffdc;
 
     // Over the 16KB max PEL size
-    std::string bigAD{"KEY1="};
-    bigAD += std::string(17000, 'G');
-
-    std::vector<std::string> data{bigAD};
+    std::map<std::string, std::string> data{{"KEY1", std::string(17000, 'G')}};
     AdditionalData ad{data};
     NiceMock<MockDataInterface> dataIface;
     NiceMock<MockJournal> journal;
@@ -362,8 +359,10 @@ TEST_F(PELTest, InvalidGenericTest)
 // Create a UserData section out of AdditionalData
 TEST_F(PELTest, MakeUDSectionTest)
 {
-    std::vector<std::string> ad{"KEY1=VALUE1", "KEY2=VALUE2", "KEY3=VALUE3",
-                                "ESEL=TEST"};
+    std::map<std::string, std::string> ad{{"KEY1", "VALUE1"},
+                                          {"KEY2", "VALUE2"},
+                                          {"KEY3", "VALUE3"},
+                                          {"ESEL", "TEST"}};
     AdditionalData additionalData{ad};
 
     auto ud = util::makeADUserDataSection(additionalData);
@@ -409,8 +408,7 @@ TEST_F(PELTest, SysInfoSectionTest)
     EXPECT_CALL(dataIface, getSystemIMKeyword())
         .WillOnce(Return(std::vector<uint8_t>{0, 1, 0x55, 0xAA}));
 
-    std::string pid = "_PID=" + std::to_string(getpid());
-    std::vector<std::string> ad{pid};
+    std::map<std::string, std::string> ad{{"_PID", std::to_string(getpid())}};
     AdditionalData additionalData{ad};
 
     auto ud = util::makeSysInfoUserDataSection(additionalData, dataIface);
@@ -752,7 +750,7 @@ TEST_F(PELTest, CreateWithFFDCTest)
     regEntry.src.type = 0xBD;
     regEntry.src.reasonCode = 0x1234;
 
-    std::vector<std::string> additionalData{"KEY1=VALUE1"};
+    std::map<std::string, std::string> additionalData{{"KEY1", "VALUE1"}};
     AdditionalData ad{additionalData};
     NiceMock<MockDataInterface> dataIface;
     NiceMock<MockJournal> journal;
@@ -863,10 +861,10 @@ TEST_F(PELTest, CreateWithDevCalloutsTest)
     file.close();
 
     {
-        std::vector<std::string> data{
-            "CALLOUT_ERRNO=5",
-            "CALLOUT_DEVICE_PATH=/sys/devices/platform/ahb/ahb:apb/"
-            "ahb:apb:bus@1e78a000/1e78a340.i2c-bus/i2c-14/14-0072"};
+        std::map<std::string, std::string> data{
+            {"CALLOUT_ERRNO", "5"},
+            {"CALLOUT_DEVICE_PATH",
+             "/sys/devices/platform/ahb/ahb:apb/ahb:apb:bus@1e78a000/1e78a340.i2c-bus/i2c-14/14-0072"}};
 
         AdditionalData ad{data};
 
@@ -917,10 +915,10 @@ TEST_F(PELTest, CreateWithDevCalloutsTest)
 
     {
         // Device path not found (wrong i2c addr), so no callouts
-        std::vector<std::string> data{
-            "CALLOUT_ERRNO=5",
-            "CALLOUT_DEVICE_PATH=/sys/devices/platform/ahb/ahb:apb/"
-            "ahb:apb:bus@1e78a000/1e78a340.i2c-bus/i2c-14/14-0099"};
+        std::map<std::string, std::string> data{
+            {"CALLOUT_ERRNO", "5"},
+            {"CALLOUT_DEVICE_PATH",
+             "/sys/devices/platform/ahb/ahb:apb/ahb:apb:bus@1e78a000/1e78a340.i2c-bus/i2c-14/14-0099"}};
 
         AdditionalData ad{data};
 
@@ -1149,7 +1147,7 @@ TEST_F(PELTest, CaptureJournalTest)
     regEntry.src.type = 0xBD;
     regEntry.src.reasonCode = 0x1234;
 
-    std::vector<std::string> data;
+    std::map<std::string, std::string> data{};
     AdditionalData ad{data};
     NiceMock<MockDataInterface> dataIface;
     NiceMock<MockJournal> journal;
@@ -1231,7 +1229,8 @@ TEST_F(PELTest, CaptureJournalTest)
                 ad,        ffdc,
                 dataIface, journal};
 
-        // Two more sections than the 1 extra UD section in the first testcase
+        // Two more sections than the 1 extra UD section in the first
+        // testcase
         ASSERT_EQ(pel.privateHeader().sectionCount(), pelSectsWithOneUD + 2);
 
         const auto& optionalSections = pel.optionalSections();
@@ -1289,8 +1288,8 @@ nlohmann::json getDIMMInfo(const auto& pel)
         {
             auto userData = static_cast<UserData*>(optionalSection.get());
 
-            // convert the userdata section to string and then parse in to json
-            // format
+            // convert the userdata section to string and then parse in to
+            // json format
             std::string userDataString{userData->data().begin(),
                                        userData->data().end()};
             nlohmann::json userDataJson = nlohmann::json::parse(userDataString);

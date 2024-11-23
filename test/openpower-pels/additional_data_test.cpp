@@ -21,8 +21,8 @@ using namespace openpower::pels;
 
 TEST(AdditionalDataTest, GetKeywords)
 {
-    std::vector<std::string> data{"KEY1=VALUE1", "KEY2=VALUE2",
-                                  "KEY3=", "HELLOWORLD", "=VALUE5"};
+    std::map<std::string, std::string> data{
+        {"KEY1", "VALUE1"}, {"KEY2", "VALUE2"}, {"KEY3", ""}};
     AdditionalData ad{data};
 
     EXPECT_TRUE(ad.getValue("KEY1"));

@@ -155,8 +155,8 @@ TEST_F(ManagerTest, TestCreateWithPEL)
     pelFile.write(reinterpret_cast<const char*>(data.data()), data.size());
     pelFile.close();
 
-    std::string adItem = "RAWPEL=" + pelFilename.string();
-    std::vector<std::string> additionalData{adItem};
+    std::map<std::string, std::string> additionalData{
+        {"RAWPEL", pelFilename.string()}};
     std::vector<std::string> associations;
 
     manager.create("error message", 42, 0,
@@ -201,8 +201,8 @@ TEST_F(ManagerTest, TestCreateWithInvalidPEL)
     pelFile.write(reinterpret_cast<const char*>(data.data()), data.size());
     pelFile.close();
 
-    std::string adItem = "RAWPEL=" + pelFilename.string();
-    std::vector<std::string> additionalData{adItem};
+    std::map<std::string, std::string> additionalData{
+        {"RAWPEL", pelFilename.string()}};
     std::vector<std::string> associations;
 
     manager.create("error message", 42, 0,
@@ -291,7 +291,7 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
                   std::placeholders::_2, std::placeholders::_3),
         std::move(journal)};
 
-    std::vector<std::string> additionalData{"FOO=BAR"};
+    std::map<std::string, std::string> additionalData{{"FOO", "BAR"}};
     std::vector<std::string> associations;
 
     // Create the event log to create the PEL from.
@@ -408,8 +408,8 @@ TEST_F(ManagerTest, TestDBusMethods)
     pelFile.write(reinterpret_cast<const char*>(data.data()), data.size());
     pelFile.close();
 
-    std::string adItem = "RAWPEL=" + pelFilename.string();
-    std::vector<std::string> additionalData{adItem};
+    std::map<std::string, std::string> additionalData{
+        {"RAWPEL", pelFilename.string()}};
     std::vector<std::string> associations;
 
     manager.create("error message", 42, 0,
@@ -624,8 +624,7 @@ TEST_F(ManagerTest, TestCreateWithESEL)
         std::move(journal)};
 
     {
-        std::string adItem = "ESEL=" + esel;
-        std::vector<std::string> additionalData{adItem};
+        std::map<std::string, std::string> additionalData{{"ESEL", esel}};
         std::vector<std::string> associations;
 
         manager.create("error message", 37, 0,
@@ -639,12 +638,12 @@ TEST_F(ManagerTest, TestCreateWithESEL)
 
     // Now an invalid one
     {
-        std::string adItem = "ESEL=" + esel;
+        std::string adItem = esel;
 
         // Crop it
         adItem.resize(adItem.size() - 300);
 
-        std::vector<std::string> additionalData{adItem};
+        std::map<std::string, std::string> additionalData{{"ESEL", adItem}};
         std::vector<std::string> associations;
 
         manager.create("error message", 38, 0,
@@ -680,11 +679,11 @@ TEST_F(ManagerTest, TestPruning)
                   std::placeholders::_2, std::placeholders::_3),
         std::move(journal)};
 
-    // Create 25 1000B (4096B on disk each, which is what is used for pruning)
-    // BMC non-informational PELs in the 100KB repository.  After the 24th one,
-    // the repo will be 96% full and a prune should be triggered to remove all
-    // but 7 to get under 30% full.  Then when the 25th is added there will be
-    // 8 left.
+    // Create 25 1000B (4096B on disk each, which is what is used for
+    // pruning) BMC non-informational PELs in the 100KB repository.  After
+    // the 24th one, the repo will be 96% full and a prune should be
+    // triggered to remove all but 7 to get under 30% full.  Then when the
+    // 25th is added there will be 8 left.
 
     auto dir = makeTempDir();
     for (int i = 1; i <= 25; i++)
@@ -696,8 +695,8 @@ TEST_F(ManagerTest, TestPruning)
         pelFile.write(reinterpret_cast<const char*>(data.data()), data.size());
         pelFile.close();
 
-        std::string adItem = "RAWPEL=" + pelFilename.string();
-        std::vector<std::string> additionalData{adItem};
+        std::map<std::string, std::string> additionalData{
+            {"RAWPEL", pelFilename.string()}};
         std::vector<std::string> associations;
 
         manager.create("error message", 42, 0,
@@ -759,8 +758,8 @@ TEST_F(ManagerTest, TestPELManualDelete)
     auto dir = makeTempDir();
     fs::path pelFilename = dir / "rawpel";
 
-    std::string adItem = "RAWPEL=" + pelFilename.string();
-    std::vector<std::string> additionalData{adItem};
+    std::map<std::string, std::string> additionalData{
+        {"RAWPEL", pelFilename.string()}};
     std::vector<std::string> associations;
 
     // Add 20 PELs, they will get incrementing IDs like
@@ -836,8 +835,8 @@ TEST_F(ManagerTest, TestPELManualDeleteAll)
     auto dir = makeTempDir();
     fs::path pelFilename = dir / "rawpel";
 
-    std::string adItem = "RAWPEL=" + pelFilename.string();
-    std::vector<std::string> additionalData{adItem};
+    std::map<std::string, std::string> additionalData{
+        {"RAWPEL", pelFilename.string()}};
     std::vector<std::string> associations;
 
     // Add 200 PELs, they will get incrementing IDs like
@@ -922,8 +921,8 @@ TEST_F(ManagerTest, TestServiceIndicators)
         pelFile.write(reinterpret_cast<const char*>(data.data()), data.size());
         pelFile.close();
 
-        std::string adItem = "RAWPEL=" + pelFilename.string();
-        std::vector<std::string> additionalData{adItem};
+        std::map<std::string, std::string> additionalData{
+            {"RAWPEL", pelFilename.string()}};
         std::vector<std::string> associations;
 
         manager.create("error message", 42, 0,
@@ -991,7 +990,7 @@ TEST_F(ManagerTest, TestServiceIndicators)
         registryFile << registry;
         registryFile.close();
 
-        std::vector<std::string> additionalData;
+        std::map<std::string, std::string> additionalData;
         std::vector<std::string> associations;
 
         manager.create("xyz.openbmc_project.Error.Test", 42, 0,
@@ -1027,8 +1026,8 @@ TEST_F(ManagerTest, TestDuplicatePEL)
         pelFile.write(reinterpret_cast<const char*>(data.data()), data.size());
         pelFile.close();
 
-        std::string adItem = "RAWPEL=" + pelFilename.string();
-        std::vector<std::string> additionalData{adItem};
+        std::map<std::string, std::string> additionalData{
+            {"RAWPEL", pelFilename.string()}};
         std::vector<std::string> associations;
 
         manager.create("error message", 42, 0,
@@ -1052,7 +1051,8 @@ TEST_F(ManagerTest, TestDuplicatePEL)
     EXPECT_EQ(count, 1);
 }
 
-// Test termination bit set for pel with critical system termination severity
+// Test termination bit set for pel with critical system termination
+// severity
 TEST_F(ManagerTest, TestTerminateBitWithPELSevCriticalSysTerminate)
 {
     const auto registry = R"(
@@ -1097,7 +1097,7 @@ TEST_F(ManagerTest, TestTerminateBitWithPELSevCriticalSysTerminate)
                   std::placeholders::_2, std::placeholders::_3),
         std::move(journal)};
 
-    std::vector<std::string> additionalData{"FOO=BAR"};
+    std::map<std::string, std::string> additionalData{{"FOO", "BAR"}};
     std::vector<std::string> associations;
 
     // Create the event log to create the PEL from.
@@ -1200,7 +1200,7 @@ TEST_F(ManagerTest, TestFruPlug)
                   std::placeholders::_2, std::placeholders::_3),
         std::move(journal)};
 
-    std::vector<std::string> additionalData;
+    std::map<std::string, std::string> additionalData;
     std::vector<std::string> associations;
 
     auto checkDeconfigured = [](bool deconfigured) {
@@ -1346,7 +1346,7 @@ TEST_F(ManagerTest, TestPELDeleteWithoutHWIsolation)
         std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
                   std::placeholders::_2, std::placeholders::_3),
         std::move(journal)};
-    std::vector<std::string> additionalData;
+    std::map<std::string, std::string> additionalData;
     std::vector<std::string> associations;
 
     // Check when there's no PEL with given id.
@@ -1363,8 +1363,8 @@ TEST_F(ManagerTest, TestPELDeleteWithoutHWIsolation)
     {
         // Verify that the guard flag is false.
         EXPECT_FALSE(pel_unguarded.getGuardFlag());
-        // Check that `isDeleteProhibited` returns false when the guard flag is
-        // false.
+        // Check that `isDeleteProhibited` returns false when the guard flag
+        // is false.
         EXPECT_FALSE(manager.isDeleteProhibited(42));
     }
     manager.erase(42);
@@ -1449,7 +1449,7 @@ TEST_F(ManagerTest, TestPELDeleteWithHWIsolation)
         std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
                   std::placeholders::_2, std::placeholders::_3),
         std::move(journal)};
-    std::vector<std::string> additionalData;
+    std::map<std::string, std::string> additionalData;
     std::vector<std::string> associations;
 
     int fd = createHWIsolatedCalloutFile();
@@ -1468,9 +1468,9 @@ TEST_F(ManagerTest, TestPELDeleteWithHWIsolation)
     auto data = readPELFile(*pelFile);
     PEL pel(*data);
     EXPECT_TRUE(pel.valid());
-    // Test case where the guard flag is set to true and the hardware isolation
-    // guard is associated, which should result in `isDeleteProhibited`
-    // returning true as expected.
+    // Test case where the guard flag is set to true and the hardware
+    // isolation guard is associated, which should result in
+    // `isDeleteProhibited` returning true as expected.
     EXPECT_TRUE(pel.getGuardFlag());
     EXPECT_TRUE(manager.isDeleteProhibited(42));
     manager.erase(42);

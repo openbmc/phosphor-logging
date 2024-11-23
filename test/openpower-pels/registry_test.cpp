@@ -688,7 +688,7 @@ TEST_F(RegistryTest, TestGetCallouts)
 
         {
             // Find callouts for PROC_NUM 0 on system3
-            std::vector<std::string> adData{"PROC_NUM=0"};
+            std::map<std::string, std::string> adData{{"PROC_NUM", "0"}};
             AdditionalData ad{adData};
             systemNames[0] = "system3";
 
@@ -723,7 +723,7 @@ TEST_F(RegistryTest, TestGetCallouts)
         }
         {
             // Find callouts for PROC_NUM 1 that uses a default system entry.
-            std::vector<std::string> adData{"PROC_NUM=1"};
+            std::map<std::string, std::string> adData{{"PROC_NUM", "1"}};
             AdditionalData ad{adData};
             systemNames[0] = "system1";
 
@@ -737,7 +737,7 @@ TEST_F(RegistryTest, TestGetCallouts)
         }
         {
             // There is no entry for PROC_NUM 2, so no callouts
-            std::vector<std::string> adData{"PROC_NUM=2"};
+            std::map<std::string, std::string> adData{{"PROC_NUM", "2"}};
             AdditionalData ad{adData};
 
             auto callouts = Registry::getCallouts(json, systemNames, ad);
@@ -783,7 +783,7 @@ TEST_F(RegistryTest, TestGetCallouts)
 
         // There isn't an entry in the JSON for a PROC_NUM of 8
         // so it should choose the P1-C1 callout.
-        std::vector<std::string> adData{"PROC_NUM=8"};
+        std::map<std::string, std::string> adData{{"PROC_NUM", "8"}};
         AdditionalData ad{adData};
         systemNames.clear();
 
