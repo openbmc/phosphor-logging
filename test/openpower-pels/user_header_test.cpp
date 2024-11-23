@@ -247,7 +247,8 @@ TEST(UserHeaderTest, UseEventLogSevCritTermTest)
     // Leave off severity
 
     MockDataInterface dataIface;
-    std::vector<std::string> adData{"SEVERITY_DETAIL=SYSTEM_TERM"};
+    std::map<std::string, std::string> adData{
+        {"SEVERITY_DETAIL", "SYSTEM_TERM"}};
     AdditionalData ad{adData};
 
     UserHeader uh(regEntry, phosphor::logging::Entry::Level::Critical, ad,
@@ -324,7 +325,7 @@ TEST(UserHeaderTest, UseEventLogPELSubsystem)
         regEntry.eventScope = 2;
 
         MockDataInterface dataIface;
-        std::vector<std::string> adData{"PEL_SUBSYSTEM=0x25"};
+        std::map<std::string, std::string> adData{{"PEL_SUBSYSTEM", "0x25"}};
         AdditionalData ad{adData};
 
         UserHeader uh(regEntry, phosphor::logging::Entry::Level::Critical, ad,
@@ -341,7 +342,7 @@ TEST(UserHeaderTest, UseEventLogPELSubsystem)
         regEntry.eventScope = 2;
 
         MockDataInterface dataIface;
-        std::vector<std::string> adData{"PEL_SUBSYSTEM=0x99"};
+        std::map<std::string, std::string> adData{{"PEL_SUBSYSTEM", "0x99"}};
         AdditionalData ad{adData};
 
         UserHeader uh(regEntry, phosphor::logging::Entry::Level::Critical, ad,
@@ -358,7 +359,7 @@ TEST(UserHeaderTest, UseEventLogPELSubsystem)
         regEntry.eventScope = 2;
 
         MockDataInterface dataIface;
-        std::vector<std::string> adData;
+        std::map<std::string, std::string> adData;
         AdditionalData ad{adData};
 
         UserHeader uh(regEntry, phosphor::logging::Entry::Level::Critical, ad,
