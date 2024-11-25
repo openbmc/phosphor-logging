@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "50388266_10262a2a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001371
+      },
+      "writtenOn": "2024-11-25T16:46:34Z",
+      "side": 1,
+      "message": "I read through this document, and it seems like this might require a significant amount of refactoring. I was wondering if maintaining the current end-to-end design without impacting the existing architecture would be the most convenient approach.",
+      "parentUuid": "ef8ead4d_cf168dc4",
+      "revId": "422dd7f8fd094b3a00c189033280832c1eba4d1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d223b5c6_7e92f3c6",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "If we accept directly overriding the original function (instead of using a new API report_metadata), no modifications are needed at the call sites. The current changes have undergone extensive stress testing, and no log loss has been observed.",
       "parentUuid": "d223b5c6_7e92f3c6",
+      "revId": "422dd7f8fd094b3a00c189033280832c1eba4d1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a73d9fb1_72db4550",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1001371
+      },
+      "writtenOn": "2024-11-25T16:46:34Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0622de03_4dbb17bb",
       "revId": "422dd7f8fd094b3a00c189033280832c1eba4d1b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -108,6 +144,30 @@
       "side": 1,
       "message": "yup, currently the log chain is:\n1, log generate app -\u003e journald\u0027\n2, log generate app -\u003e (dbus-call) logging\n3, logging notify(dbus) systemd sent signal to journald\n4, journald write file to local storage\n5, logging wait journald write done (we expect it, but in reality it is not.)\n6, get metadata...\n\nthe chain is too long, there are often difficult to diagnose and reproduce.",
       "parentUuid": "88343574_3c102664",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 46
+      },
+      "revId": "422dd7f8fd094b3a00c189033280832c1eba4d1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5eb3ab95_d4f5df42",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1001371
+      },
+      "writtenOn": "2024-11-25T16:46:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb7a67d3_e34b3121",
       "range": {
         "startLine": 46,
         "startChar": 0,
@@ -170,6 +230,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "303f508f_99af2101",
+        "filename": "lib/elog.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1001371
+      },
+      "writtenOn": "2024-11-25T16:46:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "20a89449_f6231ad6",
+      "revId": "422dd7f8fd094b3a00c189033280832c1eba4d1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "619f95eb_9b813c29",
@@ -193,6 +271,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6f22eb4_a859740e",
+        "filename": "lib/include/phosphor-logging/elog.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1001371
+      },
+      "writtenOn": "2024-11-25T16:46:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "619f95eb_9b813c29",
+      "range": {
+        "startLine": 115,
+        "startChar": 34,
+        "endLine": 115,
+        "endChar": 68
+      },
+      "revId": "422dd7f8fd094b3a00c189033280832c1eba4d1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0d1c787b_1d150c56",
@@ -206,6 +308,24 @@
       "writtenOn": "2024-05-24T02:52:14Z",
       "side": 1,
       "message": "Need to check `if (n \u003c 0)` to handle the error case.",
+      "revId": "422dd7f8fd094b3a00c189033280832c1eba4d1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94dec923_4fd98539",
+        "filename": "tools/phosphor-logging/templates/elog-gen-template.mako.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1001371
+      },
+      "writtenOn": "2024-11-25T16:46:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d1c787b_1d150c56",
       "revId": "422dd7f8fd094b3a00c189033280832c1eba4d1b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
