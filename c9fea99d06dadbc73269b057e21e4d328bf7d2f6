@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fbb4a02_6b5bd65f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2024-11-26T03:21:03Z",
+      "side": 1,
+      "message": "+1 if the doxygen comments are added.",
+      "revId": "c9fea99d06dadbc73269b057e21e4d328bf7d2f6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a83c392_271cce79",
+        "filename": "log_manager.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2024-11-26T03:21:03Z",
+      "side": 1,
+      "message": "Add doxygen comments.",
+      "revId": "c9fea99d06dadbc73269b057e21e4d328bf7d2f6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
