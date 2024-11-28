@@ -149,7 +149,7 @@ Example:
 using WriteFailure =
     sdbusplus::xyz::openbmc_project::Control::Device::Error::WriteFailure;
 using metadata =
-    xyz::openbmc_project::Control::Device::WriteFailure;
+    phosphor::logging::xyz::openbmc_project::Control::Device::WriteFailure;
 ...
 if (somethingBadHappened)
 {
