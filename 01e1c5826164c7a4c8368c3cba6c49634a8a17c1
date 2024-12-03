@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "490ee21c_b935827f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-12-03T15:34:52Z",
+      "side": 1,
+      "message": "Shawn snuck in this fix with https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/76185",
+      "revId": "01e1c5826164c7a4c8368c3cba6c49634a8a17c1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
