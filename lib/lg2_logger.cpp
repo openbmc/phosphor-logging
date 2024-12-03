@@ -214,6 +214,10 @@ static auto extra_output_method =
         ? cerr_extra_output
         : noop_extra_output;
 
+// Skip sending debug messages to journald if "DEBUG_INVOCATION" is not set
+// per systemd.exec manpage.
+static auto send_debug_to_journal = nullptr != getenv("DEBUG_INVOCATION");
+
 // Do_log implementation.
 void do_log(level l, const std::source_location& s, const char* m, ...)
 {
@@ -300,7 +304,10 @@ void do_log(level l, const std::source_location& s, const char* m, ...)
     });
 
     // Output the iovec.
-    sd_journal_sendv(iov.data(), strings.size());
+    if (send_debug_to_journal || l != level::debug)
+    {
+        sd_journal_sendv(iov.data(), strings.size());
+    }
     extra_output_method(l, s, message);
 }
 
