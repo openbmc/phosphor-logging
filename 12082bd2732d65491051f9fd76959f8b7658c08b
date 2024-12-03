@@ -39,6 +39,30 @@
       "message": "audit_event(type, rc, request, user, host, data) as described in here \n\nhttps://gerrit.openbmc.org/plugins/gitiles/openbmc/docs/+/9f5e2d83a3b9fd852422f735c55c41892de4c590/designs/phosphor-audit.md\n\nstruct blob_audit\n{\n    uint8_t type;\n    int32_t rc;\n    uint32_t request_id;\n    char *user;\n    sockaddr_in6 *addr;\n    struct iovec *data;\n}\n\nI see that here only part of it.",
       "revId": "12082bd2732d65491051f9fd76959f8b7658c08b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db1c4e6c_8d94ef86",
+        "filename": "lib/include/phosphor-logging/audit/audit.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000182
+      },
+      "writtenOn": "2024-12-03T14:02:27Z",
+      "side": 1,
+      "message": "So it will be:\n\nstruct blob_audit\n{\nuint8_t type \u003d NET_IPMI, BMCWEB;\nint32_t rc \u003d depends on return code.\nuint32_t request_id \u003d 3;\nchar user \u003d username;\nsockaddr_in6 addr \u003d sockaddr struct with addr;\nstruct iovec *data \u003d some additional data as example from bmcweb;\n}",
+      "parentUuid": "d4e2d12d_80689190",
+      "range": {
+        "startLine": 14,
+        "startChar": 56,
+        "endLine": 14,
+        "endChar": 65
+      },
+      "revId": "12082bd2732d65491051f9fd76959f8b7658c08b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
