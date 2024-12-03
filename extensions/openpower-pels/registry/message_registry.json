@@ -6143,6 +6143,20 @@
             }
         },
         {
+            "Name": "xyz.openbmc_project.Dump.Error.Offload",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "non_error",
+            "SRC": {
+                "ReasonCode": "0x6029",
+                "Words6To9": {}
+            },
+            "Documentation": {
+                "Description": "Dump has been offloaded",
+                "Message": "BMC/System/Resource dump has been offloaded"
+            }
+        },
+        {
             "Name": "xyz.openbmc_project.Memory.MemoryECC.Error.CEThresholdReached",
             "Subsystem": "cec_hardware",
             "ComponentID": "0xF300",
