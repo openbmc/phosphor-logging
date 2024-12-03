@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4e2d12d_80689190",
+        "filename": "lib/include/phosphor-logging/audit/audit.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000182
+      },
+      "writtenOn": "2024-12-03T13:59:12Z",
+      "side": 1,
+      "message": "need to proper description for each part of arguments.\n\nrequestId is something like generalized event like:\n\nstatic constexpr POWERON \u003d 1;\nstatic constexpr POWEROFF \u003d 2;\nstatic constexpr FACTORY_RESET \u003d 3;\n\nProbably need another header with common usage parts of the server like above.\n\nAs example:\n\nBMC Factory Reset\nIPMI: Netfun: 0x3a Command: 0x11\nBMCWEB: uri_path: \"redfish/v1/Managers/bmc/Actions/Manager.ResetToDefaults\"  + args: {\"ResetType\": \"ResetAll\"}\n\naudit\u003cNET_IPMI\u003e(cmd(0x3a), netfun(0x11), rc, user, sockaddr, \"\"\u003cadditional_data\u003e)\n\naudit\u003cBMCWEB\u003e(\"redfish/v1/Managers/bmc/Actions/Manager.ResetToDefaults\", rc, user, sockaddr, \"{\"ResetType\": \"ResetAll\"}\"\u003cadditional data\u003e)\n\nboth of these requests with requestId \u003d 3",
+      "range": {
+        "startLine": 14,
+        "startChar": 56,
+        "endLine": 14,
+        "endChar": 65
+      },
+      "revId": "12082bd2732d65491051f9fd76959f8b7658c08b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "589bcc2b_4d27e001",
+        "filename": "lib/include/phosphor-logging/audit/audit.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000182
+      },
+      "writtenOn": "2024-12-03T13:59:12Z",
+      "side": 1,
+      "message": "audit_event(type, rc, request, user, host, data) as described in here \n\nhttps://gerrit.openbmc.org/plugins/gitiles/openbmc/docs/+/9f5e2d83a3b9fd852422f735c55c41892de4c590/designs/phosphor-audit.md\n\nstruct blob_audit\n{\n    uint8_t type;\n    int32_t rc;\n    uint32_t request_id;\n    char *user;\n    sockaddr_in6 *addr;\n    struct iovec *data;\n}\n\nI see that here only part of it.",
+      "revId": "12082bd2732d65491051f9fd76959f8b7658c08b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
