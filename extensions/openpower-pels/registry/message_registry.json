@@ -6075,8 +6075,8 @@
                 "Words6To9": {}
             },
             "Documentation": {
-                "Description": "Dump has been deleted/offloaded",
-                "Message": "BMC/System/Resource dump has been deleted/offloaded"
+                "Description": "Dump has been deleted",
+                "Message": "BMC/System/Resource dump has been deleted"
             }
         },
         {
@@ -6140,6 +6140,20 @@
             "Documentation": {
                 "Description": "Failed to decode NewFileAvailable response",
                 "Message": "Failed to decode NewFileAvailable response"
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.Dump.Error.Offload",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x6000",
+            "Severity": "non_error",
+            "SRC": {
+                "ReasonCode": "0x6029",
+                "Words6To9": {}
+            },
+            "Documentation": {
+                "Description": "Dump has been offloaded",
+                "Message": "BMC/System/Resource dump has been offloaded"
             }
         },
         {
