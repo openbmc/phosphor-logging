@@ -211,8 +211,9 @@ to use in addition to the ASCII string field to form the symptom ID. All words
 are separated by underscores. If not specified, the code will choose a default
 format, which may depend on the SRC type.
 
-For example: ["SRCWord3", "SRCWord9"] would be: `<ASCII_STRING>_<SRCWord3>_<SRCWord9>`,
-which could look like: `B181320_00000050_49000000`.
+For example: ["SRCWord3", "SRCWord9"] would be:
+`<ASCII_STRING>_<SRCWord3>_<SRCWord9>`, which could look like:
+`B181320_00000050_49000000`.
 
 ```json
 "SymptomIDFields": ["SRCWord3", "SRCWord9"]
