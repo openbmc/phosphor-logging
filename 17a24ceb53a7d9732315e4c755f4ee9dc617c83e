@@ -22,6 +22,30 @@
       },
       "revId": "17a24ceb53a7d9732315e4c755f4ee9dc617c83e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c5832c2_07979805",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-12-03T15:30:13Z",
+      "side": 1,
+      "message": "though it doesn\u0027t use lg2 I guess.  I wonder how chatty other apps are, like even phoshor-logging itself.",
+      "parentUuid": "b3889a09_1eb68ad3",
+      "range": {
+        "startLine": 11,
+        "startChar": 47,
+        "endLine": 14,
+        "endChar": 52
+      },
+      "revId": "17a24ceb53a7d9732315e4c755f4ee9dc617c83e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
