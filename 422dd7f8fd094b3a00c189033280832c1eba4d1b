@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9b76ea0d_d49532d4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T17:55:38Z",
+      "side": 1,
+      "message": "I think it would be good to understand what your plan is with this new API.  \n\nAre you planning on refactoring all the existing calls from `report` to `report_metadata`?  If so, it seems to me like it might be more beneficial to refactor to the new APIs.  This probably warrants a broader discussion (mailing list or discord #development maybe?).\n\nIf your plan is to only use this in downstream code, this doesn\u0027t seem valuable because it just adds a legacy that we\u0027re trying to move away from anyhow.",
+      "parentUuid": "e68d7817_8a8a3844",
+      "revId": "422dd7f8fd094b3a00c189033280832c1eba4d1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d223b5c6_7e92f3c6",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
