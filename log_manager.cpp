@@ -27,6 +27,7 @@
 #include <future>
 #include <iostream>
 #include <map>
+#include <ranges>
 #include <set>
 #include <string>
 #include <string_view>
@@ -308,7 +309,7 @@ bool Manager::isQuiesceOnErrorEnabled()
 
 bool Manager::isCalloutPresent(const Entry& entry)
 {
-    for (const auto& c : entry.additionalData())
+    for (const auto& c : std::views::keys(entry.additionalData()))
     {
         if (c.find("CALLOUT_") != std::string::npos)
         {

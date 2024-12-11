@@ -185,21 +185,17 @@ TEST_F(TestLogManagerDbus, CallCommitAsync)
             // Extract the NUMBER_OF_LOGS, PID, and CODE_FILE.
             for (const auto& value : additionalData)
             {
-                auto getValue = [&value]() {
-                    return value.substr(value.find_first_of('=') + 1);
-                };
-
-                if (value.starts_with("NUMBER_OF_LOGS="))
+                if (value.first == "NUMBER_OF_LOGS")
                 {
-                    log_count = getValue();
+                    log_count = value.second;
                 }
-                if (value.starts_with("_PID="))
+                if (value.first == "_PID")
                 {
-                    pid = std::stoull(getValue());
+                    pid = std::stoull(value.second);
                 }
-                if (value.starts_with("_CODE_FILE="))
+                if (value.first == "_CODE_FILE")
                 {
-                    source_file = getValue();
+                    source_file = value.second;
                 }
             }
         }
