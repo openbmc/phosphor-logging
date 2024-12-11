@@ -76,8 +76,8 @@ class Entry : public EntryIfaces
         timestamp(timestampErr, true);
         updateTimestamp(timestampErr, true);
         message(std::move(msgErr), true);
-        additionalData2(std::move(additionalDataErr), true);
-        additionalData(util::additional_data::combine(additionalData2()), true);
+        additionalData(std::move(additionalDataErr), true);
+        additionalData2(additionalData(), true);
         associations(std::move(objects), true);
         // Store a copy of associations in case we need to recreate
         assocs = associations();

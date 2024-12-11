@@ -108,7 +108,7 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
     e.severity(severity, true);
     e.timestamp(timestamp, true);
     e.message(message, true);
-    e.additionalData(util::additional_data::combine(additionalData), true);
+    e.additionalData(additionalData, true);
     e.additionalData2(additionalData, true);
     e.sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved(
         resolved, true);
