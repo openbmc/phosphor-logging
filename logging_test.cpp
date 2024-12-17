@@ -238,9 +238,9 @@ int main(int argc, char* argv[])
         return elog_test();
 
     static struct option long_options[] = {
-        {"help", no_argument, 0, 'h'},
-        {"commit", required_argument, 0, 'c'},
-        {0, 0, 0, 0}};
+        {"help", no_argument, nullptr, 'h'},
+        {"commit", required_argument, nullptr, 'c'},
+        {nullptr, 0, nullptr, 0}};
     int option_index = 0;
 
     while ((arg = getopt_long(argc, argv, "hc:", long_options,
