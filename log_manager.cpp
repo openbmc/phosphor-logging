@@ -203,10 +203,10 @@ void Manager::_commit(uint64_t transactionId [[maybe_unused]],
     createEntry(errMsg, errLvl, additionalData);
 }
 
-auto Manager::createEntry(
-    std::string errMsg, Entry::Level errLvl,
-    std::map<std::string, std::string> additionalData,
-    const FFDCEntries& ffdc) -> sdbusplus::message::object_path
+auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
+                          std::map<std::string, std::string> additionalData,
+                          const FFDCEntries& ffdc)
+    -> sdbusplus::message::object_path
 {
     if (!Extensions::disableDefaultLogCaps())
     {
@@ -268,8 +268,9 @@ auto Manager::createEntry(
     return objPath;
 }
 
-auto Manager::createFromEvent(sdbusplus::exception::generated_event_base&&
-                                  event) -> sdbusplus::message::object_path
+auto
+    Manager::createFromEvent(sdbusplus::exception::generated_event_base&& event)
+        -> sdbusplus::message::object_path
 {
     auto [msg, level, data] = lg2::details::extractEvent(std::move(event));
     return this->createEntry(msg, level, std::move(data));
