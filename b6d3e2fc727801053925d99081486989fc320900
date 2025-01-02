@@ -16,6 +16,24 @@
       "message": "I kinda liked the old way better.  oh well.",
       "revId": "b6d3e2fc727801053925d99081486989fc320900",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "130d3ea0_1ad8b7b8",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1008,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-01-02T23:53:53Z",
+      "side": 1,
+      "message": "https://gerrit.openbmc.org/c/openbmc/docs/+/76860 would improve this I think.",
+      "parentUuid": "66209acd_08965dd8",
+      "revId": "b6d3e2fc727801053925d99081486989fc320900",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
