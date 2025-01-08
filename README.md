@@ -15,7 +15,7 @@ logging.
 
 ## To Build
 
-To build this package, do the following steps:
+To build this package, do the following important steps:
 
 1. meson builddir
 2. ninja -c builddir
