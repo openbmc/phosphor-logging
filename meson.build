@@ -70,10 +70,11 @@ endif
 nlohmann_json_dep = dependency('nlohmann_json', include_type: 'system')
 
 # Generate sdbus++ files.
-generated_sources = []
-generated_others = []
+should_generate_cpp = true
+should_generate_markdown = false
+should_generate_registry = false
+yaml_selected_subdirs = [ 'xyz' ]
 subdir('gen')
-subdir('gen/xyz')
 
 # Generate callouts-gen.hpp.
 callouts_gen = custom_target('callouts-gen.hpp'.underscorify(),
