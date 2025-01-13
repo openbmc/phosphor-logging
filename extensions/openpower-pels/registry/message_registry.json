@@ -901,6 +901,9 @@
                     "The number of OCCs detected by the BMC does not match the number of OCCs detected by the OCC.",
                     "The BMC requests that the OCC reset."
                 ]
+            },
+            "JournalCapture": {
+                "NumLines": 60
             }
         },
 
@@ -921,6 +924,14 @@
                 "Notes": [
                     "The BMC detected that the OCC was in safe state for one minute while active.",
                     "The BMC requests that the OCC reset."
+                ]
+            },
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "openpower-occ-control",
+                        "NumLines": 80
+                    }
                 ]
             }
         },
@@ -943,6 +954,9 @@
                     "The BMC failed to communicate with the OCC and retried three times.",
                     "The BMC requests that the OCC reset."
                 ]
+            },
+            "JournalCapture": {
+                "NumLines": 80
             }
         },
 
@@ -950,7 +964,6 @@
             "Name": "org.open_power.OCC.Device.Error.OpenFailure",
             "Subsystem": "cec_chip_iface",
             "ComponentID": "0x2600",
-            "Severity": "predictive",
 
             "SRC": {
                 "ReasonCode": "0x2684",
@@ -963,6 +976,9 @@
                 "Notes": [
                     "There was a failure trying to open an OCC device driver file"
                 ]
+            },
+            "JournalCapture": {
+                "NumLines": 80
             }
         },
 
@@ -993,7 +1009,7 @@
                 ]
             },
             "JournalCapture": {
-                "NumLines": 40
+                "NumLines": 100
             }
         },
 
