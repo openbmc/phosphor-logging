@@ -1,0 +1,17 @@
+description: >
+    Set of properties for BMCWEB inteface. AllowList, DenyList with
+    Enabled status. Mostly for debug purposes.
+
+properties:
+    - name: AllowList
+      type: array[struct[uint32,uint32]]
+      description: >
+          Allow BMCWEB list. List of BMCWEB paths which should be logged.
+    - name: DenyList
+      type: array[struct[uint32,uint32]]
+      description: >
+          Deny BMCWEB list. List of BMCWEB paths which should be not logged, works as exceptation.
+    - name: Enabled
+      type: boolean
+      description: >
+          Enabled or disabled status of BMCWEB audit part.
