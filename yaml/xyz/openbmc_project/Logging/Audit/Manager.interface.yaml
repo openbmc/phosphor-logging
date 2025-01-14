@@ -1,0 +1,35 @@
+description: >
+    Implement to provide event logging management features. This interface
+    should be instantiated for the phosphor::logging namespace, and only one is
+    required.
+methods:
+    - name: Notify
+      description: >
+          Writes the requested event entry and its associated metadata fields to
+          flash and notifies the audit event for processing.
+      parameters:
+          - name: type
+            type: byte
+            description: >
+                The type of the audit data.
+          - name: requestId
+            type: uint32
+            description: >
+                The unique identifier of the journal entry(ies) to be committed.
+          - name: rc
+            type: int32
+            description: >
+                The handler return code.
+          - name: user
+            type: string
+            description: >
+                The user on the system.
+          - name: sockaddr_struct
+            type: array[byte]
+            description: >
+                The sockaddr struct packed data. Supported sockaddr_in,
+                sockaddr_in6, sockaddr_mctp.
+          - name: data
+            type: array[byte]
+            description: >
+                The additional data.
