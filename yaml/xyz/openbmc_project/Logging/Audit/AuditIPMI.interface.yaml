@@ -1,0 +1,17 @@
+description: >
+    Set of properties for IPMI Audit inteface. AllowList, DenyList with
+    Enabled status. Mostly for debug purposes.
+
+properties:
+    - name: AllowList
+      type: array[struct[byte,byte,string]]
+      description: >
+          Allow IPMI list. List of cmd/netfn which should be logged.
+    - name: DenyList
+      type: array[struct[byte,byte,string]]
+      description: >
+          Deny IPMI list. List of cmd/netfn which should be not logged, works as exceptation.
+    - name: Enabled
+      type: boolean
+      description: >
+          Enabled or disabled status of IPMI audit part.
