@@ -229,3 +229,5 @@ subdir('dist')
 if get_option('tests').allowed()
     subdir('test')
 endif
+
+subdir('example')
