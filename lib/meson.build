@@ -15,6 +15,7 @@ phosphor_logging_deps = [
 
 phosphor_logging_lib = library(
     'phosphor_logging',
+    'audit.cpp',
     'elog.cpp',
     'lg2_commit.cpp',
     'lg2_logger.cpp',
