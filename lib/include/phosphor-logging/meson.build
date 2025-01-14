@@ -29,6 +29,8 @@ install_headers(
     subdir: 'phosphor-logging',
 )
 
+install_headers('audit/audit.hpp', subdir: 'phosphor-logging/audit')
+
 install_headers(
     'lg2/concepts.hpp',
     'lg2/conversion.hpp',
