@@ -229,3 +229,37 @@ subdir('dist')
 if get_option('tests').allowed()
     subdir('test')
 endif
+
+# Include Directories
+audit_api_usage_inc = include_directories(['lib/include', 'gen/'])
+
+# Sources
+audit_api_usage_src = (
+    [
+            generated_sources,
+    files('example/audit_api/audit_api_usage.cpp'),
+            ]
+)
+
+# Deps
+audit_api_usage_dep = declare_dependency(
+    link_args: ['-lsdeventplus', '-lsdbusplus', '-lsystemd', '-lm'],
+)
+
+executable(
+    'audit_api_usage',
+    audit_api_usage_src,
+    dependencies: [
+        conf_h_dep,
+        pdi_dep,
+        sdbusplus_dep,
+        phosphor_logging_dep,
+        audit_api_usage_dep,
+    ],
+    include_directories: audit_api_usage_inc,
+    link_with: phosphor_logging_lib,
+    export_dynamic: true,
+    install: true,
+)
+
+subdir('example')
