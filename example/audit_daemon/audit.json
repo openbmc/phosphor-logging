@@ -1,0 +1,18 @@
+{
+  "IPMI" :
+  {
+      "Enabled" : true,
+      "Allowlist" : [
+      {
+        "cmd" : 2,
+        "netfn": 0,
+        "msg" : "Chassis Power Control"
+      },
+      {
+        "cmd": 71,
+        "netfn": 6,
+        "msg" : "Set User Password"
+      }
+    ]
+  }
+}
