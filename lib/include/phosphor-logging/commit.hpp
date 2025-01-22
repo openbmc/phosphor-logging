@@ -16,6 +16,8 @@ namespace lg2
 auto commit(sdbusplus::exception::generated_event_base&& e)
     -> sdbusplus::message::object_path;
 
+void resolve(const sdbusplus::message::object_path& logPath);
+
 /** Commit a generated event/error (using async context).
  *
  *  @param ctx - The async context to use.
@@ -25,4 +27,9 @@ auto commit(sdbusplus::exception::generated_event_base&& e)
 auto commit(sdbusplus::async::context& ctx,
             sdbusplus::exception::generated_event_base&& e)
     -> sdbusplus::async::task<sdbusplus::message::object_path>;
+
+auto resolve(sdbusplus::async::context& ctx,
+             const sdbusplus::message::object_path& logPath)
+    -> sdbusplus::async::task<>;
+
 } // namespace lg2
