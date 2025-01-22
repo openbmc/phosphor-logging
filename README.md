@@ -72,6 +72,13 @@ lg2::commit(sdbusplus::event::xyz::openbmc_project::Logging::Cleared(
     "NUMBER_OF_LOGS", count));
 ```
 
+The above function will return the object path of the created log entry. This
+log-entry can be resolved with the helper `lg2::resolve` fuction.
+
+```cpp
+lg2::resolve(logPath);
+```
+
 There are two other, but now deprecated, methods to creating event logs in
 OpenBMC code. The first makes use of the systemd journal to store metadata
 needed for the log, and the second is a plain D-Bus method call.

@@ -142,6 +142,20 @@ auto commit(sdbusplus::exception::generated_event_base&& t)
     return {};
 }
 
+void resolve(const sdbusplus::message::object_path& logPath)
+{
+    if constexpr (LG2_COMMIT_DBUS)
+    {
+        using details::Entry;
+
+        auto b = sdbusplus::bus::new_default();
+        auto m = b.new_method_call(Entry::default_service, logPath.str.c_str(),
+                                   "org.freedesktop.DBus.Properties", "Set");
+        m.append(Entry::interface, "Resolved", std::variant<bool>(true));
+        auto reply = b.call(m);
+    }
+}
+
 auto commit(sdbusplus::async::context& ctx,
             sdbusplus::exception::generated_event_base&& t)
     -> sdbusplus::async::task<sdbusplus::message::object_path>
@@ -162,6 +176,23 @@ auto commit(sdbusplus::async::context& ctx,
                     details::data_from_json(t));
     }
     co_return {};
+}
+
+auto resolve(sdbusplus::async::context& ctx,
+             const sdbusplus::message::object_path& logPath)
+    -> sdbusplus::async::task<>
+{
+    using details::Entry;
+
+    if constexpr (LG2_COMMIT_DBUS)
+    {
+        std::string path = logPath.str;
+        co_await Entry(ctx)
+            .service(Entry::default_service)
+            .path(path)
+            .resolved(true);
+    }
+    co_return;
 }
 
 } // namespace lg2
