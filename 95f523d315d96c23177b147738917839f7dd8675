@@ -16,6 +16,24 @@
       "message": "I think we can drop these?  Or else we need to have more information to key off that we don\u0027t have. This only works in a useful way if you have some of the JSON values from the original creation, which is impossible.",
       "revId": "95f523d315d96c23177b147738917839f7dd8675",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7e003c6_c75234f4",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-01-27T19:54:49Z",
+      "side": 1,
+      "message": "Removed it.",
+      "parentUuid": "79f1c0dc_db17b876",
+      "revId": "95f523d315d96c23177b147738917839f7dd8675",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
