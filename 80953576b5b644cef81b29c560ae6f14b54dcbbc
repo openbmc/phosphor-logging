@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3323f40_b5affb86",
+        "filename": "log_resolve_main.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-01-27T22:10:34Z",
+      "side": 1,
+      "message": "Either this. Or have explicit options:\n```\n--id \u003cint id\u003e\n--path \u003cstr path\u003e\nFuture:\n--hint \u003cstr hint\u003e\n```",
+      "revId": "80953576b5b644cef81b29c560ae6f14b54dcbbc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
