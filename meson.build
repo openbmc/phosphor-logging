@@ -199,6 +199,6 @@ executable('callout-test',
 
 subdir('dist')
 
-if not get_option('tests').disabled()
+if get_option('tests').allowed()
     subdir('test')
 endif

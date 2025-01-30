@@ -13,13 +13,13 @@ if not gtest_dep.found() or not gmock_dep.found()
         gmock_dep = gtest_proj.dependency('gmock')
   else
         assert(
-            not get_option('tests').enabled(),
+            not get_option('tests').allowed(),
             'Googletest is required if tests are enabled'
         )
   endif
 endif
 
-if not get_option('openpower-pel-extension').disabled()
+if get_option('openpower-pel-extension').allowed()
     subdir('openpower-pels')
 endif
 
