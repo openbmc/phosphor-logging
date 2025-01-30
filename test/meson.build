@@ -19,7 +19,7 @@ if not gtest_dep.found() or not gmock_dep.found()
   endif
 endif
 
-if not get_option('openpower-pel-extension').disabled()
+if get_option('openpower-pel-extension').allowed()
     subdir('openpower-pels')
 endif
 
