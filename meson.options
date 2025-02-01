@@ -4,7 +4,7 @@ option(
     'openpower-pel-extension',
     type: 'feature',
     description: 'Create PELs',
-    value: 'disabled'
+    value: 'disabled',
 )
 
 option('yamldir', type: 'string', description: 'Path to YAML')
@@ -46,5 +46,5 @@ option(
     'lg2_commit_strategy',
     type: 'combo',
     choices: ['dbus', 'journal', 'both'],
-    value: 'both'
+    value: 'both',
 )

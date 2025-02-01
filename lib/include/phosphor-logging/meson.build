@@ -3,12 +3,18 @@ phosphor_logging_gen += custom_target(
     input: [elog_gen, template_elog_gen],
     output: 'elog-errors.hpp',
     command: [
-        python_prog, '@INPUT0@',
-        '-t', '',
-        '-m', '@INPUT1@',
-        '-y', yamldir,
-        '-u', tool_dir + '/',
-        '-o', '@OUTPUT0@',
+        python_prog,
+        '@INPUT0@',
+        '-t',
+        '',
+        '-m',
+        '@INPUT1@',
+        '-y',
+        yamldir,
+        '-u',
+        tool_dir + '/',
+        '-o',
+        '@OUTPUT0@',
     ],
     install: true,
     install_dir: get_option('includedir') / 'phosphor-logging',
@@ -33,7 +39,4 @@ install_headers(
     subdir: 'phosphor-logging/lg2',
 )
 
-install_headers(
-    'test/sdjournal_mock.hpp',
-    subdir: 'phosphor-logging/test',
-)
+install_headers('test/sdjournal_mock.hpp', subdir: 'phosphor-logging/test')
