@@ -1,12 +1,14 @@
-project('phosphor-logging', 'cpp',
+project(
+    'phosphor-logging',
+    'cpp',
     meson_version: '>=1.1.1',
     default_options: [
-      'buildtype=debugoptimized',
-      'cpp_std=c++23',
-      'warning_level=3',
-      'werror=true',
-      'libonly=' + (meson.is_subproject() ? 'true' : 'false'),
-      'tests=' + (meson.is_subproject() ? 'disabled' : 'auto'),
+        'buildtype=debugoptimized',
+        'cpp_std=c++23',
+        'warning_level=3',
+        'werror=true',
+        'libonly=' + (meson.is_subproject() ? 'true' : 'false'),
+        'tests=' + (meson.is_subproject() ? 'disabled' : 'auto'),
     ],
     version: '1.0.0',
 )
@@ -20,7 +22,9 @@ sdbusplusplus_prog = find_program('sdbus++', native: true)
 sdbuspp_gen_meson_prog = find_program('sdbus++-gen-meson', native: true)
 sdbusplusplus_depfiles = files()
 if sdbusplus_dep.type_name() == 'internal'
-    sdbusplusplus_depfiles = subproject('sdbusplus').get_variable('sdbusplusplus_depfiles')
+    sdbusplusplus_depfiles = subproject('sdbusplus').get_variable(
+        'sdbusplusplus_depfiles',
+    )
 endif
 
 pdi_dep = dependency('phosphor-dbus-interfaces')
@@ -37,7 +41,7 @@ subdir('tools')
 subdir('lib')
 
 if get_option('libonly')
-  subdir_done()
+    subdir_done()
 endif
 
 sdeventplus_dep = dependency('sdeventplus')
@@ -48,14 +52,18 @@ has_cereal = cpp.has_header_symbol(
     'cereal/cereal.hpp',
     'cereal::specialize',
     dependencies: cereal_dep,
-    required: false)
+    required: false,
+)
 if not has_cereal
     cereal_opts = import('cmake').subproject_options()
-    cereal_opts.add_cmake_defines({'BUILD_TESTS': 'OFF', 'SKIP_PERFORMANCE_COMPARISON': 'ON'})
+    cereal_opts.add_cmake_defines(
+        {'BUILD_TESTS': 'OFF', 'SKIP_PERFORMANCE_COMPARISON': 'ON'},
+    )
     cereal_proj = import('cmake').subproject(
         'cereal',
         options: cereal_opts,
-        required: false)
+        required: false,
+    )
     assert(cereal_proj.found(), 'cereal is required')
     cereal_dep = cereal_proj.dependency('cereal')
 endif
@@ -73,49 +81,64 @@ nlohmann_json_dep = dependency('nlohmann_json', include_type: 'system')
 should_generate_cpp = true
 should_generate_markdown = false
 should_generate_registry = false
-yaml_selected_subdirs = [ 'xyz' ]
+yaml_selected_subdirs = ['xyz']
 subdir('gen')
 
 # Generate callouts-gen.hpp.
-callouts_gen = custom_target('callouts-gen.hpp'.underscorify(),
+callouts_gen = custom_target(
+    'callouts-gen.hpp'.underscorify(),
     input: [
         'callouts/callouts.py',
         'callouts/callouts-gen.mako.hpp',
         get_option('callout_yaml'),
     ],
     output: 'callouts-gen.hpp',
-    command: [ python_prog, '@INPUT0@', '-i', '@INPUT2@', '-o', '@OUTPUT0@' ],
+    command: [python_prog, '@INPUT0@', '-i', '@INPUT2@', '-o', '@OUTPUT0@'],
 )
 # Generate elog-lookup.cpp
-elog_lookup_gen = custom_target('elog-lookup.cpp'.underscorify(),
+elog_lookup_gen = custom_target(
+    'elog-lookup.cpp'.underscorify(),
     input: files(
         'tools/elog-gen.py',
         'tools/phosphor-logging/templates/elog-lookup-template.mako.cpp',
     ),
     output: 'elog-lookup.cpp',
     command: [
-        python_prog, '@INPUT0@',
-        '-t', '',
-        '-m', '@INPUT1@',
-        '-y', yamldir,
-        '-u', meson.current_source_dir() / 'tools/',
-        '-o', '@OUTPUT0@',
+        python_prog,
+        '@INPUT0@',
+        '-t',
+        '',
+        '-m',
+        '@INPUT1@',
+        '-y',
+        yamldir,
+        '-u',
+        meson.current_source_dir() / 'tools/',
+        '-o',
+        '@OUTPUT0@',
     ],
 )
 # Generate elog-process-metadata.cpp
-elog_process_gen = custom_target('elog-process-metadata.cpp'.underscorify(),
+elog_process_gen = custom_target(
+    'elog-process-metadata.cpp'.underscorify(),
     input: files(
         'tools/elog-gen.py',
         'tools/phosphor-logging/templates/elog-process-metadata.mako.cpp',
     ),
     output: 'elog-process-metadata.cpp',
     command: [
-        python_prog, '@INPUT0@',
-        '-t', '',
-        '-m', '@INPUT1@',
-        '-y', yamldir,
-        '-u', meson.current_source_dir() / 'tools/',
-        '-o', '@OUTPUT0@',
+        python_prog,
+        '@INPUT0@',
+        '-t',
+        '',
+        '-m',
+        '@INPUT1@',
+        '-y',
+        yamldir,
+        '-u',
+        meson.current_source_dir() / 'tools/',
+        '-o',
+        '@OUTPUT0@',
     ],
 )
 
@@ -140,7 +163,7 @@ log_manager_sources = [
         'log_manager.cpp',
         'paths.cpp',
         'util.cpp',
-    )
+    ),
 ]
 log_manager_deps = [
     cereal_dep,
@@ -150,20 +173,19 @@ log_manager_deps = [
     sdbusplus_dep,
     sdeventplus_dep,
 ]
-executable('phosphor-log-manager',
+executable(
+    'phosphor-log-manager',
     log_manager_sources,
     log_manager_ext_sources,
     'log_manager_main.cpp',
     include_directories: include_directories('gen'),
     cpp_args: log_manager_ext_args,
-    dependencies: [
-        log_manager_deps,
-        log_manager_ext_deps,
-    ],
+    dependencies: [log_manager_deps, log_manager_ext_deps],
     install: true,
 )
 
-executable('log-create',
+executable(
+    'log-create',
     'log_create_main.cpp',
     dependencies: [
         CLI11_dep,
@@ -176,16 +198,14 @@ executable('log-create',
 )
 
 # Generate test executables which run in obmc env (qemu, real hardware).
-executable('logging-test',
+executable(
+    'logging-test',
     'logging_test.cpp',
-    dependencies: [
-        pdi_dep,
-        phosphor_logging_dep,
-        sdbusplus_dep,
-    ],
+    dependencies: [pdi_dep, phosphor_logging_dep, sdbusplus_dep],
     install: true,
 )
-executable('callout-test',
+executable(
+    'callout-test',
     'callouts/callout_test.cpp',
     dependencies: [
         conf_h_dep,

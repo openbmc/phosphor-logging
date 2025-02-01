@@ -1,4 +1,5 @@
-executable('phosphor-rsyslog-conf',
+executable(
+    'phosphor-rsyslog-conf',
     'main.cpp',
     'server-conf.cpp',
     '../elog_meta.cpp',

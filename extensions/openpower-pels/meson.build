@@ -1,7 +1,4 @@
-libpldm_dep = dependency(
-    'libpldm',
-    default_options: ['oem-ibm=enabled'],
-)
+libpldm_dep = dependency('libpldm', default_options: ['oem-ibm=enabled'])
 
 python_inst = import('python').find_installation('python3')
 python_ver = python_inst.language_version()
@@ -26,15 +23,14 @@ if build_phal
         cpp.find_library('phal'),
         cpp.find_library('libguard'),
     ]
-    extra_args += [
-        '-DPEL_ENABLE_PHAL',
-    ]
-    log_manager_ext_args += [
-        '-DPEL_ENABLE_PHAL',
-    ]
+    extra_args += ['-DPEL_ENABLE_PHAL']
+    log_manager_ext_args += ['-DPEL_ENABLE_PHAL']
 endif
 
 libpel_sources = files(
+    extra_sources,
+    '../../paths.cpp',
+    '../../util.cpp',
     'ascii_string.cpp',
     'bcd_time.cpp',
     'callout.cpp',
@@ -59,11 +55,8 @@ libpel_sources = files(
     'section_factory.cpp',
     'service_indicators.cpp',
     'severity.cpp',
-    'user_header.cpp',
     'temporary_file.cpp',
-    '../../paths.cpp',
-    '../../util.cpp',
-    extra_sources,
+    'user_header.cpp',
 )
 
 libpel_deps = [
@@ -80,12 +73,10 @@ libpel_deps = [
 libpel_lib = static_library(
     'pel',
     libpel_sources,
-    'pel_paths.cpp', # paths is separate because it is overridden during test.
+    'pel_paths.cpp',  # paths is separate because it is overridden during test.
     include_directories: include_directories('../..', '../../gen'),
     cpp_args: extra_args,
-    dependencies: [
-        libpel_deps,
-    ]
+    dependencies: [libpel_deps],
 )
 
 libpel_dep = declare_dependency(
@@ -98,14 +89,10 @@ libpel_dep = declare_dependency(
         sdeventplus_dep,
         pdi_dep,
         phosphor_logging_dep,
-    ]
+    ],
 )
 
-log_manager_ext_deps += [
-    libpel_dep,
-    libpldm_dep,
-    nlohmann_json_dep,
-]
+log_manager_ext_deps += [libpel_dep, libpldm_dep, nlohmann_json_dep]
 
 log_manager_ext_sources += files(
     'entry_points.cpp',
@@ -133,22 +120,15 @@ peltool_sources = files(
     'user_data_json.cpp',
 )
 
-peltool_deps = [
-    CLI11_dep,
-    conf_h_dep,
-    python_dep,
-]
+peltool_deps = [CLI11_dep, conf_h_dep, python_dep]
 
 executable(
     'peltool',
     'tools/peltool.cpp',
     peltool_sources,
-    cpp_args: [ '-DPELTOOL' ],
-    link_args: [ '-lpython' + python_ver ],
+    cpp_args: ['-DPELTOOL'],
+    link_args: ['-lpython' + python_ver],
     include_directories: include_directories('../..'),
-    dependencies: [
-        peltool_deps,
-        libpel_dep,
-    ],
+    dependencies: [peltool_deps, libpel_dep],
     install: true,
 )
