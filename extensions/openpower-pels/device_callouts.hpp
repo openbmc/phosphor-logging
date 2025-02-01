@@ -113,9 +113,9 @@ std::vector<Callout> getCallouts(
  *                             system.
  * @return std::vector<Callout> - The list of callouts
  */
-std::vector<Callout>
-    getI2CCallouts(size_t i2cBus, uint8_t i2cAddress,
-                   const std::vector<std::string>& compatibleList);
+std::vector<Callout> getI2CCallouts(
+    size_t i2cBus, uint8_t i2cAddress,
+    const std::vector<std::string>& compatibleList);
 
 namespace util
 {
@@ -140,8 +140,8 @@ enum class CalloutType
  *
  * @return path - The path to the file.
  */
-std::filesystem::path
-    getJSONFilename(const std::vector<std::string>& compatibleList);
+std::filesystem::path getJSONFilename(
+    const std::vector<std::string>& compatibleList);
 
 /**
  * @brief Looks up the callouts in the JSON using the I2C keys.
@@ -201,8 +201,8 @@ std::string getFSISearchKeys(const std::string& devPath);
  * @return std::tuple<std::string, std::tuple<size_t, uint8_t>>
  *         - The FSI links key along with the I2C bus/address.
  */
-std::tuple<std::string, std::tuple<size_t, uint8_t>>
-    getFSII2CSearchKeys(const std::string& devPath);
+std::tuple<std::string, std::tuple<size_t, uint8_t>> getFSII2CSearchKeys(
+    const std::string& devPath);
 
 /**
  * @brief Pulls the fields out of the SPI device path to use as search keys

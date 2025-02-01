@@ -201,9 +201,9 @@ std::string getTextJSON(uint16_t componentID, uint8_t subType, uint8_t version,
  * @return std::optional<std::string> - The JSON string if it could be created,
  *                                      else std::nullopt.
  */
-std::optional<std::string>
-    getBuiltinFormatJSON(uint16_t componentID, uint8_t subType, uint8_t version,
-                         const std::vector<uint8_t>& data, uint8_t creatorID)
+std::optional<std::string> getBuiltinFormatJSON(
+    uint16_t componentID, uint8_t subType, uint8_t version,
+    const std::vector<uint8_t>& data, uint8_t creatorID)
 {
     switch (subType)
     {
@@ -253,9 +253,9 @@ std::optional<std::string>
  * @return std::optional<std::string> - The JSON string if it could be created,
  *                                      else std::nullopt
  */
-std::optional<std::string>
-    getPythonJSON(uint16_t componentID, uint8_t subType, uint8_t version,
-                  const std::vector<uint8_t>& data, uint8_t creatorID)
+std::optional<std::string> getPythonJSON(
+    uint16_t componentID, uint8_t subType, uint8_t version,
+    const std::vector<uint8_t>& data, uint8_t creatorID)
 {
     PyObject *pName, *pModule, *eType, *eValue, *eTraceback, *pKey;
     std::string pErrStr;
@@ -392,10 +392,10 @@ std::optional<std::string>
     return std::nullopt;
 }
 
-std::optional<std::string>
-    getJSON(uint16_t componentID, uint8_t subType, uint8_t version,
-            const std::vector<uint8_t>& data, uint8_t creatorID,
-            const std::vector<std::string>& plugins)
+std::optional<std::string> getJSON(
+    uint16_t componentID, uint8_t subType, uint8_t version,
+    const std::vector<uint8_t>& data, uint8_t creatorID,
+    const std::vector<std::string>& plugins)
 {
     std::string subsystem = getNumberString("%c", tolower(creatorID));
     std::string component = getNumberString("%04x", componentID);

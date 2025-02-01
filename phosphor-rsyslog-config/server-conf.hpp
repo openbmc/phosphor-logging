@@ -86,8 +86,8 @@ class Server : public Iface
      *  @param[in] value - UDP/TCP.
      *  @returns protocol value
      */
-    virtual TransportProtocol
-        transportProtocol(TransportProtocol protocol) override;
+    virtual TransportProtocol transportProtocol(
+        TransportProtocol protocol) override;
 
   private:
     /** @brief Update remote server address and port in

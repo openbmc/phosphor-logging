@@ -70,10 +70,10 @@ class Section
      * @return std::optional<std::string> - If a section comes with a JSON
      * representation, this would return the string for it.
      */
-    virtual std::optional<std::string>
-        getJSON(message::Registry& /*registry*/,
-                const std::vector<std::string>& /*plugins*/,
-                uint8_t /*creatorID*/) const
+    virtual std::optional<std::string> getJSON(
+        message::Registry& /*registry*/,
+        const std::vector<std::string>& /*plugins*/,
+        uint8_t /*creatorID*/) const
     {
         return std::nullopt;
     }
@@ -85,9 +85,9 @@ class Section
      * @return std::optional<std::string> - If a section comes with a JSON
      * representation, this would return the string for it.
      */
-    virtual std::optional<std::string>
-        getJSON(uint8_t /*creatorID*/,
-                const std::vector<std::string>& /*plugins*/) const
+    virtual std::optional<std::string> getJSON(
+        uint8_t /*creatorID*/,
+        const std::vector<std::string>& /*plugins*/) const
     {
         return std::nullopt;
     }

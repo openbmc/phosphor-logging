@@ -252,8 +252,8 @@ std::string trimEnd(std::string s)
  * @param[in] creatorID - The creator ID for the PEL
  * @return optional<string> - The comp name, or std::nullopt
  */
-static std::optional<std::string>
-    lookupComponentName(uint16_t compID, char creatorID)
+static std::optional<std::string> lookupComponentName(uint16_t compID,
+                                                      char creatorID)
 {
     static std::map<char, nlohmann::json> jsonCache;
     nlohmann::json jsonData;

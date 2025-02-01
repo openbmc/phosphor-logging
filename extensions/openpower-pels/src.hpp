@@ -272,9 +272,9 @@ class SRC : public Section
      * @param[in] toCache - boolean to cache registry in memory, default=false
      * @return std::optional<std::string> - Error details
      */
-    std::optional<std::string>
-        getErrorDetails(message::Registry& registry, DetailLevel type,
-                        bool toCache = false) const;
+    std::optional<std::string> getErrorDetails(message::Registry& registry,
+                                               DetailLevel type,
+                                               bool toCache = false) const;
 
     /**
      * @brief Says if this SRC was created by the BMC (i.e. this code).
@@ -435,8 +435,8 @@ class SRC : public Section
      * @param[in] regEntry - The message registry entry for the error
      * @return std::optional<std::string> - Error message
      */
-    std::optional<std::string>
-        getErrorMessage(const message::Entry& regEntry) const;
+    std::optional<std::string> getErrorMessage(
+        const message::Entry& regEntry) const;
 
     /**
      * @brief Get Callout info in JSON
@@ -581,8 +581,8 @@ class SRC : public Section
      *
      * @param[in] mruJSON - The JSON array
      */
-    std::vector<src::MRU::MRUCallout>
-        getMRUsFromJSON(const nlohmann::json& mruJSON);
+    std::vector<src::MRU::MRUCallout> getMRUsFromJSON(
+        const nlohmann::json& mruJSON);
 
     /**
      * @brief The SRC version field

@@ -465,8 +465,8 @@ void DataInterface::getHWCalloutFields(
     serialNumber = std::string{value.begin(), value.end()};
 }
 
-std::string
-    DataInterface::getLocationCode(const std::string& inventoryPath) const
+std::string DataInterface::getLocationCode(
+    const std::string& inventoryPath) const
 {
     auto service = getService(inventoryPath, interface::locCode);
 
@@ -477,8 +477,8 @@ std::string
     return std::get<std::string>(locCode);
 }
 
-std::string
-    DataInterface::addLocationCodePrefix(const std::string& locationCode)
+std::string DataInterface::addLocationCodePrefix(
+    const std::string& locationCode)
 {
     static const std::string locationCodePrefix{"Ufcs-"};
 
@@ -820,8 +820,8 @@ std::vector<uint8_t> DataInterface::getRawProgressSRC(void) const
     return std::get<1>(rawProgress);
 }
 
-std::optional<std::vector<uint8_t>>
-    DataInterface::getDIProperty(const std::string& locationCode) const
+std::optional<std::vector<uint8_t>> DataInterface::getDIProperty(
+    const std::string& locationCode) const
 {
     std::vector<uint8_t> viniDI;
 
@@ -850,8 +850,8 @@ std::optional<std::vector<uint8_t>>
     return viniDI;
 }
 
-std::optional<bool>
-    DataInterfaceBase::isDIMMLocCode(const std::string& locCode) const
+std::optional<bool> DataInterfaceBase::isDIMMLocCode(
+    const std::string& locCode) const
 {
     if (_locationCache.contains(locCode))
     {

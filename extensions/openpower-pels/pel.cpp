@@ -987,8 +987,8 @@ std::vector<uint8_t> readFD(int fd)
     return data;
 }
 
-std::unique_ptr<UserData>
-    makeFFDCuserDataSection(uint16_t componentID, const PelFFDCfile& file)
+std::unique_ptr<UserData> makeFFDCuserDataSection(uint16_t componentID,
+                                                  const PelFFDCfile& file)
 {
     auto data = readFD(file.fd);
 

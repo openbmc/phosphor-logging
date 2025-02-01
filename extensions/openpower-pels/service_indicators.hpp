@@ -128,8 +128,8 @@ class LightPath : public Policy
      *
      * @return std::vector<std::string> - The inventory D-Bus paths
      */
-    std::vector<std::string>
-        getInventoryPaths(const std::vector<std::string>& locationCodes) const;
+    std::vector<std::string> getInventoryPaths(
+        const std::vector<std::string>& locationCodes) const;
 
     /**
      * @brief Sets the Functional property on the passed in

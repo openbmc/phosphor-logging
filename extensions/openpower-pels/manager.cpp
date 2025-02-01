@@ -1004,8 +1004,8 @@ uint32_t Manager::getBMCLogIdFromPELId(uint32_t pelId)
     }
 }
 
-void
-    Manager::updateProgressSRC(std::unique_ptr<openpower::pels::PEL>& pel) const
+void Manager::updateProgressSRC(
+    std::unique_ptr<openpower::pels::PEL>& pel) const
 {
     // Check for pel severity of type - 0x51 = critical error, system
     // termination
