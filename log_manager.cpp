@@ -268,9 +268,9 @@ auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
     return objPath;
 }
 
-auto
-    Manager::createFromEvent(sdbusplus::exception::generated_event_base&& event)
-        -> sdbusplus::message::object_path
+auto Manager::createFromEvent(
+    sdbusplus::exception::generated_event_base&& event)
+    -> sdbusplus::message::object_path
 {
     auto [msg, level, data] = lg2::details::extractEvent(std::move(event));
     return this->createEntry(msg, level, std::move(data));

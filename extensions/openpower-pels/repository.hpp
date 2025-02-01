@@ -307,8 +307,8 @@ class Repository
      *
      * @return The attributes or an empty optional if not found
      */
-    std::optional<std::reference_wrapper<const PELAttributes>>
-        getPELAttributes(const LogID& id) const;
+    std::optional<std::reference_wrapper<const PELAttributes>> getPELAttributes(
+        const LogID& id) const;
 
     /**
      * @brief Returns the attributes map so that others can traverse PELs.
@@ -477,8 +477,8 @@ class Repository
      *
      * @return an iterator to the entry
      */
-    std::map<LogID, PELAttributes>::const_iterator
-        findPEL(const LogID& id) const
+    std::map<LogID, PELAttributes>::const_iterator findPEL(
+        const LogID& id) const
     {
         return std::find_if(_pelAttributes.begin(), _pelAttributes.end(),
                             [&id](const auto& a) { return a.first == id; });

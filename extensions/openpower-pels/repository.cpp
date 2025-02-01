@@ -587,8 +587,8 @@ bool Repository::sizeWarning()
            (_pelAttributes.size() > _maxNumPELs);
 }
 
-std::vector<Repository::AttributesReference>
-    Repository::getAllPELAttributes(SortOrder order) const
+std::vector<Repository::AttributesReference> Repository::getAllPELAttributes(
+    SortOrder order) const
 {
     std::vector<Repository::AttributesReference> attributes;
 
@@ -609,8 +609,8 @@ std::vector<Repository::AttributesReference>
     return attributes;
 }
 
-std::vector<uint32_t>
-    Repository::prune(const std::vector<uint32_t>& idsWithHwIsoEntry)
+std::vector<uint32_t> Repository::prune(
+    const std::vector<uint32_t>& idsWithHwIsoEntry)
 {
     std::vector<uint32_t> obmcLogIDs;
     lg2::info("Pruning PEL repository that takes up {TOTAL} bytes and has "

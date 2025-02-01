@@ -189,8 +189,8 @@ uint16_t Server::port(uint16_t value)
     return result;
 }
 
-NetworkClient::TransportProtocol
-    Server::transportProtocol(NetworkClient::TransportProtocol value)
+NetworkClient::TransportProtocol Server::transportProtocol(
+    NetworkClient::TransportProtocol value)
 {
     TransportProtocol result{};
 

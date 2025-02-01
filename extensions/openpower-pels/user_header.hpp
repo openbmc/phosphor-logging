@@ -253,9 +253,9 @@ class UserHeader : public Section
      *                         structures to find an entry in.
      * @param[in] dataIface - The DataInterface object
      */
-    std::optional<uint8_t>
-        getSeverity(const std::vector<message::RegistrySeverity>& severities,
-                    const DataInterfaceBase& dataIface) const;
+    std::optional<uint8_t> getSeverity(
+        const std::vector<message::RegistrySeverity>& severities,
+        const DataInterfaceBase& dataIface) const;
 
     /**
      * @brief The subsystem associated with the event.

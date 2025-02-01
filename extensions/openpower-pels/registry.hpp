@@ -301,10 +301,10 @@ class Registry
      *
      * @return std::vector<RegistryCallout> - The callouts to use
      */
-    static std::vector<RegistryCallout>
-        getCallouts(const nlohmann::json& calloutJSON,
-                    const std::vector<std::string>& systemNames,
-                    const AdditionalData& additionalData);
+    static std::vector<RegistryCallout> getCallouts(
+        const nlohmann::json& calloutJSON,
+        const std::vector<std::string>& systemNames,
+        const AdditionalData& additionalData);
 
   private:
     /**
@@ -313,8 +313,8 @@ class Registry
      * @return optional<nlohmann::json> The full message registry object or an
      *                                  empty optional object upon failure.
      */
-    std::optional<nlohmann::json>
-        readRegistry(const std::filesystem::path& registryFile);
+    std::optional<nlohmann::json> readRegistry(
+        const std::filesystem::path& registryFile);
 
     /**
      * @brief The path to the registry JSON file.
@@ -453,8 +453,8 @@ std::optional<std::map<SRC::WordNum, SRC::AdditionalDataField>>
  *
  * @return std::optional<std::vector<SRC::WordNum>>
  */
-std::optional<std::vector<SRC::WordNum>>
-    getSRCSymptomIDFields(const nlohmann::json& src, const std::string& name);
+std::optional<std::vector<SRC::WordNum>> getSRCSymptomIDFields(
+    const nlohmann::json& src, const std::string& name);
 
 /**
  * @brief Returns the value of the 'DeconfigFlag' field.

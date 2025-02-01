@@ -124,5 +124,5 @@ std::vector<uint8_t> srcDataFactory(TestSRCType type);
  *
  * @return std::unique_ptr<std::vector<uint8_t>> - the data from the file
  */
-std::unique_ptr<std::vector<uint8_t>>
-    readPELFile(const std::filesystem::path& path);
+std::unique_ptr<std::vector<uint8_t>> readPELFile(
+    const std::filesystem::path& path);

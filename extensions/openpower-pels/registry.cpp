@@ -247,8 +247,8 @@ std::optional<std::map<SRC::WordNum, SRC::AdditionalDataField>>
 
     return std::nullopt;
 }
-std::optional<std::vector<SRC::WordNum>>
-    getSRCSymptomIDFields(const nlohmann::json& src, const std::string& name)
+std::optional<std::vector<SRC::WordNum>> getSRCSymptomIDFields(
+    const nlohmann::json& src, const std::string& name)
 {
     std::vector<SRC::WordNum> symptomIDFields;
 
@@ -858,8 +858,8 @@ std::optional<Entry> Registry::lookup(const std::string& name, LookupType type,
     return std::nullopt;
 }
 
-std::optional<nlohmann::json>
-    Registry::readRegistry(const std::filesystem::path& registryFile)
+std::optional<nlohmann::json> Registry::readRegistry(
+    const std::filesystem::path& registryFile)
 {
     // Look in /etc first in case someone put a test file there
     fs::path debugFile{fs::path{debugFilePath} / registryFileName};
@@ -889,10 +889,10 @@ std::optional<nlohmann::json>
     return registry;
 }
 
-std::vector<RegistryCallout>
-    Registry::getCallouts(const nlohmann::json& calloutJSON,
-                          const std::vector<std::string>& systemNames,
-                          const AdditionalData& additionalData)
+std::vector<RegistryCallout> Registry::getCallouts(
+    const nlohmann::json& calloutJSON,
+    const std::vector<std::string>& systemNames,
+    const AdditionalData& additionalData)
 {
     // The JSON may either use an AdditionalData key
     // as an index, or not.

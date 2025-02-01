@@ -508,8 +508,8 @@ std::vector<uint8_t> readFD(int fd);
  * @param[in] componentID - The component ID of the PEL creator
  * @param[in] file - The FFDC file information
  */
-std::unique_ptr<UserData>
-    makeFFDCuserDataSection(uint16_t componentID, const PelFFDCfile& file);
+std::unique_ptr<UserData> makeFFDCuserDataSection(uint16_t componentID,
+                                                  const PelFFDCfile& file);
 
 /**
  * @brief To create JSON object with the given location code and the hex

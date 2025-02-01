@@ -355,8 +355,8 @@ class DataInterfaceBase
      *
      * @return std::string - The location code
      */
-    virtual std::string
-        getLocationCode(const std::string& inventoryPath) const = 0;
+    virtual std::string getLocationCode(
+        const std::string& inventoryPath) const = 0;
 
     /**
      * @brief Get the list of system type names the system is called.
@@ -398,9 +398,9 @@ class DataInterfaceBase
      *
      * @return std::vector<std::string> - The inventory D-Bus objects
      */
-    virtual std::vector<std::string>
-        getInventoryFromLocCode(const std::string& LocationCode, uint16_t node,
-                                bool expanded) const = 0;
+    virtual std::vector<std::string> getInventoryFromLocCode(
+        const std::string& LocationCode, uint16_t node,
+        bool expanded) const = 0;
 
     /**
      * @brief Sets the Asserted property on the LED group passed in.
@@ -426,8 +426,8 @@ class DataInterfaceBase
      *
      * @param[in] objectPath - The D-Bus object path
      */
-    virtual void
-        setCriticalAssociation(const std::string& objectPath) const = 0;
+    virtual void setCriticalAssociation(
+        const std::string& objectPath) const = 0;
 
     /**
      * @brief Returns the manufacturing QuiesceOnError property
@@ -450,8 +450,8 @@ class DataInterfaceBase
      * @param[in] locationCode - location code to split
      * @return pair<string, string> - The base and connector segments
      */
-    static std::pair<std::string, std::string>
-        extractConnectorFromLocCode(const std::string& locationCode);
+    static std::pair<std::string, std::string> extractConnectorFromLocCode(
+        const std::string& locationCode);
 
 #ifdef PEL_ENABLE_PHAL
     /**
@@ -472,9 +472,9 @@ class DataInterfaceBase
      * @param[in] priSRC - Primary SRC value (e.g. BD8D1001)
      * @param[in] srcStruct - Full SRC base structure
      */
-    virtual void
-        createProgressSRC(const uint64_t& priSRC,
-                          const std::vector<uint8_t>& srcStruct) const = 0;
+    virtual void createProgressSRC(
+        const uint64_t& priSRC,
+        const std::vector<uint8_t>& srcStruct) const = 0;
 
     /**
      * @brief Get the list of unresolved OpenBMC event log ids that have an
@@ -501,8 +501,8 @@ class DataInterfaceBase
      * @return std::optional<std::vector<uint8_t>> -  The FRUs DI or
      * std::nullopt
      */
-    virtual std::optional<std::vector<uint8_t>>
-        getDIProperty(const std::string& locationCode) const = 0;
+    virtual std::optional<std::vector<uint8_t>> getDIProperty(
+        const std::string& locationCode) const = 0;
 
     /**
      * @brief Wrpper API to call pHAL API 'getFRUType()' and check whether the
@@ -788,8 +788,8 @@ class DataInterface : public DataInterfaceBase
      *
      * @return std::string - The location code
      */
-    std::string
-        getLocationCode(const std::string& inventoryPath) const override;
+    std::string getLocationCode(
+        const std::string& inventoryPath) const override;
 
     /**
      * @brief Get the list of system type names the system is called.
@@ -831,9 +831,9 @@ class DataInterface : public DataInterfaceBase
      *
      * @return std::vector<std::string> - The inventory D-Bus objects
      */
-    std::vector<std::string>
-        getInventoryFromLocCode(const std::string& locationCode, uint16_t node,
-                                bool expanded) const override;
+    std::vector<std::string> getInventoryFromLocCode(
+        const std::string& locationCode, uint16_t node,
+        bool expanded) const override;
 
     /**
      * @brief Sets the Asserted property on the LED group passed in.
@@ -886,9 +886,9 @@ class DataInterface : public DataInterfaceBase
      * @param[in] priSRC - Primary SRC value
      * @param[in] srcStruct - Full SRC base structure
      */
-    void
-        createProgressSRC(const uint64_t& priSRC,
-                          const std::vector<uint8_t>& srcStruct) const override;
+    void createProgressSRC(
+        const uint64_t& priSRC,
+        const std::vector<uint8_t>& srcStruct) const override;
 
     /**
      * @brief Get the list of unresolved OpenBMC event log ids that have an
@@ -915,8 +915,8 @@ class DataInterface : public DataInterfaceBase
      * @return std::optional<std::vector<uint8_t>> -  The FRUs DI or
      * std::nullopt
      */
-    std::optional<std::vector<uint8_t>>
-        getDIProperty(const std::string& locationCode) const override;
+    std::optional<std::vector<uint8_t>> getDIProperty(
+        const std::string& locationCode) const override;
 
     /**
      * @brief Finds all D-Bus Associated paths that contain any of the
