@@ -195,4 +195,31 @@ auto resolve(sdbusplus::async::context& ctx,
     co_return;
 }
 
+auto commit(
+    std::string name,
+    sdbusplus::common::xyz::openbmc_project::logging::Entry::Level severity,
+    AdditionalData_t& data) -> sdbusplus::message::object_path
+{
+    if constexpr (LG2_COMMIT_JOURNAL)
+    {
+        lg2::error("OPENBMC_MESSAGE_ID={DATA}", "DATA", std::string("data"));
+    }
+
+    if constexpr (LG2_COMMIT_DBUS)
+    {
+        using details::Create;
+
+        auto b = sdbusplus::bus::new_default();
+        auto m =
+            b.new_method_call(Create::default_service, Create::instance_path,
+                              Create::interface, "Create");
+
+        m.append(name, severity, data);
+        auto reply = b.call(m);
+        return reply.unpack<sdbusplus::message::object_path>();
+    }
+
+    return {};
+}
+
 } // namespace lg2

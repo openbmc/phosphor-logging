@@ -88,6 +88,36 @@ needed for the log, and the second is a plain D-Bus method call.
 [logging-cleared]:
   https://github.com/openbmc/phosphor-dbus-interfaces/blob/6a8507d06e172d8d29c0459f0a0d078553d2ecc7/yaml/xyz/openbmc_project/Logging.events.yaml#L4
 
+### Logging Messages from Redfish Message Registry
+[The Redfish Message Registry](https://www.dmtf.org/dsp/DSP2065) provides a standardized way to log messages related to Redfish-based systems. phosphor-logging supports logging messages from these registries, leveraging the structures defined in the Redfish Message Registry. This section details how to integrate and use these messages in your application.
+
+Using Redfish Message Registry with phosphor-logging
+To log messages from the Redfish Message Registry, you need to include the appropriate header files and use the provided structures. Here’s an example of how to log a successful login event using the AccountSecurity message registry:
+
+```c++
+#include <phosphor-logging/message-registries.hpp>
+#include <phosphor-logging/message-registries/AccountSecurity.1.0.0.hpp>
+
+using namespace redfish::registries;
+
+// Example function to log a successful login
+void logSuccessfulLogin(const std::string& username, const std::string& ipAddress)
+{
+    const char* const REDFISH = "Redfish";
+    lg2::commit(AccountSecurity_1_0_0::SuccessfulLogin(username, ipAddress, REDFISH));
+}
+```
+
+Key Points
+Include Headers: Include the necessary headers for the message registries you intend to use. For example, AccountSecurity.1.0.0.hpp for the AccountSecurity registry.
+Use Structures: Utilize the structures provided by the message registry to create log messages. These structures ensure that the log messages adhere to the Redfish standards.
+Commit Logs: Use lg2::commit to send the log messages. This function handles the formatting and logging of the messages.
+Handling Deprecation Warnings
+Older versions of the message registry structures are marked as deprecated. When using these structures, you may encounter deprecation warnings during compilation. To avoid these warnings, it is recommended to use the latest versions of the message registry structures.
+
+Parameter Validation
+phosphor-logging enforces the correct number and type of parameters when creating log messages. This ensures that the log messages are correctly formatted and adhere to the Redfish standards. If the parameters do not match the expected types or count, a compile-time error will occur.
+
 #### Journal Based Event Log Creation [deprecated]
 
 Event logs can be created by using phosphor-logging APIs to commit sdbusplus

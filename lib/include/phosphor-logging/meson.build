@@ -20,6 +20,7 @@ install_headers(
     'lg2.hpp',
     'log.hpp',
     'sdjournal.hpp',
+    'message-registries.hpp',
     subdir: 'phosphor-logging',
 )
 
@@ -37,3 +38,5 @@ install_headers(
     'test/sdjournal_mock.hpp',
     subdir: 'phosphor-logging/test',
 )
+
+subdir('message-registries')
