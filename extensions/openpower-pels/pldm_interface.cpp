@@ -257,6 +257,8 @@ void PLDMInterface::doSend()
                    "RC", rc, "ERRNO", e);
         throw std::runtime_error{"pldm_transport_send_msg failed"};
     }
+
+    memcpy(&_requestHeader, request, sizeof(pldm_msg_hdr));
 }
 
 void PLDMInterface::receive(IO& /*io*/, int /*fd*/, uint32_t revents,
@@ -276,7 +278,8 @@ void PLDMInterface::receive(IO& /*io*/, int /*fd*/, uint32_t revents,
     auto rc = pldm_transport_recv_msg(transport, &pldmTID, &responseMsg,
                                       &responseSize);
     struct pldm_msg_hdr* hdr = (struct pldm_msg_hdr*)responseMsg;
-    if (pldmTID != _eid)
+    if ((pldmTID != _eid) ||
+        !pldm_msg_hdr_correlate_response(&_requestHeader, hdr))
     {
         // We got a response to someone else's message. Ignore it.
         return;

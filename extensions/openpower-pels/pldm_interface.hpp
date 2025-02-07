@@ -215,6 +215,11 @@ class PLDMInterface : public HostInterface
     pldm_transport* pldmTransport = nullptr;
 
     pldm_transport_mctp_demux* mctpDemux = nullptr;
+
+    /**
+     * @brief The header for the most recent request.
+     */
+    pldm_msg_hdr _requestHeader{};
 };
 
 } // namespace openpower::pels
