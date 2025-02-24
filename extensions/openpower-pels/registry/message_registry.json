@@ -2292,6 +2292,149 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Power.PowerSupply.Info.FirmwareUpdateSuccessful",
+            "Subsystem": "power_supply",
+            "ActionFlags": ["report"],
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x15F8",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Power Supply firmware update successful",
+                "Message": "Successful PSU code update",
+                "Notes": [
+                    "Successful PSU firmware update, verify current firmware level",
+                    "in the PEL detail data"
+                ]
+            },
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "psutils",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-psu-code-manager",
+                        "NumLines": 30
+                    }
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Power.PowerSupply.Error.FirmwareUpdateFailed",
+            "Subsystem": "power_supply",
+            "ActionFlags": ["service_action", "report", "call_home"],
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x15F9",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "System": "com.ibm.Hardware.Chassis.Model.Rainier",
+                    "CalloutList": [
+                        { "Priority": "low", "LocCode": "P0-C5" },
+                        { "Priority": "low", "LocCode": "P0" }
+                    ]
+                },
+                {
+                    "System": "com.ibm.Hardware.Chassis.Model.Everest",
+                    "CalloutList": [
+                        { "Priority": "low", "LocCode": "P0-C0" },
+                        { "Priority": "low", "LocCode": "P0" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "Power Supply firmware update failed",
+                "Message": "Unsuccessful PSU code update",
+                "Notes": [
+                    "This message may indicate failure triggered due to multiple reasons,",
+                    "an issue with I2C transactions, an I2C exception, or a failure in the",
+                    "firmware download procedure. Some of the callout severity is set dynamically",
+                    "by the application based on the failure. Detailed information in the PEL",
+                    "journal data for further debugging."
+                ]
+            },
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "psutils",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-psu-code-manager",
+                        "NumLines": 30
+                    }
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Power.PowerSupply.Error.FirmwareIssue",
+            "Subsystem": "power_supply",
+            "ActionFlags": ["service_action", "report", "call_home"],
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x15FA",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "BMC0001" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "Power Supply firmware missing",
+                "Message": "Unsuccessful PSU code update",
+                "Notes": [
+                    "This PEL can be triggered by a missing firmware path, empty firmware",
+                    "file, or failure to open. Possible causes in the image firmware",
+                    "path. Detailed information in the PEL journal data."
+                ]
+            },
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "psutils",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-psu-code-manager",
+                        "NumLines": 30
+                    }
+                ]
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.Power.PowerSupply.Error.FanFault",
             "Subsystem": "power_supply",
             "ActionFlags": ["service_action", "report", "call_home"],
