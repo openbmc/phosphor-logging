@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d93750cd_9f6be17a",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 2295,
+      "author": {
+        "id": 1001630
+      },
+      "writtenOn": "2025-02-25T15:47:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f21a37a6_d914037e",
+      "range": {
+        "startLine": 2295,
+        "startChar": 59,
+        "endLine": 2295,
+        "endChar": 64
+      },
+      "revId": "844d71cafeda912eca0cc74fb70ac3fc35f7a094",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3897cd0c_8d962429",
@@ -61,6 +85,30 @@
       "writtenOn": "2025-02-25T00:04:22Z",
       "side": 1,
       "message": "The name \"BmcFirmwareUpdateFailed\" sounds like the error occurred while trying to update the BMC firmware.\n\nSince the error already has PowerSupply earlier in the name, should we just remove \"Bmc\"?",
+      "range": {
+        "startLine": 2330,
+        "startChar": 65,
+        "endLine": 2330,
+        "endChar": 68
+      },
+      "revId": "844d71cafeda912eca0cc74fb70ac3fc35f7a094",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2680020_08d16bab",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 2330,
+      "author": {
+        "id": 1001630
+      },
+      "writtenOn": "2025-02-25T15:47:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3897cd0c_8d962429",
       "range": {
         "startLine": 2330,
         "startChar": 65,
