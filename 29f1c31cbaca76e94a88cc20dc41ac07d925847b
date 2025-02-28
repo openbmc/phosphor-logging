@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c92dcebe_c16a9d62",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 2311,
+      "author": {
+        "id": 1001630
+      },
+      "writtenOn": "2025-02-28T17:45:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a1b1bd6_83c1bb2d",
+      "range": {
+        "startLine": 2311,
+        "startChar": 28,
+        "endLine": 2311,
+        "endChar": 53
+      },
+      "revId": "29f1c31cbaca76e94a88cc20dc41ac07d925847b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "68bbc2ff_f9249db0",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-02-28T16:52:28Z",
       "side": 1,
       "message": "Is this the journal data captured within the PEL? Same question on line 2416.",
+      "range": {
+        "startLine": 2368,
+        "startChar": 72,
+        "endLine": 2368,
+        "endChar": 82
+      },
+      "revId": "29f1c31cbaca76e94a88cc20dc41ac07d925847b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdb13b37_198c5a00",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 2368,
+      "author": {
+        "id": 1001630
+      },
+      "writtenOn": "2025-02-28T17:45:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68bbc2ff_f9249db0",
       "range": {
         "startLine": 2368,
         "startChar": 72,
