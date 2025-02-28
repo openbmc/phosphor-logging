@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "666c5d18_c688cb43",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 2309,
+      "author": {
+        "id": 1001630
+      },
+      "writtenOn": "2025-02-28T15:31:05Z",
+      "side": 1,
+      "message": "Yes, \"Notes\" can be empty. It is an optional field",
+      "parentUuid": "4d26293e_64198697",
+      "revId": "b81ca2400b60430d957099795f86bae8469797bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67144f54_ac2aa454",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-02-25T21:02:40Z",
       "side": 1,
       "message": "will this result in the psu getting called out first as high priority for i2c bus problems, since we discovered the mrw doesn\u0027t call out the psu (end device) until last?",
+      "revId": "b81ca2400b60430d957099795f86bae8469797bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c84aa97_827aed79",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 2345,
+      "author": {
+        "id": 1001630
+      },
+      "writtenOn": "2025-02-28T15:31:05Z",
+      "side": 1,
+      "message": "PSU is high priority then last is the chassis",
+      "parentUuid": "67144f54_ac2aa454",
       "revId": "b81ca2400b60430d957099795f86bae8469797bf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95dfb8c3_ca5c610d",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 2365,
+      "author": {
+        "id": 1001630
+      },
+      "writtenOn": "2025-02-28T15:31:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d8ee875e_ce4989ad",
+      "revId": "b81ca2400b60430d957099795f86bae8469797bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf0975a0_75ba42c3",
@@ -65,6 +119,24 @@
       "writtenOn": "2025-02-25T21:02:40Z",
       "side": 1,
       "message": "Are the notes for the customer to see for servicing the problem, or just for our internal usage to help debug the problem?",
+      "revId": "b81ca2400b60430d957099795f86bae8469797bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae44746f_43ae9319",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 2412,
+      "author": {
+        "id": 1001630
+      },
+      "writtenOn": "2025-02-28T15:31:05Z",
+      "side": 1,
+      "message": "Notes are for internal use.",
+      "parentUuid": "bf0975a0_75ba42c3",
       "revId": "b81ca2400b60430d957099795f86bae8469797bf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
