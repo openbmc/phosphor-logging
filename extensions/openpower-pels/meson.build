@@ -1,4 +1,4 @@
-libpldm_dep = dependency('libpldm', default_options: ['oem-ibm=enabled'])
+libpldm_dep = dependency('libpldm', default_options: ['oem=ibm'])
 
 python_inst = import('python').find_installation('python3')
 python_ver = python_inst.language_version()
