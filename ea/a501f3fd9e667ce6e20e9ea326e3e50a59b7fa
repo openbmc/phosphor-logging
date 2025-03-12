@@ -1,0 +1,8 @@
+Code-Review+2: Deepak Kodihalli <deepak.kodihalli.83@gmail.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: Amithash Prasad <amithash@meta.com>
+Submitted-at: Wed, 12 Mar 2025 02:41:10 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/77448
+Comments-Total: 5
+Project: openbmc/phosphor-logging
+Branch: refs/heads/master
