@@ -261,6 +261,19 @@ void PLDMInterface::doSend()
     memcpy(&_requestHeader, request, sizeof(pldm_msg_hdr));
 }
 
+struct Response
+{
+    Response(void* r) : response(r) {}
+    ~Response()
+    {
+        if (response != nullptr)
+        {
+            free(response);
+        }
+    }
+    void* response = nullptr;
+};
+
 void PLDMInterface::receive(IO& /*io*/, int /*fd*/, uint32_t revents,
                             pldm_transport* transport)
 
@@ -278,13 +291,18 @@ void PLDMInterface::receive(IO& /*io*/, int /*fd*/, uint32_t revents,
     auto rc = pldm_transport_recv_msg(transport, &pldmTID, &responseMsg,
                                       &responseSize);
     struct pldm_msg_hdr* hdr = (struct pldm_msg_hdr*)responseMsg;
-    if ((pldmTID != _eid) ||
-        !pldm_msg_hdr_correlate_response(&_requestHeader, hdr))
+    Response r{responseMsg};
+
+    if (rc == PLDM_REQUESTER_SUCCESS)
     {
-        // We got a response to someone else's message. Ignore it.
-        return;
+        if ((pldmTID != _eid) ||
+            !pldm_msg_hdr_correlate_response(&_requestHeader, hdr))
+        {
+            // We got a response to someone else's message. Ignore it.
+            return;
+        }
     }
-    if (rc)
+    else
     {
         if (rc == PLDM_REQUESTER_NOT_RESP_MSG)
         {
@@ -299,12 +317,9 @@ void PLDMInterface::receive(IO& /*io*/, int /*fd*/, uint32_t revents,
                    static_cast<std::underlying_type_t<pldm_requester_rc_t>>(rc),
                    "ERRNO", e);
         status = ResponseStatus::failure;
-
-        responseMsg = nullptr;
     }
     if (hdr && (hdr->request || hdr->datagram))
     {
-        free(responseMsg);
         return;
     }
 
@@ -338,11 +353,6 @@ void PLDMInterface::receive(IO& /*io*/, int /*fd*/, uint32_t revents,
     }
 
     callResponseFunc(status);
-
-    if (responseMsg)
-    {
-        free(responseMsg);
-    }
 }
 
 void PLDMInterface::receiveTimerExpired()
