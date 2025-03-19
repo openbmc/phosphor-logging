@@ -308,6 +308,14 @@ void Manager::getLogIDWithHwIsolation(std::vector<uint32_t>& idsWithHwIsoEntry)
 
 bool Manager::isDeleteProhibited(uint32_t obmcLogID)
 {
+    Repository::LogID id{Repository::LogID::Obmc(obmcLogID)};
+    if (!_repo.hasPEL(id))
+    {
+        lg2::info(
+            "PEL file for obmc LogID {LOGID} not found, allowing PEL delete.",
+            "LOGID", obmcLogID);
+        return false;
+    }
     auto entryPath{std::string(OBJ_ENTRY) + '/' + std::to_string(obmcLogID)};
     auto entry = _pelEntries.find(entryPath);
     if (entry != _pelEntries.end())
