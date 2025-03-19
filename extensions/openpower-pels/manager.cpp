@@ -312,6 +312,22 @@ bool Manager::isDeleteProhibited(uint32_t obmcLogID)
     auto entry = _pelEntries.find(entryPath);
     if (entry != _pelEntries.end())
     {
+        char platformLogID[9];
+        sprintf(platformLogID, "%.8X", entry->second->platformLogID());
+        if (std::none_of(
+                fs::directory_iterator(_repo.repoPath()),
+                fs::directory_iterator(),
+                [&platformLogID](const fs::directory_entry& entryFile) {
+                    return fs::is_regular_file(entryFile) &&
+                           entryFile.path().filename().string().ends_with(
+                               platformLogID);
+                }))
+        {
+            lg2::info(
+                "PEL file for platform LogID {LOGID} not found, allowing PEL delete.",
+                "LOGID", platformLogID);
+            return false;
+        }
         if (entry->second->guard())
         {
             auto hwIsolationAssocPaths = _dataIface->getAssociatedPaths(
