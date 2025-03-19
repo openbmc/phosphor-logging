@@ -775,6 +775,118 @@ TEST_F(SRCTest, SymbolicFRUWithInvPathTest)
     }
 }
 
+TEST_F(SRCTest, RegistryCalloutCantGetLocTest)
+{
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.src.deconfigFlag = true;
+    entry.src.checkstopFlag = true;
+    entry.subsystem = 0x42;
+
+    entry.callouts = R"(
+        [{
+            "CalloutList":
+            [
+                {
+                    "Priority": "high",
+                    "LocCode": "P0-C8"
+                },
+                {
+                    "Priority": "medium",
+                    "LocCode": "P0-C9"
+                }
+            ]
+        }])"_json;
+
+    {
+        // The calls to expand the location codes will fail, but it should
+        // still create the callouts with the unexpanded values and no HW
+        // fields.
+        AdditionalData ad;
+        NiceMock<MockDataInterface> dataIface;
+        std::vector<std::string> names{"systemC"};
+
+        EXPECT_CALL(dataIface, getSystemNames).WillOnce(Return(names));
+
+        EXPECT_CALL(dataIface, expandLocationCode("P0-C8", 0))
+            .WillRepeatedly(Throw(std::runtime_error("Fail")));
+
+        EXPECT_CALL(dataIface, expandLocationCode("P0-C9", 0))
+            .WillRepeatedly(Throw(std::runtime_error("Fail")));
+
+        EXPECT_CALL(dataIface, getInventoryFromLocCode(_, _, _)).Times(0);
+
+        EXPECT_CALL(dataIface, getHWCalloutFields(_, _, _, _)).Times(0);
+
+        SRC src{entry, ad, dataIface};
+
+        auto& callouts = src.callouts()->callouts();
+        ASSERT_EQ(callouts.size(), 2);
+
+        // Only unexpanded location codes
+        EXPECT_EQ(callouts[0]->locationCode(), "P0-C8");
+        EXPECT_EQ(callouts[0]->priority(), 'H');
+
+        auto& fru1 = callouts[0]->fruIdentity();
+        EXPECT_EQ(fru1->getPN().value(), "");
+        EXPECT_EQ(fru1->getCCIN().value(), "");
+        EXPECT_EQ(fru1->getSN().value(), "");
+
+        EXPECT_EQ(callouts[1]->locationCode(), "P0-C9");
+        EXPECT_EQ(callouts[1]->priority(), 'M');
+
+        auto& fru2 = callouts[1]->fruIdentity();
+        EXPECT_EQ(fru2->getPN().value(), "");
+        EXPECT_EQ(fru2->getCCIN().value(), "");
+        EXPECT_EQ(fru2->getSN().value(), "");
+    }
+}
+
+TEST_F(SRCTest, TrustedSymbolicFRUCantGetLocTest)
+{
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+
+    entry.callouts = R"(
+        [{
+            "CalloutList":
+            [
+                {
+                    "Priority": "medium",
+                    "LocCode": "P0-C8",
+                    "SymbolicFRUTrusted": "pwrsply"
+                }
+            ]
+        }])"_json;
+
+    std::map<std::string, std::string> adData;
+    AdditionalData ad{adData};
+    NiceMock<MockDataInterface> dataIface;
+    std::vector<std::string> names{"systemA"};
+
+    EXPECT_CALL(dataIface, getSystemNames).WillOnce(Return(names));
+
+    // The call to expand the location code will fail, but it should
+    // still create the callout with the unexpanded value and the
+    // symbolic FRU can't be trusted.
+    EXPECT_CALL(dataIface, expandLocationCode("P0-C8", 0))
+        .WillRepeatedly(Throw(std::runtime_error("Fail")));
+
+    SRC src{entry, ad, dataIface};
+
+    auto& callouts = src.callouts()->callouts();
+    ASSERT_EQ(callouts.size(), 1);
+
+    EXPECT_EQ(callouts[0]->locationCode(), "P0-C8");
+    EXPECT_EQ(callouts[0]->priority(), 'M');
+    auto& fru = callouts[0]->fruIdentity();
+    EXPECT_EQ(fru->getPN().value(), "PWRSPLY");
+    EXPECT_EQ(fru->failingComponentType(), src::FRUIdentity::symbolicFRU);
+}
+
 // Test looking up device path fails in the callout jSON.
 TEST_F(SRCTest, DevicePathCalloutTest)
 {
@@ -974,6 +1086,96 @@ TEST_F(SRCTest, DevicePathCalloutTest)
         EXPECT_EQ(src.getDebugData()[0],
                   "Problem looking up I2C callouts on 22 153: "
                   "[json.exception.out_of_range.403] key '22' not found");
+    }
+}
+
+TEST_F(SRCTest, DevicePathCantGetLocTest)
+{
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+
+    const auto calloutJSON = R"(
+    {
+        "I2C":
+        {
+            "14":
+            {
+                "114":
+                {
+                    "Callouts":[
+                    {
+                        "Name": "/chassis/motherboard/cpu0",
+                        "LocationCode": "P1-C40",
+                        "Priority": "H"
+                    },
+                    {
+                        "Name": "/chassis/motherboard",
+                        "LocationCode": "P1",
+                        "Priority": "M"
+                    }
+                    ],
+                    "Dest": "proc 0 target"
+                }
+            }
+        }
+    })";
+
+    auto dataPath = getPELReadOnlyDataPath();
+    std::ofstream file{dataPath / "systemA_dev_callouts.json"};
+    file << calloutJSON;
+    file.close();
+
+    NiceMock<MockDataInterface> dataIface;
+    std::vector<std::string> names{"systemA"};
+
+    EXPECT_CALL(dataIface, getSystemNames).WillRepeatedly(Return(names));
+
+    // The calls to expand the location codes will fail, so still create
+    // the callouts with the unexpanded values and no HW fields
+
+    EXPECT_CALL(dataIface, expandLocationCode("P1-C40", 0))
+        .WillRepeatedly(Throw(std::runtime_error("Fail")));
+
+    EXPECT_CALL(dataIface, expandLocationCode("P1", 0))
+        .WillRepeatedly(Throw(std::runtime_error("Fail")));
+
+    EXPECT_CALL(dataIface, getInventoryFromLocCode("P1-C40", 0, false))
+        .Times(0);
+    EXPECT_CALL(dataIface, getInventoryFromLocCode("P1", 0, false)).Times(0);
+
+    std::map<std::string, std::string> items{
+        {"CALLOUT_ERRNO", "5"},
+        {"CALLOUT_DEVICE_PATH",
+         "/sys/devices/platform/ahb/ahb:apb/ahb:apb:bus@1e78a000/1e78a340.i2c-bus/i2c-14/14-0072"}};
+
+    AdditionalData ad{items};
+    SRC src{entry, ad, dataIface};
+
+    ASSERT_TRUE(src.callouts());
+    auto& callouts = src.callouts()->callouts();
+
+    ASSERT_EQ(callouts.size(), 2);
+
+    // Should just contain the unexpanded location codes
+    {
+        EXPECT_EQ(callouts[0]->priority(), 'H');
+        EXPECT_EQ(callouts[0]->locationCode(), "P1-C40");
+
+        auto& fru = callouts[0]->fruIdentity();
+        EXPECT_EQ(fru->getPN().value(), "");
+        EXPECT_EQ(fru->getCCIN().value(), "");
+        EXPECT_EQ(fru->getSN().value(), "");
+    }
+    {
+        EXPECT_EQ(callouts[1]->priority(), 'M');
+        EXPECT_EQ(callouts[1]->locationCode(), "P1");
+
+        auto& fru = callouts[1]->fruIdentity();
+        EXPECT_EQ(fru->getPN().value(), "");
+        EXPECT_EQ(fru->getCCIN().value(), "");
+        EXPECT_EQ(fru->getSN().value(), "");
     }
 
     fs::remove_all(dataPath);
@@ -1249,7 +1451,8 @@ TEST_F(SRCTest, JsonBadCalloutsTest)
     }
 
     // Callout 1 mock calls
-    // getInventoryFromLocCode will fail
+    // getInventoryFromLocCode will fail, so a callout with just the
+    // location code will be created.
     {
         EXPECT_CALL(dataIface, expandLocationCode("P0-C2", 0))
             .Times(1)
@@ -1266,26 +1469,34 @@ TEST_F(SRCTest, JsonBadCalloutsTest)
 
     const auto& callouts = src.callouts()->callouts();
 
-    // Only the first callout was successful
-    ASSERT_EQ(callouts.size(), 1);
+    // The first callout will have the unexpanded location code.
+    ASSERT_EQ(callouts.size(), 2);
 
-    {
-        EXPECT_EQ(callouts[0]->priority(), 'H');
-        EXPECT_EQ(callouts[0]->locationCode(), "P0-C1");
+    EXPECT_EQ(callouts[0]->priority(), 'H');
+    EXPECT_EQ(callouts[0]->locationCode(), "P0-C1");
 
-        auto& fru = callouts[0]->fruIdentity();
-        EXPECT_EQ(fru->getPN().value(), "1234567");
-        EXPECT_EQ(fru->getCCIN().value(), "CCCC");
-        EXPECT_EQ(fru->getSN().value(), "123456789ABC");
-        EXPECT_EQ(fru->failingComponentType(), src::FRUIdentity::hardwareFRU);
-    }
+    auto& fru0 = callouts[0]->fruIdentity();
+    EXPECT_EQ(fru0->getPN().value(), "1234567");
+    EXPECT_EQ(fru0->getCCIN().value(), "CCCC");
+    EXPECT_EQ(fru0->getSN().value(), "123456789ABC");
+    EXPECT_EQ(fru0->failingComponentType(), src::FRUIdentity::hardwareFRU);
+
+    // The second callout will have empty HW details.
+    EXPECT_EQ(callouts[1]->priority(), 'H');
+    EXPECT_EQ(callouts[1]->locationCode(), "UXXX-P0-C2");
+
+    auto& fru1 = callouts[1]->fruIdentity();
+    EXPECT_EQ(fru1->getPN().value(), "");
+    EXPECT_EQ(fru1->getCCIN().value(), "");
+    EXPECT_EQ(fru1->getSN().value(), "");
+    EXPECT_EQ(fru1->failingComponentType(), src::FRUIdentity::hardwareFRU);
 
     const auto& data = src.getDebugData();
     ASSERT_EQ(data.size(), 4);
     EXPECT_STREQ(data[0].c_str(), "Unable to expand location code P0-C1: Fail");
-    EXPECT_STREQ(data[1].c_str(),
-                 "Failed extracting callout data from JSON: Unable to "
-                 "get inventory path from location code: P0-C2: Fail");
+    EXPECT_STREQ(
+        data[1].c_str(),
+        "Unable to get inventory path from location code: P0-C2: Fail");
     EXPECT_STREQ(data[2].c_str(),
                  "Failed extracting callout data from JSON: "
                  "[json.exception.out_of_range.403] key 'Priority' not found");

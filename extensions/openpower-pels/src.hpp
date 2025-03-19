@@ -566,6 +566,18 @@ class SRC : public Section
                         const DataInterfaceBase& dataIface);
 
     /**
+     * @brief Adds a FRU callout with only the location code
+     *
+     * Used when it's known not all of the data is available,
+     * including possibly the expanded location code.
+     *
+     * @param[in] locationCode - The location code
+     * @param[in] priority - The callout priority
+     */
+    void addLocationCodeOnlyCallout(const std::string& locationCode,
+                                    const CalloutPriority priority);
+
+    /**
      * @brief Extracts a CalloutPriority value from the json
      *        using the 'Priority' key.
      *

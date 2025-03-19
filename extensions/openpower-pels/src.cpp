@@ -867,6 +867,17 @@ void SRC::addCallouts(const message::Entry& regEntry,
     }
 }
 
+void SRC::addLocationCodeOnlyCallout(const std::string& locationCode,
+                                     const CalloutPriority priority)
+{
+    std::string empty;
+    std::vector<src::MRU::MRUCallout> mrus;
+    auto callout = std::make_unique<src::Callout>(priority, locationCode, empty,
+                                                  empty, empty, mrus);
+    createCalloutsObject();
+    _callouts->addCallout(std::move(callout));
+}
+
 void SRC::addInventoryCallout(const std::string& inventoryPath,
                               const std::optional<CalloutPriority>& priority,
                               const std::optional<std::string>& locationCode,
@@ -1006,6 +1017,7 @@ void SRC::addRegistryCallout(
 {
     std::unique_ptr<src::Callout> callout;
     auto locCode = regCallout.locCode;
+    bool locExpanded = true;
 
     if (!locCode.empty())
     {
@@ -1018,7 +1030,7 @@ void SRC::addRegistryCallout(
             auto msg = "Unable to expand location code " + locCode + ": " +
                        e.what();
             addDebugData(msg);
-            return;
+            locExpanded = false;
         }
     }
 
@@ -1045,6 +1057,7 @@ void SRC::addRegistryCallout(
     else if (!regCallout.symbolicFRUTrusted.empty())
     {
         // Symbolic FRU with trusted location code callout
+        bool trusted = false;
 
         // Use the location code from the inventory path if there is one.
         if (trustedSymbolicFRUInvPath)
@@ -1052,6 +1065,7 @@ void SRC::addRegistryCallout(
             try
             {
                 locCode = dataIface.getLocationCode(*trustedSymbolicFRUInvPath);
+                trusted = true;
             }
             catch (const std::exception& e)
             {
@@ -1062,14 +1076,29 @@ void SRC::addRegistryCallout(
             }
         }
 
+        // Can only trust the location code if it isn't empty and is expanded.
+        if (!locCode.empty() && locExpanded)
+        {
+            trusted = true;
+        }
+
         // The registry wants it to be trusted, but that requires a valid
         // location code for it to actually be.
         callout = std::make_unique<src::Callout>(
-            priority, regCallout.symbolicFRUTrusted, locCode, !locCode.empty());
+            priority, regCallout.symbolicFRUTrusted, locCode, trusted);
     }
     else
     {
         // A hardware callout
+
+        // If couldn't expand the location code, don't bother
+        // looking up the inventory path.
+        if (!locExpanded && !locCode.empty())
+        {
+            addLocationCodeOnlyCallout(locCode, priority);
+            return;
+        }
+
         std::vector<std::string> inventoryPaths;
 
         try
@@ -1084,6 +1113,11 @@ void SRC::addRegistryCallout(
                 "Unable to get inventory path from location code: " + locCode +
                 ": " + e.what();
             addDebugData(msg);
+            if (!locCode.empty())
+            {
+                // Still add a callout with just the location code.
+                addLocationCodeOnlyCallout(locCode, priority);
+            }
             return;
         }
 
@@ -1196,6 +1230,10 @@ void SRC::addDevicePathCallouts(const AdditionalData& additionalData,
             auto msg = std::format("Unable to expand location code {}: {}",
                                    callout.locationCode, e.what());
             addDebugData(msg);
+
+            // Add the callout with just the unexpanded location code.
+            addLocationCodeOnlyCallout(callout.locationCode, priority);
+            continue;
         }
 
         try
@@ -1214,6 +1252,9 @@ void SRC::addDevicePathCallouts(const AdditionalData& additionalData,
                 "Unable to get inventory path from location code: " +
                 callout.locationCode + ": " + e.what();
             addDebugData(msg);
+            // Add the callout with just the location code.
+            addLocationCodeOnlyCallout(callout.locationCode, priority);
+            continue;
         }
 
         // Until the code is there to convert these MRU value strings to
@@ -1352,10 +1393,11 @@ void SRC::addJSONCallout(const nlohmann::json& jsonCallout,
             }
             catch (const std::exception& e)
             {
-                throw std::runtime_error{
-                    std::format("Unable to get inventory path from "
-                                "location code: {}: {}",
-                                unexpandedLocCode, e.what())};
+                addDebugData(std::format("Unable to get inventory path from "
+                                         "location code: {}: {}",
+                                         unexpandedLocCode, e.what()));
+                addLocationCodeOnlyCallout(locCode, priority);
+                return;
             }
         }
 
