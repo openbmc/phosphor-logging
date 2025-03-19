@@ -149,22 +149,13 @@ bool deserialize(const fs::path& path, Entry& e)
         }
         return false;
     }
-    catch (const cereal::Exception& ex)
+    catch (const std::exception& ex)
     {
-        lg2::error("{EXCEPTION}", "EXCEPTION", ex);
-        fs::remove(path);
-        return false;
-    }
-    catch (const std::length_error& ex)
-    {
-        // Running into: USCiLab/cereal#192
-        // This may be indicating some other issue in the
-        // way vector may have been used inside the logging.
-        // possibly associations ??. But handling it here for
-        // now since we are anyway tossing the log
-        // TODO: openbmc/phosphor-logging#8
-        lg2::error("{EXCEPTION}", "EXCEPTION", ex);
-        fs::remove(path);
+        lg2::error("Failed restoring {PATH}: {EXCEPTION}", "PATH", path,
+                   "EXCEPTION", ex);
+        // Save it for later debug. Just write over any previous ones.
+        auto saveDir = paths::error().parent_path();
+        fs::rename(path, saveDir / "corrupt_error");
         return false;
     }
 }
