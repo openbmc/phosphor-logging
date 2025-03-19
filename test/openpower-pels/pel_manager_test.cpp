@@ -1237,7 +1237,7 @@ TEST_F(ManagerTest, TestFruPlug)
     checkDeconfigured(true);
 }
 
-int createHWIsolatedCalloutFile()
+std::pair<int, std::filesystem::path> createHWIsolatedCalloutFile()
 {
     json jsonCalloutDataList(nlohmann::json::value_t::array);
     json jsonDimmCallout;
@@ -1259,7 +1259,7 @@ int createHWIsolatedCalloutFile()
     if (fileFD == -1)
     {
         perror("Failed to create PELCallouts file");
-        return -1;
+        return {-1, {}};
     }
 
     ssize_t rc = write(fileFD, calloutData.c_str(), calloutData.size());
@@ -1267,7 +1267,7 @@ int createHWIsolatedCalloutFile()
     {
         perror("Failed to write PELCallouts file");
         close(fileFD);
-        return -1;
+        return {-1, {}};
     }
 
     // Ensure we seek to the beginning of the file
@@ -1276,9 +1276,9 @@ int createHWIsolatedCalloutFile()
     {
         perror("Failed to set SEEK_SET for PELCallouts file");
         close(fileFD);
-        return -1;
+        return {-1, {}};
     }
-    return fileFD;
+    return {fileFD, calloutFile};
 }
 
 void appendFFDCEntry(int fd, uint8_t subTypeJson, uint8_t version,
@@ -1370,7 +1370,7 @@ TEST_F(ManagerTest, TestPELDeleteWithoutHWIsolation)
     manager.erase(42);
     EXPECT_FALSE(findAnyPELInRepo());
 
-    int fd = createHWIsolatedCalloutFile();
+    auto [fd, calloutFile] = createHWIsolatedCalloutFile();
     ASSERT_NE(fd, -1);
     uint8_t subTypeJson = 0xCA;
     uint8_t version = 0x01;
@@ -1380,6 +1380,7 @@ TEST_F(ManagerTest, TestPELDeleteWithoutHWIsolation)
                    phosphor::logging::Entry::Level::Error, additionalData,
                    associations, ffdcEntries);
     close(fd);
+    std::filesystem::remove(calloutFile);
 
     auto pelPathInRepo = findAnyPELInRepo();
     auto unguardedData = readPELFile(*pelPathInRepo);
@@ -1452,7 +1453,7 @@ TEST_F(ManagerTest, TestPELDeleteWithHWIsolation)
     std::map<std::string, std::string> additionalData;
     std::vector<std::string> associations;
 
-    int fd = createHWIsolatedCalloutFile();
+    auto [fd, calloutFile] = createHWIsolatedCalloutFile();
     ASSERT_NE(fd, -1);
     uint8_t subTypeJson = 0xCA;
     uint8_t version = 0x01;
@@ -1462,6 +1463,7 @@ TEST_F(ManagerTest, TestPELDeleteWithHWIsolation)
                    phosphor::logging::Entry::Level::Error, additionalData,
                    associations, ffdcEntries);
     close(fd);
+    std::filesystem::remove(calloutFile);
 
     auto pelFile = findAnyPELInRepo();
     EXPECT_TRUE(pelFile);
