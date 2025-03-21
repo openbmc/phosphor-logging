@@ -31,7 +31,7 @@ namespace logging
 template <class Archive>
 void save(Archive& a, const Entry& e, const std::uint32_t /*version*/)
 {
-    a(e.id(), e.severity(), e.timestamp(), e.message(), e.additionalData2(),
+    a(e.id(), e.severity(), e.timestamp(), e.message(), e.additionalData(),
       e.associations(), e.resolved(), e.version(), e.updateTimestamp(),
       e.eventId(), e.resolution());
 }
@@ -109,7 +109,6 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
     e.timestamp(timestamp, true);
     e.message(message, true);
     e.additionalData(additionalData, true);
-    e.additionalData2(additionalData, true);
     e.sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved(
         resolved, true);
     e.associations(associations, true);

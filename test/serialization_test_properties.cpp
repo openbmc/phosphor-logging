@@ -37,7 +37,6 @@ TEST_F(TestSerialization, testProperties)
     EXPECT_EQ(input->timestamp(), output->timestamp());
     EXPECT_EQ(input->message(), output->message());
     EXPECT_EQ(input->additionalData(), output->additionalData());
-    EXPECT_EQ(input->additionalData2(), output->additionalData2());
     EXPECT_EQ(input->resolved(), output->resolved());
     EXPECT_EQ(input->associations(), output->associations());
     EXPECT_EQ(input->version(), output->version());

@@ -454,7 +454,7 @@ void Manager::doExtensionLogCreate(const Entry& entry, const FFDCEntries& ffdc)
         try
         {
             create(entry.message(), entry.id(), entry.timestamp(),
-                   entry.severity(), entry.additionalData2(), assocs, ffdc);
+                   entry.severity(), entry.additionalData(), assocs, ffdc);
         }
         catch (const std::exception& e)
         {
