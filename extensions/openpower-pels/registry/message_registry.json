@@ -5310,6 +5310,74 @@
         },
 
         {
+            "Name": "com.ibm.VPD.Error.SystemTypeMismatch",
+            "Subsystem": "cec_vpd",
+            "ComponentID": "0x4000",
+
+            "SRC": {
+                "ReasonCode": "0x400A",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "BMC0002"
+                        }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "Invalid system configuration found",
+                "Message": "Found Invalid system configuration.",
+                "Notes": [
+                    "This error occurs when there is a mismatch between the IM value ",
+                    "saved on the planar Hardware and the eBMC cache. This scenario ",
+                    "should never occur, PE intervention is required to cross check ",
+                    "and correct the IM value as needed."
+                ]
+            }
+        },
+
+        {
+            "Name": "com.ibm.VPD.Error.UnknownSystemSettings",
+            "Subsystem": "cec_vpd",
+            "ComponentID": "0x4000",
+
+            "SRC": {
+                "ReasonCode": "0x400B",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "BMC0002"
+                        }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "Unable to determine the correct system configuration",
+                "Message": "Found un-configurable system configuration.",
+                "Notes": [
+                    "This error occurs when there is a mismatch between the IM value ",
+                    "saved on the planar Hardware and the eBMC cache. ",
+                    "PE intervention is required to cross check and correct values as ",
+                    "needed, PE needs to verify the Processor FRU number and take a ",
+                    "decision as to what IM needs to be set to boot the system ",
+                    "successfully."
+                ]
+            }
+        },
+
+        {
             "Name": "com.ibm.Panel.Error.InputDevPathFailure",
             "Subsystem": "cec_op_panel",
             "ComponentID": "0x5000",
