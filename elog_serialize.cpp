@@ -31,9 +31,10 @@ namespace logging
 template <class Archive>
 void save(Archive& a, const Entry& e, const std::uint32_t /*version*/)
 {
-    a(e.id(), e.severity(), e.timestamp(), e.message(), e.additionalData(),
-      e.associations(), e.resolved(), e.version(), e.updateTimestamp(),
-      e.eventId(), e.resolution());
+    a(e.id(), e.severity(), e.timestamp(), e.message(),
+      util::additional_data::combine(e.additionalData()), e.associations(),
+      e.resolved(), e.version(), e.updateTimestamp(), e.eventId(),
+      e.resolution());
 }
 
 /** @brief Function required by Cereal to perform deserialization.
@@ -98,10 +99,19 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
           resolved, fwVersion, updateTimestamp, eventId, resolution);
         additionalData = util::additional_data::parse(additionalData_old);
     }
-    else
+    else if (version ==
+             std::stoul(FIRST_CEREAL_CLASS_VERSION_WITH_METADATA_DICT))
     {
         a(id, severity, timestamp, message, additionalData, associations,
           resolved, fwVersion, updateTimestamp, eventId, resolution);
+    }
+    else
+    {
+        // Go back to reading a vector for additionalData
+        std::vector<std::string> additionalData_old{};
+        a(id, severity, timestamp, message, additionalData_old, associations,
+          resolved, fwVersion, updateTimestamp, eventId, resolution);
+        additionalData = util::additional_data::parse(additionalData_old);
     }
 
     e.id(id, true);
