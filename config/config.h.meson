@@ -35,7 +35,8 @@ static constexpr auto FIRST_CEREAL_CLASS_VERSION_WITH_UPDATE_TS = "3";
 static constexpr auto FIRST_CEREAL_CLASS_VERSION_WITH_EVENTID = "4";
 static constexpr auto FIRST_CEREAL_CLASS_VERSION_WITH_RESOLUTION = "5";
 static constexpr auto FIRST_CEREAL_CLASS_VERSION_WITH_METADATA_DICT = "6";
-static constexpr size_t CLASS_VERSION = 6;
+static constexpr auto FIRST_CEREAL_CLASS_VERSION_WITH_METADATA_VECTOR = "7";
+static constexpr size_t CLASS_VERSION = 7;
 
 static constexpr bool LG2_COMMIT_DBUS = @lg2_commit_dbus@;
 static constexpr bool LG2_COMMIT_JOURNAL = @lg2_commit_journal@;
