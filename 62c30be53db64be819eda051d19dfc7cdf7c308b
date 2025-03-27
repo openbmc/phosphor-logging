@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33a6fde5_2e860231",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6527,
+      "author": {
+        "id": 1000348
+      },
+      "writtenOn": "2025-03-27T03:19:00Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2a8601ea_504b819c",
+      "revId": "62c30be53db64be819eda051d19dfc7cdf7c308b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2ea2386a_64b06f25",
@@ -31,6 +49,30 @@
       "writtenOn": "2025-03-26T13:22:17Z",
       "side": 1,
       "message": "I think a \u0027next level support\u0027 callout is needed here.  Also below.",
+      "range": {
+        "startLine": 6543,
+        "startChar": 41,
+        "endLine": 6543,
+        "endChar": 84
+      },
+      "revId": "62c30be53db64be819eda051d19dfc7cdf7c308b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "733507b1_43bb3432",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6543,
+      "author": {
+        "id": 1000348
+      },
+      "writtenOn": "2025-03-27T03:19:00Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2ea2386a_64b06f25",
       "range": {
         "startLine": 6543,
         "startChar": 41,
