@@ -5378,6 +5378,36 @@
         },
 
         {
+            "Name": "com.ibm.VPD.Error.FirmwareError",
+            "Subsystem": "cec_vpd",
+            "ComponentID": "0x4000",
+
+            "SRC": {
+                "ReasonCode": "0x400C",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "BMC0001" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "Firmware error.",
+                "Message": "A std runtime failure occurred in VPD Manager code.",
+                "Notes": [
+                    "This error occurs when a std runtime exception",
+                    "is thrown in the VPD Manager code for errors which",
+                    "can't be categorised in any specific category.",
+                    "Cause of failure is captured in additional data."
+                ]
+            }
+        },
+
+        {
             "Name": "com.ibm.Panel.Error.InputDevPathFailure",
             "Subsystem": "cec_op_panel",
             "ComponentID": "0x5000",
