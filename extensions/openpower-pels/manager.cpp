@@ -1012,6 +1012,9 @@ uint32_t Manager::getBMCLogIdFromPELId(uint32_t pelId)
 void Manager::updateProgressSRC(
     std::unique_ptr<openpower::pels::PEL>& pel) const
 {
+    const size_t refcodeBegin = 40;
+    const size_t refcodeSize = 8;
+
     // Check for pel severity of type - 0x51 = critical error, system
     // termination
     if (pel->userHeader().severity() == 0x51)
@@ -1020,14 +1023,19 @@ void Manager::updateProgressSRC(
         if (src)
         {
             std::vector<uint8_t> asciiSRC = (*src)->getSrcStruct();
-            uint64_t srcRefCode = 0;
 
-            // Read bytes from offset [40-47] e.g. BD8D1001
-            for (int i = 0; i < 8; i++)
+            if (asciiSRC.size() < (refcodeBegin + refcodeSize))
             {
-                srcRefCode |=
-                    (static_cast<uint64_t>(asciiSRC[40 + i]) << (8 * i));
+                lg2::error(
+                    "SRC struct is too short to get progress code ({SIZE})",
+                    "SIZE", asciiSRC.size());
+                return;
             }
+
+            // Pull the ASCII SRC from offset [40-47] e.g. BD8D1001
+            std::vector<uint8_t> srcRefCode(
+                asciiSRC.begin() + refcodeBegin,
+                asciiSRC.begin() + refcodeBegin + refcodeSize);
 
             try
             {

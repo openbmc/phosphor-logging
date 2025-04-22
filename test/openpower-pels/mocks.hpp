@@ -61,7 +61,7 @@ class MockDataInterface : public DataInterfaceBase
                  const std::string&),
                 (const override));
     MOCK_METHOD(void, createProgressSRC,
-                (const uint64_t&, const std::vector<uint8_t>&),
+                (const std::vector<uint8_t>&, const std::vector<uint8_t>&),
                 (const override));
     MOCK_METHOD(std::vector<uint32_t>, getLogIDWithHwIsolation, (),
                 (const override));

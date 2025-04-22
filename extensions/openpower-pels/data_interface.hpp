@@ -473,7 +473,7 @@ class DataInterfaceBase
      * @param[in] srcStruct - Full SRC base structure
      */
     virtual void createProgressSRC(
-        const uint64_t& priSRC,
+        const std::vector<uint8_t>& priSRC,
         const std::vector<uint8_t>& srcStruct) const = 0;
 
     /**
@@ -887,7 +887,7 @@ class DataInterface : public DataInterfaceBase
      * @param[in] srcStruct - Full SRC base structure
      */
     void createProgressSRC(
-        const uint64_t& priSRC,
+        const std::vector<uint8_t>& priSRC,
         const std::vector<uint8_t>& srcStruct) const override;
 
     /**

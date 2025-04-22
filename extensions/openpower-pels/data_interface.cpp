@@ -703,7 +703,8 @@ void DataInterface::createGuardRecord(const std::vector<uint8_t>& binPath,
 #endif
 
 void DataInterface::createProgressSRC(
-    const uint64_t& priSRC, const std::vector<uint8_t>& srcStruct) const
+    const std::vector<uint8_t>& priSRC,
+    const std::vector<uint8_t>& srcStruct) const
 {
     DBusValue variant = std::make_tuple(priSRC, srcStruct);
 
@@ -810,7 +811,8 @@ std::vector<uint32_t> DataInterface::getLogIDWithHwIsolation() const
 
 std::vector<uint8_t> DataInterface::getRawProgressSRC(void) const
 {
-    using RawProgressProperty = std::tuple<uint64_t, std::vector<uint8_t>>;
+    using RawProgressProperty =
+        std::tuple<std::vector<uint8_t>, std::vector<uint8_t>>;
 
     DBusValue value;
     getProperty(service_name::bootRawProgress, object_path::bootRawProgress,
