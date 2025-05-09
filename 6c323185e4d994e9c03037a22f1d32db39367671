@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61803d00_cac0673c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-05-09T20:52:52Z",
+      "side": 1,
+      "message": "[ RUN      ] TestLogManagerDbus.CallCommitSync\nunknown file: Failure\nC++ exception with description \"sd_bus_call: org.freedesktop.DBus.Error.Spawn.ExecFailed: Failed to execute program xyz.openbmc_project.Logging: Permission denied\" thrown in the test body.\n\n[  FAILED  ] TestLogManagerDbus.CallCommitSync (4 ms)\n\n\nnot sure what that is.",
+      "revId": "6c323185e4d994e9c03037a22f1d32db39367671",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
