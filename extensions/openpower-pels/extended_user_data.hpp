@@ -68,7 +68,7 @@ class ExtendedUserData : public Section
      */
     size_t flattenedSize()
     {
-        return Section::flattenedSize() + sizeof(_creatorID) +
+        return Section::headerSize() + sizeof(_creatorID) +
                sizeof(_reserved1B) + sizeof(_reserved2B) + _data.size();
     }
 
@@ -124,7 +124,7 @@ class ExtendedUserData : public Section
             {
                 // Use shrink to handle 4B alignment and update the header size
                 auto status =
-                    shrink(Section::flattenedSize() + 4 + newData.size());
+                    shrink(Section::headerSize() + 4 + newData.size());
                 if (status)
                 {
                     origDataSize = _data.size();

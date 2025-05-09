@@ -110,10 +110,9 @@ std::optional<std::string> ExtendedUserData::getJSON(
 bool ExtendedUserData::shrink(size_t newSize)
 {
     // minimum size is 8B header + 4B of fields + 4B of data
-    if ((newSize < flattenedSize()) &&
-        (newSize >= (Section::flattenedSize() + 8)))
+    if ((newSize < flattenedSize()) && (newSize >= (Section::headerSize() + 8)))
     {
-        auto dataSize = newSize - Section::flattenedSize() - 4;
+        auto dataSize = newSize - Section::headerSize() - 4;
 
         // Ensure it's 4B aligned
         _data.resize((dataSize / 4) * 4);

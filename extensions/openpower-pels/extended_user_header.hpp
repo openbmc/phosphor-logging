@@ -70,7 +70,7 @@ class ExtendedUserHeader : public Section
      */
     size_t flattenedSize()
     {
-        return Section::flattenedSize() + _mtms.flattenedSize() +
+        return Section::headerSize() + _mtms.flattenedSize() +
                _serverFWVersion.size() + _subsystemFWVersion.size() +
                sizeof(_reserved4B) + sizeof(_refTime) + sizeof(_reserved1B1) +
                sizeof(_reserved1B2) + sizeof(_reserved1B3) +

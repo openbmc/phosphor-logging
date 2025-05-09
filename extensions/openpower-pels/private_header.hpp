@@ -212,7 +212,7 @@ class PrivateHeader : public Section
      */
     static constexpr size_t flattenedSize()
     {
-        return Section::flattenedSize() + sizeof(_createTimestamp) +
+        return Section::headerSize() + sizeof(_createTimestamp) +
                sizeof(_commitTimestamp) + sizeof(_creatorID) +
                sizeof(_logType) + sizeof(_reservedByte) +
                sizeof(_sectionCount) + sizeof(_obmcLogID) +
