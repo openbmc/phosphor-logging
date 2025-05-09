@@ -19,6 +19,7 @@
 #include <nlohmann/json.hpp>
 
 #include <filesystem>
+#include <fstream>
 
 #include <gtest/gtest.h>
 

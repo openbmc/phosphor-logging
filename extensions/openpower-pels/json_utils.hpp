@@ -1,13 +1,9 @@
 #pragma once
 
-#include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 
 #include <cstdint>
-#include <fstream>
-#include <iomanip>
-#include <iostream>
 #include <memory>
 #include <string>
 #include <vector>

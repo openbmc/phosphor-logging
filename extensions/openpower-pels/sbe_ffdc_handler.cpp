@@ -30,7 +30,6 @@ extern "C"
 
 #include <phosphor-logging/lg2.hpp>
 
-#include <format>
 #include <new>
 
 namespace openpower

@@ -23,8 +23,8 @@
 
 #include <cstring>
 #include <filesystem>
+#include <fstream>
 #include <optional>
-#include <sstream>
 #include <string>
 
 namespace openpower

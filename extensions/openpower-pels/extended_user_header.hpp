@@ -2,7 +2,6 @@
 
 #include "bcd_time.hpp"
 #include "data_interface.hpp"
-#include "elog_entry.hpp"
 #include "mtms.hpp"
 #include "registry.hpp"
 #include "section.hpp"

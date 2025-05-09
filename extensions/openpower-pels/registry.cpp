@@ -15,7 +15,6 @@
  */
 #include "registry.hpp"
 
-#include "json_utils.hpp"
 #include "pel_types.hpp"
 #include "pel_values.hpp"
 

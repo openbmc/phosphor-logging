@@ -1,6 +1,5 @@
 #pragma once
 
-#include "pel_types.hpp"
 #include "stream.hpp"
 
 #include <array>
