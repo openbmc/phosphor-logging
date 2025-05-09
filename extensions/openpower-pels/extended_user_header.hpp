@@ -31,7 +31,7 @@ class ExtendedUserHeader : public Section
 {
   public:
     ExtendedUserHeader() = delete;
-    ~ExtendedUserHeader() = default;
+    ~ExtendedUserHeader() override = default;
     ExtendedUserHeader(const ExtendedUserHeader&) = default;
     ExtendedUserHeader& operator=(const ExtendedUserHeader&) = default;
     ExtendedUserHeader(ExtendedUserHeader&&) = default;

@@ -48,7 +48,7 @@ class Journal : public JournalBase
 {
   public:
     Journal() = default;
-    ~Journal() = default;
+    ~Journal() override = default;
     Journal(const Journal&) = default;
     Journal& operator=(const Journal&) = default;
     Journal(Journal&&) = default;

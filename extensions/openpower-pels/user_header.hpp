@@ -31,7 +31,7 @@ class UserHeader : public Section
 {
   public:
     UserHeader() = delete;
-    ~UserHeader() = default;
+    ~UserHeader() override = default;
     UserHeader(const UserHeader&) = default;
     UserHeader& operator=(const UserHeader&) = default;
     UserHeader(UserHeader&&) = default;

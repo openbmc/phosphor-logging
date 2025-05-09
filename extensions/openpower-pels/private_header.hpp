@@ -38,7 +38,7 @@ class PrivateHeader : public Section
 {
   public:
     PrivateHeader() = delete;
-    ~PrivateHeader() = default;
+    ~PrivateHeader() override = default;
     PrivateHeader(const PrivateHeader&) = default;
     PrivateHeader& operator=(const PrivateHeader&) = default;
     PrivateHeader(PrivateHeader&&) = default;

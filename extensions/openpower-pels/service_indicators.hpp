@@ -57,7 +57,7 @@ class LightPath : public Policy
 {
   public:
     LightPath() = delete;
-    virtual ~LightPath() = default;
+    ~LightPath() override = default;
     LightPath(const LightPath&) = default;
     LightPath& operator=(const LightPath&) = delete;
     LightPath(LightPath&&) = delete;
