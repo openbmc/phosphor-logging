@@ -246,7 +246,7 @@ void Manager::addESELPEL(const std::string& esel, uint32_t obmcLogID)
 
     try
     {
-        data = std::move(eselToRawData(esel));
+        data = eselToRawData(esel);
     }
     catch (const std::exception& e)
     {
