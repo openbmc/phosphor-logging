@@ -17,7 +17,6 @@
 
 #include "device_callouts.hpp"
 #include "json_utils.hpp"
-#include "paths.hpp"
 #include "pel_values.hpp"
 #ifdef PELTOOL
 #include <Python.h>
