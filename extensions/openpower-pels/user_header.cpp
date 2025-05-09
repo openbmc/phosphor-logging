@@ -63,7 +63,7 @@ UserHeader::UserHeader(const message::Entry& entry,
     auto ss = additionalData.getValue("PEL_SUBSYSTEM");
     if (ss)
     {
-        auto eventSubsystem = std::stoul(*ss, NULL, 16);
+        auto eventSubsystem = std::stoul(*ss, nullptr, 16);
         std::string subsystemString =
             pv::getValue(eventSubsystem, pel_values::subsystemValues);
         if (subsystemString == "invalid")
