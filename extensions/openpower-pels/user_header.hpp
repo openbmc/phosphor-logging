@@ -211,7 +211,7 @@ class UserHeader : public Section
      */
     static constexpr size_t flattenedSize()
     {
-        return Section::flattenedSize() + sizeof(_eventSubsystem) +
+        return Section::headerSize() + sizeof(_eventSubsystem) +
                sizeof(_eventScope) + sizeof(_eventSeverity) +
                sizeof(_eventType) + sizeof(_reserved4Byte1) +
                sizeof(_problemDomain) + sizeof(_problemVector) +

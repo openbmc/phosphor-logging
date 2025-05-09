@@ -125,7 +125,7 @@ class Section
     /**
      * @brief Returns the flattened size of the section header
      */
-    static constexpr size_t flattenedSize()
+    static constexpr size_t headerSize()
     {
         return SectionHeader::flattenedSize();
     }
