@@ -8,7 +8,6 @@ logging.
 - [Building](#to-build)
 - [Structured Logging](#structured-logging)
 - [Event Logs](#event-logs)
-- [Application Specific Error YAML](#adding-application-specific-error-yaml)
 - [Event Log Extensions](#event-log-extensions)
 - [Remote Logging](#remote-logging-via-rsyslog)
 - [Boot Fail on Hardware Errors](#boot-fail-on-hardware-errors)
@@ -142,9 +141,8 @@ Metadata can be added to event logs to add debug data captured at the time of
 the event. It shows up in the AdditionalData property in the
 `xyz.openbmc_project.Logging.Entry` interface. Metadata is passed in via the
 `elog()` or `report()` functions, which write it to the journal. The metadata
-must be predefined for the error in the [metadata YAML](#event-log-definition)
-so that the daemon knows to look for it in the journal when it creates the event
-log.
+must be predefined for the error in the metadata YAML so that the daemon knows
+to look for it in the journal when it creates the event log.
 
 Example:
 
@@ -198,11 +196,8 @@ that uses them. To do that, one must:
 2. Run the sdbus++ script within the makefile to create the error.hpp and .cpp
    files from the local YAML, and include the error.cpp file in the application
    that uses it. See [openpower-occ-control] for an example.
-3. Tell phosphor-logging about the error. This is done by either:
-   - Following the [directions](#adding-application-specific-error-yaml) defined
-     in this README, or
-   - Running the script yourself:
-   1. Run phosphor-logging\'s `elog-gen.py` script on the local yaml to generate
+3. Tell phosphor-logging about the error:
+   1. Run phosphor-logging's `elog-gen.py` script on the local yaml to generate
       an elog-errors.hpp file that just contains the local errors, and check
       that into the repository and include it where the errors are needed.
    2. Create a recipe that copies the local YAML files to a place that
