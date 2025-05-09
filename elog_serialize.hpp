@@ -6,8 +6,6 @@
 #include "paths.hpp"
 
 #include <filesystem>
-#include <string>
-#include <vector>
 
 namespace phosphor
 {
