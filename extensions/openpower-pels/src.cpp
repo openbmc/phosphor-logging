@@ -379,7 +379,7 @@ SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
 
     _size = baseSRCSize;
     _size += _callouts ? _callouts->flattenedSize() : 0;
-    _header.size = Section::flattenedSize() + _size;
+    _header.size = Section::headerSize() + _size;
 
     _valid = true;
 }
