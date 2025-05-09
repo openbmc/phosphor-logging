@@ -742,7 +742,7 @@ void PEL::addAdDetailsForDIMMsCallout(
         return;
     }
 
-    auto isDIMMCallout = [&dataIface, &debugData](const auto& callout) {
+    auto isDIMMCallout = [&dataIface](const auto& callout) {
         auto locCode{callout->locationCode()};
         if (locCode.empty())
         {
