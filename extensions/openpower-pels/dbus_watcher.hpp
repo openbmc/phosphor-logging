@@ -73,7 +73,7 @@ class PropertyWatcher : public DBusWatcher
 {
   public:
     PropertyWatcher() = delete;
-    ~PropertyWatcher() = default;
+    ~PropertyWatcher() override = default;
     PropertyWatcher(const PropertyWatcher&) = delete;
     PropertyWatcher& operator=(const PropertyWatcher&) = delete;
     PropertyWatcher(PropertyWatcher&&) = delete;
@@ -254,7 +254,7 @@ class InterfaceWatcher : public DBusWatcher
 {
   public:
     InterfaceWatcher() = delete;
-    ~InterfaceWatcher() = default;
+    ~InterfaceWatcher() override = default;
     InterfaceWatcher(const InterfaceWatcher&) = delete;
     InterfaceWatcher& operator=(const InterfaceWatcher&) = delete;
     InterfaceWatcher(InterfaceWatcher&&) = delete;

@@ -24,7 +24,7 @@ class ExtendedUserData : public Section
 {
   public:
     ExtendedUserData() = delete;
-    ~ExtendedUserData() = default;
+    ~ExtendedUserData() override = default;
     ExtendedUserData(const ExtendedUserData&) = default;
     ExtendedUserData& operator=(const ExtendedUserData&) = default;
     ExtendedUserData(ExtendedUserData&&) = default;

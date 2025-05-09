@@ -23,7 +23,7 @@ class UserData : public Section
 {
   public:
     UserData() = delete;
-    ~UserData() = default;
+    ~UserData() override = default;
     UserData(const UserData&) = default;
     UserData& operator=(const UserData&) = default;
     UserData(UserData&&) = default;

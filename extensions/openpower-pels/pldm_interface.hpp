@@ -54,7 +54,7 @@ class PLDMInterface : public HostInterface
     /**
      * @brief Destructor
      */
-    ~PLDMInterface();
+    ~PLDMInterface() override;
 
     /**
      * @brief Kicks off the send of the 'new file available' command

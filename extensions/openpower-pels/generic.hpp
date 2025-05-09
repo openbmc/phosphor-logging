@@ -20,7 +20,7 @@ class Generic : public Section
 {
   public:
     Generic() = delete;
-    ~Generic() = default;
+    ~Generic() override = default;
     Generic(const Generic&) = default;
     Generic& operator=(const Generic&) = default;
     Generic(Generic&&) = default;
