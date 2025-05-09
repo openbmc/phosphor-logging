@@ -17,9 +17,9 @@ class Policy
     Policy() = delete;
     virtual ~Policy() = default;
     Policy(const Policy&) = default;
-    Policy& operator=(const Policy&) = default;
-    Policy(Policy&&) = default;
-    Policy& operator=(Policy&&) = default;
+    Policy& operator=(const Policy&) = delete;
+    Policy(Policy&&) = delete;
+    Policy& operator=(Policy&&) = delete;
 
     /**
      * @brief Constructor
@@ -59,9 +59,9 @@ class LightPath : public Policy
     LightPath() = delete;
     virtual ~LightPath() = default;
     LightPath(const LightPath&) = default;
-    LightPath& operator=(const LightPath&) = default;
-    LightPath(LightPath&&) = default;
-    LightPath& operator=(LightPath&&) = default;
+    LightPath& operator=(const LightPath&) = delete;
+    LightPath(LightPath&&) = delete;
+    LightPath& operator=(LightPath&&) = delete;
 
     /**
      * @brief Constructor

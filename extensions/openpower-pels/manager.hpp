@@ -34,10 +34,10 @@ class Manager : public PELInterface
 {
   public:
     Manager() = delete;
-    Manager(const Manager&) = default;
-    Manager& operator=(const Manager&) = default;
-    Manager(Manager&&) = default;
-    Manager& operator=(Manager&&) = default;
+    Manager(const Manager&) = delete;
+    Manager& operator=(const Manager&) = delete;
+    Manager(Manager&&) = delete;
+    Manager& operator=(Manager&&) = delete;
 
     /**
      * @brief constructor

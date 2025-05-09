@@ -691,10 +691,10 @@ class DataInterface : public DataInterfaceBase
   public:
     DataInterface() = delete;
     ~DataInterface() = default;
-    DataInterface(const DataInterface&) = default;
-    DataInterface& operator=(const DataInterface&) = default;
-    DataInterface(DataInterface&&) = default;
-    DataInterface& operator=(DataInterface&&) = default;
+    DataInterface(const DataInterface&) = delete;
+    DataInterface& operator=(const DataInterface&) = delete;
+    DataInterface(DataInterface&&) = delete;
+    DataInterface& operator=(DataInterface&&) = delete;
 
     /**
      * @brief Constructor
