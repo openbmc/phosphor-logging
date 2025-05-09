@@ -58,7 +58,7 @@ class FailingMTMS : public Section
      */
     static constexpr size_t flattenedSize()
     {
-        return Section::flattenedSize() + MTMS::flattenedSize();
+        return Section::headerSize() + MTMS::flattenedSize();
     }
 
     /**

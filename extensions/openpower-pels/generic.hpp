@@ -49,7 +49,7 @@ class Generic : public Section
      */
     size_t flattenedSize()
     {
-        return Section::flattenedSize() + _data.size();
+        return Section::headerSize() + _data.size();
     }
 
     /**
