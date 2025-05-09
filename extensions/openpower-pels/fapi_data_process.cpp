@@ -159,7 +159,7 @@ bool getTgtReqAttrsVal(const std::vector<uint8_t>& physBinPath,
     std::memcpy(&targetInfo.physBinPath, physBinPath.data(),
                 sizeof(targetInfo.physBinPath));
 
-    int ret = pdbg_target_traverse(NULL, pdbgCallbackToGetTgtReqAttrsVal,
+    int ret = pdbg_target_traverse(nullptr, pdbgCallbackToGetTgtReqAttrsVal,
                                    &targetInfo);
     if (ret == 0)
     {
