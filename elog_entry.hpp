@@ -1,6 +1,5 @@
 #pragma once
 
-#include "util.hpp"
 #include "xyz/openbmc_project/Logging/Entry/server.hpp"
 #include "xyz/openbmc_project/Object/Delete/server.hpp"
 #include "xyz/openbmc_project/Software/Version/server.hpp"

@@ -1,5 +1,3 @@
-#include "elog_meta.hpp"
-
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/elog.hpp>
 #include <sdbusplus/exception.hpp>
