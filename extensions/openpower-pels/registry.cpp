@@ -562,7 +562,7 @@ std::vector<RegistryCallout> getCalloutsWithoutAD(
     // We finally found the callouts, make the objects.
     for (const auto& callout : calloutLists)
     {
-        calloutEntries.push_back(std::move(makeRegistryCallout(callout)));
+        calloutEntries.push_back(makeRegistryCallout(callout));
     }
 
     return calloutEntries;
