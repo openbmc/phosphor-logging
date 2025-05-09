@@ -176,7 +176,7 @@ class ExtendedUserHeader : public Section
      *
      * Updates _valid (in Section) with the results.
      */
-    void validate() override;
+    void validate();
 
     /**
      * @brief Builds the symptom ID

@@ -428,7 +428,7 @@ class SRC : public Section
      *
      * Updates _valid (in Section) with the results.
      */
-    void validate() override;
+    void validate();
 
     /**
      * @brief Get error description from message registry
