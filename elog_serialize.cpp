@@ -2,6 +2,8 @@
 
 #include "elog_serialize.hpp"
 
+#include "util.hpp"
+
 #include <cereal/archives/binary.hpp>
 #include <cereal/types/map.hpp>
 #include <cereal/types/string.hpp>
