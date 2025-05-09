@@ -241,7 +241,7 @@ class PrivateHeader : public Section
      *
      * Updates _valid (in Section) with the results.
      */
-    void validate() override;
+    void validate();
 
     /**
      * @brief The creation time timestamp
