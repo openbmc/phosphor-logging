@@ -761,11 +761,11 @@ TEST_F(PELTest, CreateWithFFDCTest)
     // This will be trimmed when added
     std::vector<uint8_t> hugeCustomData(17000, 0x42);
 
-    ffdc.emplace_back(std::move(getJSONFFDC(dir)));
-    ffdc.emplace_back(std::move(getCBORFFDC(dir)));
-    ffdc.emplace_back(std::move(getTextFFDC(dir)));
-    ffdc.emplace_back(std::move(getCustomFFDC(dir, customData)));
-    ffdc.emplace_back(std::move(getCustomFFDC(dir, hugeCustomData)));
+    ffdc.emplace_back(getJSONFFDC(dir));
+    ffdc.emplace_back(getCBORFFDC(dir));
+    ffdc.emplace_back(getTextFFDC(dir));
+    ffdc.emplace_back(getCustomFFDC(dir, customData));
+    ffdc.emplace_back(getCustomFFDC(dir, hugeCustomData));
 
     PEL pel{regEntry, 42,   timestamp, phosphor::logging::Entry::Level::Error,
             ad,       ffdc, dataIface, journal};
