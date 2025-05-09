@@ -71,7 +71,7 @@ class SRC : public Section
     };
 
     SRC() = delete;
-    ~SRC() = default;
+    ~SRC() override = default;
     SRC(const SRC&) = delete;
     SRC& operator=(const SRC&) = delete;
     SRC(SRC&&) = delete;

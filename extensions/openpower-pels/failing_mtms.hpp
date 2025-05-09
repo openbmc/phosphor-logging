@@ -21,7 +21,7 @@ class FailingMTMS : public Section
 {
   public:
     FailingMTMS() = delete;
-    ~FailingMTMS() = default;
+    ~FailingMTMS() override = default;
     FailingMTMS(const FailingMTMS&) = default;
     FailingMTMS& operator=(const FailingMTMS&) = default;
     FailingMTMS(FailingMTMS&&) = default;
