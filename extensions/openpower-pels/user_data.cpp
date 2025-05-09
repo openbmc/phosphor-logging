@@ -15,16 +15,12 @@
  */
 #include "user_data.hpp"
 
-#include "json_utils.hpp"
 #include "pel_types.hpp"
-#include "user_data_formats.hpp"
 #ifdef PELTOOL
 #include "user_data_json.hpp"
 #endif
 
 #include <phosphor-logging/lg2.hpp>
-
-#include <format>
 
 namespace openpower
 {

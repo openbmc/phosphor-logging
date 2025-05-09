@@ -2,7 +2,6 @@
 
 #include "data_interface.hpp"
 #include "elog_entry.hpp"
-#include "pel_values.hpp"
 #include "registry.hpp"
 #include "section.hpp"
 #include "stream.hpp"

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "manager.hpp"
+#include <org/open_power/Logging/PEL/Entry/server.hpp>
+
 namespace openpower
 {
 namespace pels
@@ -8,6 +9,8 @@ namespace pels
 
 using PELEntryIface = sdbusplus::server::org::open_power::logging::pel::Entry;
 using PropertiesVariant = PELEntryIface::PropertiesVariant;
+
+class Repository;
 
 class PELEntry : public PELEntryIface
 {

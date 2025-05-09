@@ -15,6 +15,8 @@
  */
 #include "repository.hpp"
 
+#include "pel_values.hpp"
+
 #include <fcntl.h>
 #include <sys/stat.h>
 

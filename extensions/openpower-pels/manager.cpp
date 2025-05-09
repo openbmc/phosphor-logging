@@ -20,6 +20,7 @@
 #include "json_utils.hpp"
 #include "pel.hpp"
 #include "pel_entry.hpp"
+#include "pel_values.hpp"
 #include "service_indicators.hpp"
 #include "severity.hpp"
 
@@ -33,7 +34,6 @@
 #include <filesystem>
 #include <format>
 #include <fstream>
-#include <locale>
 
 namespace openpower
 {
