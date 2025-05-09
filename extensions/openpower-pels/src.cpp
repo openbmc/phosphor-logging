@@ -361,7 +361,7 @@ SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
     auto ss = additionalData.getValue("PEL_SUBSYSTEM");
     if (ss)
     {
-        auto eventSubsystem = std::stoul(*ss, NULL, 16);
+        auto eventSubsystem = std::stoul(*ss, nullptr, 16);
         std::string subsystem =
             pv::getValue(eventSubsystem, pel_values::subsystemValues);
         if (subsystem == "invalid")
@@ -429,7 +429,7 @@ void SRC::setMotherboardCCIN(const DataInterfaceBase& dataIface)
     {
         if (ccinString.size() == ccinSize)
         {
-            ccin = std::stoi(ccinString, 0, 16);
+            ccin = std::stoi(ccinString, nullptr, 16);
         }
     }
     catch (const std::exception& e)
