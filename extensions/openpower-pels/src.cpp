@@ -1212,8 +1212,9 @@ void SRC::addDevicePathCallouts(const AdditionalData& additionalData,
             }
             else
             {
-                std::string msg =
-                    "Invalid priority found in dev callout JSON: " +
+                auto msg =
+                    std::string{
+                        "Invalid priority found in dev callout JSON: "} +
                     callout.priority[0];
                 addDebugData(msg);
             }
