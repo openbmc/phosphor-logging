@@ -50,9 +50,9 @@ class HostInterface
     HostInterface() = delete;
     virtual ~HostInterface() = default;
     HostInterface(const HostInterface&) = default;
-    HostInterface& operator=(const HostInterface&) = default;
-    HostInterface(HostInterface&&) = default;
-    HostInterface& operator=(HostInterface&&) = default;
+    HostInterface& operator=(const HostInterface&) = delete;
+    HostInterface(HostInterface&&) = delete;
+    HostInterface& operator=(HostInterface&&) = delete;
 
     /**
      * @brief Constructor

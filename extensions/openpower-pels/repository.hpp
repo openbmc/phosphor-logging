@@ -135,9 +135,9 @@ class Repository
     Repository() = delete;
     ~Repository() = default;
     Repository(const Repository&) = default;
-    Repository& operator=(const Repository&) = default;
-    Repository(Repository&&) = default;
-    Repository& operator=(Repository&&) = default;
+    Repository& operator=(const Repository&) = delete;
+    Repository(Repository&&) = delete;
+    Repository& operator=(Repository&&) = delete;
 
     /**
      * @brief Constructor
