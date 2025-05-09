@@ -21,8 +21,6 @@
 
 #include <phosphor-logging/lg2.hpp>
 
-#include <format>
-
 namespace openpower
 {
 namespace pels

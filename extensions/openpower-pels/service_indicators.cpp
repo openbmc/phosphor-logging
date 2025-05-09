@@ -18,7 +18,6 @@
 #include <phosphor-logging/lg2.hpp>
 
 #include <bitset>
-#include <format>
 
 namespace openpower::pels::service_indicators
 {
