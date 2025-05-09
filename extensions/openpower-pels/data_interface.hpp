@@ -690,7 +690,7 @@ class DataInterface : public DataInterfaceBase
 {
   public:
     DataInterface() = delete;
-    ~DataInterface() = default;
+    ~DataInterface() override = default;
     DataInterface(const DataInterface&) = delete;
     DataInterface& operator=(const DataInterface&) = delete;
     DataInterface(DataInterface&&) = delete;
