@@ -32,7 +32,7 @@ def main():
         calloutsMap = yaml.safe_load(fd)
 
         # Render the mako template
-        template = os.path.join(script_dir, "callouts-gen.mako.hpp")
+        template = os.path.join(script_dir, "callouts-gen.hpp.mako")
         t = Template(filename=template)
         with open(args.output, "w") as fd:
             fd.write(t.render(calloutsMap=calloutsMap))

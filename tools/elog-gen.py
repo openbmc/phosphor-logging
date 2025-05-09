@@ -288,7 +288,7 @@ def main(i_args):
         "-m",
         "--mako",
         dest="elog_mako",
-        default="elog-gen-template.mako.hpp",
+        default="elog-gen-template.hpp.mako",
         help="input mako template file to use",
     )
 
