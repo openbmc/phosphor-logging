@@ -142,13 +142,6 @@ class Section
     }
 
     /**
-     * @brief Used to validate the section.
-     *
-     * Implemented by derived classes.
-     */
-    virtual void validate() = 0;
-
-    /**
      * @brief The section header structure.
      *
      * Filled in by derived classes.

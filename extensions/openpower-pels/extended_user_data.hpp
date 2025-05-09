@@ -174,7 +174,7 @@ class ExtendedUserData : public Section
      *
      * Updates _valid (in Section) with the results.
      */
-    void validate() override;
+    void validate();
 
     /**
      * @brief The subsystem creator ID of the code that
