@@ -45,7 +45,6 @@ namespace service_name
 constexpr auto objectMapper = "xyz.openbmc_project.ObjectMapper";
 constexpr auto vpdManager = "com.ibm.VPD.Manager";
 constexpr auto ledGroupManager = "xyz.openbmc_project.LED.GroupManager";
-constexpr auto hwIsolation = "org.open_power.HardwareIsolation";
 constexpr auto biosConfigMgr = "xyz.openbmc_project.BIOSConfigManager";
 constexpr auto bootRawProgress = "xyz.openbmc_project.State.Boot.Raw";
 constexpr auto pldm = "xyz.openbmc_project.PLDM";
@@ -68,7 +67,6 @@ constexpr auto enableHostPELs =
     "/xyz/openbmc_project/logging/send_event_logs_to_host";
 constexpr auto vpdManager = "/com/ibm/VPD/Manager";
 constexpr auto logSetting = "/xyz/openbmc_project/logging/settings";
-constexpr auto hwIsolation = "/xyz/openbmc_project/hardware_isolation";
 constexpr auto biosConfigMgr = "/xyz/openbmc_project/bios_config/manager";
 constexpr auto bootRawProgress = "/xyz/openbmc_project/state/boot/raw0";
 constexpr auto systemd = "/org/freedesktop/systemd1";
