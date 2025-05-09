@@ -29,10 +29,10 @@ class PLDMInterface : public HostInterface
 {
   public:
     PLDMInterface() = delete;
-    PLDMInterface(const PLDMInterface&) = default;
-    PLDMInterface& operator=(const PLDMInterface&) = default;
-    PLDMInterface(PLDMInterface&&) = default;
-    PLDMInterface& operator=(PLDMInterface&&) = default;
+    PLDMInterface(const PLDMInterface&) = delete;
+    PLDMInterface& operator=(const PLDMInterface&) = delete;
+    PLDMInterface(PLDMInterface&&) = delete;
+    PLDMInterface& operator=(PLDMInterface&&) = delete;
 
     /**
      * @brief Constructor
