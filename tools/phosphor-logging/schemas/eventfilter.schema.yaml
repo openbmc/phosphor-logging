@@ -1,0 +1,35 @@
+$id: "http://openbmc-project.xyz/phosphor-logging/eventdefault.yaml"
+$schema: "https://json-schema.org/draft/2020-12/schema"
+title: "Event and Error defaults"
+
+$defs:
+  base-event:
+    type: object
+    properties:
+      default:
+        description: The default setting for any event not specified in ids.
+        type: string
+        enum:
+          - "blocked"
+          - "allowed"
+      ids:
+        description: The list of ids to do the opposite of 'default'.
+        type: array
+        items:
+          type: string
+          description: Event ids from phosphor-dbus-interfaces.
+          pattern: "^[A-Za-z_][A-Za-z0-9_]*(\\.[A-Za-z_][A-Za-z0-9_]*)+$"
+    required:
+      - default
+    additionalProperties: false
+
+type: object
+properties:
+  events:
+    $ref: "#/$defs/base-event"
+  errors:
+    $ref: "#/$defs/base-event"
+required:
+  - events
+  - errors
+additionalProperties: false
