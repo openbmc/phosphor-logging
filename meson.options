@@ -48,3 +48,9 @@ option(
     choices: ['dbus', 'journal', 'both'],
     value: 'both',
 )
+
+option(
+    'event-filter',
+    type: 'string',
+    description: 'Path to the event filter JSON file.',
+)

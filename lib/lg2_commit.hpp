@@ -20,4 +20,7 @@ auto extractEvent(sdbusplus::exception::generated_event_base&&)
     -> std::tuple<std::string, Entry::Level,
                   std::map<std::string, std::string>>;
 
+bool filterEvent(const std::string&);
+bool filterError(const std::string&);
+
 } // namespace lg2::details

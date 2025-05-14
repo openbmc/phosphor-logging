@@ -117,6 +117,16 @@ auto extractEvent(sdbusplus::exception::generated_event_base&& t)
 auto commit(sdbusplus::exception::generated_event_base&& t)
     -> sdbusplus::message::object_path
 {
+    // Check event filters first.
+    if ((t.severity() == LOG_INFO) && details::filterEvent(t.name()))
+    {
+        return {};
+    }
+    else if (details::filterError(t.name()))
+    {
+        return {};
+    }
+
     if constexpr (LG2_COMMIT_JOURNAL)
     {
         lg2::error("OPENBMC_MESSAGE_ID={DATA}", "DATA", t.to_json().dump());

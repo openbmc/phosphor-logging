@@ -78,6 +78,28 @@ log-entry can be resolved with the helper `lg2::resolve` fuction.
 lg2::resolve(logPath);
 ```
 
+### Event Log Filtering
+
+Vendors customizing phosphor-logging for their platforms may decide that they
+would like to prevent certain events from being added to the event log. This is
+especially true for informational / tracing events. The `lg2::commit` supports a
+compile-time event filtering mechanism that can accomplish this.
+
+The meson option `event-filter` can be used to specify a file containing
+filtering policy. When left unspecified, the [default
+policy][default-policy-json] of "allow all" is enabled. For both events and
+errors, a default policy of "allowed" or "blocked" can be specified and an
+additional set of events can be given for which the non-defaulted action should
+be taken. A JSON-Schema is available for the [policy
+JSON][filter-policy-schema].
+
+[default-policy-json]:
+  https://github.com/openbmc/phosphor-logging/blob/master/tools/phosphor-logging/default-eventfilter.json
+[filter-policy-schema]:
+  https://github.com/openbmc/phosphor-logging/blob/master/tools/phosphor-logging/schemas/eventfilter.schema.yaml
+
+### Deprecated Methods for Creating Event Logs
+
 There are two other, but now deprecated, methods to creating event logs in
 OpenBMC code. The first makes use of the systemd journal to store metadata
 needed for the log, and the second is a plain D-Bus method call.
