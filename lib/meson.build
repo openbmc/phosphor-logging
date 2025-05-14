@@ -1,6 +1,19 @@
 phosphor_logging_includes = include_directories('include')
 
-phosphor_logging_gen = []
+event_filter_json = get_option('event-filter')
+if event_filter_json == ''
+    event_filter_json = default_eventfilter_json
+endif
+
+lg2_eventfilter_cpp_gen = custom_target(
+    'lg2_eventfilter.cpp',
+    input: [eventfilter_gen, template_eventfilter_gen, event_filter_json],
+    output: 'lg2_eventfilter.cpp',
+    command: [python_prog, '@INPUT0@', '@INPUT2@'],
+    capture: true,
+)
+
+phosphor_logging_gen = [lg2_eventfilter_cpp_gen]
 
 subdir('include/phosphor-logging')
 
@@ -43,4 +56,3 @@ phosphor_logging_dep = declare_dependency(
     sources: phosphor_logging_gen,
     dependencies: phosphor_logging_deps,
 )
-
