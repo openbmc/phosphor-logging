@@ -1,0 +1,8 @@
+{
+    "events": {
+        "default": "allowed"
+    },
+    "errors": {
+        "default": "allowed"
+    }
+}
