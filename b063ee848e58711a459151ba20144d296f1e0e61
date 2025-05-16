@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "832f405a_198e2d5d",
+        "filename": "elog_serialize.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1001673
+      },
+      "writtenOn": "2025-05-16T20:30:50Z",
+      "side": 0,
+      "message": "paths.hpp includes \u003cfilesystem\u003e do you need include here as well ?",
+      "range": {
+        "startLine": 8,
+        "startChar": 10,
+        "endLine": 8,
+        "endChar": 20
+      },
+      "revId": "b063ee848e58711a459151ba20144d296f1e0e61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9d7943a_4b5d6a7f",
+        "filename": "util.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1001673
+      },
+      "writtenOn": "2025-05-16T20:30:50Z",
+      "side": 0,
+      "message": "Is clang-tidy raise dthese CI issues",
+      "revId": "b063ee848e58711a459151ba20144d296f1e0e61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

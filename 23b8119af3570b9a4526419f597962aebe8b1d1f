@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17ae13af_70af7360",
+        "filename": "util.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1001673
+      },
+      "writtenOn": "2025-05-16T20:30:50Z",
+      "side": 1,
+      "message": "why this is moved from utils.hpp to here",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 18
+      },
+      "revId": "23b8119af3570b9a4526419f597962aebe8b1d1f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
