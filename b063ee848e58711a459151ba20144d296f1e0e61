@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5b62e27_bde4f42f",
+        "filename": "elog_serialize.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-05-19T16:20:41Z",
+      "side": 0,
+      "message": "In general you want to include the includes used by the code and not rely on another include to do so.  (That usually requires tooling like IWYU (include what you use) to get it perfect though)",
+      "parentUuid": "832f405a_198e2d5d",
+      "range": {
+        "startLine": 8,
+        "startChar": 10,
+        "endLine": 8,
+        "endChar": 20
+      },
+      "revId": "b063ee848e58711a459151ba20144d296f1e0e61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f9d7943a_4b5d6a7f",
@@ -37,6 +61,24 @@
       "writtenOn": "2025-05-16T20:30:50Z",
       "side": 0,
       "message": "Is clang-tidy raise dthese CI issues",
+      "revId": "b063ee848e58711a459151ba20144d296f1e0e61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "103ae678_6567fec1",
+        "filename": "util.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-05-19T16:20:41Z",
+      "side": 0,
+      "message": "Actually it was clangd, which is like clang-tidy but is the one that runs in your editor. https://clangd.llvm.org/",
+      "parentUuid": "f9d7943a_4b5d6a7f",
       "revId": "b063ee848e58711a459151ba20144d296f1e0e61",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
