@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d63947b_39259598",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-05-19T19:02:43Z",
+      "side": 1,
+      "message": "Oh, can you also add something about this to either the phosphor-logging readme or the eventlog-design.md in docs?",
+      "revId": "cb6b3ca26c8c372546727668d9c512a2fd9a7557",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6374e128_2cdce832",
