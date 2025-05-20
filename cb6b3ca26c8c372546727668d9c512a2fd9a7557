@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c745c5b2_7f02a85c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-05-20T21:57:09Z",
+      "side": 1,
+      "message": "\u003e Add to phosphor-logging a compile-time mechanism to disable recording of specific tracing events for vendor-level customization.\n\nThis is in the design document already.  I\u0027ll add details to the README here though.",
+      "parentUuid": "4f76bcbc_f030006e",
+      "revId": "cb6b3ca26c8c372546727668d9c512a2fd9a7557",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6374e128_2cdce832",
@@ -89,6 +107,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0b49d5a_e7fab060",
+        "filename": "tools/phosphor-logging/templates/event-filter.mako.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-05-20T21:57:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b5645d6_96f0e725",
+      "revId": "cb6b3ca26c8c372546727668d9c512a2fd9a7557",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9395ff34_fe007dc2",
@@ -126,6 +162,30 @@
       "side": 1,
       "message": "Oops.  Copied this from another file and forgot to edit that filename.",
       "parentUuid": "9395ff34_fe007dc2",
+      "range": {
+        "startLine": 2,
+        "startChar": 3,
+        "endLine": 2,
+        "endChar": 15
+      },
+      "revId": "cb6b3ca26c8c372546727668d9c512a2fd9a7557",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32dca209_c28798bf",
+        "filename": "tools/phosphor-logging/templates/event-filter.mako.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-05-20T21:57:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2dd3483_eef1ccc2",
       "range": {
         "startLine": 2,
         "startChar": 3,
