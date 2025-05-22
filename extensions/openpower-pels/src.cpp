@@ -196,6 +196,12 @@ std::optional<std::string> getPythonJSON(std::vector<std::string>& hexwords,
             {
                 std::unique_ptr<PyObject, decltype(&pyDecRef)> resPtr(
                     pResult, &pyDecRef);
+
+                if (pResult == Py_None)
+                {
+                    return std::nullopt;
+                }
+
                 PyObject* pBytes =
                     PyUnicode_AsEncodedString(pResult, "utf-8", "~E~");
                 std::unique_ptr<PyObject, decltype(&pyDecRef)> pyBytePtr(
