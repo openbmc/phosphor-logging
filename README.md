@@ -40,7 +40,8 @@ The interfaces are:
   - The main event log interface.
 - [xyz.openbmc_project.Association.Definitions]
   - Used for specifying inventory items as the cause of the event.
-  - For more information on associations, see [here][associations-doc].
+  - For more information on associations, see the [associations
+    doc][associations-doc].
 - [xyz.openbmc_project.Object.Delete]
   - Provides a Delete method to delete the event.
 - [xyz.openbmc_project.Software.Version]
@@ -54,8 +55,8 @@ event logs, in addition to the event log extensions mentioned
 
 The logging daemon has the ability to add `callout` associations to an event log
 based on text in the AdditionalData property. A callout is a link to the
-inventory item(s) that were the cause of the event log. See [here][callout-doc]
-for details.
+inventory item(s) that were the cause of the event log. See [callout
+doc][callout-doc] for details.
 
 ### Creating Event Logs In Code
 
@@ -223,8 +224,8 @@ that uses them. To do that, one must:
       an elog-errors.hpp file that just contains the local errors, and check
       that into the repository and include it where the errors are needed.
    2. Create a recipe that copies the local YAML files to a place that
-      phosphor-logging can find it during the build. See [here][led-link] for an
-      example.
+      phosphor-logging can find it during the build. See sample [LED
+      YAML][led-link] for an example.
 
 #### D-Bus Event Log Creation [deprecated]
 
@@ -408,8 +409,8 @@ The supported extensions are:
 
 - OpenPower PELs
   - Enabled with --enable-openpower-pel-extension
-  - Detailed information can be found
-    [here](extensions/openpower-pels/README.md)
+  - Detailed information can be found in
+    [extensions/openpower-pels](extensions/openpower-pels/README.md).
 
 ## Remote Logging via Rsyslog
 
@@ -485,8 +486,8 @@ found within the entry, ensuring the system will not power on. Entries with
 severities of Informational or Debug will not block boots, even if they have
 callouts.
 
-The full design for this can be found
-[here](https://github.com/openbmc/docs/blob/master/designs/fail-boot-on-hw-error.md)
+The full design for this can be found in
+[docs](https://github.com/openbmc/docs/blob/master/designs/fail-boot-on-hw-error.md).
 
 To enable this function:
 

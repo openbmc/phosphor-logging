@@ -30,15 +30,16 @@ field.
 Component IDs will be unique on a per-repository basis for errors unique to that
 repository. When the same errors are created by multiple repositories, those
 errors will all share the same component ID. The master list of component IDs is
-[here](O_component_ids.json). That file can used by PEL parsers to display a
-name for the component ID. The 'O' in the name is the creator ID value for BMC
+[available](O_component_ids.json). That file can used by PEL parsers to display
+a name for the component ID. The 'O' in the name is the creator ID value for BMC
 created PELs.
 
 ## Message Registry Fields
 
-The message registry schema is [here](schema/schema.json), and the message
-registry itself is [here](message_registry.json). The schema will be validated
-either during a bitbake build or during CI, or eventually possibly both.
+The [message registry schema](schema/schema.json) and the
+[message registry](message_registry.json) is available. The schema will be
+validated either during a bitbake build or during CI, or eventually possibly
+both.
 
 In the message registry, there are fields for specifying:
 
@@ -145,8 +146,8 @@ severity or if there are any callouts. As such, this is an optional field and if
 not supplied the code will fill them in based on those fields.
 
 In fact, even if supplied here, the code may still modify them to ensure they
-are correct. The rules used for this are
-[here](../README.md#action-flags-and-event-type-rules).
+are correct. The rules used for this are in the
+[OpenPower PELs README](../README.md#action-flags-and-event-type-rules).
 
 ```json
 "ActionFlags": ["service_action", "report", "call_home"]
@@ -339,8 +340,8 @@ Suppose if multiple systems have same callouts, the `Systems` key can be used.
 The `Systems` can accept the system names as an array of strings and the list of
 callouts common to those systems can be listed under the key.
 
-Available maintenance procedures are listed [here][1] and in the source code
-[here][2].
+Available maintenance procedures are listed in the [parser][1] and in the
+[source code][2].
 
 [1]:
   https://github.com/ibm-openbmc/openpower-pel-parsers/blob/master/modules/calloutparsers/ocallouts/ocallouts.py
