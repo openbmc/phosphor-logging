@@ -5408,6 +5408,27 @@
         },
 
         {
+            "Name": "com.ibm.VPD.Error.VPDParseError",
+            "Subsystem": "cec_vpd",
+            "ComponentID": "0x4000",
+
+            "SRC": {
+                "ReasonCode": "0x400D",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "VPD parsing error.",
+                "Message": "An error occurred while parsing VPD file",
+                "Notes": [
+                    "This error occurs when there is an exception found while",
+                    "parsing is not data or ECC exception. User data will",
+                    "capture the actual reason for parse failure."
+                ]
+            }
+        },
+
+        {
             "Name": "com.ibm.Panel.Error.InputDevPathFailure",
             "Subsystem": "cec_op_panel",
             "ComponentID": "0x5000",
