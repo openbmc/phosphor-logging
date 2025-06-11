@@ -1,0 +1,32 @@
+{
+    "events": {
+        "default": "allowed",
+        "ids": [
+            "xyz.openbmc_project.Sensor.Threshold.SensorReadingNormalRange",
+            "xyz.openbmc_project.Sensor.Threshold.SensorRestored"
+        ]
+    },
+    "errors": {
+        "default": "allowed",
+        "ids": [
+            "xyz.openbmc_project.Sensor.Threshold.InvalidSensorReading",
+            "xyz.openbmc_project.Sensor.Threshold.ReadingAboveLowerCriticalThreshold",
+            "xyz.openbmc_project.Sensor.Threshold.ReadingAboveLowerHardShutdownThreshold",
+            "xyz.openbmc_project.Sensor.Threshold.ReadingAboveLowerSoftShutdownThreshold",
+            "xyz.openbmc_project.Sensor.Threshold.ReadingAboveUpperCriticalThreshold",
+            "xyz.openbmc_project.Sensor.Threshold.ReadingAboveUpperHardShutdownThreshold",
+            "xyz.openbmc_project.Sensor.Threshold.ReadingAboveUpperPerformanceLossThreshold",
+            "xyz.openbmc_project.Sensor.Threshold.ReadingAboveUpperSoftShutdownThreshold",
+            "xyz.openbmc_project.Sensor.Threshold.ReadingAboveUpperWarningThreshold",
+            "xyz.openbmc_project.Sensor.Threshold.ReadingBelowLowerCriticalThreshold",
+            "xyz.openbmc_project.Sensor.Threshold.ReadingBelowLowerHardShutdownThreshold",
+            "xyz.openbmc_project.Sensor.Threshold.ReadingBelowLowerPerformanceLossThreshold",
+            "xyz.openbmc_project.Sensor.Threshold.ReadingBelowLowerSoftShutdownThreshold",
+            "xyz.openbmc_project.Sensor.Threshold.ReadingBelowLowerWarningThreshold",
+            "xyz.openbmc_project.Sensor.Threshold.ReadingBelowUpperCriticalThreshold",
+            "xyz.openbmc_project.Sensor.Threshold.ReadingBelowUpperHardShutdownThreshold",
+            "xyz.openbmc_project.Sensor.Threshold.ReadingBelowUpperSoftShutdownThreshold",
+            "xyz.openbmc_project.Sensor.Threshold.SensorFailure"
+        ]
+    }
+}
