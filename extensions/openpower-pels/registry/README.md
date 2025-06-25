@@ -631,7 +631,6 @@ The general process for adding new entries to the message registry is:
 
 4. One can test what PELs are generated from these new entries without writing
    any code to create the corresponding event logs:
-
    1. Copy the modified message_registry.json into `/etc/phosphor-logging/` on
       the BMC. That directory may need to be created.
    2. Use busctl to call the Create method to create an event log corresponding

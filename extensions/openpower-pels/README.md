@@ -213,7 +213,6 @@ The extension code that creates PELs will add these UserData sections to every
 PEL:
 
 - The AdditionalData property contents
-
   - If the AdditionalData property in the OpenBMC event log has anything in it,
     it will be saved in a UserData section as a JSON string.
 
@@ -588,13 +587,11 @@ setup(
 ```
 
 - User Data parser module
-
   - Module name: `xzzzz.py`, where `x` is the Creator Subsystem from the Private
     Header section (in ASCII) and `zzzz` is the 2 byte Component ID from the
     User Data section itself (in HEX). All should be converted to lowercase.
     - For example: `b0100.py` for Hostboot created UserData with CompID 0x0100
   - Function to provide: `parseUDToJson`
-
     - Argument list:
       1. (int) Sub-section type
       2. (int) Section version
@@ -616,12 +613,10 @@ setup(
 ```
 
 - SRC parser module
-
   - Module name: `xsrc.py`, where `x` is the Creator Subsystem from the Private
     Header section (in ASCII, converted to lowercase).
     - For example: `bsrc.py` for Hostboot generated SRCs
   - Function to provide: `parseSRCToJson`
-
     - Argument list:
       1. (str) Refcode ASCII string
       2. (str) Hexword 2
