@@ -5839,6 +5839,21 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Software.Version.Info.FactoryResetRequested",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3600",
+            "Severity": "non_error",
+            "SRC": {
+                "ReasonCode": "0x360B",
+                "Words6To9": {}
+            },
+            "Documentation": {
+                "Description": "A BMC factory reset has been requested",
+                "Message": "A BMC factory reset has been requested"
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.PLDM.Error.findDumpObjPath.GetManagedObjectsFail",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
