@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7a84151_21706412",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 5846,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-06-30T20:48:40Z",
+      "side": 1,
+      "message": "you want this to be called home?",
+      "revId": "4a3d138388c3296199480b9f6ee0bbfc97d59d88",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
