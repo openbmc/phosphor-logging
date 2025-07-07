@@ -200,13 +200,7 @@ executable(
 executable(
     'log-resolve',
     'log_resolve_main.cpp',
-    dependencies: [
-        CLI11_dep,
-        nlohmann_json_dep,
-        pdi_dep,
-        phosphor_logging_dep,
-        sdbusplus_dep,
-    ],
+    dependencies: [CLI11_dep, pdi_dep, phosphor_logging_dep],
     install: true,
 )
 

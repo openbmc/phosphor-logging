@@ -1,11 +1,11 @@
 #include <CLI/CLI.hpp>
 #include <phosphor-logging/commit.hpp>
-#include <xyz/openbmc_project/Logging/Entry/client.hpp>
+#include <xyz/openbmc_project/Logging/Entry/common.hpp>
 
 #include <iostream>
 #include <string>
 
-using Proxy = sdbusplus::client::xyz::openbmc_project::logging::Entry<>;
+using Interface = sdbusplus::common::xyz::openbmc_project::logging::Entry;
 
 int main(int argc, char** argv)
 {
@@ -25,8 +25,8 @@ int main(int argc, char** argv)
     {
         if (*idOpt)
         {
-            path = std::string(Proxy::namespace_path::value) + "/" +
-                   std::string(Proxy::namespace_path::entry) + "/" +
+            path = std::string(Interface::namespace_path::value) + "/" +
+                   std::string(Interface::namespace_path::entry) + "/" +
                    std::to_string(id);
             lg2::resolve(path);
         }
