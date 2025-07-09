@@ -1,5 +1,5 @@
 systemd_system_unit_dir = dependency('systemd').get_variable(
-    'systemdsystemunitdir',
+    'systemd_system_unit_dir',
 )
 
 install_data(
