@@ -662,10 +662,10 @@ void Manager::restore()
 
     for (auto& file : fs::directory_iterator(dir))
     {
-        auto id = file.path().filename().c_str();
+        auto id = file.path().filename().string();
         auto idNum = std::stol(id);
         auto e = std::make_unique<Entry>(
-            busLog, std::string(OBJ_ENTRY) + '/' + id, idNum, *this);
+            busLog, std::string(OBJ_ENTRY) + "/" + id, idNum, *this);
         if (deserialize(file.path(), *e))
         {
             // validate the restored error entry id
