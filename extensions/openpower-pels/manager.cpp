@@ -369,6 +369,7 @@ void Manager::createPEL(
     const std::map<std::string, std::string>& additionalData,
     const std::vector<std::string>& /*associations*/, const FFDCEntries& ffdc)
 {
+    auto start = std::chrono::steady_clock::now();
     auto entry = _registry.lookup(message, rg::LookupType::name);
     auto pelFFDC = convertToPelFFDC(ffdc);
     AdditionalData ad{additionalData};
@@ -407,19 +408,6 @@ void Manager::createPEL(
         scheduleRepoPrune();
     }
 
-    auto src = pel->primarySRC();
-    if (src)
-    {
-        auto asciiString = (*src)->asciiString();
-        while (asciiString.back() == ' ')
-        {
-            asciiString.pop_back();
-        }
-        lg2::info("Created PEL {ID} (BMC ID {BMCID}) with SRC {SRC}", "ID",
-                  lg2::hex, pel->id(), "BMCID", pel->obmcLogID(), "SRC",
-                  asciiString);
-    }
-
     // Check for severity 0x51 and update boot progress SRC
     updateProgressSRC(pel);
 
@@ -432,6 +420,22 @@ void Manager::createPEL(
     updateResolution(*pel);
     serializeLogEntry(obmcLogID);
     createPELEntry(obmcLogID);
+
+    auto src = pel->primarySRC();
+    if (src)
+    {
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::steady_clock::now() - start);
+
+        auto asciiString = (*src)->asciiString();
+        while (asciiString.back() == ' ')
+        {
+            asciiString.pop_back();
+        }
+        lg2::info("Created PEL {ID} (BMC ID {BMCID}) with SRC {SRC}", "ID",
+                  lg2::hex, pel->id(), "BMCID", pel->obmcLogID(), "SRC",
+                  asciiString, "PEL_CREATE_DURATION", duration.count());
+    }
 
     // Check if firmware should quiesce system due to error
     checkPelAndQuiesce(pel);
