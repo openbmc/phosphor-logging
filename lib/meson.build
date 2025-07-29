@@ -56,3 +56,7 @@ phosphor_logging_dep = declare_dependency(
     sources: phosphor_logging_gen,
     dependencies: phosphor_logging_deps,
 )
+
+if meson.is_subproject()
+    phosphor_logging_dep = phosphor_logging_dep.as_system()
+endif
