@@ -5063,6 +5063,10 @@
                     "EEPROM path. Errno and device path are captured as",
                     "additional data."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -5085,6 +5089,10 @@
                     "mandatory records.Inventory path is captured in",
                     "additional data."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -5106,6 +5114,10 @@
                     "Inventory path for the failed FRU is captured in additonal",
                     "data."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -5136,6 +5148,10 @@
                     "Failed Json path and cause of failure is captured",
                     "in additional data."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -5167,6 +5183,10 @@
                     "This error occurs when a default value found on VPD.",
                     "Details regarding failure are captured in additional data."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -5196,6 +5216,10 @@
                     "Exceptions details are captured in additonal",
                     "data."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -5223,6 +5247,10 @@
                     "If anything gets changed in that combination, then it can't determine",
                     "the appropriate DTB for that system. Need to check HW and IM keywords."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -5252,6 +5280,10 @@
                     " or driver issue. Since a hardware or a software issue cannot be",
                     " differentiated, the BMC code will be called out."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -5284,6 +5316,10 @@
                     "primary and backup VPD.",
                     "Details regarding the failure are captured in additional data."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -5306,6 +5342,10 @@
                     "to be present in the system at the time of power on.",
                     "The inventory path is captured in additional data."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -5339,6 +5379,10 @@
                     "should never occur, PE intervention is required to cross check ",
                     "and correct the IM value as needed."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -5374,6 +5418,10 @@
                     "decision as to what IM needs to be set to boot the system ",
                     "successfully."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -5404,6 +5452,10 @@
                     "can't be categorised in any specific category.",
                     "Cause of failure is captured in additional data."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
@@ -5425,6 +5477,10 @@
                     "errors for different records for a single EEPROM file. User data",
                     "will capture the actual reason for parse failure."
                 ]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
             }
         },
 
