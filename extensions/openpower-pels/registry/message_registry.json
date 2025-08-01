@@ -5910,6 +5910,27 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Software.Version.Info.IntegrityEvent",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x3600",
+            "Severity": "non_error",
+            "SRC": {
+                "ReasonCode": "0x360C",
+                "Words6To9": {}
+            },
+            "Documentation": {
+                "Description": "An audit event of type Integrity was recorded",
+                "Message": "An audit event of type Integrity was recorded",
+                "Notes": [
+                    "The Linux Integrity Measurement Architecture (IMA) on the",
+                    "BMC has detected a potential integrity violation, such as",
+                    "the attempt to execute an unsigned binary. Refer to the",
+                    "User Data section for details."
+                ]
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.PLDM.Error.findDumpObjPath.GetManagedObjectsFail",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x6000",
