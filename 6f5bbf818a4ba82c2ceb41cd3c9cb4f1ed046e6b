@@ -52,6 +52,24 @@
       "parentUuid": "3ff7bf74_9242dba4",
       "revId": "6f5bbf818a4ba82c2ceb41cd3c9cb4f1ed046e6b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56527347_e1cfb101",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 5869,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2025-08-06T19:41:59Z",
+      "side": 1,
+      "message": "Yeah that\u0027s a good idea, will add. It\u0027s ok if the attacker knows that we\u0027re watching/recording :) , just like logging a \u0027wrong password\u0027 msg.",
+      "parentUuid": "854fdce7_8f4af7de",
+      "revId": "6f5bbf818a4ba82c2ceb41cd3c9cb4f1ed046e6b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
