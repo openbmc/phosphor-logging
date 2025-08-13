@@ -1,0 +1,9 @@
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+2: Matt Spinler <spinler@us.ibm.com>
+Code-Review+1: Janet Adkins <janeta@us.ibm.com>
+Submitted-by: Adriana Kobylak <anoo@us.ibm.com>
+Submitted-at: Wed, 13 Aug 2025 16:34:02 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/82562
+Comments-Total: 5
+Project: openbmc/phosphor-logging
+Branch: refs/heads/master
