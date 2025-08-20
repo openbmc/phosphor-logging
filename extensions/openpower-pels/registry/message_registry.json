@@ -6527,7 +6527,7 @@
             }
         },
         {
-            "Name": "xyz.openbmc_project.Memory.MemoryECC.Error.CEThresholdReached",
+            "Name": "xyz.openbmc_project.Memory.MemoryECC.Error.isLoggingLimitReached",
             "Subsystem": "cec_hardware",
             "ComponentID": "0xF300",
             "Severity": "predictive",
@@ -6573,7 +6573,7 @@
             }
         },
         {
-            "Name": "xyz.openbmc_project.Memory.MemoryECC.Error.CE",
+            "Name": "xyz.openbmc_project.Memory.MemoryECC.Error.ceCount",
             "Subsystem": "cec_hardware",
             "ComponentID": "0xF300",
             "Severity": "non_error",
@@ -6589,7 +6589,7 @@
             }
         },
         {
-            "Name": "xyz.openbmc_project.Memory.MemoryECC.Error.UE",
+            "Name": "xyz.openbmc_project.Memory.MemoryECC.Error.ueCount",
             "Subsystem": "cec_hardware",
             "ComponentID": "0xF300",
             "Severity": "predictive",
