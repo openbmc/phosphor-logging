@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "4b1e6f70_9f3a2e17",
         "filename": "phosphor-logging/log.hpp",
@@ -14,10 +15,10 @@
       "side": 1,
       "message": "Any plans to protect this as IPMI support flag. i.e. If IPMI is not used in the platforms, then the same can be disabled.",
       "revId": "50f026c5af846183e7a4a775ae89efb47f7dd14f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "30d486ad_f4cef7b7",
         "filename": "phosphor-logging/log.hpp",
@@ -32,10 +33,10 @@
       "message": "Considering the code is using the try/catch to capture the dbus call error. If there is no such  IPMI service, API will return at line 219. It still works if the platform does not support the IPMI service. We can add another compiling flag to disable this API in another code change.",
       "parentUuid": "4b1e6f70_9f3a2e17",
       "revId": "50f026c5af846183e7a4a775ae89efb47f7dd14f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "08c42b46_16014269",
         "filename": "phosphor-logging/log.hpp",
@@ -55,8 +56,8 @@
         "endChar": 17
       },
       "revId": "50f026c5af846183e7a4a775ae89efb47f7dd14f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
-  ]
+  ],
+  "submitRequirementResults": []
 }
