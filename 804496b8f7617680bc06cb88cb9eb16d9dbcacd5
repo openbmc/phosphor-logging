@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6da17e1_db14f56f",
+        "filename": "example/audit_daemon/src/audit_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000182
+      },
+      "writtenOn": "2025-09-22T14:21:36Z",
+      "side": 1,
+      "message": "I don\u0027t think that it should report explicitly but may inform about problem.",
+      "parentUuid": "b7b08e59_e817dba2",
+      "revId": "804496b8f7617680bc06cb88cb9eb16d9dbcacd5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "228c95d9_59787f28",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-01-17T06:33:37Z",
       "side": 1,
       "message": "This might be a nitpick, though this Init/IsIntiSuccess approach does not seems to be c++. I think if object is created there should be no other checks before using it.",
+      "revId": "804496b8f7617680bc06cb88cb9eb16d9dbcacd5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf8cd214_e1c608d8",
+        "filename": "example/audit_daemon/src/auditd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000182
+      },
+      "writtenOn": "2025-09-22T14:21:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "228c95d9_59787f28",
       "revId": "804496b8f7617680bc06cb88cb9eb16d9dbcacd5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
