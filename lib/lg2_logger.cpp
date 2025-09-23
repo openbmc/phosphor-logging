@@ -13,6 +13,7 @@
 #include <mutex>
 #include <source_location>
 #include <sstream>
+#include <utility>
 #include <vector>
 
 namespace lg2::details
@@ -137,6 +138,29 @@ static void noop_extra_output(level, const std::source_location&,
 static void cerr_extra_output(level l, const std::source_location& s,
                               const std::string& m)
 {
+    static const int maxLogLevel = []() {
+        const char* logLevel = getenv("LG2_LOG_LEVEL");
+        if (logLevel == nullptr)
+        {
+            // Default to logging all levels if not set
+            return std::to_underlying(level::debug);
+        }
+        try
+        {
+            int level = std::stoi(logLevel);
+            return std::clamp(level, 0, std::to_underlying(level::debug));
+        }
+        catch (const std::exception&)
+        {
+            return std::to_underlying(level::debug);
+        }
+    }();
+
+    if (static_cast<int>(l) > maxLogLevel)
+    {
+        return;
+    }
+
     static const char* const defaultFormat = []() {
         const char* f = getenv("LG2_FORMAT");
         if (nullptr == f)
