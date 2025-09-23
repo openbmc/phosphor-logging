@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "166461c5_147994d6",
+        "filename": "lib/lg2_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-09-23T21:46:26Z",
+      "side": 1,
+      "message": "nit: it might be better to use the level::emergency?",
+      "range": {
+        "startLine": 151,
+        "startChar": 37,
+        "endLine": 151,
+        "endChar": 38
+      },
+      "revId": "b305243fb77d6bd792ecc1237b86337e3c1b0576",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "774a1953_4b003134",
         "filename": "lib/lg2_logger.cpp",
         "patchSetId": 1
