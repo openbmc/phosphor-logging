@@ -128,6 +128,9 @@ error messages for incorrect parameters or format flags. Some examples are:
 - Missing a message yields:
   - `error: use of deleted function ‘lg2::debug<>::debug()’`
 
+Debug-level messages are only sent to journald if the `DEBUG_INVOCATION`
+environment variable is set, as suggested by the `systemd.exec` manpage.
+
 ### LOG2_FMTMSG key
 
 The API adds an extra journald key to represent the original message prior to
@@ -161,6 +164,11 @@ if the application is running on a TTY and additionally log to the TTY.
 Output to stderr can also be forced by setting the `LG2_FORCE_STDERR`
 environment variable to any value. This is especially useful to see log output
 in OpenBMC CI test verfication.
+
+The verbosity of this output can be filtered by setting `LG2_LOG_LEVEL`
+environment variable to the desired maximum log level (0-7). Messages with a
+priority value greater than this setting will be supressed. If `LG2_LOG_LEVEL`
+is not set, it defaults to 7, showing all messages.
 
 The format of information sent to the TTY can be adjusted by setting the desired
 format string in the `LG2_FORMAT` environment variable. Supported fields are:
