@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "83f2738c_f2f0a31b",
+        "filename": "lib/lg2_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1002669
+      },
+      "writtenOn": "2025-09-24T06:38:30Z",
+      "side": 1,
+      "message": "Sure, sounds better. Corrected",
+      "parentUuid": "166461c5_147994d6",
+      "range": {
+        "startLine": 151,
+        "startChar": 37,
+        "endLine": 151,
+        "endChar": 38
+      },
+      "revId": "b305243fb77d6bd792ecc1237b86337e3c1b0576",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "774a1953_4b003134",
         "filename": "lib/lg2_logger.cpp",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2025-09-23T21:45:26Z",
       "side": 1,
       "message": "Why not us `to_underlying` here?",
+      "range": {
+        "startLine": 159,
+        "startChar": 8,
+        "endLine": 159,
+        "endChar": 27
+      },
+      "revId": "b305243fb77d6bd792ecc1237b86337e3c1b0576",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f63298c_20cf9126",
+        "filename": "lib/lg2_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1002669
+      },
+      "writtenOn": "2025-09-24T06:38:30Z",
+      "side": 1,
+      "message": "Right, it should be this. Corrected",
+      "parentUuid": "774a1953_4b003134",
       "range": {
         "startLine": 159,
         "startChar": 8,
