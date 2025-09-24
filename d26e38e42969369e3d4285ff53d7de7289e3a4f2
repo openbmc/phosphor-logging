@@ -16,6 +16,24 @@
       "message": "Can you add this to docs/structured-logging.md?",
       "revId": "d26e38e42969369e3d4285ff53d7de7289e3a4f2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5414021_6987bcb0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002669
+      },
+      "writtenOn": "2025-09-24T13:42:34Z",
+      "side": 1,
+      "message": "Sure, I added it. If it\u0027s not a problem to include this in the same commit, I also added a mention of `DEBUG_INVOCATION`, since I recently had to look for it directly in the code because there\u0027s no mention of it in the docs either",
+      "parentUuid": "5a769778_c38ea091",
+      "revId": "d26e38e42969369e3d4285ff53d7de7289e3a4f2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
