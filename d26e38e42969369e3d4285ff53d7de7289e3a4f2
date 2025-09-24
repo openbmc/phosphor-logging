@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a769778_c38ea091",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-09-24T13:04:14Z",
+      "side": 1,
+      "message": "Can you add this to docs/structured-logging.md?",
+      "revId": "d26e38e42969369e3d4285ff53d7de7289e3a4f2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
