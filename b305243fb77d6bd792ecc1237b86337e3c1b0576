@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9684f1e3_d65853a0",
+        "filename": "lib/lg2_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-09-24T16:36:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83f2738c_f2f0a31b",
+      "range": {
+        "startLine": 151,
+        "startChar": 37,
+        "endLine": 151,
+        "endChar": 38
+      },
+      "revId": "b305243fb77d6bd792ecc1237b86337e3c1b0576",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "774a1953_4b003134",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Right, it should be this. Corrected",
       "parentUuid": "774a1953_4b003134",
+      "range": {
+        "startLine": 159,
+        "startChar": 8,
+        "endLine": 159,
+        "endChar": 27
+      },
+      "revId": "b305243fb77d6bd792ecc1237b86337e3c1b0576",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc4c3c31_9da9f7e4",
+        "filename": "lib/lg2_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-09-24T16:36:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2f63298c_20cf9126",
       "range": {
         "startLine": 159,
         "startChar": 8,
