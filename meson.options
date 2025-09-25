@@ -45,8 +45,15 @@ option(
 option(
     'lg2_commit_strategy',
     type: 'combo',
-    choices: ['dbus', 'journal', 'both'],
+    choices: ['dbus', 'journal', 'both', 'none'],
     value: 'both',
+)
+
+option(
+    'lg2_commit_create_deprecated_redfish_format',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Create journal log message that follows deprecated Redfish message format',
 )
 
 option(
