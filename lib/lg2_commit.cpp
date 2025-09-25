@@ -114,6 +114,38 @@ auto extractEvent(sdbusplus::exception::generated_event_base&& t)
 
 } // namespace details
 
+auto getArgummentValues(sdbusplus::exception::generated_event_base& t)
+    -> std::string
+{
+    auto j = t.to_ordered_json()[t.name()];
+
+    std::string arguments = "";
+
+    for (const auto& item : j.items())
+    {
+        if (item.key() != "_SOURCE")
+        {
+            if (item.value().type() == nlohmann::json::value_t::string)
+            {
+                arguments += item.value();
+                arguments += ",";
+            }
+            else
+            {
+                arguments += item.value().dump();
+                arguments += ",";
+            }
+        }
+    }
+
+    while (arguments.ends_with(","))
+    {
+        arguments.pop_back();
+    }
+
+    return arguments;
+}
+
 auto commit(sdbusplus::exception::generated_event_base&& t)
     -> sdbusplus::message::object_path
 {
@@ -125,6 +157,12 @@ auto commit(sdbusplus::exception::generated_event_base&& t)
     else if (details::filterError(t.name()))
     {
         return {};
+    }
+
+    if constexpr (LG2_COMMIT_DEPRECATED_RF_FORMAT)
+    {
+        lg2::error(t.description(), "REDFISH_MESSAGE_ID", t.redfishMessageId(),
+                   "REDFISH_MESSAGE_ARGS", getArgummentValues(t));
     }
 
     if constexpr (LG2_COMMIT_JOURNAL)
@@ -171,6 +209,12 @@ auto commit(sdbusplus::async::context& ctx,
     -> sdbusplus::async::task<sdbusplus::message::object_path>
 {
     using details::Create;
+
+    if constexpr (LG2_COMMIT_DEPRECATED_RF_FORMAT)
+    {
+        lg2::error(t.description(), "REDFISH_MESSAGE_ID", t.redfishMessageId(),
+                   "REDFISH_MESSAGE_ARGS", getArgummentValues(t));
+    }
 
     if constexpr (LG2_COMMIT_JOURNAL)
     {

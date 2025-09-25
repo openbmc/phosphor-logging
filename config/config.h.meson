@@ -40,5 +40,6 @@ static constexpr size_t CLASS_VERSION = 7;
 
 static constexpr bool LG2_COMMIT_DBUS = @lg2_commit_dbus@;
 static constexpr bool LG2_COMMIT_JOURNAL = @lg2_commit_journal@;
+static constexpr bool LG2_COMMIT_DEPRECATED_RF_FORMAT = @lg2_commit_deprecated_rf_format@;
 
 // vim: ft=cpp

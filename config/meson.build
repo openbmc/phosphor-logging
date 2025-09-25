@@ -13,6 +13,10 @@ conf_data.set(
     'lg2_commit_journal',
     lg2_commit_strategy == 'journal' or lg2_commit_strategy == 'both' ? 'true' : 'false',
 )
+conf_data.set(
+    'lg2_commit_deprecated_rf_format',
+    get_option('lg2_commit_create_deprecated_redfish_format').allowed() ? 'true' : 'false',
+)
 
 cxx = meson.get_compiler('cpp')
 if cxx.has_header('poll.h')
