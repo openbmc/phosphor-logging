@@ -16,6 +16,109 @@
       "message": "Why is this marked WIP?  The dependency is met due to the common topic.  Marking WIP means this isn\u0027t likely to be reviewed.",
       "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5b8e461_b56f4f55",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-09T21:53:18Z",
+      "side": 1,
+      "message": "I don\u0027t think there is a way we can make this work.  See my comments about Redfish message versions.",
+      "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf9178d5_576d31c9",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-09T21:53:18Z",
+      "side": 1,
+      "message": "This doesn\u0027t work because you still don\u0027t know which arguments are intended to be sent via Redfish and which ones are not.  In the sdbusplus YAML format there is a \"primary\" field that identifies which ones are intended to be sent via Redfish.",
+      "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b77bfe72_0596bfe5",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-09T21:53:18Z",
+      "side": 1,
+      "message": "Can we just skip all this _SOURCE stuff in this path?  You added it in sdbusplus for some reason and then you have to avoid it here.  Seems like a lot of extra work.",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 139,
+        "endChar": 5
+      },
+      "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f85eca64_c088e3ba",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-09T21:53:18Z",
+      "side": 1,
+      "message": "I was curious where the version was coming from here and realized you\u0027re using the wrong version in sdbusplus.  I don\u0027t know how to make this work with your proposal.  Only bmcweb has the proper redfish message id version.",
+      "range": {
+        "startLine": 164,
+        "startChar": 58,
+        "endLine": 164,
+        "endChar": 79
+      },
+      "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26e042bd_2f1ded2c",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-09T21:53:18Z",
+      "side": 1,
+      "message": "If we _were_ going to go this route, we should just get rid of this path and option, right?",
+      "range": {
+        "startLine": 168,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 5
+      },
+      "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
