@@ -52,6 +52,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "26c2cd5f_ad2362d2",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2025-10-13T04:42:02Z",
+      "side": 1,
+      "message": "I updated the sdbusplus to only get the primary Redfish arguments.",
+      "parentUuid": "cf9178d5_576d31c9",
+      "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b77bfe72_0596bfe5",
@@ -65,6 +83,30 @@
       "writtenOn": "2025-10-09T21:53:18Z",
       "side": 1,
       "message": "Can we just skip all this _SOURCE stuff in this path?  You added it in sdbusplus for some reason and then you have to avoid it here.  Seems like a lot of extra work.",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 139,
+        "endChar": 5
+      },
+      "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b3a41f1_747864b2",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2025-10-13T04:42:02Z",
+      "side": 1,
+      "message": "I removed checking `_SOURCE`, it is removed in getRedfishArgr function of the sdbusplus also.",
+      "parentUuid": "b77bfe72_0596bfe5",
       "range": {
         "startLine": 124,
         "startChar": 0,
@@ -98,6 +140,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6521bafc_320eed3b",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2025-10-13T04:42:02Z",
+      "side": 1,
+      "message": "The bmcweb is not needing the version information while parsing Redfish logs (Only need the Registries prefix and event name)",
+      "parentUuid": "f85eca64_c088e3ba",
+      "range": {
+        "startLine": 164,
+        "startChar": 58,
+        "endLine": 164,
+        "endChar": 79
+      },
+      "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "26e042bd_2f1ded2c",
@@ -111,6 +177,30 @@
       "writtenOn": "2025-10-09T21:53:18Z",
       "side": 1,
       "message": "If we _were_ going to go this route, we should just get rid of this path and option, right?",
+      "range": {
+        "startLine": 168,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 5
+      },
+      "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a8eb390_28d51dd6",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2025-10-13T04:42:02Z",
+      "side": 1,
+      "message": "I want to keep it as your design https://github.com/openbmc/docs/blob/master/designs/event-logging.md#phosphor-logging. Beside that, I add `none` value to the `lg2_commit_strategy` option.",
+      "parentUuid": "26e042bd_2f1ded2c",
       "range": {
         "startLine": 168,
         "startChar": 0,
