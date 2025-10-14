@@ -166,6 +166,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "84ecfad1_8616a667",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-14T18:48:58Z",
+      "side": 1,
+      "message": "Please elaborate.  How do we know the Redfish event matches the version in the message registry then?",
+      "parentUuid": "6521bafc_320eed3b",
+      "range": {
+        "startLine": 164,
+        "startChar": 58,
+        "endLine": 164,
+        "endChar": 79
+      },
+      "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "26e042bd_2f1ded2c",
         "filename": "lib/lg2_commit.cpp",
         "patchSetId": 1
@@ -201,6 +225,30 @@
       "side": 1,
       "message": "I want to keep it as your design https://github.com/openbmc/docs/blob/master/designs/event-logging.md#phosphor-logging. Beside that, I add `none` value to the `lg2_commit_strategy` option.",
       "parentUuid": "26e042bd_2f1ded2c",
+      "range": {
+        "startLine": 168,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 5
+      },
+      "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13369dae_f8610381",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-14T18:48:58Z",
+      "side": 1,
+      "message": "But why?  If nobody is going to use this other path, let\u0027s get rid of it.  It\u0027s pretty trivial to update the design document accordingly, isn\u0027t it?  Design documents aren\u0027t etched in stone.",
+      "parentUuid": "0a8eb390_28d51dd6",
       "range": {
         "startLine": 168,
         "startChar": 0,
