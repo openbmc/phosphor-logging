@@ -188,6 +188,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c33acba3_594ffbcc",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2025-10-15T07:17:49Z",
+      "side": 1,
+      "message": "In the bmcweb, it parses Redfish Message Id into 4 arguments `RegistryName.MajorVersion.MinorVersion.MessageKey`, based on the `RegistryName` and `MessageKey`, the bmcweb get the message registry, it does not use `MajorVersion` and `MinorVersion`.\nPlease refer to https://github.com/openbmc/bmcweb/blob/master/redfish-core/src/registries.cpp#L70 for more detail.",
+      "parentUuid": "84ecfad1_8616a667",
+      "range": {
+        "startLine": 164,
+        "startChar": 58,
+        "endLine": 164,
+        "endChar": 79
+      },
+      "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "26e042bd_2f1ded2c",
@@ -249,6 +273,30 @@
       "side": 1,
       "message": "But why?  If nobody is going to use this other path, let\u0027s get rid of it.  It\u0027s pretty trivial to update the design document accordingly, isn\u0027t it?  Design documents aren\u0027t etched in stone.",
       "parentUuid": "0a8eb390_28d51dd6",
+      "range": {
+        "startLine": 168,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 5
+      },
+      "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10d8e625_bdbe5583",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2025-10-15T07:17:49Z",
+      "side": 1,
+      "message": "I updated `LG2_COMMIT_JOURNAL` to generate `REDFISH_MESSAGE_ID` instead. Additional, I updated `event-logging` design at https://gerrit.openbmc.org/c/openbmc/docs/+/84453",
+      "parentUuid": "13369dae_f8610381",
       "range": {
         "startLine": 168,
         "startChar": 0,
