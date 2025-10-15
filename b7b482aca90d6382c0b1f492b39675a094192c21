@@ -236,6 +236,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b31650e8_00f4d78b",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2025-10-15T15:06:10Z",
+      "side": 1,
+      "message": "if you want to show the correct the version, I think we can update the version of events.yaml file in PDIs based on the version in the bmcweb.\nE.g: In the bmcweb, the version of `sensor events` is `1.0.1` https://github.com/openbmc/bmcweb/blob/master/scripts/parse_registries.py#L710, but the PDIs is defining the version of `sensor events` is `1.2.0` https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Sensor/Threshold.events.yaml#L1. We should update the `version` in the `Threshold.events.yaml` to `1.0.1`",
+      "parentUuid": "728a0a65_cfaf1590",
+      "range": {
+        "startLine": 164,
+        "startChar": 58,
+        "endLine": 164,
+        "endChar": 79
+      },
+      "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "26e042bd_2f1ded2c",
