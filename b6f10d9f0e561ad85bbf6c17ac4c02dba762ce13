@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95c4717b_14d168dd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-10-20T21:51:51Z",
+      "side": 1,
+      "message": "Could you also show what the journal entry looks like, maybe with journalctl -o verbose?",
+      "revId": "b6f10d9f0e561ad85bbf6c17ac4c02dba762ce13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
