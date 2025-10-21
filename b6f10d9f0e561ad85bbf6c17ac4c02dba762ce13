@@ -16,6 +16,24 @@
       "message": "Could you also show what the journal entry looks like, maybe with journalctl -o verbose?",
       "revId": "b6f10d9f0e561ad85bbf6c17ac4c02dba762ce13",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df3a8fa0_4fbf44af",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2025-10-21T02:16:02Z",
+      "side": 1,
+      "message": "This is the journal entry:\n```\nTue 2025-10-21 02:14:06.716025 UTC [s\u003d75fd7757ad0d40938745a6845d254937;i\u003d63c;b\u003db233a3c175ce4fe3976b4a3cdc9bbcf7;m\u003d1aadf507;t\u003d641a1c12c6bfc;x\u003ded\n    _BOOT_ID\u003db233a3c175ce4fe3976b4a3cdc9bbcf7\n    _MACHINE_ID\u003d3b59150aca414fba8899d4648a3d554e\n    _HOSTNAME\u003dmtmitchell-dcscm\n    _RUNTIME_SCOPE\u003dsystem\n    _TRANSPORT\u003djournal\n    _UID\u003d0\n    _GID\u003d0\n    PRIORITY\u003d3\n    MESSAGE\u003dCritical System Event Log received by the BMC.\n    LOG2_FMTMSG\u003dCritical System Event Log received by the BMC.\n    CODE_FILE\u003d../git/lib/lg2_commit.cpp\n    CODE_LINE\u003d162\n    CODE_FUNC\u003dsdbusplus::message::object_path lg2::commit(sdbusplus::exception::generated_event_base\u0026\u0026)\n    REDFISH_MESSAGE_ID\u003dOpenBMC_AmpereEventReportedSEL.1.0.ReportedSELCritical\n    REDFISH_MESSAGE_ARGS\u003dSensor 1,Message 1\n    SYSLOG_IDENTIFIER\u003dlog-create\n    _PID\u003d3810\n    _SOURCE_REALTIME_TIMESTAMP\u003d1761012846716025\n```",
+      "parentUuid": "95c4717b_14d168dd",
+      "revId": "b6f10d9f0e561ad85bbf6c17ac4c02dba762ce13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
