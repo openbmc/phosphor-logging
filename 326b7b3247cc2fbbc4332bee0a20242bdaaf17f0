@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97d5e602_e045723f",
+        "filename": "meson.build",
+        "patchSetId": 2
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-23T21:01:40Z",
+      "side": 1,
+      "message": "I suspect this can be removed since the only executable is now main.cpp.  You included it in the log_manager_lib, so I _think_ you get it transitively anyhow?",
+      "revId": "326b7b3247cc2fbbc4332bee0a20242bdaaf17f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
