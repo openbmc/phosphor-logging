@@ -40,9 +40,9 @@ foreach t : tests
             'test-' + t.underscorify(),
             t + '.cpp',
             'common.cpp',
-            log_manager_sources,
             '../phosphor-rsyslog-config/server-conf.cpp',
             dependencies: [
+                conf_h_dep,
                 gmock_dep,
                 gtest_dep,
                 log_manager_deps,
@@ -50,6 +50,7 @@ foreach t : tests
                 phosphor_logging_dep,
             ],
             include_directories: include_directories('..', '../gen'),
+            link_with: log_manager_lib,
         ),
     )
 endforeach
@@ -67,15 +68,16 @@ foreach t : tests_non_parallel
             'test-' + t.underscorify(),
             t + '.cpp',
             'common.cpp',
-            log_manager_sources,
             '../phosphor-rsyslog-config/server-conf.cpp',
             dependencies: [
+                conf_h_dep,
                 gmock_dep,
                 gtest_dep,
                 log_manager_deps,
                 phosphor_logging_dep,
             ],
             include_directories: include_directories('..', '../gen'),
+            link_with: log_manager_lib,
         ),
         is_parallel: false,
     )
