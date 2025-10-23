@@ -85,6 +85,7 @@ foreach t : openpower_pels.keys()
                 gmock_dep,
                 phosphor_logging_dep,
                 libpel_deps,
+                log_manager_deps,
                 peltool_deps,
                 openpower_pels.get(t).get('deps', []),
             ],
