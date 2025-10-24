@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3534f057_6a464e00",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-10-24T18:51:28Z",
+      "side": 1,
+      "message": "I put up the same fix this morning that I hit when I refresh my subprojects directory: https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/84632",
+      "revId": "a173c0581343a487c391a67266aec75cd869c14e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
