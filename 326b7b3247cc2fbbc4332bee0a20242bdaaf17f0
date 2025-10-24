@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "102b6b6f_d8acfb0f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-10-24T13:25:38Z",
+      "side": 1,
+      "message": "I just realized that the \u0027openpower-pel-extension\u0027 option is disabled by default.  With it enabled, this fails to compile with:\n\n../elog_entry.hpp:9:10: fatal error: sdeventplus/event.hpp: No such file or directory                                                                                                                                                                                                       9 | #include \u003csdeventplus/event.hpp\u003e                                                                                                                                                                                                                                                      |",
+      "revId": "326b7b3247cc2fbbc4332bee0a20242bdaaf17f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97d5e602_e045723f",
