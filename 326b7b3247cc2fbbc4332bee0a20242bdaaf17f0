@@ -54,6 +54,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b8a8a2f_36f6d3bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2025-10-24T18:25:44Z",
+      "side": 1,
+      "message": "@spinler@us.ibm.com I wasn\u0027t able to repro your build issue. \n\nI built this a few hundred times with openpower-pel-extension enabled. I did see a race with some of the test includes and fixed that in my latest revision\n\n```\n++ meson -Dopenpower-pel-extension\u003denabled ./one\nThe Meson build system\nVersion: 1.9.0\nSource dir: /home/jamesatha/github/copy/phosphor-logging\nBuild dir: /home/jamesatha/github/copy/phosphor-logging/one\nBuild type: native build\nProject name: phosphor-logging\nProject version: 1.0.0\nC++ compiler for the host machine: c++ (gcc 15.2.0 \"c++ (Ubuntu 15.2.0-0ubuntu1~25.04) 15.2.0\")\nC++ linker for the host machine: c++ ld.bfd 2.44\nHost machine cpu family: x86_64\nHost machine cpu: x86_64\nProgram python3 found: YES (/usr/bin/python3)\nFound pkg-config: YES (/usr/bin/pkg-config) 1.8.1\nRun-time dependency libsystemd found: YES 257\nRun-time dependency sdbusplus found: YES 1.0.0\nProgram sdbus++ found: YES (/usr/local/bin/sdbus++)\nProgram sdbus++-gen-meson found: YES (/usr/local/bin/sdbus++-gen-meson)\nRun-time dependency phosphor-dbus-interfaces found: YES 1.0.0\nHas header \"poll.h\" : YES \nConfiguring config.h using configuration\nRun-time dependency threads found: YES\nRun-time dependency sdeventplus found: YES 0.1\nFound CMake: /usr/bin/cmake (3.31.6)\nRun-time dependency cereal found: NO (tried pkgconfig and cmake)\nHeader \"cereal/cereal.hpp\" has symbol \"cereal::specialize\" with dependency cereal: YES \nHas header \"CLI/CLI.hpp\" : YES \nRun-time dependency nlohmann_json found: YES 3.12.0\nRun-time dependency libpldm found: YES 0.14.0\nProgram python3 found: YES (/usr/bin/python3)\nRun-time dependency python found: YES 3.13\nRun-time dependency systemd found: YES 257\nRun-time dependency dbus-1 found: YES 1.16.2\nRun-time dependency GTest found: YES 1.16.0\nRun-time dependency GMock found: YES 1.16.0\nBuild targets in project: 64\n\nphosphor-logging 1.0.0\n\n  User defined options\n    openpower-pel-extension: enabled\n\nFound ninja-1.12.1 at /usr/bin/ninja\nWARNING: Running the setup command as `meson [options]` instead of `meson setup [options]` is ambiguous and deprecated.\n++ ninja -C ./one\nninja: Entering directory `./one\u0027\n[312/312] Linking target test/openpower-pels/test-openpower-pels-pel_manager\n```",
+      "revId": "326b7b3247cc2fbbc4332bee0a20242bdaaf17f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97d5e602_e045723f",
