@@ -57,8 +57,7 @@ class HostNotifierTest : public CleanPELFiles
         };
 
         // Unless otherwise specified, sendNewLogCmd should always pass.
-        ON_CALL(*mockHostIface, sendNewLogCmd(_, _))
-            .WillByDefault(Invoke(send));
+        ON_CALL(*mockHostIface, sendNewLogCmd(_, _)).WillByDefault(send);
     }
 
     ~HostNotifierTest()
@@ -376,9 +375,9 @@ TEST_F(HostNotifierTest, TestHostRetry)
     };
 
     EXPECT_CALL(*mockHostIface, sendNewLogCmd(_, _))
-        .WillOnce(Invoke(sendFailure))
-        .WillOnce(Invoke(sendSuccess))
-        .WillOnce(Invoke(sendSuccess));
+        .WillOnce(sendFailure)
+        .WillOnce(sendSuccess)
+        .WillOnce(sendSuccess);
 
     dataIface.changeHostState(true);
 
@@ -423,7 +422,7 @@ TEST_F(HostNotifierTest, TestHardFailure)
     };
 
     EXPECT_CALL(*mockHostIface, sendNewLogCmd(_, _))
-        .WillRepeatedly(Invoke(sendFailure));
+        .WillRepeatedly(sendFailure);
 
     dataIface.changeHostState(true);
 
@@ -470,23 +469,23 @@ TEST_F(HostNotifierTest, TestCannotStartCmd)
     // Fails 16 times (1 fail + 15  retries) and
     // then start working.
     EXPECT_CALL(*mockHostIface, sendNewLogCmd(_, _))
-        .WillOnce(Invoke(sendFailure))
-        .WillOnce(Invoke(sendFailure))
-        .WillOnce(Invoke(sendFailure))
-        .WillOnce(Invoke(sendFailure))
-        .WillOnce(Invoke(sendFailure))
-        .WillOnce(Invoke(sendFailure))
-        .WillOnce(Invoke(sendFailure))
-        .WillOnce(Invoke(sendFailure))
-        .WillOnce(Invoke(sendFailure))
-        .WillOnce(Invoke(sendFailure))
-        .WillOnce(Invoke(sendFailure))
-        .WillOnce(Invoke(sendFailure))
-        .WillOnce(Invoke(sendFailure))
-        .WillOnce(Invoke(sendFailure))
-        .WillOnce(Invoke(sendFailure))
-        .WillOnce(Invoke(sendFailure))
-        .WillRepeatedly(Invoke(sendSuccess));
+        .WillOnce(sendFailure)
+        .WillOnce(sendFailure)
+        .WillOnce(sendFailure)
+        .WillOnce(sendFailure)
+        .WillOnce(sendFailure)
+        .WillOnce(sendFailure)
+        .WillOnce(sendFailure)
+        .WillOnce(sendFailure)
+        .WillOnce(sendFailure)
+        .WillOnce(sendFailure)
+        .WillOnce(sendFailure)
+        .WillOnce(sendFailure)
+        .WillOnce(sendFailure)
+        .WillOnce(sendFailure)
+        .WillOnce(sendFailure)
+        .WillOnce(sendFailure)
+        .WillRepeatedly(sendSuccess);
 
     dataIface.changeHostState(true);
 
