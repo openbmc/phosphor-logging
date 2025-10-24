@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2297e07e_f29bfc38",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-10-24T13:27:10Z",
+      "side": 1,
+      "message": "bad paste, will try again:\n```\nFAILED: phosphor-log-manager.p/log_manager_main.cpp.o                                                                                                                                                                                                                                   c++ @phosphor-log-manager.p/log_manager_main.cpp.o.rsp\nIn file included from ../extensions.hpp:3,\n                 from ../log_manager_main.cpp:5:\n../elog_entry.hpp:9:10: fatal error: sdeventplus/event.hpp: No such file or directory\n    9 | #include \u003csdeventplus/event.hpp\u003e\n      |          ^~~~~~~~~~~~~~~~~~~~~~~                                                                                                                                                                                                                                                compilation terminated.  \n```",
+      "parentUuid": "102b6b6f_d8acfb0f",
+      "revId": "326b7b3247cc2fbbc4332bee0a20242bdaaf17f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97d5e602_e045723f",
