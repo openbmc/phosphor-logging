@@ -13,6 +13,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
+#include <xyz/openbmc_project/ObjectMapper/client.hpp>
 
 #include <chrono>
 #include <fstream>
@@ -184,6 +185,30 @@ void journalSync()
     }
 
     return;
+}
+
+std::string getService(sdbusplus::bus_t& bus, const std::string& path,
+                       const std::string& interface)
+{
+    using ObjectMapper =
+        sdbusplus::client::xyz::openbmc_project::ObjectMapper<>;
+
+    auto method = bus.new_method_call(ObjectMapper::default_service,
+                                      ObjectMapper::instance_path,
+                                      ObjectMapper::interface, "GetObject");
+
+    method.append(path, std::vector<std::string>({interface}));
+
+    auto reply = bus.call(method);
+    auto object = reply.unpack<
+        std::vector<std::pair<std::string, std::vector<std::string>>>>();
+
+    if (object.empty())
+    {
+        throw std::runtime_error("Error no matching service");
+    }
+
+    return object.begin()->first;
 }
 
 namespace additional_data

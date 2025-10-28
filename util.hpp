@@ -1,5 +1,7 @@
 #pragma once
 
+#include <sdbusplus/bus.hpp>
+
 #include <map>
 #include <optional>
 #include <string>
@@ -23,6 +25,50 @@ std::optional<std::string> getOSReleaseValue(const std::string& key);
  *          "journalctl --sync".
  */
 void journalSync();
+
+/**
+ * @brief Read a property on D-Bus
+ *
+ * It will throw on errors
+ *
+ * @tparam T - The type of the property
+ * @param[in] bus - The sdbusplus object
+ * @param[in] service - The service
+ * @param[in] path - The path
+ * @param[in] interface - The interface
+ * @param[in] property - The property
+ *
+ * @return T - The property  value
+ */
+template <typename T>
+T getProperty(sdbusplus::bus_t& bus, const std::string& service,
+              const std::string& path, const std::string& interface,
+              const std::string& property)
+{
+    auto method = bus.new_method_call(service.c_str(), path.c_str(),
+                                      "org.freedesktop.DBus.Properties", "Get");
+
+    method.append(interface, property);
+    auto reply = bus.call(method);
+
+    auto value = reply.unpack<std::variant<T>>();
+
+    return std::get<T>(value);
+}
+
+/**
+ * @brief Looks up the D-Bus service name for the path and interface
+ *
+ * It will throw if the service doesn't exist.
+ *
+ * @param[in] bus - The sdbusplus object
+ * @param[in] path - The path
+ * @param[in] interface - The interface
+ *
+ * @return The service name
+ */
+std::string getService(sdbusplus::bus_t& bus, const std::string& path,
+                       const std::string& interface);
 
 namespace additional_data
 {
