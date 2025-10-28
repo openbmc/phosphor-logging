@@ -11,6 +11,7 @@ logging.
 - [Event Log Extensions](#event-log-extensions)
 - [Remote Logging](#remote-logging-via-rsyslog)
 - [Boot Fail on Hardware Errors](#boot-fail-on-hardware-errors)
+- [Encoding BMC position in entry ID](#encoding-the-bmc-position-in-the-entry-id)
 
 ## To Build
 
@@ -502,3 +503,20 @@ obmcutil listbootblock
 ```
 
 Resolve or clear the corresponding entry to allow the system to boot.
+
+## Encoding the BMC position in the entry ID
+
+On redundant BMC systems where multiple BMCs can be creating event logs, the
+'use-bmc-pos-in-id' meson option will trigger the encoding of the BMC position
+into the upper byte of the event log ID so that all event logs will have unique
+IDs.
+
+The BMC position is read from the
+`xyz.openbmc_project.Inventory.Decorator.Position` interface on the object path
+specified by the 'bmc-position-object-path' meson option.
+
+If the position is not on D-Bus, or if the D-Bus property is
+std::numeric_limits<size_t>::max(), then a 0xFF will be encoded as the ID.
+
+After a valid position is obtained, any event logs that had a 0xFF as the ID
+will be erased. This prevents conflicts when syncing the files between BMCs.
