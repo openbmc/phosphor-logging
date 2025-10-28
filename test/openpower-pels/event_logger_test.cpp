@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include "extensions/openpower-pels/event_logger.hpp"
-#include "log_manager.hpp"
 
 #include <gtest/gtest.h>
 
