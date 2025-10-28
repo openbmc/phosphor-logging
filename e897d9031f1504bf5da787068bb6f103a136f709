@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08c73918_93310964",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-10-28T21:51:28Z",
+      "side": 1,
+      "message": "looks like a network hiccup:\n```\nlibgpiod: #5 136.3 curl: (28) Failed to connect to git.kernel.org port 443 after 136210 ms: Could not connect to server\nlibgpiod: #5 136.3 \nlibgpiod: #5 136.3 gzip: stdin: unexpected end of file\n```",
+      "revId": "e897d9031f1504bf5da787068bb6f103a136f709",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
