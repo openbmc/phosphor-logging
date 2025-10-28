@@ -24,6 +24,7 @@ if get_option('openpower-pel-extension').allowed()
 endif
 
 tests = [
+    'bmc_pos_mgr_test',
     'extensions_test',
     'log_manager_dbus_tests',
     'remote_logging_test_address',
