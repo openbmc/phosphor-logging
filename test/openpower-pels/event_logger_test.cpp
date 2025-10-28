@@ -2,7 +2,6 @@
 // SPDX-FileCopyrightText: Copyright 2019 IBM Corporation
 
 #include "extensions/openpower-pels/event_logger.hpp"
-#include "log_manager.hpp"
 
 #include <gtest/gtest.h>
 
