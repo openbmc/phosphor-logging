@@ -223,6 +223,18 @@ auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
         }
     }
 
+    if constexpr (USE_BMC_POS_IN_ID)
+    {
+        if (!bmcPosMgr->bmcPosition.has_value())
+        {
+            // In case position is now available check again.
+            bmcPosMgr->init(busLog);
+        }
+
+        // Fold the position into the ID
+        entryId = bmcPosMgr->processEntryId(entryId);
+    }
+
     entryId++;
     if (errLvl >= Entry::sevLowerLimit)
     {
@@ -660,7 +672,8 @@ void Manager::restore()
     for (auto& file : fs::directory_iterator(dir))
     {
         auto id = file.path().filename().c_str();
-        auto idNum = std::stol(id);
+        uint32_t idNum = std::stoul(id);
+
         auto e = std::make_unique<Entry>(
             busLog, std::string(OBJ_ENTRY) + '/' + id, idNum, *this);
         if (deserialize(file.path(), *e))
