@@ -54,3 +54,17 @@ option(
     type: 'string',
     description: 'Path to the event filter JSON file.',
 )
+
+option(
+    'use-bmc-pos-in-id',
+    type: 'boolean',
+    value: false,
+    description: 'If the BMC position should be encoded into the event log ID',
+)
+
+option(
+    'bmc-position-object-path',
+    type: 'string',
+    value: '/xyz/openbmc_project/inventory/system',
+    description: 'When use-bmc-pos-in-id is enabled, used for the object path that has the position decorator interface for the BMC position',
+)
