@@ -73,3 +73,20 @@ TEST(BMCPosMgrTest, ProcessEntryId)
         EXPECT_EQ(mgr.processEntryId(test.id), test.expected);
     }
 }
+
+TEST(BMCPosMgrTest, IdContainsCurrentPosition)
+{
+    BMCPosMgr mgr;
+
+    std::optional<size_t> bmcPos = 0;
+    mgr.setBMCPosition(bmcPos);
+
+    EXPECT_TRUE(mgr.idContainsCurrentPosition(0x00000001));
+    EXPECT_FALSE(mgr.idContainsCurrentPosition(0x01000001));
+
+    bmcPos = std::nullopt;
+    mgr.setBMCPosition(bmcPos);
+
+    EXPECT_TRUE(mgr.idContainsCurrentPosition(0xFF000001));
+    EXPECT_FALSE(mgr.idContainsCurrentPosition(0x01000001));
+}
