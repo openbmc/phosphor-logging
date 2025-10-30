@@ -64,6 +64,14 @@ class BMCPosMgr
      */
     bool isPositionValid() const;
 
+    /**
+     * @brief Returns true if the position encoded in the
+     *        ID passed in contains the current BMC position.
+     *
+     * @param[in] id - The entry ID to check
+     */
+    bool idContainsCurrentPosition(uint32_t id) const;
+
   private:
     /**
      * @brief Sets the position prefix in the entry ID

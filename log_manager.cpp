@@ -229,6 +229,19 @@ auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
         {
             // In case position is now available check again.
             bmcPosMgr->setBMCPosition(busLog);
+
+            if (bmcPosMgr->isPositionValid())
+            {
+                // Find last ID used of this new position.
+                entryId = 0;
+                for (auto id : std::views::keys(entries))
+                {
+                    if (bmcPosMgr->idContainsCurrentPosition(id))
+                    {
+                        entryId = std::max(entryId, id);
+                    }
+                }
+            }
         }
 
         // Fold the position into the ID
@@ -703,9 +716,25 @@ void Manager::restore()
         }
     }
 
-    if (!entries.empty())
+    if constexpr (!USE_BMC_POS_IN_ID)
     {
-        entryId = entries.rbegin()->first;
+        if (!entries.empty())
+        {
+            entryId = entries.rbegin()->first;
+        }
+    }
+    else
+    {
+        // Find the largest ID just from this BMC's entries.
+        entryId = 0;
+        for (auto id : std::views::keys(entries))
+        {
+            if (bmcPosMgr->idContainsCurrentPosition(id))
+            {
+                entryId = std::max(entryId, id);
+            }
+        }
+        lg2::debug("Last entry ID for this BMC is {ID}", "ID", entryId);
     }
 }
 

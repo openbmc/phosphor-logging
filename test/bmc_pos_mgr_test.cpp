@@ -43,3 +43,19 @@ TEST(BMCPosMgrTest, ProcessEntryId)
         EXPECT_EQ(mgr.processEntryId(test.id), test.expected);
     }
 }
+
+TEST(BMCPosMgrTest, IdContainsCurrentPosition)
+{
+    auto bus = sdbusplus::bus::new_default();
+    BMCPosMgr mgr{bus};
+
+    mgr.bmcPosition = 0;
+
+    EXPECT_TRUE(mgr.idContainsCurrentPosition(0x00000001));
+    EXPECT_FALSE(mgr.idContainsCurrentPosition(0x01000001));
+
+    mgr.bmcPosition = 0xFF;
+
+    EXPECT_TRUE(mgr.idContainsCurrentPosition(0xFF000001));
+    EXPECT_FALSE(mgr.idContainsCurrentPosition(0x01000001));
+}

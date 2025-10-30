@@ -90,4 +90,9 @@ void BMCPosMgr::setBMCPosition(sdbusplus::bus_t& bus)
     }
 }
 
+bool BMCPosMgr::idContainsCurrentPosition(uint32_t id) const
+{
+    return (id >> 24) == bmcPosition;
+}
+
 } // namespace phosphor::logging
