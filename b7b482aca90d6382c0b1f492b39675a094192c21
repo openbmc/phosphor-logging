@@ -548,6 +548,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0a41bfb_9daa1737",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-30T13:14:34Z",
+      "side": 1,
+      "message": "I don\u0027t see anything insurmountable here.  There is nothing fixed in stone about the format currently in /var/log/redfish, is there?\n\n\u003e This will result in two different Redfish log formats in the same file, making the content messy. \n\nThis really isn\u0027t hard.  Have new messages prefix with `OPENBMC_MESSAGE_ID` instead of the RedfishMessageId.  Then you know if it is the new-style or the old style.\n\n\u003e Additionally, bmcweb will need to be updated to parse both formats in /var/log/redfish, which would require unnecessary extra effort.\n\nAdditional work is not, to me, a reason to spread details across 3 repositories.",
+      "parentUuid": "d23a0178_20fa1455",
+      "range": {
+        "startLine": 164,
+        "startChar": 58,
+        "endLine": 164,
+        "endChar": 79
+      },
+      "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "26e042bd_2f1ded2c",
