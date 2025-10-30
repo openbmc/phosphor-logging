@@ -108,3 +108,18 @@ TEST(BMCPosMgrTest, ProcessEntryId)
         EXPECT_EQ(mgr.processEntryId(test.id), test.expected);
     }
 }
+
+TEST(BMCPosMgrTest, IdContainsCurrentPosition)
+{
+    PosFile file{0};
+    BMCPosMgr mgr{file.path};
+
+    EXPECT_TRUE(mgr.idContainsCurrentPosition(0x00000001));
+    EXPECT_FALSE(mgr.idContainsCurrentPosition(0x01000001));
+
+    file.write(0xFF);
+    mgr.readBMCPosition();
+
+    EXPECT_TRUE(mgr.idContainsCurrentPosition(0xFF000001));
+    EXPECT_FALSE(mgr.idContainsCurrentPosition(0x01000001));
+}
