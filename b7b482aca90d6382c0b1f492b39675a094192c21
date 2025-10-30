@@ -574,6 +574,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a28d6ebc_7c66023d",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2025-10-30T16:27:42Z",
+      "side": 1,
+      "message": "\u003e I don\u0027t see anything insurmountable here.  There is nothing fixed in stone about the format currently in /var/log/redfish, is there?\n\u003e This really isn\u0027t hard.  Have new messages prefix with `OPENBMC_MESSAGE_ID` instead of the RedfishMessageId.  Then you know if it is the new-style or the old style.\n\nIMO, the format of a data file should be consistent, we should not mix 2 formats.\n\n\u003e Additional work is not, to me, a reason to spread details across 3 repositories.\n\nThis is a solution to avoid missing Redfish events during transitional period. When all applications have switched to using lg2::commit to log events to D-Bus object paths, I believe we can remove this solution. Therefore, spending so much effort parsing both formats in the /var/log/redfish file is not a good choice.\n\n@ed@tanous.net, Could you share your thoughts on mixing two event formats in the /var/log/redfish file and whether bmcweb must support both formats?",
+      "parentUuid": "f0a41bfb_9daa1737",
+      "range": {
+        "startLine": 164,
+        "startChar": 58,
+        "endLine": 164,
+        "endChar": 79
+      },
+      "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "26e042bd_2f1ded2c",
         "filename": "lib/lg2_commit.cpp",
         "patchSetId": 1
