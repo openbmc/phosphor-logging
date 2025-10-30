@@ -500,6 +500,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bbbf6f7_c357ff95",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2025-10-30T02:26:36Z",
+      "side": 1,
+      "message": "The `/var/log/redfish` file is storing Redfish events that follow format `\u003cTimespame\u003e \u003cRedfishMessageId\u003e\u003cRedfishMessageArguments\u003e`. Currently, rsyslog filters structured journal logs that have the keys `REDFISH_MESSAGE_ID` and `REDFISH_MESSAGE_ARGS` then store to `/var/log/redfish` file (You can refer to this example https://github.com/openbmc/openbmc/blob/47982c492d22f2cd4bbb429676c6a2ef0236f291/meta-evb/meta-evb-arm/meta-evb-fvp-base/recipes-extended/rsyslog/rsyslog/rsyslog.conf#L41). However, the `OPENBMC_MESSAGE_ID` record does not have `RedfishMessageId`. Instead, it contains many keys that correspond to argument names, which makes parsing `RedfishMessageArguments` difficult.\n\nIf we want to store whole OPENBMC_MESSAGE_ID record then we have to update rsyslog configuration files of platforms to filter OPENBMC_MESSAGE_ID records. This will result in two different Redfish log formats in the same file, making the content messy. Additionally, bmcweb will need to be updated to parse both formats in `/var/log/redfish`,  which would require unnecessary extra effort.",
+      "parentUuid": "b2c87b32_ffd4be14",
+      "range": {
+        "startLine": 164,
+        "startChar": 58,
+        "endLine": 164,
+        "endChar": 79
+      },
+      "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "26e042bd_2f1ded2c",
