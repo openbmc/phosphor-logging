@@ -83,4 +83,9 @@ void BMCPosMgr::readBMCPosition()
     lg2::info("Found BMC position {POSITION}", "POSITION", bmcPosition);
 }
 
+bool BMCPosMgr::idContainsCurrentPosition(uint32_t id) const
+{
+    return (id >> 24) == bmcPosition;
+}
+
 } // namespace phosphor::logging
