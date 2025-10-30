@@ -119,4 +119,9 @@ void BMCPosMgr::removeNoPosLogs(internal::Manager& logMgr)
     }
 }
 
+bool BMCPosMgr::idContainsCurrentPosition(uint32_t id) const
+{
+    return (id >> 24) == bmcPosition.value_or(noPosition);
+}
+
 } // namespace phosphor::logging
