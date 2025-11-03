@@ -232,6 +232,9 @@ auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
 
             if (bmcPosMgr->isPositionValid())
             {
+                // Remove any existing logs that had no position
+                removeLogsWithNoPosition();
+
                 // Find last ID used of this new position.
                 entryId = 0;
                 for (auto id : std::views::keys(entries))
@@ -687,6 +690,20 @@ void Manager::restore()
         auto id = file.path().filename().c_str();
         uint32_t idNum = std::stoul(id);
 
+        if constexpr (USE_BMC_POS_IN_ID)
+        {
+            if (bmcPosMgr->isPositionValid() &&
+                bmcPosMgr->idHasNoPosition(idNum))
+            {
+                lg2::info(
+                    "Not restoring log {ID} with no BMC position because now there is one",
+                    "ID", idNum);
+                std::error_code ec;
+                std::filesystem::remove(file.path(), ec);
+                continue;
+            }
+        }
+
         auto e = std::make_unique<Entry>(
             busLog, std::string(OBJ_ENTRY) + '/' + id, idNum, *this);
         if (deserialize(file.path(), *e))
@@ -755,6 +772,27 @@ auto Manager::create(const std::string& message, Entry::Level severity,
                      const FFDCEntries& ffdc) -> sdbusplus::message::object_path
 {
     return createEntry(message, severity, additionalData, ffdc);
+}
+
+void Manager::removeLogsWithNoPosition()
+{
+    if constexpr (!USE_BMC_POS_IN_ID)
+    {
+        return;
+    }
+
+    std::vector<uint32_t> ids;
+    std::ranges::for_each(entries, [this, &ids](const auto& entry) {
+        if (bmcPosMgr->idHasNoPosition(entry.first))
+        {
+            ids.push_back(entry.first);
+        }
+    });
+
+    std::ranges::for_each(ids, [this](auto id) {
+        lg2::info("Removing log {ID} that didn't have a position", "ID", id);
+        erase(id);
+    });
 }
 
 } // namespace internal

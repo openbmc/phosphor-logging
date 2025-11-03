@@ -228,6 +228,13 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     void checkAndRemoveBlockingError(uint32_t entryId);
 
+    /**
+     * @brief Removes entries with 'no BMC position' in their IDs.
+     *
+     * Only does anything if the use-bmc-pos-in-id option is enabled.
+     */
+    void removeLogsWithNoPosition();
+
     /** @brief Persistent map of Entry dbus objects and their ID */
     std::map<uint32_t, std::unique_ptr<Entry>> entries;
 
