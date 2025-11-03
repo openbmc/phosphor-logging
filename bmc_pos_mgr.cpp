@@ -36,6 +36,12 @@ void BMCPosMgr::setPrefixInEntryId(uint32_t& id) const
     id |= prefix;
 }
 
+bool BMCPosMgr::idHasNoPosition(uint32_t id) const
+{
+    return (id & ~entryIdValueMask) ==
+           (static_cast<uint32_t>(noPosition) << 24);
+}
+
 void BMCPosMgr::checkEntryIdRollover(uint32_t& id) const
 {
     if ((id & entryIdValueMask) == entryIdValueMask)
