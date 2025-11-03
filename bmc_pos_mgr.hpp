@@ -59,9 +59,20 @@ class BMCPosMgr
     void setBMCPosition(const std::optional<size_t>& bmcPosFromDBus);
 
     /**
+     * @brief Says if the ID passed in has the 'no position' value
+     *        encoded into it.
+     *
+     * @param[in] id - The entry ID
+     *
+     * @return true - If the ID contains 'no position'
+     */
+    bool idHasNoPosition(uint32_t id);
+
+    /**
      * @brief Updates entryID with the current BMC position value
      *        and returns it.
      *
+     * Adds the ID to idsWithNoPosition if there is no position.
      * Rolls over the ID if necessary.
      *
      * @param[in] id - The entry ID
@@ -69,6 +80,24 @@ class BMCPosMgr
      * @return The updated entry ID
      */
     uint32_t processEntryId(uint32_t id);
+
+    /**
+     * @brief Deletes all event logs that have IDs in idsWithNoPosition
+     *        if there is now a position.
+     *
+     * @param[in] logMgr - The Manager object that can erase event logs
+     */
+    void removeNoPosLogs(internal::Manager& logMgr);
+
+    /**
+     * @brief Adds an entry ID with no position to the list
+     *
+     * @param[in] id - The ID to add
+     */
+    inline void addNoPosEntryId(uint32_t id)
+    {
+        idsWithNoPosition.push_back(id);
+    }
 
     /**
      * @brief Returns true if the position encoded in the
@@ -103,6 +132,11 @@ class BMCPosMgr
      * @param[inout] The ID that may be rolled over
      */
     void checkEntryIdRollover(uint32_t& id);
+
+    /**
+     * @brief All event log IDs that have 'no position' in them.
+     */
+    std::vector<uint32_t> idsWithNoPosition;
 };
 
 } // namespace phosphor::logging

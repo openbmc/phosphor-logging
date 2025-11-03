@@ -229,6 +229,11 @@ auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
         {
             // In case position is now available check again.
             bmcPosMgr->init(busLog);
+
+            if (bmcPosMgr->bmcPosition.has_value())
+            {
+                bmcPosMgr->removeNoPosLogs(*this);
+            }
         }
 
         // Fold the position into the ID
@@ -673,6 +678,24 @@ void Manager::restore()
     {
         auto id = file.path().filename().c_str();
         uint32_t idNum = std::stoul(id);
+
+        if constexpr (USE_BMC_POS_IN_ID)
+        {
+            bool noPos = bmcPosMgr->idHasNoPosition(idNum);
+            if (bmcPosMgr->bmcPosition.has_value() && noPos)
+            {
+                lg2::info(
+                    "Not restoring log {ID} with no BMC position because now there is one",
+                    "ID", idNum);
+                std::error_code ec;
+                std::filesystem::remove(file.path(), ec);
+                continue;
+            }
+            else if (noPos)
+            {
+                bmcPosMgr->addNoPosEntryId(idNum);
+            }
+        }
 
         auto e = std::make_unique<Entry>(
             busLog, std::string(OBJ_ENTRY) + '/' + id, idNum, *this);
