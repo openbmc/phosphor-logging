@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "462f8d0d_a13419d1",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-11-03T17:35:51Z",
+      "side": 1,
+      "message": "Does this imply redundant BMC images will be different? Can\u0027t the position be fetched via an EM config?",
+      "revId": "cc9b26e84f32b9963b857dcb82274ef2b65ae03d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
