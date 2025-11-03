@@ -72,6 +72,16 @@ class BMCPosMgr
      */
     bool idContainsCurrentPosition(uint32_t id) const;
 
+    /**
+     * @brief Says if the ID passed in has the 'no position' value
+     *        encoded into it.
+     *
+     * @param[in] id - The entry ID
+     *
+     * @return true - If the ID contains 'no position'
+     */
+    bool idHasNoPosition(uint32_t id) const;
+
   private:
     /**
      * @brief Sets the position prefix in the entry ID

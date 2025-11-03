@@ -518,6 +518,9 @@ specified by the 'bmc-position-object-path' meson option.
 If the position is not on D-Bus, or if the D-Bus property is
 std::numeric_limits<size_t>::max(), then a 0xFF will be encoded as the ID.
 
+After a valid position is obtained, any event logs that had a 0xFF as the ID
+will be erased. This prevents conflicts when syncing the files between BMCs.
+
 This option is enabled automatically in bitbake when the 'redundant-BMC' machine
 feature is enabled. This is done by including 'redundant-bmc.inc' in the
 appropriate system conf file.
