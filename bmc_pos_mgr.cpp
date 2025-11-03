@@ -51,6 +51,11 @@ uint32_t BMCPosMgr::processEntryId(uint32_t id)
     // Roll it over at 0x00FFFFFF
     checkEntryIdRollover(id);
 
+    if (idHasNoPosition(id))
+    {
+        idsWithNoPosition.push_back(id + 1);
+    }
+
     return id;
 }
 
@@ -61,6 +66,11 @@ void BMCPosMgr::setPrefixInEntryId(uint32_t& id)
 
     id &= entryIdValueMask;
     id |= prefix;
+}
+
+bool BMCPosMgr::idHasNoPosition(uint32_t id)
+{
+    return (id & ~entryIdValueMask) == (noPosition << 24);
 }
 
 void BMCPosMgr::checkEntryIdRollover(uint32_t& id)
@@ -91,6 +101,22 @@ std::optional<size_t> BMCPosMgr::getBMCPosition(sdbusplus::bus_t& bus)
     }
 
     return std::nullopt;
+}
+
+void BMCPosMgr::removeNoPosLogs(internal::Manager& logMgr)
+{
+    // If the position is now known, remove any logs created
+    // when there wasn't one.
+    if (!idsWithNoPosition.empty() && bmcPosition.has_value())
+    {
+        std::ranges::for_each(idsWithNoPosition, [&logMgr](auto id) {
+            lg2::info(
+                "Removing log {ID} that didn't have a position because now there is one",
+                "ID", id);
+            logMgr.erase(id);
+        });
+        idsWithNoPosition.clear();
+    }
 }
 
 bool BMCPosMgr::idContainsCurrentPosition(uint32_t id) const
