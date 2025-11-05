@@ -35,8 +35,8 @@ uint32_t commit(const char* name)
     msg.append(id, name);
     auto bus = sdbusplus::bus::new_default();
     auto reply = bus.call(msg);
-    uint32_t entryID;
-    reply.read(entryID);
+    auto entryID = reply.unpack<uint32_t>();
+
     return entryID;
 }
 
@@ -47,8 +47,8 @@ uint32_t commit(const char* name, Entry::Level level)
     msg.append(id, name, static_cast<uint32_t>(level));
     auto bus = sdbusplus::bus::new_default();
     auto reply = bus.call(msg);
-    uint32_t entryID;
-    reply.read(entryID);
+    auto entryID = reply.unpack<uint32_t>();
+
     return entryID;
 }
 } // namespace details
