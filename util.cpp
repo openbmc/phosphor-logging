@@ -106,8 +106,11 @@ void journalSync()
             auto method = bus.new_method_call(SYSTEMD_BUSNAME, SYSTEMD_PATH,
                                               SYSTEMD_INTERFACE, "KillUnit");
             method.append(JOURNAL_UNIT, "main", signal);
-            bus.call(method);
-            if (method.is_method_error())
+            try
+            {
+                bus.call(method);
+            }
+            catch (sdbusplus::exception_t&)
             {
                 lg2::error("Failed to kill journal service");
                 break;
