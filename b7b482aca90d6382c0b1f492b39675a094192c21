@@ -622,6 +622,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "83b737b5_b1ac0889",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-05T22:31:40Z",
+      "side": 1,
+      "message": "I wouldn\u0027t mind hearing Ed\u0027s opinion.",
+      "parentUuid": "4444fb22_285d1c0b",
+      "range": {
+        "startLine": 164,
+        "startChar": 58,
+        "endLine": 164,
+        "endChar": 79
+      },
+      "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "26e042bd_2f1ded2c",
         "filename": "lib/lg2_commit.cpp",
         "patchSetId": 1
