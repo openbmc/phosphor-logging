@@ -268,8 +268,7 @@ DBusPathList DataInterface::getPaths(const DBusInterfaceList& interfaces) const
 
     auto reply = _bus.call(method, dbusTimeout);
 
-    DBusPathList paths;
-    reply.read(paths);
+    auto paths = reply.unpack<DBusPathList>();
 
     return paths;
 }
@@ -285,8 +284,7 @@ DBusService DataInterface::getService(const std::string& objectPath,
 
     auto reply = _bus.call(method, dbusTimeout);
 
-    std::map<DBusService, DBusInterfaceList> response;
-    reply.read(response);
+    auto response = reply.unpack<std::map<DBusService, DBusInterfaceList>>();
 
     if (!response.empty())
     {
@@ -494,8 +492,7 @@ std::string DataInterface::expandLocationCode(const std::string& locationCode,
 
     auto reply = _bus.call(method, dbusTimeout);
 
-    std::string expandedLocationCode;
-    reply.read(expandedLocationCode);
+    auto expandedLocationCode = reply.unpack<std::string>();
 
     if (!connectorLoc.empty())
     {
@@ -532,8 +529,7 @@ std::vector<std::string> DataInterface::getInventoryFromLocCode(
 
     auto reply = _bus.call(method, dbusTimeout);
 
-    std::vector<sdbusplus::message::object_path> entries;
-    reply.read(entries);
+    auto entries = reply.unpack<std::vector<sdbusplus::message::object_path>>();
 
     std::vector<std::string> paths;
 
