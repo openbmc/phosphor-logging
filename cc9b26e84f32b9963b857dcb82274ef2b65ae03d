@@ -34,6 +34,24 @@
       "parentUuid": "462f8d0d_a13419d1",
       "revId": "cc9b26e84f32b9963b857dcb82274ef2b65ae03d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c8c0655_bbb2a258",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2025-11-05T04:59:55Z",
+      "side": 1,
+      "message": "It would be great if we pointed that `redundant-bmc` machine specific feature details here.",
+      "parentUuid": "d0cf2351_47b383a1",
+      "revId": "cc9b26e84f32b9963b857dcb82274ef2b65ae03d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
