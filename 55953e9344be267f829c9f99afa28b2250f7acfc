@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23bd634a_0112e7ac",
+        "filename": "util.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-05T17:29:40Z",
+      "side": 1,
+      "message": "and here.",
+      "revId": "55953e9344be267f829c9f99afa28b2250f7acfc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80c3be00_292f4356",
+        "filename": "util.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-05T17:29:40Z",
+      "side": 1,
+      "message": "I saw several dozen commits just came through everywhere to use unpack() instead of read(), so I should do that here too.",
+      "revId": "55953e9344be267f829c9f99afa28b2250f7acfc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
