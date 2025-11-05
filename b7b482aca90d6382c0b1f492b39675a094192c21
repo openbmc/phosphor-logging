@@ -646,6 +646,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ff88cc29_89058a77",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-11-05T23:04:21Z",
+      "side": 1,
+      "message": "Version-wise, I really don\u0027t care.  It\u0027s \"technically\" a breaking Redfish API change to move the version from 0.1 to 0.5.  Every Redfish client implementation I know of completely ignores the version field when parsing real events, and the compliance tools only verify that the version exists in the registry the instance publishes.  That seems fair if we want to start publishing \"only the latest\" version of each message.  FWIW, we\u0027ve treated the schemas themselves that way for forever, so it\u0027s somewhat expected that version doesn\u0027t matter so long as you ignore keys you don\u0027t understand.\n\nI\u0027ve +1ed the bmcweb review itself.  I didn\u0027t +2 in case this group has more comments or thinks this is ill advised.\n\n\u003e I\u0027d prefer we just do the entire thing in bmcweb like I originally suggested\n\nI\u0027m not sure I understand the difference here.  I think the latest patchset was everything being done in bmcweb?  Or are you saying we should omit the versions entirely in this file?\n\n\n\u003e Therefore, spending so much effort parsing both formats\n\nI don\u0027t care much if we want to parse both formats, so long as there\u0027s a way to correctly parse both formats from a single set of code (arg number differences or something to determine the difference?).  I\u0027m not sure I understand the other format being proposed, but so long as both end up with a correct version, MessageId, Message, and Args in the Redfish https response (which is what users and compliance tools care about) I\u0027m fine with whatever code needs to exist to make that happen.  Where I\u0027ll get worried is if we claim to need to functionally break the user-facing behavior that\u0027s working correctly for the sake of cleaner code.",
+      "parentUuid": "83b737b5_b1ac0889",
+      "range": {
+        "startLine": 164,
+        "startChar": 58,
+        "endLine": 164,
+        "endChar": 79
+      },
+      "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "26e042bd_2f1ded2c",
         "filename": "lib/lg2_commit.cpp",
         "patchSetId": 1

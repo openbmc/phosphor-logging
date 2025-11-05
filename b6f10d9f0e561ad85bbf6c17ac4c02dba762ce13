@@ -34,6 +34,23 @@
       "parentUuid": "95c4717b_14d168dd",
       "revId": "b6f10d9f0e561ad85bbf6c17ac4c02dba762ce13",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a65c8e9_364cab82",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-11-05T23:04:21Z",
+      "side": 1,
+      "message": "I haven\u0027t read this whole review, but the problem has always been that each Redfish logging mechanism supported different features.  MessageId, Eventing, mutable Resolved field, \u003e1000 event storage limit performance, and Redfish registries are the 5 major differences that I knew of.  Any answer I give to \"do we need both\" would need to be rooted in someones (maybe mine, maybe not mine) analysis of the features of each, and understand if we\u0027re dropping any functionality.  If we\u0027re truly not dropping anything, and we have refactoring patches in place to move one implementation to the other, I\u0027m fine here, but every time I\u0027ve looked, each mechanism supported different features.   There\u0027s been people trying to close that gap, which is great!",
+      "revId": "b6f10d9f0e561ad85bbf6c17ac4c02dba762ce13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
