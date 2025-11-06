@@ -670,6 +670,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "416c909a_20754201",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2025-11-06T16:27:51Z",
+      "side": 1,
+      "message": "The new Redfish message format can be `\u003cTimestamp\u003e OPENBMC_MESSAGE_ID,\u003cWhole Message\u003e`.\n- \u003cTimestamp\u003e: The time Redfish event is stored.\n- OPENBMC_MESSAGE_ID: Prefix to indicate the new format.\n- \u003cWhole Message\u003e: Message data in json format. {\u003cEventName\u003e:{\u003cArgs Name\u003e:\u003cArgs Value\u003e: \"_SOURCE\":{\"COLUMN\":\u003c\u003e, \"FILE\":\u003c\u003e,\"FUNCTION\":\u003c\u003e,\"LINE\":\u003c\u003e,\"PID\":\u003c\u003e}}}\n\nE.g: When users use log-create CLI to create an Ampere Event: \n```\nlog-create com.ampere.Event.ReportedSEL.ReportedSELCritical -j \\\n\u0027{\"SOURCE\": \"Test Source\", \"MESSAGE\": \"Test Message\", \"RAW_DATA\": \"Test Data\"}\u0027\n```\nthis event shall be stored in the /var/log/redfish file as \n```\n2025-11-06T16:05:47.129348+00:00 OPENBMC_MESSAGE_ID,{\"com.ampere.Event.ReportedSEL.ReportedSELCritical\":{\"MESSAGE\":\"Test Message\",\"RAW_DATA\":\"Test Data\",\"SOURCE\":\"Test Source\",\"_SOURCE\":{\"COLUMN\":45,\"FILE\":\"../git/log_create_main.cpp\",\"FUNCTION\":\"int generate_event(const std::string\u0026, const nlohmann::json_abi_v3_12_0::json\u0026)\",\"LINE\":34,\"PID\":12764}}}\n```\n\n@patrick@stwcx.xyz, please correct me if the new message format is wrong.",
+      "parentUuid": "ff88cc29_89058a77",
+      "range": {
+        "startLine": 164,
+        "startChar": 58,
+        "endLine": 164,
+        "endChar": 79
+      },
+      "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "26e042bd_2f1ded2c",
         "filename": "lib/lg2_commit.cpp",
         "patchSetId": 1
