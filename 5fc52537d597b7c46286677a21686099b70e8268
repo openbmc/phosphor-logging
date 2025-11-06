@@ -18,6 +18,41 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbf0bbf6_7a16c627",
+        "filename": "bmc_pos_mgr.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-06T20:28:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21960e99_c12baf8e",
+      "revId": "5fc52537d597b7c46286677a21686099b70e8268",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "383f695d_b60332d1",
+        "filename": "bmc_pos_mgr.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-06T20:28:13Z",
+      "side": 1,
+      "message": "not needed",
+      "revId": "5fc52537d597b7c46286677a21686099b70e8268",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f8b8ec88_e3e719bf",
@@ -58,6 +93,48 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b2ffe57_3e2173eb",
+        "filename": "bmc_pos_mgr.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-06T20:28:13Z",
+      "side": 1,
+      "message": "Good point, thanks. Done.\nAlso turns out it simplifies things to not store it as an optional due to some refactoring due to other comments.",
+      "parentUuid": "d9df243f_00976155",
+      "revId": "5fc52537d597b7c46286677a21686099b70e8268",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a69ca98b_37ed9bd4",
+        "filename": "bmc_pos_mgr.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-06T20:28:13Z",
+      "side": 1,
+      "message": "I want to be able to set/get the value for testcases. I could have get/set functions but I think now the thing to do is just leave it public.",
+      "parentUuid": "f8b8ec88_e3e719bf",
+      "range": {
+        "startLine": 41,
+        "startChar": 28,
+        "endLine": 41,
+        "endChar": 39
+      },
+      "revId": "5fc52537d597b7c46286677a21686099b70e8268",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1831df0a_7d1e481a",
@@ -75,6 +152,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96fbebf6_de1203e7",
+        "filename": "bmc_pos_mgr.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-06T20:28:13Z",
+      "side": 1,
+      "message": "Done, though had to add a unit test check into the D-Bus call so that it doesn\u0027t spit out errors every time the class in instantiated.",
+      "parentUuid": "1831df0a_7d1e481a",
+      "revId": "5fc52537d597b7c46286677a21686099b70e8268",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97771bc7_c1315069",
@@ -88,6 +183,30 @@
       "writtenOn": "2025-11-05T03:16:48Z",
       "side": 1,
       "message": "Consider to remove setBMCPosition/getBMCPosition, we can use `bmcPosition` directly inside this class.",
+      "range": {
+        "startLine": 59,
+        "startChar": 9,
+        "endLine": 59,
+        "endChar": 23
+      },
+      "revId": "5fc52537d597b7c46286677a21686099b70e8268",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16941592_231bd5e7",
+        "filename": "bmc_pos_mgr.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-06T20:28:13Z",
+      "side": 1,
+      "message": "Ended up refactoring things a bit based on the comments, so this function behaves a bit differently now.  Would still like to call it from logManager so still needs to be public.  Can continue the  discussion of this in that file if necessary.",
+      "parentUuid": "97771bc7_c1315069",
       "range": {
         "startLine": 59,
         "startChar": 9,
@@ -117,6 +236,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8c91122b_8e0a7654",
+        "filename": "log_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-06T20:28:13Z",
+      "side": 1,
+      "message": "I will look into it.  I am worried that there could be some case where a signal would be missed.  It would also have to watch both InterfacesAdded and PropertiesChanged, which is extra work for something that is only error case for us.",
+      "parentUuid": "c6d49ea3_4bda9538",
+      "revId": "5fc52537d597b7c46286677a21686099b70e8268",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3b8910e8_fe869e6a",
         "filename": "log_manager.hpp",
         "patchSetId": 3
@@ -128,6 +265,24 @@
       "writtenOn": "2025-11-05T06:12:15Z",
       "side": 1,
       "message": "Suggestion: init could called inside `BMCPosMgr` constructor.",
+      "revId": "5fc52537d597b7c46286677a21686099b70e8268",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "674f4081_dccc0c54",
+        "filename": "log_manager.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-06T20:28:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b8910e8_fe869e6a",
       "revId": "5fc52537d597b7c46286677a21686099b70e8268",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -149,6 +304,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50c9c459_dd8484c3",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-06T20:28:13Z",
+      "side": 1,
+      "message": "I followed the bmcweb method of still compiling everything and using the \u0027if constexpr (USE_BMC_POS_IN_ID)\u0027 checks instead of #ifdefs everywhere.  Unless you feel strongly I\u0027d like to keep it.",
+      "parentUuid": "2046f5d3_c9ce41c1",
+      "revId": "5fc52537d597b7c46286677a21686099b70e8268",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c71989cb_42313bd2",
@@ -162,6 +335,41 @@
       "writtenOn": "2025-11-05T06:12:15Z",
       "side": 1,
       "message": "License statement is missing?",
+      "revId": "5fc52537d597b7c46286677a21686099b70e8268",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57550f69_135339c1",
+        "filename": "test/bmc_pos_mgr_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-06T20:28:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c71989cb_42313bd2",
+      "revId": "5fc52537d597b7c46286677a21686099b70e8268",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edefa0db_06312c1e",
+        "filename": "test/openpower-pels/meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-06T20:28:13Z",
+      "side": 1,
+      "message": "hmm, don\u0027t need this anymore.",
       "revId": "5fc52537d597b7c46286677a21686099b70e8268",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
