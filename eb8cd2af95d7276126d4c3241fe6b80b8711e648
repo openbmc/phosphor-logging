@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d168214_dd8a2fad",
+        "filename": "log_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 717,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-06T20:28:13Z",
+      "side": 1,
+      "message": "I would also need to do this up above when the position changes to known.",
+      "revId": "eb8cd2af95d7276126d4c3241fe6b80b8711e648",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
