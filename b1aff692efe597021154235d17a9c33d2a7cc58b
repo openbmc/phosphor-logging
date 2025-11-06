@@ -52,6 +52,24 @@
       "parentUuid": "5f9a3cfd_8db4b6f3",
       "revId": "b1aff692efe597021154235d17a9c33d2a7cc58b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da68b228_ece174ad",
+        "filename": "meson.options",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-06T19:24:37Z",
+      "side": 1,
+      "message": "\u003e Yes, I am not sure whether the defining a object path as argument is allowed or is it ok?\n\nIt\u0027s done in other places, like here: https://github.com/openbmc/phosphor-state-manager/blob/master/meson.options#L18",
+      "parentUuid": "4a323b24_3502a764",
+      "revId": "b1aff692efe597021154235d17a9c33d2a7cc58b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
