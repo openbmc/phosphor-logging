@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db6d9f82_426be490",
+        "filename": "bmc_pos_mgr.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-11-07T14:29:51Z",
+      "side": 1,
+      "message": "Do we have any deadlocks here where phosphor-inventory-manager can\u0027t create logs because we\u0027ll end up calling back into phosphor-inventory-manager, which isn\u0027t listening because it is waiting for the log to be recorded?\n\n(or similar with entity-manager, mapper, etc.)",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 78
+      },
+      "revId": "77714a6eddc5c52308856d166ef39061e2e9117a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cf2205d_7455fee7",
+        "filename": "log_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-11-07T14:29:51Z",
+      "side": 1,
+      "message": "Why put this logic here?  Can\u0027t it be handled in the bmcPosMgr?",
+      "range": {
+        "startLine": 228,
+        "startChar": 0,
+        "endLine": 232,
+        "endChar": 9
+      },
+      "revId": "77714a6eddc5c52308856d166ef39061e2e9117a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
