@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5e76b7dd_56b654f5",
+        "filename": "bmc_pos_mgr.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-10T17:11:39Z",
+      "side": 1,
+      "message": "I don\u0027t see PIM ever creating logs.\nEM though will probably start using lg2 to commit those \u0027inventory added\u0027 logs.\n\nI\u0027m not sure how likely it is that EM would host this Position interface on this object path, but if it did and somehow got far enough along before phosphor-logging started, then I could see this issue:\n1. EM makes lg2::commit call to create \u0027inventory added\u0027 log\n2. D-Bus activation starts phosphor-logging\n3. on startup, phosphor-logging tries to read the BMC position from EM\n4. Deadlock?  Or does the async call that EM uses prevent that?\n\nAny ideas? How bad would it be if we just stored the position in a file as well?  That would simplify this code quite a lot.",
+      "parentUuid": "db6d9f82_426be490",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 78
+      },
+      "revId": "77714a6eddc5c52308856d166ef39061e2e9117a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2cf2205d_7455fee7",
         "filename": "log_manager.cpp",
         "patchSetId": 4
@@ -37,6 +61,30 @@
       "writtenOn": "2025-11-07T14:29:51Z",
       "side": 1,
       "message": "Why put this logic here?  Can\u0027t it be handled in the bmcPosMgr?",
+      "range": {
+        "startLine": 228,
+        "startChar": 0,
+        "endLine": 232,
+        "endChar": 9
+      },
+      "revId": "77714a6eddc5c52308856d166ef39061e2e9117a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7926bc7_2eba44dd",
+        "filename": "log_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-10T17:11:39Z",
+      "side": 1,
+      "message": "Yes, should be possible, will fix.",
+      "parentUuid": "2cf2205d_7455fee7",
       "range": {
         "startLine": 228,
         "startChar": 0,
