@@ -252,6 +252,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35aa4331_c193de27",
+        "filename": "log_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-11T21:36:10Z",
+      "side": 1,
+      "message": "I tried to use both IA and PC signals to get the position if it isn\u0027t available right away, but since Position will be coming from PIM for us, and PIM doesn\u0027t emit signals when it is restoring its cache, then the code will never end up getting a position except for the first boot when it\u0027s added.  So I don\u0027t think I can avoid explicitly making the call.",
+      "parentUuid": "8c91122b_8e0a7654",
+      "revId": "5fc52537d597b7c46286677a21686099b70e8268",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b8910e8_fe869e6a",

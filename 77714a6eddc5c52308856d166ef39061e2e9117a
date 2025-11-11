@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72136d93_c4860f8b",
+        "filename": "bmc_pos_mgr.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-11T21:36:10Z",
+      "side": 1,
+      "message": "Going to resolve this because EM would be my only worry and it would be using async or asio.",
+      "parentUuid": "5e76b7dd_56b654f5",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 78
+      },
+      "revId": "77714a6eddc5c52308856d166ef39061e2e9117a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2cf2205d_7455fee7",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Yes, should be possible, will fix.",
       "parentUuid": "2cf2205d_7455fee7",
+      "range": {
+        "startLine": 228,
+        "startChar": 0,
+        "endLine": 232,
+        "endChar": 9
+      },
+      "revId": "77714a6eddc5c52308856d166ef39061e2e9117a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "813674bf_97e93524",
+        "filename": "log_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-11T21:36:10Z",
+      "side": 1,
+      "message": "With the other commits also adding function into this leg: https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/84858/4/log_manager.cpp#228  it makes it harder to push things into the BmcPosMgr since this class will be doing things.\n\nSo I will resolve this but am open to any better solutions.",
+      "parentUuid": "e7926bc7_2eba44dd",
       "range": {
         "startLine": 228,
         "startChar": 0,
