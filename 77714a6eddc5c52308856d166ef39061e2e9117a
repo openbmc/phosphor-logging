@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "64fd7157_89e20fbd",
+        "filename": "bmc_pos_mgr.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-11T22:07:45Z",
+      "side": 1,
+      "message": "Since EM would after all be using the sync version of commit, I think a deadlock would be possible. I\u0027ll explore getting the position into a file in /run/openbmc/",
+      "parentUuid": "72136d93_c4860f8b",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 78
+      },
+      "revId": "77714a6eddc5c52308856d166ef39061e2e9117a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2cf2205d_7455fee7",
         "filename": "log_manager.cpp",
         "patchSetId": 4
