@@ -52,6 +52,24 @@
       "parentUuid": "9f08cc36_1302daba",
       "revId": "0d4589208fb63bedd9bcc89c369d200f3baea9b5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5eb9534_d1149e08",
+        "filename": "meson.options",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-12T19:28:08Z",
+      "side": 1,
+      "message": "I can remove it now that the position is just being read from a file.",
+      "parentUuid": "faf8cd11_cd969eca",
+      "revId": "0d4589208fb63bedd9bcc89c369d200f3baea9b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
