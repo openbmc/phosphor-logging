@@ -73,6 +73,24 @@
       "message": "I don\u0027t think I need to actually track these.",
       "revId": "e6c4cbdc4576ea7efaba9b085224228cf6fb93c2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac978a30_4031da5f",
+        "filename": "bmc_pos_mgr.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-12T19:28:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5884517_ed8df5a5",
+      "revId": "e6c4cbdc4576ea7efaba9b085224228cf6fb93c2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
