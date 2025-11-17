@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44d63bc4_7349dc4a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002739
+      },
+      "writtenOn": "2025-11-17T16:04:48Z",
+      "side": 1,
+      "message": "CI failed in docker base image build (dpkg error).  \nUnrelated to the patch. Please re-run CI.",
+      "revId": "cbe1ab6e40736d03493e24e0c68fb4dfa19240c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
