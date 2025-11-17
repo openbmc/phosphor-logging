@@ -12,6 +12,7 @@ project(
     ],
     version: '1.0.0',
 )
+
 cpp = meson.get_compiler('cpp')
 
 python_prog = find_program('python3', native: true)
