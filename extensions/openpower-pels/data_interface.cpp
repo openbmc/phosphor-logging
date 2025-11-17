@@ -986,7 +986,7 @@ void DataInterface::inventoryIfaceAdded(sdbusplus::message_t& msg)
     auto itemIt = interfaces.find(interface::invItem);
     if (itemIt != interfaces.end())
     {
-        notifyPresenceSubsribers(path.str, itemIt->second);
+        notifyPresenceSubscribers(path.str, itemIt->second);
     }
 }
 
@@ -1002,11 +1002,11 @@ void DataInterface::presenceChanged(sdbusplus::message_t& msg)
     }
 
     std::string path = msg.get_path();
-    notifyPresenceSubsribers(path, properties);
+    notifyPresenceSubscribers(path, properties);
 }
 
-void DataInterface::notifyPresenceSubsribers(const std::string& path,
-                                             const DBusPropertyMap& properties)
+void DataInterface::notifyPresenceSubscribers(const std::string& path,
+                                              const DBusPropertyMap& properties)
 {
     auto prop = properties.find("Present");
     if ((prop == properties.end()) || (!std::get<bool>(prop->second)))

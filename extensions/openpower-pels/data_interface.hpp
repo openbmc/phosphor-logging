@@ -1012,8 +1012,8 @@ class DataInterface : public DataInterfaceBase
      * @param[in] path - The object path of the inventory item.
      * @param[in] properties - The properties map
      */
-    void notifyPresenceSubsribers(const std::string& path,
-                                  const DBusPropertyMap& properties);
+    void notifyPresenceSubscribers(const std::string& path,
+                                   const DBusPropertyMap& properties);
 
     /**
      * @brief Adds the Ufcs- prefix to the location code passed in
