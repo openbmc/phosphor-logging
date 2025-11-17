@@ -12,6 +12,17 @@ project(
     ],
     version: '1.0.0',
 )
+if clang_tidy.found()
+    cpp_check = ['clang-tidy', '--quiet']
+    cxx = meson.get_compiler('cpp')
+    cxx.cmd_array()  # get compiler cmd
+
+    add_project_arguments(['-DCLANG_TIDY'], language: 'cpp')
+    foreach t : targets
+        t.add_postconf_command(clang_tidy, t.full_path())
+    endforeach
+endif
+
 cpp = meson.get_compiler('cpp')
 
 python_prog = find_program('python3', native: true)
