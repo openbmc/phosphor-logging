@@ -21,10 +21,12 @@ using ::testing::NiceMock;
 using ::testing::Return;
 using json = nlohmann::json;
 
+using Level = phosphor::logging::Entry::Level;
+
 class TestLogger
 {
   public:
-    void log(const std::string& name, phosphor::logging::Entry::Level level,
+    void log(const std::string& name, Level level,
              const EventLogger::ADMap& additionalData)
     {
         errName = name;
@@ -33,7 +35,7 @@ class TestLogger
     }
 
     std::string errName;
-    phosphor::logging::Entry::Level errLevel;
+    Level errLevel;
     EventLogger::ADMap ad;
 };
 
@@ -128,11 +130,9 @@ TEST_F(ManagerTest, TestCreateWithPEL)
 
     std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
 
-    openpower::pels::Manager manager{
-        logManager, std::move(dataIface),
-        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3),
-        std::move(journal)};
+    Manager manager{logManager, std::move(dataIface),
+                    std::bind_front(&TestLogger::log, &logger),
+                    std::move(journal)};
 
     // Create a PEL, write it to a file, and pass that filename into
     // the create function.
@@ -147,8 +147,7 @@ TEST_F(ManagerTest, TestCreateWithPEL)
         {"RAWPEL", pelFilename.string()}};
     std::vector<std::string> associations;
 
-    manager.create("error message", 42, 0,
-                   phosphor::logging::Entry::Level::Error, additionalData,
+    manager.create("error message", 42, 0, Level::Error, additionalData,
                    associations);
 
     // Find the file in the PEL repository directory
@@ -171,11 +170,9 @@ TEST_F(ManagerTest, TestCreateWithInvalidPEL)
 
     std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
 
-    openpower::pels::Manager manager{
-        logManager, std::move(dataIface),
-        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3),
-        std::move(journal)};
+    Manager manager{logManager, std::move(dataIface),
+                    std::bind_front(&TestLogger::log, &logger),
+                    std::move(journal)};
 
     // Create a PEL, write it to a file, and pass that filename into
     // the create function.
@@ -193,8 +190,7 @@ TEST_F(ManagerTest, TestCreateWithInvalidPEL)
         {"RAWPEL", pelFilename.string()}};
     std::vector<std::string> associations;
 
-    manager.create("error message", 42, 0,
-                   phosphor::logging::Entry::Level::Error, additionalData,
+    manager.create("error message", 42, 0, Level::Error, additionalData,
                    associations);
 
     // Run the event loop to log the bad PEL event
@@ -203,7 +199,7 @@ TEST_F(ManagerTest, TestCreateWithInvalidPEL)
 
     PEL invalidPEL{data};
     EXPECT_EQ(logger.errName, "org.open_power.Logging.Error.BadHostPEL");
-    EXPECT_EQ(logger.errLevel, phosphor::logging::Entry::Level::Error);
+    EXPECT_EQ(logger.errLevel, Level::Error);
     EXPECT_EQ(std::stoi(logger.ad["PLID"], nullptr, 16), invalidPEL.plid());
     EXPECT_EQ(logger.ad["OBMC_LOG_ID"], "42");
     EXPECT_EQ(logger.ad["SRC"], (*invalidPEL.primarySRC())->asciiString());
@@ -273,19 +269,16 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
 
     std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
 
-    openpower::pels::Manager manager{
-        logManager, std::move(dataIface),
-        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3),
-        std::move(journal)};
+    Manager manager{logManager, std::move(dataIface),
+                    std::bind_front(&TestLogger::log, &logger),
+                    std::move(journal)};
 
     std::map<std::string, std::string> additionalData{{"FOO", "BAR"}};
     std::vector<std::string> associations;
 
     // Create the event log to create the PEL from.
-    manager.create("xyz.openbmc_project.Error.Test", 33, 0,
-                   phosphor::logging::Entry::Level::Error, additionalData,
-                   associations);
+    manager.create("xyz.openbmc_project.Error.Test", 33, 0, Level::Error,
+                   additionalData, associations);
 
     // Ensure a PEL was created in the repository
     auto pelFile = findAnyPELInRepo();
@@ -316,9 +309,8 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
     // Create an event log that can't be found in the registry.
     // In this case, xyz.openbmc_project.Logging.Error.Default will
     // be used as the key instead to find a registry match.
-    manager.create("xyz.openbmc_project.Error.Foo", 42, 0,
-                   phosphor::logging::Entry::Level::Error, additionalData,
-                   associations);
+    manager.create("xyz.openbmc_project.Error.Foo", 42, 0, Level::Error,
+                   additionalData, associations);
 
     // Ensure a PEL was still created in the repository
     pelFile = findAnyPELInRepo();
@@ -381,11 +373,9 @@ TEST_F(ManagerTest, TestDBusMethods)
 
     std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
 
-    Manager manager{
-        logManager, std::move(dataIface),
-        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3),
-        std::move(journal)};
+    Manager manager{logManager, std::move(dataIface),
+                    std::bind_front(&TestLogger::log, &logger),
+                    std::move(journal)};
 
     // Create a PEL, write it to a file, and pass that filename into
     // the create function so there's one in the repo.
@@ -400,8 +390,7 @@ TEST_F(ManagerTest, TestDBusMethods)
         {"RAWPEL", pelFilename.string()}};
     std::vector<std::string> associations;
 
-    manager.create("error message", 42, 0,
-                   phosphor::logging::Entry::Level::Error, additionalData,
+    manager.create("error message", 42, 0, Level::Error, additionalData,
                    associations);
 
     // getPELFromOBMCID
@@ -605,18 +594,15 @@ TEST_F(ManagerTest, TestCreateWithESEL)
 
     std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
 
-    openpower::pels::Manager manager{
-        logManager, std::move(dataIface),
-        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3),
-        std::move(journal)};
+    Manager manager{logManager, std::move(dataIface),
+                    std::bind_front(&TestLogger::log, &logger),
+                    std::move(journal)};
 
     {
         std::map<std::string, std::string> additionalData{{"ESEL", esel}};
         std::vector<std::string> associations;
 
-        manager.create("error message", 37, 0,
-                       phosphor::logging::Entry::Level::Error, additionalData,
+        manager.create("error message", 37, 0, Level::Error, additionalData,
                        associations);
 
         auto data = manager.getPELFromOBMCID(37);
@@ -634,8 +620,7 @@ TEST_F(ManagerTest, TestCreateWithESEL)
         std::map<std::string, std::string> additionalData{{"ESEL", adItem}};
         std::vector<std::string> associations;
 
-        manager.create("error message", 38, 0,
-                       phosphor::logging::Entry::Level::Error, additionalData,
+        manager.create("error message", 38, 0, Level::Error, additionalData,
                        associations);
 
         EXPECT_THROW(
@@ -647,7 +632,7 @@ TEST_F(ManagerTest, TestCreateWithESEL)
         e.run(std::chrono::milliseconds(1));
 
         EXPECT_EQ(logger.errName, "org.open_power.Logging.Error.BadHostPEL");
-        EXPECT_EQ(logger.errLevel, phosphor::logging::Entry::Level::Error);
+        EXPECT_EQ(logger.errLevel, Level::Error);
     }
 }
 
@@ -661,11 +646,9 @@ TEST_F(ManagerTest, TestPruning)
 
     std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
 
-    openpower::pels::Manager manager{
-        logManager, std::move(dataIface),
-        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3),
-        std::move(journal)};
+    Manager manager{logManager, std::move(dataIface),
+                    std::bind_front(&TestLogger::log, &logger),
+                    std::move(journal)};
 
     // Create 25 1000B (4096B on disk each, which is what is used for
     // pruning) BMC non-informational PELs in the 100KB repository.  After
@@ -687,8 +670,7 @@ TEST_F(ManagerTest, TestPruning)
             {"RAWPEL", pelFilename.string()}};
         std::vector<std::string> associations;
 
-        manager.create("error message", 42, 0,
-                       phosphor::logging::Entry::Level::Error, additionalData,
+        manager.create("error message", 42, 0, Level::Error, additionalData,
                        associations);
 
         // Simulate the code getting back to the event loop
@@ -736,11 +718,9 @@ TEST_F(ManagerTest, TestPELManualDelete)
 
     std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
 
-    openpower::pels::Manager manager{
-        logManager, std::move(dataIface),
-        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3),
-        std::move(journal)};
+    Manager manager{logManager, std::move(dataIface),
+                    std::bind_front(&TestLogger::log, &logger),
+                    std::move(journal)};
 
     auto data = pelDataFactory(TestPELType::pelSimple);
     auto dir = makeTempDir();
@@ -758,8 +738,7 @@ TEST_F(ManagerTest, TestPELManualDelete)
         pelFile.write(reinterpret_cast<const char*>(data.data()), data.size());
         pelFile.close();
 
-        manager.create("error message", 42, 0,
-                       phosphor::logging::Entry::Level::Error, additionalData,
+        manager.create("error message", 42, 0, Level::Error, additionalData,
                        associations);
 
         // Sanity check this ID is really there so we can test
@@ -813,11 +792,9 @@ TEST_F(ManagerTest, TestPELManualDeleteAll)
 
     std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
 
-    openpower::pels::Manager manager{
-        logManager, std::move(dataIface),
-        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3),
-        std::move(journal)};
+    Manager manager{logManager, std::move(dataIface),
+                    std::bind_front(&TestLogger::log, &logger),
+                    std::move(journal)};
 
     auto data = pelDataFactory(TestPELType::pelSimple);
     auto dir = makeTempDir();
@@ -835,8 +812,7 @@ TEST_F(ManagerTest, TestPELManualDeleteAll)
         pelFile.write(reinterpret_cast<const char*>(data.data()), data.size());
         pelFile.close();
 
-        manager.create("error message", 42, 0,
-                       phosphor::logging::Entry::Level::Error, additionalData,
+        manager.create("error message", 42, 0, Level::Error, additionalData,
                        associations);
 
         // Sanity check this ID is really there so we can test
@@ -885,11 +861,9 @@ TEST_F(ManagerTest, TestServiceIndicators)
 
     std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
 
-    openpower::pels::Manager manager{
-        logManager, std::move(dataIface),
-        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3),
-        std::move(journal)};
+    Manager manager{logManager, std::move(dataIface),
+                    std::bind_front(&TestLogger::log, &logger),
+                    std::move(journal)};
 
     // Add a PEL with a callout as if hostboot added it
     {
@@ -913,8 +887,7 @@ TEST_F(ManagerTest, TestServiceIndicators)
             {"RAWPEL", pelFilename.string()}};
         std::vector<std::string> associations;
 
-        manager.create("error message", 42, 0,
-                       phosphor::logging::Entry::Level::Error, additionalData,
+        manager.create("error message", 42, 0, Level::Error, additionalData,
                        associations);
     }
 
@@ -981,9 +954,8 @@ TEST_F(ManagerTest, TestServiceIndicators)
         std::map<std::string, std::string> additionalData;
         std::vector<std::string> associations;
 
-        manager.create("xyz.openbmc_project.Error.Test", 42, 0,
-                       phosphor::logging::Entry::Level::Error, additionalData,
-                       associations);
+        manager.create("xyz.openbmc_project.Error.Test", 42, 0, Level::Error,
+                       additionalData, associations);
     }
 }
 
@@ -998,11 +970,9 @@ TEST_F(ManagerTest, TestDuplicatePEL)
 
     std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
 
-    openpower::pels::Manager manager{
-        logManager, std::move(dataIface),
-        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3),
-        std::move(journal)};
+    Manager manager{logManager, std::move(dataIface),
+                    std::bind_front(&TestLogger::log, &logger),
+                    std::move(journal)};
 
     for (int i = 0; i < 2; i++)
     {
@@ -1018,8 +988,7 @@ TEST_F(ManagerTest, TestDuplicatePEL)
             {"RAWPEL", pelFilename.string()}};
         std::vector<std::string> associations;
 
-        manager.create("error message", 42, 0,
-                       phosphor::logging::Entry::Level::Error, additionalData,
+        manager.create("error message", 42, 0, Level::Error, additionalData,
                        associations);
 
         e.run(std::chrono::milliseconds(1));
@@ -1079,19 +1048,16 @@ TEST_F(ManagerTest, TestTerminateBitWithPELSevCriticalSysTerminate)
 
     std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
 
-    openpower::pels::Manager manager{
-        logManager, std::move(dataIface),
-        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3),
-        std::move(journal)};
+    Manager manager{logManager, std::move(dataIface),
+                    std::bind_front(&TestLogger::log, &logger),
+                    std::move(journal)};
 
     std::map<std::string, std::string> additionalData{{"FOO", "BAR"}};
     std::vector<std::string> associations;
 
     // Create the event log to create the PEL from.
-    manager.create("xyz.openbmc_project.Error.Test", 33, 0,
-                   phosphor::logging::Entry::Level::Error, additionalData,
-                   associations);
+    manager.create("xyz.openbmc_project.Error.Test", 33, 0, Level::Error,
+                   additionalData, associations);
 
     // Ensure a PEL was created in the repository
     auto pelData = findAnyPELInRepo();
@@ -1182,11 +1148,9 @@ TEST_F(ManagerTest, TestFruPlug)
 
     std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
 
-    openpower::pels::Manager manager{
-        logManager, std::move(dataIface),
-        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3),
-        std::move(journal)};
+    Manager manager{logManager, std::move(dataIface),
+                    std::bind_front(&TestLogger::log, &logger),
+                    std::move(journal)};
 
     std::map<std::string, std::string> additionalData;
     std::vector<std::string> associations;
@@ -1204,9 +1168,8 @@ TEST_F(ManagerTest, TestFruPlug)
                   deconfigured);
     };
 
-    manager.create("xyz.openbmc_project.Fan.Error.Fault", 42, 0,
-                   phosphor::logging::Entry::Level::Error, additionalData,
-                   associations);
+    manager.create("xyz.openbmc_project.Fan.Error.Fault", 42, 0, Level::Error,
+                   additionalData, associations);
     checkDeconfigured(true);
 
     // Replace A3 so PEL deconfigured flag should be set to false
@@ -1217,9 +1180,8 @@ TEST_F(ManagerTest, TestFruPlug)
 
     // Create it again and replace a FRU not in the callout list.
     // Deconfig flag should stay on.
-    manager.create("xyz.openbmc_project.Fan.Error.Fault", 43, 0,
-                   phosphor::logging::Entry::Level::Error, additionalData,
-                   associations);
+    manager.create("xyz.openbmc_project.Fan.Error.Fault", 43, 0, Level::Error,
+                   additionalData, associations);
     checkDeconfigured(true);
     mockIface->fruPresent("U1234-A4");
     checkDeconfigured(true);
@@ -1329,11 +1291,9 @@ TEST_F(ManagerTest, TestPELDeleteWithoutHWIsolation)
         .WillRepeatedly(Return(std::vector<std::string>{}));
 
     std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
-    openpower::pels::Manager manager{
-        logManager, std::move(dataIface),
-        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3),
-        std::move(journal)};
+    Manager manager{logManager, std::move(dataIface),
+                    std::bind_front(&TestLogger::log, &logger),
+                    std::move(journal)};
     std::map<std::string, std::string> additionalData;
     std::vector<std::string> associations;
 
@@ -1342,9 +1302,8 @@ TEST_F(ManagerTest, TestPELDeleteWithoutHWIsolation)
         EXPECT_FALSE(manager.isDeleteProhibited(42));
     }
     // creating without ffdcEntries
-    manager.create("xyz.openbmc_project.Error.Test", 42, 0,
-                   phosphor::logging::Entry::Level::Error, additionalData,
-                   associations);
+    manager.create("xyz.openbmc_project.Error.Test", 42, 0, Level::Error,
+                   additionalData, associations);
     auto pelFile = findAnyPELInRepo();
     auto data = readPELFile(*pelFile);
     PEL pel_unguarded(*data);
@@ -1364,9 +1323,8 @@ TEST_F(ManagerTest, TestPELDeleteWithoutHWIsolation)
     uint8_t version = 0x01;
     phosphor::logging::FFDCEntries ffdcEntries;
     appendFFDCEntry(fd, subTypeJson, version, ffdcEntries);
-    manager.create("xyz.openbmc_project.Error.Test", 42, 0,
-                   phosphor::logging::Entry::Level::Error, additionalData,
-                   associations, ffdcEntries);
+    manager.create("xyz.openbmc_project.Error.Test", 42, 0, Level::Error,
+                   additionalData, associations, ffdcEntries);
     close(fd);
     std::filesystem::remove(calloutFile);
 
@@ -1433,11 +1391,9 @@ TEST_F(ManagerTest, TestPELDeleteWithHWIsolation)
             "/xyz/openbmc_project/hardware_isolation/entry/1"}));
 
     std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
-    openpower::pels::Manager manager{
-        logManager, std::move(dataIface),
-        std::bind(std::mem_fn(&TestLogger::log), &logger, std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3),
-        std::move(journal)};
+    Manager manager{logManager, std::move(dataIface),
+                    std::bind_front(&TestLogger::log, &logger),
+                    std::move(journal)};
     std::map<std::string, std::string> additionalData;
     std::vector<std::string> associations;
 
@@ -1447,9 +1403,8 @@ TEST_F(ManagerTest, TestPELDeleteWithHWIsolation)
     uint8_t version = 0x01;
     phosphor::logging::FFDCEntries ffdcEntries;
     appendFFDCEntry(fd, subTypeJson, version, ffdcEntries);
-    manager.create("xyz.openbmc_project.Error.Test", 42, 0,
-                   phosphor::logging::Entry::Level::Error, additionalData,
-                   associations, ffdcEntries);
+    manager.create("xyz.openbmc_project.Error.Test", 42, 0, Level::Error,
+                   additionalData, associations, ffdcEntries);
     close(fd);
     std::filesystem::remove(calloutFile);
 
