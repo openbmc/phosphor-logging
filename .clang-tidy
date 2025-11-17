@@ -1,0 +1,15 @@
+Checks: >
+  clang-analyzer-*,
+  bugprone-*,
+  modernize-*,
+  readability-*,
+  performance-*,
+  portability-*,
+  cppcoreguidelines-*,
+  misc-*,
+  -cppcoreguidelines-owning-memory,
+  -cppcoreguidelines-pro-type-reinterpret-cast
+
+WarningsAsErrors: '*'
+FormatStyle: file
+HeaderFilterRegex: '.*'
