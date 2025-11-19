@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdf098a2_ca355cb7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-11-19T13:49:07Z",
+      "side": 1,
+      "message": "Are you just using gerrit to run clang-tidy for you each time?  Because I\u0027ve tried this before and due to some conditional includes this will just never work without a .clang-ignore file.   So maybe try getting it work in your local CI first?",
+      "revId": "5af383766f07fc8fbb909323f9e3729145a6a6c8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
