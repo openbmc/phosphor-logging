@@ -694,6 +694,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d765f985_241f6abc",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2025-11-19T07:09:15Z",
+      "side": 1,
+      "message": "Do you have any comments about new format? \nShould we accept this format or create old format in lg2::commit method?",
+      "parentUuid": "416c909a_20754201",
+      "range": {
+        "startLine": 164,
+        "startChar": 58,
+        "endLine": 164,
+        "endChar": 79
+      },
+      "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "26e042bd_2f1ded2c",
         "filename": "lib/lg2_commit.cpp",
         "patchSetId": 1
