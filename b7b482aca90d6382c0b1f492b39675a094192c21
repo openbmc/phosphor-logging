@@ -718,6 +718,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dfacdd7d_515de140",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2025-12-01T16:51:25Z",
+      "side": 1,
+      "message": "@patrick@stwcx.xyz, Do you have any comment about new Redfish message format?",
+      "parentUuid": "d765f985_241f6abc",
+      "range": {
+        "startLine": 164,
+        "startChar": 58,
+        "endLine": 164,
+        "endChar": 79
+      },
+      "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "26e042bd_2f1ded2c",
         "filename": "lib/lg2_commit.cpp",
         "patchSetId": 1
