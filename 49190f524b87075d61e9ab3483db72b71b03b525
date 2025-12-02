@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30aa7fe1_0942bbce",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-12-02T05:16:23Z",
+      "side": 1,
+      "message": "You didn\u0027t actually add one though?  There is no `.clang-tidy` in this commit.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 23
+      },
+      "revId": "49190f524b87075d61e9ab3483db72b71b03b525",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37e44d76_9b2da9f1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-12-02T05:16:23Z",
+      "side": 1,
+      "message": "I don\u0027t see anything wrong with the changes being proposed, but it is really hard to figure out how these changes are related to the clang-tidy checks being listed here.  It looks like this is switching everything from read -\u003e unpack, which is a legitimate change, but can we document it that way instead?",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 59
+      },
+      "revId": "49190f524b87075d61e9ab3483db72b71b03b525",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
