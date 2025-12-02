@@ -766,6 +766,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "09396772_18d37427",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2025-12-02T16:29:35Z",
+      "side": 1,
+      "message": "In the new record format, we have two tasks to parse this record into a Redfish message:\n1. Map `EventName` to `Redfish Message ID`.\n2. Parse Argruments\u0027s values.\n\nI noticed that in the patch https://gerrit.openbmc.org/c/openbmc/bmcweb/+/78481/18, it is trying to do 2 above tasks (data from Dbus object path). However, it seems this patch is no longer maintained by its owner. We will need to add some similar patches to convert data from record to Redfish message, which could make some implicit issues in bmcweb.\n\nIn my solution, it made small changes to the sdbusplus and phosphor-logging,making it easier to review. Additionally, we don\u0027t have to update the `rsyslog.conf` files in platfroms to collect `OPENBMC_MESSAGE_ID` records. IMO, my solution is better suited to prevent missing Redfish events during the transitional period as we move to using lg2::commit method to log Redfish events.\n\nCould you share your thoughts about 2 solutions @patrick@stwcx.xyz @ed@tanous.net @spinler@us.ibm.com?",
+      "parentUuid": "7e58c80c_6f569c11",
+      "range": {
+        "startLine": 164,
+        "startChar": 58,
+        "endLine": 164,
+        "endChar": 79
+      },
+      "revId": "b7b482aca90d6382c0b1f492b39675a094192c21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "26e042bd_2f1ded2c",
         "filename": "lib/lg2_commit.cpp",
         "patchSetId": 1
