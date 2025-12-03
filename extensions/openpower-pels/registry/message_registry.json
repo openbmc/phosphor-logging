@@ -6734,6 +6734,159 @@
                     "the additional user data section."
                 ]
             }
+        },
+        {
+            "Name": "xyz.openbmc_project.RBMC_DataSync.Error.SyncFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x7000",
+
+            "SRC": {
+                "ReasonCode": "0x7001",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "BMC0002"
+                        }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "A failure of the issued sync has occurred",
+                "Message": "Failure occurred while syncing the data in a path in data sync",
+                "Notes": [
+                    "The severity is set by the creator",
+                    "Traces of Data Sync and stunnel is captured"
+                ]
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-rbmc-data-sync-mgr",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "stunnel",
+                        "NumLines": 15
+                    }
+                ]
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.RBMC_DataSync.Error.SyncEventsFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x7000",
+
+            "SRC": {
+                "ReasonCode": "0x7002",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "BMC0002"
+                        }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "This is used when there is an error associated with setting up sync events",
+                "Message": "Failure to create watcher or set the sync event for a path",
+                "Notes": [
+                    "The severity is set by the creator",
+                    "Traces of Data Sync is captured"
+                ]
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-rbmc-data-sync-mgr",
+                        "NumLines": 15
+                    }
+                ]
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.RBMC_DataSync.Error.ParserFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x7000",
+
+            "SRC": {
+                "ReasonCode": "0x7003",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "BMC0002"
+                        }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "This is used when there is an error associated with parsing configuration",
+                "Message": "Unable to parse the datasync JSON configuration file as expected",
+                "Notes": [
+                    "The severity is set by the creator",
+                    "Traces of Data Sync is captured"
+                ]
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-rbmc-data-sync-mgr",
+                        "NumLines": 15
+                    }
+                ]
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.RBMC_DataSync.Error.NotifyFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x7000",
+
+            "SRC": {
+                "ReasonCode": "0x7004",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "This is an error log associated with Notify Requests and Services provided by data sync",
+                "Message": "Failure occurred in the Notification service/request after the data was synced",
+                "Notes": [
+                    "The severity is set by the creator",
+                    "Traces of Data Sync and stunnel is captured"
+                ]
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-rbmc-data-sync-mgr",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "stunnel",
+                        "NumLines": 15
+                    }
+                ]
+            }
         }
     ]
 }
