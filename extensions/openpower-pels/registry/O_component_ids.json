@@ -14,6 +14,7 @@
     "4500": "bmc POZ PEL parser",
     "5000": "bmc panel",
     "6000": "bmc pldm",
+    "7000": "bmc datasync",
     "C100": "bmc system dump collector",
     "C200": "bmc dump collector",
     "D100": "bmc hw diags attention handler",
