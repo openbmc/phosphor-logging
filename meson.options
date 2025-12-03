@@ -54,3 +54,6 @@ option(
     type: 'string',
     description: 'Path to the event filter JSON file.',
 )
+
+option('debug-monitor', type: 'feature', value: 'enabled',
+       description: 'Enable systemd debug state file monitor service')
