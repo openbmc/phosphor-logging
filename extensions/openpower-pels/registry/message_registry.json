@@ -6734,6 +6734,38 @@
                     "the additional user data section."
                 ]
             }
+        },
+        {
+            "Name": "xyz.openbmc_project.RBMC_DataSync.Error.SyncFailure",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x7000",
+
+            "SRC": {
+                "ReasonCode": "0x7001",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Failure occurred during data sync",
+                "Message": "Failure occurred during data sync",
+                "Notes": [
+                    "Debug traces of phosphor-rbmc-manager and stunnel will be captured if necessary in AdditionalData section",
+                    "Severity needs to be set by the application."
+                ]
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-rbmc-data-sync-mgr",
+                        "NumLines": 10
+                    },
+                    {
+                        "SyslogID": "stunnel",
+                        "NumLines": 5
+                    }
+                ]
+            }
         }
     ]
 }
