@@ -16,6 +16,12 @@
 #include <utility>
 #include <vector>
 
+/** Check if systemd debug is enabled */
+static bool is_systemd_debug_enabled()
+{
+    return access("/run/systemd-debug-enabled", F_OK) == 0;
+}
+
 namespace lg2::details
 {
 /** Convert unsigned to string using format flags. */
@@ -241,7 +247,10 @@ static auto extra_output_method =
 
 // Skip sending debug messages to journald if "DEBUG_INVOCATION" is not set
 // per systemd.exec manpage.
-static auto send_debug_to_journal = nullptr != getenv("DEBUG_INVOCATION");
+static auto send_debug_to_journal = []() {
+    const char* debug_invocation = getenv("DEBUG_INVOCATION");
+    return (debug_invocation == nullptr || strcmp(debug_invocation, "0") != 0);
+}();
 
 // Do_log implementation.
 void do_log(level l, const std::source_location& s, const char* m, ...)
@@ -329,7 +338,8 @@ void do_log(level l, const std::source_location& s, const char* m, ...)
     });
 
     // Output the iovec.
-    if (send_debug_to_journal || l != level::debug)
+    if (l != level::debug ||
+        (send_debug_to_journal && is_systemd_debug_enabled()))
     {
         sd_journal_sendv(iov.data(), strings.size());
     }

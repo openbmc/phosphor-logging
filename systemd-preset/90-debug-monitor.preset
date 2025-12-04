@@ -1,0 +1,2 @@
+# Enable debug-monitor service by default
+enable debug-monitor.service
