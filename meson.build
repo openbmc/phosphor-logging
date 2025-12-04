@@ -149,6 +149,11 @@ log_manager_ext_args = []
 subdir('extensions')
 subdir('phosphor-rsyslog-config')
 
+# Add debug-monitor if enabled
+if get_option('debug-monitor').enabled()
+    subdir('debug-monitor')
+endif
+
 # Generate daemon.
 log_manager_sources = [
     generated_sources,

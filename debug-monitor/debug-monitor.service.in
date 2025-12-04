@@ -1,0 +1,16 @@
+[Unit]
+Description=SystemD Debug State File Monitor for phosphor-logging
+After=dbus.service
+Wants=dbus.service
+
+[Service]
+Type=simple
+ExecStart=@bindir@/debug-monitor
+Restart=always
+RestartSec=5
+User=root
+RuntimeDirectory=debug-monitor
+RuntimeDirectoryMode=0755
+
+[Install]
+WantedBy=multi-user.target
