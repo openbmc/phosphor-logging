@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "47881295_f3299c04",
+        "filename": ".clang-tidy",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1002739
+      },
+      "writtenOn": "2025-12-05T14:59:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff0c324f_fe1c14db",
+      "revId": "cbe1ab6e40736d03493e24e0c68fb4dfa19240c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cac73a39_3ced20e3",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-11-18T05:02:28Z",
       "side": 1,
       "message": "Nit : Better follow the format something like\n\nclang-tidy: Initial commit\n\nAdded initial .clang-tidy configuration file with recommended C++ checks aligned with the OpenBMC-approved checklist.",
+      "revId": "cbe1ab6e40736d03493e24e0c68fb4dfa19240c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90be855b_ec4b0fba",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002739
+      },
+      "writtenOn": "2025-12-05T14:59:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cac73a39_3ced20e3",
       "revId": "cbe1ab6e40736d03493e24e0c68fb4dfa19240c5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
