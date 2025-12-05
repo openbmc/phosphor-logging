@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e9101a3_26d09fef",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 6765,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2025-12-05T05:37:16Z",
+      "side": 1,
+      "message": "is it ok to use `15` for both sections?",
+      "revId": "183d94c5a4785d472199d5e9d5db1380d628c539",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
