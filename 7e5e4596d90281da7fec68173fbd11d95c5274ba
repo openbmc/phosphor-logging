@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ac068b3_13ee2ec0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002739
+      },
+      "writtenOn": "2025-12-05T14:57:11Z",
+      "side": 1,
+      "message": "@patrick@stwcx.xyz\nThanks for the feedback.\n\nThe .clang-tidy file was unintentionally left out; I will add it in the\nnext patchset.\n\nI will also update the commit message to explicitly document the\nread() → unpack() changes and reference how they address the\nbugprone-unchecked-optional-access check.\nThe next patchset will include both fixes.",
+      "revId": "7e5e4596d90281da7fec68173fbd11d95c5274ba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
