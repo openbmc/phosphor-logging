@@ -16,6 +16,24 @@
       "message": "All non-informational PELs need callouts so that service personnel know what to do when they see the error to resolve it.  They can either be hardcoded in this file, or if it\u0027s a piece of hardware it can be passed in.\n\nWhat would a callout even be in this case?",
       "revId": "d4ae9270752ae947e35d90ae1b0ef7013e645b95",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11ff4ed8_1c15c11b",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 6742,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2025-12-09T13:48:56Z",
+      "side": 1,
+      "message": "We are planning to have a Procedure callout BMC0002 for this scenario to save dump data and call next level of support for assistance.",
+      "parentUuid": "e5f3e50f_14534837",
+      "revId": "d4ae9270752ae947e35d90ae1b0ef7013e645b95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
