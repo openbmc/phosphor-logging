@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cfc4e2c_7c789c38",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 6803,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-12-10T16:49:50Z",
+      "side": 1,
+      "message": "Could you remove the periods from the end of any Description or Message entries that have them? (i really need to update the validate script to check for that)",
+      "range": {
+        "startLine": 6803,
+        "startChar": 106,
+        "endLine": 6803,
+        "endChar": 107
+      },
+      "revId": "045a08d1f6c6c2ae16a199d7c7fef7e499269c33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40235008_ee783aa4",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 6870,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-12-10T16:49:50Z",
+      "side": 1,
+      "message": "Maybe remove the mention of it being informational since if the code creating it ever changes to pass in an Error severity this would be wrong.",
+      "range": {
+        "startLine": 6870,
+        "startChar": 32,
+        "endLine": 6870,
+        "endChar": 67
+      },
+      "revId": "045a08d1f6c6c2ae16a199d7c7fef7e499269c33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
