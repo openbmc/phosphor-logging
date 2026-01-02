@@ -628,35 +628,35 @@ std::optional<std::string> SRC::getCallouts() const
             {
                 jsonInsert(printOut, "Location Code", entry->locationCode(), 3);
             }
-            if (entry->fruIdentity()->getPN().has_value())
+
+            auto pn = entry->fruIdentity()->getPN();
+            if (pn.has_value())
             {
-                jsonInsert(printOut, "Part Number",
-                           entry->fruIdentity()->getPN().value(), 3);
+                jsonInsert(printOut, "Part Number", pn.value(), 3);
             }
-            if (entry->fruIdentity()->getMaintProc().has_value())
+
+            auto proc = entry->fruIdentity()->getMaintProc();
+            if (proc.has_value())
             {
-                jsonInsert(printOut, "Procedure",
-                           entry->fruIdentity()->getMaintProc().value(), 3);
-                if (pv::procedureDesc.find(
-                        entry->fruIdentity()->getMaintProc().value()) !=
+                jsonInsert(printOut, "Procedure", proc.value(), 3);
+                if (pv::procedureDesc.find(proc.value()) !=
                     pv::procedureDesc.end())
                 {
-                    jsonInsert(
-                        printOut, "Description",
-                        pv::procedureDesc.at(
-                            entry->fruIdentity()->getMaintProc().value()),
-                        3);
+                    jsonInsert(printOut, "Description",
+                               pv::procedureDesc.at(proc.value()), 3);
                 }
             }
-            if (entry->fruIdentity()->getCCIN().has_value())
+
+            auto ccin = entry->fruIdentity()->getCCIN();
+            if (ccin.has_value())
             {
-                jsonInsert(printOut, "CCIN",
-                           entry->fruIdentity()->getCCIN().value(), 3);
+                jsonInsert(printOut, "CCIN", ccin.value(), 3);
             }
-            if (entry->fruIdentity()->getSN().has_value())
+
+            auto sn = entry->fruIdentity()->getSN();
+            if (sn.has_value())
             {
-                jsonInsert(printOut, "Serial Number",
-                           entry->fruIdentity()->getSN().value(), 3);
+                jsonInsert(printOut, "Serial Number", sn.value(), 3);
             }
         }
         if (entry->pceIdentity())
