@@ -222,6 +222,11 @@ void PLDMInterface::registerReceiveCallback()
 
 void PLDMInterface::doSend()
 {
+    if (!_instanceID.has_value())
+    {
+        throw std::runtime_error{"No instance ID in PLDMInterface::doSend"};
+    }
+
     std::array<uint8_t, sizeof(pldm_msg_hdr) + sizeof(pelFileType) +
                             sizeof(_pelID) + sizeof(uint64_t)>
         requestMsg;
