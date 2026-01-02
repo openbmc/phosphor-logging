@@ -120,7 +120,7 @@ std::optional<std::string> getPythonJSON(std::vector<std::string>& hexwords,
         std::string("srcparsers." + module + "." + module).c_str());
     std::unique_ptr<PyObject, decltype(&pyDecRef)> modNamePtr(pName, &pyDecRef);
     pModule = PyImport_Import(pName);
-    if (pModule == NULL)
+    if (pModule == nullptr)
     {
         pErrStr = "No error string found";
         PyErr_Fetch(&eType, &eValue, &eTraceback);

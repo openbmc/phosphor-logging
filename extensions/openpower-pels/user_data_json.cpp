@@ -252,7 +252,7 @@ std::optional<std::string> getPythonJSON(
         std::string("udparsers." + module + "." + module).c_str());
     std::unique_ptr<PyObject, decltype(&pyDecRef)> modNamePtr(pName, &pyDecRef);
     pModule = PyImport_Import(pName);
-    if (pModule == NULL)
+    if (pModule == nullptr)
     {
         pErrStr = "No error string found";
         PyErr_Fetch(&eType, &eValue, &eTraceback);
