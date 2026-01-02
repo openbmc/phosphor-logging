@@ -34,22 +34,6 @@ const uint8_t critSysTermSeverity = 0x51;
 using PELFunc = std::function<void(const PEL&, bool hexDump)>;
 message::Registry registry(getPELReadOnlyDataPath() / message::registryFileName,
                            false);
-namespace service
-{
-constexpr auto logging = "xyz.openbmc_project.Logging";
-} // namespace service
-
-namespace interface
-{
-constexpr auto deleteObj = "xyz.openbmc_project.Object.Delete";
-constexpr auto deleteAll = "xyz.openbmc_project.Collection.DeleteAll";
-} // namespace interface
-
-namespace object_path
-{
-constexpr auto logEntry = "/xyz/openbmc_project/logging/entry/";
-constexpr auto logging = "/xyz/openbmc_project/logging";
-} // namespace object_path
 
 std::string pelLogDir()
 {
