@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fe90478_af7cbaf7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-01-05T21:41:43Z",
+      "side": 1,
+      "message": "This isn\u0027t obvious to me why this is a good design decision.  It\u0027s better to lose an event than to potentially have duplicate ones?  That\u0027s counter-intuitive.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 60
+      },
+      "revId": "23ec3c3b3406be853dfcb544ab7625b688422972",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
