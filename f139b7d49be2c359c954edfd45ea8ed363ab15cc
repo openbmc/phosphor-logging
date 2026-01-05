@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c16e492_aa41c059",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-01-05T21:39:48Z",
+      "side": 1,
+      "message": "[\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d] Running 3 tests from 1 test suite.\n[----------] Global test environment set-up.\n[----------] 3 tests from TestLogManagerDbus\n[ RUN      ] TestLogManagerDbus.GenerateSimpleEvent\n[       OK ] TestLogManagerDbus.GenerateSimpleEvent (5 ms)\n[ RUN      ] TestLogManagerDbus.CallCommitSync\n[       OK ] TestLogManagerDbus.CallCommitSync (10 ms)\n[ RUN      ] TestLogManagerDbus.CallCommitAsync\n\u001b[1;36mstderr:\u001b[0m\nterminate called after throwing an instance of \u0027sdbusplus::exception::SdBusError\u0027\n  what():  method: org.freedesktop.DBus.Error.Spawn.ExecFailed: Failed to execute program xyz.openbmc_project.Logging: Permission denied\n  \n I guess I will retrigger.",
+      "revId": "f139b7d49be2c359c954edfd45ea8ed363ab15cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
