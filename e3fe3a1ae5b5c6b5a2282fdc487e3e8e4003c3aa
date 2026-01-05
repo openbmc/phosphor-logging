@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "627fef82_2047b4b6",
+        "filename": "log_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-01-05T21:12:53Z",
+      "side": 1,
+      "message": "Other commits add more log_manager functionality into this path so it can\u0027t be all done inside processEntryId (unless I pass logManager in).\n1. removing old logs with no position if there is now a position (a new log manager function)\n2. setting entryId so that it picks the next one after the last log with the current BMC position. (looks at the entries map)\n\nhttps://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/84858/6/log_manager.cpp#226 shows the full code",
+      "parentUuid": "42d755b9_9797f094",
+      "range": {
+        "startLine": 228,
+        "startChar": 0,
+        "endLine": 232,
+        "endChar": 9
+      },
+      "revId": "e3fe3a1ae5b5c6b5a2282fdc487e3e8e4003c3aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "1c9994f6_a9108126",
