@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "42d755b9_9797f094",
+        "filename": "log_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-01-05T20:34:26Z",
+      "side": 1,
+      "message": "Why make this a public API?  Can\u0027t `processEntryId` do this internally?  It seems like a better encapsulation to have it all done in the BmcPosMgr.",
+      "range": {
+        "startLine": 228,
+        "startChar": 0,
+        "endLine": 232,
+        "endChar": 9
+      },
+      "revId": "e3fe3a1ae5b5c6b5a2282fdc487e3e8e4003c3aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "1c9994f6_a9108126",
@@ -14,6 +37,24 @@
       "writtenOn": "2026-01-05T17:09:28Z",
       "side": 1,
       "message": "Not sure yet why CI didn\u0027t catch this, but it\u0027s needed since this test uses log_manager.",
+      "revId": "e3fe3a1ae5b5c6b5a2282fdc487e3e8e4003c3aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c51716a_d415ec4c",
+        "filename": "test/openpower-pels/meson.build",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-01-05T20:34:26Z",
+      "side": 1,
+      "message": "Due to meson option defaulting to false?",
+      "parentUuid": "1c9994f6_a9108126",
       "revId": "e3fe3a1ae5b5c6b5a2282fdc487e3e8e4003c3aa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
