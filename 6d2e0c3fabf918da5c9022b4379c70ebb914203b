@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7f09910_d0c2025a",
+        "filename": "meson.options",
+        "patchSetId": 5
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-01-05T20:33:32Z",
+      "side": 1,
+      "message": "We should probably default to true?",
+      "revId": "6d2e0c3fabf918da5c9022b4379c70ebb914203b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
