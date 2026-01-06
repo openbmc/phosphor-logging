@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6581d9da_81c4b2ee",
+        "filename": "README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-01-06T20:45:13Z",
+      "side": 1,
+      "message": "redundant-bmc",
+      "range": {
+        "startLine": 519,
+        "startChar": 68,
+        "endLine": 519,
+        "endChar": 71
+      },
+      "revId": "df0b036118611f52c3dee56c72955a6403cc2e65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
