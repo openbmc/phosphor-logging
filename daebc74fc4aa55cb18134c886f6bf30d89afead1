@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "757bc063_653d7baf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-01-06T20:57:30Z",
+      "side": 1,
+      "message": "rebased these to pick up the clang-tidy enablement.",
+      "revId": "daebc74fc4aa55cb18134c886f6bf30d89afead1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
