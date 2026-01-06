@@ -22,6 +22,30 @@
       },
       "revId": "23ec3c3b3406be853dfcb544ab7625b688422972",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88f5b95b_ef600956",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-01-06T20:43:36Z",
+      "side": 1,
+      "message": "They\u0027re duplicate until we sync the files across BMCs, and then one of them gets overwritten, which also ends up causing us problems with PELs.\n\nThat being said, we don\u0027t have the sync code running on logs yet, so I don\u0027t mind abandoning this one at least for now until we have better testing on how it works in practice.",
+      "parentUuid": "1fe90478_af7cbaf7",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 60
+      },
+      "revId": "23ec3c3b3406be853dfcb544ab7625b688422972",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
