@@ -965,6 +965,15 @@ class DataInterface : public DataInterfaceBase
     DBusPathList getPaths(const DBusInterfaceList& interfaces) const;
 
     /**
+     * @brief Wrapper for the mapper's GetSubTree
+     *
+     * @param[in] interfaces - The desired interfaces
+     *
+     * @return The D-Bus paths.
+     */
+    DBusSubTree getSubTree(const DBusInterfaceList& interfaces) const;
+
+    /**
      * @brief The interfacesAdded callback used on the inventory to
      *        find the D-Bus object that has the motherboard interface.
      *        When the motherboard is found, it then adds a PropertyWatcher
