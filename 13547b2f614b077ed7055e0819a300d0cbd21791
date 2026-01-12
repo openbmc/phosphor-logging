@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4359d5b_5a208aa5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002129
+      },
+      "writtenOn": "2026-01-12T06:55:23Z",
+      "side": 1,
+      "message": "Hi @patrick@stwcx.xyz, this change implements part of the design document discussed earlier (https://gerrit.openbmc.org/c/openbmc/docs/+/84016).\nWhen you have time, could you please take a look and share your feedback? Thanks!",
+      "revId": "13547b2f614b077ed7055e0819a300d0cbd21791",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
