@@ -273,6 +273,17 @@ DBusPathList DataInterface::getPaths(const DBusInterfaceList& interfaces) const
     return paths;
 }
 
+DBusSubTree DataInterface::getSubTree(const DBusInterfaceList& interfaces) const
+{
+    auto method = _bus.new_method_call(service_name::objectMapper,
+                                       object_path::objectMapper,
+                                       interface::objectMapper, "GetSubTree");
+    method.append(std::string{"/"}, 0, interfaces);
+    auto reply = _bus.call(method, dbusTimeout);
+
+    return reply.unpack<DBusSubTree>();
+}
+
 DBusService DataInterface::getService(const std::string& objectPath,
                                       const std::string& interface) const
 {
@@ -397,20 +408,30 @@ std::string DataInterface::getMotherboardCCIN() const
 
 std::vector<uint8_t> DataInterface::getSystemIMKeyword() const
 {
-    std::vector<uint8_t> systemIM;
+    static std::vector<uint8_t> systemIM;
+
+    if (!systemIM.empty())
+    {
+        return systemIM;
+    }
 
     try
     {
-        auto service =
-            getService(object_path::motherBoardInv, interface::vsbpRecordVPD);
-        if (!service.empty())
-        {
-            DBusValue value;
-            getProperty(service, object_path::motherBoardInv,
-                        interface::vsbpRecordVPD, "IM", value);
+        auto subtree = getSubTree({interface::vsbpRecordVPD});
 
-            systemIM = std::get<std::vector<uint8_t>>(value);
+        if (subtree.empty())
+        {
+            lg2::warning("No VSBP VPD interface found");
+            return systemIM;
         }
+
+        DBusValue imValue;
+        const auto& path = subtree.begin()->first;
+        const auto& interfaceMap = subtree.begin()->second;
+        const auto& service = interfaceMap.begin()->first;
+        getProperty(service, path, interface::vsbpRecordVPD, "IM", imValue);
+
+        systemIM = std::get<std::vector<uint8_t>>(imValue);
     }
     catch (const std::exception& e)
     {
@@ -608,17 +629,8 @@ void DataInterface::setCriticalAssociation(const std::string& objectPath) const
 
 std::vector<std::string> DataInterface::getSystemNames() const
 {
-    DBusSubTree subtree;
-    DBusValue names;
+    auto subtree = getSubTree({interface::compatible});
 
-    auto method = _bus.new_method_call(service_name::objectMapper,
-                                       object_path::objectMapper,
-                                       interface::objectMapper, "GetSubTree");
-    method.append(std::string{"/"}, 0,
-                  std::vector<std::string>{interface::compatible});
-    auto reply = _bus.call(method, dbusTimeout);
-
-    reply.read(subtree);
     if (subtree.empty())
     {
         throw std::runtime_error("Compatible interface not on D-Bus");
@@ -631,6 +643,8 @@ std::vector<std::string> DataInterface::getSystemNames() const
         {
             continue;
         }
+
+        DBusValue names;
 
         getProperty(iface->first, path, interface::compatible, "Names", names);
 
