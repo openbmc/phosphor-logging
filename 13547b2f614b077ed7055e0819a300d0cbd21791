@@ -67,6 +67,23 @@
       "message": "whats wrong with ofstream?",
       "revId": "13547b2f614b077ed7055e0819a300d0cbd21791",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03f4e81b_52d2ef18",
+        "filename": "debug-monitor/debug-monitor.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2026-01-15T18:07:35Z",
+      "side": 1,
+      "message": "seems like we should be using RAII here, which I believe sdbusplus gets us. In any case, if thats not usable for som reason consider just wrapping this in an raii class like (similar to GSL\u0027s final_action https://github.com/microsoft/GSL/blob/main/include/gsl/util#L98C1-L99C1:\n\n\ntemplate\u003ctypename FunctorCleanup\u003e\nclass OnScopeExit {\npublic:\n    OnScopeExit() \u003d delete;\n    explicit OnScopeExit(FunctorCleanup \u0026\u0026f) : f{f} {}\n    ~OnScopeExit(){\n        f();\n    }\n    OnScopeExit\u0026 operator\u003d(const OnScopeExit\u0026) \u003d delete;\n    OnScopeExit(const OnscopeExit\u0026) \u003d delete;\n    OnScopeExit(OnScopeExit\u0026\u0026) \u003d delete;\n    OnScopeExit\u0026 operator\u003d(OnSecopeExit\u0026\u0026) \u003d delete;\nprivate:\n    FunctorCleanup f; \n};\n\ntemplate \u003ctypename F\u003e\nauto makeOnscopeExit\u003cF\u003e(F \u0026\u0026f)\n{\n    return OnScopeExit\u003cF\u003e(std::forward(f));\n}\n\nint run()\n{\n    auto cleanup \u003d makeOnscopeExit(\u003cyour existing lambda\u003e);\n}\n\nthat said, please just use the existing RAII handlers if possible.",
+      "revId": "13547b2f614b077ed7055e0819a300d0cbd21791",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
