@@ -16,6 +16,57 @@
       "message": "Hi @patrick@stwcx.xyz, this change implements part of the design document discussed earlier (https://gerrit.openbmc.org/c/openbmc/docs/+/84016).\nWhen you have time, could you please take a look and share your feedback? Thanks!",
       "revId": "13547b2f614b077ed7055e0819a300d0cbd21791",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2f6d4da_66c0c6e0",
+        "filename": "debug-monitor/debug-monitor.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2026-01-15T17:58:08Z",
+      "side": 1,
+      "message": "whats wrong with std::chrono::duration?",
+      "revId": "13547b2f614b077ed7055e0819a300d0cbd21791",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "836839a0_0570df45",
+        "filename": "debug-monitor/debug-monitor.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2026-01-15T17:58:08Z",
+      "side": 1,
+      "message": "whats wrong with sdbusplus here? Why are we using the raw bindings?",
+      "revId": "13547b2f614b077ed7055e0819a300d0cbd21791",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "179d6dfd_88c3f233",
+        "filename": "debug-monitor/debug-monitor.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2026-01-15T17:58:08Z",
+      "side": 1,
+      "message": "whats wrong with ofstream?",
+      "revId": "13547b2f614b077ed7055e0819a300d0cbd21791",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
