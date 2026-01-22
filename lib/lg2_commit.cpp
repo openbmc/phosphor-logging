@@ -114,11 +114,12 @@ auto extractEvent(sdbusplus::exception::generated_event_base&& t)
 
 } // namespace details
 
-auto commit(sdbusplus::exception::generated_event_base&& t)
-    -> sdbusplus::message::object_path
+auto commit(sdbusplus::exception::generated_event_base&& t,
+            std::optional<int> overrideLevel) -> sdbusplus::message::object_path
 {
+    int severity = overrideLevel.value_or(t.severity());
     // Check event filters first.
-    if ((t.severity() == LOG_INFO) && details::filterEvent(t.name()))
+    if ((severity == LOG_INFO) && details::filterEvent(t.name()))
     {
         return {};
     }
@@ -141,7 +142,7 @@ auto commit(sdbusplus::exception::generated_event_base&& t)
             b.new_method_call(Create::default_service, Create::instance_path,
                               Create::interface, "Create");
 
-        m.append(t.name(), details::severity_from_syslog(t.severity()),
+        m.append(t.name(), details::severity_from_syslog(severity),
                  details::data_from_json(t));
 
         auto reply = b.call(m);
@@ -167,10 +168,12 @@ void resolve(const sdbusplus::message::object_path& logPath)
 }
 
 auto commit(sdbusplus::async::context& ctx,
-            sdbusplus::exception::generated_event_base&& t)
+            sdbusplus::exception::generated_event_base&& t,
+            std::optional<int> overrideLevel)
     -> sdbusplus::async::task<sdbusplus::message::object_path>
 {
     using details::Create;
+    int severity = overrideLevel.value_or(t.severity());
 
     if constexpr (LG2_COMMIT_JOURNAL)
     {
@@ -182,7 +185,7 @@ auto commit(sdbusplus::async::context& ctx,
         co_return co_await Create(ctx)
             .service(Create::default_service)
             .path(Create::instance_path)
-            .create(t.name(), details::severity_from_syslog(t.severity()),
+            .create(t.name(), details::severity_from_syslog(severity),
                     details::data_from_json(t));
     }
     co_return {};
