@@ -36,7 +36,7 @@ def order_inherited_errors(i_errors, i_parents):
         while len(errors) < len(i_errors):
             for error in i_errors:
                 if error in errors:
-                    # already ordererd
+                    # already ordered
                     continue
                 if (not i_parents[error]) or (i_parents[error] in errors):
                     # parent present, or has no parent, either way this error
@@ -324,7 +324,7 @@ def main(i_args):
         help="Base directory of files to process",
     )
 
-    (options, args) = parser.parse_args(i_args)
+    options, args = parser.parse_args(i_args)
 
     gen_elog_hpp(
         options.yamldir,
