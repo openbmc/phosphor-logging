@@ -79,6 +79,14 @@ log-entry can be resolved with the helper `lg2::resolve` fuction.
 lg2::resolve(logPath);
 ```
 
+Services may override the default assigned severity of the event by providing
+the optional parameter:
+```cpp
+#include <syslog.h>
+lg2::commit(sdbusplus::event::xyz::openbmc_project::Logging::Cleared(
+    "NUMBER_OF_LOGS", count), LOG_CRIT);
+```
+
 ### Event Log Filtering
 
 Vendors customizing phosphor-logging for their platforms may decide that they
