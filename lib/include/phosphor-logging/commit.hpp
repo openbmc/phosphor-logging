@@ -3,6 +3,8 @@
 #include <sdbusplus/async.hpp>
 #include <sdbusplus/exception.hpp>
 
+#include <optional>
+
 namespace lg2
 {
 /** Commit a generated event/error.
@@ -13,7 +15,8 @@ namespace lg2
  *  Note: Similar to elog(), this will use the default dbus connection to
  *  perform the operation.
  */
-auto commit(sdbusplus::exception::generated_event_base&& e)
+auto commit(sdbusplus::exception::generated_event_base&& e,
+            std::optional<int> overrideLevel = std::nullopt)
     -> sdbusplus::message::object_path;
 
 /** Resolve an existing event/error.
@@ -33,7 +36,8 @@ void resolve(const sdbusplus::message::object_path& logPath);
  *  @return The object path of the resulting event.
  */
 auto commit(sdbusplus::async::context& ctx,
-            sdbusplus::exception::generated_event_base&& e)
+            sdbusplus::exception::generated_event_base&& e,
+            std::optional<int> overrideLevel = std::nullopt)
     -> sdbusplus::async::task<sdbusplus::message::object_path>;
 
 /** Resolve an existing event/error (using async context).
