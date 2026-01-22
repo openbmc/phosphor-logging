@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a8534be_7c50f525",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-01-22T21:09:00Z",
+      "side": 1,
+      "message": "This s",
+      "revId": "6659be645a07ef6e14fd84b8e5ae15a4de4ef3d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28d6ab97_cd0c9eaf",
+        "filename": "callouts/callouts.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-01-22T21:09:00Z",
+      "side": 1,
+      "message": "This seems to me like a pointless move of a single line.  What motivated this change?\n\nIt doesn\u0027t seem that this has any real effect on the behavior of the application.",
+      "revId": "6659be645a07ef6e14fd84b8e5ae15a4de4ef3d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
