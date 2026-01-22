@@ -19,7 +19,8 @@ void list_all()
     }
 }
 
-int generate_event(const std::string& eventId, const nlohmann::json& data)
+int generate_event(const std::string& eventId, const nlohmann::json& data,
+                   std::optional<int> severity)
 {
     if (eventId.empty())
     {
@@ -35,7 +36,7 @@ int generate_event(const std::string& eventId, const nlohmann::json& data)
     }
     catch (sdbusplus::exception::generated_event_base& e)
     {
-        auto path = lg2::commit(std::move(e));
+        auto path = lg2::commit(std::move(e), severity);
         std::cout << path.str << std::endl;
         return 0;
     }
@@ -47,10 +48,20 @@ int generate_event(const std::string& eventId, const nlohmann::json& data)
 int main(int argc, char** argv)
 {
     CLI::App app{"log-create"};
+    std::map<std::string, int> syslogMap = {
+        {"DEBUG", LOG_DEBUG},     {"INFO", LOG_INFO},  {"NOTICE", LOG_NOTICE},
+        {"WARNING", LOG_WARNING}, {"ERR", LOG_ERR},    {"CRIT", LOG_CRIT},
+        {"ALERT", LOG_ALERT},     {"EMERG", LOG_EMERG}};
 
     std::string jsonStr;
     app.add_option("-j,--json", jsonStr, "Event data as a JSON object")
         ->default_val("{}");
+
+    std::optional<int> severity;
+    app.add_option(
+           "-s,--severity", severity,
+           "Syslog severity (Overrides the one specified by the message registry")
+        ->transform(CLI::CheckedTransformer(syslogMap, CLI::ignore_case));
 
     std::string event{};
     auto event_option = app.add_option("event", event, "Event name");
@@ -67,5 +78,5 @@ int main(int argc, char** argv)
         return 0;
     }
 
-    return generate_event(event, nlohmann::json::parse(jsonStr));
+    return generate_event(event, nlohmann::json::parse(jsonStr), severity);
 }
