@@ -7,6 +7,8 @@ from mako.template import Template
 
 import yaml
 
+script_dir = os.path.dirname(os.path.realpath(__file__))
+
 
 def main():
     parser = argparse.ArgumentParser(description="Callout code generator")
@@ -39,5 +41,4 @@ def main():
 
 
 if __name__ == "__main__":
-    script_dir = os.path.dirname(os.path.realpath(__file__))
     main()
