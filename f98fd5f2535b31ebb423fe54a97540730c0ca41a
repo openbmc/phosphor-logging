@@ -18,6 +18,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5186351d_c0435b19",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-01-23T16:34:38Z",
+      "side": 1,
+      "message": "Can you add an example of to the \u0027Creating event logs in code\u0027 section in the readme?",
+      "revId": "f98fd5f2535b31ebb423fe54a97540730c0ca41a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21e0d8e9_c933a429",
