@@ -324,7 +324,7 @@ def main(i_args):
         help="Base directory of files to process",
     )
 
-    (options, args) = parser.parse_args(i_args)
+    options, args = parser.parse_args(i_args)
 
     gen_elog_hpp(
         options.yamldir,
