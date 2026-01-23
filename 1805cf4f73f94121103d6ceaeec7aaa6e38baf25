@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "121900e8_f79300d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-01-23T16:06:41Z",
+      "side": 1,
+      "message": "\u003e Black fails the typo-only patchset; added parse_args formatting here so CI passes. Formatting-only changes 86916/86917 will be abandoned.\n\nThat\u0027s probably because you had the commits in the wrong order.",
+      "revId": "1805cf4f73f94121103d6ceaeec7aaa6e38baf25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
