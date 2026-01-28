@@ -5,6 +5,7 @@ executable(
     '../elog_meta.cpp',
     '../util.cpp',
     elog_process_gen,
+    callouts_gen,
     include_directories: include_directories('..'),
     dependencies: [
         conf_h_dep,

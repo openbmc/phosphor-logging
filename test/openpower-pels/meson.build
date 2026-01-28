@@ -30,6 +30,7 @@ openpower_pels = {
             '../../log_manager.cpp',
             elog_lookup_gen,
             elog_process_gen,
+            callouts_gen,
             generated_sources,
             log_manager_ext_sources,
         ],
