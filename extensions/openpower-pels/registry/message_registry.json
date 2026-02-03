@@ -3905,6 +3905,190 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Power.ChassisPowerMissing",
+            "Subsystem": "input_power_source",
+            "ActionFlags": ["service_action", "report", "call_home"],
+            "ComponentID": "0x2700",
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x74F0",
+                "Words6To9": {}
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "BMC0009"
+                        }
+                    ]
+                }
+            ],
+            "Documentation": {
+                "Description": "Chassis input power is missing",
+                "Message": "Chassis input power is missing",
+                "Notes": [
+                    "Some nodes on the system may not have power.",
+                    "There is at least one BMC that has full system power."
+                ]
+            },
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    }
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Power.BMC.Reset.ChassisPreviouslyLostPower",
+            "Subsystem": "input_power_source",
+            "ActionFlags": ["service_action", "report", "call_home"],
+            "ComponentID": "0x2700",
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x74F1",
+                "Words6To9": {}
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "BMC0009"
+                        }
+                    ]
+                }
+            ],
+            "Documentation": {
+                "Description": "Chassis previously lost input power causing BMC reset.",
+                "Message": "Chassis input power is missing.",
+                "Notes": [
+                    "At least one node has a latched input power fault, which caused the BMC to get reset.",
+                    "This PEL is used to leave a clue as to which node caused the reset.."
+                ]
+            },
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    }
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Power.Chassis.PresentDetection.Incorrect",
+            "Subsystem": "input_power_source",
+            "ActionFlags": ["service_action", "report", "call_home"],
+            "ComponentID": "0x2700",
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x88E0",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "BMC0004"
+                        }
+                    ]
+                }
+            ],
+            "Documentation": {
+                "Description": "Chassis present detection is incorrect.",
+                "Message": "Chassis present detection is incorrect",
+                "Notes": [
+                    "Callout fsi cables, then Barton loc code, the Comal code."
+                ]
+            },
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    }
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Power.Chassis.Missing.ShouldBePresent",
+            "Subsystem": "input_power_source",
+            "ActionFlags": ["service_action", "report", "call_home"],
+            "ComponentID": "0x2700",
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x88F0",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "BMC0004"
+                        }
+                    ]
+                }
+            ],
+            "Documentation": {
+                "Description": "Chassis present detection is missing but it should be present.",
+                "Message": "Chassis is reported as missing when previously it was present",
+                "Notes": [
+                    "Callout fsi cables, then other Barton/Jolleyville loc code, then this Barton loc code, then Comal loc code."
+                ]
+            },
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    }
+                ]
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.Power.Regulators.Error.ConfigFile",
             "Subsystem": "power",
             "ComponentID": "0x2700",
