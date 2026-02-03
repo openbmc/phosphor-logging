@@ -1150,7 +1150,7 @@ void DataInterface::subscribeToSystemdSignals()
     catch (const sdbusplus::exception_t& e)
     {
         lg2::error(
-            "Exception occured while handling JobRemoved systemd signal, "
+            "Exception occurred while handling JobRemoved systemd signal, "
             "exception: {ERROR}",
             "ERROR", e);
     }
@@ -1183,7 +1183,7 @@ void DataInterface::unsubscribeFromSystemdSignals()
     catch (const sdbusplus::exception_t& e)
     {
         lg2::error(
-            "Exception occured while unsubscribing from JobRemoved systemd signal, "
+            "Exception occurred while unsubscribing from JobRemoved systemd signal, "
             "exception: {ERROR}",
             "ERROR", e);
     }
