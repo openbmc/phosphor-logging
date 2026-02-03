@@ -683,7 +683,7 @@ TEST_F(ManagerTest, TestPruning)
         }
         else if (i == 24)
         {
-            // Prune occured
+            // Prune occurred
             EXPECT_EQ(countPELsInRepo(), 7);
         }
         else // i == 25
