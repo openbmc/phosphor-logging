@@ -223,6 +223,12 @@ const std::map<std::string, std::string> maintenanceProcedures = {
     {"detected_issue_need_service", "BMC0008"},
     // Problem is the CEC node does not have input power
     {"drawer_power", "BMC0009"},
+    // BMC can't failover
+    {"bmc_failover_blocked", "BMC000A"},
+    // BMC can't enable redundancy
+    {"bmc_redundancy_not_enabled", "BMC000B"},
+    // BMC must be passive because of an error
+    {"bmc_passive_due_to_error", "BMC000C"}};
 };
 
 /**

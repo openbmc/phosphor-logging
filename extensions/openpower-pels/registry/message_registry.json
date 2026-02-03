@@ -6710,6 +6710,164 @@
                 "Message": "BMC/System/Resource dump has been offloaded"
             }
         },
+
+        {
+            "Name": "xyz.openbmc_project.State.BMC.Redundancy.FailoverStarted",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x8000",
+            "Severity": "non_error",
+            "SRC": {
+                "ReasonCode": "0x8001",
+                "Words6To9": {
+                    "6": {
+                        "Description": "Failover Requester Value",
+                        "AdditionalDataPropSource": "FORequesterVal"
+                    }
+                }
+            },
+            "Documentation": {
+                "Description": "A BMC failover has been started",
+                "Message": "A BMC failover has been started",
+                "Notes": [
+                    "The requester is in plain text in a UserData section."
+                ]
+            },
+            "JournalCapture": {
+                "NumLines": 50
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.State.BMC.Redundancy.FailoverBlocked",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x8000",
+            "SRC": {
+                "ReasonCode": "0x8002",
+                "Words6To9": {
+                    "6": {
+                        "Description": "Failover Requester Value",
+                        "AdditionalDataPropSource": "FORequesterVal"
+                    },
+                    "7": {
+                        "Description": "Block Reason Value",
+                        "AdditionalDataPropSource": "FOBlockedReasonVal"
+                    }
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "BMC000A" }
+                    ]
+                }
+            ],
+            "Documentation": {
+                "Description": "A request to start a failover was blocked",
+                "Message": "A request to start a failover was blocked",
+                "Notes": [
+                    "A UserData section shows the requester and the reason",
+                    "for the block in plain text.  The severity will be",
+                    "Informational if the request came from rbmctool, otherwise",
+                    "it will be Predictive."
+                ]
+            },
+            "JournalCapture": {
+                "NumLines": 20
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.State.BMC.Redundancy.RedundancyManuallyDisabled",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x8000",
+            "Severity": "non_error",
+            "SRC": {
+                "ReasonCode": "0x8003",
+                "Words6To9": {}
+            },
+            "Documentation": {
+                "Description": "Redundancy has been manually disabled",
+                "Message": "Redundancy has been manually disabled",
+                "Notes": ["Someone manually disabled redundancy."]
+            },
+            "JournalCapture": {
+                "NumLines": 20
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.State.BMC.Redundancy.PassiveDueToError",
+            "Subsystem": "cec_hardware",
+            "ComponentID": "0x8000",
+            "Severity": "unrecoverable_redundancy_loss",
+            "SRC": {
+                "ReasonCode": "0x8004",
+                "Words6To9": {
+                    "6": {
+                        "Description": "Role Reason Value",
+                        "AdditionalDataPropSource": "RoleReasonVal"
+                    }
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "BMC000C" }
+                    ]
+                }
+            ],
+            "Documentation": {
+                "Description": "The BMC claimed the passive role due to an error",
+                "Message": "The BMC claimed the passive role due to an error",
+                "Notes": [
+                    "Due to an error the BMC cannot be active and must be passive.",
+                    "Even if the other BMC is active, redundancy cannot be enabled.",
+                    "Check the UserData for the role reason in plain text."
+                ]
+            },
+            "JournalCapture": {
+                "NumLines": 75
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.State.BMC.Redundancy.NoRedundancy",
+            "Subsystem": "cec_hardware",
+            "ComponentID": "0x8000",
+            "Severity": "unrecoverable_redundancy_loss",
+            "SRC": {
+                "ReasonCode": "0x8005",
+                "Words6To9": {
+                    "6": {
+                        "Description": "Reason For No Redundancy Value",
+                        "AdditionalDataPropSource": "FirstReasonVal"
+                    },
+                    "7": {
+                        "Description": "Total Number of Reasons",
+                        "AdditionalDataPropSource": "ReasonsCount"
+                    }
+                }
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "BMC000B" }
+                    ]
+                }
+            ],
+            "Documentation": {
+                "Description": "BMC redundancy cannot be enabled",
+                "Message": "BMC redundancy cannot be enabled",
+                "Notes": [
+                    "The UserData will have plain text descriptions of the reason(s)",
+                    "why redundancy can't be enabled."
+                ]
+            },
+            "JournalCapture": {
+                "NumLines": 75
+            }
+        },
+
         {
             "Name": "xyz.openbmc_project.Memory.MemoryECC.Error.isLoggingLimitReached",
             "Subsystem": "cec_hardware",
