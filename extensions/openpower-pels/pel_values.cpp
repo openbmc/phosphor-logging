@@ -281,7 +281,16 @@ const std::map<std::string, std::string> sectionTitles = {
 /**
  * @brief Map for Procedure Descriptions
  */
-const std::map<std::string, std::string> procedureDesc = {{"TODO", "TODO"}};
+const std::map<std::string, std::string> procedureDesc = {
+    {"BMC0001", "BMC firmware problem - contact next level support"},
+    {"BMC0002", "Isolation not possible, contact next level support"},
+    {"BMC0003", "SBE firmware problem, upgrade your firmware"},
+    {"BMC0004", "FSI bus path problem"},
+    {"BMC0005", "Power supply over-current fault"},
+    {"BMC0006", "Unrecoverable error, check previous error logs"},
+    {"BMC0007", "Correct system backplane VPD mismatch"},
+    {"BMC0008", "Service reminder - failed parts in system"},
+};
 
 /**
  * @brief Map for Callout Failing Component Types
