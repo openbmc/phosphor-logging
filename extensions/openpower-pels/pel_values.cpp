@@ -221,6 +221,8 @@ const std::map<std::string, std::string> maintenanceProcedures = {
     {"system_vpd_correction", "BMC0007"},
     // service reminder about the failed parts present in the system
     {"detected_issue_need_service", "BMC0008"},
+    // Problem is the expansion drawer does not have power
+    {"drawer_power", "BMC0009"},
 };
 
 /**

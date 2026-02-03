@@ -6887,6 +6887,179 @@
                     }
                 ]
             }
+        },
+        {
+            "Name": "xyz.openbmc_project.State.ChassisPowerMissing",
+            "Subsystem": "input_power_source",
+            "ActionFlags": ["service_action", "report", "call_home"],
+            "ComponentID": "0x7400",
+            "SRC": {
+                "ReasonCode": "0x74F0",
+                "Words6To9": {}
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "BMC0009"
+                        }
+                    ]
+                }
+            ],
+            "Documentation": {
+                "Description": "Chassis input power is missing",
+                "Message": "Chassis input power is missing, look for other logs with more details",
+                "Notes": [
+                    "The system is most likely in a limited power situation. ",
+                    "There is enough power for the BMC to operate but not the ",
+                    "CEC hardware. Check for UPS or brownout logs."
+                ]
+            },
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    }
+                ]
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.State.BMC.Reset.ChassisPreviouslyLostPower",
+            "Subsystem": "input_power_source",
+            "ActionFlags": ["service_action", "report", "call_home"],
+            "ComponentID": "0x7400",
+            "SRC": {
+                "ReasonCode": "0x74F1",
+                "Words6To9": {}
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "BMC0009"
+                        }
+                    ]
+                }
+            ],
+            "Documentation": {
+                "Description": "Chassis previously lost input power causing BMC reset.",
+                "Message": "Chassis input power is missing, look for other logs with more details"
+            },
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    }
+                ]
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.State.Chassis.PresentDetection.Incorrect",
+            "Subsystem": "cec_chip_iface",
+            "ActionFlags": ["service_action", "report", "call_home"],
+            "ComponentID": "0x8800",
+            "SRC": {
+                "ReasonCode": "0x88E0",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "BMC0004"
+                        }
+                    ]
+                }
+            ],
+            "Documentation": {
+                "Description": "Chassis present detection is incorrect.",
+                "Message": "Chassis present detection is incorrect, look for other logs with more details",
+                "Notes": [
+                    "Callout fsi cables, then Barton loc code, the Comal code."
+                ]
+            },
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    }
+                ]
+            }
+        },
+        {
+            "Name": "xyz.openbmc_project.State.Chassis.Missing.ShouldBePresent",
+            "Subsystem": "cec_chip_iface",
+            "ActionFlags": ["service_action", "report", "call_home"],
+            "ComponentID": "0x8800",
+            "SRC": {
+                "ReasonCode": "0x88F0",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        {
+                            "Priority": "high",
+                            "Procedure": "BMC0004"
+                        }
+                    ]
+                }
+            ],
+            "Documentation": {
+                "Description": "Chassis present detection is missing but it should be present.",
+                "Message": "Chassis present detection is missing but it should be present",
+                "Notes": [
+                    "Callout fsi cables, then other Barton/Jolleyville loc code, then this Barton loc code, then Comal loc code."
+                ]
+            },
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    }
+                ]
+            }
         }
     ]
 }
