@@ -6892,8 +6892,9 @@
             "Name": "xyz.openbmc_project.State.ChassisPowerMissing",
             "Subsystem": "input_power_source",
             "ActionFlags": ["service_action", "report", "call_home"],
-            "ComponentID": "0x7400",
+            "ComponentID": "0x9000",
             "SRC": {
+                "Type": "11",
                 "ReasonCode": "0x74F0",
                 "Words6To9": {}
             },
@@ -6937,8 +6938,9 @@
             "Name": "xyz.openbmc_project.State.BMC.Reset.ChassisPreviouslyLostPower",
             "Subsystem": "input_power_source",
             "ActionFlags": ["service_action", "report", "call_home"],
-            "ComponentID": "0x7400",
+            "ComponentID": "0x9000",
             "SRC": {
+                "Type": "11",
                 "ReasonCode": "0x74F1",
                 "Words6To9": {}
             },
@@ -6977,8 +6979,9 @@
             "Name": "xyz.openbmc_project.State.Chassis.PresentDetection.Incorrect",
             "Subsystem": "cec_chip_iface",
             "ActionFlags": ["service_action", "report", "call_home"],
-            "ComponentID": "0x8800",
+            "ComponentID": "0x9000",
             "SRC": {
+                "Type": "11",
                 "ReasonCode": "0x88E0",
                 "Words6To9": {}
             },
@@ -7021,8 +7024,9 @@
             "Name": "xyz.openbmc_project.State.Chassis.Missing.ShouldBePresent",
             "Subsystem": "cec_chip_iface",
             "ActionFlags": ["service_action", "report", "call_home"],
-            "ComponentID": "0x8800",
+            "ComponentID": "0x9000",
             "SRC": {
+                "Type": "11",
                 "ReasonCode": "0x88F0",
                 "Words6To9": {}
             },

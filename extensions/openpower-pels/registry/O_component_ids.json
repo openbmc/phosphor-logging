@@ -15,6 +15,7 @@
     "5000": "bmc panel",
     "6000": "bmc pldm",
     "7000": "bmc datasync",
+    "9000": "bmc chassis",
     "C100": "bmc system dump collector",
     "C200": "bmc dump collector",
     "D100": "bmc hw diags attention handler",
