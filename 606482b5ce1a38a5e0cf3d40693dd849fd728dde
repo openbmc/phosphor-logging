@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94654e9e_af3a7ef1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-02-04T20:44:38Z",
+      "side": 1,
+      "message": "can you prefix this with \u0027PEL: \u0027 so it\u0027s clear it\u0027s for an IBM thing only?",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4edcc7ae_6b66933b",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6895,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-02-04T20:44:38Z",
+      "side": 1,
+      "message": "on the component ID for the 1100 errors it doesn\u0027t have to match the SRC.  So I would maybe come up with a new component for this new application and put it into O_component_ids.json, and then you can still keep the reasoncodes as is.\n\nAlso we\u0027ve for the most part attempted to order this file by component IDs, so you may need to move these.",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "480513a1_6cf08919",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6897,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-02-04T20:44:38Z",
+      "side": 1,
+      "message": "If these are all 1100 SRCs, you\u0027ll need to add\n \"Type\": \"11\",\n \n in this section, like on line 2025.",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
