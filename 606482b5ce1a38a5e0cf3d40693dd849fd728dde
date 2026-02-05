@@ -18,6 +18,40 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b741d3a4_2f2adda9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2026-02-05T20:27:21Z",
+      "side": 1,
+      "message": "Looks good!  A couple of suggestions for now, we can fine-tune the callouts/notes later when we have the multi-node error logging infrastructure in place.",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4944183_c951897e",
+        "filename": "extensions/openpower-pels/pel_values.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2026-02-05T20:27:21Z",
+      "side": 1,
+      "message": "I would say \"The CEC node does not have input power\" or something like that...",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "38e3ff2e_d972ce0f",
@@ -31,6 +65,23 @@
       "writtenOn": "2026-02-05T17:06:54Z",
       "side": 1,
       "message": "not sure if anyone mentioned this yet, but these also need to go into https://github.com/ibm-openbmc/openpower-pel-parsers/blob/master/modules/calloutparsers/ocallouts/ocallouts.py",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d727bc82_ed246148",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6892,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2026-02-05T20:27:21Z",
+      "side": 1,
+      "message": "I think we should use xyz.openbmc_project.Power.xxxx for all of these, since they will be logged by an app in the phosphor-power repo.",
       "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -54,6 +105,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "23efb603_e7560ede",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6895,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2026-02-05T20:27:21Z",
+      "side": 1,
+      "message": "Matt can we use 0x2700 for the componentID for all of these, as that is for \"bmc power and thermal\", and what the psu code and the fan code in the same repo use?",
+      "parentUuid": "4edcc7ae_6b66933b",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "480513a1_6cf08919",
         "filename": "extensions/openpower-pels/registry/message_registry.json",
         "patchSetId": 1
@@ -65,6 +134,142 @@
       "writtenOn": "2026-02-04T20:44:38Z",
       "side": 1,
       "message": "If these are all 1100 SRCs, you\u0027ll need to add\n \"Type\": \"11\",\n \n in this section, like on line 2025.",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50d17708_3114e1c8",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6912,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2026-02-05T20:27:21Z",
+      "side": 1,
+      "message": "I think you can remove the \", look for other logs with more details\"... there likely won\u0027t be other logs with pertinent info when this is logged",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e03c6f7b_3a741744",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6916,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2026-02-05T20:27:21Z",
+      "side": 1,
+      "message": "The Notes are a little different for this.. in this scenario, \"Some system nodes may not have power, while at least one BMC node does have full system power.\" or something like that.",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e4b573e_bb7908ea",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6957,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2026-02-05T20:27:21Z",
+      "side": 1,
+      "message": "\"Chassis previously lost input power causing BMC reset.\" is fine",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78e871e4_0d1249ef",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6958,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2026-02-05T20:27:21Z",
+      "side": 1,
+      "message": "maybe add a note saying something like \"At least one node has a latched input power fault, which caused the BMC to get reset. This PEL is used to leave a clue as to which node caused the reset.\"",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b6c181e_6dde3ee1",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6978,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2026-02-05T20:27:21Z",
+      "side": 1,
+      "message": "I think we should use \"input_power_source\" for this one too, since it\u0027s the same app logging the error.  I don\u0027t think it really matters what this field has though.",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84c71474_aa970162",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6998,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2026-02-05T20:27:21Z",
+      "side": 1,
+      "message": "don\u0027t need the \"look for other logs\" text here either.",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5c78fcb_7056fba2",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 7022,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2026-02-05T20:27:21Z",
+      "side": 1,
+      "message": "I think we should use \"input_power_source\" for this one too, since it\u0027s the same app logging the error.  I don\u0027t think it really matters what this field has though.",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f28bb92_9295f5b8",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 7042,
+      "author": {
+        "id": 1000318
+      },
+      "writtenOn": "2026-02-05T20:27:21Z",
+      "side": 1,
+      "message": "\"Chassis is being reported as missing when previously it was present.\" or something like that.",
       "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
