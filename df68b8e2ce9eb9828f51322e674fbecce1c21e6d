@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a5e5196_16cc918a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-02-05T17:08:04Z",
+      "side": 1,
+      "message": "For gerrit commits, there\u0027s no need to create separate commits for code review changes, you can just fix the commit and push again.  Gerrit keeps a history of each patchset so we can still diff your changes.\n\nFor this one, you can squash this newer one into your original one and push again, and then abandon this one.",
+      "revId": "df68b8e2ce9eb9828f51322e674fbecce1c21e6d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
