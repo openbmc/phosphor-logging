@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ad1d59e_b130b58e",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 6616,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-02-10T12:06:05Z",
+      "side": 1,
+      "message": "Why is it cec hw?",
+      "range": {
+        "startLine": 6616,
+        "startChar": 26,
+        "endLine": 6616,
+        "endChar": 38
+      },
+      "revId": "160fc17451b497fadc668a566e1d7143b919c490",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33e28322_17605e92",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 6651,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-02-10T12:06:05Z",
+      "side": 1,
+      "message": "Why is it cec hw?",
+      "range": {
+        "startLine": 6651,
+        "startChar": 26,
+        "endLine": 6651,
+        "endChar": 38
+      },
+      "revId": "160fc17451b497fadc668a566e1d7143b919c490",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3bbf46e_5be51d04",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 6653,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-02-10T12:06:05Z",
+      "side": 1,
+      "message": "Is it should be predictive? what about no redundancy with passive passive, its critical, right? unrecoverable_redundancy_loss?",
+      "revId": "160fc17451b497fadc668a566e1d7143b919c490",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
