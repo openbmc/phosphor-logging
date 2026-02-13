@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d572141_127f9e92",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-02-13T14:37:47Z",
+      "side": 1,
+      "message": "All these Common ones match their defined errors in phosphor-dbus-interfaces:\n```\nphosphor-dbus-interfaces/yaml/xyz/openbmc_project/Common$ ls *.errors.yaml\nCallout.errors.yaml  Device.errors.yaml  File.errors.yaml\n```\n\nSo for it to be in Common, it will also need to get added to PDI.",
+      "range": {
+        "startLine": 355,
+        "startChar": 21,
+        "endLine": 355,
+        "endChar": 55
+      },
+      "revId": "f32cc59074bb67d2fa49b19a104ddbe0a342b5d1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
