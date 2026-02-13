@@ -352,6 +352,24 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Common.Device.Error.NotPresent",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x1000",
+            "SRC": {
+                "ReasonCode": "0x1010",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Device not present in the system",
+                "Message": "Device not present in the system",
+                "Notes": [
+                    "The device name is specified in the UserData section."
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.Logging.Error.SentBadPELToHost",
             "Subsystem": "bmc_firmware",
             "Severity": "non_error",
