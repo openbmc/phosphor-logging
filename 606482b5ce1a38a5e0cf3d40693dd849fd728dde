@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "073b41f1_7654bf61",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002833
+      },
+      "writtenOn": "2026-02-16T19:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94654e9e_af3a7ef1",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "b741d3a4_2f2adda9",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -52,6 +70,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff734ceb_505e4b7a",
+        "filename": "extensions/openpower-pels/pel_values.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1002833
+      },
+      "writtenOn": "2026-02-16T19:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4944183_c951897e",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "38e3ff2e_d972ce0f",
@@ -69,6 +105,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a47bb84_d034b308",
+        "filename": "extensions/openpower-pels/pel_values.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1002833
+      },
+      "writtenOn": "2026-02-16T19:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "38e3ff2e_d972ce0f",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d727bc82_ed246148",
@@ -82,6 +136,24 @@
       "writtenOn": "2026-02-05T20:27:21Z",
       "side": 1,
       "message": "I think we should use xyz.openbmc_project.Power.xxxx for all of these, since they will be logged by an app in the phosphor-power repo.",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50745262_a0d81ab2",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6892,
+      "author": {
+        "id": 1002833
+      },
+      "writtenOn": "2026-02-16T19:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d727bc82_ed246148",
       "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -121,6 +193,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80f39ef1_d043c199",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6895,
+      "author": {
+        "id": 1002833
+      },
+      "writtenOn": "2026-02-16T19:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "23efb603_e7560ede",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "480513a1_6cf08919",
@@ -134,6 +224,24 @@
       "writtenOn": "2026-02-04T20:44:38Z",
       "side": 1,
       "message": "If these are all 1100 SRCs, you\u0027ll need to add\n \"Type\": \"11\",\n \n in this section, like on line 2025.",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b947343b_cc1da007",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6897,
+      "author": {
+        "id": 1002833
+      },
+      "writtenOn": "2026-02-16T19:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "480513a1_6cf08919",
       "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -155,6 +263,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c37f2484_2cb958d9",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6912,
+      "author": {
+        "id": 1002833
+      },
+      "writtenOn": "2026-02-16T19:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50d17708_3114e1c8",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e03c6f7b_3a741744",
@@ -168,6 +294,24 @@
       "writtenOn": "2026-02-05T20:27:21Z",
       "side": 1,
       "message": "The Notes are a little different for this.. in this scenario, \"Some system nodes may not have power, while at least one BMC node does have full system power.\" or something like that.",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1970455_d1f5c484",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6916,
+      "author": {
+        "id": 1002833
+      },
+      "writtenOn": "2026-02-16T19:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e03c6f7b_3a741744",
       "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -189,6 +333,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1068360b_494df77f",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6957,
+      "author": {
+        "id": 1002833
+      },
+      "writtenOn": "2026-02-16T19:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e4b573e_bb7908ea",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78e871e4_0d1249ef",
@@ -202,6 +364,24 @@
       "writtenOn": "2026-02-05T20:27:21Z",
       "side": 1,
       "message": "maybe add a note saying something like \"At least one node has a latched input power fault, which caused the BMC to get reset. This PEL is used to leave a clue as to which node caused the reset.\"",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c759aea_a346a452",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6958,
+      "author": {
+        "id": 1002833
+      },
+      "writtenOn": "2026-02-16T19:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78e871e4_0d1249ef",
       "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -223,6 +403,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2b3ed98_587b47e0",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6978,
+      "author": {
+        "id": 1002833
+      },
+      "writtenOn": "2026-02-16T19:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b6c181e_6dde3ee1",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84c71474_aa970162",
@@ -236,6 +434,24 @@
       "writtenOn": "2026-02-05T20:27:21Z",
       "side": 1,
       "message": "don\u0027t need the \"look for other logs\" text here either.",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "426b24c4_387dbb49",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6998,
+      "author": {
+        "id": 1002833
+      },
+      "writtenOn": "2026-02-16T19:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84c71474_aa970162",
       "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -257,6 +473,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "73d75af4_44667c34",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 7022,
+      "author": {
+        "id": 1002833
+      },
+      "writtenOn": "2026-02-16T19:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c5c78fcb_7056fba2",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f28bb92_9295f5b8",
@@ -270,6 +504,24 @@
       "writtenOn": "2026-02-05T20:27:21Z",
       "side": 1,
       "message": "\"Chassis is being reported as missing when previously it was present.\" or something like that.",
+      "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4a04078_c2ba63fd",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 7042,
+      "author": {
+        "id": 1002833
+      },
+      "writtenOn": "2026-02-16T19:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f28bb92_9295f5b8",
       "revId": "606482b5ce1a38a5e0cf3d40693dd849fd728dde",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
