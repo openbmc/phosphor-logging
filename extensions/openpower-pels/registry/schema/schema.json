@@ -638,7 +638,7 @@
         },
 
         "system": {
-            "description": "The system type string, as specified by entity manger.  It is used to index into different sections of the JSON.",
+            "description": "The system type string, as specified by entity manager.  It is used to index into different sections of the JSON.",
             "type": "string",
             "minLength": 1
         },

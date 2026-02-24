@@ -75,7 +75,7 @@ UserHeader::UserHeader(const message::Entry& entry,
     {
         // Gotta use something, how about 'others'.
         lg2::warning(
-            "No PEL subystem value supplied for error, using 'others'");
+            "No PEL subsystem value supplied for error, using 'others'");
         _eventSubsystem = 0x70;
     }
 

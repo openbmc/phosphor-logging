@@ -92,7 +92,7 @@ PHOSPHOR_LOG2_DECLARE_LEVEL(debug);
 // the math function `log`.  There is little use for direct calls to `lg2::log`,
 // when the level-aliases are available, since it is just a more awkward syntax.
 
-/** Scope-level `using` to get the everything, incluing format flags. */
+/** Scope-level `using` to get the everything, including format flags. */
 #define PHOSPHOR_LOG2_USING_WITH_FLAGS                                         \
     PHOSPHOR_LOG2_USING;                                                       \
     PHOSPHOR_LOG2_USING_FLAGS

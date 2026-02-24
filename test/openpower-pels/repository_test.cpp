@@ -861,7 +861,7 @@ TEST_F(RepositoryTest, TestSizeWarningNumPELs)
     EXPECT_TRUE(repo.sizeWarning());
 }
 
-// Test existense of archive file
+// Test existence of archive file
 TEST_F(RepositoryTest, TestArchiveFile)
 {
     using pelID = Repository::LogID::Pel;

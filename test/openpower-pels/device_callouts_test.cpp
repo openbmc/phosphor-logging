@@ -226,7 +226,7 @@ fs::path DeviceCalloutsTest::dataPath;
 namespace openpower::pels::device_callouts
 {
 
-// Helpers to compair vectors of Callout objects
+// Helpers to compare vectors of Callout objects
 bool operator!=(const Callout& left, const Callout& right)
 {
     return (left.priority != right.priority) ||

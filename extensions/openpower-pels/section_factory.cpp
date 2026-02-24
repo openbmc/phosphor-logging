@@ -23,7 +23,7 @@ std::unique_ptr<Section> create(Stream& pelData)
 {
     std::unique_ptr<Section> section;
 
-    // Peek the section ID to create the appriopriate object.
+    // Peek the section ID to create the appropriate object.
     // If not enough data remains to do so, an invalid
     // Generic object will be created in the default case.
     uint16_t sectionID = 0;

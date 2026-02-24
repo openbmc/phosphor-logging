@@ -108,7 +108,7 @@ int pdbgCallbackToGetTgtReqAttrsVal(struct pdbg_target* target,
     }
 
     // Found Target, now collect the required attributes associated to the
-    // target. Incase of any attribute read failure, initialize the data with
+    // target. In case of any attribute read failure, initialize the data with
     // default value.
 
     try
@@ -242,7 +242,7 @@ static void addPlanarCallout(json& jsonCalloutDataList,
  *
  * Creates informational PEL for spare clock failure
  *
- * @param[in]  ffdc FFDC data capturd by the HWP
+ * @param[in]  ffdc FFDC data captured by the HWP
  * @param[out] pelJSONFmtCalloutDataList used to store collected callout
  *            data into pel expected format
  * @param[out] ffdcUserData used to store additional ffdc user data to

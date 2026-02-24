@@ -20,7 +20,7 @@ using FFDCData = std::vector<std::pair<std::string, std::string>>;
  * @brief Used to convert  processed SBE FFDC FAPI format packets into
  *        PEL expected format.
  *
- * @param[in]  ffdc FFDC data capturd by the HWP
+ * @param[in]  ffdc FFDC data captured by the HWP
  * @param[out] pelJSONFmtCalloutDataList used to store collected callout
  *             data into pel expected format
  * @param[out] ffdcUserData used to store additional ffdc user data to

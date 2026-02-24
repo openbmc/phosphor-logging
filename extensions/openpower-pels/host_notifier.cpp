@@ -43,7 +43,7 @@ HostNotifier::HostNotifier(Repository& repo, DataInterfaceBase& dataIface,
         subscriptionName, std::bind(std::mem_fn(&HostNotifier::hostStateChange),
                                     this, std::placeholders::_1));
 
-    // Set the function to call when the async reponse is received.
+    // Set the function to call when the async response is received.
     _hostIface->setResponseFunction(
         std::bind(std::mem_fn(&HostNotifier::commandResponse), this,
                   std::placeholders::_1));

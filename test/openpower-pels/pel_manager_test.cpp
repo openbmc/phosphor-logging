@@ -1003,7 +1003,7 @@ TEST_F(ManagerTest, TestDuplicatePEL)
         }
     }
 
-    // Get count of PELs in the repository & in archive directtory
+    // Get count of PELs in the repository & in archive directory
     EXPECT_EQ(countPELsInRepo(), 1);
     EXPECT_EQ(count, 1);
 }

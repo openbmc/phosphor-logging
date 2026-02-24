@@ -75,7 +75,7 @@ using deduce_entry_type_t = typename deduce_entry_type<T>::type;
 /**
  * @brief Used to map an sdbusplus error to a phosphor-logging error type
  *
- * Users log errors via the sdbusplus error name, and the execption that's
+ * Users log errors via the sdbusplus error name, and the exception that's
  * thrown is the corresponding sdbusplus exception. However, there's a need
  * to map the sdbusplus error name to the phosphor-logging error name, in order
  * to verify the error metadata at compile-time.

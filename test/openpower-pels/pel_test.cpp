@@ -1034,7 +1034,7 @@ TEST_F(PELTest, CreateWithJSONCalloutsTest)
     fs::remove_all(dir);
 }
 
-// Test PELs with symblic FRU callout.
+// Test PELs with symbolic FRU callout.
 TEST_F(PELTest, CreateWithJSONSymblicCalloutTest)
 {
     PelFFDCfile ffdcFile;

@@ -12,7 +12,7 @@ namespace test
 TEST_F(TestSerialization, testProperties)
 {
     auto id = 99;
-    phosphor::logging::AssociationList assocations{};
+    phosphor::logging::AssociationList associations{};
     std::map<std::string, std::string> testData = {{"additional", "1"},
                                                    {"data", "yes"}};
     uint64_t timestamp{100};
@@ -22,7 +22,7 @@ TEST_F(TestSerialization, testProperties)
     auto input = std::make_unique<Entry>(
         bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, timestamp,
         Entry::Level::Informational, std::move(message), std::move(testData),
-        std::move(assocations), fwLevel, inputPath, manager);
+        std::move(associations), fwLevel, inputPath, manager);
     auto path = serialize(*input, TestSerialization::dir);
     EXPECT_EQ(path, inputPath);
 

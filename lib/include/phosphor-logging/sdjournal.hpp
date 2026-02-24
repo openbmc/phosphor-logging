@@ -23,7 +23,7 @@ class SdJournalHandler
      * the journal_send call in testing.
      *
      * @param[in] fmt - the format string passed into journal_send.
-     * @return an int meant to be intepreted by the journal_send caller during
+     * @return an int meant to be interpreted by the journal_send caller during
      * testing.
      */
     virtual int journal_send_call(const char* fmt);

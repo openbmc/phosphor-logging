@@ -79,7 +79,7 @@ void createGuardRecords(const nlohmann::json& jsonCallouts, uint32_t plid,
     {
         try
         {
-            // Check Callout data conatains Guarded requests.
+            // Check Callout data contains Guarded requests.
             if (!_callout.contains("Guarded"))
             {
                 continue;
@@ -163,7 +163,7 @@ void createDeconfigRecords(const nlohmann::json& jsonCallouts, uint32_t plid)
     {
         try
         {
-            // Check Callout data conatains Guarded requests.
+            // Check Callout data contains Guarded requests.
             if (!_callout.contains("Deconfigured"))
             {
                 continue;

@@ -322,7 +322,7 @@ void do_log(level l, const std::source_location& s, const char* m, ...)
     // Add the final message into the strings array.
     strings[pos_msg] = "MESSAGE="s + message.data();
 
-    // Trasform strings -> iovec.
+    // Transform strings -> iovec.
     std::vector<iovec> iov{};
     std::ranges::transform(strings, std::back_inserter(iov), [](auto& s) {
         return iovec{s.data(), s.length()};
