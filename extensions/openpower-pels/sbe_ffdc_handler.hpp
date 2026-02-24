@@ -160,7 +160,7 @@ class SbeFFDC
      * @brief Helper function to return FFDC files information, which
      *        includes SBE FFDC specific callout information.
      *
-     * return PelFFDC - pel formated FFDC files.
+     * return PelFFDC - pel formatted FFDC files.
      */
     const PelFFDC& getSbeFFDC()
     {

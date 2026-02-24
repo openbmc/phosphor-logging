@@ -71,7 +71,7 @@
 
             "Documentation": {
                 "Description": "An operation failed due to insufficient permission",
-                "Message": "An operation failed due to unsufficient permission",
+                "Message": "An operation failed due to insufficient permission",
                 "Notes": ["The journal should contain more information"]
             }
         },
@@ -747,7 +747,7 @@
                 "Description": "Error during memory preserving reboot",
                 "Message": "Error during memory preserving reboot",
                 "Notes": [
-                    "Software error occured during memory preserving reboot"
+                    "Software error occurred during memory preserving reboot"
                 ]
             }
         },
@@ -5295,7 +5295,7 @@
                 "Message": "A VPD ecc exception occurred.",
                 "Notes": [
                     "This error occurs when VPD ecc check fails for the FRU.",
-                    "Inventory path for the failed FRU is captured in additonal",
+                    "Inventory path for the failed FRU is captured in additional",
                     "data."
                 ]
             },
@@ -5397,7 +5397,7 @@
                 "Message": "A Dbus internal error occurred.",
                 "Notes": [
                     "This error occurs when Dbus operation fails.",
-                    "Exceptions details are captured in additonal",
+                    "Exceptions details are captured in additional",
                     "data."
                 ]
             },

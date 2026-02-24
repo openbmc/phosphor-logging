@@ -78,7 +78,7 @@ class PEL
      * Note: Neither this nor the following constructor can take a const vector&
      * because the Stream class that is used to read from the vector cannot take
      * a const.  The alternative is to make a copy of the data, but as PELs can
-     * be up to 16KB that is undesireable.
+     * be up to 16KB that is undesirable.
      *
      * @param[in] data - The PEL data
      */

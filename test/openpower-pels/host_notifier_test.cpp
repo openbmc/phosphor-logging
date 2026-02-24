@@ -588,7 +588,7 @@ TEST_F(HostNotifierTest, TestPowerCycleAndAcks)
     PEL pelFromRepo2{*data};
     EXPECT_EQ(pelFromRepo2.hostTransmissionState(), TransmissionState::acked);
 
-    // Power back off, and they should't get re-added
+    // Power back off, and they shouldn't get re-added
     dataIface.changeHostState(false);
 
     EXPECT_EQ(notifier.queueSize(), 0);

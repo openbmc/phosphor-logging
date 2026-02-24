@@ -240,7 +240,7 @@ std::optional<Repository::LogID> Repository::remove(const LogID& id)
 
     if (fs::exists(pel->second.path))
     {
-        // Check for existense of new archive folder
+        // Check for existence of new archive folder
         if (!fs::exists(_archivePath))
         {
             fs::create_directories(_archivePath);

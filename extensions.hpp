@@ -122,7 +122,7 @@ class Extensions
     /**
      * @brief Constructor to register a startup function
      *
-     * Functions registered with this contructor will be called
+     * Functions registered with this constructor will be called
      * when phosphor-log-manager starts up.
      *
      * @param[in] func - The startup function to register
@@ -135,7 +135,7 @@ class Extensions
     /**
      * @brief Constructor to register a create function
      *
-     * Functions registered with this contructor will be called
+     * Functions registered with this constructor will be called
      * after phosphor-log-manager creates an event log.
      *
      * @param[in] func - The create function to register
@@ -148,7 +148,7 @@ class Extensions
     /**
      * @brief Constructor to register a delete function
      *
-     * Functions registered with this contructor will be called
+     * Functions registered with this constructor will be called
      * after phosphor-log-manager deletes an event log.
      *
      * @param[in] func - The delete function to register
@@ -161,7 +161,7 @@ class Extensions
     /**
      * @brief Constructor to register a delete prohibition function
      *
-     * Functions registered with this contructor will be called
+     * Functions registered with this constructor will be called
      * before phosphor-log-manager deletes an event log to ensure
      * deleting the log is allowed.
      *
@@ -175,7 +175,7 @@ class Extensions
     /**
      * @brief Constructor to register a LogID with HwIsolation function
      *
-     * Functions registered with this contructor will be called
+     * Functions registered with this constructor will be called
      * before phosphor-log-manager deletes all event log.
      *
      * @param[in] func - The function to register

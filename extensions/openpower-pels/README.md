@@ -455,7 +455,7 @@ LocationCode field is optional.
 ## `Action Flags` and `Event Type` Rules
 
 The `Action Flags` and `Event Type` PEL fields are optional in the message
-registry, and if not present the code will set them based on certain rules layed
+registry, and if not present the code will set them based on certain rules laid
 out in the PEL spec.
 
 These rules are:

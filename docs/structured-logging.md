@@ -68,7 +68,7 @@ The post-C++20 logging APIs presented by phosphor-logging are `lg2::log`. The
 basic format of a log call is:
 
 ```cpp
-    lg2::level("A {TAG0} occured.", "TAG0", "foo"s, "TAG1", lg2::hex, 2);
+    lg2::level("A {TAG0} occurred.", "TAG0", "foo"s, "TAG1", lg2::hex, 2);
 ```
 
 Each log call has a level or priority, but the level is indicated by the
@@ -163,11 +163,11 @@ if the application is running on a TTY and additionally log to the TTY.
 
 Output to stderr can also be forced by setting the `LG2_FORCE_STDERR`
 environment variable to any value. This is especially useful to see log output
-in OpenBMC CI test verfication.
+in OpenBMC CI test verification.
 
 The verbosity of this output can be filtered by setting `LG2_LOG_LEVEL`
 environment variable to the desired maximum log level (0-7). Messages with a
-priority value greater than this setting will be supressed. If `LG2_LOG_LEVEL`
+priority value greater than this setting will be suppressed. If `LG2_LOG_LEVEL`
 is not set, it defaults to 7, showing all messages.
 
 The format of information sent to the TTY can be adjusted by setting the desired

@@ -393,7 +393,7 @@ class DataInterfaceBase
      * @param[in] node - The node number the location is on.  Ignored if the
      *                   expanded location code is passed in.
      *
-     * @param[in] expanded - If the location code already has the relevent
+     * @param[in] expanded - If the location code already has the relevant
      *                       VPD fields embedded in it.
      *
      * @return std::vector<std::string> - The inventory D-Bus objects
@@ -493,7 +493,7 @@ class DataInterfaceBase
     virtual std::vector<uint8_t> getRawProgressSRC() const = 0;
 
     /**
-     * @brief Returns the FRUs DI property value hosted on the VINI iterface for
+     * @brief Returns the FRUs DI property value hosted on the VINI interface for
      * the given location code.
      *
      * @param[in] locationCode - The location code of the FRU
@@ -826,7 +826,7 @@ class DataInterface : public DataInterfaceBase
      * @param[in] node - The node number the location is on.  Ignored if the
      *                   expanded location code is passed in.
      *
-     * @param[in] expanded - If the location code already has the relevent
+     * @param[in] expanded - If the location code already has the relevant
      *                       VPD fields embedded in it.
      *
      * @return std::vector<std::string> - The inventory D-Bus objects
@@ -907,7 +907,7 @@ class DataInterface : public DataInterfaceBase
     std::vector<uint8_t> getRawProgressSRC() const override;
 
     /**
-     * @brief Returns the FRUs DI property value hosted on the VINI iterface for
+     * @brief Returns the FRUs DI property value hosted on the VINI interface for
      * the given location code.
      *
      * @param[in] locationCode - The location code of the FRU
@@ -1092,7 +1092,7 @@ class DataInterface : public DataInterfaceBase
 
     /**
      * @brief Watcher to check "openpower-update-bios-attr-table" service
-     *        is "done" to init PHAL libraires
+     *        is "done" to init PHAL libraries
      */
     std::unique_ptr<sdbusplus::bus::match_t> _systemdMatch;
 

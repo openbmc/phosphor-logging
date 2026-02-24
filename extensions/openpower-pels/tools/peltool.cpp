@@ -42,7 +42,7 @@ std::string pelLogDir()
 
 /**
  * @brief helper function to get PEL commit timestamp from file name
- * @retrun uint64_t - PEL commit timestamp
+ * @return uint64_t - PEL commit timestamp
  * @param[in] std::string - file name
  */
 uint64_t fileNameToTimestamp(const std::string& fileName)
@@ -138,7 +138,7 @@ uint64_t fileNameToTimestamp(const std::string& fileName)
 
 /**
  * @brief helper function to get PEL id from file name
- * @retrun uint32_t - PEL id
+ * @return uint32_t - PEL id
  * @param[in] std::string - file name
  */
 uint32_t fileNameToPELId(const std::string& fileName)
@@ -205,7 +205,7 @@ std::vector<uint8_t> getFileData(const std::string& name)
 /**
  * @brief Initialize Python interpreter and gather all UD parser modules under
  *        the paths found in Python sys.path and the current user directory.
- *        This is to prevent calling a non-existant module which causes Python
+ *        This is to prevent calling a non-existent module which causes Python
  *        to print an import error message and breaking JSON output.
  *
  * @return std::vector<std::string> Vector of plugins found in filesystem
@@ -769,7 +769,7 @@ std::regex genRegex(std::string& scrubFile)
             std::cerr << "Mismatched bracket ([ or ])\n";
         else if (e.code() == std::regex_constants::error_paren)
         {
-            // to catch return code error_badrepeat when error_paren is retured
+            // to catch return code error_badrepeat when error_paren is returned
             // instead
             size_t pos = pattern.find_first_of("*+?{");
             while (pos != std::string::npos)

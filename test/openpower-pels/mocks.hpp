@@ -203,7 +203,7 @@ class MockHostInterface : public HostInterface
             }
         }
 
-        // Open it and register the reponse callback to
+        // Open it and register the response callback to
         // be used on FD activity.
         int fd = open(_fifo.c_str(), O_NONBLOCK | O_RDWR);
         EXPECT_TRUE(fd >= 0) << "Unable to open FIFO";
@@ -227,7 +227,7 @@ class MockHostInterface : public HostInterface
             return CmdStatus::failure;
         }
 
-        // Write the fake host reponse to the FIFO
+        // Write the fake host response to the FIFO
         auto bytesWritten = write(fd, &hostResponse, sizeof(hostResponse));
         EXPECT_EQ(bytesWritten, sizeof(hostResponse));
 

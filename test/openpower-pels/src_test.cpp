@@ -219,7 +219,7 @@ TEST_F(SRCTest, CreateTestNoCallouts)
     // And that none of the error status flags are set
     EXPECT_EQ(hexwords[5 - 2], 0);
 
-    // The user defined hex word fields specifed in the additional data.
+    // The user defined hex word fields specified in the additional data.
     EXPECT_EQ(hexwords[6 - 2], 0x12345678); // TEST1
     EXPECT_EQ(hexwords[7 - 2], 12345678);   // TEST2
     EXPECT_EQ(hexwords[8 - 2], 0xdef);      // TEST3

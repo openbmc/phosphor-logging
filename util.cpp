@@ -64,7 +64,7 @@ void journalSync()
     //               journald updates with the timestamp the last time the
     //               journal was flushed.
     // Iteration #3: Poll to wait until inotify reports an event which blocks
-    //               the error log from being commited until the sync completes.
+    //               the error log from being committed until the sync completes.
     constexpr auto maxRetry = 3;
     for (int i = 0; i < maxRetry; i++)
     {

@@ -230,7 +230,7 @@ void SbeFFDC::process(const sbeFfdcPacketType& ffdcPkt)
 {
     using json = nlohmann::json;
 
-    // formated FFDC data structure after FFDC packet processing
+    // formatted FFDC data structure after FFDC packet processing
     FFDC ffdc;
 
     try
@@ -264,7 +264,7 @@ void SbeFFDC::process(const sbeFfdcPacketType& ffdcPkt)
     auto calloutData = pelJSONFmtCalloutDataList.dump();
     util::TemporaryFile ffdcFile(calloutData.c_str(), calloutData.size());
 
-    // Create json callout type pel FFDC file structre.
+    // Create json callout type pel FFDC file structure.
     PelFFDCfile pf;
     pf.format = openpower::pels::UserDataFormat::json;
     pf.subType = openpower::pels::jsonCalloutSubtype;
