@@ -86,6 +86,24 @@
       "message": "json j \u003d t.to_json();\nj[\"severity\"] \u003d severity;\nlg2::error(... j.dump());",
       "revId": "f98fd5f2535b31ebb423fe54a97540730c0ca41a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cefaf7b3_dc387abb",
+        "filename": "lib/lg2_commit.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-02-26T17:00:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21e0d8e9_c933a429",
+      "revId": "f98fd5f2535b31ebb423fe54a97540730c0ca41a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
