@@ -16,6 +16,24 @@
       "message": "Not used",
       "revId": "b6c6e2dbab1f4c903bf045b927d7f92bb85f8670",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f99fb7da_8c23113b",
+        "filename": "test/bmc_pos_mgr_test.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-02-27T16:47:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05f9a1d5_e2883a90",
+      "revId": "b6c6e2dbab1f4c903bf045b927d7f92bb85f8670",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
