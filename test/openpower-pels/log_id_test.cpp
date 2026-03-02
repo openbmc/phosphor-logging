@@ -85,3 +85,28 @@ TEST(LogIdTest, PELIDTest)
 
     fs::remove_all(fs::path{backingFile}.parent_path());
 }
+
+TEST(LogIdTest, IDTestWithBMCPos)
+{
+    // Position 1
+    position::extractBMCPostionFromLogID(0x01000123);
+    EXPECT_EQ(generatePELID(), 0x51000001);
+
+    // Position 0
+    position::extractBMCPostionFromLogID(0x00000345);
+    EXPECT_EQ(generatePELID(), 0x50000002);
+
+    // No Position
+    position::extractBMCPostionFromLogID(0xFF000678);
+    EXPECT_EQ(generatePELID(), 0x5F000003);
+
+    // Back to 0
+    position::extractBMCPostionFromLogID(0x000009AB);
+    EXPECT_EQ(generatePELID(), 0x50000004);
+
+    // Invalid, so PEL gets 0x5F
+    position::extractBMCPostionFromLogID(0x39000CDE);
+    EXPECT_EQ(generatePELID(), 0x5F000005);
+
+    fs::remove_all(getPELIDFile().parent_path());
+}
