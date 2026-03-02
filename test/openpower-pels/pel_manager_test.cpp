@@ -1420,3 +1420,53 @@ TEST_F(ManagerTest, TestPELDeleteWithHWIsolation)
     EXPECT_TRUE(manager.isDeleteProhibited(42));
     manager.erase(42);
 }
+
+// Test that the PELs get created with the BMC position from the obmcLogID
+TEST_F(ManagerTest, TestCreatePELsWithBMCPosInID)
+{
+    auto dir = makeTempDir();
+
+    // Function to create a PEL with the passed in OBMC ID
+    auto createPEL = [](Manager& manager, const std::filesystem::path& tempdir,
+                        uint32_t obmcLogID) {
+        auto data = pelDataFactory(TestPELType::pelSimple);
+
+        fs::path pelFilename = tempdir / "rawpel";
+        std::ofstream pelFile{pelFilename};
+        pelFile.write(reinterpret_cast<const char*>(data.data()), data.size());
+        pelFile.close();
+
+        std::map<std::string, std::string> additionalData{
+            {"RAWPEL", pelFilename.string()}};
+
+        manager.create("error message", obmcLogID, 0, Level::Error,
+                       additionalData, {});
+    };
+
+    // Create PELs with different BMC positions
+    {
+        std::unique_ptr<DataInterfaceBase> dataIface =
+            std::make_unique<MockDataInterface>();
+        std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+
+        Manager manager{logManager, std::move(dataIface),
+                        std::bind_front(&TestLogger::log, &logger),
+                        std::move(journal)};
+
+        // Position 1
+        createPEL(manager, dir, 0x01000001);
+        EXPECT_EQ(manager.getPELIdFromBMCLogId(0x01000001), 0x51000001);
+
+        // No position
+        createPEL(manager, dir, 0xFF000002);
+        EXPECT_EQ(manager.getPELIdFromBMCLogId(0xFF000002), 0x5F000002);
+
+        // Position 0
+        createPEL(manager, dir, 0x00000003);
+        EXPECT_EQ(manager.getPELIdFromBMCLogId(0x00000003), 0x50000003);
+
+        // 0x93 is an invalid position, so will get a 0x5F PEL
+        createPEL(manager, dir, 0x9300FFFF);
+        EXPECT_EQ(manager.getPELIdFromBMCLogId(0x9300FFFF), 0x5F000004);
+    }
+}
