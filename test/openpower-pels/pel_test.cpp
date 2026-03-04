@@ -3,6 +3,7 @@
 
 #include "elog_entry.hpp"
 #include "extensions/openpower-pels/generic.hpp"
+#include "extensions/openpower-pels/log_id.hpp"
 #include "extensions/openpower-pels/pel.hpp"
 #include "mocks.hpp"
 #include "pel_utils.hpp"
@@ -395,6 +396,11 @@ TEST_F(PELTest, SysInfoSectionTest)
         .WillOnce(Return("State.SystemInitComplete"));
     EXPECT_CALL(dataIface, getSystemIMKeyword())
         .WillOnce(Return(std::vector<uint8_t>{0, 1, 0x55, 0xAA}));
+    EXPECT_CALL(dataIface, getBMCRedundancyFields())
+        .WillOnce(Return(std::make_pair(true, "Active")));
+
+    // Set BMC position to 1 for testing
+    position::extractBMCPostionFromLogID(0x01000000);
 
     std::map<std::string, std::string> ad{{"_PID", std::to_string(getpid())}};
     AdditionalData additionalData{ad};
@@ -437,6 +443,13 @@ TEST_F(PELTest, SysInfoSectionTest)
 
     auto keyword = json["System IM"].get<std::string>();
     EXPECT_EQ(keyword, "000155AA");
+
+    // Check BMCRedundancy fields
+    ASSERT_TRUE(json.contains("BMCRedundancy"));
+    auto redundancy = json["BMCRedundancy"];
+    EXPECT_EQ(redundancy["Enabled"].get<bool>(), true);
+    EXPECT_EQ(redundancy["Role"].get<std::string>(), "Active");
+    EXPECT_EQ(redundancy["Position"].get<size_t>(), 1);
 }
 
 // Test that the sections that override

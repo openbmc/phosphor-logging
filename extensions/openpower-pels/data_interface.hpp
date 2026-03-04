@@ -12,7 +12,6 @@
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
 
-#include <expected>
 #include <filesystem>
 #include <fstream>
 #include <unordered_map>
@@ -557,6 +556,18 @@ class DataInterfaceBase
         const DBusPath& associatedPath, const DBusPath& subtree, int32_t depth,
         const DBusInterfaceList& interfaces) const = 0;
 
+    /**
+     * @brief Returns the values of the RedundancyEnabled and Role properties
+     *        on the xyz.openbmc_project.State.BMC.Redundancy interface.
+     *
+     *  To be used for PEL user data.
+     *  The role is shortened from the full enum string value.
+     *
+     *  @return pair<bool, string> - The properties or nullopt if an error.
+     */
+    virtual std::optional<std::pair<bool, std::string>> getBMCRedundancyFields()
+        const = 0;
+
   protected:
     /**
      * @brief Sets the host on/off state and runs any
@@ -934,6 +945,18 @@ class DataInterface : public DataInterfaceBase
     DBusPathList getAssociatedPaths(
         const DBusPath& associatedPath, const DBusPath& subtree, int32_t depth,
         const DBusInterfaceList& interfaces) const override;
+
+    /**
+     * @brief Returns the values of the RedundancyEnabled and Role properties
+     *        on the xyz.openbmc_project.State.BMC.Redundancy interface.
+     *
+     *  To be used for PEL user data.
+     *  The role is shortened from the full enum string value.
+     *
+     *  @return pair<bool, string> - The properties or nullopt if an error.
+     */
+    std::optional<std::pair<bool, std::string>> getBMCRedundancyFields()
+        const override;
 
   private:
     /**
