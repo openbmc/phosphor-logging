@@ -40,6 +40,7 @@ foreach t : tests
         executable(
             'test-' + t.underscorify(),
             t + '.cpp',
+            'bmc_pos_path.cpp',
             'common.cpp',
             '../phosphor-rsyslog-config/server-conf.cpp',
             dependencies: [
@@ -68,6 +69,7 @@ foreach t : tests_non_parallel
         executable(
             'test-' + t.underscorify(),
             t + '.cpp',
+            'bmc_pos_path.cpp',
             'common.cpp',
             '../phosphor-rsyslog-config/server-conf.cpp',
             dependencies: [

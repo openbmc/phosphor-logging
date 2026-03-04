@@ -1,3 +1,4 @@
+#include "bmc_pos_fixture.hpp"
 #include "elog_entry.hpp"
 #include "extensions.hpp"
 
@@ -59,7 +60,10 @@ REGISTER_EXTENSION_FUNCTION(logIDWithHwIsolation2)
 REGISTER_EXTENSION_FUNCTION(deleteLog1)
 REGISTER_EXTENSION_FUNCTION(deleteLog2)
 
-TEST(ExtensionsTest, FunctionCallTest)
+class ExtensionsTest : public test::BMCPosTestFixture
+{};
+
+TEST_F(ExtensionsTest, FunctionCallTest)
 {
     sdbusplus::SdBusMock sdbusMock;
     sdbusplus::bus_t bus = sdbusplus::get_mocked_new(&sdbusMock);

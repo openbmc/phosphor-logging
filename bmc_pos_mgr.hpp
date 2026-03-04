@@ -8,8 +8,6 @@
 namespace phosphor::logging
 {
 
-const std::filesystem::path bmcPositionFile = "/run/openbmc/bmc_position";
-
 /**
  * @class BMCPosMgr
  *
@@ -27,8 +25,12 @@ class BMCPosMgr
     BMCPosMgr(BMCPosMgr&&) = delete;
     BMCPosMgr& operator=(BMCPosMgr&&) = delete;
 
-    explicit BMCPosMgr(const std::filesystem::path& posFile = bmcPositionFile) :
-        posFile(posFile)
+    /**
+     * @brief Constructor
+     *
+     * @param[in] posFile - The position file to use
+     */
+    explicit BMCPosMgr(const std::filesystem::path& posFile) : posFile(posFile)
     {
         readBMCPosition();
     }

@@ -1,3 +1,4 @@
+#include "../bmc_pos_fixture.hpp"
 #include "extensions/openpower-pels/paths.hpp"
 
 #include <filesystem>
@@ -26,7 +27,7 @@ class CleanLogID : public ::testing::Test
     static std::filesystem::path pelIDFile;
 };
 
-class CleanPELFiles : public ::testing::Test
+class CleanPELFiles : public phosphor::logging::test::BMCPosTestFixture
 {
   protected:
     void SetUp() override
@@ -42,6 +43,7 @@ class CleanPELFiles : public ::testing::Test
             std::filesystem::path{pelIDFile}.parent_path());
         std::filesystem::remove_all(repoPath);
         std::filesystem::remove_all(registryPath);
+        phosphor::logging::test::BMCPosTestFixture::TearDown();
     }
 
     static std::filesystem::path pelIDFile;
