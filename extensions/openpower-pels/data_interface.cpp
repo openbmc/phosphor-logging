@@ -90,6 +90,7 @@ constexpr auto invPowerSupply =
     "xyz.openbmc_project.Inventory.Item.PowerSupply";
 constexpr auto inventoryManager = "xyz.openbmc_project.Inventory.Manager";
 constexpr auto systemdMgr = "org.freedesktop.systemd1.Manager";
+constexpr auto redundancy = "xyz.openbmc_project.State.BMC.Redundancy";
 } // namespace interface
 
 using namespace sdbusplus::server::xyz::openbmc_project::state::boot;
@@ -1187,6 +1188,50 @@ void DataInterface::unsubscribeFromSystemdSignals()
             "exception: {ERROR}",
             "ERROR", e);
     }
+}
+
+std::optional<std::pair<bool, std::string>>
+    DataInterface::getBMCRedundancyFields() const
+{
+    try
+    {
+        bool redundancyEnabled = false;
+        std::string role;
+
+        auto service = getService(object_path::bmcState, interface::redundancy);
+
+        auto properties = getAllProperties(service, object_path::bmcState,
+                                           interface::redundancy);
+        auto prop = properties.find("RedundancyEnabled");
+        if (prop != properties.end())
+        {
+            redundancyEnabled = std::get<bool>(prop->second);
+        }
+        else
+        {
+            lg2::warning(
+                "RedundancyEnabled property not on Redundancy interface");
+        }
+
+        prop = properties.find("Role");
+        if (prop != properties.end())
+        {
+            role = std::get<std::string>(prop->second);
+            if (role.contains('.'))
+            {
+                role = role.substr(role.find_last_of('.') + 1);
+            }
+        }
+        else
+        {
+            lg2::warning("Role property not on Redundancy interface");
+        }
+
+        return std::make_pair(redundancyEnabled, role);
+    }
+    catch (const std::exception& e)
+    {}
+    return std::nullopt;
 }
 
 } // namespace pels

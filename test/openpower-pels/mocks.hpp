@@ -72,6 +72,8 @@ class MockDataInterface : public DataInterfaceBase
                 (const DBusPath&, const DBusPath&, int32_t,
                  const DBusInterfaceList&),
                 (const override));
+    MOCK_METHOD((std::optional<std::pair<bool, std::string>>),
+                getBMCRedundancyFields, (), (const override));
 
     void changeHostState(bool newState)
     {

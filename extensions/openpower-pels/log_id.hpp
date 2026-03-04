@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <optional>
 #include <string>
 
 namespace openpower
@@ -22,6 +23,13 @@ extern uint32_t bmcPosition;
  * @param[in] obmcID - The ID to extract the position from
  */
 void extractBMCPostionFromLogID(uint32_t obmcID);
+
+/**
+ * @brief Returns the BMC position
+ *
+ * @return The BMC position, or std::nullopt if not available.
+ */
+std::optional<uint32_t> getBMCPosition();
 
 } // namespace position
 

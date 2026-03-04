@@ -901,6 +901,24 @@ void addBMCUptime(nlohmann::json& json, const DataInterfaceBase& dataIface)
     json["BMCLoad"] = dataIface.getBMCLoadAvg();
 }
 
+void addBMCRedundancyFieldsToJSON(nlohmann::json& json,
+                                  const DataInterfaceBase& dataIface)
+{
+    auto pos = position::getBMCPosition();
+
+    nlohmann::json obj;
+    obj["Position"] = pos.has_value() ? nlohmann::json(pos.value())
+                                      : nlohmann::json(unknownValue);
+    auto fields = dataIface.getBMCRedundancyFields();
+    if (fields.has_value())
+    {
+        obj["Enabled"] = fields.value().first;
+        obj["Role"] = fields.value().second;
+    }
+
+    json["BMCRedundancy"] = std::move(obj);
+}
+
 std::unique_ptr<UserData> makeSysInfoUserDataSection(
     const AdditionalData& ad, const DataInterfaceBase& dataIface,
     bool addUptime, const nlohmann::json& adSysInfoData)
@@ -911,6 +929,10 @@ std::unique_ptr<UserData> makeSysInfoUserDataSection(
     addBMCFWVersionIDToJSON(json, dataIface);
     addIMKeyword(json, dataIface);
     addStatesToJSON(json, dataIface);
+    if constexpr (USE_BMC_POS_IN_ID)
+    {
+        addBMCRedundancyFieldsToJSON(json, dataIface);
+    }
 
     if (addUptime)
     {
