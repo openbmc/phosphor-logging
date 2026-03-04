@@ -1,27 +1,22 @@
 // SPDX-License-Identifier: Apache-2.0
 // SPDX-FileCopyrightText: Copyright OpenBMC Authors
 
+#include "bmc_pos_fixture.hpp"
 #include "bmc_pos_mgr.hpp"
+#include "bmc_pos_path.hpp"
 
 #include <fstream>
 
 #include <gtest/gtest.h>
 
 using namespace phosphor::logging;
+using phosphor::logging::test::BMCPosTestFixture;
 
 class PosFile
 {
   public:
-    PosFile(size_t pos)
+    PosFile(size_t pos) : path(getBMCPositionFilePath())
     {
-        auto fd = mkstemp(path.data());
-        if (fd == -1)
-        {
-            throw std::runtime_error{
-                std::string{"Unable to create temporary file: "} +
-                strerror(errno)};
-        }
-        close(fd);
         write(pos);
     }
 
@@ -46,10 +41,10 @@ class PosFile
         std::filesystem::remove(path, ec);
     }
 
-    std::string path{std::filesystem::temp_directory_path() / "bmc-pos-XXXXXX"};
+    std::string path;
 };
 
-TEST(BMCPosMgrTest, ReadBMCPosition)
+TEST_F(BMCPosTestFixture, ReadBMCPosition)
 {
     PosFile file{0};
     BMCPosMgr mgr{file.path};
@@ -73,7 +68,7 @@ TEST(BMCPosMgrTest, ReadBMCPosition)
     EXPECT_EQ(mgr.getBMCPosition(), 0xFF);
 }
 
-TEST(BMCPosMgrTest, ProcessEntryId)
+TEST_F(BMCPosTestFixture, ProcessEntryId)
 {
     struct TestEntry
     {
@@ -109,7 +104,7 @@ TEST(BMCPosMgrTest, ProcessEntryId)
     }
 }
 
-TEST(BMCPosMgrTest, IdContainsCurrentPosition)
+TEST_F(BMCPosTestFixture, IdContainsCurrentPosition)
 {
     PosFile file{0};
     BMCPosMgr mgr{file.path};

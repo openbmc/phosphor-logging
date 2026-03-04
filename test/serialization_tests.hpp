@@ -1,5 +1,6 @@
 #include "config.h"
 
+#include "bmc_pos_fixture.hpp"
 #include "log_manager.hpp"
 
 #include <stdlib.h>
@@ -25,7 +26,7 @@ sdbusplus::SdBusMock sdbusMock;
 sdbusplus::bus_t bus = sdbusplus::get_mocked_new(&sdbusMock);
 phosphor::logging::internal::Manager manager(bus, OBJ_INTERNAL);
 
-class TestSerialization : public testing::Test
+class TestSerialization : public BMCPosTestFixture
 {
   public:
     TestSerialization() : dir(fs::path(mkdtemp(tmplt))) {}

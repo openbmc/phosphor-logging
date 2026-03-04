@@ -1,5 +1,6 @@
 #include "config.h"
 
+#include "bmc_pos_fixture.hpp"
 #include "elog_entry.hpp"
 #include "elog_serialize.hpp"
 #include "extensions.hpp"
@@ -31,8 +32,11 @@ void deleteIsNotProhibitedMock(uint32_t /*id*/, bool& prohibited)
     prohibited = false;
 }
 
+class TestUpdateTS : public BMCPosTestFixture
+{};
+
 // Test that the update timestamp changes when the resolved property changes
-TEST(TestUpdateTS, testChangeResolved)
+TEST_F(TestUpdateTS, testChangeResolved)
 {
     // Setting resolved will serialize, so need this directory.
     fs::create_directories(paths::error());
@@ -100,7 +104,7 @@ TEST(TestUpdateTS, testChangeResolved)
     fs::remove(fs::path{paths::error()} / std::to_string(id));
 }
 
-TEST(TestResolveProhibited, testResolveFlagChange)
+TEST_F(TestUpdateTS, testResolveFlagChange)
 {
     auto persist_path = phosphor::logging::paths::error();
 

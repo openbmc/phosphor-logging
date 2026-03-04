@@ -1,5 +1,6 @@
 #include "config.h"
 
+#include "bmc_pos_fixture.hpp"
 #include "log_manager.hpp"
 #include "paths.hpp"
 
@@ -20,7 +21,7 @@ using LoggingCleared = sdbusplus::event::xyz::openbmc_project::Logging::Cleared;
 using LoggingEntry = sdbusplus::client::xyz::openbmc_project::logging::Entry<>;
 
 // Fixture to spawn the log-manager for dbus-based testing.
-class TestLogManagerDbus : public ::testing::Test
+class TestLogManagerDbus : public BMCPosTestFixture
 {
   protected:
     // Create the daemon and sdbusplus::async::contexts.
@@ -36,6 +37,7 @@ class TestLogManagerDbus : public ::testing::Test
     void TearDown() override
     {
         data.reset();
+        BMCPosTestFixture::TearDown();
     }
 
     /** Run a client task, wait for it to complete, and stop daemon. */

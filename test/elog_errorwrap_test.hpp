@@ -1,5 +1,6 @@
 #include "config.h"
 
+#include "bmc_pos_fixture.hpp"
 #include "elog_serialize.hpp"
 #include "log_manager.hpp"
 #include "paths.hpp"
@@ -79,7 +80,7 @@ class MockJournal : public Manager
     MOCK_METHOD1(sd_journal_close, void(sd_journal*));
 };
 
-class TestLogManager : public testing::Test
+class TestLogManager : public phosphor::logging::test::BMCPosTestFixture
 {
   public:
     sdbusplus::bus_t bus;

@@ -66,6 +66,7 @@ openpower_test_lib = static_library(
     'openpower_test_lib',
     'pel_utils.cpp',
     'pel_paths.cpp',
+    '../bmc_pos_path.cpp',
     libpel_sources,
     peltool_sources,
     '../common.cpp',

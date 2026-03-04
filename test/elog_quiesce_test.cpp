@@ -1,5 +1,6 @@
 #include "config.h"
 
+#include "bmc_pos_fixture.hpp"
 #include "elog_entry.hpp"
 #include "log_manager.hpp"
 #include "paths.hpp"
@@ -19,7 +20,7 @@ namespace logging
 namespace test
 {
 
-class TestQuiesceOnError : public testing::Test
+class TestQuiesceOnError : public BMCPosTestFixture
 {
   public:
     sdbusplus::SdBusMock sdbusMock;

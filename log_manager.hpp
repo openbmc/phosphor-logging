@@ -3,6 +3,7 @@
 #include "config.h"
 
 #include "bmc_pos_mgr.hpp"
+#include "bmc_pos_path.hpp"
 #include "elog_block.hpp"
 #include "elog_entry.hpp"
 #include "xyz/openbmc_project/Logging/Internal/Manager/server.hpp"
@@ -79,7 +80,7 @@ class Manager : public details::ServerObject<details::ManagerIface>
     {
         if constexpr (USE_BMC_POS_IN_ID)
         {
-            bmcPosMgr = std::make_unique<BMCPosMgr>();
+            bmcPosMgr = std::make_unique<BMCPosMgr>(getBMCPositionFilePath());
         }
     };
 
