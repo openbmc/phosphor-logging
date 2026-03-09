@@ -684,7 +684,7 @@ void Manager::restore()
 
     for (auto& file : fs::directory_iterator(dir))
     {
-        auto id = file.path().filename().c_str();
+        auto id = file.path().filename().string();
         uint32_t idNum = std::stoul(id);
 
         auto e = std::make_unique<Entry>(
