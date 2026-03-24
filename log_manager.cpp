@@ -768,7 +768,7 @@ void Manager::setupErrorFileWatch()
     }
 
     auto errDir = paths::error();
-    uint32_t mask = IN_MOVED_TO;
+    uint32_t mask = IN_MOVED_TO | IN_DELETE;
 
     _errorFileWatchWD =
         inotify_add_watch(_errorFileWatchFD, errDir.c_str(), mask);
@@ -837,6 +837,13 @@ void Manager::errorFileChanged(sdeventplus::source::IO&, int, uint32_t revents)
                             lg2::error("Failed to restore entry {ID} from disk",
                                        "ID", idNum);
                         }
+                    }
+                }
+                else if (ev->mask & IN_DELETE)
+                {
+                    if (entries.contains(idNum))
+                    {
+                        erase(idNum);
                     }
                 }
             }
