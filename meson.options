@@ -36,10 +36,11 @@ option(
 )
 
 option(
-    'phal',
-    type: 'feature',
-    value: 'disabled',
-    description: 'Enable support for PHAL',
+    'phal_backend',
+    type: 'combo',
+    choices: ['legacy', 'next', 'none'],
+    value: 'none',
+    description: 'Select PHAL backend',
 )
 
 option(
