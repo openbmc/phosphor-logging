@@ -834,7 +834,15 @@ void Manager::errorFileChanged(sdeventplus::source::IO&, int, uint32_t revents)
 
                 if (ev->mask & IN_MOVED_TO)
                 {
-                    if (!entries.contains(idNum))
+                    if (entries.contains(idNum))
+                    {
+                        if (!refreshFromDisk(idNum))
+                        {
+                            lg2::error("Failed to refresh entry {ID} from disk",
+                                       "ID", idNum);
+                        }
+                    }
+                    else
                     {
                         if (!restoreFromDisk(idNum))
                         {
@@ -916,6 +924,58 @@ bool Manager::restoreFromDisk(uint32_t id)
     else
     {
         entryId = std::max(entryId, id);
+    }
+
+    return true;
+}
+
+bool Manager::refreshFromDisk(uint32_t id)
+{
+    auto it = entries.find(id);
+    if (it == entries.end() || !it->second)
+    {
+        lg2::error("refreshFromDisk called for unknown entry ID {ID}", "ID",
+                   id);
+        return false;
+    }
+
+    const fs::path path = paths::error() / std::to_string(id);
+
+    std::error_code ec;
+    if (!fs::is_regular_file(path, ec))
+    {
+        return false;
+    }
+
+    if (!deserialize(path, *(it->second)))
+    {
+        lg2::error("Failed to deserialize entry {ID} from {PATH}", "ID", id,
+                   "PATH", path);
+        return false;
+    }
+
+    it->second->path(path, true);
+
+    // The entry severity may have changed after update,
+    // so remove it from the old list before adding it to the correct one.
+    auto eraseOnce = [](std::list<uint32_t>& lst, uint32_t value) {
+        const auto pos = std::find(lst.begin(), lst.end(), value);
+        if (pos != lst.end())
+        {
+            lst.erase(pos);
+        }
+    };
+
+    eraseOnce(infoErrors, id);
+    eraseOnce(realErrors, id);
+
+    if (it->second->severity() >= Entry::sevLowerLimit)
+    {
+        infoErrors.push_back(id);
+    }
+    else
+    {
+        realErrors.push_back(id);
     }
 
     return true;
