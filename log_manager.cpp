@@ -780,7 +780,10 @@ void Manager::setupErrorFileWatch()
     // first and moved into place only after the write completes. Using
     // IN_MOVED_TO ensures we react only when the finalized file appears in the
     // target directory.
-    uint32_t mask = IN_MOVED_TO;
+    //
+    // IN_DELETE handles synced file removals so the corresponding in-memory
+    // event log entry is also removed.
+    uint32_t mask = IN_MOVED_TO | IN_DELETE;
 
     if (!util::setupInotifyWatch(errDir, mask, errDirInotifyFD,
                                  errDirWatcherWD))
@@ -848,6 +851,13 @@ void Manager::errorFileChanged(sdeventplus::source::IO&, int, uint32_t revents)
                             lg2::error("Failed to restore entry {ID} from disk",
                                        "ID", idNum);
                         }
+                    }
+                }
+                else if (ev->mask & IN_DELETE)
+                {
+                    if (entries.contains(idNum))
+                    {
+                        erase(idNum);
                     }
                 }
             }
