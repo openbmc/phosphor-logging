@@ -8,9 +8,9 @@ extra_sources = []
 extra_dependencies = []
 extra_args = []
 
-build_phal = get_option('phal').allowed()
+openpower_pel_phal_backend = get_option('openpower_pel_phal_backend')
 
-if build_phal
+if openpower_pel_phal_backend == 'legacy'
     extra_sources += [
         'sbe_ffdc_handler.cpp',
         'fapi_data_process.cpp',
