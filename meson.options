@@ -36,10 +36,11 @@ option(
 )
 
 option(
-    'phal',
-    type: 'feature',
-    value: 'disabled',
-    description: 'Enable support for PHAL',
+    'openpower_pel_phal_backend',
+    type: 'combo',
+    choices: ['legacy', 'next', 'none'],
+    value: 'none',
+    description: 'Select the PHAL (Power Hardware Abstraction Layer, used by the BMC to access host processor hardware) backend for the OpenPOWER PEL extension, which needs it to decode SBE/FAPI FFDC and to apply guard/deconfigure service actions to hardware callouts: legacy , next, or none',
 )
 
 option(
