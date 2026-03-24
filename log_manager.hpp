@@ -9,6 +9,7 @@
 
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
+#include <sdeventplus/source/io.hpp>
 #include <xyz/openbmc_project/Collection/DeleteAll/server.hpp>
 #include <xyz/openbmc_project/Logging/Create/server.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
@@ -75,7 +76,8 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     Manager(sdbusplus::bus_t& bus, const char* objPath) :
         details::ServerObject<details::ManagerIface>(bus, objPath), busLog(bus),
-        entryId(0), fwVersion(readFWVersion())
+        entryId(0), fwVersion(readFWVersion()),
+        _event(sdeventplus::Event::get_default())
     {
         if constexpr (USE_BMC_POS_IN_ID)
         {
@@ -228,6 +230,14 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     void checkAndRemoveBlockingError(uint32_t entryId);
 
+    /**
+     * @brief Sets up an inotify watch on the error entry directory.
+     *
+     * Watches for intrested events which indicate that a new error entry
+     * file has been created (typically via rsync during RBMC synchronization).
+     */
+    void setupErrorFileWatch();
+
     /** @brief Persistent map of Entry dbus objects and their ID */
     std::map<uint32_t, std::unique_ptr<Entry>> entries;
 
@@ -303,6 +313,24 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     void checkAndQuiesceHost();
 
+    /** @brief Restore a single error entry from disk into the entries map and
+     *         D-Bus
+     *
+     * @param[in] id - The entry ID to restore
+     * @return true if the entry was successfully restored, false otherwise
+     */
+    bool restoreFromDisk(uint32_t id);
+
+    /**
+     * @brief Handles inotify events for the error entry directory.
+     *
+     * @param[in] io - The event source object.
+     * @param[in] fd - File descriptor for the inotify instance.
+     * @param[in] revents - Event flags returned by epoll.
+     */
+    void errorFileChanged(sdeventplus::source::IO& io, int fd,
+                          uint32_t revents);
+
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus_t& busLog;
 
@@ -327,6 +355,28 @@ class Manager : public details::ServerObject<details::ManagerIface>
 
     /** @brief Encodes the BMC position in the entryId when enabled */
     std::unique_ptr<BMCPosMgr> bmcPosMgr;
+
+    /**
+     * @brief Event source used to monitor error entry directory changes.
+     */
+    std::unique_ptr<sdeventplus::source::IO> _errorFileWatchEventSource;
+
+    /**
+     * @brief Reference to the sd-event wrapper used to register event sources.
+     */
+    sdeventplus::Event _event;
+
+    /**
+     * @brief File descriptor returned by inotify_init1() for the error entry
+     * watcher.
+     */
+    int _errorFileWatchFD = -1;
+
+    /**
+     * @brief Watch descriptor returned by inotify_add_watch() for the error
+     * entry directory.
+     */
+    int _errorFileWatchWD = -1;
 };
 
 } // namespace internal
