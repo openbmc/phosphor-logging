@@ -37,6 +37,9 @@ int main(int argc, char* argv[])
     // Create a directory to persist errors.
     std::filesystem::create_directories(phosphor::logging::paths::error());
 
+    // Start watching for newly synced error files.
+    iMgr.setupErrorFileWatch();
+
     // Recreate error d-bus objects from persisted errors.
     iMgr.restore();
 

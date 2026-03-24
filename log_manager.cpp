@@ -55,6 +55,18 @@ inline auto getLevel(const std::string& errMsg)
     return reqLevel;
 }
 
+Manager::~Manager()
+{
+    if (_errorFileWatchFD != -1)
+    {
+        if (_errorFileWatchWD != -1)
+        {
+            inotify_rm_watch(_errorFileWatchFD, _errorFileWatchWD);
+        }
+        close(_errorFileWatchFD);
+    }
+}
+
 int Manager::getRealErrSize()
 {
     return realErrors.size();
@@ -755,6 +767,158 @@ auto Manager::create(const std::string& message, Entry::Level severity,
                      const FFDCEntries& ffdc) -> sdbusplus::message::object_path
 {
     return createEntry(message, severity, additionalData, ffdc);
+}
+
+void Manager::setupErrorFileWatch()
+{
+    _errorFileWatchFD = inotify_init1(IN_NONBLOCK);
+    if (_errorFileWatchFD == -1)
+    {
+        lg2::error("inotify_init1(errors) failed errno {ERRNO}", "ERRNO",
+                   errno);
+        abort();
+    }
+
+    auto errDir = paths::error();
+    uint32_t mask = IN_MOVED_TO;
+
+    _errorFileWatchWD =
+        inotify_add_watch(_errorFileWatchFD, errDir.c_str(), mask);
+    if (_errorFileWatchWD == -1)
+    {
+        lg2::error("inotify_add_watch(errors) failed errno {ERRNO}", "ERRNO",
+                   errno);
+        abort();
+    }
+
+    _errorFileWatchEventSource = std::make_unique<sdeventplus::source::IO>(
+        _event, _errorFileWatchFD, EPOLLIN,
+        std::bind(std::mem_fn(&Manager::errorFileChanged), this,
+                  std::placeholders::_1, std::placeholders::_2,
+                  std::placeholders::_3));
+}
+
+void Manager::errorFileChanged(sdeventplus::source::IO&, int, uint32_t revents)
+{
+    if (!(revents & EPOLLIN))
+    {
+        return;
+    }
+
+    std::array<uint8_t, 64 * 1024> buf{};
+    const auto bytesRead = read(_errorFileWatchFD, buf.data(), buf.size());
+    if (bytesRead < 0)
+    {
+        if (errno == EAGAIN || errno == EWOULDBLOCK)
+        {
+            return;
+        }
+
+        lg2::error("read(inotify errors) failed errno {ERRNO}", "ERRNO", errno);
+        return;
+    }
+
+    const auto totalBytes = static_cast<size_t>(bytesRead);
+    size_t offset = 0;
+
+    while (offset < totalBytes)
+    {
+        auto* ev = reinterpret_cast<inotify_event*>(&buf[offset]);
+
+        if (ev->len)
+        {
+            try
+            {
+                const auto idNum =
+                    static_cast<uint32_t>(std::stoul(ev->name, nullptr, 10));
+
+                if (ev->mask & IN_MOVED_TO)
+                {
+                    if (!entries.contains(idNum))
+                    {
+                        if (!restoreFromDisk(idNum))
+                        {
+                            lg2::error("Failed to restore entry {ID} from disk",
+                                       "ID", idNum);
+                        }
+                    }
+                }
+            }
+            catch (const std::exception& e)
+            {
+                lg2::info(
+                    "Could not parse error entry ID from filename NAME {NAME}",
+                    "NAME", ev->name);
+            }
+        }
+
+        offset += offsetof(inotify_event, name) + ev->len;
+    }
+}
+
+bool Manager::restoreFromDisk(uint32_t id)
+{
+    const fs::path path = paths::error() / std::to_string(id);
+
+    std::error_code ec;
+    if (!fs::is_regular_file(path, ec))
+    {
+        return false;
+    }
+
+    const std::string objPath =
+        std::string(OBJ_ENTRY) + "/" + std::to_string(id);
+
+    auto entry = std::make_unique<Entry>(busLog, objPath, id, *this);
+
+    if (!deserialize(path, *entry))
+    {
+        lg2::error("Failed to deserialize entry {ID} from {PATH}", "ID", id,
+                   "PATH", path);
+        return false;
+    }
+
+    if (entry->id() != id)
+    {
+        lg2::error(
+            "Sanity check failed while restoring entry EXPECTED_ID={EXPECTED_ID} "
+            "RESTORED_ID={RESTORED_ID}",
+            "EXPECTED_ID", id, "RESTORED_ID", entry->id());
+        return false;
+    }
+
+    entry->path(path, true);
+
+    auto [it, inserted] = entries.emplace(id, std::move(entry));
+    if (!inserted)
+    {
+        return true;
+    }
+
+    if (it->second->severity() >= Entry::sevLowerLimit)
+    {
+        infoErrors.push_back(id);
+    }
+    else
+    {
+        realErrors.push_back(id);
+    }
+
+    it->second->emit_object_added();
+
+    if constexpr (USE_BMC_POS_IN_ID)
+    {
+        if (bmcPosMgr->idContainsCurrentPosition(id))
+        {
+            entryId = std::max(entryId, id);
+        }
+    }
+    else
+    {
+        entryId = std::max(entryId, id);
+    }
+
+    return true;
 }
 
 } // namespace internal
