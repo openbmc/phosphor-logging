@@ -89,6 +89,15 @@ lg2::commit(sdbusplus::event::xyz::openbmc_project::Logging::Cleared(
     "NUMBER_OF_LOGS", count), LOG_CRIT);
 ```
 
+Services may also add extra key-value pairs to the additional data of the event
+by providing the optional parameter which can be useful for adding entries like
+CALLOUT_INVENTORY_PATH which would otherwise need to go through other paths:
+
+```cpp
+lg2::commit(sdbusplus::event::xyz::openbmc_project::Logging::Cleared(
+    "NUMBER_OF_LOGS", count), std::nullopt, {"HELLO", "WORLD"});
+```
+
 ### Event Log Filtering
 
 Vendors customizing phosphor-logging for their platforms may decide that they
