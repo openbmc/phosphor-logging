@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "08fbea55_db9cb633",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-03-25T17:55:36Z",
+      "side": 1,
+      "message": "Oh, you can leave off the \u0027PEL\u0027 on commits that don\u0027t affect the extensions/openpower-pels subdir.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 5
+      },
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6ad778e8_76cfe9de",
         "filename": "log_manager.cpp",
         "patchSetId": 2
@@ -32,6 +55,24 @@
       "side": 1,
       "message": "Do you mean to put this all logic behind a meson option so it’s only enabled for RBMC use cases? I can update it accordingly.",
       "parentUuid": "6ad778e8_76cfe9de",
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2046397_caeaa975",
+        "filename": "log_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-03-25T17:55:36Z",
+      "side": 1,
+      "message": "yea.",
+      "parentUuid": "d238f216_d6c42f2a",
       "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
