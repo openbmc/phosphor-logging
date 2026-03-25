@@ -115,7 +115,8 @@ auto extractEvent(sdbusplus::exception::generated_event_base&& t)
 } // namespace details
 
 auto commit(sdbusplus::exception::generated_event_base&& t,
-            std::optional<int> overrideLevel) -> sdbusplus::object_path
+            std::optional<int> overrideLevel, AdditionalData_t additionalData)
+    -> sdbusplus::message::object_path
 {
     int severity = overrideLevel.value_or(t.severity());
     // Check event filters first.
@@ -144,8 +145,10 @@ auto commit(sdbusplus::exception::generated_event_base&& t,
             b.new_method_call(Create::default_service, Create::instance_path,
                               Create::interface, "Create");
 
-        m.append(t.name(), details::severity_from_syslog(severity),
-                 details::data_from_json(t));
+        auto data = details::data_from_json(t);
+        data.merge(details::AdditionalData_t(std::move(additionalData)));
+
+        m.append(t.name(), details::severity_from_syslog(severity), data);
 
         auto reply = b.call(m);
 
@@ -171,8 +174,8 @@ void resolve(const sdbusplus::object_path& logPath)
 
 auto commit(sdbusplus::async::context& ctx,
             sdbusplus::exception::generated_event_base&& t,
-            std::optional<int> overrideLevel)
-    -> sdbusplus::async::task<sdbusplus::object_path>
+            std::optional<int> overrideLevel, AdditionalData_t additionalData)
+    -> sdbusplus::async::task<sdbusplus::message::object_path>
 {
     using details::Create;
     int severity = overrideLevel.value_or(t.severity());
@@ -184,11 +187,13 @@ auto commit(sdbusplus::async::context& ctx,
 
     if constexpr (LG2_COMMIT_DBUS)
     {
+        auto data = details::data_from_json(t);
+        data.merge(details::AdditionalData_t(std::move(additionalData)));
+
         co_return co_await Create(ctx)
             .service(Create::default_service)
             .path(Create::instance_path)
-            .create(t.name(), details::severity_from_syslog(severity),
-                    details::data_from_json(t));
+            .create(t.name(), details::severity_from_syslog(severity), data);
     }
     co_return {};
 }
