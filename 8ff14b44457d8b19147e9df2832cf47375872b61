@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d238f216_d6c42f2a",
+        "filename": "log_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-03-25T11:00:55Z",
+      "side": 1,
+      "message": "Do you mean to put this all logic behind a meson option so it’s only enabled for RBMC use cases? I can update it accordingly.",
+      "parentUuid": "6ad778e8_76cfe9de",
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5b62a0f6_9852cb90",
         "filename": "log_manager.cpp",
         "patchSetId": 2
@@ -43,6 +61,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e0c39e04_6d6e7529",
+        "filename": "log_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 796,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-03-25T11:00:55Z",
+      "side": 1,
+      "message": "Thanks, that’s a good suggestion. I’ll switch to std::bind_front.",
+      "parentUuid": "5b62a0f6_9852cb90",
+      "range": {
+        "startLine": 796,
+        "startChar": 8,
+        "endLine": 796,
+        "endChar": 17
+      },
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2551700d_d580f217",
         "filename": "log_manager.cpp",
         "patchSetId": 2
@@ -54,6 +96,24 @@
       "writtenOn": "2026-03-24T21:52:05Z",
       "side": 1,
       "message": "I like this check, but what happens if:\n1. BMC A creates event.\n2. event is synced to BMC B\n3. someone updates Resolved property on BMC A.",
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fefa1569_38080c98",
+        "filename": "log_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 837,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-03-25T11:00:55Z",
+      "side": 1,
+      "message": "Actually this case is handled by the refresh flow introduced in another commit.\n\nWhen a property like Resolved is updated on BMC A and synced to BMC B, the corresponding file change triggers the refresh path (refreshFromDisk), which updates the in-memory entry on the peer.\nhttps://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/88590",
+      "parentUuid": "2551700d_d580f217",
       "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
