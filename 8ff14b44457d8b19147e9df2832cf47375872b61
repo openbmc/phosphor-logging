@@ -96,6 +96,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1fcdaf54_84d24d3e",
+        "filename": "log_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 779,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-03-26T09:07:50Z",
+      "side": 1,
+      "message": "Will failure to create watcher descriptor for an error file result in termination of application due to abort() ?",
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15819c79_27a6a3f4",
+        "filename": "log_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 791,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-03-26T09:07:50Z",
+      "side": 1,
+      "message": "Same doubt as above.",
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5b62a0f6_9852cb90",
         "filename": "log_manager.cpp",
         "patchSetId": 2
@@ -172,6 +206,23 @@
       "side": 1,
       "message": "Actually this case is handled by the refresh flow introduced in another commit.\n\nWhen a property like Resolved is updated on BMC A and synced to BMC B, the corresponding file change triggers the refresh path (refreshFromDisk), which updates the in-memory entry on the peer.\nhttps://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/88590",
       "parentUuid": "2551700d_d580f217",
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49297a4c_da08b8c2",
+        "filename": "log_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-03-26T09:07:50Z",
+      "side": 1,
+      "message": "nit: Spelling error in interested.",
       "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
