@@ -77,7 +77,7 @@ class Manager : public details::ServerObject<details::ManagerIface>
         details::ServerObject<details::ManagerIface>(bus, objPath), busLog(bus),
         entryId(0), fwVersion(readFWVersion())
     {
-        if constexpr (USE_BMC_POS_IN_ID)
+        if constexpr (REDUNDANT_BMC)
         {
             bmcPosMgr = std::make_unique<BMCPosMgr>();
         }
