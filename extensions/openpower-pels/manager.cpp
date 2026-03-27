@@ -71,7 +71,7 @@ void Manager::create(const std::string& message, uint32_t obmcLogID,
     AdditionalData ad{additionalData};
 
     // Extract the latest BMC position value
-    if constexpr (USE_BMC_POS_IN_ID || IS_UNIT_TEST)
+    if constexpr (REDUNDANT_BMC || IS_UNIT_TEST)
     {
         position::extractBMCPostionFromLogID(obmcLogID);
     }

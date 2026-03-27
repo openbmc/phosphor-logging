@@ -14,8 +14,8 @@ conf_data.set(
     lg2_commit_strategy == 'journal' or lg2_commit_strategy == 'both' ? 'true' : 'false',
 )
 
-use_bmc_pos_in_id = get_option('use-bmc-pos-in-id')
-conf_data.set10('use_bmc_pos_in_id', use_bmc_pos_in_id)
+REDUNDANT_BMC = get_option('redundant-bmc')
+conf_data.set10('REDUNDANT_BMC', REDUNDANT_BMC)
 
 cxx = meson.get_compiler('cpp')
 if cxx.has_header('poll.h')
