@@ -516,7 +516,7 @@ Resolve or clear the corresponding entry to allow the system to boot.
 ## Encoding the BMC position in the entry ID
 
 On redundant BMC systems where multiple BMCs can be creating event logs, the
-'use-bmc-pos-in-id' meson option will trigger the encoding of the BMC position
+'redundant-bmc' meson option will trigger the encoding of the BMC position
 into the upper byte of the event log ID so that all event logs will have unique
 IDs.
 

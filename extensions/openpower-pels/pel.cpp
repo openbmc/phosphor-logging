@@ -929,7 +929,7 @@ std::unique_ptr<UserData> makeSysInfoUserDataSection(
     addBMCFWVersionIDToJSON(json, dataIface);
     addIMKeyword(json, dataIface);
     addStatesToJSON(json, dataIface);
-    if constexpr (USE_BMC_POS_IN_ID)
+    if constexpr (REDUNDANT_BMC)
     {
         addBMCRedundancyFieldsToJSON(json, dataIface);
     }
