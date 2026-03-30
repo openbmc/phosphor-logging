@@ -16,6 +16,40 @@
       "message": "how do the signals look from this?  It emits just the properties changed on the diffs?",
       "revId": "692039c4783f2c5daf0dd62bc31e977a90650cd5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91a416fa_dd5e081d",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 949,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2026-03-30T10:28:58Z",
+      "side": 1,
+      "message": "And we can use std::list:remove(value) instead this lambda",
+      "revId": "692039c4783f2c5daf0dd62bc31e977a90650cd5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "499d2272_5926dffd",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 957,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2026-03-30T10:28:58Z",
+      "side": 1,
+      "message": "Can\u0027t we check whether severity changed, if yes then remove?",
+      "revId": "692039c4783f2c5daf0dd62bc31e977a90650cd5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
