@@ -113,6 +113,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9f3210ad_21f68e12",
+        "filename": "log_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 779,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2026-03-30T06:55:15Z",
+      "side": 1,
+      "message": "Yes I also agree, we could handle gracefully throwing a runtime exception instead, Impact is restoration of Synced PELs wont work automatically until restart the application",
+      "parentUuid": "1fcdaf54_84d24d3e",
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "15819c79_27a6a3f4",
         "filename": "log_manager.cpp",
         "patchSetId": 2
@@ -177,6 +195,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "476d18ad_95ccb3c4",
+        "filename": "log_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 808,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2026-03-30T06:55:15Z",
+      "side": 1,
+      "message": "For safer, size of buffer can keep as per inotify manpage, it says:\n\nSpecifying a buffer of size `sizeof(struct inotify_event) + NAME_MAX + 1` will be sufficient to read at least one event.\n\nReference : https://man7.org/linux/man-pages/man7/inotify.7.html",
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2551700d_d580f217",
         "filename": "log_manager.cpp",
         "patchSetId": 2
@@ -223,6 +258,40 @@
       "writtenOn": "2026-03-26T09:07:50Z",
       "side": 1,
       "message": "nit: Spelling error in interested.",
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e442109e_86d4855b",
+        "filename": "log_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2026-03-30T06:55:15Z",
+      "side": 1,
+      "message": "Phosphor logging does not follow the naming convention of prefixing with _. To maintain consistency, we may  consider removing this prefix.",
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "911a4472_7dc145f8",
+        "filename": "log_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2026-03-30T06:55:15Z",
+      "side": 1,
+      "message": "Also, will `inotifyFD` \u0026 `errDirWatcherWD` makes more sense? \n\nReasos for suggestion :\n\ninotifyFD --\u003e It\u0027s an inotify instance (actually a FD), but can setup multiple path watches, so generic could be better.\n\nerrDirWatcherWD --\u003e we are watching the error directory, rather than individual files inside.",
       "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
