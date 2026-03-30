@@ -223,7 +223,7 @@ auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
         }
     }
 
-    if constexpr (USE_BMC_POS_IN_ID)
+    if constexpr (REDUNDANT_BMC)
     {
         if (!bmcPosMgr->isPositionValid())
         {
@@ -716,7 +716,7 @@ void Manager::restore()
         }
     }
 
-    if constexpr (!USE_BMC_POS_IN_ID)
+    if constexpr (!REDUNDANT_BMC)
     {
         if (!entries.empty())
         {
