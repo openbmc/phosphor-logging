@@ -16,6 +16,23 @@
       "message": "LGTM, just need to remove the \u0027PEL:\u0027 from the commit message.",
       "revId": "d1c6a301bdce3ef8d121b9b10562d24f18329860",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bcdc1ab_cca7564f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-03-31T11:05:31Z",
+      "side": 1,
+      "message": "Please Remove \"PEL:\" from the commit message header. we would add only for the PEL specific changes but this commit introducing changes into common code.",
+      "revId": "d1c6a301bdce3ef8d121b9b10562d24f18329860",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
