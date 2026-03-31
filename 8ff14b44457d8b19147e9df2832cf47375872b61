@@ -41,6 +41,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3809659_ab8be0a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-03-31T08:22:09Z",
+      "side": 1,
+      "message": "Yep, I tested this on the RBMC prototype with ~3000 PEL files, including both full-sync and background-sync scenarios, and it worked fine in my testing. I did not observe any inconsistencies.",
+      "parentUuid": "27ec9329_931529cb",
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ad778e8_76cfe9de",
@@ -131,6 +149,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "521fe777_22174d04",
+        "filename": "log_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 779,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-03-31T08:22:09Z",
+      "side": 1,
+      "message": "My initial thought was to treat this as fatal because even though the synced files will still be present on disk, without the watcher they won’t get restored into D-Bus until some later restart. My concern was the live D-Bus state, because any client watching the interface or property changes could miss those entries completely, and we do not really control for the phosphor-logging when that next successful restart will be. So I was leaning more toward fail-fast here instead of silently running. what do you think about that tradeoff?",
+      "parentUuid": "9f3210ad_21f68e12",
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "15819c79_27a6a3f4",
         "filename": "log_manager.cpp",
         "patchSetId": 2
@@ -206,6 +242,24 @@
       "writtenOn": "2026-03-30T06:55:15Z",
       "side": 1,
       "message": "For safer, size of buffer can keep as per inotify manpage, it says:\n\nSpecifying a buffer of size `sizeof(struct inotify_event) + NAME_MAX + 1` will be sufficient to read at least one event.\n\nReference : https://man7.org/linux/man-pages/man7/inotify.7.html",
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f82796fd_d424fd4b",
+        "filename": "log_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 808,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-03-31T08:22:09Z",
+      "side": 1,
+      "message": "My thinking here was to use a larger buffer so one callback can drain multiple queued inotify events, instead of processing only one event per iteration. Since this runs under sdeventplus, a smaller buffer would still be functionally correct because the callback will continue firing while the fd remains readable, but it may require more iterations during bursts of synced files (for example, during full sync) i was mainly thinking about the performance side here.",
+      "parentUuid": "476d18ad_95ccb3c4",
       "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -292,6 +346,24 @@
       "writtenOn": "2026-03-30T06:55:15Z",
       "side": 1,
       "message": "Also, will `inotifyFD` \u0026 `errDirWatcherWD` makes more sense? \n\nReasos for suggestion :\n\ninotifyFD --\u003e It\u0027s an inotify instance (actually a FD), but can setup multiple path watches, so generic could be better.\n\nerrDirWatcherWD --\u003e we are watching the error directory, rather than individual files inside.",
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e3cb436_1438d75f",
+        "filename": "log_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-03-31T08:22:09Z",
+      "side": 1,
+      "message": "That makes sense. since this inotify FD is specifically used for the error directory watcher, plain inotifyFD feels a bit too generic here. How about `errDirInotifyFD`? I also have another inotify FD in the PEL path, so this would help keep the two uses distinct.",
+      "parentUuid": "911a4472_7dc145f8",
       "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
