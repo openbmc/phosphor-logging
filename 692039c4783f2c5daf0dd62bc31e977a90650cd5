@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e185146d_bdf58180",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-03-31T11:29:20Z",
+      "side": 1,
+      "message": "Please Remove \"PEL:\" from the commit message header. we would add only for the PEL specific changes but this commit introducing changes into common code.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 4
+      },
+      "revId": "692039c4783f2c5daf0dd62bc31e977a90650cd5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b8ea2fbc_cb0ba0f4",
         "filename": "log_manager.cpp",
         "patchSetId": 1
@@ -20,6 +43,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3a290a87_10e366fd",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 947,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-03-31T11:29:20Z",
+      "side": 1,
+      "message": "Why do we need this?\n\nDo we change severity after creating the event log? I don\u0027t think so, please correct me.",
+      "revId": "692039c4783f2c5daf0dd62bc31e977a90650cd5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "91a416fa_dd5e081d",
         "filename": "log_manager.cpp",
         "patchSetId": 1
@@ -31,6 +71,24 @@
       "writtenOn": "2026-03-30T10:28:58Z",
       "side": 1,
       "message": "And we can use std::list:remove(value) instead this lambda",
+      "revId": "692039c4783f2c5daf0dd62bc31e977a90650cd5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f881059d_e5024bd1",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 949,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-03-31T11:29:20Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "91a416fa_dd5e081d",
       "revId": "692039c4783f2c5daf0dd62bc31e977a90650cd5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
