@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "b2a51b70_a4dd39b6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-03-31T12:19:21Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "08fbea55_db9cb633",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 5
+      },
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "27ec9329_931529cb",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -112,6 +136,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3905b6d_fe463f0c",
+        "filename": "log_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-03-31T12:19:21Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e2046397_caeaa975",
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1fcdaf54_84d24d3e",
@@ -182,6 +224,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "11417838_12b21676",
+        "filename": "log_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 791,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-03-31T12:19:21Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "15819c79_27a6a3f4",
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b62a0f6_9852cb90",
@@ -219,6 +279,30 @@
       "side": 1,
       "message": "Thanks, that’s a good suggestion. I’ll switch to std::bind_front.",
       "parentUuid": "5b62a0f6_9852cb90",
+      "range": {
+        "startLine": 796,
+        "startChar": 8,
+        "endLine": 796,
+        "endChar": 17
+      },
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61cac601_d1b3e387",
+        "filename": "log_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 796,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-03-31T12:19:21Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e0c39e04_6d6e7529",
       "range": {
         "startLine": 796,
         "startChar": 8,
@@ -299,6 +383,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "feabda01_5afe1b9b",
+        "filename": "log_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 837,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-03-31T12:19:21Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "fefa1569_38080c98",
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "49297a4c_da08b8c2",
@@ -316,6 +418,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1657d60_9065cc77",
+        "filename": "log_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-03-31T12:19:21Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "49297a4c_da08b8c2",
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e442109e_86d4855b",
@@ -329,6 +449,24 @@
       "writtenOn": "2026-03-30T06:55:15Z",
       "side": 1,
       "message": "Phosphor logging does not follow the naming convention of prefixing with _. To maintain consistency, we may  consider removing this prefix.",
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a4aed0d_629d818d",
+        "filename": "log_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-03-31T12:19:21Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e442109e_86d4855b",
       "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
