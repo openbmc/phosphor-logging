@@ -321,6 +321,14 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     bool restoreFromDisk(uint32_t id);
 
+    /** @brief Refresh a single error entry from disk
+     *
+     * @param[in] id - The entry ID to refresh
+     * @return true if the entry was successfully refreshed,
+     *         false otherwise
+     */
+    bool refreshFromDisk(uint32_t id);
+
     /**
      * @brief Handles inotify events for the error entry directory.
      *
