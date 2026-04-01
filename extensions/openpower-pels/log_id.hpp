@@ -22,7 +22,7 @@ extern uint32_t bmcPosition;
  *
  * @param[in] obmcID - The ID to extract the position from
  */
-void extractBMCPostionFromLogID(uint32_t obmcID);
+void extractBMCPositionFromLogID(uint32_t obmcID);
 
 /**
  * @brief Returns the BMC position

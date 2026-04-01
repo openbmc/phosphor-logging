@@ -31,7 +31,7 @@ namespace position
 
 uint32_t bmcPosition = 0;
 
-void extractBMCPostionFromLogID(uint32_t obmcID)
+void extractBMCPositionFromLogID(uint32_t obmcID)
 {
     uint32_t pos = obmcID >> 24;
 

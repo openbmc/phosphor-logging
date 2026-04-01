@@ -400,7 +400,7 @@ TEST_F(PELTest, SysInfoSectionTest)
         .WillOnce(Return(std::make_pair(true, "Active")));
 
     // Set BMC position to 1 for testing
-    position::extractBMCPostionFromLogID(0x01000000);
+    position::extractBMCPositionFromLogID(0x01000000);
 
     std::map<std::string, std::string> ad{{"_PID", std::to_string(getpid())}};
     AdditionalData additionalData{ad};
