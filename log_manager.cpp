@@ -921,6 +921,20 @@ bool Manager::restoreFromDisk(uint32_t id)
 
     it->second->emit_object_added();
 
+    for (auto& func : Extensions::getPelEntryLinkFunctions())
+    {
+        try
+        {
+            func(id, objPath);
+        }
+        catch (const std::exception& e)
+        {
+            lg2::error(
+                "An extension's PEL entry link function threw an exception: {ERROR}",
+                "ERROR", e);
+        }
+    }
+
     if constexpr (REDUNDANT_BMC)
     {
         if (bmcPosMgr->idContainsCurrentPosition(id))
