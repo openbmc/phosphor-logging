@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ab79458_2624b04f",
+        "filename": "log_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 909,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-01T09:32:33Z",
+      "side": 1,
+      "message": "Since this function is only called from the watcher (which is only set up when REDUNDANT_BMC is true) Im thinking `if constexpr (REDUNDANT_BMC)` and `else` seem redundant since we\u0027re always in redundant BMC mode here. so it can be removed. Thoughts?",
+      "revId": "47953d798e392391ded55996399318e142bde2c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
