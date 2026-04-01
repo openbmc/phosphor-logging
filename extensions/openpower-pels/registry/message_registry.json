@@ -622,6 +622,18 @@
                     "FFDC (First Failure Data Collection) will be collected ",
                     "and added into PEL."
                 ]
+            },
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "systemd",
+                        "NumLines": 10
+                    },
+                    {
+                        "SyslogID": "openpower-proc-control",
+                        "NumLines": 30
+                    }
+                ]
             }
         },
 
