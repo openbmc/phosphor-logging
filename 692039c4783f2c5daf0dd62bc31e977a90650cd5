@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b741125_a7e1b814",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-01T08:33:13Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e185146d_bdf58180",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 4
+      },
+      "revId": "692039c4783f2c5daf0dd62bc31e977a90650cd5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8ea2fbc_cb0ba0f4",
@@ -41,6 +65,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d65d7099_8790d85e",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 938,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-01T08:33:13Z",
+      "side": 1,
+      "message": "In the current code, this does not emit any signals. I’ll update the refresh path so only the properties whose values changed emit PropertiesChanged\nAt present, the properties expected to change are:\n1. resolved \n2. resolution (that is on the web UI so people can manually resolve a log)",
+      "parentUuid": "b8ea2fbc_cb0ba0f4",
+      "revId": "692039c4783f2c5daf0dd62bc31e977a90650cd5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3a290a87_10e366fd",
@@ -54,6 +96,24 @@
       "writtenOn": "2026-03-31T11:29:20Z",
       "side": 1,
       "message": "Why do we need this?\n\nDo we change severity after creating the event log? I don\u0027t think so, please correct me.",
+      "revId": "692039c4783f2c5daf0dd62bc31e977a90650cd5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89b38ab2_bc880be9",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 947,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-01T08:33:13Z",
+      "side": 1,
+      "message": "You\u0027re right. Severity updates can happen during creation (via updateDBusSeverity()). When refreshFromDisk() deserializes, it gets the correct severity. This code is redundant will remove it.",
+      "parentUuid": "3a290a87_10e366fd",
       "revId": "692039c4783f2c5daf0dd62bc31e977a90650cd5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -93,6 +153,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "544c5f2b_557e9074",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 949,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-01T08:33:13Z",
+      "side": 1,
+      "message": "The code is redundant and will be removed.",
+      "parentUuid": "f881059d_e5024bd1",
+      "revId": "692039c4783f2c5daf0dd62bc31e977a90650cd5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "499d2272_5926dffd",
@@ -106,6 +184,24 @@
       "writtenOn": "2026-03-30T10:28:58Z",
       "side": 1,
       "message": "Can\u0027t we check whether severity changed, if yes then remove?",
+      "revId": "692039c4783f2c5daf0dd62bc31e977a90650cd5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dfab88a_7a139f01",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 957,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-01T08:33:13Z",
+      "side": 1,
+      "message": "The code is redundant and will be removed",
+      "parentUuid": "499d2272_5926dffd",
       "revId": "692039c4783f2c5daf0dd62bc31e977a90650cd5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
