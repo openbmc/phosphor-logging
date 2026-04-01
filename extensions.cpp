@@ -35,6 +35,12 @@ LogIDsWithHwIsolationFunctions& Extensions::getLogIDWithHwIsolationFunctions()
     return logIDWithHwIsolationFunctions;
 }
 
+PelEntryLinkFunctions& Extensions::getPelEntryLinkFunctions()
+{
+    static PelEntryLinkFunctions pelEntryLinkFunctions{};
+    return pelEntryLinkFunctions;
+}
+
 Extensions::DefaultErrorCaps& Extensions::getDefaultErrorCaps()
 {
     static DefaultErrorCaps defaultErrorCaps = DefaultErrorCaps::enable;
