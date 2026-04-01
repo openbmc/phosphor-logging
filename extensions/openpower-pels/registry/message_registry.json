@@ -876,6 +876,37 @@
         },
 
         {
+            "Name": "org.open_power.PHAL.Error.HWP",
+            "Subsystem": "cec_hardware",
+            "ComponentID": "0x3000",
+
+            "SRC": {
+                "ReasonCode": "0x300D",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Failure occurred during hardware procedure execution",
+                "Message": "Failure occurred during hardware procedure execution",
+                "Notes": [
+                    "Look for HWP name in the UserData section."
+                ]
+            },
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "systemd",
+                        "NumLines": 10
+                    },
+                    {
+                        "SyslogID": "openpower-proc-control",
+                        "NumLines": 40
+                    }
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.OCC.Firmware.Error.PresenceMismatch",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x2600",
