@@ -834,7 +834,15 @@ void Manager::errorFileChanged(sdeventplus::source::IO&, int, uint32_t revents)
 
                 if (ev->mask & IN_MOVED_TO)
                 {
-                    if (!entries.contains(idNum))
+                    if (entries.contains(idNum))
+                    {
+                        if (!refreshFromDisk(idNum))
+                        {
+                            lg2::error("Failed to refresh entry {ID} from disk",
+                                       "ID", idNum);
+                        }
+                    }
+                    else
                     {
                         if (!restoreFromDisk(idNum))
                         {
@@ -917,6 +925,63 @@ bool Manager::restoreFromDisk(uint32_t id)
     {
         entryId = std::max(entryId, id);
     }
+
+    return true;
+}
+
+bool Manager::refreshFromDisk(uint32_t id)
+{
+    auto it = entries.find(id);
+    if (it == entries.end() || !it->second)
+    {
+        lg2::error("refreshFromDisk called for unknown entry ID {ID}", "ID",
+                   id);
+        return false;
+    }
+
+    const fs::path path = paths::error() / std::to_string(id);
+
+    std::error_code ec;
+    if (!fs::is_regular_file(path, ec))
+    {
+        return false;
+    }
+
+    // Save old values before deserialization to detect changes
+    auto oldResolved = it->second->resolved();
+    auto oldResolution = it->second->resolution();
+
+    if (!deserialize(path, *(it->second)))
+    {
+        lg2::error("Failed to deserialize entry {ID} from {PATH}", "ID", id,
+                   "PATH", path);
+        return false;
+    }
+
+    // deserialize() updates properties with skip_signal=true, bypassing
+    // PropertiesChanged signal emission. For properties with custom setters
+    // that have change detection, we need to trigger signal emission by:
+    // 1. Temporarily restoring the old value (skip_signal=true)
+    // 2. Calling the setter with the new value
+    // This ensures D-Bus clients are notified of property changes.
+    if (it->second->resolved() != oldResolved)
+    {
+        auto newResolved = it->second->resolved();
+        it->second
+            ->sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved(
+                oldResolved, true);
+        it->second->resolved(newResolved);
+    }
+
+    if (it->second->resolution() != oldResolution)
+    {
+        auto newResolution = it->second->resolution();
+        it->second->sdbusplus::server::xyz::openbmc_project::logging::Entry::
+            resolution(oldResolution, true);
+        it->second->resolution(newResolution);
+    }
+
+    it->second->path(path, true);
 
     return true;
 }
