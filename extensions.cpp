@@ -35,6 +35,12 @@ LogIDsWithHwIsolationFunctions& Extensions::getLogIDWithHwIsolationFunctions()
     return logIDWithHwIsolationFunctions;
 }
 
+ExtensionLogAssociations& Extensions::getExtensionLogAssociationFunctions()
+{
+    static ExtensionLogAssociations extensionLogAssociationFunctions{};
+    return extensionLogAssociationFunctions;
+}
+
 Extensions::DefaultErrorCaps& Extensions::getDefaultErrorCaps()
 {
     static DefaultErrorCaps defaultErrorCaps = DefaultErrorCaps::enable;
