@@ -68,7 +68,7 @@ namespace detail
 uint32_t addLogIDPrefix(uint32_t id)
 {
     uint32_t pos = 0;
-    if constexpr (USE_BMC_POS_IN_ID || IS_UNIT_TEST)
+    if (USE_BMC_POS_IN_ID || IS_UNIT_TEST)
     {
         pos = (position::bmcPosition & 0xF) << 24;
     }
