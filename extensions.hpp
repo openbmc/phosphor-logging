@@ -64,10 +64,20 @@ using LogIDWithHwIsolationFunction =
 using LogIDsWithHwIsolationFunctions =
     std::vector<LogIDWithHwIsolationFunction>;
 
+/**
+ * @brief The function type used to try linking a log entry with its
+ *        corresponding PEL.
+ * @param[in] uint32_t - OpenBMC log ID of the entry
+ * @param[in] const std::string - D-Bus object path of the entry
+ */
+using ExtensionLogAssociation =
+    std::function<void(uint32_t, const std::string&)>;
+
 using StartupFunctions = std::vector<StartupFunction>;
 using CreateFunctions = std::vector<CreateFunction>;
 using DeleteFunctions = std::vector<DeleteFunction>;
 using DeleteProhibitedFunctions = std::vector<DeleteProhibitedFunction>;
+using ExtensionLogAssociations = std::vector<ExtensionLogAssociation>;
 
 /**
  * @brief Register an extension hook function
@@ -186,6 +196,20 @@ class Extensions
     }
 
     /**
+     * @brief Constructor to register a log entry and PEL linking function
+     *
+     * Functions registered with this constructor will be called
+     * after a log entry is restored from disk so extensions can
+     * try linking it with its corresponding PEL.
+     *
+     * @param[in] func - The function to register
+     */
+    explicit Extensions(ExtensionLogAssociation func)
+    {
+        getExtensionLogAssociationFunctions().push_back(func);
+    }
+
+    /**
      * @brief Constructor to disable event log capping
      *
      * This constructor should only be called by the
@@ -235,6 +259,12 @@ class Extensions
      * @return DefaultErrorCaps - the DefaultErrorCaps value
      */
     static DefaultErrorCaps& getDefaultErrorCaps();
+
+    /**
+     * @brief Returns the ExtensionLogAssociation functions
+     * @return ExtensionLogAssociations - the ExtensionLogAssociation functions
+     */
+    static ExtensionLogAssociations& getExtensionLogAssociationFunctions();
 
     /**
      * @brief Say if the default log capping policy should be disabled
