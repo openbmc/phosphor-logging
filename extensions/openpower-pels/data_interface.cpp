@@ -379,34 +379,6 @@ std::string DataInterface::getMachineSerialNumber() const
     return sn;
 }
 
-std::string DataInterface::getMotherboardCCIN() const
-{
-    std::string ccin;
-
-    try
-    {
-        auto service =
-            getService(object_path::motherBoardInv, interface::viniRecordVPD);
-        if (!service.empty())
-        {
-            DBusValue value;
-            getProperty(service, object_path::motherBoardInv,
-                        interface::viniRecordVPD, "CC", value);
-
-            auto cc = std::get<std::vector<uint8_t>>(value);
-            ccin = std::string{cc.begin(), cc.end()};
-        }
-    }
-    catch (const std::exception& e)
-    {
-        lg2::warning("Failed reading Motherboard CCIN property from "
-                     "interface: {IFACE} exception: {ERROR}",
-                     "IFACE", interface::viniRecordVPD, "ERROR", e);
-    }
-
-    return ccin;
-}
-
 std::vector<uint8_t> DataInterface::getSystemIMKeyword() const
 {
     static std::vector<uint8_t> systemIM;
