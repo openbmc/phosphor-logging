@@ -321,13 +321,6 @@ class DataInterfaceBase
     }
 
     /**
-     * @brief Returns the motherboard CCIN
-     *
-     * @return std::string The motherboard CCIN
-     */
-    virtual std::string getMotherboardCCIN() const = 0;
-
-    /**
      * @brief Returns the system IM
      *
      * @return std::string The system IM
@@ -761,13 +754,6 @@ class DataInterface : public DataInterfaceBase
      * @return string - The machine serial number
      */
     std::string getMachineSerialNumber() const override;
-
-    /**
-     * @brief Returns the motherboard CCIN
-     *
-     * @return std::string The motherboard CCIN
-     */
-    std::string getMotherboardCCIN() const override;
 
     /**
      * @brief Returns the system IM

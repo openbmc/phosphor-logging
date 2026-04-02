@@ -25,8 +25,6 @@ namespace pv = openpower::pels::pel_values;
 namespace rg = openpower::pels::message;
 using namespace std::string_literals;
 
-constexpr size_t ccinSize = 4;
-
 #ifdef PELTOOL
 using orderedJSON = nlohmann::ordered_json;
 
@@ -333,7 +331,6 @@ SRC::SRC(const message::Entry& regEntry, const AdditionalData& additionalData,
     setProgressCode(dataIface);
     setBMCFormat();
     setBMCPosition();
-    setMotherboardCCIN(dataIface);
 
     if (regEntry.src.checkstopFlag)
     {
@@ -411,29 +408,6 @@ void SRC::setUserDefinedHexWords(const message::Entry& regEntry,
             addDebugData(msg);
         }
     }
-}
-
-void SRC::setMotherboardCCIN(const DataInterfaceBase& dataIface)
-{
-    uint32_t ccin = 0;
-    auto ccinString = dataIface.getMotherboardCCIN();
-
-    try
-    {
-        if (ccinString.size() == ccinSize)
-        {
-            ccin = std::stoi(ccinString, nullptr, 16);
-        }
-    }
-    catch (const std::exception& e)
-    {
-        lg2::warning("Could not convert motherboard CCIN {CCIN} to a number",
-                     "CCIN", ccinString);
-        return;
-    }
-
-    // Set the first 2 bytes
-    _hexData[1] |= ccin << 16;
 }
 
 void SRC::validate()
@@ -723,16 +697,6 @@ std::optional<std::string> SRC::getJSON(message::Registry& registry,
 
     if (isBMCSRC())
     {
-        std::string ccinString;
-        uint32_t ccin = _hexData[1] >> 16;
-
-        if (ccin)
-        {
-            ccinString = getNumberString("%04X", ccin);
-        }
-        // The PEL spec calls it a backplane, so call it that here.
-        jsonInsert(ps, "Backplane CCIN", ccinString, 1);
-
         jsonInsert(ps, "Terminate FW Error",
                    pv::boolString.at(
                        _hexData[3] &

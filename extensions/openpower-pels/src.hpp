@@ -400,13 +400,6 @@ class SRC : public Section
     }
 
     /**
-     * @brief Sets the motherboard CCIN hex word field
-     *
-     * @param[in] dataIface - The DataInterface object
-     */
-    void setMotherboardCCIN(const DataInterfaceBase& dataIface);
-
-    /**
      * @brief Sets the progress code hex word field
      *
      * @param[in] dataIface - The DataInterface object
