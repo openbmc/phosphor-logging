@@ -194,8 +194,6 @@ TEST_F(SRCTest, CreateTestNoCallouts)
     AdditionalData ad{adData};
     NiceMock<MockDataInterface> dataIface;
 
-    EXPECT_CALL(dataIface, getMotherboardCCIN).WillOnce(Return("ABCD"));
-
     SRC src{entry, ad, dataIface};
 
     EXPECT_TRUE(src.valid());
@@ -211,7 +209,6 @@ TEST_F(SRCTest, CreateTestNoCallouts)
     EXPECT_EQ(hexwords[2 - 2] & 0x00F00000, 0);    // Partition boot type
     EXPECT_EQ(hexwords[2 - 2] & 0x000000FF, 0x55); // SRC format
     EXPECT_EQ(hexwords[3 - 2] & 0x000000FF, 0x10); // BMC position
-    EXPECT_EQ(hexwords[3 - 2] & 0xFFFF0000, 0xABCD0000); // Motherboard CCIN
 
     // Validate more fields here as the code starts filling them in.
 
@@ -241,48 +238,6 @@ TEST_F(SRCTest, CreateTestNoCallouts)
     EXPECT_TRUE(newSRC.valid());
     EXPECT_EQ(newSRC.asciiString(), src.asciiString());
     EXPECT_FALSE(newSRC.callouts());
-}
-
-// Test when the CCIN string isn't a 4 character number
-TEST_F(SRCTest, BadCCINTest)
-{
-    message::Entry entry;
-    entry.src.type = 0xBD;
-    entry.src.reasonCode = 0xABCD;
-    entry.subsystem = 0x42;
-
-    std::map<std::string, std::string> adData{};
-    AdditionalData ad{adData};
-    NiceMock<MockDataInterface> dataIface;
-
-    // First it isn't a number, then it is too long,
-    // then it is empty.
-    EXPECT_CALL(dataIface, getMotherboardCCIN)
-        .WillOnce(Return("X"))
-        .WillOnce(Return("12345"))
-        .WillOnce(Return(""));
-
-    // The CCIN in the first half should still be 0 each time.
-    {
-        SRC src{entry, ad, dataIface};
-        EXPECT_TRUE(src.valid());
-        const auto& hexwords = src.hexwordData();
-        EXPECT_EQ(hexwords[3 - 2] & 0xFFFF0000, 0x00000000);
-    }
-
-    {
-        SRC src{entry, ad, dataIface};
-        EXPECT_TRUE(src.valid());
-        const auto& hexwords = src.hexwordData();
-        EXPECT_EQ(hexwords[3 - 2] & 0xFFFF0000, 0x00000000);
-    }
-
-    {
-        SRC src{entry, ad, dataIface};
-        EXPECT_TRUE(src.valid());
-        const auto& hexwords = src.hexwordData();
-        EXPECT_EQ(hexwords[3 - 2] & 0xFFFF0000, 0x00000000);
-    }
 }
 
 // Test the getErrorDetails function
@@ -1540,8 +1495,6 @@ TEST_F(SRCTest, TestPELSubsystem)
     std::map<std::string, std::string> adData{{"PEL_SUBSYSTEM", "0x20"}};
     AdditionalData ad{adData};
     NiceMock<MockDataInterface> dataIface;
-
-    EXPECT_CALL(dataIface, getMotherboardCCIN).WillOnce(Return("ABCD"));
 
     SRC src{entry, ad, dataIface};
 
