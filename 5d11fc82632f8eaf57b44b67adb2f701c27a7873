@@ -16,6 +16,24 @@
       "message": "I think I need to see what this does to get a better picture.",
       "revId": "5d11fc82632f8eaf57b44b67adb2f701c27a7873",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e0859cc_466dc0f4",
+        "filename": "extensions/openpower-pels/entry_points.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-02T11:43:15Z",
+      "side": 1,
+      "message": "yep, will push the pel related changes soon.",
+      "parentUuid": "75697fd0_0d0ed946",
+      "revId": "5d11fc82632f8eaf57b44b67adb2f701c27a7873",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
