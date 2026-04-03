@@ -576,7 +576,7 @@ void Manager::setupPELFileWatch()
         abort();
     }
 
-    uint32_t mask = IN_DELETE;
+    uint32_t mask = IN_DELETE | IN_MOVED_TO;
 
     _pelDirWatcherWD =
         inotify_add_watch(_pelDirWatchFD, _repo.repoPath().c_str(), mask);
@@ -634,6 +634,13 @@ void Manager::pelFileChanged(sdeventplus::source::IO& /*io*/, int /*fd*/,
                 {
                     handlePELDelete(name);
                 }
+                else if (ev->mask & IN_MOVED_TO)
+                {
+                    if constexpr (REDUNDANT_BMC)
+                    {
+                        handlePELMovedTo(name);
+                    }
+                }
             }
             catch (const std::exception& e)
             {
@@ -671,6 +678,79 @@ void Manager::handlePELDelete(const std::string& filename)
                       filename);
         }
     }
+}
+
+void Manager::handlePELMovedTo(const std::string& filename)
+{
+    auto pos = filename.find_first_of('_');
+    if (pos == std::string::npos)
+    {
+        lg2::warning("Filename does not contain '_' separator: {FILE}", "FILE",
+                     filename);
+        return;
+    }
+
+    auto path = _repo.repoPath() / filename;
+
+    try
+    {
+        restorePELFromDisk(path, filename);
+    }
+    catch (const std::exception& e)
+    {
+        lg2::error("Failed to process PEL file {FILE}: {ERROR}", "FILE",
+                   filename, "ERROR", e);
+    }
+}
+
+void Manager::restorePELFromDisk(const std::filesystem::path& path,
+                                 const std::string& filename)
+{
+    auto logId = _repo.importPELFromFile(path);
+    if (!logId)
+    {
+        lg2::warning("Failed to import PEL from file: {FILE}", "FILE",
+                     filename);
+        return;
+    }
+
+    linkPelToEventLog(logId->obmcID.id, path.string());
+}
+
+void Manager::linkPelToEventLog(uint32_t obmcLogID,
+                                [[maybe_unused]] const std::string& path)
+{
+    // This function links a new PEL with its event log entry by creating
+    // a D-Bus PELEntry interface object. It's called when:
+    // 1. A new PEL file is restored
+    // 2. An event log entry is restored
+    //
+    // If either the event log or PEL is missing, we return early and wait
+    // for the other piece to arrive (at which point this will be called again).
+
+    const auto entryPath =
+        std::string{OBJ_ENTRY} + "/" + std::to_string(obmcLogID);
+
+    // Verify event log entry exists
+    if (!_logManager.entries.contains(obmcLogID))
+    {
+        lg2::debug("Skipping link, event log missing. OBMC_ID={OBMC_ID}",
+                   "OBMC_ID", obmcLogID);
+        return;
+    }
+
+    // Verify PEL exists in repository
+    const Repository::LogID rid{Repository::LogID::Obmc{obmcLogID}};
+    if (!_repo.getPELAttributes(rid))
+    {
+        lg2::debug("Skipping link, PEL missing. OBMC_ID={OBMC_ID}", "OBMC_ID",
+                   obmcLogID);
+        return;
+    }
+
+    setEntryPath(obmcLogID);
+    setServiceProviderNotifyFlag(obmcLogID);
+    createPELEntry(obmcLogID, false);
 }
 
 std::tuple<uint32_t, uint32_t> Manager::createPELWithFFDCFiles(
