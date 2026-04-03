@@ -34,6 +34,24 @@
       "parentUuid": "5ab79458_2624b04f",
       "revId": "47953d798e392391ded55996399318e142bde2c4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "151df5c8_8912ffdb",
+        "filename": "log_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 909,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-03T18:03:16Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c6818bfa_837b0aa4",
+      "revId": "47953d798e392391ded55996399318e142bde2c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
