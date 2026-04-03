@@ -848,5 +848,35 @@ std::optional<Repository::LogID> Repository::importPELFromFile(
     return key;
 }
 
+bool Repository::updatePELFromFile(const LogID& existingKey,
+                                   const std::filesystem::path& path)
+{
+    // Find the existing PEL entry in the repository.
+    auto it = findPEL(existingKey);
+    if (it == _pelAttributes.end())
+    {
+        lg2::error("updatePELFromFile: Existing PEL not found for key");
+        return false;
+    }
+
+    // Read the PEL file and parse it to get the updated attributes and PEL
+    // object.
+    auto result = parsePELFile(path);
+    if (!result)
+    {
+        return false;
+    }
+
+    auto& [key, attrs, pel] = *result;
+
+    // Update repository statistics and attributes
+    updateRepoStats(it->second, false);         // Remove old stats
+    _pelAttributes.erase(existingKey);          // Remove old entry
+    _pelAttributes.emplace(existingKey, attrs); // Add updated entry
+    updateRepoStats(attrs, true);               // Add new stats
+
+    return true;
+}
+
 } // namespace pels
 } // namespace openpower

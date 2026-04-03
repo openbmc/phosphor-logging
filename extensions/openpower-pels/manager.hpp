@@ -565,6 +565,30 @@ class Manager : public PELInterface
                             const std::string& filename);
 
     /**
+     * @brief Handles an existing PEL being updated from a file.
+     *
+     * Updates the repository and refreshes D-Bus properties if PELEntry exists.
+     *
+     * @param[in] existingLogId - The LogID of the existing PEL
+     * @param[in] path - Path to the updated PEL file
+     * @param[in] filename - Name of the PEL file (for logging)
+     */
+    void refreshPELFromDisk(const Repository::LogID& existingLogId,
+                            const std::filesystem::path& path,
+                            const std::string& filename);
+
+    /**
+     * @brief Updates all D-Bus PELEntry properties from the current
+     *        in-memory PELAttributes.
+     *
+     * Used when a PEL is modified on the active BMC and synchronized
+     * to the passive BMC via rsync.
+     *
+     * @param[in] obmcLogID - The OpenBMC log ID of the entry to update
+     */
+    void updatePELEntryProperties(uint32_t obmcLogID);
+
+    /**
      * @brief Reference to phosphor-logging's Manager class
      */
     phosphor::logging::internal::Manager& _logManager;
