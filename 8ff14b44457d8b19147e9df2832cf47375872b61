@@ -209,6 +209,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a74cc3b6_14f886c7",
+        "filename": "log_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 779,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2026-04-06T04:49:08Z",
+      "side": 1,
+      "message": "\u003ewhat do you think about that tradeoff?\n\n\nThe biggest concern here is ,systemd will attempt to restart the application, and if all retries fail, the BMC could transition to a quiesced state. That might be a relatively heavy in this scenario i feel.\n\nDo we really want to mark the BMC as quiesced due to a failure in creating the watcher? \n\n@rameshi1@in.ibm.com Could you please share your view?",
+      "parentUuid": "521fe777_22174d04",
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "15819c79_27a6a3f4",
         "filename": "log_manager.cpp",
         "patchSetId": 2
@@ -344,6 +362,24 @@
       "side": 1,
       "message": "My thinking here was to use a larger buffer so one callback can drain multiple queued inotify events, instead of processing only one event per iteration. Since this runs under sdeventplus, a smaller buffer would still be functionally correct because the callback will continue firing while the fd remains readable, but it may require more iterations during bursts of synced files (for example, during full sync) i was mainly thinking about the performance side here.",
       "parentUuid": "476d18ad_95ccb3c4",
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c7931f1_fc48a6fc",
+        "filename": "log_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 808,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2026-04-06T04:49:08Z",
+      "side": 1,
+      "message": "Haa got it, that\u0027s good..\n\nI hope bigger buffer wont cause partial read of events.",
+      "parentUuid": "f82796fd_d424fd4b",
       "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -502,6 +538,24 @@
       "side": 1,
       "message": "That makes sense. since this inotify FD is specifically used for the error directory watcher, plain inotifyFD feels a bit too generic here. How about `errDirInotifyFD`? I also have another inotify FD in the PEL path, so this would help keep the two uses distinct.",
       "parentUuid": "911a4472_7dc145f8",
+      "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "129e9c15_b95b113a",
+        "filename": "log_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2026-04-06T04:49:08Z",
+      "side": 1,
+      "message": "\u003e How about errDirInotifyFD?\n\n\nYup, We can go with this.",
+      "parentUuid": "7e3cb436_1438d75f",
       "revId": "8ff14b44457d8b19147e9df2832cf47375872b61",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
