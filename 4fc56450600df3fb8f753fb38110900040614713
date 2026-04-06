@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f098e9a_c2c80f88",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 717,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-04-06T14:47:24Z",
+      "side": 1,
+      "message": "It appears that:\n\nIn the event log sync case (when it occurs first), we create the event log D-Bus object and then wait for the PEL inotify event to populate the PEL entry interface, if the corresponding entry is not already present in the PEL repository.\n\nIn the PEL log sync case (when it occurs first), we store the information in the PEL repository without creating any D-Bus object, and wait for the event log inotify event. Once that arrives, we update D-Bus as described above.\n\nThat said, I’m not fully convinced by this approach—specifically, having an event log without a PEL entry interface, or temporarily storing data only in the PEL repository until the dependent file (either the event log or PEL file) arrives via inotify.\n\nIs there a specific reason we don’t wait for the associated file (either the event log or the PEL file) before proceeding, instead of populating partially complete information in D-Bus or in-memory?",
+      "revId": "4fc56450600df3fb8f753fb38110900040614713",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71b9302b_5e3b948d",
+        "filename": "extensions/openpower-pels/manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-04-06T14:47:24Z",
+      "side": 1,
+      "message": "Lets not mention how it was synced (\"rsync\")",
+      "revId": "4fc56450600df3fb8f753fb38110900040614713",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "102ceb6c_e9fe2b21",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 783,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-04-06T14:47:24Z",
+      "side": 1,
+      "message": "I would like to get @spinler@us.ibm.com view on this whether anything missed to maintain in the PEL repository.",
+      "revId": "4fc56450600df3fb8f753fb38110900040614713",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
