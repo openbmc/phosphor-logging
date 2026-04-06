@@ -16,6 +16,52 @@
       "message": "Cannot make it as utils function and use in the event logs and PEL.",
       "revId": "54d0145b3784d65c123c1fb8bc0a7924efda774b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6faad02_32e995c3",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 608,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-06T21:57:03Z",
+      "side": 1,
+      "message": "based on comments in the other commit, you\u0027ll have a change here?",
+      "range": {
+        "startLine": 608,
+        "startChar": 24,
+        "endLine": 608,
+        "endChar": 33
+      },
+      "revId": "54d0145b3784d65c123c1fb8bc0a7924efda774b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d5afcae_4f2b0acf",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 638,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-06T21:57:03Z",
+      "side": 1,
+      "message": "with the try/catch already in handlePELDelete, is this one still needed?",
+      "range": {
+        "startLine": 638,
+        "startChar": 11,
+        "endLine": 638,
+        "endChar": 43
+      },
+      "revId": "54d0145b3784d65c123c1fb8bc0a7924efda774b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
