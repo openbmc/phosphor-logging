@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac5efd8b_1e6ca381",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 570,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-04-06T11:11:04Z",
+      "side": 1,
+      "message": "Cannot make it as utils function and use in the event logs and PEL.",
+      "revId": "54d0145b3784d65c123c1fb8bc0a7924efda774b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
