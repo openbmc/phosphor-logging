@@ -70,6 +70,29 @@
       },
       "revId": "a3975bf5597c16bf7d3ae6792547f649d62de867",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78be69c4_e0669c99",
+        "filename": "test/openpower-pels/src_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-06T16:27:48Z",
+      "side": 0,
+      "message": "oh, I think we can just remove this whole testcase now.",
+      "range": {
+        "startLine": 246,
+        "startChar": 0,
+        "endLine": 247,
+        "endChar": 28
+      },
+      "revId": "a3975bf5597c16bf7d3ae6792547f649d62de867",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
