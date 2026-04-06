@@ -93,6 +93,30 @@
       },
       "revId": "a3975bf5597c16bf7d3ae6792547f649d62de867",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db2580d3_582ecf0f",
+        "filename": "test/openpower-pels/src_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-04-06T21:59:13Z",
+      "side": 0,
+      "message": "updated.",
+      "parentUuid": "78be69c4_e0669c99",
+      "range": {
+        "startLine": 246,
+        "startChar": 0,
+        "endLine": 247,
+        "endChar": 28
+      },
+      "revId": "a3975bf5597c16bf7d3ae6792547f649d62de867",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
