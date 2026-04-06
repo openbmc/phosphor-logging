@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf7fd964_c6566f48",
+        "filename": "log_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 786,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-04-06T10:31:32Z",
+      "side": 1,
+      "message": "Please specify why are you using the IN_MOVED_TO instead of IN_CLOSE_WRITE",
+      "revId": "1ea27fa4eb870875ce577192e33a49741c4a6a23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cbd2cc3_aca5719f",
+        "filename": "log_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 849,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-04-06T10:31:32Z",
+      "side": 1,
+      "message": "It should be error trace",
+      "revId": "1ea27fa4eb870875ce577192e33a49741c4a6a23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30efbe82_85dc338b",
+        "filename": "log_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 881,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-04-06T10:31:32Z",
+      "side": 1,
+      "message": "why is it required?",
+      "revId": "1ea27fa4eb870875ce577192e33a49741c4a6a23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00e16e29_dfed5bac",
+        "filename": "log_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 895,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-04-06T10:31:32Z",
+      "side": 1,
+      "message": "why returning true?",
+      "revId": "1ea27fa4eb870875ce577192e33a49741c4a6a23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d46cd653_a09b3301",
+        "filename": "log_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-04-06T10:31:32Z",
+      "side": 1,
+      "message": "\u003e file has been created (typically via rsync during RBMC synchronization).\n\nLets not mention how it was synced.\n\nfile has been synced in the redundant BMC system.",
+      "revId": "1ea27fa4eb870875ce577192e33a49741c4a6a23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
