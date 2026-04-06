@@ -46,6 +46,30 @@
       },
       "revId": "a3975bf5597c16bf7d3ae6792547f649d62de867",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7c244c7_2a66f86b",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-04-06T07:54:58Z",
+      "side": 0,
+      "message": "`motherBoardInv` is not used for it anymore, removing from code.",
+      "parentUuid": "89efcede_22f811f7",
+      "range": {
+        "startLine": 389,
+        "startChar": 23,
+        "endLine": 389,
+        "endChar": 78
+      },
+      "revId": "a3975bf5597c16bf7d3ae6792547f649d62de867",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
