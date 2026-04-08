@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "661822b1_f4e58046",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 791,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-08T20:42:38Z",
+      "side": 1,
+      "message": "@rameshi1@in.ibm.com\n\nI\u0027m reverting this to only update `ManagementSystemAck`.\n\nCurrently, `ManagementSystemAck` is the only PELEntry property that is written back to the underlying PEL file. Because of that, its update results in a file change, and that change can then be synced to the peer side.\n\nFor the other properties, updating them here would only affect the local D-Bus object. Since those changes are not written back to the PEL file, there is no corresponding file update to sync, so they would not propagate to the other side.\n\nSo with the current pel design, only updating the `ManagementSystemAck` is the correct behavior.",
+      "range": {
+        "startLine": 791,
+        "startChar": 0,
+        "endLine": 791,
+        "endChar": 79
+      },
+      "revId": "d29d523a9fcfff0a8ba87610a390ea588bcc59c3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
