@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <map>
 #include <optional>
 #include <string>
@@ -23,6 +24,19 @@ std::optional<std::string> getOSReleaseValue(const std::string& key);
  *          "journalctl --sync".
  */
 void journalSync();
+
+/**
+ * @brief Set up an inotify watch on a directory
+ *
+ * @param[in] path - The directory path to watch
+ * @param[in] mask - The inotify event mask
+ * @param[out] inotifyFD - The file descriptor returned by inotify_init1
+ * @param[out] watcherWD - The watch descriptor returned by inotify_add_watch
+ *
+ * @return true if setup was successful, false otherwise
+ */
+bool setupInotifyWatch(const std::string& path, uint32_t mask, int& inotifyFD,
+                       int& watcherWD);
 
 namespace additional_data
 {
