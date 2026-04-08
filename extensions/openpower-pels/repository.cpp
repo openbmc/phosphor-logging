@@ -777,5 +777,76 @@ void Repository::archivePEL(const PEL& pel)
     }
 }
 
+std::optional<std::tuple<Repository::LogID, Repository::PELAttributes,
+                         std::shared_ptr<PEL>>>
+    Repository::parsePELFile(const std::filesystem::path& path)
+{
+    namespace fs = std::filesystem;
+
+    if (!fs::is_regular_file(path))
+    {
+        lg2::error("PEL file missing or not regular: {FILE}", "FILE",
+                   path.string());
+        return std::nullopt;
+    }
+
+    std::ifstream file{path, std::ios::in | std::ios::binary};
+    if (!file.good())
+    {
+        lg2::error("Failed to open PEL file: {FILE}", "FILE", path.string());
+        return std::nullopt;
+    }
+
+    std::vector<uint8_t> data{std::istreambuf_iterator<char>(file),
+                              std::istreambuf_iterator<char>()};
+
+    auto pel = std::make_shared<PEL>(data);
+    if (!pel->valid())
+    {
+        lg2::error("Invalid PEL file in parsePELFile: {FILE}", "FILE",
+                   path.string());
+        return std::nullopt;
+    }
+
+    LogID key{LogID::Pel{pel->id()}, LogID::Obmc{pel->obmcLogID()}};
+
+    PELAttributes attrs{
+        path,
+        getFileDiskSize(path),
+        pel->privateHeader().creatorID(),
+        pel->userHeader().subsystem(),
+        pel->userHeader().severity(),
+        pel->userHeader().actionFlags(),
+        pel->hostTransmissionState(),
+        pel->hmcTransmissionState(),
+        pel->plid(),
+        pel->getDeconfigFlag(),
+        pel->getGuardFlag(),
+        getMillisecondsSinceEpoch(pel->privateHeader().createTimestamp()),
+    };
+
+    return std::make_tuple(key, attrs, pel);
+}
+
+std::optional<Repository::LogID> Repository::importPELFromFile(
+    const std::filesystem::path& path)
+{
+    auto result = parsePELFile(path);
+    lg2::info("Importing PEL from file: {FILE}", "FILE", path.string());
+    if (!result)
+    {
+        return std::nullopt;
+    }
+
+    auto& [key, attrs, pel] = *result;
+
+    // Add to repository
+    _pelAttributes.emplace(key, attrs);
+    updateRepoStats(attrs, true);
+    processAddCallbacks(*pel);
+
+    return key;
+}
+
 } // namespace pels
 } // namespace openpower
