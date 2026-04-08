@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "08d360e8_5a395da5",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 570,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-08T14:07:39Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ac5efd8b_1e6ca381",
+      "revId": "54d0145b3784d65c123c1fb8bc0a7924efda774b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6faad02_32e995c3",
@@ -41,6 +59,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4203db53_8bae2e6a",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 608,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-08T14:07:39Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b6faad02_32e995c3",
+      "range": {
+        "startLine": 608,
+        "startChar": 24,
+        "endLine": 608,
+        "endChar": 33
+      },
+      "revId": "54d0145b3784d65c123c1fb8bc0a7924efda774b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d5afcae_4f2b0acf",
@@ -54,6 +96,30 @@
       "writtenOn": "2026-04-06T21:57:03Z",
       "side": 1,
       "message": "with the try/catch already in handlePELDelete, is this one still needed?",
+      "range": {
+        "startLine": 638,
+        "startChar": 11,
+        "endLine": 638,
+        "endChar": 43
+      },
+      "revId": "54d0145b3784d65c123c1fb8bc0a7924efda774b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f15967e8_df03cf41",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 638,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-08T14:07:39Z",
+      "side": 1,
+      "message": "Agreed removed the try/catch from handlePELDelete. The outer handler in pelFileChanged already catches exceptions and provides better error logging",
+      "parentUuid": "3d5afcae_4f2b0acf",
       "range": {
         "startLine": 638,
         "startChar": 11,
