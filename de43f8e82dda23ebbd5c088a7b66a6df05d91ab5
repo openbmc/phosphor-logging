@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d61fd751_93a4d055",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-08T21:40:36Z",
+      "side": 1,
+      "message": "just minor things",
+      "revId": "de43f8e82dda23ebbd5c088a7b66a6df05d91ab5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88937fee_32181cdc",
+        "filename": "log_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-08T21:40:36Z",
+      "side": 1,
+      "message": "nit: this isn\u0027t necessary anymore.",
+      "range": {
+        "startLine": 793,
+        "startChar": 24,
+        "endLine": 793,
+        "endChar": 35
+      },
+      "revId": "de43f8e82dda23ebbd5c088a7b66a6df05d91ab5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca90d0e4_caf28469",
+        "filename": "log_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 849,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-08T21:40:36Z",
+      "side": 1,
+      "message": "nit: did you mean to leave this in? seems redundant.",
+      "range": {
+        "startLine": 849,
+        "startChar": 66,
+        "endLine": 849,
+        "endChar": 70
+      },
+      "revId": "de43f8e82dda23ebbd5c088a7b66a6df05d91ab5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
