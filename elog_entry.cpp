@@ -128,5 +128,20 @@ void Entry::closeFD(int fd, sdeventplus::source::EventBase& /*source*/)
     fdCloseEventSource.reset();
 }
 
+Entry& Entry::operator=(const Entry& source)
+{
+    if (resolved() != source.resolved())
+    {
+        resolved(source.resolved());
+    }
+
+    if (resolution() != source.resolution())
+    {
+        resolution(source.resolution());
+    }
+
+    return *this;
+}
+
 } // namespace logging
 } // namespace phosphor
