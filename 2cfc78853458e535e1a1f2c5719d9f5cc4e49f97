@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3e6d567_7f3b12ba",
+        "filename": "log_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 930,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-08T11:09:41Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ce3e0417_08b4a969",
+      "revId": "2cfc78853458e535e1a1f2c5719d9f5cc4e49f97",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2ffdd4e0_fbbeda08",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-04-06T10:52:53Z",
       "side": 1,
       "message": "A couple of points here:\n\nWe can create a temporary entry object by reading from the filesystem and use the assignment operator overload to compare it with the existing entry. If any member differs, we update the original entry (the one in the container) and emit a properties-changed signal.\n\nIn the current logic, we update the existing entry, compare it with the previous value, revert it if there’s a difference, and then update it again with the new value to trigger the signal.",
+      "range": {
+        "startLine": 943,
+        "startChar": 1,
+        "endLine": 976,
+        "endChar": 0
+      },
+      "revId": "2cfc78853458e535e1a1f2c5719d9f5cc4e49f97",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3f2c647_20fc26a9",
+        "filename": "log_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 976,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-08T11:09:41Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2ffdd4e0_fbbeda08",
       "range": {
         "startLine": 943,
         "startChar": 1,
