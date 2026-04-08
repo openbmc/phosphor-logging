@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78ccf63b_5d89ab82",
+        "filename": "log_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 786,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-08T08:50:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cf7fd964_c6566f48",
+      "revId": "1ea27fa4eb870875ce577192e33a49741c4a6a23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5cbd2cc3_aca5719f",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-04-06T10:31:32Z",
       "side": 1,
       "message": "It should be error trace",
+      "revId": "1ea27fa4eb870875ce577192e33a49741c4a6a23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8986d68_2a33b1b0",
+        "filename": "log_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 849,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-08T08:50:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5cbd2cc3_aca5719f",
       "revId": "1ea27fa4eb870875ce577192e33a49741c4a6a23",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4baddd0_e324f2b9",
+        "filename": "log_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 881,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-08T08:50:19Z",
+      "side": 1,
+      "message": "it just a sanity check which Verify the ID in the file contents matches the filename. This catches file corruption, manual file manipulation etc.",
+      "parentUuid": "30efbe82_85dc338b",
+      "revId": "1ea27fa4eb870875ce577192e33a49741c4a6a23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00e16e29_dfed5bac",
@@ -69,6 +123,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "337ef6e3_8a4c2bb2",
+        "filename": "log_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 895,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-08T08:50:19Z",
+      "side": 1,
+      "message": "I was returning true because if the ID already exists in entries, there is nothing to restore, so I treated it as a no-op success.\nin this flow I do not expect this case to happen, I can remove.",
+      "parentUuid": "00e16e29_dfed5bac",
+      "revId": "1ea27fa4eb870875ce577192e33a49741c4a6a23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d46cd653_a09b3301",
@@ -82,6 +154,24 @@
       "writtenOn": "2026-04-06T10:31:32Z",
       "side": 1,
       "message": "\u003e file has been created (typically via rsync during RBMC synchronization).\n\nLets not mention how it was synced.\n\nfile has been synced in the redundant BMC system.",
+      "revId": "1ea27fa4eb870875ce577192e33a49741c4a6a23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4eb93d62_3d864374",
+        "filename": "log_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-08T08:50:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d46cd653_a09b3301",
       "revId": "1ea27fa4eb870875ce577192e33a49741c4a6a23",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
