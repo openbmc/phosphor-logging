@@ -16,6 +16,24 @@
       "message": "Please avoid using the PEL term in the common code.\n\nHow about the `ExtensionLogAssociation`?",
       "revId": "ffcc9d400d75c2722b965869a1e56e8b4ed371e0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e6c36e9_d45a694a",
+        "filename": "extensions.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-08T13:06:32Z",
+      "side": 1,
+      "message": "sounds good, will update",
+      "parentUuid": "880f3797_4c4f01e1",
+      "revId": "ffcc9d400d75c2722b965869a1e56e8b4ed371e0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
