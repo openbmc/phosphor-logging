@@ -164,7 +164,7 @@ TEST_F(TestLogManagerDbus, CallCommitSync)
 // metadata is saved correctly.
 TEST_F(TestLogManagerDbus, CallCommitAsync)
 {
-    sdbusplus::message::object_path path{};
+    sdbusplus::object_path path{};
     std::string log_count{};
     pid_t pid = 0;
     std::string source_file{};

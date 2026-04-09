@@ -193,14 +193,14 @@ class Manager : public details::ServerObject<details::ManagerIface>
     auto create(const std::string& message, Severity severity,
                 const std::map<std::string, std::string>& additionalData,
                 const FFDCEntries& ffdc = FFDCEntries{})
-        -> sdbusplus::message::object_path;
+        -> sdbusplus::object_path;
 
     /** @brief Create an internal event log from the sdbusplus generated event
      *
      *  @param[in] event - The event to create.
      */
     auto createFromEvent(sdbusplus::exception::generated_event_base&& event)
-        -> sdbusplus::message::object_path;
+        -> sdbusplus::object_path;
 
     /** @brief Common wrapper for creating an Entry object
      *
@@ -281,7 +281,7 @@ class Manager : public details::ServerObject<details::ManagerIface>
     auto createEntry(std::string errMsg, Entry::Level errLvl,
                      std::map<std::string, std::string> additionalData,
                      const FFDCEntries& ffdc = FFDCEntries{})
-        -> sdbusplus::message::object_path;
+        -> sdbusplus::object_path;
 
     /** @brief Notified on entry property changes
      *
@@ -382,7 +382,7 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
      */
     auto create(std::string message, Severity severity,
                 std::map<std::string, std::string> additionalData)
-        -> sdbusplus::message::object_path override
+        -> sdbusplus::object_path override
     {
         return manager.create(message, severity, additionalData);
     }

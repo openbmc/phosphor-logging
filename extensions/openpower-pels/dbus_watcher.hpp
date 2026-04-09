@@ -203,7 +203,7 @@ class PropertyWatcher : public DBusWatcher
      */
     void interfaceAdded(sdbusplus::message_t& msg)
     {
-        sdbusplus::message::object_path path;
+        sdbusplus::object_path path;
         DBusInterfaceMap interfaces;
 
         msg.read(path, interfaces);
@@ -346,7 +346,7 @@ class InterfaceWatcher : public DBusWatcher
      */
     void interfaceAdded(sdbusplus::message_t& msg)
     {
-        sdbusplus::message::object_path path;
+        sdbusplus::object_path path;
         DBusInterfaceMap interfaces;
 
         msg.read(path, interfaces);

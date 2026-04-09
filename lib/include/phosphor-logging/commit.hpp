@@ -17,7 +17,7 @@ namespace lg2
  */
 auto commit(sdbusplus::exception::generated_event_base&& e,
             std::optional<int> overrideLevel = std::nullopt)
-    -> sdbusplus::message::object_path;
+    -> sdbusplus::object_path;
 
 /** Resolve an existing event/error.
  *
@@ -27,7 +27,7 @@ auto commit(sdbusplus::exception::generated_event_base&& e,
  *  Note: Similar to elog(), this will use the default dbus connection to
  *  perform the operation.
  */
-void resolve(const sdbusplus::message::object_path& logPath);
+void resolve(const sdbusplus::object_path& logPath);
 
 /** Commit a generated event/error (using async context).
  *
@@ -38,7 +38,7 @@ void resolve(const sdbusplus::message::object_path& logPath);
 auto commit(sdbusplus::async::context& ctx,
             sdbusplus::exception::generated_event_base&& e,
             std::optional<int> overrideLevel = std::nullopt)
-    -> sdbusplus::async::task<sdbusplus::message::object_path>;
+    -> sdbusplus::async::task<sdbusplus::object_path>;
 
 /** Resolve an existing event/error (using async context).
  *
@@ -47,7 +47,6 @@ auto commit(sdbusplus::async::context& ctx,
  *  @return None
  */
 auto resolve(sdbusplus::async::context& ctx,
-             const sdbusplus::message::object_path& logPath)
-    -> sdbusplus::async::task<>;
+             const sdbusplus::object_path& logPath) -> sdbusplus::async::task<>;
 
 } // namespace lg2

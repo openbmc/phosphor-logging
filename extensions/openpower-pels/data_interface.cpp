@@ -521,7 +521,7 @@ std::vector<std::string> DataInterface::getInventoryFromLocCode(
 
     auto reply = _bus.call(method, dbusTimeout);
 
-    auto entries = reply.unpack<std::vector<sdbusplus::message::object_path>>();
+    auto entries = reply.unpack<std::vector<sdbusplus::object_path>>();
 
     std::vector<std::string> paths;
 
@@ -875,9 +875,8 @@ DBusPathList DataInterface::getAssociatedPaths(
         auto method = _bus.new_method_call(
             service_name::objectMapper, object_path::objectMapper,
             interface::objectMapper, "GetAssociatedSubTreePaths");
-        method.append(sdbusplus::message::object_path(associatedPath),
-                      sdbusplus::message::object_path(subtree), depth,
-                      interfaces);
+        method.append(sdbusplus::object_path(associatedPath),
+                      sdbusplus::object_path(subtree), depth, interfaces);
 
         auto reply = _bus.call(method, dbusTimeout);
         reply.read(paths);
@@ -941,7 +940,7 @@ void DataInterface::addHotplugWatch(const std::string& path)
 
 void DataInterface::inventoryIfaceAdded(sdbusplus::message_t& msg)
 {
-    sdbusplus::message::object_path path;
+    sdbusplus::object_path path;
     DBusInterfaceMap interfaces;
 
     msg.read(path, interfaces);
@@ -1101,7 +1100,7 @@ void DataInterface::subscribeToSystemdSignals()
                         sdbusRule::interface(interface::systemdMgr),
                     [this](sdbusplus::message_t& msg) {
                         uint32_t jobID;
-                        sdbusplus::message::object_path jobObjPath;
+                        sdbusplus::object_path jobObjPath;
                         std::string jobUnitName, jobUnitResult;
 
                         msg.read(jobID, jobObjPath, jobUnitName, jobUnitResult);
