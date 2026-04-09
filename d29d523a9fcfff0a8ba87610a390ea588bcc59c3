@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b47e6421_4196caba",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-09T19:49:47Z",
+      "side": 1,
+      "message": "ok, I guess this newer code is where we could have an existing PEL with the same ID but in a different file, so we could catch it here instead.  Probably all my comments from the previous commit about this apply here.",
+      "revId": "d29d523a9fcfff0a8ba87610a390ea588bcc59c3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "661822b1_f4e58046",
         "filename": "extensions/openpower-pels/manager.cpp",
         "patchSetId": 5
