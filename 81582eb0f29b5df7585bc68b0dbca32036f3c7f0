@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "89a3833e_ce60546e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-09T08:02:33Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ffec9963_018be8e6",
+      "range": {
+        "startLine": 10,
+        "startChar": 1,
+        "endLine": 10,
+        "endChar": 20
+      },
+      "revId": "81582eb0f29b5df7585bc68b0dbca32036f3c7f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "280360fc_7d894bdd",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bf07710_20d0d9d2",
+        "filename": "extensions.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-09T08:02:33Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "280360fc_7d894bdd",
+      "range": {
+        "startLine": 41,
+        "startChar": 11,
+        "endLine": 41,
+        "endChar": 14
+      },
+      "revId": "81582eb0f29b5df7585bc68b0dbca32036f3c7f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e9b0465_90446cff",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-04-08T21:52:55Z",
       "side": 1,
       "message": "and here",
+      "range": {
+        "startLine": 199,
+        "startChar": 53,
+        "endLine": 199,
+        "endChar": 57
+      },
+      "revId": "81582eb0f29b5df7585bc68b0dbca32036f3c7f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bffcc4e_966891b4",
+        "filename": "extensions.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-09T08:02:33Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6e9b0465_90446cff",
       "range": {
         "startLine": 199,
         "startChar": 53,
