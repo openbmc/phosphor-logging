@@ -14,6 +14,7 @@
 #include "pel_values.hpp"
 #include "service_indicators.hpp"
 #include "severity.hpp"
+#include "util.hpp"
 
 #include <sys/inotify.h>
 #include <unistd.h>
@@ -52,13 +53,13 @@ constexpr uint32_t bmcFansCompID = 0x2800;
 
 Manager::~Manager()
 {
-    if (_pelFileDeleteFD != -1)
+    if (_pelDirWatchFD != -1)
     {
-        if (_pelFileDeleteWatchFD != -1)
+        if (_pelDirWatcherWD != -1)
         {
-            inotify_rm_watch(_pelFileDeleteFD, _pelFileDeleteWatchFD);
+            inotify_rm_watch(_pelDirWatchFD, _pelDirWatcherWD);
         }
-        close(_pelFileDeleteFD);
+        close(_pelDirWatchFD);
     }
 }
 
@@ -567,33 +568,24 @@ void Manager::pruneRepo(sdeventplus::source::EventBase& /*source*/)
     _repoPrunerEventSource.reset();
 }
 
-void Manager::setupPELDeleteWatch()
+void Manager::setupPELFileWatch()
 {
-    _pelFileDeleteFD = inotify_init1(IN_NONBLOCK);
-    if (-1 == _pelFileDeleteFD)
+    auto pelDir = _repo.repoPath();
+
+    uint32_t mask = IN_DELETE;
+    if (!phosphor::logging::util::setupInotifyWatch(
+            pelDir, mask, _pelDirWatchFD, _pelDirWatcherWD))
     {
-        auto e = errno;
-        lg2::error("inotify_init1 failed with errno {ERRNO}", "ERRNO", e);
+        lg2::error("Failed to setup inotify watch for PEL directory");
         abort();
     }
 
-    _pelFileDeleteWatchFD = inotify_add_watch(
-        _pelFileDeleteFD, _repo.repoPath().c_str(), IN_DELETE);
-    if (-1 == _pelFileDeleteWatchFD)
-    {
-        auto e = errno;
-        lg2::error("inotify_add_watch failed with errno {ERRNO}", "ERRNO", e);
-        abort();
-    }
-
-    _pelFileDeleteEventSource = std::make_unique<sdeventplus::source::IO>(
-        _event, _pelFileDeleteFD, EPOLLIN,
-        std::bind(std::mem_fn(&Manager::pelFileDeleted), this,
-                  std::placeholders::_1, std::placeholders::_2,
-                  std::placeholders::_3));
+    _pelDirWatchEventSource = std::make_unique<sdeventplus::source::IO>(
+        _event, _pelDirWatchFD, EPOLLIN,
+        std::bind_front(&Manager::pelFileChanged, this));
 }
 
-void Manager::pelFileDeleted(sdeventplus::source::IO& /*io*/, int /*fd*/,
+void Manager::pelFileChanged(sdeventplus::source::IO& /*io*/, int /*fd*/,
                              uint32_t revents)
 {
     if (!(revents & EPOLLIN))
@@ -601,55 +593,67 @@ void Manager::pelFileDeleted(sdeventplus::source::IO& /*io*/, int /*fd*/,
         return;
     }
 
-    // An event for 1 PEL uses 48B. When all PELs are deleted at once,
-    // as many events as there is room for can be handled in one callback.
-    // A size of 2000 will allow 41 to be processed, with additional
-    // callbacks being needed to process the remaining ones.
-    std::array<uint8_t, 2000> data{};
-    auto bytesRead = read(_pelFileDeleteFD, data.data(), data.size());
+    // An event for 1 PEL uses about 48B. When many PELs are processed at
+    // once, as many events as there is room for can be handled in one
+    // callback. A size of 48000 will allow about 1000 events to be
+    // processed, with additional callbacks being needed to process the
+    // remaining ones.
+    std::array<uint8_t, 48 * 1000> buf{};
+    auto bytesRead = read(_pelDirWatchFD, buf.data(), buf.size());
     if (bytesRead < 0)
     {
-        auto e = errno;
-        lg2::error("Failed reading data from inotify event, errno = {ERRNO}",
-                   "ERRNO", e);
+        if (errno == EAGAIN || errno == EWOULDBLOCK)
+        {
+            return;
+        }
+
+        lg2::error("read data(inotify PEL) failed errno {ERRNO}", "ERRNO",
+                   errno);
         abort();
     }
 
-    auto offset = 0;
-    while (offset < bytesRead)
+    size_t offset = 0;
+    while (offset < static_cast<size_t>(bytesRead))
     {
-        auto event = reinterpret_cast<inotify_event*>(&data[offset]);
-        if (event->mask & IN_DELETE)
+        auto* ev = reinterpret_cast<inotify_event*>(&buf[offset]);
+
+        if (ev->len)
         {
-            std::string filename{event->name};
-
-            // Get the PEL ID from the filename and tell the
-            // repo it's been removed, and then delete the BMC
-            // event log if it's there.
-            auto pos = filename.find_first_of('_');
-            if (pos != std::string::npos)
+            try
             {
-                try
-                {
-                    auto idString = filename.substr(pos + 1);
-                    auto pelID = std::stoul(idString, nullptr, 16);
+                std::string name{ev->name};
 
-                    Repository::LogID id{Repository::LogID::Pel(pelID)};
-                    auto removedLogID = _repo.remove(id);
-                    if (removedLogID)
-                    {
-                        _logManager.erase(removedLogID->obmcID.id);
-                    }
-                }
-                catch (const std::exception& e)
+                if (ev->mask & IN_DELETE)
                 {
-                    lg2::info("Could not find PEL ID from its filename {NAME}",
-                              "NAME", filename);
+                    handlePELDelete(name);
                 }
+            }
+            catch (const std::exception& e)
+            {
+                lg2::error(
+                    "Failed to process PEL event: NAME={NAME}, ERR={ERR}",
+                    "NAME", ev->name, "ERR", e);
             }
         }
 
-        offset += offsetof(inotify_event, name) + event->len;
+        offset += offsetof(inotify_event, name) + ev->len;
+    }
+}
+
+void Manager::handlePELDelete(const std::string& filename)
+{
+    auto pos = filename.find_first_of('_');
+    if (pos != std::string::npos)
+    {
+        auto idString = filename.substr(pos + 1);
+        auto pelID = static_cast<uint32_t>(std::stoul(idString, nullptr, 16));
+
+        Repository::LogID id{Repository::LogID::Pel(pelID)};
+        auto removedLogID = _repo.remove(id);
+        if (removedLogID)
+        {
+            _logManager.erase(removedLogID->obmcID.id);
+        }
     }
 }
 
