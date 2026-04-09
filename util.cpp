@@ -190,6 +190,32 @@ void journalSync()
     return;
 }
 
+bool setupInotifyWatch(const std::string& path, uint32_t mask, int& inotifyFD,
+                       int& watcherWD)
+{
+    inotifyFD = inotify_init1(IN_NONBLOCK);
+    if (inotifyFD == -1)
+    {
+        lg2::error("inotify_init1 failed for {PATH} with errno {ERRNO}", "PATH",
+                   path, "ERRNO", errno);
+        return false;
+    }
+
+    watcherWD = inotify_add_watch(inotifyFD, path.c_str(), mask);
+    if (watcherWD == -1)
+    {
+        lg2::error("inotify_add_watch failed for {PATH} with errno {ERRNO}",
+                   "PATH", path, "ERRNO", errno);
+
+        // close the inotify file descriptor if we failed to add the watch
+        close(inotifyFD);
+        inotifyFD = -1;
+        return false;
+    }
+
+    return true;
+}
+
 namespace additional_data
 {
 auto parse(const std::vector<std::string>& data)
