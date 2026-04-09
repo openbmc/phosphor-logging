@@ -833,7 +833,15 @@ void Manager::errorFileChanged(sdeventplus::source::IO&, int, uint32_t revents)
 
                 if (ev->mask & IN_MOVED_TO)
                 {
-                    if (!entries.contains(idNum))
+                    if (entries.contains(idNum))
+                    {
+                        if (!refreshFromDisk(idNum))
+                        {
+                            lg2::error("Failed to refresh entry {ID} from disk",
+                                       "ID", idNum);
+                        }
+                    }
+                    else
                     {
                         if (!restoreFromDisk(idNum))
                         {
@@ -905,6 +913,47 @@ bool Manager::restoreFromDisk(uint32_t id)
     {
         entryId = std::max(entryId, id);
     }
+
+    return true;
+}
+
+bool Manager::refreshFromDisk(uint32_t id)
+{
+    auto it = entries.find(id);
+    if (it == entries.end() || !it->second)
+    {
+        lg2::error("Unknown refreshed entry ID {ID}", "ID", id);
+        return false;
+    }
+
+    const fs::path path = paths::error() / std::to_string(id);
+
+    std::error_code ec;
+    if (!fs::is_regular_file(path, ec))
+    {
+        return false;
+    }
+
+    // Max uint32_t value
+    const uint32_t tempId = 0xFFFFFFFF;
+    auto tempEntry = std::make_unique<Entry>(
+        busLog, std::string(OBJ_ENTRY) + "/" + std::to_string(tempId), tempId,
+        *this);
+
+    // Read the persisted entry data from disk into the temporary entry
+    if (!deserialize(path, *tempEntry))
+    {
+        lg2::error("Failed to deserialize entry {ID} from {PATH}", "ID", id,
+                   "PATH", path);
+        return false;
+    }
+
+    // Assign properties from the deserialized temp entry using assignment
+    // operator, will only update properties that differ
+    auto& existingEntry = it->second;
+    *existingEntry = *tempEntry;
+
+    existingEntry->path(path, true);
 
     return true;
 }
