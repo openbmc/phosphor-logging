@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "12b5969b_9cde3f1a",
+        "filename": "log_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-09T06:35:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "88937fee_32181cdc",
+      "range": {
+        "startLine": 793,
+        "startChar": 24,
+        "endLine": 793,
+        "endChar": 35
+      },
+      "revId": "de43f8e82dda23ebbd5c088a7b66a6df05d91ab5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca90d0e4_caf28469",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-04-08T21:40:36Z",
       "side": 1,
       "message": "nit: did you mean to leave this in? seems redundant.",
+      "range": {
+        "startLine": 849,
+        "startChar": 66,
+        "endLine": 849,
+        "endChar": 70
+      },
+      "revId": "de43f8e82dda23ebbd5c088a7b66a6df05d91ab5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "331d3b36_cf5e5998",
+        "filename": "log_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 849,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-09T06:35:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ca90d0e4_caf28469",
       "range": {
         "startLine": 849,
         "startChar": 66,
