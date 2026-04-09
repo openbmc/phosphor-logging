@@ -128,5 +128,45 @@ void Entry::closeFD(int fd, sdeventplus::source::EventBase& /*source*/)
     fdCloseEventSource.reset();
 }
 
+Entry& Entry::operator=(const Entry& source)
+{
+    if (resolved() != source.resolved())
+    {
+        resolved(source.resolved());
+    }
+
+    if (resolution() != source.resolution())
+    {
+        resolution(source.resolution());
+    }
+
+    if (eventId() != source.eventId())
+    {
+        eventId(source.eventId());
+    }
+
+    if (severity() != source.severity())
+    {
+        severity(source.severity());
+    }
+
+    if (message() != source.message())
+    {
+        message(source.message());
+    }
+
+    if (additionalData() != source.additionalData())
+    {
+        additionalData(source.additionalData());
+    }
+
+    if (serviceProviderNotify() != source.serviceProviderNotify())
+    {
+        serviceProviderNotify(source.serviceProviderNotify());
+    }
+
+    return *this;
+}
+
 } // namespace logging
 } // namespace phosphor
