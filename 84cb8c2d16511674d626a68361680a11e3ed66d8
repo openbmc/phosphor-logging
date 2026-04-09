@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a420f6e9_9569e64d",
+        "filename": "extensions/openpower-pels/manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-09T19:03:25Z",
+      "side": 1,
+      "message": "nit,  \u0027PEL\u0027.",
+      "range": {
+        "startLine": 309,
+        "startChar": 13,
+        "endLine": 309,
+        "endChar": 16
+      },
+      "revId": "84cb8c2d16511674d626a68361680a11e3ed66d8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e199653f_63e96bc2",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 810,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-09T19:03:25Z",
+      "side": 1,
+      "message": "We could probably use pel-\u003evalid() check here just to be sure there was no corruption on the transfer.",
+      "revId": "84cb8c2d16511674d626a68361680a11e3ed66d8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "270fb474_c853bfa7",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 842,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-09T19:03:25Z",
+      "side": 1,
+      "message": "Here we have the case that this PEL ID may already exist and have a different filename and possibly different log ID.\n\nWe should be able to catch it here by checking _pelAttributes searching on just the PEL ID.\nThen we have to decide what to do, either keep the original or this one and archive the other PEL file.  Probably no answer would be best in all cases.  I guess keep the newer one?\n\nIf we do archive a PEL with a different log ID, we\u0027d want to be sure to also remove that event log because otherwise it\u0027ll be pointing to a nonexistent file.",
+      "revId": "84cb8c2d16511674d626a68361680a11e3ed66d8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d2b9525_473b85d2",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 844,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-09T19:03:25Z",
+      "side": 1,
+      "message": "How hard would it to instead of adding to _pelAttributes now, to create a new structure to hold this tuple off to the side and then in the link when both sides are there then add it to the index?",
+      "revId": "84cb8c2d16511674d626a68361680a11e3ed66d8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34764714_add09e2a",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 846,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-09T19:03:25Z",
+      "side": 1,
+      "message": "Sending to PHYP before we have the event log synced may be fine, though it worries me.  not an issue if you do the above suggestion.",
+      "range": {
+        "startLine": 846,
+        "startChar": 3,
+        "endLine": 846,
+        "endChar": 30
+      },
+      "revId": "84cb8c2d16511674d626a68361680a11e3ed66d8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
