@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "49322f78_87d1d7d3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-10T07:33:30Z",
+      "side": 1,
+      "message": "I do not think listing specific inotify events makes sense here, since this change is a refactor to support handling any inotify event.",
+      "parentUuid": "3e1c224d_9e7f2566",
+      "revId": "1f694b18b2ff93af7797b0f741c29f726f6f5f73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ffdd69ab_48e8bbd4",
         "filename": "extensions/openpower-pels/manager.cpp",
         "patchSetId": 5
@@ -31,6 +49,24 @@
       "writtenOn": "2026-04-10T07:06:26Z",
       "side": 1,
       "message": "The existing code aborts if the inotify read fails, and I think we can keep that behavior as is. Is it removed intentionally?",
+      "revId": "1f694b18b2ff93af7797b0f741c29f726f6f5f73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4190df3d_bea1c0f8",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-10T07:33:30Z",
+      "side": 1,
+      "message": "Yes, this was intentional we already return for EAGAIN and EWOULDBLOCK, so returning here felt more consistent than aborting, also watcher creation failures are handled earlier, so this is not expected to be an unrecoverable error.",
+      "parentUuid": "ffdd69ab_48e8bbd4",
       "revId": "1f694b18b2ff93af7797b0f741c29f726f6f5f73",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
