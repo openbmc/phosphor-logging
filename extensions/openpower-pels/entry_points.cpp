@@ -80,10 +80,10 @@ void getLogIDWithHwIsolation(std::vector<uint32_t>& logIDs)
 
 REGISTER_EXTENSION_FUNCTION(getLogIDWithHwIsolation)
 
-void pelEntryRestored([[maybe_unused]] uint32_t obmcId,
+void pelEntryRestored(uint32_t obmcId,
                       [[maybe_unused]] const std::string& objectPath)
 {
-    // TODO: Call API to link the restored entry with its corresponding PEL.
+    manager->linkPELToEventLog(obmcId);
 }
 
 REGISTER_EXTENSION_FUNCTION(pelEntryRestored)
