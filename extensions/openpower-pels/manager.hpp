@@ -296,6 +296,17 @@ class Manager : public PELInterface
      */
     static std::string sanitizeFieldForDBus(std::string field);
 
+    /**
+     * @brief Attempts to link a PEL with its corresponding OpenBMC event log
+     *        entry.
+     *
+     * Creates the PELEntry interface only when both the OpenBMC event
+     * log entry and the corresponding PEL are available.
+     *
+     * @param[in] obmcLogID - OpenBMC event log ID associated with the PEL.
+     */
+    void linkPELToEventLog(uint32_t obmcLogID);
+
   private:
     /**
      * @brief Adds a received raw PEL to the PEL repository
@@ -529,6 +540,28 @@ class Manager : public PELInterface
      * @param[in] filename - Name of the deleted PEL file.
      */
     void handlePELDelete(const std::string& filename);
+
+    /**
+     * @brief Handles a PEL file appearing in the pel directory.
+     *
+     * In a redundant BMC system, this is triggered when a PEL file becomes
+     * available at its final location after synchronization.
+     *
+     * @param[in] filename - Name of the moved PEL file.
+     */
+    void handlePELMovedTo(const std::string& filename);
+
+    /**
+     * @brief Restores a PEL from disk.
+     *
+     * Imports the PEL into the repository and attempts to link it with the
+     * corresponding event log entry.
+     *
+     * @param[in] path - Path to the PEL file
+     * @param[in] filename - Name of the PEL file
+     */
+    void restorePELFromDisk(const std::filesystem::path& path,
+                            const std::string& filename);
 
     /**
      * @brief Reference to phosphor-logging's Manager class
