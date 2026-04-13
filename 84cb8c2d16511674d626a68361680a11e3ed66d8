@@ -100,6 +100,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d025a681_bae030e5",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 842,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-13T17:27:54Z",
+      "side": 1,
+      "message": "Yes, agreed this case needs to be handled. We are still thinking through the best way to address it and plan to cover this error path in a separate commit.",
+      "parentUuid": "270fb474_c853bfa7",
+      "revId": "84cb8c2d16511674d626a68361680a11e3ed66d8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9d2b9525_473b85d2",
