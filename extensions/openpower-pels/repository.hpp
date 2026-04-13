@@ -469,6 +469,26 @@ class Repository
      */
     bool updatePEL(const std::filesystem::path& path, PELUpdateFunc updateFunc);
 
+    /**
+     * @brief Imports a PEL from disk into the repository.
+     *
+     * Reads and validates the PEL file, builds its repository data, and
+     * stores it in the repository.
+     *
+     * @param[in] path - Path to the PEL file
+     * @return std::optional<LogID> containing the PEL LogID on success,
+     *         or std::nullopt on failure
+     */
+    std::optional<LogID> importPELFromFile(const std::filesystem::path& path);
+
+    /**
+     * @brief Completes PEL link by moving from pending to repository index.
+     *
+     * @param[in] obmcLogID - The OpenBMC log ID
+     * @return true if pending PEL found and linked, false otherwise
+     */
+    bool completePELLink(uint32_t obmcLogID);
+
   private:
     /**
      * @brief Finds an entry in the _pelAttributes map.
@@ -569,6 +589,21 @@ class Repository
                     const IsPELTypeFunc& isPELType,
                     const std::vector<uint32_t>& idsWithHwIsoEntry,
                     std::vector<uint32_t>& removedBMCLogIDs);
+
+    /**
+     * @brief Reads and validates a PEL file from disk.
+     *
+     * Extracts the LogID, repository attributes, and PEL object from the
+     * file contents without adding them to the repository.
+     *
+     * @param[in] path - Path to the PEL file
+     * @return std::optional<std::tuple<LogID, PELAttributes,
+     *         std::shared_ptr<PEL>>> containing the parsed data on success,
+     *         or std::nullopt on failure
+     */
+    std::optional<std::tuple<LogID, PELAttributes, std::shared_ptr<PEL>>>
+        parsePELFile(const std::filesystem::path& path);
+
     /**
      * @brief The filesystem path to the PEL logs.
      */
@@ -620,6 +655,14 @@ class Repository
      * @brief The size of archive folder.
      */
     uint64_t _archiveSize = 0;
+
+    /**
+     * @brief Pending PELs awaiting event log link before adding to repository.
+     *        Map key: OpenBMC log ID
+     *        Map value: tuple<LogID, PELAttributes, shared_ptr<PEL>>
+     */
+    std::map<uint32_t, std::tuple<LogID, PELAttributes, std::shared_ptr<PEL>>>
+        _pendingPELs;
 };
 
 } // namespace pels
