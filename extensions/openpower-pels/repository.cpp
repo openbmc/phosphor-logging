@@ -868,5 +868,26 @@ bool Repository::completePELLink(uint32_t obmcLogID)
     return true;
 }
 
+bool Repository::updatePELFromFile(const LogID& existingKey,
+                                   const std::filesystem::path& path)
+{
+    auto it = _pelAttributes.find(existingKey);
+    if (it == _pelAttributes.end())
+    {
+        return false;
+    }
+
+    auto result = parsePELFile(path);
+    if (!result)
+    {
+        return false;
+    }
+
+    auto& [key, attrs, pel] = *result;
+
+    it->second = attrs;
+    return true;
+}
+
 } // namespace pels
 } // namespace openpower

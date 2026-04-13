@@ -677,7 +677,21 @@ void Manager::handlePELMovedTo(const std::string& filename)
 
     try
     {
-        restorePELFromDisk(path, filename);
+        // Extract PEL ID from filename
+        auto idString = filename.substr(pos + 1);
+        auto pelID = static_cast<uint32_t>(std::stoul(idString, nullptr, 16));
+
+        Repository::LogID id{Repository::LogID::Pel(pelID)};
+        auto existingLogId = _repo.getLogID(id);
+
+        if (existingLogId)
+        {
+            refreshPELFromDisk(*existingLogId, path, filename);
+        }
+        else
+        {
+            restorePELFromDisk(path, filename);
+        }
     }
     catch (const std::exception& e)
     {
@@ -733,6 +747,48 @@ void Manager::linkPELToEventLog(uint32_t obmcLogID,
     setEntryPath(obmcLogID);
     setServiceProviderNotifyFlag(obmcLogID);
     createPELEntry(obmcLogID, false);
+}
+
+void Manager::refreshPELFromDisk(const Repository::LogID& existingLogId,
+                                 const std::filesystem::path& path,
+                                 const std::string& filename)
+{
+    if (!_repo.updatePELFromFile(existingLogId, path))
+    {
+        lg2::warning("Failed to update PEL from file: {FILE}", "FILE",
+                     filename);
+        return;
+    }
+
+    // Update D-Bus properties if PELEntry exists
+    auto entryPath =
+        std::string(OBJ_ENTRY) + "/" + std::to_string(existingLogId.obmcID.id);
+    if (_pelEntries.contains(entryPath))
+    {
+        updatePELEntryProperties(existingLogId.obmcID.id);
+    }
+}
+
+void Manager::updatePELEntryProperties(uint32_t obmcLogID)
+{
+    const auto entryPath =
+        std::string{OBJ_ENTRY} + "/" + std::to_string(obmcLogID);
+
+    if (const auto it = _pelEntries.find(entryPath); it != _pelEntries.end())
+    {
+        const Repository::LogID id{Repository::LogID::Obmc{obmcLogID}};
+
+        if (const auto attributes = _repo.getPELAttributes(id); attributes)
+        {
+            using PELEntryIface =
+                sdbusplus::server::org::open_power::logging::pel::Entry;
+
+            const auto newAckValue =
+                attributes->get().hmcState == TransmissionState::acked;
+
+            it->second->PELEntryIface::managementSystemAck(newAckValue, false);
+        }
+    }
 }
 
 std::tuple<uint32_t, uint32_t> Manager::createPELWithFFDCFiles(

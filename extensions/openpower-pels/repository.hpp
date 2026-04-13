@@ -489,6 +489,19 @@ class Repository
      */
     bool completePELLink(uint32_t obmcLogID);
 
+    /**
+     * @brief Updates an existing PEL's attributes from a file on disk.
+     *
+     * Reads the PEL file and updates the in-memory attributes for an
+     * existing PEL entry.
+     *
+     * @param[in] existingKey - The LogID key of the existing PEL
+     * @param[in] path - The path to the updated PEL file
+     * @return bool - True if successful, false otherwise
+     */
+    bool updatePELFromFile(const LogID& existingKey,
+                           const std::filesystem::path& path);
+
   private:
     /**
      * @brief Finds an entry in the _pelAttributes map.
