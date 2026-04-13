@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "253269ab_74fd7ec1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-13T05:07:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49322f78_87d1d7d3",
+      "revId": "1f694b18b2ff93af7797b0f741c29f726f6f5f73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ffdd69ab_48e8bbd4",
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "Yes, this was intentional we already return for EAGAIN and EWOULDBLOCK, so returning here felt more consistent than aborting, also watcher creation failures are handled earlier, so this is not expected to be an unrecoverable error.",
       "parentUuid": "ffdd69ab_48e8bbd4",
+      "revId": "1f694b18b2ff93af7797b0f741c29f726f6f5f73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ae0d875_5364e3c9",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-13T05:07:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4190df3d_bea1c0f8",
       "revId": "1f694b18b2ff93af7797b0f741c29f726f6f5f73",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
