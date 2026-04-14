@@ -65,7 +65,7 @@ class Manager : public PELInterface
             createPELEntry(entry.first, true);
         }
 
-        setupPELDeleteWatch();
+        setupPELFileWatch();
 
         _dataIface->subscribeToFruPresent(
             "Manager",
@@ -389,19 +389,23 @@ class Manager : public PELInterface
     void pruneRepo(sdeventplus::source::EventBase& source);
 
     /**
-     * @brief Sets up an inotify watch to watch for deleted PEL
-     *        files.  Calls pelFileDeleted() when that occurs.
+     * @brief Sets up an inotify watch on the PEL directory.
+     *
+     * Watches for interested events which indicate that a PEL file has been
+     * created, updated, or deleted
      */
-    void setupPELDeleteWatch();
+    void setupPELFileWatch();
 
     /**
-     * @brief Called when the inotify watch put on the repository directory
-     *        detects a PEL file was deleted.
+     * @brief Handles inotify events for the PEL repository directory.
      *
-     * Will tell the Repository class about the deleted PEL, and then tell
-     * the log manager class to delete the corresponding OpenBMC event log.
+     * Dispatches the event to the appropriate handler based on the event type
+     *
+     * @param[in] io - The event source object.
+     * @param[in] fd - File descriptor for the inotify instance.
+     * @param[in] revents - Event flags returned by epoll.
      */
-    void pelFileDeleted(sdeventplus::source::IO& io, int fd, uint32_t revents);
+    void pelFileChanged(sdeventplus::source::IO& io, int fd, uint32_t revents);
 
     /**
      * @brief Check if the input PEL should cause a quiesce of the system
@@ -517,6 +521,16 @@ class Manager : public PELInterface
     void hardwarePresent(const std::string& locationCode);
 
     /**
+     * @brief Handles deletion of a PEL file.
+     *
+     * Removes the corresponding PEL from the repository and deletes the
+     * associated OpenBMC event log entry if present.
+     *
+     * @param[in] filename - Name of the deleted PEL file.
+     */
+    void handlePELDelete(const std::string& filename);
+
+    /**
      * @brief Reference to phosphor-logging's Manager class
      */
     phosphor::logging::internal::Manager& _logManager;
@@ -588,18 +602,18 @@ class Manager : public PELInterface
     /**
      * @brief The even source for watching for deleted PEL files.
      */
-    std::unique_ptr<sdeventplus::source::IO> _pelFileDeleteEventSource;
+    std::unique_ptr<sdeventplus::source::IO> _pelDirWatchEventSource;
 
     /**
-     * @brief The file descriptor returned by inotify_init1() used
-     *        for watching for deleted PEL files.
+     * @brief File descriptor returned by inotify_init1() for the PEL watcher.
      */
-    int _pelFileDeleteFD = -1;
+    int _pelDirWatchFD = -1;
 
     /**
-     * @brief The file descriptor returned by inotify_add_watch().
+     * @brief Watch descriptor returned by inotify_add_watch() for the PEL
+     * directory.
      */
-    int _pelFileDeleteWatchFD = -1;
+    int _pelDirWatcherWD = -1;
 };
 
 } // namespace pels
