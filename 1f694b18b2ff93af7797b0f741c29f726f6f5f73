@@ -56,6 +56,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "42daa283_eac33850",
+        "filename": "extensions/openpower-pels/manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 597,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-04-14T05:07:19Z",
+      "side": 1,
+      "message": "is it need to match with event log count?",
+      "range": {
+        "startLine": 597,
+        "startChar": 50,
+        "endLine": 597,
+        "endChar": 61
+      },
+      "revId": "1f694b18b2ff93af7797b0f741c29f726f6f5f73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ffdd69ab_48e8bbd4",
         "filename": "extensions/openpower-pels/manager.cpp",
         "patchSetId": 5
