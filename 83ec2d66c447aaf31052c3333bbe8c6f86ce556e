@@ -63,6 +63,24 @@
       "message": "In the scenario:\n1) PEL file is synced\n2) something crashes and the BMC event log is never synced\n3) phosphor-log-manager is restarted\n\nwe could get in a strange case where Repo::restore() runs on that file but it never gets on DBus because there is no entry in logManager.\n\nA future enhancement could be to archive PELs whose associated dbus event event log doesn\u0027t exist.  Though I suppose eventually that file would sync again.",
       "revId": "83ec2d66c447aaf31052c3333bbe8c6f86ce556e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d851cb9_913dafa2",
+        "filename": "extensions/openpower-pels/repository.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 851,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-14T11:19:36Z",
+      "side": 1,
+      "message": "yep noted, will think on this scenario as well",
+      "parentUuid": "ca96797a_c9938d68",
+      "revId": "83ec2d66c447aaf31052c3333bbe8c6f86ce556e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
