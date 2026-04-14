@@ -46,6 +46,30 @@
       },
       "revId": "3f5fbfd291c112c31660d21e438724e6023d81f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24390439_080ccd02",
+        "filename": "extensions/openpower-pels/entry_points.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-14T08:00:44Z",
+      "side": 1,
+      "message": "Cannot drop it, the two-parameter signature is required to match ExtensionLogAssociation type. Removing it would cause the function to register as DeleteFunction instead.\n\nHowever, I can drop the objectPath parameter from the inner function call in commit https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/88887 where it\u0027s passed as:\n```\nmanager-\u003elinkPELToEventLog(obmcId, objectPath);\n```\nSince it only takes obmcLogID, that second parameter can be removed from the call.",
+      "parentUuid": "c806923b_5891bc64",
+      "range": {
+        "startLine": 84,
+        "startChar": 24,
+        "endLine": 84,
+        "endChar": 68
+      },
+      "revId": "3f5fbfd291c112c31660d21e438724e6023d81f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
