@@ -94,6 +94,30 @@
       },
       "revId": "3f5fbfd291c112c31660d21e438724e6023d81f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3fb5fa9_dd5ae3fd",
+        "filename": "extensions/openpower-pels/entry_points.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-14T08:41:46Z",
+      "side": 1,
+      "message": "They are stored in different vectors, but the selection happens earlier based on the callback signature.\n\n`REGISTER_EXTENSION_FUNCTION(pelEntryRestored)` currently registers this as an ExtensionLogAssociation: `std::function\u003cvoid(uint32_t, const std::string\u0026)\u003e`\n\nIf I remove `objectPath`, the callback becomes `std::function\u003cvoid(uint32_t)\u003e`, which matches `DeleteFunction` instead.\n\nThat also creates a constructor overload conflict, since Extensions has constructors for both callback types.\n\nSo the second parameter is still needed to keep this registered under the correct extension hook.",
+      "parentUuid": "9698ecf5_3bafeb14",
+      "range": {
+        "startLine": 84,
+        "startChar": 24,
+        "endLine": 84,
+        "endChar": 68
+      },
+      "revId": "3f5fbfd291c112c31660d21e438724e6023d81f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
