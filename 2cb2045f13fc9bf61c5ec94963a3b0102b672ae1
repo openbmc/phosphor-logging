@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed1c6512_0420bfb9",
+        "filename": "elog_serialize.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-15T20:51:21Z",
+      "side": 1,
+      "message": "Since this function is only used for testing it isn\u0027t a big deal, but if JSON were to ever replace cereal, we\u0027d want to do everything we can to keep an event log if the version is newer than the latest the code understands so that we can support code downgrades without losing event logs.",
+      "revId": "2cb2045f13fc9bf61c5ec94963a3b0102b672ae1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9b2c316_e940404f",
+        "filename": "elog_serialize.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-15T20:51:21Z",
+      "side": 1,
+      "message": "From what I remember the [] operator will just crash if the key isn\u0027t found, but the at() operator will throw.  So I think at() would be better here.",
+      "revId": "2cb2045f13fc9bf61c5ec94963a3b0102b672ae1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
