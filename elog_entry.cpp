@@ -66,6 +66,7 @@ bool Entry::resolved(bool value)
         updateTimestamp(ms);
 
         serialize(*this);
+        serializeJSON(*this);
     }
 
     return current;
@@ -81,6 +82,7 @@ std::string Entry::eventId(std::string value)
             sdbusplus::server::xyz::openbmc_project::logging::Entry::eventId(
                 value);
         serialize(*this);
+        serializeJSON(*this);
     }
 
     return current;
@@ -96,6 +98,7 @@ std::string Entry::resolution(std::string value)
             sdbusplus::server::xyz::openbmc_project::logging::Entry::resolution(
                 value);
         serialize(*this);
+        serializeJSON(*this);
     }
 
     return current;
@@ -103,7 +106,8 @@ std::string Entry::resolution(std::string value)
 
 sdbusplus::message::unix_fd Entry::getEntry()
 {
-    int fd = open(path().c_str(), O_RDONLY | O_NONBLOCK);
+    std::string jsonPath = path() + ".json";
+    int fd = open(jsonPath.c_str(), O_RDONLY | O_NONBLOCK);
     if (fd == -1)
     {
         auto e = errno;
