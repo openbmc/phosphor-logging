@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "465c4db4_f36b7952",
+        "filename": "elog_entry.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-04-15T14:00:15Z",
+      "side": 1,
+      "message": "Should/can we add support to deserialize from JSON also?  I think it would be good if we can make a transition from Cereal to JSON, eventually disabling Cereal via a meson option.",
+      "revId": "6738495479e8c13788a9a31093d2f09dbf8856f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d9057d3_602e25cd",
+        "filename": "elog_serialize.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-04-15T14:00:15Z",
+      "side": 1,
+      "message": "I had to look up what this \"version\" was but it looks like a BMC version and not a structure version.  Do we need some kind of versioning on the JSON structure itself?",
+      "revId": "6738495479e8c13788a9a31093d2f09dbf8856f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
