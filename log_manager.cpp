@@ -273,6 +273,7 @@ auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
         std::move(objects), fwVersion, getEntrySerializePath(entryId), *this);
 
     serialize(*e);
+    serializeJson(*e);
 
     if (isQuiesceOnErrorEnabled() && (errLvl < Entry::sevLowerLimit) &&
         isCalloutPresent(*e))
@@ -630,6 +631,10 @@ void Manager::erase(uint32_t entryId)
         fs::path errorPath(paths::error());
         errorPath /= std::to_string(entryId);
         fs::remove(errorPath);
+
+        fs::path jsonPath = errorPath;
+        jsonPath += ".json";
+        fs::remove(jsonPath);
 
         auto removeId = [](std::list<uint32_t>& ids, uint32_t id) {
             auto it = std::find(ids.begin(), ids.end(), id);

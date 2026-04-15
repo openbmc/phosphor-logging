@@ -23,6 +23,23 @@ namespace fs = std::filesystem;
 fs::path serialize(const Entry& e,
                    const fs::path& dir = fs::path(paths::error()));
 
+/** @brief Serialize error d-bus object as JSON
+ *  @param[in] e - const reference to error entry.
+ *  @param[in] dir - pathname of directory where the JSON file will
+ *                   be placed.
+ *  @return fs::path - pathname of persisted JSON file
+ */
+fs::path serializeJson(const Entry& e,
+                       const fs::path& dir = fs::path(paths::error()));
+
+/** @brief Deserialize a persisted JSON error into a d-bus object
+ *  @param[in] path - pathname of persisted JSON error file
+ *  @param[in] e - reference to error object which is the target of
+ *             deserialization.
+ *  @return bool - true if the deserialization was successful, false otherwise.
+ */
+bool deserializeJson(const fs::path& path, Entry& e);
+
 /** @brief Deserialze a persisted error into a d-bus object
  *  @param[in] path - pathname of persisted error file
  *  @param[in] e - reference to error object which is the target of
