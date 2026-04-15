@@ -9,6 +9,7 @@
 #include <cereal/types/string.hpp>
 #include <cereal/types/tuple.hpp>
 #include <cereal/types/vector.hpp>
+#include <nlohmann/json.hpp>
 #include <phosphor-logging/lg2.hpp>
 
 #include <fstream>
@@ -145,6 +146,87 @@ fs::path serialize(const Entry& e, const fs::path& dir)
     cereal::BinaryOutputArchive oarchive(os);
     oarchive(e);
     return path;
+}
+
+fs::path serializeJson(const Entry& e, const fs::path& dir)
+{
+    auto path = getEntrySerializePath(e.id(), dir);
+    path += ".json";
+
+    nlohmann::json j;
+    j["id"] = e.id();
+    j["severity"] = static_cast<int>(e.severity());
+    j["timestamp"] = e.timestamp();
+    j["message"] = e.message();
+    j["additionalData"] = e.additionalData();
+
+    nlohmann::json assocArray = nlohmann::json::array();
+    for (const auto& [forward, reverse, endpoint] : e.associations())
+    {
+        assocArray.push_back({forward, reverse, endpoint});
+    }
+    j["associations"] = assocArray;
+
+    j["resolved"] = e.resolved();
+    j["version"] = e.version();
+    j["updateTimestamp"] = e.updateTimestamp();
+    j["eventId"] = e.eventId();
+    j["resolution"] = e.resolution();
+
+    std::ofstream os(path.c_str());
+    os << j.dump(4);
+    return path;
+}
+
+bool deserializeJson(const fs::path& path, Entry& e)
+{
+    try
+    {
+        if (!fs::exists(path))
+        {
+            return false;
+        }
+
+        std::ifstream is(path.c_str());
+        nlohmann::json j = nlohmann::json::parse(is);
+
+        e.id(j["id"].get<uint32_t>(), true);
+        e.severity(static_cast<Entry::Level>(j["severity"].get<int>()), true);
+        e.timestamp(j["timestamp"].get<uint64_t>(), true);
+        e.message(j["message"].get<std::string>(), true);
+        e.additionalData(
+            j["additionalData"].get<std::map<std::string, std::string>>(),
+            true);
+
+        AssociationList associations;
+        for (const auto& a : j["associations"])
+        {
+            associations.emplace_back(a[0].get<std::string>(),
+                                      a[1].get<std::string>(),
+                                      a[2].get<std::string>());
+        }
+        e.associations(associations, true);
+
+        e.sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved(
+            j["resolved"].get<bool>(), true);
+        e.version(j["version"].get<std::string>(), true);
+        e.purpose(sdbusplus::server::xyz::openbmc_project::software::Version::
+                      VersionPurpose::BMC,
+                  true);
+        e.updateTimestamp(j["updateTimestamp"].get<uint64_t>(), true);
+        e.eventId(j["eventId"].get<std::string>(), true);
+        e.resolution(j["resolution"].get<std::string>(), true);
+
+        return true;
+    }
+    catch (const std::exception& ex)
+    {
+        lg2::error("Failed restoring JSON {PATH}: {EXCEPTION}", "PATH", path,
+                   "EXCEPTION", ex);
+        auto saveDir = paths::error().parent_path();
+        fs::rename(path, saveDir / "corrupt_error_json");
+        return false;
+    }
 }
 
 bool deserialize(const fs::path& path, Entry& e)
