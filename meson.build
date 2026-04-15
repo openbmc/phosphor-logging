@@ -169,6 +169,7 @@ log_manager_sources = [
 log_manager_deps = [
     cereal_dep,
     conf_h_dep,
+    nlohmann_json_dep,
     pdi_dep,
     phosphor_logging_dep,
     sdbusplus_dep,
