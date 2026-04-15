@@ -31,6 +31,7 @@ tests = [
     'remote_logging_test_config',
     'remote_logging_test_port',
     'sdtest',
+    'serialization_test_json',
     'serialization_test_path',
     'serialization_test_properties',
 ]

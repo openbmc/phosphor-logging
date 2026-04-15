@@ -9,6 +9,7 @@
 #include <cereal/types/string.hpp>
 #include <cereal/types/tuple.hpp>
 #include <cereal/types/vector.hpp>
+#include <nlohmann/json.hpp>
 #include <phosphor-logging/lg2.hpp>
 
 #include <fstream>
@@ -144,6 +145,36 @@ fs::path serialize(const Entry& e, const fs::path& dir)
     std::ofstream os(path.c_str(), std::ios::binary);
     cereal::BinaryOutputArchive oarchive(os);
     oarchive(e);
+    return path;
+}
+
+fs::path serializeJson(const Entry& e, const fs::path& dir)
+{
+    auto path = getEntrySerializePath(e.id(), dir);
+    path += ".json";
+
+    nlohmann::json j;
+    j["id"] = e.id();
+    j["severity"] = static_cast<int>(e.severity());
+    j["timestamp"] = e.timestamp();
+    j["message"] = e.message();
+    j["additionalData"] = e.additionalData();
+
+    nlohmann::json assocArray = nlohmann::json::array();
+    for (const auto& [forward, reverse, endpoint] : e.associations())
+    {
+        assocArray.push_back({forward, reverse, endpoint});
+    }
+    j["associations"] = assocArray;
+
+    j["resolved"] = e.resolved();
+    j["version"] = e.version();
+    j["updateTimestamp"] = e.updateTimestamp();
+    j["eventId"] = e.eventId();
+    j["resolution"] = e.resolution();
+
+    std::ofstream os(path.c_str());
+    os << j.dump(4);
     return path;
 }
 
