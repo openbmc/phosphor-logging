@@ -9,6 +9,7 @@
 #include <cereal/types/string.hpp>
 #include <cereal/types/tuple.hpp>
 #include <cereal/types/vector.hpp>
+#include <nlohmann/json.hpp>
 #include <phosphor-logging/lg2.hpp>
 
 #include <fstream>
@@ -145,6 +146,107 @@ fs::path serialize(const Entry& e, const fs::path& dir)
     cereal::BinaryOutputArchive oarchive(os);
     oarchive(e);
     return path;
+}
+
+fs::path serializeJson(const Entry& e, const fs::path& dir)
+{
+    auto path = getEntrySerializePath(e.id(), dir);
+    path += ".json";
+
+    nlohmann::json j;
+    j["jsonVersion"] = JSON_FORMAT_VERSION;
+    j["id"] = e.id();
+    j["severity"] = static_cast<int>(e.severity());
+    j["timestamp"] = e.timestamp();
+    j["message"] = e.message();
+    j["additionalData"] = e.additionalData();
+
+    nlohmann::json assocArray = nlohmann::json::array();
+    for (const auto& [forward, reverse, endpoint] : e.associations())
+    {
+        assocArray.push_back({forward, reverse, endpoint});
+    }
+    j["associations"] = assocArray;
+
+    j["resolved"] = e.resolved();
+    j["version"] = e.version();
+    j["updateTimestamp"] = e.updateTimestamp();
+    j["eventId"] = e.eventId();
+    j["resolution"] = e.resolution();
+
+    std::ofstream os(path.c_str());
+    os << j.dump(4);
+    return path;
+}
+
+bool deserializeJson(const fs::path& path, Entry& e)
+{
+    try
+    {
+        if (!fs::exists(path))
+        {
+            return false;
+        }
+
+        std::ifstream is(path.c_str());
+        nlohmann::json j = nlohmann::json::parse(is);
+
+        // Version 1 is the initial JSON format
+        size_t fileVersion = j.value("jsonVersion", 1);
+        if (fileVersion > JSON_FORMAT_VERSION)
+        {
+            lg2::error(
+                "Unsupported JSON version {VER} in {PATH}, max supported: {MAX}",
+                "VER", fileVersion, "PATH", path, "MAX", JSON_FORMAT_VERSION);
+            return false;
+        }
+
+        // When JSON_FORMAT_VERSION is bumped, add migration logic here
+        // to apply defaults for any newly added fields that don't exist
+        // in older versions. The common fields below are always read.
+        if (fileVersion < JSON_FORMAT_VERSION)
+        {}
+
+        e.id(j.at("id").get<uint32_t>(), true);
+        e.severity(static_cast<Entry::Level>(j.at("severity").get<int>()),
+                   true);
+        e.timestamp(j.at("timestamp").get<uint64_t>(), true);
+        e.message(j.at("message").get<std::string>(), true);
+        e.additionalData(
+            j.at("additionalData").get<std::map<std::string, std::string>>(),
+            true);
+        e.sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved(
+            j.at("resolved").get<bool>(), true);
+
+        AssociationList associations;
+        for (const auto& a : j.at("associations"))
+        {
+            associations.emplace_back(a[0].get<std::string>(),
+                                      a[1].get<std::string>(),
+                                      a[2].get<std::string>());
+        }
+        e.associations(associations, true);
+
+        e.version(j.at("version").get<std::string>(), true);
+        e.purpose(sdbusplus::server::xyz::openbmc_project::software::Version::
+                      VersionPurpose::BMC,
+                  true);
+        e.updateTimestamp(j.at("updateTimestamp").get<uint64_t>(), true);
+        e.eventId(j.at("eventId").get<std::string>(), true);
+        e.resolution(j.at("resolution").get<std::string>(), true);
+
+        return true;
+    }
+    catch (const std::exception& ex)
+    {
+        lg2::error("Failed restoring JSON {PATH}: {EXCEPTION}", "PATH", path,
+                   "EXCEPTION", ex);
+        // Save the corrupt entry file for later debug. Just write over any
+        // previous ones.
+        auto saveDir = paths::error().parent_path();
+        fs::rename(path, saveDir / "corrupt_error_json");
+        return false;
+    }
 }
 
 bool deserialize(const fs::path& path, Entry& e)
