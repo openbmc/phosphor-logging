@@ -33,6 +33,24 @@
       "message": "From what I remember the [] operator will just crash if the key isn\u0027t found, but the at() operator will throw.  So I think at() would be better here.",
       "revId": "2cb2045f13fc9bf61c5ec94963a3b0102b672ae1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c96b6a88_d2136534",
+        "filename": "elog_serialize.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1002802
+      },
+      "writtenOn": "2026-04-16T12:12:12Z",
+      "side": 1,
+      "message": "I have now replaced [] with .at() for accessing individual fields",
+      "parentUuid": "b9b2c316_e940404f",
+      "revId": "2cb2045f13fc9bf61c5ec94963a3b0102b672ae1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
