@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a803d637_05306983",
+        "filename": "test/log_manager_rbmc_sync_test.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-17T20:00:23Z",
+      "side": 1,
+      "message": "clever ways to test!",
+      "revId": "e13319cd435e5aca215df3dc5d7586e463091ae5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "639284ed_fca7949d",
+        "filename": "test/meson.build",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-17T20:00:23Z",
+      "side": 1,
+      "message": "This line is commented out... what was your plan here?",
+      "revId": "e13319cd435e5aca215df3dc5d7586e463091ae5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
