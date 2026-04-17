@@ -34,6 +34,11 @@ tests = [
     'serialization_test_path',
     'serialization_test_properties',
 ]
+
+if get_option('redundant-bmc')
+    # tests += ['log_manager_rbmc_sync_test']
+endif
+
 foreach t : tests
     test(
         'test_' + t.underscorify(),
