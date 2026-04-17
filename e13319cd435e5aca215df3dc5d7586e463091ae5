@@ -33,6 +33,24 @@
       "message": "This line is commented out... what was your plan here?",
       "revId": "e13319cd435e5aca215df3dc5d7586e463091ae5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e7dcb42_35fda1ca",
+        "filename": "test/meson.build",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1002680
+      },
+      "writtenOn": "2026-04-17T20:14:53Z",
+      "side": 1,
+      "message": "Oh, I left it commented out by mistake while working on the other changes.",
+      "parentUuid": "639284ed_fca7949d",
+      "revId": "e13319cd435e5aca215df3dc5d7586e463091ae5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
