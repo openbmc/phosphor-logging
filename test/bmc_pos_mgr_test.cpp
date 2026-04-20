@@ -86,16 +86,13 @@ TEST(BMCPosMgrTest, ProcessEntryId)
         // No position change no rollover
         {0, 1, 1},
         {1, 1, 0x01000001},
-        {0xFF, 0xFF000000, 0xFF000000},
 
         // Change positions
         {0, 0x01000001, 0x00000001},
         {1, 0x00000001, 0x01000001},
-        {0xFF, 0x00000001, 0xFF000001},
         {0, 0xFF000001, 0x00000001},
 
         // Rollovers
-        {0xFF, 0xFFFFFFFF, 0xFF000000},
         {0, 0x00FFFFFF, 0x00000000},
         {1, 0x01FFFFFF, 0x01000000},
         {1, 0xFFFFFFFF, 0x01000000}};
@@ -107,6 +104,20 @@ TEST(BMCPosMgrTest, ProcessEntryId)
 
         EXPECT_EQ(mgr.processEntryId(test.id), test.expected);
     }
+}
+
+TEST(BMCPosMgrTest, ProcessEntryIdWhenPositionInvalid)
+{
+    PosFile file{0};
+    BMCPosMgr mgr{file.path};
+
+    file.remove();
+    mgr.readBMCPosition();
+
+    auto id = mgr.processEntryId(0x00000001);
+
+    EXPECT_EQ(id & 0xFF000000, 0xFF000000);
+    EXPECT_NE(id & 0x00FFFFFF, 0x00000001);
 }
 
 TEST(BMCPosMgrTest, IdContainsCurrentPosition)
