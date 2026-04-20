@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6aa243ca_170a462d",
+        "filename": "test/bmc_pos_mgr_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-20T21:38:39Z",
+      "side": 1,
+      "message": "nit: how about a check that the remaining 3 bytes aren\u0027t still 0x000001?",
+      "revId": "f9a651bc275e2f7398a936c438c536a15aae5da2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
