@@ -92,6 +92,16 @@ class BMCPosMgr
     void checkEntryIdRollover(uint32_t& id) const;
 
     /**
+     * @brief Generates a time-based entry ID when position is not available.
+     *
+     * Uses nanoseconds since epoch to create a unique ID across
+     * redundant BMC systems when the position file doesn't exist.
+     *
+     * @return A unique time-based entry ID with 0xFF position marker
+     */
+    uint32_t getTimeBasedEntryId() const;
+
+    /**
      * @brief The BMC position.
      *
      * 0xFF if the position can't be obtained.
