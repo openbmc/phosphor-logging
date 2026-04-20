@@ -5,6 +5,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <chrono>
 #include <fstream>
 
 namespace phosphor::logging
@@ -15,6 +16,12 @@ constexpr uint32_t entryIdValueMask = 0x00FFFFFF;
 
 uint32_t BMCPosMgr::processEntryId(uint32_t id) const
 {
+    // If position is invalid, generate a time-based ID
+    if (!isPositionValid())
+    {
+        return getTimeBasedEntryId();
+    }
+
     setPrefixInEntryId(id);
 
     // Roll it over at 0x00FFFFFF
@@ -86,6 +93,18 @@ void BMCPosMgr::readBMCPosition()
 bool BMCPosMgr::idContainsCurrentPosition(uint32_t id) const
 {
     return (id >> 24) == bmcPosition;
+}
+
+uint32_t BMCPosMgr::getTimeBasedEntryId() const
+{
+    using namespace std::chrono;
+
+    // Use 3 bytes of the nanosecond count since the epoch.
+    uint32_t id =
+        duration_cast<nanoseconds>(system_clock::now().time_since_epoch())
+            .count();
+
+    return (id & entryIdValueMask) | (static_cast<uint32_t>(noPosition) << 24);
 }
 
 } // namespace phosphor::logging
