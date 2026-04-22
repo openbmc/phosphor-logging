@@ -96,17 +96,21 @@ TEST(LogIdTest, IDTestWithBMCPos)
     position::extractBMCPositionFromLogID(0x00000345);
     EXPECT_EQ(generatePELID(), 0x50000002);
 
-    // No Position
+    // No Position - generates time-based ID
     position::extractBMCPositionFromLogID(0xFF000678);
-    EXPECT_EQ(generatePELID(), 0x5F000003);
+    auto timeBasedID1 = generatePELID();
+    EXPECT_EQ(timeBasedID1 & 0xFF000000, 0x5F000000);
+    EXPECT_NE(timeBasedID1 & 0x00FFFFFF, 0x00000003);
 
     // Back to 0
     position::extractBMCPositionFromLogID(0x000009AB);
     EXPECT_EQ(generatePELID(), 0x50000004);
 
-    // Invalid, so PEL gets 0x5F
+    // Invalid, so PEL gets 0x5F with time-based ID
     position::extractBMCPositionFromLogID(0x39000CDE);
-    EXPECT_EQ(generatePELID(), 0x5F000005);
+    auto timeBasedID2 = generatePELID();
+    EXPECT_EQ(timeBasedID2 & 0xFF000000, 0x5F000000);
+    EXPECT_NE(timeBasedID2 & 0x00FFFFFF, 0x00000005);
 
     fs::remove_all(getPELIDFile().parent_path());
 }
