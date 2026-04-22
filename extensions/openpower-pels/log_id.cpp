@@ -140,6 +140,14 @@ uint32_t generatePELID()
         return detail::getTimeBasedLogID();
     }
 
+    // In redundant BMC systems, if position is invalid, use time-based ID
+    if ((REDUNDANT_BMC || IS_UNIT_TEST) &&
+        position::bmcPosition == invalidPELIDPosition)
+    {
+        lg2::info("BMC position not available, using time-based PEL ID");
+        return detail::getTimeBasedLogID();
+    }
+
     return detail::addLogIDPrefix(id);
 }
 

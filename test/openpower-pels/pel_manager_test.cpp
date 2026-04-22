@@ -1459,7 +1459,9 @@ TEST_F(ManagerTest, TestCreatePELsWithBMCPosInID)
 
         // No position
         createPEL(manager, dir, 0xFF000002);
-        EXPECT_EQ(manager.getPELIdFromBMCLogId(0xFF000002), 0x5F000002);
+        auto pelId1 = manager.getPELIdFromBMCLogId(0xFF000002);
+        EXPECT_EQ(pelId1 & 0xFF000000, 0x5F000000);
+        EXPECT_NE(pelId1 & 0x00FFFFFF, 0x00000002);
 
         // Position 0
         createPEL(manager, dir, 0x00000003);
@@ -1467,6 +1469,8 @@ TEST_F(ManagerTest, TestCreatePELsWithBMCPosInID)
 
         // 0x93 is an invalid position, so will get a 0x5F PEL
         createPEL(manager, dir, 0x9300FFFF);
-        EXPECT_EQ(manager.getPELIdFromBMCLogId(0x9300FFFF), 0x5F000004);
+        auto pelId2 = manager.getPELIdFromBMCLogId(0x9300FFFF);
+        EXPECT_EQ(pelId2 & 0xFF000000, 0x5F000000);
+        EXPECT_NE(pelId2 & 0x00FFFFFF, 0x00000004);
     }
 }
