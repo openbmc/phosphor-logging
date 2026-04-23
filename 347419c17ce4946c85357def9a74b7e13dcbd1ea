@@ -168,6 +168,24 @@
       "message": "Can we add test cases that attempts to deserialize:\n1. a corrupted JSON\n2. a JSON missing a field.\n\nWe should confirm that the result is the expected exception.",
       "revId": "347419c17ce4946c85357def9a74b7e13dcbd1ea",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b25bffff_946edcc1",
+        "filename": "test/serialization_test_json.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1002802
+      },
+      "writtenOn": "2026-04-23T16:14:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "15079010_444f592d",
+      "revId": "347419c17ce4946c85357def9a74b7e13dcbd1ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
