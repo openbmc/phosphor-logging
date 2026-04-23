@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7dc0e4e0_01a51736",
+        "filename": "config/config.h.meson",
+        "patchSetId": 6
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1002802
+      },
+      "writtenOn": "2026-04-23T16:14:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c0a76d9_251a756c",
+      "range": {
+        "startLine": 40,
+        "startChar": 17,
+        "endLine": 40,
+        "endChar": 23
+      },
+      "revId": "347419c17ce4946c85357def9a74b7e13dcbd1ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aa6d550b_725c8fb3",
@@ -37,6 +61,24 @@
       "writtenOn": "2026-04-21T15:50:45Z",
       "side": 1,
       "message": "What are we doing if the json version is less than the expected?",
+      "revId": "347419c17ce4946c85357def9a74b7e13dcbd1ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a470850_c796571b",
+        "filename": "elog_serialize.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1002802
+      },
+      "writtenOn": "2026-04-23T16:14:03Z",
+      "side": 1,
+      "message": "Added a placeholder for upgrading it to the newer version, by setting the newer fields in the if block and always reading the fields existing in the older version outside if.",
+      "parentUuid": "aa6d550b_725c8fb3",
       "revId": "347419c17ce4946c85357def9a74b7e13dcbd1ea",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -58,6 +100,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "10fecc65_2b1a9c0e",
+        "filename": "elog_serialize.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1002802
+      },
+      "writtenOn": "2026-04-23T16:14:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "672f773f_5e7b4b6e",
+      "revId": "347419c17ce4946c85357def9a74b7e13dcbd1ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "64224fcb_9cc35339",
@@ -71,6 +131,24 @@
       "writtenOn": "2026-04-21T15:50:45Z",
       "side": 1,
       "message": "Is there a reason we\u0027re renaming the entire directory due to a single corrupted file?  If so, can we leave a comment here as to why?",
+      "revId": "347419c17ce4946c85357def9a74b7e13dcbd1ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c624f7a_9b52a650",
+        "filename": "elog_serialize.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1002802
+      },
+      "writtenOn": "2026-04-23T16:14:03Z",
+      "side": 1,
+      "message": "path - points to single entry file, it is renaming that file and saving under the parent directory overwriting any existing file, same as existing logic in deserialize",
+      "parentUuid": "64224fcb_9cc35339",
       "revId": "347419c17ce4946c85357def9a74b7e13dcbd1ea",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
