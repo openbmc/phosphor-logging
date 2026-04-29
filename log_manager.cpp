@@ -701,19 +701,35 @@ void Manager::restore()
         return;
     }
 
+    // The directory location might have JSON or Cereal serialized logs (or
+    // both).  Use a map to deduplicate to just the individual event IDs and then
+    // deserialize them.
+    std::map<uint32_t, std::string> files{};
     for (auto& file : fs::directory_iterator(dir))
     {
         auto id = file.path().filename().string();
+
+        if (id.ends_with(".json"))
+        {
+            id = id.substr(0, id.size() - 5);
+        }
         uint32_t idNum = std::stoul(id);
 
+        files.try_emplace(idNum, std::move(id));
+    }
+
+    for (const auto& [idNum, id] : files)
+    {
         auto e = std::make_unique<Entry>(
             busLog, std::string(OBJ_ENTRY) + '/' + id, idNum, *this);
-        if (deserialize(file.path(), *e))
+
+        auto filePath = dir / id;
+        if (deserialize(filePath, *e))
         {
             // validate the restored error entry id
             if (sanity(static_cast<uint32_t>(idNum), e->id()))
             {
-                e->path(file.path(), true);
+                e->path(filePath, true);
                 if (e->severity() >= Entry::sevLowerLimit)
                 {
                     infoErrors.push_back(idNum);
