@@ -16,6 +16,24 @@
       "message": "Even easier is:\n\nif (id.ends_with(json))\n    continue\n\nWhat advantage is the current method?",
       "revId": "4bf361edbcf75eb423f86a6ee48035aee5455b09",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d935cebc_9077630f",
+        "filename": "log_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 712,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-04-29T17:28:26Z",
+      "side": 1,
+      "message": "I think Archit was planning on adding support to deserialize from JSON as well.  That way we can make a transition from Cereal to JSON.  Continuing to add the ID into the map makes it easier to deal with that code below in the near future.\n\n(Maybe I\u0027ll add it quickly)",
+      "parentUuid": "ced242a4_8033a812",
+      "revId": "4bf361edbcf75eb423f86a6ee48035aee5455b09",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
