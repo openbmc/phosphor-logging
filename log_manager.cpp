@@ -729,7 +729,12 @@ void Manager::restore()
             // validate the restored error entry id
             if (sanity(static_cast<uint32_t>(idNum), e->id()))
             {
-                e->path(filePath, true);
+                // If we got here, it is possible we didn't record the file
+                // in JSON (maybe an upgrade from an old version).  Do that
+                // now and make sure the path is adjusted.
+                auto jsonPath = serializeJSON(*e);
+                e->path(jsonPath, true);
+
                 if (e->severity() >= Entry::sevLowerLimit)
                 {
                     infoErrors.push_back(idNum);
