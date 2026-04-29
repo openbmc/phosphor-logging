@@ -18,7 +18,7 @@ class TestJsonSerialization : public testing::Test
   public:
     TestJsonSerialization()
     {
-        dir = paths::error();
+        dir = paths::error_json();
         fs::create_directories(dir);
     }
 

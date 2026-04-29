@@ -30,7 +30,7 @@ fs::path serialize(const Entry& e,
  *  @return fs::path - pathname of persisted JSON file
  */
 fs::path serializeJSON(const Entry& e,
-                       const fs::path& dir = fs::path(paths::error()));
+                       const fs::path& dir = fs::path(paths::error_json()));
 
 /** @brief Deserialize a persisted JSON error into a d-bus object
  *  @param[in] path - pathname of persisted JSON error file

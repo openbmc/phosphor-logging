@@ -646,8 +646,8 @@ void Manager::erase(uint32_t entryId)
         errorPath /= std::to_string(entryId);
         fs::remove(errorPath);
 
-        fs::path jsonPath = errorPath;
-        jsonPath += ".json";
+        fs::path jsonPath(paths::error_json());
+        jsonPath /= std::to_string(entryId) + ".json";
         fs::remove(jsonPath);
 
         auto removeId = [](std::list<uint32_t>& ids, uint32_t id) {

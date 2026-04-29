@@ -8,6 +8,7 @@ namespace phosphor::logging::paths
 {
 
 auto error() -> std::filesystem::path;
+auto error_json() -> std::filesystem::path;
 auto extension() -> std::filesystem::path;
 
 } // namespace phosphor::logging::paths

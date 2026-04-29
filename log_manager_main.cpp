@@ -36,6 +36,7 @@ int main(int argc, char* argv[])
 
     // Create a directory to persist errors.
     std::filesystem::create_directories(phosphor::logging::paths::error());
+    std::filesystem::create_directories(phosphor::logging::paths::error_json());
 
     if constexpr (REDUNDANT_BMC)
     {
