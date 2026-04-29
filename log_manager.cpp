@@ -724,35 +724,47 @@ void Manager::restore()
             busLog, std::string(OBJ_ENTRY) + '/' + id, idNum, *this);
 
         auto filePath = dir / id;
-        if (deserialize(filePath, *e))
+        auto filePathJSON = dir / (id + ".json");
+        if (std::filesystem::exists(filePathJSON) &&
+            deserializeJSON(filePathJSON, *e))
         {
-            // validate the restored error entry id
-            if (sanity(static_cast<uint32_t>(idNum), e->id()))
+            e->path(filePathJSON, true);
+        }
+        else if (std::filesystem::exists(filePath) && deserialize(filePath, *e))
+        {
+            // If we got here, it is possible we didn't record the file
+            // in JSON (maybe an upgrade from an old version).  Do that
+            // now and make sure the path is adjusted.
+            auto jsonPath = serializeJSON(*e);
+            e->path(jsonPath, true);
+        }
+        else
+        {
+            lg2::error(
+                "Unable to find or parse error entry {ID_NUM}/?{ENTRY_ID}.",
+                "ID_NUM", idNum, "ENTRY_ID", e->id());
+            continue;
+        }
+
+        // Add it to the appropriate queue.
+        if (sanity(static_cast<uint32_t>(idNum), e->id()))
+        {
+            if (e->severity() >= Entry::sevLowerLimit)
             {
-                // If we got here, it is possible we didn't record the file
-                // in JSON (maybe an upgrade from an old version).  Do that
-                // now and make sure the path is adjusted.
-                auto jsonPath = serializeJSON(*e);
-                e->path(jsonPath, true);
-
-                if (e->severity() >= Entry::sevLowerLimit)
-                {
-                    infoErrors.push_back(idNum);
-                }
-                else
-                {
-                    realErrors.push_back(idNum);
-                }
-
-                entries.insert(std::make_pair(idNum, std::move(e)));
+                infoErrors.push_back(idNum);
             }
             else
             {
-                lg2::error(
-                    "Failed in sanity check while restoring error entry. "
-                    "Ignoring error entry {ID_NUM}/{ENTRY_ID}.",
-                    "ID_NUM", idNum, "ENTRY_ID", e->id());
+                realErrors.push_back(idNum);
             }
+
+            entries.insert(std::make_pair(idNum, std::move(e)));
+        }
+        else
+        {
+            lg2::error("Failed in sanity check while restoring error entry. "
+                       "Ignoring error entry {ID_NUM}/{ENTRY_ID}.",
+                       "ID_NUM", idNum, "ENTRY_ID", e->id());
         }
     }
 
