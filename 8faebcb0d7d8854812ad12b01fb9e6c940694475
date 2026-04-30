@@ -16,6 +16,24 @@
       "message": "I\u0027d prefer to not rewrite the file if it\u0027s already there. Can you only do if necessary?",
       "revId": "8faebcb0d7d8854812ad12b01fb9e6c940694475",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ca2c7f1_4b94211f",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 735,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-04-30T15:02:09Z",
+      "side": 1,
+      "message": "Sure... it\u0027ll be a little clunky and I\u0027m going to end up removing it in the next commit, but I can do that.",
+      "parentUuid": "98f277c2_e12ae32d",
+      "revId": "8faebcb0d7d8854812ad12b01fb9e6c940694475",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
