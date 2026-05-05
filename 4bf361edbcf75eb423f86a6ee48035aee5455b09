@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "430316e8_bd5d4299",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-05-05T20:18:40Z",
+      "side": 1,
+      "message": "We should move the JSON into a new directory to support backwards compatibility.  I missed that.\n\n\u003e Does meta not have to support N-1 testing or rolling back updates?\n\nGenerally we do not downgrade or require backwards compatibility.  We only move forward.\n\n\u003e IBM happens to be at a breakpoint right now where I think we\u0027re safe from this, but in general it\u0027s standard practice to go from old to new and back again all the time.\n\nYes, I think this is reasonable to have to support.",
+      "parentUuid": "0c4670e1_d56e4797",
+      "revId": "4bf361edbcf75eb423f86a6ee48035aee5455b09",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ced242a4_8033a812",
         "filename": "log_manager.cpp",
         "patchSetId": 2
