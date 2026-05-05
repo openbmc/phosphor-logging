@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "03eadde0_2359464e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-05-05T21:44:19Z",
+      "side": 1,
+      "message": "\u003e So I think if we do that then these 3 commits won\u0027t be needed.\n\nWe definitely still need some or all of these 3 commits even if I move it.  But I\u0027ll try to simplify what can be simplified if a simple move makes it not necessary.",
+      "parentUuid": "66db5b33_36eea485",
+      "revId": "4bf361edbcf75eb423f86a6ee48035aee5455b09",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ced242a4_8033a812",
         "filename": "log_manager.cpp",
         "patchSetId": 2
