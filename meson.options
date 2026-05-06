@@ -7,6 +7,13 @@ option(
     value: 'disabled',
 )
 
+option(
+    'amd-event-logging',
+    type: 'boolean',
+    description: 'Enable AMD Event Logging (AEL) extension',
+    value: true,
+)
+
 option('yamldir', type: 'string', description: 'Path to YAML')
 option(
     'callout_yaml',
