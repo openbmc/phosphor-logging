@@ -36,15 +36,11 @@ owners:
 - spinler@us.ibm.com
 
 reviewers:
-- anoo@us.ibm.com
 - geissonator@yahoo.com
 
 matchers:
 
 openbmc:
-- name: Adriana Kobylak
-  email: anoo@us.ibm.com
-  discord: anoo
 - name: Andrew Geissler
   email: geissonator@yahoo.com
   discord: geissonator
