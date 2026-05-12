@@ -696,55 +696,80 @@ void Manager::restore()
     };
 
     fs::path dir(paths::error());
-    if (!fs::exists(dir) || fs::is_empty(dir))
+    fs::path jsondir(paths::error_json());
+
+    if (!fs::exists(dir) && !fs::exists(jsondir))
     {
         return;
     }
 
+    // The directory location might have JSON or Cereal serialized logs (or
+    // both).  Use a map to deduplicate to just the individual event IDs and
+    // then deserialize them.
+    std::map<uint32_t, std::filesystem::path> files{};
+    // Prioritize for JSON first.
+    for (auto& file : fs::directory_iterator(jsondir))
+    {
+        auto id = file.path().filename().string();
+        if (!id.ends_with(".json"))
+        {
+            continue;
+        }
+
+        uint32_t idNum = std::stoul(id.substr(0, id.size() - 5));
+        files.try_emplace(idNum, file.path());
+    }
+    // Look for Cereal.
     for (auto& file : fs::directory_iterator(dir))
     {
         auto id = file.path().filename().string();
         uint32_t idNum = std::stoul(id);
 
+        files.try_emplace(idNum, file.path());
+    }
+
+    for (const auto& [idNum, filePath] : files)
+    {
         auto e = std::make_unique<Entry>(
-            busLog, std::string(OBJ_ENTRY) + '/' + id, idNum, *this);
-        if (deserialize(file.path(), *e))
+            busLog, std::string(OBJ_ENTRY) + '/' + std::to_string(idNum), idNum,
+            *this);
+
+        if (filePath.extension() == ".json")
         {
-            // validate the restored error entry id
-            if (sanity(static_cast<uint32_t>(idNum), e->id()))
-            {
-                // If we got here, it is possible we didn't record the file
-                // in JSON (maybe an upgrade from an old version).  Do that
-                // now and make sure the path is adjusted.
-                auto jsonPath = [&] {
-                    auto jsonPath = paths::error_json() / (id + ".json");
-                    if (std::filesystem::exists(jsonPath))
-                    {
-                        return jsonPath;
-                    }
-                    return serializeJSON(*e);
-                }();
-                e->path(jsonPath, true);
-
-                if (e->severity() >= Entry::sevLowerLimit)
-                {
-                    infoErrors.push_back(idNum);
-                }
-                else
-                {
-                    realErrors.push_back(idNum);
-                }
-
-                entries.insert(std::make_pair(idNum, std::move(e)));
-            }
-            else
-            {
-                lg2::error(
-                    "Failed in sanity check while restoring error entry. "
-                    "Ignoring error entry {ID_NUM}/{ENTRY_ID}.",
-                    "ID_NUM", idNum, "ENTRY_ID", e->id());
-            }
+            deserializeJSON(filePath, *e);
+            e->path(filePath, true);
         }
+        else
+        {
+            deserialize(filePath, *e);
+
+            // If we got here, either we didn't record the file in JSON
+            // previously, such as due to an upgrade, or it is corrupted.
+            // Rewrite the JSON now and ensure the path is adjusted.
+            auto jsonPath = serializeJSON(*e);
+            e->path(jsonPath, true);
+        }
+
+        // Sanity check for proper deserialization.
+        if (!sanity(static_cast<uint32_t>(idNum), e->id()))
+        {
+            lg2::error(
+                "Unable to find or parse error entry {ID_NUM}/?{ENTRY_ID}: {PATH}",
+                "ID_NUM", idNum, "ENTRY_ID", e->id(), "PATH", filePath);
+            continue;
+        }
+
+        // Add the event to the appropriate queue.
+        if (e->severity() >= Entry::sevLowerLimit)
+        {
+            infoErrors.push_back(idNum);
+        }
+        else
+        {
+            realErrors.push_back(idNum);
+        }
+
+        entries.insert(std::make_pair(idNum, std::move(e)));
     }
 
     if constexpr (!REDUNDANT_BMC)
