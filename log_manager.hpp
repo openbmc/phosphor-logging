@@ -13,6 +13,7 @@
 #include <xyz/openbmc_project/Collection/DeleteAll/server.hpp>
 #include <xyz/openbmc_project/Logging/Create/server.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
+#include <xyz/openbmc_project/Logging/Manager/server.hpp>
 #include <xyz/openbmc_project/Logging/event.hpp>
 
 #include <list>
@@ -28,6 +29,8 @@ extern const std::map<std::string, level> g_errLevelMap;
 using CreateIface = sdbusplus::server::xyz::openbmc_project::logging::Create;
 using DeleteAllIface =
     sdbusplus::server::xyz::openbmc_project::collection::DeleteAll;
+using FindEntryIface =
+    sdbusplus::server::xyz::openbmc_project::logging::Manager;
 
 using Severity = sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level;
 using LoggingCleared = sdbusplus::event::xyz::openbmc_project::Logging::Cleared;
@@ -224,6 +227,17 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     bool isCalloutPresent(const Entry& entry);
 
+    /** @brief Check if specified additional data present in input entry
+     *
+     * @param[in] entry - The error to check for callouts
+     * @param[in] key - The key of the additional data
+     * @param[in] value - The value of the additional data
+     *
+     * @return true if the required key value is present
+     */
+    bool isAdditionalDataPresent(const Entry& entry, const std::string& key,
+                                 const std::string& value);
+
     /** @brief Check (and remove) entry being erased from blocking errors
      *
      * @param[in] entryId - The entry that is being erased
@@ -237,6 +251,21 @@ class Manager : public details::ServerObject<details::ManagerIface>
      * file has has been synced in a redundant BMC system.
      */
     void setupErrorFileWatch();
+
+    /** @brief Find entries matching a given additional data key/value pair.
+     *
+     *  Searches from newest to oldest entry.
+     *
+     *  @param[in] key - The additional data key to search for.
+     *  @param[in] value - The expected value of the key.
+     *  @param[in] maxCount - Maximum number of matching entries to return.
+     *
+     *  @return vector of object paths for matching entries
+     *  @throws ResourceNotFound if no entries match
+     */
+    auto findEntry(const std::string& key, const std::string& value,
+                   uint64_t maxCount)
+        -> std::vector<sdbusplus::message::object_path>;
 
     /** @brief Persistent map of Entry dbus objects and their ID */
     std::map<uint32_t, std::unique_ptr<Entry>> entries;
@@ -393,10 +422,12 @@ class Manager : public details::ServerObject<details::ManagerIface>
  *  @brief Implementation for deleting all error log entries and
  *         creating new logs.
  *  @details A concrete implementation for the
- *           xyz.openbmc_project.Collection.DeleteAll and
- *           xyz.openbmc_project.Logging.Create interfaces.
+ *           xyz.openbmc_project.Collection.DeleteAll,
+ *           xyz.openbmc_project.Logging.Create, and
+ *           xyz.openbmc_project.Logging.Manager interfaces.
  */
-class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
+class Manager :
+    public details::ServerObject<DeleteAllIface, CreateIface, FindEntryIface>
 {
   public:
     Manager() = delete;
@@ -415,10 +446,10 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
      */
     Manager(sdbusplus::bus_t& bus, const std::string& path,
             internal::Manager& manager) :
-        details::ServerObject<DeleteAllIface, CreateIface>(
+        details::ServerObject<DeleteAllIface, CreateIface, FindEntryIface>(
             bus, path.c_str(),
-            details::ServerObject<DeleteAllIface,
-                                  CreateIface>::action::defer_emit),
+            details::ServerObject<DeleteAllIface, CreateIface,
+                                  FindEntryIface>::action::defer_emit),
         manager(manager) {};
 
     /** @brief Delete all d-bus objects.
@@ -463,6 +494,20 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
             ffdc) override
     {
         manager.create(message, severity, additionalData, ffdc);
+    }
+
+    /** @brief D-Bus method to find log entries by additional data key/value.
+     *
+     * @param[in] additionalDataKey - The key to search for
+     * @param[in] additionalDataValue - The value to match
+     * @param[in] maxCount - Maximum number of entries to return
+     */
+    auto findEntry(std::string additionalDataKey,
+                   std::string additionalDataValue, uint64_t maxCount)
+        -> std::vector<sdbusplus::message::object_path> override
+    {
+        return manager.findEntry(additionalDataKey, additionalDataValue,
+                                 maxCount);
     }
 
   private:
