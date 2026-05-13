@@ -20,7 +20,8 @@ void list_all()
 }
 
 int generate_event(const std::string& eventId, const nlohmann::json& data,
-                   std::optional<int> severity)
+                   std::optional<int> severity,
+                   const std::string& additionalJsonStr)
 {
     if (eventId.empty())
     {
@@ -29,6 +30,21 @@ int generate_event(const std::string& eventId, const nlohmann::json& data,
     }
 
     nlohmann::json j = {{eventId, data}};
+    lg2::AdditionalData_t ad;
+    if (!additionalJsonStr.empty())
+    {
+        try
+        {
+            ad = nlohmann::json::parse(additionalJsonStr)
+                     .get<lg2::AdditionalData_t>();
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "Failed to parse additional data: " << e.what()
+                      << std::endl;
+            return 1;
+        }
+    }
 
     try
     {
@@ -36,7 +52,7 @@ int generate_event(const std::string& eventId, const nlohmann::json& data,
     }
     catch (sdbusplus::exception::generated_event_base& e)
     {
-        auto path = lg2::commit(std::move(e), severity);
+        auto path = lg2::commit(std::move(e), severity, ad);
         std::cout << path.str << std::endl;
         return 0;
     }
@@ -56,6 +72,11 @@ int main(int argc, char** argv)
     std::string jsonStr;
     app.add_option("-j,--json", jsonStr, "Event data as a JSON object")
         ->default_val("{}");
+
+    std::string additionalJsonStr;
+    app.add_option(
+        "-a,--additional-json", additionalJsonStr,
+        "Additional Data as a JSON dictionary object {<str>: <str>}");
 
     std::optional<int> severity;
     app.add_option(
@@ -78,5 +99,6 @@ int main(int argc, char** argv)
         return 0;
     }
 
-    return generate_event(event, nlohmann::json::parse(jsonStr), severity);
+    return generate_event(event, nlohmann::json::parse(jsonStr), severity,
+                          additionalJsonStr);
 }
