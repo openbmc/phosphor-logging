@@ -33,6 +33,24 @@
       "message": "Do we want to do this if the JSON file existed but was corrupted?",
       "revId": "7556599523d6a3f68471fd2203b17a764107e82c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4104c50b_818d1521",
+        "filename": "log_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-05-13T18:32:38Z",
+      "side": 1,
+      "message": "I don\u0027t know how much error checking we really need there.  Are we anticipating a lot of file system corruption of that level?  I\u0027m hoping we can add a meson option to leave Cereal in the dust, so trying to figure out which of the two sources is \"better\" seems not that worthwhile.",
+      "parentUuid": "c715afea_b698970c",
+      "revId": "7556599523d6a3f68471fd2203b17a764107e82c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
