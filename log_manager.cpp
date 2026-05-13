@@ -16,6 +16,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/vtable.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
 #include <xyz/openbmc_project/State/Host/server.hpp>
 
 #include <cassert>
@@ -356,6 +357,13 @@ bool Manager::isCalloutPresent(const Entry& entry)
     }
 
     return false;
+}
+
+bool Manager::isAdditionalDataPresent(
+    const Entry& entry, const std::string& key, const std::string& value)
+{
+    return entry.additionalData().contains(key) &&
+           entry.additionalData().at(key) == value;
 }
 
 void Manager::findAndRemoveResolvedBlocks()
@@ -1021,6 +1029,29 @@ bool Manager::refreshFromDisk(uint32_t id)
     existingEntry->path(path, true);
 
     return true;
+}
+
+auto Manager::findEntry(const std::string& key, const std::string& value,
+                        uint64_t maxCount, bool includeResolved)
+    -> std::vector<sdbusplus::message::object_path>
+{
+    std::vector<sdbusplus::message::object_path> result;
+
+    for (auto it = entries.rbegin(); it != entries.rend(); ++it)
+    {
+        if ((!it->second->resolved() || includeResolved) &&
+            isAdditionalDataPresent(*it->second, key, value))
+        {
+            result.emplace_back(
+                std::string(OBJ_ENTRY) + '/' + std::to_string(it->first));
+            if (result.size() >= maxCount)
+            {
+                break;
+            }
+        }
+    }
+
+    return result;
 }
 
 } // namespace internal
