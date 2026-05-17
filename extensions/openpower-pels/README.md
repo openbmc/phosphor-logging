@@ -452,6 +452,43 @@ LocationCode field is optional.
 }
 ```
 
+### Multi-Chassis Callouts
+
+FRU location codes in callouts must identify the chassis to which they belong.
+
+#### Passing Multi-Chassis Information for Callouts in Message Registry
+
+The message registry can contain location code details with an optional chassis
+value. When no chassis value is specified, the running/local BMC chassis is used
+by default. For other chassis, the chassis number must be provided.
+
+For detailed information, see the message registry documentation on
+[multi-chassis-callout-in-registry](registry/README.md#multi-chassis-callout-in-registry).
+
+#### Callouts Through JSON Format FFDC Files
+
+When passing callouts details through JSON FFDC File, you can provide one of the
+following:
+
+- Expanded location code
+- Inventory path
+- Unexpanded location code with chassis number
+
+When an unexpanded location code is provided, the chassis number must be
+explicitly specified using the ChassisNumber parameter, except for FRUs in the
+running BMC chassis.
+
+**Example:**
+
+```json
+{
+  "LocationCode": "P0-C1",
+  "ChassisNumber": 2
+}
+```
+
+If no chassis number is provided, the running BMC chassis is used by default.
+
 ## `Action Flags` and `Event Type` Rules
 
 The `Action Flags` and `Event Type` PEL fields are optional in the message
