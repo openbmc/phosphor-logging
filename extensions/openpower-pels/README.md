@@ -304,6 +304,18 @@ AdditionalData entry, then that will also be a key.
 See the message registry [README](registry/README.md) and
 [schema](registry/schema/schema.json) for the details.
 
+#### Passing Multi-Chassis information for callouts in message registry
+
+In a multi-chassis environment, FRU location codes in callouts must identify the
+chassis to which they belong.
+
+The message registry can contain location code details with an optional chassis
+value. When no chassis value is specified, the running/local BMC chassis is used
+by default. For other chassis, the chassis number must be provided.
+
+For detailed information, see the message registry documentation on
+[multi-chassis-callout-in-registry](registry/README.md#multi-chassis-callout-in-registry).
+
 ### Using the message registry along with CALLOUT\_ entries
 
 If the message registry entry contains a callout definition and the event log
@@ -420,6 +432,30 @@ will show up as decimal when visually inspecting the JSON.
   ]
 }
 ```
+
+##### Multi-chassis callout
+
+When passing callouts details through JSON FFDC File, you must provide one of
+the following:
+
+- Expanded location code
+- Inventory path
+- Unexpanded location code with chassis number
+
+When an unexpanded location code is provided, the chassis number must be
+explicitly specified using the ChassisNumber parameter, except for FRUs in the
+running BMC chassis.
+
+**Example:**
+
+```json
+{
+  "LocationCode": "P0-C1",
+  "ChassisNumber": 2
+}
+```
+
+If no chassis number is provided, the running BMC chassis is used by default.
 
 #### Maintenance procedure callout
 
