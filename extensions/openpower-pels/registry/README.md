@@ -570,6 +570,119 @@ the first callout in the registry for this to work.
 }
 ```
 
+### Multi-chassis callout in registry
+
+To identify the FRU in the callout, PEL needs the chassis associated with the
+location code in the registry, since the value is relative to the chassis.
+
+#### Switchboard Chassis
+
+If the `LocCode` field starts with "SC" (e.g., "SC0-P0"), it is automatically
+considered as a switchboard chassis location code.
+
+#### BMC Chassis
+
+For all other location codes where Chassis information is not passed, the BMC
+chassis number is used. This chassis number is dynamically fetched by the PEL
+application at runtime.
+
+**Example:**
+
+```json
+"Callouts": [
+    {
+        "CalloutList": [
+            {
+                "Priority": "high",
+                "LocCode": "P0"
+            }
+        ]
+    }
+]
+```
+
+In this example, Location Code "P0" will be resolved using the BMC's chassis
+number.
+
+#### Static Chassis Number
+
+When the chassis number can be statically defined in the registry, use the
+`ChassisNumber` keyword to explicitly specify the chassis along with the
+shorthand location code.
+
+**Example:**
+
+```json
+"Callouts": [
+    {
+        "CalloutList": [
+            {
+                "Priority": "high",
+                "LocCode": "P0",
+                "ChassisNumber": 2
+            }
+        ]
+    }
+]
+```
+
+In this example, the location code "P0" will always be associated with chassis
+number 2, regardless of which chassis the BMC is running on.
+
+#### Dynamic Chassis Number
+
+For scenarios where the chassis number cannot be determined until runtime, use
+the `ChassisNumberADKeyName` field in the registry. The user should pass the
+chassis number via AdditionalData when creating the PEL.
+
+**Example:**
+
+```json
+"Callouts": [
+    {
+        "CalloutList": [
+            {
+                "Priority": "high",
+                "LocCode": "P0-C14",
+                "ChassisNumberADKeyName": "VRM_CHASSIS_NUMBER"
+            },
+            {
+                "Priority": "medium",
+                "LocCode": "P1",
+                "ChassisNumberADKeyName": "DASD_CHASSIS_NUMBER"
+            }
+        ]
+    }
+]
+```
+
+The creator must provide as many chassis number values in AdditionalData as
+there are `ChassisNumberADKeyName` entries in the registry
+
+**Creating the Error Log:**
+
+When creating a PEL with dynamic chassis numbers, the creator must pass the
+chassis number values through the AdditionalData property. The keyword names
+must match those specified in the registry's `ChassisNumberADKeyName` fields.
+
+**Example:**
+
+```cpp
+// Create error log with dynamic chassis numbers
+std::map<std::string, std::string> additionalData;
+additionalData["VRM_CHASSIS_NUMBER"] = 2;
+additionalData["DASD_CHASSIS_NUMBER"] = 3;
+
+// Create the error log with the additional data
+createErrorLog(errorMessage, additionalData);
+```
+
+In this example:
+
+- The callout with location code "P0-C14" will be associated with chassis number
+  2
+- The callout with location code "P1" will be associated with chassis number 3
+
 ### Capturing the Journal
 
 The PEL daemon can be told to capture pieces of the journal in PEL UserData
