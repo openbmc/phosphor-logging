@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "b95b6c0d_9e7943c0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-05-19T15:23:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ea82d494_fbeee72b",
+      "revId": "c463a01816ef2215baeccdc75734520a8abc0743",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "376f734b_278b58f4",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -60,6 +78,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1249e0cb_ded058bd",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-05-19T15:23:07Z",
+      "side": 1,
+      "message": "If chassis value is not provided either in registry or passed during PEL creation through FFDC File, we will consider the BMC chassis for compatibility with the legacy format. If the FRU is in the switchboard chassis, the chassis number will be passed. Have updated to make it more clear.",
+      "parentUuid": "f588085f_2f316b0b",
+      "range": {
+        "startLine": 462,
+        "startChar": 15,
+        "endLine": 463,
+        "endChar": 63
+      },
+      "revId": "c463a01816ef2215baeccdc75734520a8abc0743",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6fe6ce79_232b0ee4",
         "filename": "extensions/openpower-pels/registry/README.md",
         "patchSetId": 2
@@ -71,6 +113,30 @@
       "writtenOn": "2026-05-18T21:44:32Z",
       "side": 1,
       "message": "\u0027the code\u0027",
+      "range": {
+        "startLine": 575,
+        "startChar": 36,
+        "endLine": 575,
+        "endChar": 40
+      },
+      "revId": "c463a01816ef2215baeccdc75734520a8abc0743",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8faa0043_1e47b425",
+        "filename": "extensions/openpower-pels/registry/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-05-19T15:23:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6fe6ce79_232b0ee4",
       "range": {
         "startLine": 575,
         "startChar": 36,
@@ -100,6 +166,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "23f08208_2249858f",
+        "filename": "extensions/openpower-pels/registry/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-05-19T15:23:07Z",
+      "side": 1,
+      "message": "Since the \u0027SC\u0027 format will not be used further, I will change the doc below.",
+      "parentUuid": "49e0a08a_2ad63f6b",
+      "revId": "c463a01816ef2215baeccdc75734520a8abc0743",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5cc9caa1_9843a515",
         "filename": "extensions/openpower-pels/registry/README.md",
         "patchSetId": 2
@@ -111,6 +195,24 @@
       "writtenOn": "2026-05-19T09:12:53Z",
       "side": 1,
       "message": "will `running BMC` make it more readable?",
+      "revId": "c463a01816ef2215baeccdc75734520a8abc0743",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3d14745_8d411ff6",
+        "filename": "extensions/openpower-pels/registry/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-05-19T15:23:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5cc9caa1_9843a515",
       "revId": "c463a01816ef2215baeccdc75734520a8abc0743",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -138,6 +240,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "41df2000_15a5aedf",
+        "filename": "extensions/openpower-pels/registry/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-05-19T15:23:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e611ac33_2d3c7ad0",
+      "range": {
+        "startLine": 635,
+        "startChar": 5,
+        "endLine": 635,
+        "endChar": 26
+      },
+      "revId": "c463a01816ef2215baeccdc75734520a8abc0743",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f78c1d34_8be16cf1",
@@ -151,6 +277,24 @@
       "writtenOn": "2026-05-19T09:12:53Z",
       "side": 1,
       "message": "since map\u0027s value is also string wrap it around quotes\n```\nadditionalData[\"VRM_CHASSIS_NUMBER\"] \u003d \"2\";\n```",
+      "revId": "c463a01816ef2215baeccdc75734520a8abc0743",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69d635c0_be6a09db",
+        "filename": "extensions/openpower-pels/registry/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-05-19T15:23:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f78c1d34_8be16cf1",
       "revId": "c463a01816ef2215baeccdc75734520a8abc0743",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
