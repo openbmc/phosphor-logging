@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea82d494_fbeee72b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2026-05-19T09:12:53Z",
+      "side": 1,
+      "message": "nit : where \u003cspace\u003e location",
+      "revId": "c463a01816ef2215baeccdc75734520a8abc0743",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "376f734b_278b58f4",
@@ -83,6 +100,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5cc9caa1_9843a515",
+        "filename": "extensions/openpower-pels/registry/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2026-05-19T09:12:53Z",
+      "side": 1,
+      "message": "will `running BMC` make it more readable?",
+      "revId": "c463a01816ef2215baeccdc75734520a8abc0743",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e611ac33_2d3c7ad0",
         "filename": "extensions/openpower-pels/registry/README.md",
         "patchSetId": 2
@@ -100,6 +134,23 @@
         "endLine": 635,
         "endChar": 26
       },
+      "revId": "c463a01816ef2215baeccdc75734520a8abc0743",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f78c1d34_8be16cf1",
+        "filename": "extensions/openpower-pels/registry/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2026-05-19T09:12:53Z",
+      "side": 1,
+      "message": "since map\u0027s value is also string wrap it around quotes\n```\nadditionalData[\"VRM_CHASSIS_NUMBER\"] \u003d \"2\";\n```",
       "revId": "c463a01816ef2215baeccdc75734520a8abc0743",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
