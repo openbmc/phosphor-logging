@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "440ff3fc_29ae032e",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-05-21T19:41:08Z",
+      "side": 1,
+      "message": "Maybe the chassis callout words for the message registry could go here instead?",
+      "revId": "f573acf4ef00cdf279287c8a7c9dd0a1131dd705",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3ef0b30_0cd95f64",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-05-21T19:41:08Z",
+      "side": 1,
+      "message": "maybe the multi-chassis support for the JSON files could go here instead?",
+      "revId": "f573acf4ef00cdf279287c8a7c9dd0a1131dd705",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
