@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd23908a_c868ed78",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2026-05-26T11:37:27Z",
+      "side": 1,
+      "message": "This property name disagrees with the markdown documentation which specifies \"ChassisNumADKey\".",
+      "range": {
+        "startLine": 45,
+        "startChar": 10,
+        "endLine": 45,
+        "endChar": 32
+      },
+      "revId": "0ddf371e9680fcd5a3bd2a48bfd0c0b4d80764bc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d330b16b_8cbdbbac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2026-05-26T11:37:27Z",
+      "side": 1,
+      "message": "Looks good. A few minor comments.",
+      "revId": "0ddf371e9680fcd5a3bd2a48bfd0c0b4d80764bc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f276e525_b82ab02f",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2026-05-26T11:37:27Z",
+      "side": 1,
+      "message": "Do we need something specified in this section about multi-chassis? About automatically determining the chassis number based on the inventory path, device path, or bus/addr?\n\nWe need this to work too for multi-chassis. For example, if I log an error and specify the I2C bus and address, I need the error logging code to determine the associate chassis in addition to the callouts within that chassis.",
+      "revId": "0ddf371e9680fcd5a3bd2a48bfd0c0b4d80764bc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3cb5b4e_9631daed",
+        "filename": "extensions/openpower-pels/registry/README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 581,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2026-05-26T11:37:27Z",
+      "side": 1,
+      "message": "Nit: leading space",
+      "range": {
+        "startLine": 581,
+        "startChar": 28,
+        "endLine": 581,
+        "endChar": 29
+      },
+      "revId": "0ddf371e9680fcd5a3bd2a48bfd0c0b4d80764bc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
