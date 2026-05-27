@@ -1274,7 +1274,7 @@ TEST_F(ManagerTest, TestPELDeleteWithoutHWIsolation)
     MockDataInterface* mockIface =
         reinterpret_cast<MockDataInterface*>(dataIface.get());
 
-    EXPECT_CALL(*mockIface, getInventoryFromLocCode("Ufcs-DIMM0", 0, false))
+    EXPECT_CALL(*mockIface, getInventoryFromLocCode("Ufcs-DIMM0", 1, false))
         .WillOnce(Return(std::vector<std::string>{
             "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm0"}));
 
@@ -1375,7 +1375,7 @@ TEST_F(ManagerTest, TestPELDeleteWithHWIsolation)
     MockDataInterface* mockIface =
         reinterpret_cast<MockDataInterface*>(dataIface.get());
 
-    EXPECT_CALL(*mockIface, getInventoryFromLocCode("Ufcs-DIMM0", 0, false))
+    EXPECT_CALL(*mockIface, getInventoryFromLocCode("Ufcs-DIMM0", 1, false))
         .WillOnce(Return(std::vector<std::string>{
             "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm0"}));
 

@@ -5,6 +5,7 @@
 
 #include "device_callouts.hpp"
 #include "json_utils.hpp"
+#include "log_id.hpp"
 #include "pel_values.hpp"
 #ifdef PELTOOL
 #include <Python.h>
@@ -1268,15 +1269,37 @@ void SRC::addJSONCallout(const nlohmann::json& jsonCallout,
     std::string locCode;
     std::string unexpandedLocCode;
     std::unique_ptr<src::Callout> callout;
+    uint16_t chassisNumber = 0;
 
     // Expand the location code if it's there
     if (jsonCallout.contains("LocationCode"))
     {
         unexpandedLocCode = jsonCallout.at("LocationCode").get<std::string>();
 
+        if (jsonCallout.contains("ChassisNumber"))
+        {
+            chassisNumber = jsonCallout.at("ChassisNumber").get<uint16_t>();
+        }
+        else
+        {
+            // Fetch the running BMC chassis
+            auto chassis = position::getBMCChassis();
+            if (!chassis.has_value())
+            {
+                // Unable to find a chassis position
+                addDebugData(std::format(
+                    "Unable to find BMC chassis position. LocationCode: {}",
+                    unexpandedLocCode));
+                addLocationCodeOnlyCallout(unexpandedLocCode, priority);
+                return;
+            }
+            chassisNumber = static_cast<uint16_t>(chassis.value());
+        }
+
         try
         {
-            locCode = dataIface.expandLocationCode(unexpandedLocCode, 0);
+            locCode =
+                dataIface.expandLocationCode(unexpandedLocCode, chassisNumber);
         }
         catch (const std::exception& e)
         {
@@ -1337,14 +1360,15 @@ void SRC::addJSONCallout(const nlohmann::json& jsonCallout,
         {
             if (unexpandedLocCode.empty())
             {
-                throw std::runtime_error{"JSON callout needs either an "
-                                         "inventory path or location code"};
+                throw std::runtime_error{
+                    "JSON callout needs either an "
+                    "inventory path or location code with valid chassis"};
             }
 
             try
             {
                 auto inventoryPaths = dataIface.getInventoryFromLocCode(
-                    unexpandedLocCode, 0, false);
+                    unexpandedLocCode, chassisNumber, false);
                 // Just use first path returned since they all
                 // point to the same FRU.
                 inventoryPath = inventoryPaths[0];
