@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "9606c075_b159df48",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-05-27T06:37:11Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cd23908a_c868ed78",
+      "range": {
+        "startLine": 45,
+        "startChar": 10,
+        "endLine": 45,
+        "endChar": 32
+      },
+      "revId": "0ddf371e9680fcd5a3bd2a48bfd0c0b4d80764bc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d330b16b_8cbdbbac",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 4
@@ -60,6 +84,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ef50f106_3b132f36",
+        "filename": "extensions/openpower-pels/README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-05-27T06:37:11Z",
+      "side": 1,
+      "message": "The device path multi-chassis support will be handled in a separate patch, working on it.",
+      "parentUuid": "f276e525_b82ab02f",
+      "revId": "0ddf371e9680fcd5a3bd2a48bfd0c0b4d80764bc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c3cb5b4e_9631daed",
         "filename": "extensions/openpower-pels/registry/README.md",
         "patchSetId": 4
@@ -71,6 +113,30 @@
       "writtenOn": "2026-05-26T11:37:27Z",
       "side": 1,
       "message": "Nit: leading space",
+      "range": {
+        "startLine": 581,
+        "startChar": 28,
+        "endLine": 581,
+        "endChar": 29
+      },
+      "revId": "0ddf371e9680fcd5a3bd2a48bfd0c0b4d80764bc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07763931_fc08654c",
+        "filename": "extensions/openpower-pels/registry/README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 581,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-05-27T06:37:11Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c3cb5b4e_9631daed",
       "range": {
         "startLine": 581,
         "startChar": 28,
