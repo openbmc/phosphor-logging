@@ -60,6 +60,17 @@ std::optional<uint32_t> getBMCPosition()
     return std::nullopt;
 }
 
+std::optional<uint32_t> getBMCChassisNum()
+{
+    if (bmcPosition != invalidPELIDPosition)
+    {
+        // BMC position 0 - Chassis 1
+        // BMC position 1 - Chassis 2
+        return bmcPosition + 1;
+    }
+    return std::nullopt;
+}
+
 } // namespace position
 
 namespace detail
