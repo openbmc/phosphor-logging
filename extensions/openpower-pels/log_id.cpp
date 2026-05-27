@@ -60,6 +60,18 @@ std::optional<uint32_t> getBMCPosition()
     return std::nullopt;
 }
 
+std::optional<uint16_t> getBMCChassisPosition()
+{
+    // In multi-chassis redundant BMC system:
+    // BMC position 0 -> chassis 1
+    // BMC position 1 -> chassis 2
+    if (getBMCPosition())
+    {
+        return static_cast<uint16_t>(bmcPosition + 1);
+    }
+    return std::nullopt;
+}
+
 } // namespace position
 
 namespace detail
