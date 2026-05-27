@@ -5,6 +5,7 @@
 #include "mocks.hpp"
 #include "pel_utils.hpp"
 
+#include <algorithm>
 #include <fstream>
 
 #include <gtest/gtest.h>
@@ -1188,11 +1189,12 @@ TEST_F(SRCTest, JsonCalloutsTest)
     NiceMock<MockDataInterface> dataIface;
 
     // Callout 0 mock calls
+    // BMC chassis 1 since BMC position 0
     {
-        EXPECT_CALL(dataIface, expandLocationCode("P0-C1", 0))
+        EXPECT_CALL(dataIface, expandLocationCode("P0-C1", 1))
             .Times(1)
-            .WillOnce(Return("UXXX-P0-C1"));
-        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-C1", 0, false))
+            .WillOnce(Return("UXXX-N00-P0-C1"));
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-C1", 1, false))
             .Times(1)
             .WillOnce(Return(std::vector<std::string>{
                 "/inv/system/chassis/motherboard/bmc"}));
@@ -1219,13 +1221,13 @@ TEST_F(SRCTest, JsonCalloutsTest)
     }
     // Callout 3 mock calls
     {
-        EXPECT_CALL(dataIface, expandLocationCode("P1-C23", 0))
+        EXPECT_CALL(dataIface, expandLocationCode("P1-C23", 1))
             .Times(1)
             .WillOnce(Return("UXXX-P1-C23"));
     }
     // Callout 4 mock calls
     {
-        EXPECT_CALL(dataIface, expandLocationCode("P1-C24", 0))
+        EXPECT_CALL(dataIface, expandLocationCode("P1-C24", 1))
             .Times(1)
             .WillOnce(Return("UXXX-P1-C24"));
     }
@@ -1242,7 +1244,7 @@ TEST_F(SRCTest, JsonCalloutsTest)
     // Check callout 0
     {
         EXPECT_EQ(callouts[0]->priority(), 'H');
-        EXPECT_EQ(callouts[0]->locationCode(), "UXXX-P0-C1");
+        EXPECT_EQ(callouts[0]->locationCode(), "UXXX-N00-P0-C1");
 
         auto& fru = callouts[0]->fruIdentity();
         EXPECT_EQ(fru->getPN().value(), "1234567");
@@ -1377,10 +1379,10 @@ TEST_F(SRCTest, JsonBadCalloutsTest)
     // Expand location code will fail, so the unexpanded location
     // code should show up in the callout instead.
     {
-        EXPECT_CALL(dataIface, expandLocationCode("P0-C1", 0))
+        EXPECT_CALL(dataIface, expandLocationCode("P0-C1", 1))
             .WillOnce(Throw(std::runtime_error("Fail")));
 
-        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-C1", 0, false))
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-C1", 1, false))
             .Times(1)
             .WillOnce(Return(std::vector<std::string>{
                 "/inv/system/chassis/motherboard/bmc"}));
@@ -1397,11 +1399,11 @@ TEST_F(SRCTest, JsonBadCalloutsTest)
     // getInventoryFromLocCode will fail, so a callout with just the
     // location code will be created.
     {
-        EXPECT_CALL(dataIface, expandLocationCode("P0-C2", 0))
+        EXPECT_CALL(dataIface, expandLocationCode("P0-C2", 1))
             .Times(1)
             .WillOnce(Return("UXXX-P0-C2"));
 
-        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-C2", 0, false))
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-C2", 1, false))
             .Times(1)
             .WillOnce(Throw(std::runtime_error("Fail")));
     }
@@ -1595,4 +1597,302 @@ TEST_F(SRCTest, TestProgressCodeField)
 
     // Verify that the hex vlue is set at the right hexword
     EXPECT_EQ(src.hexwordData()[2], 0xCC009184);
+}
+
+// Test JSON callouts with ChassisNumber support for multi-chassis systems
+TEST_F(SRCTest, JsonCalloutsWithChassisNumberTest)
+{
+    // Test Case 1: JSON callout without ChassisNumber
+    // Should use running BMC chassis (BMC position 0 -> chassis 1)
+    {
+        const auto jsonCallouts = R"(
+            [
+                {
+                    "LocationCode": "P0",
+                    "Priority": "H"
+                }
+            ]
+        )"_json;
+
+        message::Entry entry;
+        entry.src.type = 0xBD;
+        entry.src.reasonCode = 0xABCD;
+        entry.subsystem = 0x42;
+
+        AdditionalData ad;
+        NiceMock<MockDataInterface> dataIface;
+
+        // Mock BMC position to return 0 (chassis 1)
+        EXPECT_CALL(dataIface, expandLocationCode("P0", 1))
+            .Times(1)
+            .WillOnce(Return("UXXX-N00-P0"));
+
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0", 1, false))
+            .Times(1)
+            .WillOnce(Return(
+                std::vector<std::string>{"/inv/system/chassis1/motherboard"}));
+
+        EXPECT_CALL(dataIface, getHWCalloutFields(
+                                   "/inv/system/chassis1/motherboard", _, _, _))
+            .Times(1)
+            .WillOnce(
+                DoAll(SetArgReferee<1>("1234567"), SetArgReferee<2>("CCCC"),
+                      SetArgReferee<3>("123456789ABC")));
+
+        SRC src{entry, ad, jsonCallouts, dataIface};
+        ASSERT_TRUE(src.callouts());
+
+        const auto& callouts = src.callouts()->callouts();
+        ASSERT_EQ(callouts.size(), 1);
+
+        EXPECT_EQ(callouts[0]->priority(), 'H');
+        EXPECT_EQ(callouts[0]->locationCode(), "UXXX-N00-P0");
+
+        auto& fru = callouts[0]->fruIdentity();
+        EXPECT_EQ(fru->getPN().value(), "1234567");
+        EXPECT_EQ(fru->getCCIN().value(), "CCCC");
+        EXPECT_EQ(fru->getSN().value(), "123456789ABC");
+    }
+
+    // Test Case 2: JSON callout with ChassisNumber = 0 (control unit
+    // chassis)
+    {
+        const auto jsonCallouts = R"(
+            [
+                {
+                    "LocationCode": "P0",
+                    "ChassisNumber": 0,
+                    "Priority": "H"
+                }
+            ]
+        )"_json;
+
+        message::Entry entry;
+        entry.src.type = 0xBD;
+        entry.src.reasonCode = 0xABCD;
+        entry.subsystem = 0x42;
+
+        AdditionalData ad;
+        NiceMock<MockDataInterface> dataIface;
+
+        // Chassis 0 should use SC0 prefix
+        EXPECT_CALL(dataIface, expandLocationCode("P0", 0))
+            .Times(1)
+            .WillOnce(Return("UXXX-SC0-P0"));
+
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0", 0, false))
+            .Times(1)
+            .WillOnce(Return(
+                std::vector<std::string>{"/inv/system/chassis0/motherboard"}));
+
+        EXPECT_CALL(dataIface, getHWCalloutFields(
+                                   "/inv/system/chassis0/motherboard", _, _, _))
+            .Times(1)
+            .WillOnce(
+                DoAll(SetArgReferee<1>("1234567"), SetArgReferee<2>("CCCC"),
+                      SetArgReferee<3>("123456789ABC")));
+
+        SRC src{entry, ad, jsonCallouts, dataIface};
+        ASSERT_TRUE(src.callouts());
+
+        const auto& callouts = src.callouts()->callouts();
+        ASSERT_EQ(callouts.size(), 1);
+
+        EXPECT_EQ(callouts[0]->priority(), 'H');
+        EXPECT_EQ(callouts[0]->locationCode(), "UXXX-SC0-P0");
+    }
+
+    // Test Case 3: JSON callout with ChassisNumber = 11 (node chassis N10)
+    {
+        const auto jsonCallouts = R"(
+            [
+                {
+                    "LocationCode": "P0",
+                    "ChassisNumber": 11,
+                    "Priority": "M"
+                }
+            ]
+        )"_json;
+
+        message::Entry entry;
+        entry.src.type = 0xBD;
+        entry.src.reasonCode = 0xABCD;
+        entry.subsystem = 0x42;
+
+        AdditionalData ad;
+        NiceMock<MockDataInterface> dataIface;
+
+        // Chassis 1 should use N00 prefix
+        EXPECT_CALL(dataIface, expandLocationCode("P0", 11))
+            .Times(1)
+            .WillOnce(Return("UXXX-N10-P0"));
+
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0", 11, false))
+            .Times(1)
+            .WillOnce(Return(
+                std::vector<std::string>{"/inv/system/chassis11/motherboard"}));
+
+        EXPECT_CALL(
+            dataIface,
+            getHWCalloutFields("/inv/system/chassis11/motherboard", _, _, _))
+            .Times(1)
+            .WillOnce(
+                DoAll(SetArgReferee<1>("1234567"), SetArgReferee<2>("CCCC"),
+                      SetArgReferee<3>("123456789ABC")));
+
+        SRC src{entry, ad, jsonCallouts, dataIface};
+        ASSERT_TRUE(src.callouts());
+
+        const auto& callouts = src.callouts()->callouts();
+        ASSERT_EQ(callouts.size(), 1);
+
+        EXPECT_EQ(callouts[0]->priority(), 'M');
+        EXPECT_EQ(callouts[0]->locationCode(), "UXXX-N10-P0");
+    }
+}
+
+// Test JSON callouts with invalid ChassisNumber
+TEST_F(SRCTest, JsonCalloutsWithInvalidChassisNumberTest)
+{
+    // Test with invalid ChassisNumber type (string instead of number)
+    const auto jsonCallouts = R"(
+        [
+            {
+                "LocationCode": "P0",
+                "ChassisNumber": "3",
+                "Priority": "H"
+            }
+        ]
+    )"_json;
+
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+
+    AdditionalData ad;
+    NiceMock<MockDataInterface> dataIface;
+
+    // Should not call expandLocationCode since ChassisNumber is invalid
+    EXPECT_CALL(dataIface, expandLocationCode(_, _)).Times(0);
+    EXPECT_CALL(dataIface, getInventoryFromLocCode(_, _, _)).Times(0);
+
+    SRC src{entry, ad, jsonCallouts, dataIface};
+
+    // Should have debug data about the invalid ChassisNumber
+    const auto& debugData = src.getDebugData();
+    EXPECT_FALSE(debugData.empty());
+    bool found = std::any_of(
+        debugData.begin(), debugData.end(), [](const std::string& s) {
+            return s.find("Invalid ChassisNumber") != std::string::npos ||
+                   s.find("ChassisNumber") != std::string::npos;
+        });
+    EXPECT_TRUE(found);
+}
+
+// Test JSON callouts with multiple callouts having different ChassisNumbers
+TEST_F(SRCTest, JsonCalloutsMultipleChassisNumbersTest)
+{
+    const auto jsonCallouts = R"(
+        [
+            {
+                "LocationCode": "P0-C1",
+                "ChassisNumber": 0,
+                "Priority": "H"
+            },
+            {
+                "LocationCode": "P1-C2",
+                "ChassisNumber": 1,
+                "Priority": "M"
+            },
+            {
+                "LocationCode": "P2-C3",
+                "ChassisNumber": 10,
+                "Priority": "L"
+            }
+        ]
+    )"_json;
+
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+
+    AdditionalData ad;
+    NiceMock<MockDataInterface> dataIface;
+
+    // Callout 0: Chassis 0 (SC0)
+    EXPECT_CALL(dataIface, expandLocationCode("P0-C1", 0))
+        .Times(1)
+        .WillOnce(Return("UXXX-SC0-P0-C1"));
+    EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-C1", 0, false))
+        .Times(1)
+        .WillOnce(Return(std::vector<std::string>{
+            "/inv/system/chassis0/motherboard/component1"}));
+    EXPECT_CALL(dataIface,
+                getHWCalloutFields(
+                    "/inv/system/chassis0/motherboard/component1", _, _, _))
+        .Times(1)
+        .WillOnce(DoAll(SetArgReferee<1>("1234567"), SetArgReferee<2>("CCCC"),
+                        SetArgReferee<3>("123456789ABC")));
+
+    // Callout 1: Chassis 1 (N00)
+    EXPECT_CALL(dataIface, expandLocationCode("P1-C2", 1))
+        .Times(1)
+        .WillOnce(Return("UXXX-N00-P1-C2"));
+    EXPECT_CALL(dataIface, getInventoryFromLocCode("P1-C2", 1, false))
+        .Times(1)
+        .WillOnce(Return(std::vector<std::string>{
+            "/inv/system/chassis1/motherboard/component2"}));
+    EXPECT_CALL(dataIface,
+                getHWCalloutFields(
+                    "/inv/system/chassis1/motherboard/component2", _, _, _))
+        .Times(1)
+        .WillOnce(DoAll(SetArgReferee<1>("1234567"), SetArgReferee<2>("CCCC"),
+                        SetArgReferee<3>("123456789ABC")));
+
+    // Callout 2: Chassis 10 (N09)
+    EXPECT_CALL(dataIface, expandLocationCode("P2-C3", 10))
+        .Times(1)
+        .WillOnce(Return("UXXX-N09-P2-C3"));
+    EXPECT_CALL(dataIface, getInventoryFromLocCode("P2-C3", 10, false))
+        .Times(1)
+        .WillOnce(Return(std::vector<std::string>{
+            "/inv/system/chassis10/motherboard/component3"}));
+    EXPECT_CALL(dataIface,
+                getHWCalloutFields(
+                    "/inv/system/chassis10/motherboard/component3", _, _, _))
+        .Times(1)
+        .WillOnce(DoAll(SetArgReferee<1>("1234567"), SetArgReferee<2>("CCCC"),
+                        SetArgReferee<3>("123456789ABC")));
+
+    SRC src{entry, ad, jsonCallouts, dataIface};
+    ASSERT_TRUE(src.callouts());
+
+    const auto& callouts = src.callouts()->callouts();
+    ASSERT_EQ(callouts.size(), 3);
+
+    // Verify callout 0 (Chassis 0 - SC0)
+    EXPECT_EQ(callouts[0]->priority(), 'H');
+    EXPECT_EQ(callouts[0]->locationCode(), "UXXX-SC0-P0-C1");
+    auto& fru0 = callouts[0]->fruIdentity();
+    EXPECT_EQ(fru0->getPN().value(), "1234567");
+    EXPECT_EQ(fru0->getCCIN().value(), "CCCC");
+    EXPECT_EQ(fru0->getSN().value(), "123456789ABC");
+
+    // Verify callout 1 (Chassis 1 - N00)
+    EXPECT_EQ(callouts[1]->priority(), 'M');
+    EXPECT_EQ(callouts[1]->locationCode(), "UXXX-N00-P1-C2");
+    auto& fru1 = callouts[1]->fruIdentity();
+    EXPECT_EQ(fru1->getPN().value(), "1234567");
+    EXPECT_EQ(fru1->getCCIN().value(), "CCCC");
+    EXPECT_EQ(fru1->getSN().value(), "123456789ABC");
+
+    // Verify callout 2 (Chassis 10 - N09)
+    EXPECT_EQ(callouts[2]->priority(), 'L');
+    EXPECT_EQ(callouts[2]->locationCode(), "UXXX-N09-P2-C3");
+    auto& fru2 = callouts[2]->fruIdentity();
+    EXPECT_EQ(fru2->getPN().value(), "1234567");
+    EXPECT_EQ(fru2->getCCIN().value(), "CCCC");
+    EXPECT_EQ(fru2->getSN().value(), "123456789ABC");
 }
