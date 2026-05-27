@@ -996,10 +996,10 @@ TEST_F(PELTest, CreateWithJSONCalloutsTest)
     NiceMock<MockDataInterface> dataIface;
     NiceMock<MockJournal> journal;
 
-    EXPECT_CALL(dataIface, expandLocationCode("P0-C1", 0))
+    EXPECT_CALL(dataIface, expandLocationCode("P0-C1", 2))
         .Times(1)
-        .WillOnce(Return("UXXX-P0-C1"));
-    EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-C1", 0, false))
+        .WillOnce(Return("UXXX-N01-P0-C1"));
+    EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-C1", 2, false))
         .Times(1)
         .WillOnce(Return(
             std::vector<std::string>{"/inv/system/chassis/motherboard/bmc"}));
@@ -1027,7 +1027,7 @@ TEST_F(PELTest, CreateWithJSONCalloutsTest)
 
     {
         EXPECT_EQ(callouts[0]->priority(), 'H');
-        EXPECT_EQ(callouts[0]->locationCode(), "UXXX-P0-C1");
+        EXPECT_EQ(callouts[0]->locationCode(), "UXXX-N01-P0-C1");
 
         auto& fru = callouts[0]->fruIdentity();
         EXPECT_EQ(fru->getPN().value(), "1234567");

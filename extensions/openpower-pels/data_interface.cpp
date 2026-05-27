@@ -10,6 +10,7 @@
 #include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
 
 #include <filesystem>
+#include <format>
 
 #ifdef PEL_ENABLE_PHAL
 #include <libekb.H>
@@ -453,7 +454,7 @@ std::string DataInterface::getLocationCode(
 }
 
 std::string DataInterface::addLocationCodePrefix(
-    const std::string& locationCode)
+    const std::string& locationCode, uint16_t chassisNumber)
 {
     static const std::string locationCodePrefix{"Ufcs-"};
 
@@ -461,14 +462,24 @@ std::string DataInterface::addLocationCodePrefix(
     // if it already starts with a U then don't need to do anything.
     if (locationCode.front() != 'U')
     {
-        return locationCodePrefix + locationCode;
+        // This is a temporary workaround and will be removed once PIM stops
+        // including chassis delimiter in location code
+        // The prefix is added based on the current format for fetching the
+        // expanded location code Chassis 0 is control unit, chassis 1-12 = node
+        // chassis (numbered N00-N11)
+        const auto chassisPrefix =
+            (chassisNumber == 0) ? "SC0-"
+                                 : std::format("N{:02}-", chassisNumber - 1);
+
+        return std::format("{}{}{}", locationCodePrefix, chassisPrefix,
+                           locationCode);
     }
 
     return locationCode;
 }
 
 std::string DataInterface::expandLocationCode(const std::string& locationCode,
-                                              uint16_t /*node*/) const
+                                              uint16_t chassisNumber) const
 {
     // Location codes for connectors are the location code of the FRU they are
     // on, plus a '-Tx' segment.  Remove this last segment before expanding it
@@ -480,7 +491,9 @@ std::string DataInterface::expandLocationCode(const std::string& locationCode,
         _bus.new_method_call(service_name::vpdManager, object_path::vpdManager,
                              interface::vpdManager, "GetExpandedLocationCode");
 
-    method.append(addLocationCodePrefix(baseLoc), static_cast<uint16_t>(0));
+    method.append(
+        addLocationCodePrefix(baseLoc, chassisNumber),
+        static_cast<uint16_t>(chassisNumber > 0 ? chassisNumber - 1 : 0));
 
     auto reply = _bus.call(method, dbusTimeout);
 
@@ -495,7 +508,8 @@ std::string DataInterface::expandLocationCode(const std::string& locationCode,
 }
 
 std::vector<std::string> DataInterface::getInventoryFromLocCode(
-    const std::string& locationCode, uint16_t node, bool expanded) const
+    const std::string& locationCode, uint16_t chassisNumber,
+    bool expanded) const
 {
     std::string methodName = expanded ? "GetFRUsByExpandedLocationCode"
                                       : "GetFRUsByUnexpandedLocationCode";
@@ -516,7 +530,9 @@ std::vector<std::string> DataInterface::getInventoryFromLocCode(
     }
     else
     {
-        method.append(addLocationCodePrefix(baseLoc), node);
+        method.append(
+            addLocationCodePrefix(baseLoc, chassisNumber),
+            static_cast<uint16_t>(chassisNumber > 0 ? chassisNumber - 1 : 0));
     }
 
     auto reply = _bus.call(method, dbusTimeout);
