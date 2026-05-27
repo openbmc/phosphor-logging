@@ -365,12 +365,12 @@ class DataInterfaceBase
      * @param[in] locationCode - Location code value starting with Ufcs-, and
      *                           if that isn't present it will be added first.
      *
-     * @param[in] node - The node number the location is on.
+     * @param[in] chassisNumber - The chassis in which the location code is for.
      *
      * @return std::string - The expanded location code
      */
     virtual std::string expandLocationCode(const std::string& locationCode,
-                                           uint16_t node) const = 0;
+                                           uint16_t chassisNumber) const = 0;
 
     /**
      * @brief Returns the inventory paths for the FRU that the location
@@ -382,8 +382,8 @@ class DataInterfaceBase
      *                           starting with Ufcs-, and if that isn't
      *                           present it will be added first.
      *
-     * @param[in] node - The node number the location is on.  Ignored if the
-     *                   expanded location code is passed in.
+     * @param[in] chassisNumber - The chassis number the location is on. Ignored
+     * if the expanded location code is passed in.
      *
      * @param[in] expanded - If the location code already has the relevant
      *                       VPD fields embedded in it.
@@ -391,7 +391,7 @@ class DataInterfaceBase
      * @return std::vector<std::string> - The inventory D-Bus objects
      */
     virtual std::vector<std::string> getInventoryFromLocCode(
-        const std::string& LocationCode, uint16_t node,
+        const std::string& LocationCode, uint16_t chassisNumber,
         bool expanded) const = 0;
 
     /**
@@ -803,12 +803,12 @@ class DataInterface : public DataInterfaceBase
      * @param[in] locationCode - Location code value starting with Ufcs-, and
      *                           if that isn't present it will be added first.
      *
-     * @param[in] node - The node number the location is one.
+     * @param[in] chassisNumber - The chassis in which the location code is for.
      *
      * @return std::string - The expanded location code
      */
     std::string expandLocationCode(const std::string& locationCode,
-                                   uint16_t node) const override;
+                                   uint16_t chassisNumber) const override;
 
     /**
      * @brief Returns the inventory paths for the FRU that the location
@@ -820,8 +820,8 @@ class DataInterface : public DataInterfaceBase
      *                           starting with Ufcs-, and if that isn't
      *                           present it will be added first.
      *
-     * @param[in] node - The node number the location is on.  Ignored if the
-     *                   expanded location code is passed in.
+     * @param[in] chassisNumber - The chassis number the location is on. Ignored
+     * if the expanded location code is passed in.
      *
      * @param[in] expanded - If the location code already has the relevant
      *                       VPD fields embedded in it.
@@ -829,7 +829,7 @@ class DataInterface : public DataInterfaceBase
      * @return std::vector<std::string> - The inventory D-Bus objects
      */
     std::vector<std::string> getInventoryFromLocCode(
-        const std::string& locationCode, uint16_t node,
+        const std::string& locationCode, uint16_t chassisNumber,
         bool expanded) const override;
 
     /**
@@ -1041,10 +1041,12 @@ class DataInterface : public DataInterfaceBase
      * message registry and device callout JSON don't have it.
      *
      * @param[in] - The location code without a prefix, like P1-C1
+     * @param[in] - The chassis in which the location code is for.
      *
      * @return std::string - The location code with the prefix
      */
-    static std::string addLocationCodePrefix(const std::string& locationCode);
+    static std::string addLocationCodePrefix(const std::string& locationCode,
+                                             uint16_t chassisNumber = 1);
 
     /**
      * @brief A helper API to check whether the PHAL device tree is exists,
