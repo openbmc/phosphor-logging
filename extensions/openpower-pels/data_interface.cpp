@@ -10,6 +10,7 @@
 #include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
 
 #include <filesystem>
+#include <format>
 
 #ifdef PEL_ENABLE_PHAL
 #include <libekb.H>
@@ -468,7 +469,7 @@ std::string DataInterface::addLocationCodePrefix(
 }
 
 std::string DataInterface::expandLocationCode(const std::string& locationCode,
-                                              uint16_t /*node*/) const
+                                              uint16_t chassisNumber) const
 {
     // Location codes for connectors are the location code of the FRU they are
     // on, plus a '-Tx' segment.  Remove this last segment before expanding it
@@ -480,7 +481,7 @@ std::string DataInterface::expandLocationCode(const std::string& locationCode,
         _bus.new_method_call(service_name::vpdManager, object_path::vpdManager,
                              interface::vpdManager, "GetExpandedLocationCode");
 
-    method.append(addLocationCodePrefix(baseLoc), static_cast<uint16_t>(0));
+    method.append(addLocationCodePrefix(baseLoc), chassisNumber);
 
     auto reply = _bus.call(method, dbusTimeout);
 
@@ -495,7 +496,8 @@ std::string DataInterface::expandLocationCode(const std::string& locationCode,
 }
 
 std::vector<std::string> DataInterface::getInventoryFromLocCode(
-    const std::string& locationCode, uint16_t node, bool expanded) const
+    const std::string& locationCode, uint16_t chassisNumber,
+    bool expanded) const
 {
     std::string methodName = expanded ? "GetFRUsByExpandedLocationCode"
                                       : "GetFRUsByUnexpandedLocationCode";
@@ -516,7 +518,7 @@ std::vector<std::string> DataInterface::getInventoryFromLocCode(
     }
     else
     {
-        method.append(addLocationCodePrefix(baseLoc), node);
+        method.append(addLocationCodePrefix(baseLoc), chassisNumber);
     }
 
     auto reply = _bus.call(method, dbusTimeout);
