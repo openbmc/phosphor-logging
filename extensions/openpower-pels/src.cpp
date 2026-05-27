@@ -5,6 +5,7 @@
 
 #include "device_callouts.hpp"
 #include "json_utils.hpp"
+#include "log_id.hpp"
 #include "pel_values.hpp"
 #ifdef PELTOOL
 #include <Python.h>
@@ -1269,6 +1270,25 @@ void SRC::addJSONCallout(const nlohmann::json& jsonCallout,
     std::string unexpandedLocCode;
     std::unique_ptr<src::Callout> callout;
 
+    // Extract chassis number from JSON, default will be the running BMC chassis
+    // BMC position 0 -> chassis 1, BMC position 1 -> chassis 2
+    auto bmcPos = position::getBMCPosition();
+    uint16_t chassisNumber = static_cast<uint16_t>(bmcPos.value() + 1);
+
+    if (jsonCallout.contains("ChassisNumber"))
+    {
+        try
+        {
+            chassisNumber = jsonCallout.at("ChassisNumber").get<uint16_t>();
+        }
+        catch (const std::exception& e)
+        {
+            addDebugData(std::format(
+                "Invalid ChassisNumber in JSON callout: {}", e.what()));
+            return;
+        }
+    }
+
     // Expand the location code if it's there
     if (jsonCallout.contains("LocationCode"))
     {
@@ -1276,7 +1296,8 @@ void SRC::addJSONCallout(const nlohmann::json& jsonCallout,
 
         try
         {
-            locCode = dataIface.expandLocationCode(unexpandedLocCode, 0);
+            locCode =
+                dataIface.expandLocationCode(unexpandedLocCode, chassisNumber);
         }
         catch (const std::exception& e)
         {
@@ -1344,7 +1365,7 @@ void SRC::addJSONCallout(const nlohmann::json& jsonCallout,
             try
             {
                 auto inventoryPaths = dataIface.getInventoryFromLocCode(
-                    unexpandedLocCode, 0, false);
+                    unexpandedLocCode, chassisNumber, false);
                 // Just use first path returned since they all
                 // point to the same FRU.
                 inventoryPath = inventoryPaths[0];
