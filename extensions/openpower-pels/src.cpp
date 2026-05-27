@@ -1,10 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 // SPDX-FileCopyrightText: Copyright 2019 IBM Corporation
 
+#include "config.h"
+
 #include "src.hpp"
 
 #include "device_callouts.hpp"
 #include "json_utils.hpp"
+#include "log_id.hpp"
 #include "pel_values.hpp"
 #ifdef PELTOOL
 #include <Python.h>
@@ -16,6 +19,7 @@
 #include <phosphor-logging/lg2.hpp>
 
 #include <format>
+#include <limits>
 
 namespace openpower
 {
@@ -1268,22 +1272,48 @@ void SRC::addJSONCallout(const nlohmann::json& jsonCallout,
     std::string locCode;
     std::string unexpandedLocCode;
     std::unique_ptr<src::Callout> callout;
+    uint16_t chassisNumber = 1;
 
     // Expand the location code if it's there
     if (jsonCallout.contains("LocationCode"))
     {
         unexpandedLocCode = jsonCallout.at("LocationCode").get<std::string>();
 
-        try
+        if (jsonCallout.contains("ChassisNumber"))
         {
-            locCode = dataIface.expandLocationCode(unexpandedLocCode, 0);
+            chassisNumber = jsonCallout.at("ChassisNumber").get<uint16_t>();
         }
-        catch (const std::exception& e)
+        else
         {
-            addDebugData(std::format("Unable to expand location code {}: {}",
-                                     unexpandedLocCode, e.what()));
-            // Use the value from the JSON so at least there's something
-            locCode = unexpandedLocCode;
+            // Fetch the running BMC chassis
+            auto chassis = position::getBMCChassisNum();
+            chassisNumber = static_cast<uint16_t>(chassis.value_or(1));
+            if (!chassis.has_value() && REDUNDANT_BMC)
+            {
+                // Unable to find a chassis position for redundant multi-chassis
+                // system
+                addDebugData(std::format(
+                    "Unable to find BMC chassis position. LocationCode: {}",
+                    unexpandedLocCode));
+                chassisNumber = static_cast<uint16_t>(-1);
+            }
+        }
+
+        if (chassisNumber != std::numeric_limits<uint16_t>::max())
+        {
+            try
+            {
+                locCode = dataIface.expandLocationCode(unexpandedLocCode,
+                                                       chassisNumber);
+            }
+            catch (const std::exception& e)
+            {
+                addDebugData(
+                    std::format("Unable to expand location code {}: {}",
+                                unexpandedLocCode, e.what()));
+                // Use the value from the JSON so at least there's something
+                locCode = unexpandedLocCode;
+            }
         }
     }
 
@@ -1337,14 +1367,15 @@ void SRC::addJSONCallout(const nlohmann::json& jsonCallout,
         {
             if (unexpandedLocCode.empty())
             {
-                throw std::runtime_error{"JSON callout needs either an "
-                                         "inventory path or location code"};
+                throw std::runtime_error{
+                    "JSON callout needs either an "
+                    "inventory path or location code with valid chassis"};
             }
 
             try
             {
                 auto inventoryPaths = dataIface.getInventoryFromLocCode(
-                    unexpandedLocCode, 0, false);
+                    unexpandedLocCode, chassisNumber, false);
                 // Just use first path returned since they all
                 // point to the same FRU.
                 inventoryPath = inventoryPaths[0];
