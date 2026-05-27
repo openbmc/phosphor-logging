@@ -31,6 +31,13 @@ void extractBMCPositionFromLogID(uint32_t obmcID);
  */
 std::optional<uint32_t> getBMCPosition();
 
+/**
+ * @brief Returns the BMC Chassis
+ *
+ * @return The Chassis number, or std::nullopt if not available.
+ */
+std::optional<uint32_t> getBMCChassisNum();
+
 } // namespace position
 
 namespace detail
