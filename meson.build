@@ -194,11 +194,17 @@ log_manager_lib = static_library(
 executable(
     'phosphor-log-manager',
     'log_manager_main.cpp',
+    log_manager_ext_sources,
     include_directories: [
         include_directories('gen'),
     ] + log_manager_ext_inc,
     cpp_args: log_manager_ext_args,
-    dependencies: [conf_h_dep, log_manager_deps, phosphor_logging_dep],
+    dependencies: [
+        conf_h_dep,
+        log_manager_deps,
+        log_manager_ext_deps,
+        phosphor_logging_dep,
+    ],
     install: true,
     install_dir: get_option('libexecdir') / 'phosphor-logging',
     link_with: log_manager_lib,
