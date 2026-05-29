@@ -72,7 +72,11 @@ endif
 if cpp.has_header('CLI/CLI.hpp')
     CLI11_dep = declare_dependency()
 else
-    CLI11_dep = dependency('CLI11')
+    CLI11_dep = dependency(
+        'CLI11',
+        include_type: 'system',
+        default_options: ['tests=disabled'],
+    )
 endif
 
 nlohmann_json_dep = dependency('nlohmann_json', include_type: 'system')
