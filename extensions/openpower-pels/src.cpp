@@ -977,11 +977,19 @@ void SRC::addRegistryCallout(
     auto locCode = regCallout.locCode;
     bool locExpanded = true;
 
+    // default BMC's running chassis
+    auto bmcPos = position::getBMCPosition();
+    uint16_t chassisNumber = static_cast<uint16_t>(bmcPos.value() + 1);
+    if (regCallout.chassisNumber.has_value())
+    {
+        chassisNumber = regCallout.chassisNumber.value();
+    }
+    lg2::warning("Chassis Number {CHASS}", "CHASS", chassisNumber);
     if (!locCode.empty())
     {
         try
         {
-            locCode = dataIface.expandLocationCode(locCode, 0);
+            locCode = dataIface.expandLocationCode(locCode, chassisNumber);
         }
         catch (const std::exception& e)
         {
@@ -1062,8 +1070,8 @@ void SRC::addRegistryCallout(
         try
         {
             // Get the inventory item from the unexpanded location code
-            inventoryPaths =
-                dataIface.getInventoryFromLocCode(regCallout.locCode, 0, false);
+            inventoryPaths = dataIface.getInventoryFromLocCode(
+                regCallout.locCode, chassisNumber, false);
         }
         catch (const std::exception& e)
         {
