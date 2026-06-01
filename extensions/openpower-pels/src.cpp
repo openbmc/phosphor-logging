@@ -978,12 +978,39 @@ void SRC::addRegistryCallout(
     std::unique_ptr<src::Callout> callout;
     auto locCode = regCallout.locCode;
     bool locExpanded = true;
+    uint16_t chassisNumber = 0;
+
+    // Via the PEL values table, get the priority enum.
+    // The schema will have validated the priority was a valid value.
+    auto priorityIt =
+        pv::findByName(regCallout.priority, pv::calloutPriorityValues);
+    assert(priorityIt != pv::calloutPriorityValues.end());
+    auto priority =
+        static_cast<CalloutPriority>(std::get<pv::fieldValuePos>(*priorityIt));
 
     if (!locCode.empty())
     {
+        if (regCallout.chassisNumber.has_value())
+        {
+            chassisNumber = regCallout.chassisNumber.value();
+        }
+        else
+        {
+            // Running BMC's chassis is considered
+            auto chassis = position::getBMCChassisPosition();
+            if (!chassis.has_value() && REDUNDANT_BMC)
+            {
+                addDebugData(std::format("Unable to find BMC chassis value. "
+                                         "LocationCode: {}",
+                                         locCode));
+                addLocationCodeOnlyCallout(locCode, priority);
+                return;
+            }
+            chassisNumber = chassis.value_or(0);
+        }
         try
         {
-            locCode = dataIface.expandLocationCode(locCode, 0);
+            locCode = dataIface.expandLocationCode(locCode, chassisNumber);
         }
         catch (const std::exception& e)
         {
@@ -993,14 +1020,6 @@ void SRC::addRegistryCallout(
             locExpanded = false;
         }
     }
-
-    // Via the PEL values table, get the priority enum.
-    // The schema will have validated the priority was a valid value.
-    auto priorityIt =
-        pv::findByName(regCallout.priority, pv::calloutPriorityValues);
-    assert(priorityIt != pv::calloutPriorityValues.end());
-    auto priority =
-        static_cast<CalloutPriority>(std::get<pv::fieldValuePos>(*priorityIt));
 
     if (!regCallout.procedure.empty())
     {
@@ -1064,8 +1083,8 @@ void SRC::addRegistryCallout(
         try
         {
             // Get the inventory item from the unexpanded location code
-            inventoryPaths =
-                dataIface.getInventoryFromLocCode(regCallout.locCode, 0, false);
+            inventoryPaths = dataIface.getInventoryFromLocCode(
+                regCallout.locCode, chassisNumber, false);
         }
         catch (const std::exception& e)
         {
