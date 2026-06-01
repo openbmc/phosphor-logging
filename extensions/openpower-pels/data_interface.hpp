@@ -1046,7 +1046,7 @@ class DataInterface : public DataInterfaceBase
      * @return std::string - The location code with the prefix
      */
     static std::string addLocationCodePrefix(const std::string& locationCode,
-                                             uint16_t chassisNumber = 1);
+                                             uint16_t chassisNumber);
 
     /**
      * @brief A helper API to check whether the PHAL device tree is exists,
