@@ -544,8 +544,15 @@
             "type": "boolean"
         },
 
+        "chassisNumber": {
+            "description": "The chassis number used in a multi-chassis system to identify which chassis the unexpanded location code belongs to.",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 12
+        },
+
         "calloutList": {
-            "description": "The list of FRU callouts to add to a PEL.  If just LocCode is specified, it is a normal hardware FRU callout.  If Procedure is specified, it is a procedure callout.  If SymbolicFRU or SymbolicFRUTrusted are specified, it is a Symbolic FRU callout.  SymbolicFRUTrusted also requires LocCode.",
+            "description": "The list of FRU callouts to add to a PEL.  If just LocCode is specified, it is a normal hardware FRU callout. If Procedure is specified, it is a procedure callout.  If SymbolicFRU or SymbolicFRUTrusted are specified, it is a Symbolic FRU callout.  SymbolicFRUTrusted also requires LocCode.",
             "type": "array",
             "items": {
                 "type": "object",
@@ -559,7 +566,8 @@
                     "Procedure": { "$ref": "#/definitions/procedure" },
                     "UseInventoryLocCode": {
                         "$ref": "#/definitions/useInventoryLocCode"
-                    }
+                    },
+                    "ChassisNumber": { "$ref": "#/definitions/chassisNumber" }
                 },
                 "additionalProperties": false,
                 "required": ["Priority"],
@@ -591,7 +599,6 @@
                             { "not": { "required": ["UseInventoryLocCode"] } }
                         ]
                     },
-
                     {
                         "allOf": [
                             {
@@ -602,7 +609,8 @@
                             },
                             { "not": { "required": ["SymbolicFRU"] } },
                             { "not": { "required": ["Procedure"] } },
-                            { "not": { "required": ["LocCode"] } }
+                            { "not": { "required": ["LocCode"] } },
+                            { "not": { "required": ["ChassisNumber"] } }
                         ]
                     },
 
@@ -612,6 +620,7 @@
                             { "not": { "required": ["SymbolicFRU"] } },
                             { "not": { "required": ["SymbolicFRUTrusted"] } },
                             { "not": { "required": ["LocCode"] } },
+                            { "not": { "required": ["ChassisNumber"] } },
                             { "not": { "required": ["UseInventoryLocCode"] } }
                         ]
                     }
@@ -688,6 +697,15 @@
                     {
                         "Systems": ["system1", "system2"],
                         "CalloutList": [{ "Priority": "low", "LocCode": "P2" }]
+                    },
+                    {
+                        "CalloutList": [
+                            {
+                                "Priority": "high",
+                                "LocCode": "P1",
+                                "ChassisNumber": 2
+                            }
+                        ]
                     },
                     {
                         "CalloutList": [
