@@ -979,21 +979,7 @@ void SRC::addRegistryCallout(
     std::unique_ptr<src::Callout> callout;
     auto locCode = regCallout.locCode;
     bool locExpanded = true;
-
-    if (!locCode.empty())
-    {
-        try
-        {
-            locCode = dataIface.expandLocationCode(locCode, 0);
-        }
-        catch (const std::exception& e)
-        {
-            auto msg = "Unable to expand location code " + locCode + ": " +
-                       e.what();
-            addDebugData(msg);
-            locExpanded = false;
-        }
-    }
+    uint16_t chassisNumber = 1;
 
     // Via the PEL values table, get the priority enum.
     // The schema will have validated the priority was a valid value.
@@ -1002,6 +988,49 @@ void SRC::addRegistryCallout(
     assert(priorityIt != pv::calloutPriorityValues.end());
     auto priority =
         static_cast<CalloutPriority>(std::get<pv::fieldValuePos>(*priorityIt));
+
+    if (!locCode.empty())
+    {
+        if (regCallout.chassisNumber.has_value())
+        {
+            chassisNumber = regCallout.chassisNumber.value();
+        }
+        else
+        {
+            // Running BMC's chassis is considered
+            auto chassis = position::getBMCChassisNum();
+            // If unable to find a chassis position in redundant BMC system
+            // set locExpanded as failed
+            // To fail the expansion of location code, unknown chassis set as -1
+            if (!chassis.has_value() && REDUNDANT_BMC)
+            {
+                addDebugData(std::format(
+                    "Unable to find BMC chassis position. LocationCode: {}",
+                    locCode));
+                locExpanded = false;
+                chassisNumber = static_cast<uint16_t>(-1);
+            }
+            else
+            {
+                chassisNumber = static_cast<uint16_t>(chassis.value_or(1));
+            }
+        }
+
+        if (chassisNumber != std::numeric_limits<uint16_t>::max())
+        {
+            try
+            {
+                locCode = dataIface.expandLocationCode(locCode, chassisNumber);
+            }
+            catch (const std::exception& e)
+            {
+                auto msg = "Unable to expand location code " + locCode + ": " +
+                           e.what();
+                addDebugData(msg);
+                locExpanded = false;
+            }
+        }
+    }
 
     if (!regCallout.procedure.empty())
     {
@@ -1065,8 +1094,8 @@ void SRC::addRegistryCallout(
         try
         {
             // Get the inventory item from the unexpanded location code
-            inventoryPaths =
-                dataIface.getInventoryFromLocCode(regCallout.locCode, 0, false);
+            inventoryPaths = dataIface.getInventoryFromLocCode(
+                regCallout.locCode, chassisNumber, false);
         }
         catch (const std::exception& e)
         {
