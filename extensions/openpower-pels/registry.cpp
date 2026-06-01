@@ -490,6 +490,11 @@ RegistryCallout makeRegistryCallout(const nlohmann::json& json)
         callout.useInventoryLocCode = json["UseInventoryLocCode"].get<bool>();
     }
 
+    if (json.contains("ChassisNumber"))
+    {
+        callout.chassisNumber = json["ChassisNumber"].get<uint16_t>();
+    }
+
     return callout;
 }
 
