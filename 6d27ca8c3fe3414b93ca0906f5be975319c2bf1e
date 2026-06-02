@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3edab719_b6357014",
+        "filename": "extensions/openpower-pels/registry.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-02T20:38:15Z",
+      "side": 1,
+      "message": "there\u0027s a tstcase to add for this",
+      "revId": "6d27ca8c3fe3414b93ca0906f5be975319c2bf1e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9c4febd_c572c9b1",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 998,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-02T20:38:15Z",
+      "side": 1,
+      "message": "This is the same problem as before, what to do on a low end system, or on a system like rainier.",
+      "revId": "6d27ca8c3fe3414b93ca0906f5be975319c2bf1e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83385c38_b2d98be0",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1009,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-02T20:38:15Z",
+      "side": 1,
+      "message": "and same comment as in other commit here as well.",
+      "revId": "6d27ca8c3fe3414b93ca0906f5be975319c2bf1e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66f6d392_e6a6a40a",
+        "filename": "test/openpower-pels/pel_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1351,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-02T20:38:15Z",
+      "side": 1,
+      "message": "Any reason you changed these?",
+      "range": {
+        "startLine": 1351,
+        "startChar": 61,
+        "endLine": 1351,
+        "endChar": 63
+      },
+      "revId": "6d27ca8c3fe3414b93ca0906f5be975319c2bf1e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
