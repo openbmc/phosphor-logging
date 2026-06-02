@@ -1,0 +1,147 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1af69213_3ad36ef5",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-02T20:32:05Z",
+      "side": 1,
+      "message": "can you remind me what is changing here?",
+      "range": {
+        "startLine": 465,
+        "startChar": 66,
+        "endLine": 466,
+        "endChar": 55
+      },
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79cfa95c_5ebbc178",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-02T20:32:05Z",
+      "side": 1,
+      "message": "won\u0027t think break existing platforms?",
+      "range": {
+        "startLine": 468,
+        "startChar": 10,
+        "endLine": 469,
+        "endChar": 37
+      },
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a49fd725_30199ea6",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 533,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-02T20:32:05Z",
+      "side": 1,
+      "message": "why is this second arg hardcoded to zero?",
+      "range": {
+        "startLine": 533,
+        "startChar": 22,
+        "endLine": 533,
+        "endChar": 46
+      },
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52011d74_87482e8c",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-02T20:32:05Z",
+      "side": 1,
+      "message": "nit:  align this line under the \u0027The\u0027 in the above line.",
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ef7fe63_c4a47537",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 824,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-02T20:32:05Z",
+      "side": 1,
+      "message": "same nit as above.",
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18a25e96_fb7ea6fc",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1287,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-02T20:32:05Z",
+      "side": 1,
+      "message": "what about low end systems that may not have this?",
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3473d393_581a26c7",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1299,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-02T20:32:05Z",
+      "side": 1,
+      "message": "this can\u0027t be hardcoded since it may not be true for every system.\nLet me know if you need help thinking of a way to look it up (I\u0027d need to think about it)",
+      "range": {
+        "startLine": 1299,
+        "startChar": 12,
+        "endLine": 1299,
+        "endChar": 70
+      },
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
