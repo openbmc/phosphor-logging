@@ -123,6 +123,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0fc56916_9fb9586a",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1287,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-02T21:19:38Z",
+      "side": 1,
+      "message": "could check the compile option:\n        if constexpr (REDUNDANT_BMC)",
+      "parentUuid": "18a25e96_fb7ea6fc",
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3473d393_581a26c7",
         "filename": "extensions/openpower-pels/src.cpp",
         "patchSetId": 5
