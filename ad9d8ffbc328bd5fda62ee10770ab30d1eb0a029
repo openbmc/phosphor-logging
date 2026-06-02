@@ -1,0 +1,147 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1fa1721_a155a728",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-02T05:01:59Z",
+      "side": 1,
+      "message": "Looks like UT is failing so I did not review it yet, please check on it.",
+      "revId": "ad9d8ffbc328bd5fda62ee10770ab30d1eb0a029",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6004c0f9_b49c0b2e",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-02T05:01:59Z",
+      "side": 1,
+      "message": "Please note that this is a temporary workaround and should be removed once PIM stops including the chassis delimiter in the location code.",
+      "revId": "ad9d8ffbc328bd5fda62ee10770ab30d1eb0a029",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee694717_df92f2ae",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-02T05:01:59Z",
+      "side": 1,
+      "message": "You could use `std::format`\n\n```\nconst auto chassisPrefix \u003d\n    (chassisNumber \u003d\u003d 0) ? \"SC0-\" :\n                           std::format(\"N{:02}-\", chassisNumber - 1);\n\nreturn std::format(\"{}{}{}\", locationCodePrefix, chassisPrefix, locationCode);\n```",
+      "range": {
+        "startLine": 469,
+        "startChar": 0,
+        "endLine": 473,
+        "endChar": 77
+      },
+      "revId": "ad9d8ffbc328bd5fda62ee10770ab30d1eb0a029",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36f2eef5_0140048f",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1049,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-02T05:01:59Z",
+      "side": 1,
+      "message": "Why default value is, 1?",
+      "range": {
+        "startLine": 1049,
+        "startChar": 68,
+        "endLine": 1049,
+        "endChar": 71
+      },
+      "revId": "ad9d8ffbc328bd5fda62ee10770ab30d1eb0a029",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b301b68f_9cf725e9",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1275,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-02T05:01:59Z",
+      "side": 1,
+      "message": "What happens if the BMC position is not available? In that case, `getBMCPosition()` will return `std::nullopt`.\n\nThere could be scenarios where a FRU is called out before the BMC position becomes available. In such cases, we should still capture the provided location details in the PEL.\n\nPlease check how callout section additions are handled during failure scenarios and follow the same approach here.",
+      "range": {
+        "startLine": 1275,
+        "startChar": 4,
+        "endLine": 1275,
+        "endChar": 45
+      },
+      "revId": "ad9d8ffbc328bd5fda62ee10770ab30d1eb0a029",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "773aebc9_65f9292c",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1276,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-02T05:01:59Z",
+      "side": 1,
+      "message": "Can we make this a utility API (perhaps in log_id, something like getBMCChassisPosition())?\n\nI believe we may eventually need to obtain the running BMC chassis position through D-Bus, but for now this approach is fine with me.\n\n@spinler@us.ibm.com, do you have any thoughts on this?",
+      "range": {
+        "startLine": 1276,
+        "startChar": 4,
+        "endLine": 1276,
+        "endChar": 71
+      },
+      "revId": "ad9d8ffbc328bd5fda62ee10770ab30d1eb0a029",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "913f5fe1_6c137f73",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1286,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-02T05:01:59Z",
+      "side": 1,
+      "message": "We should add location code details and other debug information, we should add information into PEL as much as we can.",
+      "revId": "ad9d8ffbc328bd5fda62ee10770ab30d1eb0a029",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
