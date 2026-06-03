@@ -141,6 +141,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ded28e7e_a1df3746",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1287,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-06-03T03:30:01Z",
+      "side": 1,
+      "message": "Yes, I have made the change such that default chassis number will be passed as 0. For redundant system, with the check it will be ensured that the logic doesn\u0027t break for low end systems.",
+      "parentUuid": "0fc56916_9fb9586a",
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3473d393_581a26c7",
         "filename": "extensions/openpower-pels/src.cpp",
         "patchSetId": 5

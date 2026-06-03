@@ -147,6 +147,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "471e54b9_a2324290",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1049,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-06-03T03:30:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db861870_460e10c5",
+      "range": {
+        "startLine": 1049,
+        "startChar": 68,
+        "endLine": 1049,
+        "endChar": 71
+      },
+      "revId": "ad9d8ffbc328bd5fda62ee10770ab30d1eb0a029",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b301b68f_9cf725e9",
@@ -184,6 +208,30 @@
       "side": 1,
       "message": "Have used an API `AddLocationCodeOnlyCallout` to address the null scenario. By default I have given the value to be 0 to avoid build error, but it will not be consumed if a chassis number was not able to map to a location code.",
       "parentUuid": "b301b68f_9cf725e9",
+      "range": {
+        "startLine": 1275,
+        "startChar": 4,
+        "endLine": 1275,
+        "endChar": 45
+      },
+      "revId": "ad9d8ffbc328bd5fda62ee10770ab30d1eb0a029",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a950af22_8cac3b72",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1275,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-06-03T03:30:01Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "02d7f8a5_5b5c1465",
       "range": {
         "startLine": 1275,
         "startChar": 4,
@@ -248,6 +296,24 @@
       "side": 1,
       "message": "On further look that catch seems unnecessary. But will be having a debug data for when the bmc position is unavailable to determine the chassis.",
       "parentUuid": "913f5fe1_6c137f73",
+      "revId": "ad9d8ffbc328bd5fda62ee10770ab30d1eb0a029",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e65b154e_33c3ab10",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1286,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-06-03T03:30:01Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "43e1d0b4_929baff4",
       "revId": "ad9d8ffbc328bd5fda62ee10770ab30d1eb0a029",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
