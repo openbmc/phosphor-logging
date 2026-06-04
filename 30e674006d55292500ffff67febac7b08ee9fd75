@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8c3ec308_d402523e",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-04T02:23:41Z",
+      "side": 1,
+      "message": "Right now, The VPD changed the location code format `Ufcs-SCn/NDn-FRUn`, which broke the existing PEL code.\n\nThere was a discussion about how we want to represent the location code in the PIM. The rack label does not include a chassis number indication because it is part of the `Ufcs`, so having different location code formats could be confusing for customers and PEs.\n\nAs a result, the VPD team plans to revert to the original format and expects the chassis number information to be provided through the node number parameter. However, that change will take some time. In the meantime, we are adding a workaround in the PEL code to address the issue and will remove it once the VPD format is reverted.",
+      "parentUuid": "1af69213_3ad36ef5",
+      "range": {
+        "startLine": 465,
+        "startChar": 66,
+        "endLine": 466,
+        "endChar": 55
+      },
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "79cfa95c_5ebbc178",
         "filename": "extensions/openpower-pels/data_interface.cpp",
         "patchSetId": 5
@@ -49,6 +73,53 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3befe8ca_dddd9d81",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-04T02:23:41Z",
+      "side": 1,
+      "message": "Agree, but its a temporary workaround. we should leave this function as it while removing workaround.",
+      "parentUuid": "79cfa95c_5ebbc178",
+      "range": {
+        "startLine": 468,
+        "startChar": 10,
+        "endLine": 469,
+        "endChar": 37
+      },
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31cd587e_340a3e0f",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-04T02:23:41Z",
+      "side": 1,
+      "message": "Why is it still `0`? it should be changed to chassisNumber, right?",
+      "range": {
+        "startLine": 495,
+        "startChar": 40,
+        "endLine": 495,
+        "endChar": 41
+      },
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a49fd725_30199ea6",
         "filename": "extensions/openpower-pels/data_interface.cpp",
         "patchSetId": 5
@@ -60,6 +131,30 @@
       "writtenOn": "2026-06-02T20:32:05Z",
       "side": 1,
       "message": "why is this second arg hardcoded to zero?",
+      "range": {
+        "startLine": 533,
+        "startChar": 22,
+        "endLine": 533,
+        "endChar": 46
+      },
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e28527c_6bbeb74f",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 533,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-04T02:23:41Z",
+      "side": 1,
+      "message": "+1. I noticed the same issue in another location as well. Please make sure the chassis number is passed to all VPD D-Bus APIs wherever required.",
+      "parentUuid": "a49fd725_30199ea6",
       "range": {
         "startLine": 533,
         "startChar": 22,
@@ -100,6 +195,29 @@
       "writtenOn": "2026-06-02T20:32:05Z",
       "side": 1,
       "message": "same nit as above.",
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d8b0b23_fa78fbab",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1049,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-04T02:23:41Z",
+      "side": 1,
+      "message": "FYI, You should mention if removing this in the future commit as TODO or in the commit message or commit order should be different.",
+      "range": {
+        "startLine": 1049,
+        "startChar": 68,
+        "endLine": 1049,
+        "endChar": 71
+      },
       "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -159,6 +277,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "53fe08de_ee0268bc",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1287,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-04T02:23:41Z",
+      "side": 1,
+      "message": "I think `run/openbmc/bmc_position` should be available for all system types (redundant-BMC multi-chassis, single-BMC multi-chassis, and single-BMC single-chassis) to provide a consistent interface.\n\nFor backward compatibility and lower-end systems, if `run/openbmc/bmc_position` is not present, we can assume chassis 0.\n\nSince chassis position is required for multi-chassis systems regardless of whether redundant BMC is enabled, I don\u0027t think this logic should depend solely on the redundant-BMC configuration option.",
+      "parentUuid": "ded28e7e_a1df3746",
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3473d393_581a26c7",
         "filename": "extensions/openpower-pels/src.cpp",
         "patchSetId": 5
@@ -170,6 +306,30 @@
       "writtenOn": "2026-06-02T20:32:05Z",
       "side": 1,
       "message": "this can\u0027t be hardcoded since it may not be true for every system.\nLet me know if you need help thinking of a way to look it up (I\u0027d need to think about it)",
+      "range": {
+        "startLine": 1299,
+        "startChar": 12,
+        "endLine": 1299,
+        "endChar": 70
+      },
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74f56e16_0eec420a",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1299,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-04T02:23:41Z",
+      "side": 1,
+      "message": "Agree, we should determine the chassis number dynamically instead of deriving it from the BMC position.\n\nMy suggestion is:\n\n* Find all `Item.BMC` object paths using `ObjectMapper.GetSubTreePaths`.\n* If there is only one BMC object:\n\n  * Find its parent `Item.Chassis` object using `ObjectMapper.GetAncestors`.\n  * Get the chassis position from that chassis object.\n* If there are multiple BMC objects:\n\n  * Identify the running BMC using the BMC position.\n  * If the BMC position is valid:\n\n    * Find its parent `Item.Chassis` object using `ObjectMapper.GetAncestors`.\n    * Get the chassis position from that chassis object.\n  * If the BMC position is invalid or unavailable:\n\n    * Follow the existing error-handling flow for the callout section and add debug information to help diagnose the issue.\n\nThis approach should cover:\n\n* Redundant BMC systems\n\n  * Active and passive sides may each have one or more BMC objects.\n* Non-redundant multi-chassis systems\n\n  * A single BMC associated with any chassis.\n* Non-redundant single-chassis systems\n\n  * A single BMC associated with the chassis.\n* Backward compatibility\n\n  * If the chassis position is unavailable and only one BMC object exists, assume chassis 0.\n  \nPlease let me know if any different thoughts or seeing a problem with the above approach.",
+      "parentUuid": "3473d393_581a26c7",
       "range": {
         "startLine": 1299,
         "startChar": 12,
