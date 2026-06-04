@@ -73,11 +73,44 @@ using LogIDsWithHwIsolationFunctions =
 using ExtensionLogAssociation =
     std::function<void(uint32_t, const std::string&)>;
 
+/**
+ * @brief OEM provider callback function type.
+ *
+ * This function is used by OEM extensions to populate structured
+ * vendor-specific metadata into the logging framework.
+ *
+ * The function must not mutate the Entry object directly. Instead,
+ * it fills the provided OemType container with additional data.
+ *
+ * @param[in,out] oem
+ *     Reference to the OEM data container that will be populated.
+ *
+ * @param[in] message
+ *     Log message string associated with the entry.
+ *
+ * @param[in] id
+ *     Unique identifier of the log entry.
+ *
+ * @param[in] level
+ *     Severity level of the log entry.
+ *
+ * @param[in] additionalData
+ *     Additional key-value metadata associated with the log entry.
+ *
+ * @param[in] associations
+ *     List of associations related to the log entry.
+ */
+using OemProviderFunction = std::function<void(
+    OemType& oem, const std::string& message, uint32_t id, Entry::Level level,
+    const AdditionalDataVec& additionalData,
+    const AssociationList& associations)>;
+
 using StartupFunctions = std::vector<StartupFunction>;
 using CreateFunctions = std::vector<CreateFunction>;
 using DeleteFunctions = std::vector<DeleteFunction>;
 using DeleteProhibitedFunctions = std::vector<DeleteProhibitedFunction>;
 using ExtensionLogAssociations = std::vector<ExtensionLogAssociation>;
+using OemProviderFunctions = std::vector<OemProviderFunction>;
 
 /**
  * @brief Register an extension hook function
@@ -102,6 +135,23 @@ using ExtensionLogAssociations = std::vector<ExtensionLogAssociation>;
     namespace disable_caps##_ns                                                \
     {                                                                          \
         Extensions e{Extensions::DefaultErrorCaps::disable};                   \
+    }
+
+/**
+ * @brief Register an OEM provider function
+ *
+ * Call this macro at global scope to register an OEM extension provider
+ * with the logging framework. The provider will be invoked during log
+ * creation to populate the Entry.Oem property with vendor-specific data.
+ *
+ * @param func
+ *     The OEM provider function to register. It must conform to the
+ *     OemProviderFunction signature.
+ */
+#define REGISTER_OEM_PROVIDER(func)                                            \
+    namespace func##_oem_ns                                                    \
+    {                                                                          \
+        Extensions e{func};                                                    \
     }
 
 /**
@@ -224,6 +274,23 @@ class Extensions
     }
 
     /**
+     * @brief Constructor to register an OEM provider function
+     *
+     * Functions registered with this constructor are invoked during
+     * log entry creation to populate the Entry.Oem property with
+     * vendor-specific metadata.
+     *
+     * This enables extensions to contribute structured OEM data
+     * without modifying the core log entry fields.
+     *
+     * @param[in] func - The OEM provider function to register
+     */
+    explicit Extensions(OemProviderFunction func)
+    {
+        getOemProviderFunctions().push_back(func);
+    }
+
+    /**
      * @brief Returns the Startup functions
      * @return StartupFunctions - the Startup functions
      */
@@ -265,6 +332,17 @@ class Extensions
      * @return ExtensionLogAssociations - the ExtensionLogAssociation functions
      */
     static ExtensionLogAssociations& getExtensionLogAssociationFunctions();
+
+    /**
+     * @brief Returns the registered OEM provider functions
+     *
+     * Provides access to the internal container holding all
+     * registered OEM provider callbacks.
+     *
+     * @return OemProviderFunctions& - reference to the registered
+     *                                 OEM provider function list
+     */
+    static OemProviderFunctions& getOemProviderFunctions();
 
     /**
      * @brief Say if the default log capping policy should be disabled

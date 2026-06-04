@@ -47,5 +47,11 @@ Extensions::DefaultErrorCaps& Extensions::getDefaultErrorCaps()
     return defaultErrorCaps;
 }
 
+OemProviderFunctions& Extensions::getOemProviderFunctions()
+{
+    static OemProviderFunctions providers;
+    return providers;
+}
+
 } // namespace logging
 } // namespace phosphor
