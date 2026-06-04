@@ -25,6 +25,7 @@ using EntryIfaces = sdbusplus::server::object_t<
 
 using AssociationList =
     std::vector<std::tuple<std::string, std::string, std::string>>;
+using OemType = std::map<std::string, std::map<std::string, std::string>>;
 
 namespace internal
 {
@@ -59,13 +60,15 @@ class Entry : public EntryIfaces
      *  @param[in] objects - The list of associations.
      *  @param[in] fwVersion - The BMC code version.
      *  @param[in] filePath - Serialization path
+     *  @param[in] oemData - Oem Data container
      *  @param[in] parent - The error's parent.
      */
     Entry(sdbusplus::bus_t& bus, const std::string& objectPath, uint32_t idErr,
           uint64_t timestampErr, Level severityErr, std::string&& msgErr,
           std::map<std::string, std::string>&& additionalDataErr,
           AssociationList&& objects, const std::string& fwVersion,
-          const std::string& filePath, internal::Manager& parent) :
+          const std::string& filePath, OemType&& oemData,
+          internal::Manager& parent) :
         EntryIfaces(bus, objectPath.c_str(), EntryIfaces::action::defer_emit),
         parent(parent)
     {
@@ -84,6 +87,7 @@ class Entry : public EntryIfaces
         version(fwVersion, true);
         purpose(VersionPurpose::BMC, true);
         path(filePath, true);
+        oem(std::move(oemData), true);
 
         // Emit deferred signal.
         this->emit_object_added();
