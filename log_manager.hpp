@@ -31,6 +31,7 @@ using DeleteAllIface =
 
 using Severity = sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level;
 using LoggingCleared = sdbusplus::event::xyz::openbmc_project::Logging::Cleared;
+using AdditionalDataVec = std::vector<std::string>;
 
 namespace details
 {
@@ -338,6 +339,29 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     void errorFileChanged(sdeventplus::source::IO& io, int fd,
                           uint32_t revents);
+
+    /**
+     * @brief Collect OEM data from registered providers
+     *
+     * Internal helper used by the logging path to invoke all registered
+     * OEM provider functions and aggregate their contributions into a
+     * single OemType container.
+     *
+     * @param[in] message - Log message string associated with the entry
+     * @param[in] id - Unique identifier of the log entry
+     * @param[in] level - Severity level of the log entry
+     * @param[in] additionalData - Additional metadata for the log entry
+     * @param[in] associations - Associations related to the log entry
+     *
+     * @return OemType - Aggregated OEM metadata collected from all providers
+     *
+     * @note
+     * This API is intended for internal use only.
+     */
+    static OemType collectOemData(const std::string& message, uint32_t id,
+                                  Entry::Level level,
+                                  const AdditionalDataVec& additionalData,
+                                  const AssociationList& associations);
 
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus_t& busLog;

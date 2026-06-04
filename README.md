@@ -422,6 +422,81 @@ The supported extensions are:
   - Detailed information can be found in
     [extensions/openpower-pels](extensions/openpower-pels/README.md).
 
+## OEM Property (Entry.Oem) Design
+
+The phosphor-logging framework provides an `Entry.Oem` property as a generic
+container for vendor-specific metadata.
+
+Vendor implementations populate this container—typically via platform-specific
+extensions—during log creation.
+
+This property is intended for extensible, structured metadata.
+
+---
+
+### Purpose
+
+The `Entry.Oem` property enables:
+
+- Vendor-specific metadata
+- Additional contextual data for debugging
+- Structured data compatible with external interfaces
+
+---
+
+### Ownership Model
+
+#### Framework Responsibilities
+
+The framework is responsible for:
+
+- Managing the lifecycle of the `Entry.Oem` property
+- Aggregating data from multiple sources
+- Ensuring consistency of the container
+
+#### OEM Responsibilities
+
+OEM components are responsible for:
+
+- Populating vendor-specific data under a unique namespace
+- Ensuring data correctness and consistency
+- Avoiding conflicts with other namespaces
+- Using structured and extensible formats
+
+---
+
+### Namespacing
+
+All OEM data must be scoped under a vendor-defined key:
+
+```json
+{
+  "<Vendor>": {
+    "Key": "Value"
+  }
+}
+```
+
+---
+
+### Data Flow
+
+During log creation:
+
+1. A log entry is created by the framework
+2. OEM data providers contribute additional metadata
+3. Data is aggregated into the Entry.Oem container
+
+---
+
+### Design Constraints
+
+- OEM data must be additive only
+- OEM data must not modify standard log properties
+- Data structures should be stable and extensible
+
+---
+
 ## Remote Logging via Rsyslog
 
 The BMC has the ability to stream out local logs (that go to the systemd

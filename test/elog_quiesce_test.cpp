@@ -55,6 +55,7 @@ TEST_F(TestQuiesceOnError, testNoCallout)
                std::move(associations),
                fwLevel,
                path,
+               phosphor::logging::OemType{},
                manager};
 
     EXPECT_EQ(manager.isCalloutPresent(elog), false);
@@ -83,6 +84,7 @@ TEST_F(TestQuiesceOnError, testCallout)
                std::move(associations),
                fwLevel,
                path,
+               phosphor::logging::OemType{},
                manager};
 
     EXPECT_EQ(manager.isCalloutPresent(elog), true);
@@ -122,6 +124,7 @@ TEST_F(TestQuiesceOnError, testBlockingErrorsCreated)
                std::move(associations),
                fwLevel,
                path,
+               phosphor::logging::OemType{},
                manager};
 
     manager.quiesceOnError(id);
@@ -179,6 +182,7 @@ TEST_F(TestQuiesceOnError, testBlockingErrorsResolved)
                std::move(associations),
                fwLevel,
                path,
+               phosphor::logging::OemType{},
                manager};
 
     manager.quiesceOnError(id);
@@ -238,6 +242,7 @@ TEST_F(TestQuiesceOnError, testBlockingErrorTwice)
                std::move(associations),
                fwLevel,
                path,
+               phosphor::logging::OemType{},
                manager};
 
     manager.quiesceOnError(id);

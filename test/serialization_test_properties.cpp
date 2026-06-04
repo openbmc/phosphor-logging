@@ -9,6 +9,8 @@ namespace logging
 namespace test
 {
 
+using Oem = phosphor::logging::OemType;
+
 TEST_F(TestSerialization, testProperties)
 {
     auto id = 99;
@@ -19,10 +21,14 @@ TEST_F(TestSerialization, testProperties)
     std::string message{"test error"};
     std::string fwLevel{"level42"};
     std::string inputPath = getEntrySerializePath(id, TestSerialization::dir);
+
+    Oem testOem{{"AMD", {{"ErrorCode", "42"}, {"Unit", std::string("SMU")}}}};
+
     auto input = std::make_unique<Entry>(
         bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, timestamp,
         Entry::Level::Informational, std::move(message), std::move(testData),
-        std::move(associations), fwLevel, inputPath, manager);
+        std::move(associations), fwLevel, inputPath, std::move(testOem),
+        manager);
     auto path = serialize(*input, TestSerialization::dir);
     EXPECT_EQ(path, inputPath);
 
@@ -42,6 +48,7 @@ TEST_F(TestSerialization, testProperties)
     EXPECT_EQ(input->version(), output->version());
     EXPECT_EQ(input->purpose(), output->purpose());
     EXPECT_EQ(input->updateTimestamp(), output->updateTimestamp());
+    EXPECT_EQ(input->oem(), output->oem());
 }
 
 } // namespace test
