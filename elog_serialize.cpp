@@ -8,6 +8,7 @@
 #include <cereal/types/map.hpp>
 #include <cereal/types/string.hpp>
 #include <cereal/types/tuple.hpp>
+#include <cereal/types/variant.hpp>
 #include <cereal/types/vector.hpp>
 #include <nlohmann/json.hpp>
 #include <phosphor-logging/lg2.hpp>
@@ -37,7 +38,7 @@ void save(Archive& a, const Entry& e, const std::uint32_t /*version*/)
     a(e.id(), e.severity(), e.timestamp(), e.message(),
       util::additional_data::combine(e.additionalData()), e.associations(),
       e.resolved(), e.version(), e.updateTimestamp(), e.eventId(),
-      e.resolution());
+      e.resolution(), e.oem());
 }
 
 /** @brief Function required by Cereal to perform deserialization.
@@ -63,6 +64,7 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
     uint64_t updateTimestamp{};
     std::string eventId{};
     std::string resolution{};
+    OemType oem{};
 
     if (version < std::stoul(FIRST_CEREAL_CLASS_VERSION_WITH_FWLEVEL))
     {
@@ -108,13 +110,20 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
         a(id, severity, timestamp, message, additionalData, associations,
           resolved, fwVersion, updateTimestamp, eventId, resolution);
     }
-    else
+    else if (version == std::stoul(FIRST_CEREAL_CLASS_VERSION_WITH_OEM))
     {
         // Go back to reading a vector for additionalData
         std::vector<std::string> additionalData_old{};
         a(id, severity, timestamp, message, additionalData_old, associations,
-          resolved, fwVersion, updateTimestamp, eventId, resolution);
+          resolved, fwVersion, updateTimestamp, eventId, resolution, oem);
         additionalData = util::additional_data::parse(additionalData_old);
+    }
+
+    else
+    {
+        // OEM extension
+        a(id, severity, timestamp, message, additionalData, associations,
+          resolved, fwVersion, updateTimestamp, eventId, resolution, oem);
     }
 
     e.id(id, true);
@@ -132,6 +141,7 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
     e.updateTimestamp(updateTimestamp, true);
     e.eventId(eventId, true);
     e.resolution(resolution, true);
+    e.oem(std::move(oem), true);
 }
 
 fs::path getEntrySerializePath(uint32_t id, const fs::path& dir)
@@ -173,6 +183,28 @@ fs::path serializeJSON(const Entry& e, const fs::path& dir)
     j["updateTimestamp"] = e.updateTimestamp();
     j["eventId"] = e.eventId();
     j["resolution"] = e.resolution();
+
+    nlohmann::json oemJson = nlohmann::json::object();
+
+    const auto& oem = e.oem();
+
+    for (const auto& [vendor, props] : oem)
+    {
+        nlohmann::json vendorJson = nlohmann::json::object();
+
+        for (const auto& [key, val] : props)
+        {
+            std::visit([&](const auto& v) { vendorJson[key] = v; }, val);
+        }
+
+        oemJson[vendor] = std::move(vendorJson);
+    }
+
+    // Only add if not empty (optional but clean)
+    if (!oemJson.empty())
+    {
+        j["Oem"] = std::move(oemJson);
+    }
 
     std::ofstream os(path.c_str());
     os << j.dump(4);
@@ -234,6 +266,34 @@ bool deserializeJSON(const fs::path& path, Entry& e)
         e.updateTimestamp(j.at("updateTimestamp").get<uint64_t>(), true);
         e.eventId(j.at("eventId").get<std::string>(), true);
         e.resolution(j.at("resolution").get<std::string>(), true);
+
+        if (j.contains("Oem"))
+        {
+            OemType oem;
+
+            for (auto& [vendor, vendorObj] : j["Oem"].items())
+            {
+                std::map<std::string, std::variant<std::string, uint64_t>>
+                    props;
+
+                for (auto& [key, val] : vendorObj.items())
+                {
+                    if (val.is_string())
+                    {
+                        props[key] = val.get<std::string>();
+                    }
+                    else if (val.is_number_unsigned())
+                    {
+                        props[key] = val.get<uint64_t>();
+                    }
+                    // optional: handle signed / floats if needed
+                }
+
+                oem[vendor] = std::move(props);
+            }
+
+            e.oem(std::move(oem), true);
+        }
 
         return true;
     }

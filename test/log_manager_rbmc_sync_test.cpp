@@ -74,7 +74,7 @@ class LogManagerRedundantBMCSyncTest : public ::testing::Test
             bus, std::string(OBJ_ENTRY) + "/" + std::to_string(entryId),
             entryId, 100, level, std::move(entryMessage),
             std::move(additionalData), std::move(associations), "fw",
-            tempEntryPath.string(), *manager);
+            tempEntryPath.string(), phosphor::logging::OemType{}, *manager);
 
         entry->resolved(resolved, true);
         serialize(*entry, tempEntryDir);
