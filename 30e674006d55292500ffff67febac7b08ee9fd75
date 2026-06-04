@@ -338,6 +338,30 @@
       },
       "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67c0667e_06ed2e2a",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1299,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-04T02:27:38Z",
+      "side": 1,
+      "message": "Note that this involves multiple D-Bus calls. It would be better to cache the chassis position once it has been identified, so that subsequent PEL creations can reuse it instead of determining the running BMC\u0027s chassis position every time.",
+      "parentUuid": "74f56e16_0eec420a",
+      "range": {
+        "startLine": 1299,
+        "startChar": 12,
+        "endLine": 1299,
+        "endChar": 70
+      },
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
