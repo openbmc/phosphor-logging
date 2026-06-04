@@ -26,5 +26,6 @@ inline constexpr auto FIRST_CEREAL_CLASS_VERSION_WITH_EVENTID = "4";
 inline constexpr auto FIRST_CEREAL_CLASS_VERSION_WITH_RESOLUTION = "5";
 inline constexpr auto FIRST_CEREAL_CLASS_VERSION_WITH_METADATA_DICT = "6";
 inline constexpr auto FIRST_CEREAL_CLASS_VERSION_WITH_METADATA_VECTOR = "7";
-inline constexpr std::size_t CLASS_VERSION = 7;
+inline constexpr auto FIRST_CEREAL_CLASS_VERSION_WITH_OEM = "8";
+inline constexpr std::size_t CLASS_VERSION = 8;
 inline constexpr std::size_t JSON_FORMAT_VERSION = 1;
