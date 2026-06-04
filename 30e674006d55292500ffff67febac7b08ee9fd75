@@ -488,6 +488,30 @@
       },
       "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34dcf9c8_1f31db82",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1299,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-04T19:27:59Z",
+      "side": 1,
+      "message": "\u003e Find its parent Item.Chassis object using ObjectMapper.GetAncestors.\n\nthe trick would be finding the BMC inventory item in the first place, because there will be 2, and the BMC position value doesn\u0027t match the chassis position value.\n\nDid you have a plan for that already?",
+      "parentUuid": "67c0667e_06ed2e2a",
+      "range": {
+        "startLine": 1299,
+        "startChar": 12,
+        "endLine": 1299,
+        "endChar": 70
+      },
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
