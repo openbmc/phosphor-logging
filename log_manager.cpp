@@ -280,6 +280,9 @@ auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
     auto additionalDataVec = util::additional_data::combine(additionalData);
     processMetadata(errMsg, additionalDataVec, objects);
 
+    auto oemData =
+        collectOemData(errMsg, entryId, errLvl, additionalDataVec, objects);
+
     auto e = std::make_unique<Entry>(
         busLog, objPath, entryId,
         ms, // Milliseconds since 1970
@@ -1021,6 +1024,29 @@ bool Manager::refreshFromDisk(uint32_t id)
     existingEntry->path(path, true);
 
     return true;
+}
+
+OemType Manager::collectOemData(
+    const std::string& message, uint32_t id, Entry::Level level,
+    AdditionalDataVec additionalData, AssociationList associations)
+{
+    OemType aggregatedOem{};
+
+    for (auto& fn : Extensions::getOemProviderFunctions())
+    {
+        try
+        {
+            fn(aggregatedOem, message, id, level, additionalData, associations);
+        }
+        catch (...)
+        {
+            // Intentionally ignore exceptions from OEM providers
+            // to avoid impacting core logging flow.
+            lg2::info("OEM provider threw exception: {ERR}", "ERR", e.what());
+        }
+    }
+
+    return aggregatedOem;
 }
 
 } // namespace internal
