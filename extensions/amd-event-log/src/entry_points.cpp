@@ -1,21 +1,60 @@
-#include <phosphor-logging/log.hpp>
+#include "extensions.hpp"
+
+#include <phosphor-logging/lg2.hpp>
 
 namespace phosphor::logging::extensions::ael
 {
 
+using namespace phosphor::logging;
+
 /**
- * @brief Entry point for AMD Event Log (AEL) extension
- *
- * Initial skeleton implementation.
- *
- * This module will evolve to provide:
- *  - AEL metadata helpers
- *  - Schema validation
- *  - Integration with phosphor-logging pipeline
+ * @brief AMD OEM provider (minimal infra)
+ */
+static void amdOemProvider(OemType& oem, const std::string& /*msg*/,
+                           uint32_t /*id*/, Entry::Level /*level*/,
+                           const AdditionalDataVec& /*additionalData*/,
+                           const AssociationList& /*associations*/)
+{
+    try
+    {
+        // Ensure vendor section exists
+        auto& amd = oem["Amd"];
+        (void)amd;
+    }
+    catch (...)
+    {
+        lg2::error("amdOemProvider: exception while creating OEM section");
+    }
+}
+
+/**
+ * @brief Register OEM providers
+ */
+static void registerOemProviders()
+{
+    Extensions::getOemProviderFunctions().emplace_back(amdOemProvider);
+}
+
+/**
+ * @brief Main initialization entry
  */
 void initialize()
 {
-    // Placeholder - no-op
+    registerOemProviders();
+    lg2::info("AMD AEL extension initialized");
 }
+
+/**
+ * @brief Extension startup hook
+ */
+void startupHandler(internal::Manager& /*manager*/)
+{
+    initialize();
+}
+
+/**
+ * Register startup hook
+ */
+REGISTER_EXTENSION_FUNCTION(startupHandler);
 
 } // namespace phosphor::logging::extensions::ael
