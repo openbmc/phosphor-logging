@@ -195,6 +195,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7e5ba86_48ff7a33",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1049,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-06-04T14:36:02Z",
+      "side": 1,
+      "message": "I have passed the value to be 0 by default, so this change will not be needed.",
+      "parentUuid": "71a61d14_d0e80df5",
+      "range": {
+        "startLine": 1049,
+        "startChar": 68,
+        "endLine": 1049,
+        "endChar": 71
+      },
+      "revId": "ad9d8ffbc328bd5fda62ee10770ab30d1eb0a029",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b301b68f_9cf725e9",

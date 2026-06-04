@@ -118,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85f9daa0_ac45cb2e",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-06-04T14:36:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "31cd587e_340a3e0f",
+      "range": {
+        "startLine": 495,
+        "startChar": 40,
+        "endLine": 495,
+        "endChar": 41
+      },
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a49fd725_30199ea6",
@@ -165,6 +189,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9c13117_66af0ec0",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 533,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-06-04T14:36:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7e28527c_6bbeb74f",
+      "range": {
+        "startLine": 533,
+        "startChar": 22,
+        "endLine": 533,
+        "endChar": 46
+      },
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52011d74_87482e8c",
@@ -178,6 +226,24 @@
       "writtenOn": "2026-06-02T20:32:05Z",
       "side": 1,
       "message": "nit:  align this line under the \u0027The\u0027 in the above line.",
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4a08a4e_47ecca15",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-06-04T14:36:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "52011d74_87482e8c",
       "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -201,6 +267,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "cda67d98_54ba0f22",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 824,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-06-04T14:36:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ef7fe63_c4a47537",
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "9d8b0b23_fa78fbab",
         "filename": "extensions/openpower-pels/data_interface.hpp",
         "patchSetId": 5
@@ -212,6 +296,30 @@
       "writtenOn": "2026-06-04T02:23:41Z",
       "side": 1,
       "message": "FYI, You should mention if removing this in the future commit as TODO or in the commit message or commit order should be different.",
+      "range": {
+        "startLine": 1049,
+        "startChar": 68,
+        "endLine": 1049,
+        "endChar": 71
+      },
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "962e4e05_ce9dee30",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1049,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-06-04T14:36:02Z",
+      "side": 1,
+      "message": "I have passed the value to be 0 by default, so this change will not be needed.",
+      "parentUuid": "9d8b0b23_fa78fbab",
       "range": {
         "startLine": 1049,
         "startChar": 68,
@@ -288,6 +396,24 @@
       "writtenOn": "2026-06-04T02:23:41Z",
       "side": 1,
       "message": "I think `run/openbmc/bmc_position` should be available for all system types (redundant-BMC multi-chassis, single-BMC multi-chassis, and single-BMC single-chassis) to provide a consistent interface.\n\nFor backward compatibility and lower-end systems, if `run/openbmc/bmc_position` is not present, we can assume chassis 0.\n\nSince chassis position is required for multi-chassis systems regardless of whether redundant BMC is enabled, I don\u0027t think this logic should depend solely on the redundant-BMC configuration option.",
+      "parentUuid": "ded28e7e_a1df3746",
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "368e4701_23b649e6",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1287,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-06-04T14:36:02Z",
+      "side": 1,
+      "message": "In this case, the non-redundant systems will have a default chassis number of 0.",
       "parentUuid": "ded28e7e_a1df3746",
       "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
