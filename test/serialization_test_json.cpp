@@ -13,6 +13,8 @@ namespace logging
 namespace test
 {
 
+using Oem = phosphor::logging::OemType;
+
 class TestJsonSerialization : public testing::Test
 {
   public:
@@ -51,7 +53,7 @@ TEST_F(TestJsonSerialization, testJsonProperties)
     auto input = std::make_unique<Entry>(
         bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, timestamp,
         Entry::Level::Informational, std::move(message), std::move(testData),
-        std::move(associations), fwLevel, inputPath, manager);
+        std::move(associations), fwLevel, inputPath, Oem{}, manager);
 
     auto jsonPath = serializeJSON(*input);
 
@@ -99,7 +101,7 @@ TEST_F(TestJsonSerialization, testJsonEmptyAdditionalData)
     auto input = std::make_unique<Entry>(
         bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, timestamp,
         Entry::Level::Error, std::move(message), std::move(testData),
-        std::move(associations), fwLevel, inputPath, manager);
+        std::move(associations), fwLevel, inputPath, Oem{}, manager);
 
     auto jsonPath = serializeJSON(*input);
 
@@ -125,7 +127,7 @@ TEST_F(TestJsonSerialization, testBinarySerializationUnchanged)
     auto input = std::make_unique<Entry>(
         bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, timestamp,
         Entry::Level::Warning, std::move(message), std::move(testData),
-        std::move(associations), fwLevel, inputPath, manager);
+        std::move(associations), fwLevel, inputPath, Oem{}, manager);
 
     auto path = serialize(*input);
 
@@ -160,7 +162,7 @@ TEST_F(TestJsonSerialization, testJsonRoundTrip)
     auto input = std::make_unique<Entry>(
         bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, timestamp,
         Entry::Level::Critical, std::move(message), std::move(testData),
-        std::move(associations), fwLevel, inputPath, manager);
+        std::move(associations), fwLevel, inputPath, Oem{}, manager);
 
     auto jsonPath = serializeJSON(*input);
 

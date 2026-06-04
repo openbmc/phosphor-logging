@@ -19,6 +19,7 @@ namespace test
 {
 
 using namespace std::chrono_literals;
+using Oem = phosphor::logging::OemType;
 namespace fs = std::filesystem;
 
 void deleteIsProhibitedMock(uint32_t /*id*/, bool& prohibited)
@@ -29,6 +30,18 @@ void deleteIsProhibitedMock(uint32_t /*id*/, bool& prohibited)
 void deleteIsNotProhibitedMock(uint32_t /*id*/, bool& prohibited)
 {
     prohibited = false;
+}
+
+// Helper: generic multi-vendor OEM data
+static Oem createTestOem()
+{
+    return {
+        {"VendorA",
+         {{"ErrorCode", uint64_t(42)}, {"Component", std::string("UnitA")}}},
+        {"VendorB",
+         {{"InstanceId", uint64_t(7)},
+          {"DriverName", std::string("driver-x")}}},
+        {"VendorC", {{"Flag", std::string("true")}, {"Count", uint64_t(100)}}}};
 }
 
 // Test that the update timestamp changes when the resolved property changes
@@ -74,6 +87,7 @@ TEST(TestUpdateTS, testChangeResolved)
                std::move(associations),
                fwLevel,
                path,
+               Oem{},
                manager};
 
     EXPECT_EQ(elog.timestamp(), elog.updateTimestamp());
@@ -145,6 +159,7 @@ TEST(TestResolveProhibited, testResolveFlagChange)
                std::move(associations),
                fwLevel,
                path,
+               Oem{},
                manager};
 
     Extensions ext{deleteIsProhibitedMock};
@@ -162,6 +177,43 @@ TEST(TestResolveProhibited, testResolveFlagChange)
     // Leave the directory in case other CI instances are running
     fs::remove(persist_path / std::to_string(id));
 }
+
+// Entry-level behavior test
+TEST(ElogEntryTest, OemSetGet)
+{
+    auto bus = sdbusplus::bus::new_default();
+    phosphor::logging::internal::Manager manager{bus, OBJ_INTERNAL};
+
+    uint32_t id = 1;
+    std::string path = std::string(OBJ_ENTRY) + "/" + std::to_string(id);
+
+    Entry entry{bus, path, id, manager};
+
+    auto oem = createTestOem();
+
+    entry.oem(oem);
+
+    EXPECT_EQ(entry.oem(), oem);
+}
+
+// Validate nested structure and variant correctness
+TEST(ElogEntryTest, OemMultiVendorStructure)
+{
+    Oem oem = createTestOem();
+
+    ASSERT_TRUE(oem.contains("VendorA"));
+    ASSERT_TRUE(oem.contains("VendorB"));
+    ASSERT_TRUE(oem.contains("VendorC"));
+
+    EXPECT_EQ(std::get<uint64_t>(oem["VendorA"]["ErrorCode"]), 42);
+    EXPECT_EQ(std::get<std::string>(oem["VendorA"]["Component"]), "UnitA");
+
+    EXPECT_EQ(std::get<uint64_t>(oem["VendorB"]["InstanceId"]), 7);
+    EXPECT_EQ(std::get<std::string>(oem["VendorB"]["DriverName"]), "driver-x");
+
+    EXPECT_EQ(std::get<uint64_t>(oem["VendorC"]["Count"]), 100);
+}
+
 } // namespace test
 } // namespace logging
 } // namespace phosphor
