@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8aa15dec_bf5dae6d",
+        "filename": "extensions/amd-event-log/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-04T21:52:59Z",
+      "side": 1,
+      "message": "I was expecting something AMD specific here.\n\nHow about if you want an \u0027OEM\u0027 design doc, put it into a separate file in the docs subdir and point to it from here.\n\nThen here just have the AMD specific details.",
+      "revId": "466457225402d08e34b9ca948a4a5e111402c2b3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "306ccbb0_9559ac47",
+        "filename": "extensions/amd-event-log/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-04T21:52:59Z",
+      "side": 1,
+      "message": "AMD?",
+      "range": {
+        "startLine": 56,
+        "startChar": 3,
+        "endLine": 56,
+        "endChar": 6
+      },
+      "revId": "466457225402d08e34b9ca948a4a5e111402c2b3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbe69c96_73d4af72",
+        "filename": "extensions/amd-event-log/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-04T21:52:59Z",
+      "side": 1,
+      "message": "Ideally this would list the actual fields, or are those not known ahead of time?",
+      "range": {
+        "startLine": 111,
+        "startChar": 4,
+        "endLine": 111,
+        "endChar": 11
+      },
+      "revId": "466457225402d08e34b9ca948a4a5e111402c2b3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99a1a382_0c737ea1",
+        "filename": "extensions/meson.build",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-04T21:52:59Z",
+      "side": 1,
+      "message": "not that it should be a problem, but I use the standalone meson builds for this repo a lot for dev and testing, so that still needs to work with any new code",
+      "revId": "466457225402d08e34b9ca948a4a5e111402c2b3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c9f03b2_4f2e8db4",
+        "filename": "meson.options",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-04T21:52:59Z",
+      "side": 1,
+      "message": "Many years ago when I put in the one below, I had to go into openbmc-build-scripts/setup.py and then enable it there to get test coverage.\n\nNow I\u0027m not sure if that was the best route, or if it was to have it default to enabled,but then disable it if part of a subproject and also then just have a packageconfig for it to enable it it bitbake.",
+      "revId": "466457225402d08e34b9ca948a4a5e111402c2b3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
