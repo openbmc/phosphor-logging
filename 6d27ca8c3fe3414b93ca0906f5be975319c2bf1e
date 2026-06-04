@@ -20,6 +20,41 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c343da1b_06db8046",
+        "filename": "extensions/openpower-pels/registry.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-04T02:39:44Z",
+      "side": 1,
+      "message": "Also, I don\u0027t see any corresponding schema changes and updates to the registry example files. Please consider those changes as well.",
+      "parentUuid": "3edab719_b6357014",
+      "revId": "6d27ca8c3fe3414b93ca0906f5be975319c2bf1e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e38ef1bc_7a910e53",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 981,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-04T02:39:44Z",
+      "side": 1,
+      "message": "Why is it moved?",
+      "revId": "6d27ca8c3fe3414b93ca0906f5be975319c2bf1e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b9c4febd_c572c9b1",
         "filename": "extensions/openpower-pels/src.cpp",
         "patchSetId": 3
@@ -37,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7b9704d1_8e07c04d",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 998,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-04T02:39:44Z",
+      "side": 1,
+      "message": "+1. I also shared some suggestions in a previous review. It would be better to implement this as a utility API and reuse it wherever needed.",
+      "parentUuid": "b9c4febd_c572c9b1",
+      "revId": "6d27ca8c3fe3414b93ca0906f5be975319c2bf1e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "83385c38_b2d98be0",
         "filename": "extensions/openpower-pels/src.cpp",
         "patchSetId": 3
@@ -48,6 +101,24 @@
       "writtenOn": "2026-06-02T20:38:15Z",
       "side": 1,
       "message": "and same comment as in other commit here as well.",
+      "revId": "6d27ca8c3fe3414b93ca0906f5be975319c2bf1e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "616fa735_7e5e9bd8",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1009,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-04T02:39:44Z",
+      "side": 1,
+      "message": "+1. I also shared some suggestions in a previous review. It would be better to implement this as a utility API and reuse it wherever needed.",
+      "parentUuid": "83385c38_b2d98be0",
       "revId": "6d27ca8c3fe3414b93ca0906f5be975319c2bf1e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
