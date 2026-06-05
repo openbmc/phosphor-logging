@@ -16,6 +16,24 @@
       "message": "can you also add an example into the README?",
       "revId": "d99d6817807983d5c63b56b91b720488e0ea41bc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53bdba52_63ee0061",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2026-06-05T21:59:06Z",
+      "side": 1,
+      "message": "Thanks for pointing that out. I added docs in the README",
+      "parentUuid": "2d17aa93_955f9932",
+      "revId": "d99d6817807983d5c63b56b91b720488e0ea41bc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
