@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "776565b4_757014fe",
+        "filename": "extensions/amd-event-log/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-06-05T11:52:50Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8aa15dec_bf5dae6d",
+      "revId": "466457225402d08e34b9ca948a4a5e111402c2b3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "306ccbb0_9559ac47",
@@ -41,6 +59,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "754b139b_0120b840",
+        "filename": "extensions/amd-event-log/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-06-05T11:52:50Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "306ccbb0_9559ac47",
+      "range": {
+        "startLine": 56,
+        "startChar": 3,
+        "endLine": 56,
+        "endChar": 6
+      },
+      "revId": "466457225402d08e34b9ca948a4a5e111402c2b3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dbe69c96_73d4af72",
@@ -54,6 +96,30 @@
       "writtenOn": "2026-06-04T21:52:59Z",
       "side": 1,
       "message": "Ideally this would list the actual fields, or are those not known ahead of time?",
+      "range": {
+        "startLine": 111,
+        "startChar": 4,
+        "endLine": 111,
+        "endChar": 11
+      },
+      "revId": "466457225402d08e34b9ca948a4a5e111402c2b3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf8647ac_2232bfde",
+        "filename": "extensions/amd-event-log/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-06-05T11:52:50Z",
+      "side": 1,
+      "message": "Thanks Matt, good point.\nThe intent is to have a set of well-known AEL fields (like VERSION, TYPE, AFID, etc.) that are defined ahead of time and used by consumers.\nAt the same time, we allow adding extra AEL fields for flexibility.\nI’ve updated the document to clearly list the core fields and mention that extensions are allowed. Let me know if you think it should be stricter.",
+      "parentUuid": "dbe69c96_73d4af72",
       "range": {
         "startLine": 111,
         "startChar": 4,
