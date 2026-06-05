@@ -221,6 +221,7 @@ struct RegistryCallout
     std::string symbolicFRUTrusted;
     bool useInventoryLocCode;
     std::optional<uint16_t> chassisNumber;
+    std::string chassisNumADKey;
 };
 
 /**
