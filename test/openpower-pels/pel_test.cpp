@@ -1350,15 +1350,15 @@ TEST_F(PELTest, TestDimmsCalloutInfo)
         ]
         )"_json;
 
-        EXPECT_CALL(dataIface, expandLocationCode("P0-DIMM0", 1))
+        EXPECT_CALL(dataIface, expandLocationCode("P0-DIMM0", 0))
             .WillOnce(Return("U98D-P0-DIMM0"));
-        EXPECT_CALL(dataIface, expandLocationCode("P0-DIMM1", 1))
+        EXPECT_CALL(dataIface, expandLocationCode("P0-DIMM1", 0))
             .WillOnce(Return("U98D-P0-DIMM1"));
 
-        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-DIMM0", 1, false))
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-DIMM0", 0, false))
             .WillOnce(Return(std::vector<std::string>{
                 "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm0"}));
-        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-DIMM1", 1, false))
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-DIMM1", 0, false))
             .WillOnce(Return(std::vector<std::string>{
                 "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm1"}));
 
@@ -1421,10 +1421,10 @@ TEST_F(PELTest, TestNoDimmsCallout)
         ]
         )"_json;
 
-    EXPECT_CALL(dataIface, expandLocationCode("P0-PROC0", 1))
+    EXPECT_CALL(dataIface, expandLocationCode("P0-PROC0", 0))
         .WillOnce(Return("U98D-P0-PROC0"));
 
-    EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-PROC0", 1, false))
+    EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-PROC0", 0, false))
         .WillOnce(Return(std::vector<std::string>{
             "/xyz/openbmc_project/inventory/system/chassis/motherboard/dcm0/cpu0"}));
 
@@ -1485,10 +1485,10 @@ TEST_F(PELTest, TestDimmsCalloutInfoDIFailure)
         ]
         )"_json;
 
-        EXPECT_CALL(dataIface, expandLocationCode("P0-DIMM0", 1))
+        EXPECT_CALL(dataIface, expandLocationCode("P0-DIMM0", 0))
             .WillOnce(Return("U98D-P0-DIMM0"));
 
-        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-DIMM0", 1, false))
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-DIMM0", 0, false))
             .WillOnce(Return(std::vector<std::string>{
                 "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm0"}));
 

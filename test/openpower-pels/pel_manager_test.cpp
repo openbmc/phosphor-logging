@@ -898,11 +898,11 @@ TEST_F(ManagerTest, TestServiceIndicators)
             .Times(1)
             .WillOnce(Return(names));
 
-        EXPECT_CALL(*mockIface, expandLocationCode("P42-C23", 1))
+        EXPECT_CALL(*mockIface, expandLocationCode("P42-C23", 0))
             .WillOnce(Return("U42-P42-C23"));
 
         // First call to this is when building the Callout section
-        EXPECT_CALL(*mockIface, getInventoryFromLocCode("P42-C23", 1, false))
+        EXPECT_CALL(*mockIface, getInventoryFromLocCode("P42-C23", 0, false))
             .WillOnce(
                 Return(std::vector<std::string>{"/system/chassis/processor"}));
 
@@ -1132,16 +1132,16 @@ TEST_F(ManagerTest, TestFruPlug)
         reinterpret_cast<MockDataInterface*>(dataIface.get());
 
     // Set up the mock calls used when building callouts
-    EXPECT_CALL(*mockIface, getInventoryFromLocCode("P0", 1, false))
+    EXPECT_CALL(*mockIface, getInventoryFromLocCode("P0", 0, false))
         .WillRepeatedly(Return(std::vector<std::string>{"motherboard"}));
-    EXPECT_CALL(*mockIface, expandLocationCode("P0", 1))
+    EXPECT_CALL(*mockIface, expandLocationCode("P0", 0))
         .WillRepeatedly(Return("U1234-P0"));
     EXPECT_CALL(*mockIface, getInventoryFromLocCode("U1234-P0", 0, true))
         .WillRepeatedly(Return(std::vector<std::string>{"motherboard"}));
 
-    EXPECT_CALL(*mockIface, getInventoryFromLocCode("A3", 1, false))
+    EXPECT_CALL(*mockIface, getInventoryFromLocCode("A3", 0, false))
         .WillRepeatedly(Return(std::vector<std::string>{"fan"}));
-    EXPECT_CALL(*mockIface, expandLocationCode("A3", 1))
+    EXPECT_CALL(*mockIface, expandLocationCode("A3", 0))
         .WillRepeatedly(Return("U1234-A3"));
     EXPECT_CALL(*mockIface, getInventoryFromLocCode("U1234-A3", 0, true))
         .WillRepeatedly(Return(std::vector<std::string>{"fan"}));

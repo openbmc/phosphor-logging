@@ -495,6 +495,11 @@ RegistryCallout makeRegistryCallout(const nlohmann::json& json)
         callout.chassisNumber = json["ChassisNumber"].get<uint16_t>();
     }
 
+    if (json.contains("ChassisNumADKey"))
+    {
+        callout.chassisNumADKey = json["ChassisNumADKey"].get<std::string>();
+    }
+
     return callout;
 }
 
