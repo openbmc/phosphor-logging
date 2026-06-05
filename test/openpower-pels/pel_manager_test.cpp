@@ -1136,7 +1136,7 @@ TEST_F(ManagerTest, TestFruPlug)
         .WillRepeatedly(Return(std::vector<std::string>{"motherboard"}));
     EXPECT_CALL(*mockIface, expandLocationCode("P0", 1))
         .WillRepeatedly(Return("U1234-P0"));
-    EXPECT_CALL(*mockIface, getInventoryFromLocCode("U1234-P0", 0, true))
+    EXPECT_CALL(*mockIface, getInventoryFromLocCode("U1234-P0", 1, true))
         .WillRepeatedly(Return(std::vector<std::string>{"motherboard"}));
 
     EXPECT_CALL(*mockIface, getInventoryFromLocCode("A3", 1, false))

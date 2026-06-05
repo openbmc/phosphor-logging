@@ -820,7 +820,8 @@ void SRC::addCallouts(const message::Entry& regEntry,
     addDevicePathCallouts(additionalData, dataIface);
 
     addRegistryCallouts(registryCallouts, dataIface,
-                        (useInvForSymbolicFRULocCode) ? item : std::nullopt);
+                        (useInvForSymbolicFRULocCode) ? item : std::nullopt,
+                        additionalData);
 
     if (!jsonCallouts.empty())
     {
@@ -948,13 +949,15 @@ std::vector<message::RegistryCallout> SRC::getRegistryCallouts(
 void SRC::addRegistryCallouts(
     const std::vector<message::RegistryCallout>& callouts,
     const DataInterfaceBase& dataIface,
-    std::optional<std::string> trustedSymbolicFRUInvPath)
+    std::optional<std::string> trustedSymbolicFRUInvPath,
+    const AdditionalData& additionalData)
 {
     try
     {
         for (const auto& callout : callouts)
         {
-            addRegistryCallout(callout, dataIface, trustedSymbolicFRUInvPath);
+            addRegistryCallout(callout, dataIface, trustedSymbolicFRUInvPath,
+                               additionalData);
 
             // Only the first callout gets the inventory path
             if (trustedSymbolicFRUInvPath)
@@ -974,7 +977,8 @@ void SRC::addRegistryCallouts(
 void SRC::addRegistryCallout(
     const message::RegistryCallout& regCallout,
     const DataInterfaceBase& dataIface,
-    const std::optional<std::string>& trustedSymbolicFRUInvPath)
+    const std::optional<std::string>& trustedSymbolicFRUInvPath,
+    const AdditionalData& additionalData)
 {
     std::unique_ptr<src::Callout> callout;
     auto locCode = regCallout.locCode;
@@ -991,9 +995,36 @@ void SRC::addRegistryCallout(
 
     if (!locCode.empty())
     {
+        // Determine chassis number from registry, additional data
         if (regCallout.chassisNumber.has_value())
         {
             chassisNumber = regCallout.chassisNumber.value();
+        }
+        else if (!regCallout.chassisNumADKey.empty())
+        {
+            auto adValue = additionalData.getValue(regCallout.chassisNumADKey);
+            if (!adValue)
+            {
+                addDebugData(std::format(
+                    "Missing AdditionalData key for chassis number: {}",
+                    regCallout.chassisNumADKey));
+                addLocationCodeOnlyCallout(locCode, priority);
+                return;
+            }
+            try
+            {
+                chassisNumber = static_cast<uint16_t>(
+                    std::stoul(adValue.value(), nullptr, 0));
+            }
+            catch (const std::exception& e)
+            {
+                addDebugData(std::format(
+                    "Invalid chassis number in AdditionalData key {} with value {} : {}",
+                    regCallout.chassisNumADKey, adValue.value(), e.what()));
+                // If unable to find a chassis position
+                // Setting locExpanded explicitly as failed
+                locExpanded = false;
+            }
         }
         else
         {
