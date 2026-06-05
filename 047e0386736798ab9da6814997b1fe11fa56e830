@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4315f6e8_bd9cf64c",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-06-05T05:57:14Z",
+      "side": 1,
+      "message": "In case of when chassis number is 0, the node number value that the API expects is 0. But when the chassis number is 1 to 12, the respective node number will be 0 to 11. It is the node number that is expected by the API here. \nShould I add a comment here ?",
+      "parentUuid": "08c80522_4a0ade3f",
+      "range": {
+        "startLine": 496,
+        "startChar": 30,
+        "endLine": 496,
+        "endChar": 71
+      },
+      "revId": "047e0386736798ab9da6814997b1fe11fa56e830",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "aea64c60_76a0709a",
         "filename": "extensions/openpower-pels/data_interface.cpp",
         "patchSetId": 6
@@ -37,6 +61,30 @@
       "writtenOn": "2026-06-05T02:54:21Z",
       "side": 1,
       "message": "Same as above.",
+      "range": {
+        "startLine": 535,
+        "startChar": 34,
+        "endLine": 535,
+        "endChar": 75
+      },
+      "revId": "047e0386736798ab9da6814997b1fe11fa56e830",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c7514f3_a4e3c021",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-06-05T05:57:14Z",
+      "side": 1,
+      "message": "Mentioned in the comment above.",
+      "parentUuid": "aea64c60_76a0709a",
       "range": {
         "startLine": 535,
         "startChar": 34,
