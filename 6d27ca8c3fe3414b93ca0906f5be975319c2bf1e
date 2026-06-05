@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "14047025_77590d1d",
+        "filename": "extensions/openpower-pels/registry.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-06-05T19:09:29Z",
+      "side": 1,
+      "message": "I have made the schema changes. \nThe \"ChassisNumber\" is excluded in the callout types which do not require \"LocCode\".\nThe test case is added `RegistryCalloutsWithChassisNumberTest`. Is there any cases I have to test additionally?",
+      "parentUuid": "c343da1b_06db8046",
+      "revId": "6d27ca8c3fe3414b93ca0906f5be975319c2bf1e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e38ef1bc_7a910e53",
@@ -49,6 +67,24 @@
       "writtenOn": "2026-06-04T02:39:44Z",
       "side": 1,
       "message": "Why is it moved?",
+      "revId": "6d27ca8c3fe3414b93ca0906f5be975319c2bf1e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52a3de33_d1f99015",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 981,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-06-05T19:09:29Z",
+      "side": 1,
+      "message": "In the scenario where we are not able to find the BMC position, we can have a `LocationCodeOnlyCallout`. For that we pass the priority as well.\nEven though it expects the expanded location code, with no chassis number, the limited data we can have will be this.",
+      "parentUuid": "e38ef1bc_7a910e53",
       "revId": "6d27ca8c3fe3414b93ca0906f5be975319c2bf1e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -84,6 +120,24 @@
       "side": 1,
       "message": "+1. I also shared some suggestions in a previous review. It would be better to implement this as a utility API and reuse it wherever needed.",
       "parentUuid": "b9c4febd_c572c9b1",
+      "revId": "6d27ca8c3fe3414b93ca0906f5be975319c2bf1e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "437db412_344c3b92",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 998,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-06-05T19:09:29Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7b9704d1_8e07c04d",
       "revId": "6d27ca8c3fe3414b93ca0906f5be975319c2bf1e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -136,6 +190,30 @@
       "writtenOn": "2026-06-02T20:38:15Z",
       "side": 1,
       "message": "Any reason you changed these?",
+      "range": {
+        "startLine": 1351,
+        "startChar": 61,
+        "endLine": 1351,
+        "endChar": 63
+      },
+      "revId": "6d27ca8c3fe3414b93ca0906f5be975319c2bf1e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47faa026_e9e62992",
+        "filename": "test/openpower-pels/pel_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1351,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-06-05T19:09:29Z",
+      "side": 1,
+      "message": "The BMC position is set to be 1 by one of the test cases. \nI have reset BMC position to be 0, in that scenario the API call will be for chasis number 1.",
+      "parentUuid": "66f6d392_e6a6a40a",
       "range": {
         "startLine": 1351,
         "startChar": 61,
