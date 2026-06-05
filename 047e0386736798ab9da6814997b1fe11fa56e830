@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08c80522_4a0ade3f",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-05T02:54:21Z",
+      "side": 1,
+      "message": "Sorry, I could not get it? Why are you doing this?",
+      "range": {
+        "startLine": 496,
+        "startChar": 30,
+        "endLine": 496,
+        "endChar": 71
+      },
+      "revId": "047e0386736798ab9da6814997b1fe11fa56e830",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aea64c60_76a0709a",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-05T02:54:21Z",
+      "side": 1,
+      "message": "Same as above.",
+      "range": {
+        "startLine": 535,
+        "startChar": 34,
+        "endLine": 535,
+        "endChar": 75
+      },
+      "revId": "047e0386736798ab9da6814997b1fe11fa56e830",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ecdfb0e_a585866d",
+        "filename": "extensions/openpower-pels/log_id.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-05T02:54:21Z",
+      "side": 1,
+      "message": "Its not correct as mentioned early, please fix it.",
+      "range": {
+        "startLine": 65,
+        "startChar": 5,
+        "endLine": 70,
+        "endChar": 54
+      },
+      "revId": "047e0386736798ab9da6814997b1fe11fa56e830",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd888b38_fb891811",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1288,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-05T02:54:21Z",
+      "side": 1,
+      "message": "Why are you adding for redundant BMC alone?\n\nDid you see my suggestion to get the BMC chassis position?",
+      "range": {
+        "startLine": 1288,
+        "startChar": 37,
+        "endLine": 1288,
+        "endChar": 53
+      },
+      "revId": "047e0386736798ab9da6814997b1fe11fa56e830",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1adf6bba_e545abfa",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1290,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-06-05T02:54:21Z",
+      "side": 1,
+      "message": "position?",
+      "range": {
+        "startLine": 1290,
+        "startChar": 69,
+        "endLine": 1290,
+        "endChar": 74
+      },
+      "revId": "047e0386736798ab9da6814997b1fe11fa56e830",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
