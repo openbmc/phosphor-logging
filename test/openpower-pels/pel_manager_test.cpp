@@ -907,7 +907,7 @@ TEST_F(ManagerTest, TestServiceIndicators)
                 Return(std::vector<std::string>{"/system/chassis/processor"}));
 
         // Second call to this is finding the associated LED group
-        EXPECT_CALL(*mockIface, getInventoryFromLocCode("U42-P42-C23", 0, true))
+        EXPECT_CALL(*mockIface, getInventoryFromLocCode("U42-P42-C23", 1, true))
             .WillOnce(
                 Return(std::vector<std::string>{"/system/chassis/processor"}));
 
@@ -1136,14 +1136,14 @@ TEST_F(ManagerTest, TestFruPlug)
         .WillRepeatedly(Return(std::vector<std::string>{"motherboard"}));
     EXPECT_CALL(*mockIface, expandLocationCode("P0", 1))
         .WillRepeatedly(Return("U1234-P0"));
-    EXPECT_CALL(*mockIface, getInventoryFromLocCode("U1234-P0", 0, true))
+    EXPECT_CALL(*mockIface, getInventoryFromLocCode("U1234-P0", 1, true))
         .WillRepeatedly(Return(std::vector<std::string>{"motherboard"}));
 
     EXPECT_CALL(*mockIface, getInventoryFromLocCode("A3", 1, false))
         .WillRepeatedly(Return(std::vector<std::string>{"fan"}));
     EXPECT_CALL(*mockIface, expandLocationCode("A3", 1))
         .WillRepeatedly(Return("U1234-A3"));
-    EXPECT_CALL(*mockIface, getInventoryFromLocCode("U1234-A3", 0, true))
+    EXPECT_CALL(*mockIface, getInventoryFromLocCode("U1234-A3", 1, true))
         .WillRepeatedly(Return(std::vector<std::string>{"fan"}));
 
     std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();

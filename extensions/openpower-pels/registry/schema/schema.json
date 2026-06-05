@@ -551,6 +551,11 @@
             "maximum": 12
         },
 
+        "chassisNumADKey": {
+            "description": "The AdditionalData key name that contains the chassis number to use for this callout. Used when the chassis number cannot be determined until runtime.",
+            "type": "string"
+        },
+
         "calloutList": {
             "description": "The list of FRU callouts to add to a PEL.  If just LocCode is specified, it is a normal hardware FRU callout. If Procedure is specified, it is a procedure callout.  If SymbolicFRU or SymbolicFRUTrusted are specified, it is a Symbolic FRU callout.  SymbolicFRUTrusted also requires LocCode.",
             "type": "array",
@@ -567,7 +572,10 @@
                     "UseInventoryLocCode": {
                         "$ref": "#/definitions/useInventoryLocCode"
                     },
-                    "ChassisNumber": { "$ref": "#/definitions/chassisNumber" }
+                    "ChassisNumber": { "$ref": "#/definitions/chassisNumber" },
+                    "ChassisNumADKey": {
+                        "$ref": "#/definitions/chassisNumADKey"
+                    }
                 },
                 "additionalProperties": false,
                 "required": ["Priority"],
