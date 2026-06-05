@@ -2006,3 +2006,78 @@ TEST_F(SRCTest, RegistryCalloutsWithChassisNumberTest)
     EXPECT_EQ(fru2->getCCIN().value(), "EEEE");
     EXPECT_EQ(fru2->getSN().value(), "FEDCBA098765");
 }
+
+TEST_F(SRCTest, DynamicChassisNumberCalloutsFromAdditionalDataTest)
+{
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xACED;
+    entry.subsystem = 0x42;
+
+    entry.callouts = R"(
+        [
+            {
+                "CalloutList": [
+                    {
+                        "Priority": "high",
+                        "LocCode": "P0-C14",
+                        "ChassisNumADKey": "A_CHASSIS_NUMBER"
+                    },
+                    {
+                        "Priority": "medium",
+                        "LocCode": "P1",
+                        "ChassisNumADKey": "B_CHASSIS_NUMBER"
+                    }
+                ]
+            }
+        ]
+        )"_json;
+
+    std::map<std::string, std::string> additionalDataMap{
+        {"A_CHASSIS_NUMBER", "2"}, {"B_CHASSIS_NUMBER", "3"}};
+    AdditionalData ad{additionalDataMap};
+    NiceMock<MockDataInterface> dataIface;
+    std::vector<std::string> names{"systemA"};
+
+    EXPECT_CALL(dataIface, getSystemNames).WillOnce(Return(names));
+
+    EXPECT_CALL(dataIface, expandLocationCode("P0-C14", 2))
+        .WillOnce(Return("UXXX-N01-P0-C14"));
+    EXPECT_CALL(dataIface, expandLocationCode("P1", 3))
+        .WillOnce(Return("UXXX-N02-P1"));
+
+    EXPECT_CALL(dataIface, getInventoryFromLocCode("P0-C14", 2, false))
+        .WillOnce(Return(
+            std::vector<std::string>{"/inv/system/chassis2/component14"}));
+    EXPECT_CALL(dataIface, getInventoryFromLocCode("P1", 3, false))
+        .WillOnce(Return(std::vector<std::string>{"/inv/system/chassis3/p1"}));
+
+    EXPECT_CALL(dataIface,
+                getHWCalloutFields("/inv/system/chassis2/component14", _, _, _))
+        .WillOnce(DoAll(SetArgReferee<1>("1234567"), SetArgReferee<2>("CCCC"),
+                        SetArgReferee<3>("123456789ABC")));
+    EXPECT_CALL(dataIface,
+                getHWCalloutFields("/inv/system/chassis3/p1", _, _, _))
+        .WillOnce(DoAll(SetArgReferee<1>("7654321"), SetArgReferee<2>("DDDD"),
+                        SetArgReferee<3>("ABCDEF123456")));
+
+    SRC src{entry, ad, dataIface};
+    ASSERT_TRUE(src.callouts());
+
+    const auto& callouts = src.callouts()->callouts();
+    ASSERT_EQ(callouts.size(), 2);
+
+    EXPECT_EQ(callouts[0]->priority(), 'H');
+    EXPECT_EQ(callouts[0]->locationCode(), "UXXX-N01-P0-C14");
+    auto& fru0 = callouts[0]->fruIdentity();
+    EXPECT_EQ(fru0->getPN().value(), "1234567");
+    EXPECT_EQ(fru0->getCCIN().value(), "CCCC");
+    EXPECT_EQ(fru0->getSN().value(), "123456789ABC");
+
+    EXPECT_EQ(callouts[1]->priority(), 'M');
+    EXPECT_EQ(callouts[1]->locationCode(), "UXXX-N02-P1");
+    auto& fru1 = callouts[1]->fruIdentity();
+    EXPECT_EQ(fru1->getPN().value(), "7654321");
+    EXPECT_EQ(fru1->getCCIN().value(), "DDDD");
+    EXPECT_EQ(fru1->getSN().value(), "ABCDEF123456");
+}
