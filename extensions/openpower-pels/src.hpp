@@ -498,11 +498,14 @@ class SRC : public Section
      * @param[in] dataIface - The DataInterface object
      * @param[in] trustedSymbolicFRUInvPath - The optional inventory path used
      *                                        in the symbolic FRU case.
+     * @param[in] additionalData - The AdditionalData property for dynamic
+     *                            chassis number lookup
      */
     void addRegistryCallouts(
         const std::vector<message::RegistryCallout>& callouts,
         const DataInterfaceBase& dataIface,
-        std::optional<std::string> trustedSymbolicFRUInvPath);
+        std::optional<std::string> trustedSymbolicFRUInvPath,
+        const AdditionalData& additionalData);
 
     /**
      * @brief Adds a single FRU callout from the message registry.
@@ -516,11 +519,14 @@ class SRC : public Section
      * @param[in] dataIface - The DataInterface object
      * @param[in] trustedSymbolicFRUInvPath - The optional inventory path used
      *                                        in the symbolic FRU case.
+     * @param[in] additionalData - The AdditionalData property for dynamic
+     *                            chassis number lookup
      */
     void addRegistryCallout(
         const message::RegistryCallout& callout,
         const DataInterfaceBase& dataIface,
-        const std::optional<std::string>& trustedSymbolicFRUInvPath);
+        const std::optional<std::string>& trustedSymbolicFRUInvPath,
+        const AdditionalData& additionalData);
 
     /**
      * @brief Creates the Callouts object _callouts
