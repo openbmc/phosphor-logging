@@ -4,6 +4,7 @@
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <phosphor-logging/elog.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <fstream>
 #if __has_include("../../usr/include/phosphor-logging/elog-errors.hpp")
@@ -114,7 +115,7 @@ std::optional<
     }
     catch (const std::exception& ex)
     {
-        log<level::ERR>("Invalid config", entry("ERR=%s", ex.what()));
+        lg2::error("Invalid config: {ERR}", "ERR", ex.what());
         return {};
     }
 }
@@ -153,7 +154,7 @@ std::string Server::address(std::string value)
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>(e.what());
+        lg2::error("Exception: {ERR}", "ERR", e.what());
         elog<InternalFailure>();
     }
 
@@ -182,7 +183,7 @@ uint16_t Server::port(uint16_t value)
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>(e.what());
+        lg2::error("Exception: {ERR}", "ERR", e.what());
         elog<InternalFailure>();
     }
 
@@ -211,7 +212,7 @@ NetworkClient::TransportProtocol Server::transportProtocol(
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>(e.what());
+        lg2::error("Exception: {ERR}", "ERR", e.what());
         elog<InternalFailure>();
     }
 
@@ -264,8 +265,8 @@ bool Server::addressValid(const std::string& address)
     auto result = getaddrinfo(address.c_str(), nullptr, &hints, &res);
     if (result)
     {
-        log<level::ERR>("bad address", entry("ADDRESS=%s", address.c_str()),
-                        entry("ERRNO=%d", result));
+        lg2::error("bad address: {ADDR}, errno={ERR}", "ADDR", address, "ERR",
+                   result);
         return false;
     }
 
