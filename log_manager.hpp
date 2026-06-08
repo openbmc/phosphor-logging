@@ -234,7 +234,7 @@ class Manager : public details::ServerObject<details::ManagerIface>
      * @brief Sets up an inotify watch on the error entry directory.
      *
      * Watches for interested events which indicate that a new error entry
-     * file has has been synced in a redundant BMC system.
+     * file has been synced in a redundant BMC system.
      */
     void setupErrorFileWatch();
 
