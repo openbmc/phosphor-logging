@@ -536,6 +536,30 @@
       },
       "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d759ea32_22920726",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1299,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-06-08T16:52:32Z",
+      "side": 1,
+      "message": "In this commit, the support will be for only passing the chassis number. \nBMC chassis position will be considered later.",
+      "parentUuid": "f474a35c_e2691ea6",
+      "range": {
+        "startLine": 1299,
+        "startChar": 12,
+        "endLine": 1299,
+        "endChar": 70
+      },
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

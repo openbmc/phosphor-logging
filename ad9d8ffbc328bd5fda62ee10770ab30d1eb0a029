@@ -313,6 +313,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c379f133_f171938c",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1276,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-06-08T16:52:32Z",
+      "side": 1,
+      "message": "running BMC chassis position will be considered seperately.",
+      "parentUuid": "773aebc9_65f9292c",
+      "range": {
+        "startLine": 1276,
+        "startChar": 4,
+        "endLine": 1276,
+        "endChar": 71
+      },
+      "revId": "ad9d8ffbc328bd5fda62ee10770ab30d1eb0a029",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "913f5fe1_6c137f73",
