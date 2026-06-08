@@ -16,6 +16,52 @@
       "message": "LGTM, No Functional Change",
       "revId": "0f4526d9321b8079d7f07c518ca0d4046d2c6f12",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1987b854_1c9d3973",
+        "filename": "phosphor-rsyslog-config/server-conf.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-08T18:34:16Z",
+      "side": 1,
+      "message": "lg2 understands exceptions, so you can drop the .what()",
+      "range": {
+        "startLine": 118,
+        "startChar": 50,
+        "endLine": 118,
+        "endChar": 60
+      },
+      "revId": "0f4526d9321b8079d7f07c518ca0d4046d2c6f12",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46105e69_a2bf8bee",
+        "filename": "phosphor-rsyslog-config/server-conf.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-08T18:34:16Z",
+      "side": 1,
+      "message": "how about ERRNO",
+      "range": {
+        "startLine": 268,
+        "startChar": 48,
+        "endLine": 268,
+        "endChar": 51
+      },
+      "revId": "0f4526d9321b8079d7f07c518ca0d4046d2c6f12",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
