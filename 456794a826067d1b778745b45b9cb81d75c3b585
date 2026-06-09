@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "907c0d60_e83de0e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002531
+      },
+      "writtenOn": "2026-06-09T17:35:32Z",
+      "side": 1,
+      "message": "Can this be expedited pls? This will greatly help in logging additional data like original event timestamps (at which the event is recorded by Satellite Management Controllers) in addition to the BMC timestamp (at which the event is recorded in BMC). thanks",
+      "revId": "456794a826067d1b778745b45b9cb81d75c3b585",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
