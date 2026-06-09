@@ -25,7 +25,7 @@ using FFDCArg = FFDCEntries;
  *  @brief The function type that will be called after an event log
  *         is created.
  * @param[in] const std::string& - The Message property
- * @param[in] uin32_t - The event log ID
+ * @param[in] uint32_t - The event log ID
  * @param[in] uint64_t - The event log timestamp
  * @param[in] Level - The event level
  * @param[in] const AdditionalDataArg&) - the additional data
@@ -43,11 +43,10 @@ using CreateFunction = std::function<void(
 using DeleteFunction = std::function<void(uint32_t)>;
 
 /**
- * @brief The function type that will to check if an event log is prohibited
- *        from being deleted.
- *        The same function is used to check if an event log is prohibited from
- *        setting Resolved flag, as Resolve is prohibited as long as Delete is
- *        prohibited.
+ * @brief The function type that will be used to check if an event log is 
+ * prohibited from being deleted.The same function is used to check if an event 
+ * log is prohibited from setting Resolved flag, as Resolve is prohibited as 
+ * long as Delete is prohibited.
  *
  * @param[in] uint32_t - The event log ID
  * @param[out] bool - set to true if the delete is prohibited
