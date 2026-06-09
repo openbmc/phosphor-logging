@@ -40,7 +40,7 @@ fs::path serializeJSON(const Entry& e,
  */
 bool deserializeJSON(const fs::path& path, Entry& e);
 
-/** @brief Deserialze a persisted error into a d-bus object
+/** @brief Deserialize a persisted error into a d-bus object
  *  @param[in] path - pathname of persisted error file
  *  @param[in] e - reference to error object which is the target of
  *             deserialization.
