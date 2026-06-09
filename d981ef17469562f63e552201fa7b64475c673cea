@@ -16,6 +16,24 @@
       "message": "The build errors are not related to my changes",
       "revId": "d981ef17469562f63e552201fa7b64475c673cea",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a1233c6_805c9358",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001886
+      },
+      "writtenOn": "2026-06-09T06:02:49Z",
+      "side": 1,
+      "message": "@meghanav@ami.com You need to format the changes.\n\n```\ndiff --git a/extensions.hpp b/extensions.hpp\nindex 354549f..900010c 100644\n--- a/extensions.hpp\n+++ b/extensions.hpp\n@@ -43,11 +43,10 @@ using CreateFunction \u003d std::function\u003cvoid(\n using DeleteFunction \u003d std::function\u003cvoid(uint32_t)\u003e;\n \n /**\n- * @brief The function type that will be used to check if an event log is prohibited\n- *        from being deleted.\n- *        The same function is used to check if an event log is prohibited from\n- *        setting Resolved flag, as Resolve is prohibited as long as Delete is\n- *        prohibited.\n+ * @brief The function type that will be used to check if an event log is\n+ * prohibited from being deleted. The same function is used to check if an event\n+ * log is prohibited from setting Resolved flag, as Resolve is prohibited as\n+ * long as Delete is prohibited.\n  *\n  * @param[in] uint32_t - The event log ID\n  * @param[out] bool - set to true if the delete is prohibited\n```",
+      "parentUuid": "ce23efca_135bc012",
+      "revId": "d981ef17469562f63e552201fa7b64475c673cea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
