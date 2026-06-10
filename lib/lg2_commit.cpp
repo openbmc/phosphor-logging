@@ -115,7 +115,7 @@ auto extractEvent(sdbusplus::exception::generated_event_base&& t)
 } // namespace details
 
 auto commit(sdbusplus::exception::generated_event_base&& t,
-            std::optional<int> overrideLevel, AdditionalData_t additionalData)
+            std::optional<int> overrideLevel, AdditionalData additionalData)
     -> sdbusplus::object_path
 {
     int severity = overrideLevel.value_or(t.severity());
@@ -146,7 +146,7 @@ auto commit(sdbusplus::exception::generated_event_base&& t,
                               Create::interface, "Create");
 
         auto data = details::data_from_json(t);
-        data.merge(std::move(additionalData));
+        data.merge(std::move(additionalData).map());
 
         m.append(t.name(), details::severity_from_syslog(severity), data);
 
@@ -174,7 +174,7 @@ void resolve(const sdbusplus::object_path& logPath)
 
 auto commit(sdbusplus::async::context& ctx,
             sdbusplus::exception::generated_event_base&& t,
-            std::optional<int> overrideLevel, AdditionalData_t additionalData)
+            std::optional<int> overrideLevel, AdditionalData additionalData)
     -> sdbusplus::async::task<sdbusplus::object_path>
 {
     using details::Create;
@@ -188,7 +188,7 @@ auto commit(sdbusplus::async::context& ctx,
     if constexpr (LG2_COMMIT_DBUS)
     {
         auto data = details::data_from_json(t);
-        data.merge(std::move(additionalData));
+        data.merge(std::move(additionalData).map());
 
         co_return co_await Create(ctx)
             .service(Create::default_service)
