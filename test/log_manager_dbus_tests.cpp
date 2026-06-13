@@ -102,8 +102,8 @@ class TestLogManagerDbus : public ::testing::Test
             sd_journal* j = nullptr;
 
             sd_journal_open(&j, SD_JOURNAL_LOCAL_ONLY);
-            sd_journal_add_match(j, "SYSLOG_IDENTIFIER=test_manager_dbus_tests",
-                                 SIZE_MAX);
+            sd_journal_add_match(
+                j, "SYSLOG_IDENTIFIER=test-log_manager_dbus_tests", SIZE_MAX);
 
             SD_JOURNAL_FOREACH_BACKWARDS(j)
             {
