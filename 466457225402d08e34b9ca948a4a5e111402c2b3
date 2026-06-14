@@ -162,6 +162,24 @@
       "message": "Many years ago when I put in the one below, I had to go into openbmc-build-scripts/setup.py and then enable it there to get test coverage.\n\nNow I\u0027m not sure if that was the best route, or if it was to have it default to enabled,but then disable it if part of a subproject and also then just have a packageconfig for it to enable it it bitbake.",
       "revId": "466457225402d08e34b9ca948a4a5e111402c2b3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d20e3c7_2169a581",
+        "filename": "meson.options",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-06-14T07:08:57Z",
+      "side": 1,
+      "message": "This got oem dbus interface dependency . need to look how we can handle that here . will look",
+      "parentUuid": "4c9f03b2_4f2e8db4",
+      "revId": "466457225402d08e34b9ca948a4a5e111402c2b3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
