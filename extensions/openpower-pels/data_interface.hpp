@@ -207,7 +207,7 @@ class DataInterfaceBase
      *
      * @return std::string - days/hours/minutes/seconds
      */
-    std::string getBMCUptime(uint64_t seconds) const
+    static std::string getBMCUptime(uint64_t seconds)
     {
         time_t t(seconds);
         tm* p = gmtime(&t);
