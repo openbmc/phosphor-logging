@@ -1,7 +1,6 @@
 #pragma once
 
-#include "config.h"
-
+#include <phosphor-logging/constants.hpp>
 #include "xyz/openbmc_project/Logging/ErrorBlocksTransition/server.hpp"
 
 #include <sdbusplus/bus.hpp>

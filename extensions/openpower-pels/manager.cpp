@@ -6,6 +6,7 @@
 #include "manager.hpp"
 
 #include "additional_data.hpp"
+#include <phosphor-logging/constants.hpp>
 #include "elog_serialize.hpp"
 #include "json_utils.hpp"
 #include "log_id.hpp"

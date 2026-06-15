@@ -2,6 +2,7 @@
 
 #include "config_main.h"
 
+#include <phosphor-logging/constants.hpp>
 #include "server-conf.hpp"
 
 #include <sdbusplus/bus.hpp>
