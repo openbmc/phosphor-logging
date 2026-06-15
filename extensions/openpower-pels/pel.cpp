@@ -19,6 +19,8 @@
 #include "stream.hpp"
 #include "user_data_formats.hpp"
 
+#include <phosphor-logging/constants.hpp>
+
 #ifdef PEL_ENABLE_PHAL
 #include "phal_service_actions.hpp"
 #include "sbe_ffdc_handler.hpp"

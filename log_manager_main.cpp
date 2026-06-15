@@ -6,6 +6,7 @@
 #include "log_manager.hpp"
 #include "paths.hpp"
 
+#include <phosphor-logging/constants.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/manager.hpp>

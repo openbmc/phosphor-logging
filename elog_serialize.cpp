@@ -10,6 +10,7 @@
 #include <cereal/types/tuple.hpp>
 #include <cereal/types/vector.hpp>
 #include <nlohmann/json.hpp>
+#include <phosphor-logging/constants.hpp>
 #include <phosphor-logging/lg2.hpp>
 
 #include <fstream>
