@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00a494c4_318846f8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-15T13:50:45Z",
+      "side": 1,
+      "message": "Maybe you could fix this todo at the same time:\n\n//               Once autoconf is removed, they should be switched over to\n//               a constant in a header file.",
+      "revId": "660866880ce7b4b172402707058a1255d154271b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
