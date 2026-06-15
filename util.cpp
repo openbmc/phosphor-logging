@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // SPDX-FileCopyrightText: Copyright 2020 IBM Corporation
 
-#include "config.h"
-
 #include "util.hpp"
 
 #include <poll.h>
@@ -11,6 +9,7 @@
 #include <systemd/sd-journal.h>
 #include <unistd.h>
 
+#include <phosphor-logging/constants.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 

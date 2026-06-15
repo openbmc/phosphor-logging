@@ -1,7 +1,5 @@
 #pragma once
 
-#include "config.h"
-
 #include "data_interface.hpp"
 #include "event_logger.hpp"
 #include "host_notifier.hpp"
@@ -14,6 +12,7 @@
 
 #include <org/open_power/Logging/PEL/Entry/server.hpp>
 #include <org/open_power/Logging/PEL/server.hpp>
+#include <phosphor-logging/constants.hpp>
 #include <sdbusplus/server.hpp>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>

@@ -19,6 +19,7 @@
 #include <sys/inotify.h>
 #include <unistd.h>
 
+#include <phosphor-logging/constants.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
 #include <xyz/openbmc_project/Logging/Create/server.hpp>
