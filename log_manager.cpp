@@ -2,6 +2,7 @@
 
 #include "log_manager.hpp"
 
+#include "constants.hpp"
 #include "elog_entry.hpp"
 #include "elog_meta.hpp"
 #include "elog_serialize.hpp"
