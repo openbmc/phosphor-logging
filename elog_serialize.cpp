@@ -12,6 +12,7 @@
 #include <cereal/types/vector.hpp>
 #include <nlohmann/json.hpp>
 #include <phosphor-logging/lg2.hpp>
+#include <sdbusplus/message/types.hpp>
 
 #include <fstream>
 
@@ -206,6 +207,51 @@ fs::path serializeJSON(const Entry& e, const fs::path& dir)
         j["Oem"] = std::move(oemJson);
     }
 
+    // Serialize CPER diagnostic interface (optional)
+    if (auto* cper = e.getCperIface())
+    {
+        nlohmann::json diagJson;
+
+        // Type (enum → string)
+        diagJson["Type"] =
+            ::sdbusplus::message::convert_to_string(cper->type());
+
+        // DiagnosticInfo (JSON string → JSON object)
+        nlohmann::json diagInfoJson;
+
+        try
+        {
+            const auto& diagStr = cper->diagnosticInfo();
+
+            if (!diagStr.empty())
+            {
+                diagInfoJson = nlohmann::json::parse(diagStr);
+            }
+            else
+            {
+                diagInfoJson = nlohmann::json::object();
+            }
+        }
+        catch (const nlohmann::json::parse_error& e)
+        {
+            // Fallback: preserve as raw string
+            diagInfoJson["Raw"] = cper->diagnosticInfo();
+        }
+
+        diagJson["DiagnosticInfo"] = std::move(diagInfoJson);
+
+        // AdditionalDataObject (optional)
+        std::string objPath =
+            static_cast<std::string>(cper->additionalDataObject());
+
+        if (!objPath.empty())
+        {
+            diagJson["AdditionalDataObject"] = objPath;
+        }
+
+        j["Diagnostic"] = std::move(diagJson);
+    }
+
     std::ofstream os(path.c_str());
     os << j.dump(4);
     return path;
@@ -293,6 +339,54 @@ bool deserializeJSON(const fs::path& path, Entry& e)
             }
 
             e.oem(std::move(oem), true);
+        }
+
+        if (j.contains("Diagnostic"))
+        {
+            const auto& diagJson = j["Diagnostic"];
+
+            // Extract Type
+            std::string type = "CPER";
+            if (diagJson.contains("Type") && diagJson["Type"].is_string())
+            {
+                type = diagJson["Type"].get<std::string>();
+            }
+
+            // Extract DiagnosticInfo (convert JSON → string)
+            std::string diagInfo;
+
+            if (diagJson.contains("DiagnosticInfo"))
+            {
+                const auto& info = diagJson["DiagnosticInfo"];
+
+                if (info.is_object() || info.is_array())
+                {
+                    // Serialize JSON back to string
+                    diagInfo = info.dump();
+                }
+                else if (info.is_string())
+                {
+                    // Already string (fallback case)
+                    diagInfo = info.get<std::string>();
+                }
+            }
+
+            // Fallback if missing
+            if (diagInfo.empty())
+            {
+                diagInfo = R"({"Message":"CPER event detected"})";
+            }
+
+            // Extract AdditionalDataObject
+            std::string objPath;
+            if (diagJson.contains("AdditionalDataObject") &&
+                diagJson["AdditionalDataObject"].is_string())
+            {
+                objPath = diagJson["AdditionalDataObject"].get<std::string>();
+            }
+
+            // Pass full JSON string (NOT summary)
+            e.createCperInterface(type, diagInfo, objPath);
         }
 
         return true;
