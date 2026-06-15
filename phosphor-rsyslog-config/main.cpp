@@ -4,6 +4,7 @@
 
 #include "server-conf.hpp"
 
+#include <phosphor-logging/constants.hpp>
 #include <sdbusplus/bus.hpp>
 
 int main(int /*argc*/, char* /*argv*/[])
