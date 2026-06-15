@@ -2,7 +2,7 @@
 // SPDX-FileCopyrightText: Copyright 2019 IBM Corporation
 
 #include "config.h"
-
+#include "constants.hpp"
 #include "pel.hpp"
 
 #include "bcd_time.hpp"

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // SPDX-FileCopyrightText: Copyright 2020 IBM Corporation
 
-#include "config.h"
+#include "constants.hpp"
 
 #include "util.hpp"
 

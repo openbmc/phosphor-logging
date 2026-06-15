@@ -1,5 +1,5 @@
 #include "config.h"
-
+#include "constants.hpp"
 #include "log_manager.hpp"
 
 #include "elog_entry.hpp"

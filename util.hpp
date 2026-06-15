@@ -5,7 +5,7 @@
 #include <optional>
 #include <string>
 #include <vector>
-
+#include "constants.hpp"
 namespace phosphor::logging::util
 {
 
