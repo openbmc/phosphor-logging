@@ -23,7 +23,7 @@ if cxx.has_header('poll.h')
 endif
 
 conf_h_dep = declare_dependency(
-    include_directories: include_directories('.'),
+    include_directories: include_directories('.','..'),
     sources: configure_file(
         input: 'config.h.meson',
         output: 'config.h',

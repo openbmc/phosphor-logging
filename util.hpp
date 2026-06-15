@@ -1,5 +1,7 @@
 #pragma once
 
+#include "constants.hpp"
+
 #include <cstdint>
 #include <map>
 #include <optional>
