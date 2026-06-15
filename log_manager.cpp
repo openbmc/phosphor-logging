@@ -2,6 +2,7 @@
 
 #include "log_manager.hpp"
 
+#include "cper_diagnostics.hpp"
 #include "elog_entry.hpp"
 #include "elog_meta.hpp"
 #include "elog_serialize.hpp"
@@ -31,6 +32,7 @@
 #include <vector>
 
 using namespace std::chrono;
+using namespace phosphor::logging::diagnostics;
 extern const std::map<
     phosphor::logging::metadata::Metadata,
     std::function<phosphor::logging::metadata::associations::Type>>
@@ -280,6 +282,9 @@ auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
     auto additionalDataVec = util::additional_data::combine(additionalData);
     processMetadata(errMsg, additionalDataVec, objects);
 
+    // Extract CPER metadata and sanitize AdditionalData
+    auto cperData = collectCperData(errMsg, entryId, additionalData);
+
     auto oemData =
         collectOemData(errMsg, entryId, errLvl, additionalDataVec, objects);
 
@@ -289,6 +294,9 @@ auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
         errLvl, std::move(errMsg), std::move(additionalData),
         std::move(objects), fwVersion, getEntrySerializePath(entryId),
         std::move(oemData), *this);
+
+    // Attach CPER diagnostic interface (if applicable)
+    attachCperInterface(*e, cperData);
 
     serialize(*e);
     serializeJSON(*e);
