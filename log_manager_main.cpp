@@ -2,6 +2,7 @@
 
 #include "config_main.h"
 
+#include "constants.hpp"
 #include "extensions.hpp"
 #include "log_manager.hpp"
 #include "paths.hpp"
