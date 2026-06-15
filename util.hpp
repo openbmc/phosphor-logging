@@ -1,5 +1,7 @@
 #pragma once
 
+#include <phosphor-logging/constants.hpp>
+
 #include <cstdint>
 #include <map>
 #include <optional>

@@ -14,6 +14,7 @@
 #include <systemd/sd-journal.h>
 #include <unistd.h>
 
+#include <phosphor-logging/constants.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/vtable.hpp>
 #include <xyz/openbmc_project/State/Host/server.hpp>

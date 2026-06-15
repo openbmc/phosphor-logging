@@ -1,7 +1,6 @@
 #pragma once
 
-#include "config.h"
-
+#include <phosphor-logging/constants.hpp>
 #include <sdbusplus/bus.hpp>
 
 namespace phosphor
