@@ -1,6 +1,6 @@
 #pragma once
 
-#include "config.h"
+#include "constants.hpp"
 
 #include <sdbusplus/bus.hpp>
 

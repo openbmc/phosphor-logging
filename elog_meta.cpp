@@ -1,7 +1,6 @@
-#include "config.h"
-
 #include "elog_meta.hpp"
 
+#include "constants.hpp"
 #include "util.hpp"
 
 namespace phosphor
