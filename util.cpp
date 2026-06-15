@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 // SPDX-FileCopyrightText: Copyright 2020 IBM Corporation
 
-#include "config.h"
-
 #include "util.hpp"
+
+#include "constants.hpp"
 
 #include <poll.h>
 #include <sys/inotify.h>

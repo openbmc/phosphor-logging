@@ -2,6 +2,8 @@
 
 #include "phosphor-rsyslog-config/server-conf.hpp"
 
+#include "constants.hpp"
+
 #include <sdbusplus/bus.hpp>
 
 #include <filesystem>
