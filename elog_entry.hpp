@@ -12,6 +12,7 @@
 #include <sdeventplus/source/event.hpp>
 #include <xyz/openbmc_project/Association/Definitions/server.hpp>
 #include <xyz/openbmc_project/Common/FilePath/server.hpp>
+#include <xyz/openbmc_project/Logging/Diagnostic/CPER/server.hpp>
 
 namespace phosphor
 {
@@ -28,6 +29,8 @@ using EntryIfaces = sdbusplus::server::object_t<
 using AssociationList =
     std::vector<std::tuple<std::string, std::string, std::string>>;
 using OemType = std::map<std::string, std::map<std::string, std::string>>;
+using CperIface =
+    sdbusplus::xyz::openbmc_project::Logging::Diagnostic::server::CPER;
 
 namespace internal
 {
@@ -72,7 +75,7 @@ class Entry : public EntryIfaces
           const std::string& filePath, OemType&& oemData,
           internal::Manager& parent) :
         EntryIfaces(bus, objectPath.c_str(), EntryIfaces::action::defer_emit),
-        parent(parent)
+        busRef(bus), objPathStr(objectPath), parent(parent)
     {
         id(idErr, true);
         severity(severityErr, true);
@@ -106,7 +109,7 @@ class Entry : public EntryIfaces
     Entry(sdbusplus::bus_t& bus, const std::string& path, uint32_t entryId,
           internal::Manager& parent) :
         EntryIfaces(bus, path.c_str(), EntryIfaces::action::defer_emit),
-        parent(parent)
+        busRef(bus), objPathStr(path), parent(parent)
     {
         id(entryId, true);
     };
@@ -164,7 +167,37 @@ class Entry : public EntryIfaces
      */
     sdbusplus::message::unix_fd getEntry() override;
 
+    /**
+     * @brief Create CPER diagnostic DBus interface
+     *
+     * Attaches CPER diagnostic interface to this log entry.
+     * Safe to call once; subsequent calls are ignored.
+     *
+     * @param[in] type CPER type
+     * @param[in] diagInfo Structured diagnostic summary
+     * @param[in] dataObj Object path / URI for extended data
+     */
+    void createCperInterface(const std::string& type,
+                             const std::string& diagInfo,
+                             const std::string& dataObj);
+
+    /**
+     * @brief Get CPER diagnostic interface
+     *
+     * @return Pointer to CPER interface, or nullptr if not present
+     */
+    const CperIface* getCperIface() const
+    {
+        return cperIface.get();
+    }
+
   private:
+    /** @brief Reference to the system D-Bus connection */
+    sdbusplus::bus_t& busRef;
+
+    /** @brief Object path for this interface */
+    std::string objPathStr;
+
     /** @brief This entry's associations */
     AssociationList assocs = {};
 
@@ -176,6 +209,9 @@ class Entry : public EntryIfaces
      *        has been returned from the getEntry D-Bus method.
      */
     std::unique_ptr<sdeventplus::source::Defer> fdCloseEventSource;
+
+    /* @brief Interface for CPER handling */
+    std::unique_ptr<CperIface> cperIface;
 
     /**
      * @brief Closes the file descriptor passed in.
