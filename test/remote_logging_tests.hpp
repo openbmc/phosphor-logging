@@ -1,5 +1,6 @@
 #include "config.h"
 
+#include <phosphor-logging/constants.hpp>
 #include "phosphor-rsyslog-config/server-conf.hpp"
 
 #include <sdbusplus/bus.hpp>

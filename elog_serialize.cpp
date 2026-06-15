@@ -2,6 +2,7 @@
 
 #include "elog_serialize.hpp"
 
+#include <phosphor-logging/constants.hpp>
 #include "util.hpp"
 
 #include <cereal/archives/binary.hpp>
