@@ -5,6 +5,7 @@
 
 #include "pel.hpp"
 
+#include "constants.hpp"
 #include "bcd_time.hpp"
 #include "extended_user_data.hpp"
 #include "extended_user_header.hpp"

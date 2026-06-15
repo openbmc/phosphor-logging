@@ -5,6 +5,7 @@
 
 #include "manager.hpp"
 
+#include "constants.hpp"
 #include "additional_data.hpp"
 #include "elog_serialize.hpp"
 #include "json_utils.hpp"

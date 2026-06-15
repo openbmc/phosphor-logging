@@ -1,8 +1,8 @@
 #pragma once
 
-#include "config.h"
-
 #include "xyz/openbmc_project/Logging/ErrorBlocksTransition/server.hpp"
+
+#include "constants.hpp"
 
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/object.hpp>

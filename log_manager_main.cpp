@@ -3,6 +3,7 @@
 #include "config_main.h"
 
 #include "extensions.hpp"
+#include "constants.hpp"
 #include "log_manager.hpp"
 #include "paths.hpp"
 
