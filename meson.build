@@ -161,6 +161,7 @@ log_manager_sources = [
     elog_process_gen,
     files(
         'bmc_pos_mgr.cpp',
+        'cper_diagnostics.cpp',
         'elog_entry.cpp',
         'elog_meta.cpp',
         'elog_serialize.cpp',
