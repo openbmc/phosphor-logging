@@ -16,6 +16,24 @@
       "message": "Maybe you could fix this todo at the same time:\n\n//               Once autoconf is removed, they should be switched over to\n//               a constant in a header file.",
       "revId": "660866880ce7b4b172402707058a1255d154271b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "357b2309_f41fbd9d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-06-16T08:56:11Z",
+      "side": 1,
+      "message": "@spinler@us.ibm.com\n\nI checked how these values are populated and found that they are not\nfixed constants—they are derived from Yocto configuration.\n\nFor example, `error_info_cap` is computed via\n`get_info_cap(d)` based on FLASH_SIZE and can also be\noverridden (e.g., via `ERR_INFO_CAP` and EXTRA_OEMESON).\n\nSo the final value (128 in my build) is platform-dependent,\nnot constant. Similar applies to other values like\n`redundant-bmc` and `lg2_commit_strategy`.\n\nGiven this, hardcoding them would remove intended\nconfigurability.",
+      "parentUuid": "00a494c4_318846f8",
+      "revId": "660866880ce7b4b172402707058a1255d154271b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
