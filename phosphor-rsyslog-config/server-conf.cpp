@@ -41,21 +41,26 @@ std::optional<
     parseConfig(std::istream& ss)
 {
     std::string line;
-    std::getline(ss, line);
-
-    std::string serverAddress;
-    std::string serverPort;
-    NetworkClient::TransportProtocol serverTransportProtocol =
-        NetworkClient::TransportProtocol::TCP;
-
-    // Ignore if line is commented
-    if (!line.empty() && '#' != line.at(0))
+    while (std::getline(ss, line))
     {
+        auto firstNonSpace = line.find_first_not_of(" \t");
+        if (firstNonSpace == std::string::npos || line[firstNonSpace] == '#')
+        {
+            continue;
+        }
+
+        std::string serverAddress;
+        std::string serverPort;
+        NetworkClient::TransportProtocol serverTransportProtocol =
+            NetworkClient::TransportProtocol::TCP;
+
         //"*.* @@<address>:<port>" or
         //"*.* @@[<ipv6-address>:<port>"
         auto start = line.find('@');
-        if (start == std::string::npos)
+        if (start == std::string::npos || start + 1 >= line.size())
+        {
             return {};
+        }
 
         // Skip "*.* @@" or "*.* @"
         if (line.at(start + 1) == '@')
@@ -103,21 +108,25 @@ std::optional<
             serverAddress = line.substr(start, pos - start);
             serverPort = line.substr(pos + 1);
         }
+
+        if (serverAddress.empty() || serverPort.empty())
+        {
+            return {};
+        }
+        try
+        {
+            return std::make_tuple(std::move(serverAddress),
+                                   std::stoul(serverPort),
+                                   serverTransportProtocol);
+        }
+        catch (const std::exception& ex)
+        {
+            log<level::ERR>("Invalid config", entry("ERR=%s", ex.what()));
+            return {};
+        }
     }
-    if (serverAddress.empty() || serverPort.empty())
-    {
-        return {};
-    }
-    try
-    {
-        return std::make_tuple(std::move(serverAddress), std::stoul(serverPort),
-                               serverTransportProtocol);
-    }
-    catch (const std::exception& ex)
-    {
-        lg2::error("Invalid config: {ERR}", "ERR", ex);
-        return {};
-    }
+
+    return {};
 }
 
 } // namespace internal
