@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c2605ab0_7a9b66c0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-17T20:42:03Z",
+      "side": 1,
+      "message": "but that same thing is done here?\nstatic constexpr bool LG2_COMMIT_DBUS \u003d @lg2_commit_dbus@;",
+      "range": {
+        "startLine": 16,
+        "startChar": 46,
+        "endLine": 18,
+        "endChar": 16
+      },
+      "revId": "660866880ce7b4b172402707058a1255d154271b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "00a494c4_318846f8",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -50,6 +73,24 @@
       "side": 1,
       "message": "Acknowledged",
       "parentUuid": "357b2309_f41fbd9d",
+      "revId": "660866880ce7b4b172402707058a1255d154271b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24cd8f58_99b3f8a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-17T20:42:03Z",
+      "side": 1,
+      "message": "The TODO was referencing specifically what you changed:\n \n@TODO(stwcx): These values are currently configured in autoconf but never\n              modified by anyone, nor could I see why they ever would be.\n\nThat meant that these constants aren\u0027t doing \u0027@\u0027 substitutions so don\u0027t need to be in config.h.",
+      "parentUuid": "5d5dbbb0_ce40cb30",
       "revId": "660866880ce7b4b172402707058a1255d154271b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
