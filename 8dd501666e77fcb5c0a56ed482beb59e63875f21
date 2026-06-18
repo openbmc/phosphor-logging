@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bac3ea1_1549c3f8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-18T21:57:55Z",
+      "side": 1,
+      "message": "Thanks for creating the new file.  just a few minor things.",
+      "revId": "8dd501666e77fcb5c0a56ed482beb59e63875f21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22041e18_3f128eac",
+        "filename": "config/config.h.meson",
+        "patchSetId": 7
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-18T21:57:55Z",
+      "side": 1,
+      "message": "We can just get this info from the commit message, so comment not necessary.",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 30
+      },
+      "revId": "8dd501666e77fcb5c0a56ed482beb59e63875f21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cbbf66e_db0518c6",
+        "filename": "config/config.h.meson",
+        "patchSetId": 7
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-18T21:57:55Z",
+      "side": 1,
+      "message": "Instead of including this so everyone gets it, can you just add this include to the users that need those constants?",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 24
+      },
+      "revId": "8dd501666e77fcb5c0a56ed482beb59e63875f21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8f08bbc_44607261",
+        "filename": "config/constants.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-18T21:57:55Z",
+      "side": 1,
+      "message": "can also just get this from the commit message if someone is curious.",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 65
+      },
+      "revId": "8dd501666e77fcb5c0a56ed482beb59e63875f21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
