@@ -49,7 +49,7 @@ class DBusWatcher
      * @brief The match objects for the propertiesChanged and
      *        interfacesAdded signals.
      */
-    std::vector<sdbusplus::bus::match_t> _matches;
+    std::vector<sdbusplus::match> _matches;
 };
 
 /**

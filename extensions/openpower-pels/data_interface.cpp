@@ -906,7 +906,7 @@ void DataInterface::startFruPlugWatch()
     // existing hotpluggable interfaces and add propertiesChanged
     // watches on them.
 
-    _invIaMatch = std::make_unique<sdbusplus::bus::match_t>(
+    _invIaMatch = std::make_unique<sdbusplus::match>(
         _bus, match_rules::interfacesAdded(object_path::baseInv),
         std::bind(&DataInterface::inventoryIfaceAdded, this,
                   std::placeholders::_1));
@@ -931,7 +931,7 @@ void DataInterface::addHotplugWatch(const std::string& path)
     {
         _invPresentMatches.emplace(
             path,
-            std::make_unique<sdbusplus::bus::match_t>(
+            std::make_unique<sdbusplus::match>(
                 _bus, match_rules::propertiesChanged(path, interface::invItem),
                 std::bind(&DataInterface::presenceChanged, this,
                           std::placeholders::_1)));
