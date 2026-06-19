@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "192eaade_4269c17b",
+        "filename": "config/config.h.meson",
+        "patchSetId": 7
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-06-19T10:06:35Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "22041e18_3f128eac",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 30
+      },
+      "revId": "8dd501666e77fcb5c0a56ed482beb59e63875f21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7cbbf66e_db0518c6",
@@ -64,6 +88,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22de9509_fe51a38e",
+        "filename": "config/config.h.meson",
+        "patchSetId": 7
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-06-19T10:06:35Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7cbbf66e_db0518c6",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 24
+      },
+      "revId": "8dd501666e77fcb5c0a56ed482beb59e63875f21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a8f08bbc_44607261",
@@ -77,6 +125,30 @@
       "writtenOn": "2026-06-18T21:57:55Z",
       "side": 1,
       "message": "can also just get this from the commit message if someone is curious.",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 65
+      },
+      "revId": "8dd501666e77fcb5c0a56ed482beb59e63875f21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dca1b610_3e6d9401",
+        "filename": "config/constants.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-06-19T10:06:35Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a8f08bbc_44607261",
       "range": {
         "startLine": 4,
         "startChar": 0,
