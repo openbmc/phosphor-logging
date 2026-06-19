@@ -1084,15 +1084,14 @@ class DataInterface : public DataInterfaceBase
      */
     std::vector<std::unique_ptr<DBusWatcher>> _properties;
 
-    std::unique_ptr<sdbusplus::bus::match_t> _invIaMatch;
+    std::unique_ptr<sdbusplus::match> _invIaMatch;
 
     /**
      * @brief The matches for watching for hotplugs.
      *
      * A map so we can check that we never get duplicates.
      */
-    std::map<std::string, std::unique_ptr<sdbusplus::bus::match_t>>
-        _invPresentMatches;
+    std::map<std::string, std::unique_ptr<sdbusplus::match>> _invPresentMatches;
 
     /**
      * @brief The sdbusplus bus object for making D-Bus calls.
@@ -1103,7 +1102,7 @@ class DataInterface : public DataInterfaceBase
      * @brief Watcher to check "openpower-update-bios-attr-table" service
      *        is "done" to init PHAL libraries
      */
-    std::unique_ptr<sdbusplus::bus::match_t> _systemdMatch;
+    std::unique_ptr<sdbusplus::match> _systemdMatch;
 
     /**
      * @brief A slot object for async dbus call

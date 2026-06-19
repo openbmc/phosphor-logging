@@ -460,9 +460,9 @@ void Manager::quiesceOnError(const uint32_t entryId)
     this->blockingErrors.push_back(std::move(blockObj));
 
     // Register call back if log is resolved
-    using namespace sdbusplus::bus::match::rules;
+    using namespace sdbusplus::match_rules;
     auto entryPath = std::string(OBJ_ENTRY) + '/' + std::to_string(entryId);
-    auto callback = std::make_unique<sdbusplus::bus::match_t>(
+    auto callback = std::make_unique<sdbusplus::match>(
         this->busLog,
         propertiesChanged(entryPath, "xyz.openbmc_project.Logging.Entry"),
         std::bind(std::mem_fn(&Manager::onEntryResolve), this,

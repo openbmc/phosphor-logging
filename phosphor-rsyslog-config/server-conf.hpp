@@ -16,7 +16,7 @@ namespace rsyslog_config
 using namespace phosphor::logging;
 using NetworkClient = sdbusplus::xyz::openbmc_project::Network::server::Client;
 using Iface = sdbusplus::server::object_t<NetworkClient>;
-namespace sdbusRule = sdbusplus::bus::match::rules;
+namespace sdbusRule = sdbusplus::match_rules;
 
 /** @class Server
  *  @brief Configuration for rsyslog server
@@ -121,7 +121,7 @@ class Server : public Iface
         restart();
     }
 
-    sdbusplus::bus::match_t hostnameChange;
+    sdbusplus::match hostnameChange;
 };
 
 } // namespace rsyslog_config

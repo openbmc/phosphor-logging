@@ -7,7 +7,7 @@
 namespace openpower::pels
 {
 
-namespace match_rules = sdbusplus::bus::match::rules;
+namespace match_rules = sdbusplus::match_rules;
 
 /**
  * @class DBusWatcher
@@ -49,7 +49,7 @@ class DBusWatcher
      * @brief The match objects for the propertiesChanged and
      *        interfacesAdded signals.
      */
-    std::vector<sdbusplus::bus::match_t> _matches;
+    std::vector<sdbusplus::match> _matches;
 };
 
 /**

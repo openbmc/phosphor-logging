@@ -93,7 +93,7 @@ constexpr auto redundancy = "xyz.openbmc_project.State.BMC.Redundancy";
 
 using namespace sdbusplus::server::xyz::openbmc_project::state::boot;
 using namespace sdbusplus::server::xyz::openbmc_project::state;
-namespace match_rules = sdbusplus::bus::match::rules;
+namespace match_rules = sdbusplus::match_rules;
 
 const DBusInterfaceList hotplugInterfaces{interface::invFan,
                                           interface::invPowerSupply};
@@ -906,7 +906,7 @@ void DataInterface::startFruPlugWatch()
     // existing hotpluggable interfaces and add propertiesChanged
     // watches on them.
 
-    _invIaMatch = std::make_unique<sdbusplus::bus::match_t>(
+    _invIaMatch = std::make_unique<sdbusplus::match>(
         _bus, match_rules::interfacesAdded(object_path::baseInv),
         std::bind(&DataInterface::inventoryIfaceAdded, this,
                   std::placeholders::_1));
@@ -931,7 +931,7 @@ void DataInterface::addHotplugWatch(const std::string& path)
     {
         _invPresentMatches.emplace(
             path,
-            std::make_unique<sdbusplus::bus::match_t>(
+            std::make_unique<sdbusplus::match>(
                 _bus, match_rules::propertiesChanged(path, interface::invItem),
                 std::bind(&DataInterface::presenceChanged, this,
                           std::placeholders::_1)));
@@ -1090,7 +1090,7 @@ void DataInterface::subscribeToSystemdSignals()
                 return;
             }
 
-            namespace sdbusRule = sdbusplus::bus::match::rules;
+            namespace sdbusRule = sdbusplus::match_rules;
             this->_systemdMatch =
                 std::make_unique<decltype(this->_systemdMatch)::element_type>(
                     this->_bus,

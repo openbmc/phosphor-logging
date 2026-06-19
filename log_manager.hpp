@@ -358,7 +358,7 @@ class Manager : public details::ServerObject<details::ManagerIface>
     std::vector<std::unique_ptr<Block>> blockingErrors;
 
     /** @brief Map of entry id to call back object on properties changed */
-    std::map<uint32_t, std::unique_ptr<sdbusplus::bus::match_t>>
+    std::map<uint32_t, std::unique_ptr<sdbusplus::match>>
         propChangedEntryCallback;
 
     /** @brief Encodes the BMC position in the entryId when enabled */
