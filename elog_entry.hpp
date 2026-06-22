@@ -100,8 +100,7 @@ class Entry : public EntryIfaces
      *  @param[in] parent - The error's parent.
      */
     Entry(sdbusplus::bus_t& bus, const std::string& objectPath,
-          uint32_t entryId,
-          internal::Manager& parent) :
+          uint32_t entryId, internal::Manager& parent) :
         EntryIfaces(bus, objectPath.c_str(), EntryIfaces::action::defer_emit),
         parent(parent)
     {
