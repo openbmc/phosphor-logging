@@ -36,6 +36,17 @@ extern const std::map<
     std::function<phosphor::logging::metadata::associations::Type>>
     meta;
 
+static constexpr auto policyServiceName = "xyz.openbmc_project.Settings";
+static constexpr auto policyObjPath = "/xyz/openbmc_project/logging/settings";
+static constexpr auto dbusProperty = "org.freedesktop.DBus.Properties";
+static constexpr auto policyInterface = "xyz.openbmc_project.Logging.Settings";
+static constexpr auto logRetentionProperty = "LogRetentionPolicy";
+static constexpr auto quiesceOnHwErrorProperty = "QuiesceOnHwError";
+static constexpr auto policyLinear =
+    "xyz.openbmc_project.Logging.Settings.RetentionPolicy.Linear";
+static constexpr auto policyDefault =
+    "xyz.openbmc_project.Logging.Settings.RetentionPolicy.Circular";
+
 namespace phosphor
 {
 namespace logging
@@ -83,19 +94,19 @@ int Manager::getInfoErrSize()
 uint32_t Manager::commit(uint64_t transactionId, std::string errMsg)
 {
     auto level = getLevel(errMsg);
-    _commit(transactionId, std::move(errMsg), level);
-    return entryId;
+    auto created = _commit(transactionId, std::move(errMsg), level);
+    return created ? entryId : 0;
 }
 
 uint32_t Manager::commitWithLvl(uint64_t transactionId, std::string errMsg,
                                 uint32_t errLvl)
 {
-    _commit(transactionId, std::move(errMsg),
-            static_cast<Entry::Level>(errLvl));
-    return entryId;
+    auto created = _commit(transactionId, std::move(errMsg),
+                           static_cast<Entry::Level>(errLvl));
+    return created ? entryId : 0;
 }
 
-void Manager::_commit(uint64_t transactionId [[maybe_unused]],
+bool Manager::_commit(uint64_t transactionId [[maybe_unused]],
                       std::string&& errMsg, Entry::Level errLvl)
 {
     std::map<std::string, std::string> additionalData{};
@@ -121,7 +132,7 @@ void Manager::_commit(uint64_t transactionId [[maybe_unused]],
         {
             lg2::error("Failed to open journal: {ERROR}", "ERROR",
                        strerror(-rc));
-            return;
+            return false;
         }
 
         std::string transactionIdStr = std::to_string(transactionId);
@@ -212,7 +223,79 @@ void Manager::_commit(uint64_t transactionId [[maybe_unused]],
 
         sd_journal_close(j);
     }
-    createEntry(errMsg, errLvl, additionalData);
+
+    auto entryPath = createEntry(errMsg, errLvl, additionalData);
+    return !entryPath.str.empty();
+}
+
+std::string Manager::getLogPolicy()
+{
+    std::variant<std::string> property;
+    try
+    {
+        auto method = this->busLog.new_method_call(
+            policyServiceName, policyObjPath, dbusProperty, "Get");
+        method.append(policyInterface, logRetentionProperty);
+
+        auto reply = this->busLog.call(method);
+        reply.read(property);
+    }
+    catch (const std::exception&)
+    {
+        // Some platforms may not provide Logging.Settings by default.
+        // Treat that as an expected condition and fall back silently.
+        return policyDefault;
+    }
+
+    return std::get<std::string>(property);
+}
+
+Manager::Manager(sdbusplus::bus_t& bus, const char* objPath) :
+    details::ServerObject<details::ManagerIface>(bus, objPath), busLog(bus),
+    entryId(0), fwVersion(readFWVersion()),
+    logPolicyChangedMatch(busLog,
+                          sdbusplus::bus::match::rules::propertiesChanged(
+                              policyObjPath, policyInterface),
+                          std::bind_front(&Manager::onLogPolicyChanged, this)),
+    logPolicy(policyDefault), event(sdeventplus::Event::get_default())
+{
+    if constexpr (REDUNDANT_BMC)
+    {
+        bmcPosMgr = std::make_unique<BMCPosMgr>();
+    }
+
+    logPolicy = getLogPolicy();
+}
+
+void Manager::onLogPolicyChanged(sdbusplus::message_t& msg)
+{
+    using Interface = std::string;
+    using Property = std::string;
+    using PropertyValue = std::variant<std::string, bool>;
+    using Properties = std::map<Property, PropertyValue>;
+
+    Interface interface;
+    Properties properties;
+    std::vector<Property> invalidated;
+
+    msg.read(interface, properties, invalidated);
+
+    if (interface != policyInterface)
+    {
+        return;
+    }
+
+    const auto policyIt = properties.find(logRetentionProperty);
+    if (policyIt != properties.end())
+    {
+        if (const auto* value = std::get_if<std::string>(&policyIt->second))
+        {
+            logPolicy = *value;
+            return;
+        }
+    }
+
+    logPolicy = getLogPolicy();
 }
 
 auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
@@ -221,18 +304,46 @@ auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
 {
     if (!Extensions::disableDefaultLogCaps())
     {
-        if (errLvl < Entry::sevLowerLimit)
+        if (logPolicy == policyLinear)
         {
-            if (realErrors.size() >= ERROR_CAP)
+            if (errLvl < Entry::sevLowerLimit)
             {
-                erase(realErrors.front());
+                if (realErrors.size() >= ERROR_CAP)
+                {
+                    lg2::info(
+                        "Linear log policy: error capacity reached ({ERROR_CAP}), "
+                        "rejecting new event",
+                        "ERROR_CAP", ERROR_CAP);
+                    return {};
+                }
+            }
+            else
+            {
+                if (infoErrors.size() >= ERROR_INFO_CAP)
+                {
+                    lg2::info(
+                        "Linear log policy: info capacity reached ({ERROR_CAP}), "
+                        "rejecting new event",
+                        "ERROR_CAP", ERROR_INFO_CAP);
+                    return {};
+                }
             }
         }
         else
         {
-            if (infoErrors.size() >= ERROR_INFO_CAP)
+            if (errLvl < Entry::sevLowerLimit)
             {
-                erase(infoErrors.front());
+                if (realErrors.size() >= ERROR_CAP)
+                {
+                    erase(realErrors.front());
+                }
+            }
+            else
+            {
+                if (infoErrors.size() >= ERROR_INFO_CAP)
+                {
+                    erase(infoErrors.front());
+                }
             }
         }
     }
@@ -324,11 +435,10 @@ bool Manager::isQuiesceOnErrorEnabled()
 
     std::variant<bool> property;
 
-    auto method = this->busLog.new_method_call(
-        "xyz.openbmc_project.Settings", "/xyz/openbmc_project/logging/settings",
-        "org.freedesktop.DBus.Properties", "Get");
+    auto method = this->busLog.new_method_call(policyServiceName, policyObjPath,
+                                               dbusProperty, "Get");
 
-    method.append("xyz.openbmc_project.Logging.Settings", "QuiesceOnHwError");
+    method.append(policyInterface, quiesceOnHwErrorProperty);
 
     try
     {
