@@ -36,6 +36,23 @@ extern const std::map<
     std::function<phosphor::logging::metadata::associations::Type>>
     meta;
 
+static constexpr auto mapperBusName = "xyz.openbmc_project.ObjectMapper";
+static constexpr auto mapperObjPath = "/xyz/openbmc_project/object_mapper";
+static constexpr auto mapperIntf = "xyz.openbmc_project.ObjectMapper";
+static constexpr auto dbusProperty = "org.freedesktop.DBus.Properties";
+static constexpr auto policyInterface = "xyz.openbmc_project.Logging.Settings";
+static constexpr auto policyLinear =
+    "xyz.openbmc_project.Logging.Settings.Policy.Linear";
+static constexpr auto policyDefault =
+    "xyz.openbmc_project.Logging.Settings.Policy.Circular";
+
+using DBusInterface = std::string;
+using DBusService = std::string;
+using DBusPath = std::string;
+using DBusInterfaceList = std::vector<DBusInterface>;
+using DBusSubTree =
+    std::map<DBusPath, std::map<DBusService, DBusInterfaceList>>;
+
 namespace phosphor
 {
 namespace logging
@@ -83,16 +100,22 @@ int Manager::getInfoErrSize()
 uint32_t Manager::commit(uint64_t transactionId, std::string errMsg)
 {
     auto level = getLevel(errMsg);
+    auto priorId = entryId;
     _commit(transactionId, std::move(errMsg), level);
-    return entryId;
+    // Return 0 if entry was rejected (entryId unchanged); otherwise return new
+    // entry ID
+    return (entryId > priorId) ? entryId : 0;
 }
 
 uint32_t Manager::commitWithLvl(uint64_t transactionId, std::string errMsg,
                                 uint32_t errLvl)
 {
+    auto priorId = entryId;
     _commit(transactionId, std::move(errMsg),
             static_cast<Entry::Level>(errLvl));
-    return entryId;
+    // Return 0 if entry was rejected (entryId unchanged); otherwise return new
+    // entry ID
+    return (entryId > priorId) ? entryId : 0;
 }
 
 void Manager::_commit(uint64_t transactionId [[maybe_unused]],
@@ -212,7 +235,65 @@ void Manager::_commit(uint64_t transactionId [[maybe_unused]],
 
         sd_journal_close(j);
     }
+    // createEntry returns empty path if entry creation was rejected (e.g.,
+    // linear SEL at capacity). Callers should check commit() return value: 0
+    // means rejected, non-zero means entry was created with that ID.
     createEntry(errMsg, errLvl, additionalData);
+}
+
+std::string Manager::getSelPolicy()
+{
+    DBusSubTree subtree;
+
+    try
+    {
+        auto method = this->busLog.new_method_call(mapperBusName, mapperObjPath,
+                                                   mapperIntf, "GetSubTree");
+        method.append(std::string{"/"}, 0,
+                      std::vector<std::string>{policyInterface});
+
+        auto reply = this->busLog.call(method);
+        reply.read(subtree);
+    }
+    catch (const std::exception& e)
+    {
+        lg2::error("Failed to get SEL policy subtree from D-Bus: {ERROR}. "
+                   "Continuing with Circular policy",
+                   "ERROR", e);
+        return policyDefault;
+    }
+
+    if (subtree.empty())
+    {
+        lg2::info("SEL policy interface not found on D-Bus. Continuing with "
+                  "Circular policy");
+        return policyDefault;
+    }
+
+    const auto& object = *subtree.begin();
+    const auto& policyPath = object.first;
+    const auto& policyService = object.second.begin()->first;
+
+    std::variant<std::string> property;
+    try
+    {
+        auto method = this->busLog.new_method_call(
+            policyService.c_str(), policyPath.c_str(), dbusProperty, "Get");
+        method.append(policyInterface, "SelPolicy");
+
+        auto reply = this->busLog.call(method);
+        reply.read(property);
+    }
+    catch (const std::exception& e)
+    {
+        lg2::error(
+            "Failed to read SEL policy from D-Bus: {ERROR}. Continuing with "
+            "Circular policy",
+            "ERROR", e);
+        return policyDefault;
+    }
+
+    return std::get<std::string>(property);
 }
 
 auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
@@ -221,18 +302,47 @@ auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
 {
     if (!Extensions::disableDefaultLogCaps())
     {
-        if (errLvl < Entry::sevLowerLimit)
+        const auto currentPolicy = getSelPolicy();
+        if (currentPolicy == policyLinear)
         {
-            if (realErrors.size() >= ERROR_CAP)
+            if (errLvl < Entry::sevLowerLimit)
             {
-                erase(realErrors.front());
+                if (realErrors.size() >= ERROR_CAP)
+                {
+                    lg2::info(
+                        "Linear SEL: error capacity reached ({ERROR_CAP}), "
+                        "rejecting new event",
+                        "ERROR_CAP", ERROR_CAP);
+                    return {};
+                }
+            }
+            else
+            {
+                if (infoErrors.size() >= ERROR_INFO_CAP)
+                {
+                    lg2::info(
+                        "Linear SEL: info capacity reached ({ERROR_CAP}), "
+                        "rejecting new event",
+                        "ERROR_CAP", ERROR_INFO_CAP);
+                    return {};
+                }
             }
         }
         else
         {
-            if (infoErrors.size() >= ERROR_INFO_CAP)
+            if (errLvl < Entry::sevLowerLimit)
             {
-                erase(infoErrors.front());
+                if (realErrors.size() >= ERROR_CAP)
+                {
+                    erase(realErrors.front());
+                }
+            }
+            else
+            {
+                if (infoErrors.size() >= ERROR_INFO_CAP)
+                {
+                    erase(infoErrors.front());
+                }
             }
         }
     }
