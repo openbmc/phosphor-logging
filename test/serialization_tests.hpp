@@ -23,7 +23,11 @@ namespace fs = std::filesystem;
 char tmplt[] = "/tmp/logging_test.XXXXXX";
 sdbusplus::SdBusMock sdbusMock;
 sdbusplus::bus_t bus = sdbusplus::get_mocked_new(&sdbusMock);
-phosphor::logging::internal::Manager manager(bus, OBJ_INTERNAL);
+// Keep the shared manager alive for process lifetime to avoid teardown-time
+// interaction with mocked bus match slots in these serialization binaries.
+phosphor::logging::internal::Manager* managerPtr =
+    new phosphor::logging::internal::Manager(bus, OBJ_INTERNAL);
+phosphor::logging::internal::Manager& manager = *managerPtr;
 
 class TestSerialization : public testing::Test
 {

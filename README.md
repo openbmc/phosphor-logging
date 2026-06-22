@@ -8,6 +8,7 @@ logging.
 - [Building](#to-build)
 - [Structured Logging](#structured-logging)
 - [Event Logs](#event-logs)
+- [Log Retention Policy](#log-retention-policy)
 - [Event Log Extensions](#event-log-extensions)
 - [Remote Logging](#remote-logging-via-rsyslog)
 - [Boot Fail on Hardware Errors](#boot-fail-on-hardware-errors)
@@ -58,6 +59,20 @@ The logging daemon has the ability to add `callout` associations to an event log
 based on text in the AdditionalData property. A callout is a link to the
 inventory item(s) that were the cause of the event log. See [callout
 doc][callout-doc] for details.
+
+## Log Retention Policy
+
+phosphor-log-manager reads `LogRetentionPolicy` from
+`xyz.openbmc_project.Logging.Settings` at runtime and updates behavior when the
+property changes.
+
+- `Circular`: Existing behavior. When a capacity limit is reached, the oldest
+  entry in that severity bucket is erased and the new entry is created.
+- `Linear`: When a capacity limit is reached, the new entry is rejected.
+
+For the internal `Commit` and `CommitWithLvl` methods, a rejected log creation
+returns `0`. A non-zero return value indicates the entry ID of a successfully
+created event log.
 
 ### Creating Event Logs In Code
 
