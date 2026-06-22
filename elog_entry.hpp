@@ -1,5 +1,7 @@
 #pragma once
 
+#include "config_main.h"
+
 #include "xyz/openbmc_project/Logging/Entry/server.hpp"
 #include "xyz/openbmc_project/Object/Delete/server.hpp"
 #include "xyz/openbmc_project/Software/Version/server.hpp"
@@ -77,7 +79,7 @@ class Entry : public EntryIfaces
         additionalData(std::move(additionalDataErr), true);
         associations(std::move(objects), true);
         // Store a copy of associations in case we need to recreate
-        assocs = associations();
+        assocs = objects;
         sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved(
             false, true);
 
@@ -86,7 +88,10 @@ class Entry : public EntryIfaces
         path(filePath, true);
 
         // Emit deferred signal.
-        this->emit_object_added();
+        if (!IS_UNIT_TEST)
+        {
+            this->emit_object_added();
+        }
     };
 
     /** @brief Constructor that puts an "empty" error object on the bus,
