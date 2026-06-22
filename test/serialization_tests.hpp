@@ -8,6 +8,7 @@
 #include <sdbusplus/test/sdbus_mock.hpp>
 
 #include <filesystem>
+#include <stdexcept>
 
 #include <gtest/gtest.h>
 
@@ -20,15 +21,13 @@ namespace test
 
 namespace fs = std::filesystem;
 
-char tmplt[] = "/tmp/logging_test.XXXXXX";
 sdbusplus::SdBusMock sdbusMock;
 sdbusplus::bus_t bus = sdbusplus::get_mocked_new(&sdbusMock);
-phosphor::logging::internal::Manager manager(bus, OBJ_INTERNAL);
 
 class TestSerialization : public testing::Test
 {
   public:
-    TestSerialization() : dir(fs::path(mkdtemp(tmplt))) {}
+    TestSerialization() : dir(createTempDir()), manager(bus, OBJ_INTERNAL) {}
 
     ~TestSerialization()
     {
@@ -36,6 +35,19 @@ class TestSerialization : public testing::Test
     }
 
     fs::path dir;
+    phosphor::logging::internal::Manager manager;
+
+  private:
+    static fs::path createTempDir()
+    {
+        char tmplt[] = "/tmp/logging_test.XXXXXX";
+        char* tmpDir = mkdtemp(tmplt);
+        if (tmpDir == nullptr)
+        {
+            throw std::runtime_error("mkdtemp failed for serialization test");
+        }
+        return fs::path(tmpDir);
+    }
 };
 
 } // namespace test

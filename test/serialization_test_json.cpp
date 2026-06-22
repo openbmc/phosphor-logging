@@ -13,7 +13,7 @@ namespace logging
 namespace test
 {
 
-class TestJsonSerialization : public testing::Test
+class TestJsonSerialization : public TestSerialization
 {
   public:
     TestJsonSerialization()
@@ -22,16 +22,25 @@ class TestJsonSerialization : public testing::Test
         fs::create_directories(dir);
     }
 
-    ~TestJsonSerialization() {}
-
-    fs::path dir;
+    ~TestJsonSerialization() override = default;
 };
 
 TEST_F(TestJsonSerialization, testJsonPath)
 {
     auto id = 99;
+    // Use fully initialized constructor because serializeJSON() reads all
+    // JSON fields, not just ID.
+    phosphor::logging::AssociationList associations{};
+    std::map<std::string, std::string> testData{};
+    uint64_t timestamp{0};
+    std::string message{"json path test"};
+    std::string fwLevel{"test-fw"};
+    std::string objectPath = std::string(OBJ_ENTRY) + '/' + std::to_string(id);
+    std::string inputPath = getEntrySerializePath(id);
     auto e = std::make_unique<Entry>(
-        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, manager);
+        bus, objectPath, id, timestamp, Entry::Level::Informational,
+        std::move(message), std::move(testData), std::move(associations),
+        fwLevel, inputPath, manager);
     auto path = serializeJSON(*e);
     EXPECT_EQ(path.c_str(), dir / (std::to_string(id) + ".json"));
 }
@@ -46,12 +55,13 @@ TEST_F(TestJsonSerialization, testJsonProperties)
     uint64_t timestamp{100};
     std::string message{"test error"};
     std::string fwLevel{"level42"};
+    std::string objectPath = std::string(OBJ_ENTRY) + '/' + std::to_string(id);
     std::string inputPath = getEntrySerializePath(id);
 
     auto input = std::make_unique<Entry>(
-        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, timestamp,
-        Entry::Level::Informational, std::move(message), std::move(testData),
-        std::move(associations), fwLevel, inputPath, manager);
+        bus, objectPath, id, timestamp, Entry::Level::Informational,
+        std::move(message), std::move(testData), std::move(associations),
+        fwLevel, inputPath, manager);
 
     auto jsonPath = serializeJSON(*input);
 
@@ -94,12 +104,13 @@ TEST_F(TestJsonSerialization, testJsonEmptyAdditionalData)
     uint64_t timestamp{200};
     std::string message{"empty data error"};
     std::string fwLevel{"level1"};
+    std::string objectPath = std::string(OBJ_ENTRY) + '/' + std::to_string(id);
     std::string inputPath = getEntrySerializePath(id);
 
     auto input = std::make_unique<Entry>(
-        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, timestamp,
-        Entry::Level::Error, std::move(message), std::move(testData),
-        std::move(associations), fwLevel, inputPath, manager);
+        bus, objectPath, id, timestamp, Entry::Level::Error, std::move(message),
+        std::move(testData), std::move(associations), fwLevel, inputPath,
+        manager);
 
     auto jsonPath = serializeJSON(*input);
 
@@ -120,19 +131,23 @@ TEST_F(TestJsonSerialization, testBinarySerializationUnchanged)
     uint64_t timestamp{300};
     std::string message{"binary test"};
     std::string fwLevel{"v1.0"};
+    std::string inputObjectPath =
+        std::string(OBJ_ENTRY) + '/' + std::to_string(id);
     std::string inputPath = getEntrySerializePath(id);
 
     auto input = std::make_unique<Entry>(
-        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, timestamp,
-        Entry::Level::Warning, std::move(message), std::move(testData),
-        std::move(associations), fwLevel, inputPath, manager);
+        bus, inputObjectPath, id, timestamp, Entry::Level::Warning,
+        std::move(message), std::move(testData), std::move(associations),
+        fwLevel, inputPath, manager);
 
     auto path = serialize(*input);
 
     auto idStr = path.filename();
     auto outputId = std::stol(idStr.c_str());
-    auto output = std::make_unique<Entry>(
-        bus, std::filesystem::path(OBJ_ENTRY) / idStr, outputId, manager);
+    std::string outputObjectPath =
+        (std::filesystem::path(OBJ_ENTRY) / idStr).string();
+    auto output =
+        std::make_unique<Entry>(bus, outputObjectPath, outputId, manager);
     deserialize(path, *output);
 
     EXPECT_EQ(input->id(), output->id());
@@ -155,17 +170,20 @@ TEST_F(TestJsonSerialization, testJsonRoundTrip)
     uint64_t timestamp{500};
     std::string message{"roundtrip error"};
     std::string fwLevel{"v2.0"};
+    std::string inputObjectPath =
+        std::string(OBJ_ENTRY) + '/' + std::to_string(id);
     std::string inputPath = getEntrySerializePath(id);
 
     auto input = std::make_unique<Entry>(
-        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, timestamp,
-        Entry::Level::Critical, std::move(message), std::move(testData),
-        std::move(associations), fwLevel, inputPath, manager);
+        bus, inputObjectPath, id, timestamp, Entry::Level::Critical,
+        std::move(message), std::move(testData), std::move(associations),
+        fwLevel, inputPath, manager);
 
     auto jsonPath = serializeJSON(*input);
 
-    auto output = std::make_unique<Entry>(
-        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, manager);
+    std::string outputObjectPath =
+        std::string(OBJ_ENTRY) + '/' + std::to_string(id);
+    auto output = std::make_unique<Entry>(bus, outputObjectPath, id, manager);
     EXPECT_TRUE(deserializeJSON(jsonPath, *output));
 
     EXPECT_EQ(input->id(), output->id());
@@ -190,8 +208,9 @@ TEST_F(TestJsonSerialization, testDeserializeCorruptedJson)
     os << "this is not valid json{{{";
     os.close();
 
-    auto output = std::make_unique<Entry>(
-        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, manager);
+    std::string outputObjectPath =
+        std::string(OBJ_ENTRY) + '/' + std::to_string(id);
+    auto output = std::make_unique<Entry>(bus, outputObjectPath, id, manager);
     EXPECT_FALSE(deserializeJSON(jsonPath, *output));
 }
 
@@ -210,8 +229,9 @@ TEST_F(TestJsonSerialization, testDeserializeMissingField)
     os << j.dump();
     os.close();
 
-    auto output = std::make_unique<Entry>(
-        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, manager);
+    std::string outputObjectPath =
+        std::string(OBJ_ENTRY) + '/' + std::to_string(id);
+    auto output = std::make_unique<Entry>(bus, outputObjectPath, id, manager);
     EXPECT_FALSE(deserializeJSON(jsonPath, *output));
 }
 

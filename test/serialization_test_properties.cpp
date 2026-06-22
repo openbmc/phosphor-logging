@@ -18,18 +18,21 @@ TEST_F(TestSerialization, testProperties)
     uint64_t timestamp{100};
     std::string message{"test error"};
     std::string fwLevel{"level42"};
+    std::string inputObjectPath =
+        std::string(OBJ_ENTRY) + '/' + std::to_string(id);
     std::string inputPath = getEntrySerializePath(id, TestSerialization::dir);
     auto input = std::make_unique<Entry>(
-        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, timestamp,
-        Entry::Level::Informational, std::move(message), std::move(testData),
-        std::move(associations), fwLevel, inputPath, manager);
+        bus, inputObjectPath, id, timestamp, Entry::Level::Informational,
+        std::move(message), std::move(testData), std::move(associations),
+        fwLevel, inputPath, manager);
     auto path = serialize(*input, TestSerialization::dir);
     EXPECT_EQ(path, inputPath);
 
     auto idStr = path.filename();
     id = std::stol(idStr.c_str());
-    auto output = std::make_unique<Entry>(
-        bus, std::filesystem::path(OBJ_ENTRY) / idStr, id, manager);
+    std::string outputObjectPath =
+        (std::filesystem::path(OBJ_ENTRY) / idStr).string();
+    auto output = std::make_unique<Entry>(bus, outputObjectPath, id, manager);
     deserialize(path, *output);
 
     EXPECT_EQ(input->id(), output->id());

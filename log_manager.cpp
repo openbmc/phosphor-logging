@@ -36,6 +36,17 @@ extern const std::map<
     std::function<phosphor::logging::metadata::associations::Type>>
     meta;
 
+static constexpr auto policyServiceName = "xyz.openbmc_project.Settings";
+static constexpr auto policyObjPath = "/xyz/openbmc_project/logging/settings";
+static constexpr auto dbusProperty = "org.freedesktop.DBus.Properties";
+static constexpr auto policyInterface = "xyz.openbmc_project.Logging.Settings";
+static constexpr auto logRetentionProperty = "LogRetentionPolicy";
+static constexpr auto quiesceOnHwErrorProperty = "QuiesceOnHwError";
+static constexpr auto policyLinear =
+    "xyz.openbmc_project.Logging.Settings.RetentionPolicy.Linear";
+static constexpr auto policyDefault =
+    "xyz.openbmc_project.Logging.Settings.RetentionPolicy.Circular";
+
 namespace phosphor
 {
 namespace logging
@@ -53,6 +64,23 @@ inline auto getLevel(const std::string& errMsg)
     }
 
     return reqLevel;
+}
+
+inline bool isBusAvailable(sdbusplus::bus_t& bus)
+{
+    if (IS_UNIT_TEST)
+    {
+        return false;
+    }
+
+    try
+    {
+        return bus.is_open();
+    }
+    catch (const std::exception&)
+    {
+        return false;
+    }
 }
 
 Manager::~Manager()
@@ -83,16 +111,22 @@ int Manager::getInfoErrSize()
 uint32_t Manager::commit(uint64_t transactionId, std::string errMsg)
 {
     auto level = getLevel(errMsg);
+    auto priorId = entryId;
     _commit(transactionId, std::move(errMsg), level);
-    return entryId;
+    // Return 0 if entry was rejected (entryId unchanged); otherwise return new
+    // entry ID
+    return (entryId > priorId) ? entryId : 0;
 }
 
 uint32_t Manager::commitWithLvl(uint64_t transactionId, std::string errMsg,
                                 uint32_t errLvl)
 {
+    auto priorId = entryId;
     _commit(transactionId, std::move(errMsg),
             static_cast<Entry::Level>(errLvl));
-    return entryId;
+    // Return 0 if entry was rejected (entryId unchanged); otherwise return new
+    // entry ID
+    return (entryId > priorId) ? entryId : 0;
 }
 
 void Manager::_commit(uint64_t transactionId [[maybe_unused]],
@@ -212,7 +246,144 @@ void Manager::_commit(uint64_t transactionId [[maybe_unused]],
 
         sd_journal_close(j);
     }
+    // createEntry returns empty path if entry creation was rejected (e.g.,
+    // linear log policy at capacity). Callers should check commit() return
+    // value: 0 means rejected, non-zero means entry was created with that ID.
     createEntry(errMsg, errLvl, additionalData);
+}
+
+std::string Manager::getLogPolicy()
+{
+    if (IS_UNIT_TEST)
+    {
+        return policyDefault;
+    }
+
+    if (!isBusAvailable(this->busLog))
+    {
+        return policyDefault;
+    }
+
+    std::variant<std::string> property;
+    try
+    {
+        auto method = this->busLog.new_method_call(
+            policyServiceName, policyObjPath, dbusProperty, "Get");
+        method.append(policyInterface, logRetentionProperty);
+
+        auto reply = this->busLog.call(method);
+        reply.read(property);
+    }
+    catch (const std::exception&)
+    {
+        // Some platforms may not provide Logging.Settings by default.
+        // Treat that as an expected condition and fall back silently.
+        return policyDefault;
+    }
+
+    return std::get<std::string>(property);
+}
+
+void Manager::refreshLogPolicy()
+{
+    try
+    {
+        cachedLogPolicy = getLogPolicy();
+    }
+    catch (const std::exception& e)
+    {
+        lg2::error("Failed to refresh log policy: {ERROR}", "ERROR", e);
+    }
+}
+
+void Manager::setupLogPolicyMatch()
+{
+    using namespace sdbusplus::bus::match::rules;
+    logPolicyChangedCallback = std::make_unique<sdbusplus::bus::match_t>(
+        busLog, propertiesChanged(policyObjPath, policyInterface),
+        std::bind_front(&Manager::onLogPolicyChanged, this));
+}
+
+Manager::Manager(sdbusplus::bus_t& bus, const char* objPath) :
+    details::ServerObject<details::ManagerIface>(bus, objPath), busLog(bus),
+    entryId(0), fwVersion(readFWVersion()),
+    event(sdeventplus::Event::get_default())
+{
+    if constexpr (REDUNDANT_BMC)
+    {
+        bmcPosMgr = std::make_unique<BMCPosMgr>();
+    }
+
+    cachedLogPolicy = policyDefault;
+
+    if (IS_UNIT_TEST)
+    {
+        return;
+    }
+
+    if (!isBusAvailable(this->busLog))
+    {
+        lg2::debug("D-Bus handle is not available; defaulting log policy to "
+                   "Circular without match registration");
+        return;
+    }
+
+    try
+    {
+        cachedLogPolicy = getLogPolicy();
+    }
+    catch (const std::exception& e)
+    {
+        lg2::debug("Failed to query initial log policy: {ERROR}, "
+                   "defaulting to Circular",
+                   "ERROR", e);
+    }
+
+    try
+    {
+        setupLogPolicyMatch();
+    }
+    catch (const std::exception& e)
+    {
+        lg2::debug("Failed to register log policy PropertiesChanged match: "
+                   "{ERROR}",
+                   "ERROR", e);
+    }
+}
+
+void Manager::onLogPolicyChanged(sdbusplus::message_t& msg)
+{
+    using Interface = std::string;
+    using Property = std::string;
+    using PropertyValue = std::variant<std::string, bool>;
+    using Properties = std::map<Property, PropertyValue>;
+
+    Interface interface;
+    Properties properties;
+    std::vector<Property> invalidated;
+
+    msg.read(interface, properties, invalidated);
+
+    if (interface != policyInterface)
+    {
+        return;
+    }
+
+    const auto policyIt = properties.find(logRetentionProperty);
+    if (policyIt != properties.end())
+    {
+        if (const auto* value = std::get_if<std::string>(&policyIt->second))
+        {
+            cachedLogPolicy = *value;
+            return;
+        }
+    }
+
+    if (std::ranges::find(invalidated, logRetentionProperty) !=
+        invalidated.end())
+    {
+        refreshLogPolicy();
+    }
 }
 
 auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
@@ -221,18 +392,46 @@ auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
 {
     if (!Extensions::disableDefaultLogCaps())
     {
-        if (errLvl < Entry::sevLowerLimit)
+        if (cachedLogPolicy == policyLinear)
         {
-            if (realErrors.size() >= ERROR_CAP)
+            if (errLvl < Entry::sevLowerLimit)
             {
-                erase(realErrors.front());
+                if (realErrors.size() >= ERROR_CAP)
+                {
+                    lg2::info(
+                        "Linear log policy: error capacity reached ({ERROR_CAP}), "
+                        "rejecting new event",
+                        "ERROR_CAP", ERROR_CAP);
+                    return {};
+                }
+            }
+            else
+            {
+                if (infoErrors.size() >= ERROR_INFO_CAP)
+                {
+                    lg2::info(
+                        "Linear log policy: info capacity reached ({ERROR_CAP}), "
+                        "rejecting new event",
+                        "ERROR_CAP", ERROR_INFO_CAP);
+                    return {};
+                }
             }
         }
         else
         {
-            if (infoErrors.size() >= ERROR_INFO_CAP)
+            if (errLvl < Entry::sevLowerLimit)
             {
-                erase(infoErrors.front());
+                if (realErrors.size() >= ERROR_CAP)
+                {
+                    erase(realErrors.front());
+                }
+            }
+            else
+            {
+                if (infoErrors.size() >= ERROR_INFO_CAP)
+                {
+                    erase(infoErrors.front());
+                }
             }
         }
     }
@@ -324,11 +523,10 @@ bool Manager::isQuiesceOnErrorEnabled()
 
     std::variant<bool> property;
 
-    auto method = this->busLog.new_method_call(
-        "xyz.openbmc_project.Settings", "/xyz/openbmc_project/logging/settings",
-        "org.freedesktop.DBus.Properties", "Get");
+    auto method = this->busLog.new_method_call(policyServiceName, policyObjPath,
+                                               dbusProperty, "Get");
 
-    method.append("xyz.openbmc_project.Logging.Settings", "QuiesceOnHwError");
+    method.append(policyInterface, quiesceOnHwErrorProperty);
 
     try
     {

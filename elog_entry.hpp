@@ -92,34 +92,19 @@ class Entry : public EntryIfaces
     };
 
     /** @brief Constructor that puts an "empty" error object on the bus,
-     *         with default property values populated. Caller may update the
-     *         properties before emitting the added signal.
+     *         with only the id property populated. Rest of the properties
+     *         to be set by the caller. Caller should emit the added signal.
      *  @param[in] bus - Bus to attach to.
-     *  @param[in] objectPath - Path to attach at.
+     *  @param[in] path - Path to attach at.
      *  @param[in] id - The error entry id.
      *  @param[in] parent - The error's parent.
      */
-    Entry(sdbusplus::bus_t& bus, const std::string& objectPath,
-          uint32_t entryId,
+    Entry(sdbusplus::bus_t& bus, const std::string& path, uint32_t entryId,
           internal::Manager& parent) :
-        EntryIfaces(bus, objectPath.c_str(), EntryIfaces::action::defer_emit),
+        EntryIfaces(bus, path.c_str(), EntryIfaces::action::defer_emit),
         parent(parent)
     {
         id(entryId, true);
-        severity(Entry::Level::Error, true);
-        timestamp(0, true);
-        updateTimestamp(0, true);
-        message("", true);
-        additionalData({}, true);
-        associations({}, true);
-        assocs = associations();
-        sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved(
-            false, true);
-        version("", true);
-        purpose(VersionPurpose::BMC, true);
-        path("", true);
-        eventId("", true);
-        resolution("", true);
     };
 
     /**
