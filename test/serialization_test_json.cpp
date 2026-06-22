@@ -115,6 +115,7 @@ TEST_F(TestJsonSerialization, testJsonEmptyAdditionalData)
 TEST_F(TestJsonSerialization, testBinarySerializationUnchanged)
 {
     auto id = 42;
+    auto restoredId = id + 1000;
     phosphor::logging::AssociationList associations{};
     std::map<std::string, std::string> testData = {{"FOO", "bar"}};
     uint64_t timestamp{300};
@@ -128,11 +129,9 @@ TEST_F(TestJsonSerialization, testBinarySerializationUnchanged)
         std::move(associations), fwLevel, inputPath, manager);
 
     auto path = serialize(*input);
-
-    auto idStr = path.filename();
-    auto outputId = std::stol(idStr.c_str());
     auto output = std::make_unique<Entry>(
-        bus, std::filesystem::path(OBJ_ENTRY) / idStr, outputId, manager);
+        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(restoredId),
+        restoredId, manager);
     deserialize(path, *output);
 
     EXPECT_EQ(input->id(), output->id());
@@ -148,6 +147,7 @@ TEST_F(TestJsonSerialization, testBinarySerializationUnchanged)
 TEST_F(TestJsonSerialization, testJsonRoundTrip)
 {
     auto id = 77;
+    auto restoredId = id + 1000;
     phosphor::logging::AssociationList associations{
         {"callout", "fault", "/xyz/openbmc_project/inventory/system/board"}};
     std::map<std::string, std::string> testData = {{"REASON", "test"},
@@ -165,7 +165,8 @@ TEST_F(TestJsonSerialization, testJsonRoundTrip)
     auto jsonPath = serializeJSON(*input);
 
     auto output = std::make_unique<Entry>(
-        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, manager);
+        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(restoredId),
+        restoredId, manager);
     EXPECT_TRUE(deserializeJSON(jsonPath, *output));
 
     EXPECT_EQ(input->id(), output->id());
