@@ -13,16 +13,25 @@ namespace logging
 namespace test
 {
 
-class TestJsonSerialization : public testing::Test
+class TestJsonSerialization : public SerializationTestBase
 {
   public:
     TestJsonSerialization()
     {
-        dir = paths::error_json();
-        fs::create_directories(dir);
+        char tmplt[] = "/tmp/logging_json_test.XXXXXX";
+        if (auto* p = mkdtemp(tmplt); p != nullptr)
+        {
+            dir = fs::path(p);
+        }
     }
 
-    ~TestJsonSerialization() {}
+    ~TestJsonSerialization()
+    {
+        if (!dir.empty())
+        {
+            fs::remove_all(dir);
+        }
+    }
 
     fs::path dir;
 };
@@ -32,7 +41,7 @@ TEST_F(TestJsonSerialization, testJsonPath)
     auto id = 99;
     auto e = std::make_unique<Entry>(
         bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, manager);
-    auto path = serializeJSON(*e);
+    auto path = serializeJSON(*e, dir);
     EXPECT_EQ(path.c_str(), dir / (std::to_string(id) + ".json"));
 }
 
@@ -46,14 +55,14 @@ TEST_F(TestJsonSerialization, testJsonProperties)
     uint64_t timestamp{100};
     std::string message{"test error"};
     std::string fwLevel{"level42"};
-    std::string inputPath = getEntrySerializePath(id);
+    std::string inputPath = getEntrySerializePath(id, dir);
 
     auto input = std::make_unique<Entry>(
         bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, timestamp,
         Entry::Level::Informational, std::move(message), std::move(testData),
         std::move(associations), fwLevel, inputPath, manager);
 
-    auto jsonPath = serializeJSON(*input);
+    auto jsonPath = serializeJSON(*input, dir);
 
     EXPECT_TRUE(std::filesystem::exists(jsonPath));
 
@@ -94,14 +103,14 @@ TEST_F(TestJsonSerialization, testJsonEmptyAdditionalData)
     uint64_t timestamp{200};
     std::string message{"empty data error"};
     std::string fwLevel{"level1"};
-    std::string inputPath = getEntrySerializePath(id);
+    std::string inputPath = getEntrySerializePath(id, dir);
 
     auto input = std::make_unique<Entry>(
         bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, timestamp,
         Entry::Level::Error, std::move(message), std::move(testData),
         std::move(associations), fwLevel, inputPath, manager);
 
-    auto jsonPath = serializeJSON(*input);
+    auto jsonPath = serializeJSON(*input, dir);
 
     std::ifstream is(jsonPath);
     nlohmann::json j = nlohmann::json::parse(is);
@@ -120,14 +129,14 @@ TEST_F(TestJsonSerialization, testBinarySerializationUnchanged)
     uint64_t timestamp{300};
     std::string message{"binary test"};
     std::string fwLevel{"v1.0"};
-    std::string inputPath = getEntrySerializePath(id);
+    std::string inputPath = getEntrySerializePath(id, dir);
 
     auto input = std::make_unique<Entry>(
         bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, timestamp,
         Entry::Level::Warning, std::move(message), std::move(testData),
         std::move(associations), fwLevel, inputPath, manager);
 
-    auto path = serialize(*input);
+    auto path = serialize(*input, dir);
 
     auto idStr = path.filename();
     auto outputId = std::stol(idStr.c_str());
@@ -155,14 +164,14 @@ TEST_F(TestJsonSerialization, testJsonRoundTrip)
     uint64_t timestamp{500};
     std::string message{"roundtrip error"};
     std::string fwLevel{"v2.0"};
-    std::string inputPath = getEntrySerializePath(id);
+    std::string inputPath = getEntrySerializePath(id, dir);
 
     auto input = std::make_unique<Entry>(
         bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, timestamp,
         Entry::Level::Critical, std::move(message), std::move(testData),
         std::move(associations), fwLevel, inputPath, manager);
 
-    auto jsonPath = serializeJSON(*input);
+    auto jsonPath = serializeJSON(*input, dir);
 
     auto output = std::make_unique<Entry>(
         bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, manager);
