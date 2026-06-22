@@ -20,19 +20,36 @@ namespace test
 
 namespace fs = std::filesystem;
 
-char tmplt[] = "/tmp/logging_test.XXXXXX";
-sdbusplus::SdBusMock sdbusMock;
-sdbusplus::bus_t bus = sdbusplus::get_mocked_new(&sdbusMock);
-phosphor::logging::internal::Manager manager(bus, OBJ_INTERNAL);
-
-class TestSerialization : public testing::Test
+class SerializationTestBase : public testing::Test
 {
   public:
-    TestSerialization() : dir(fs::path(mkdtemp(tmplt))) {}
+    SerializationTestBase() :
+        bus(sdbusplus::get_mocked_new(&sdbusMock)), manager(bus, OBJ_INTERNAL)
+    {}
+
+    sdbusplus::SdBusMock sdbusMock;
+    sdbusplus::bus_t bus;
+    phosphor::logging::internal::Manager manager;
+};
+
+class TestSerialization : public SerializationTestBase
+{
+  public:
+    TestSerialization()
+    {
+        char tmplt[] = "/tmp/logging_test.XXXXXX";
+        if (auto* p = mkdtemp(tmplt); p != nullptr)
+        {
+            dir = fs::path(p);
+        }
+    }
 
     ~TestSerialization()
     {
-        fs::remove_all(dir);
+        if (!dir.empty())
+        {
+            fs::remove_all(dir);
+        }
     }
 
     fs::path dir;
