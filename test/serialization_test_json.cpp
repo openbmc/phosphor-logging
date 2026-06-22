@@ -30,8 +30,18 @@ class TestJsonSerialization : public testing::Test
 TEST_F(TestJsonSerialization, testJsonPath)
 {
     auto id = 99;
+    // Use fully initialized constructor because serializeJSON() reads all
+    // JSON fields, not just ID.
+    phosphor::logging::AssociationList associations{};
+    std::map<std::string, std::string> testData{};
+    uint64_t timestamp{0};
+    std::string message{"json path test"};
+    std::string fwLevel{"test-fw"};
+    std::string inputPath = getEntrySerializePath(id);
     auto e = std::make_unique<Entry>(
-        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, manager);
+        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, timestamp,
+        Entry::Level::Informational, std::move(message), std::move(testData),
+        std::move(associations), fwLevel, inputPath, manager);
     auto path = serializeJSON(*e);
     EXPECT_EQ(path.c_str(), dir / (std::to_string(id) + ".json"));
 }
@@ -132,7 +142,10 @@ TEST_F(TestJsonSerialization, testBinarySerializationUnchanged)
     auto idStr = path.filename();
     auto outputId = std::stol(idStr.c_str());
     auto output = std::make_unique<Entry>(
-        bus, std::filesystem::path(OBJ_ENTRY) / idStr, outputId, manager);
+        bus, (std::filesystem::path(OBJ_ENTRY) / idStr).string(), outputId, 0,
+        Entry::Level::Informational, "", std::map<std::string, std::string>{},
+        phosphor::logging::AssociationList{}, "",
+        getEntrySerializePath(outputId), manager);
     deserialize(path, *output);
 
     EXPECT_EQ(input->id(), output->id());
@@ -165,7 +178,10 @@ TEST_F(TestJsonSerialization, testJsonRoundTrip)
     auto jsonPath = serializeJSON(*input);
 
     auto output = std::make_unique<Entry>(
-        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, manager);
+        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, 0,
+        Entry::Level::Informational, "", std::map<std::string, std::string>{},
+        phosphor::logging::AssociationList{}, "", getEntrySerializePath(id),
+        manager);
     EXPECT_TRUE(deserializeJSON(jsonPath, *output));
 
     EXPECT_EQ(input->id(), output->id());
@@ -191,7 +207,10 @@ TEST_F(TestJsonSerialization, testDeserializeCorruptedJson)
     os.close();
 
     auto output = std::make_unique<Entry>(
-        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, manager);
+        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, 0,
+        Entry::Level::Informational, "", std::map<std::string, std::string>{},
+        phosphor::logging::AssociationList{}, "", getEntrySerializePath(id),
+        manager);
     EXPECT_FALSE(deserializeJSON(jsonPath, *output));
 }
 
@@ -211,7 +230,10 @@ TEST_F(TestJsonSerialization, testDeserializeMissingField)
     os.close();
 
     auto output = std::make_unique<Entry>(
-        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, manager);
+        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, 0,
+        Entry::Level::Informational, "", std::map<std::string, std::string>{},
+        phosphor::logging::AssociationList{}, "", getEntrySerializePath(id),
+        manager);
     EXPECT_FALSE(deserializeJSON(jsonPath, *output));
 }
 
