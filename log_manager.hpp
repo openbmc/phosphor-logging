@@ -9,12 +9,14 @@
 
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
+#include <sdbusplus/bus/match.hpp>
 #include <sdeventplus/source/io.hpp>
 #include <xyz/openbmc_project/Collection/DeleteAll/server.hpp>
 #include <xyz/openbmc_project/Logging/Create/server.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
 #include <xyz/openbmc_project/Logging/event.hpp>
 
+#include <functional>
 #include <list>
 
 namespace phosphor
@@ -74,16 +76,21 @@ class Manager : public details::ServerObject<details::ManagerIface>
      *  @param[in] bus - Bus to attach to.
      *  @param[in] path - Path to attach at.
      */
-    Manager(sdbusplus::bus_t& bus, const char* objPath) :
-        details::ServerObject<details::ManagerIface>(bus, objPath), busLog(bus),
-        entryId(0), fwVersion(readFWVersion()),
-        event(sdeventplus::Event::get_default())
-    {
-        if constexpr (REDUNDANT_BMC)
-        {
-            bmcPosMgr = std::make_unique<BMCPosMgr>();
-        }
-    };
+    Manager(sdbusplus::bus_t& bus, const char* objPath);
+    /** @brief Retrieve current SEL policy from Logging settings. */
+    virtual std::string getSelPolicy();
+
+    /** @brief Refresh SEL policy cache from D-Bus. */
+    void refreshSelPolicy();
+
+    /** @brief Check if SEL policy provider is available on D-Bus. */
+    bool isSelPolicyProviderAvailable();
+
+    /** @brief Setup PropertiesChanged match for SEL policy updates. */
+    void setupSelPolicyMatch();
+
+    /** @brief Handle SEL policy property changes. */
+    void onSelPolicyChanged(sdbusplus::message_t& msg);
 
     /*
      * @fn commit()
@@ -360,6 +367,12 @@ class Manager : public details::ServerObject<details::ManagerIface>
     /** @brief Map of entry id to call back object on properties changed */
     std::map<uint32_t, std::unique_ptr<sdbusplus::bus::match_t>>
         propChangedEntryCallback;
+
+    /** @brief Callback object for SEL policy property changes. */
+    std::unique_ptr<sdbusplus::bus::match_t> selPolicyChangedCallback;
+
+    /** @brief Cached SEL policy value used in createEntry hot path. */
+    std::string cachedSelPolicy;
 
     /** @brief Encodes the BMC position in the entryId when enabled */
     std::unique_ptr<BMCPosMgr> bmcPosMgr;

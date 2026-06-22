@@ -11,6 +11,8 @@
 #include <xyz/openbmc_project/Association/Definitions/server.hpp>
 #include <xyz/openbmc_project/Common/FilePath/server.hpp>
 
+extern const bool IS_UNIT_TEST;
+
 namespace phosphor
 {
 namespace logging
@@ -77,7 +79,7 @@ class Entry : public EntryIfaces
         additionalData(std::move(additionalDataErr), true);
         associations(std::move(objects), true);
         // Store a copy of associations in case we need to recreate
-        assocs = associations();
+        assocs = objects;
         sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved(
             false, true);
 
@@ -86,23 +88,39 @@ class Entry : public EntryIfaces
         path(filePath, true);
 
         // Emit deferred signal.
-        this->emit_object_added();
+        if (!IS_UNIT_TEST)
+        {
+            this->emit_object_added();
+        }
     };
 
     /** @brief Constructor that puts an "empty" error object on the bus,
      *         with only the id property populated. Rest of the properties
      *         to be set by the caller. Caller should emit the added signal.
      *  @param[in] bus - Bus to attach to.
-     *  @param[in] path - Path to attach at.
+     *  @param[in] objectPath - Path to attach at.
      *  @param[in] id - The error entry id.
      *  @param[in] parent - The error's parent.
      */
-    Entry(sdbusplus::bus_t& bus, const std::string& path, uint32_t entryId,
-          internal::Manager& parent) :
-        EntryIfaces(bus, path.c_str(), EntryIfaces::action::defer_emit),
+    Entry(sdbusplus::bus_t& bus, const std::string& objectPath,
+          uint32_t entryId, internal::Manager& parent) :
+        EntryIfaces(bus, objectPath.c_str(), EntryIfaces::action::defer_emit),
         parent(parent)
     {
         id(entryId, true);
+        severity(Entry::Level::Error, true);
+        timestamp(0, true);
+        updateTimestamp(0, true);
+        message("", true);
+        additionalData({}, true);
+        associations({}, true);
+        sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved(
+            false, true);
+        version("", true);
+        purpose(VersionPurpose::BMC, true);
+        path("", true);
+        eventId("", true);
+        resolution("", true);
     };
 
     /**
