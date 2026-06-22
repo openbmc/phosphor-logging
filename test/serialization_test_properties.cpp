@@ -28,8 +28,17 @@ TEST_F(TestSerialization, testProperties)
 
     auto idStr = path.filename();
     id = std::stol(idStr.c_str());
+    std::string outputMessage{};
+    std::map<std::string, std::string> outputData{};
+    phosphor::logging::AssociationList outputAssocs{};
+    std::string outputFwLevel{};
+    std::string outputPath =
+        getEntrySerializePath(id, TestSerialization::dir).string();
     auto output = std::make_unique<Entry>(
-        bus, std::filesystem::path(OBJ_ENTRY) / idStr, id, manager);
+        bus, (std::filesystem::path(OBJ_ENTRY) / idStr).string(), id, 0,
+        Entry::Level::Informational, std::move(outputMessage),
+        std::move(outputData), std::move(outputAssocs), outputFwLevel,
+        outputPath, manager);
     deserialize(path, *output);
 
     EXPECT_EQ(input->id(), output->id());
