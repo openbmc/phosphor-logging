@@ -12,6 +12,7 @@ namespace test
 TEST_F(TestSerialization, testProperties)
 {
     auto id = 99;
+    auto restoredId = id + 1000;
     phosphor::logging::AssociationList associations{};
     std::map<std::string, std::string> testData = {{"additional", "1"},
                                                    {"data", "yes"}};
@@ -26,10 +27,9 @@ TEST_F(TestSerialization, testProperties)
     auto path = serialize(*input, TestSerialization::dir);
     EXPECT_EQ(path, inputPath);
 
-    auto idStr = path.filename();
-    id = std::stol(idStr.c_str());
     auto output = std::make_unique<Entry>(
-        bus, std::filesystem::path(OBJ_ENTRY) / idStr, id, manager);
+        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(restoredId),
+        restoredId, manager);
     deserialize(path, *output);
 
     EXPECT_EQ(input->id(), output->id());
