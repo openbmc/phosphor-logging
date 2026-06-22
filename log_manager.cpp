@@ -36,6 +36,23 @@ extern const std::map<
     std::function<phosphor::logging::metadata::associations::Type>>
     meta;
 
+static constexpr auto mapperBusName = "xyz.openbmc_project.ObjectMapper";
+static constexpr auto mapperObjPath = "/xyz/openbmc_project/object_mapper";
+static constexpr auto mapperIntf = "xyz.openbmc_project.ObjectMapper";
+static constexpr auto dbusProperty = "org.freedesktop.DBus.Properties";
+static constexpr auto policyInterface = "xyz.openbmc_project.Logging.Settings";
+static constexpr auto policyLinear =
+    "xyz.openbmc_project.Logging.Settings.Policy.Linear";
+static constexpr auto policyDefault =
+    "xyz.openbmc_project.Logging.Settings.Policy.Circular";
+
+using DBusInterface = std::string;
+using DBusService = std::string;
+using DBusPath = std::string;
+using DBusInterfaceList = std::vector<DBusInterface>;
+using DBusSubTree =
+    std::map<DBusPath, std::map<DBusService, DBusInterfaceList>>;
+
 namespace phosphor
 {
 namespace logging
@@ -53,6 +70,23 @@ inline auto getLevel(const std::string& errMsg)
     }
 
     return reqLevel;
+}
+
+inline bool isBusAvailable(sdbusplus::bus_t& bus)
+{
+    if (IS_UNIT_TEST)
+    {
+        return false;
+    }
+
+    try
+    {
+        return bus.is_open();
+    }
+    catch (const std::exception&)
+    {
+        return false;
+    }
 }
 
 Manager::~Manager()
@@ -83,16 +117,22 @@ int Manager::getInfoErrSize()
 uint32_t Manager::commit(uint64_t transactionId, std::string errMsg)
 {
     auto level = getLevel(errMsg);
+    auto priorId = entryId;
     _commit(transactionId, std::move(errMsg), level);
-    return entryId;
+    // Return 0 if entry was rejected (entryId unchanged); otherwise return new
+    // entry ID
+    return (entryId > priorId) ? entryId : 0;
 }
 
 uint32_t Manager::commitWithLvl(uint64_t transactionId, std::string errMsg,
                                 uint32_t errLvl)
 {
+    auto priorId = entryId;
     _commit(transactionId, std::move(errMsg),
             static_cast<Entry::Level>(errLvl));
-    return entryId;
+    // Return 0 if entry was rejected (entryId unchanged); otherwise return new
+    // entry ID
+    return (entryId > priorId) ? entryId : 0;
 }
 
 void Manager::_commit(uint64_t transactionId [[maybe_unused]],
@@ -212,7 +252,220 @@ void Manager::_commit(uint64_t transactionId [[maybe_unused]],
 
         sd_journal_close(j);
     }
+    // createEntry returns empty path if entry creation was rejected (e.g.,
+    // linear log policy at capacity). Callers should check commit() return
+    // value: 0 means rejected, non-zero means entry was created with that ID.
     createEntry(errMsg, errLvl, additionalData);
+}
+
+std::string Manager::getLogPolicy()
+{
+    if (IS_UNIT_TEST)
+    {
+        return policyDefault;
+    }
+
+    if (!isBusAvailable(this->busLog))
+    {
+        return policyDefault;
+    }
+
+    DBusSubTree subtree;
+
+    try
+    {
+        auto method = this->busLog.new_method_call(mapperBusName, mapperObjPath,
+                                                   mapperIntf, "GetSubTree");
+        method.append(std::string{"/"}, 0,
+                      std::vector<std::string>{policyInterface});
+
+        auto reply = this->busLog.call(method);
+        reply.read(subtree);
+    }
+    catch (const std::exception& e)
+    {
+        lg2::error("Failed to get log policy subtree from D-Bus: {ERROR}. "
+                   "Continuing with Circular policy",
+                   "ERROR", e);
+        return policyDefault;
+    }
+
+    if (subtree.empty())
+    {
+        lg2::info("Log policy interface not found on D-Bus. Continuing with "
+                  "Circular policy");
+        return policyDefault;
+    }
+
+    const auto& object = *subtree.begin();
+    const auto& policyPath = object.first;
+    const auto& policyService = object.second.begin()->first;
+
+    std::variant<std::string> property;
+    try
+    {
+        auto method = this->busLog.new_method_call(
+            policyService.c_str(), policyPath.c_str(), dbusProperty, "Get");
+        method.append(policyInterface, "Policy");
+
+        auto reply = this->busLog.call(method);
+        reply.read(property);
+    }
+    catch (const std::exception& e)
+    {
+        lg2::error(
+            "Failed to read log policy from D-Bus: {ERROR}. Continuing with "
+            "Circular policy",
+            "ERROR", e);
+        return policyDefault;
+    }
+
+    return std::get<std::string>(property);
+}
+
+void Manager::refreshLogPolicy()
+{
+    try
+    {
+        cachedLogPolicy = getLogPolicy();
+    }
+    catch (const std::exception& e)
+    {
+        lg2::error("Failed to refresh log policy: {ERROR}", "ERROR", e);
+    }
+}
+
+void Manager::setupLogPolicyMatch()
+{
+    using namespace sdbusplus::bus::match::rules;
+    logPolicyChangedCallback = std::make_unique<sdbusplus::bus::match_t>(
+        busLog,
+        propertiesChanged("/xyz/openbmc_project/logging/settings",
+                          "xyz.openbmc_project.Logging.Settings"),
+        std::bind_front(&Manager::onLogPolicyChanged, this));
+}
+
+bool Manager::isLogPolicyProviderAvailable()
+{
+    if (IS_UNIT_TEST)
+    {
+        return false;
+    }
+
+    if (!isBusAvailable(this->busLog))
+    {
+        return false;
+    }
+
+    DBusSubTree subtree;
+
+    try
+    {
+        auto method = this->busLog.new_method_call(mapperBusName, mapperObjPath,
+                                                   mapperIntf, "GetSubTree");
+        method.append(std::string{"/"}, 0,
+                      std::vector<std::string>{policyInterface});
+
+        auto reply = this->busLog.call(method);
+        reply.read(subtree);
+    }
+    catch (const std::exception& e)
+    {
+        lg2::debug("Failed to query log policy provider presence: {ERROR}",
+                   "ERROR", e);
+        return false;
+    }
+
+    return !subtree.empty();
+}
+
+Manager::Manager(sdbusplus::bus_t& bus, const char* objPath) :
+    details::ServerObject<details::ManagerIface>(bus, objPath), busLog(bus),
+    entryId(0), fwVersion(readFWVersion()),
+    event(sdeventplus::Event::get_default())
+{
+    if constexpr (REDUNDANT_BMC)
+    {
+        bmcPosMgr = std::make_unique<BMCPosMgr>();
+    }
+
+    cachedLogPolicy = policyDefault;
+
+    if (IS_UNIT_TEST)
+    {
+        return;
+    }
+
+    if (!isBusAvailable(this->busLog))
+    {
+        lg2::debug("D-Bus handle is not available; defaulting log policy to "
+                   "Circular without match registration");
+        return;
+    }
+
+    try
+    {
+        cachedLogPolicy = getLogPolicy();
+    }
+    catch (const std::exception& e)
+    {
+        lg2::debug("Failed to query initial log policy: {ERROR}, "
+                   "defaulting to Circular",
+                   "ERROR", e);
+    }
+
+    if (isLogPolicyProviderAvailable())
+    {
+        try
+        {
+            setupLogPolicyMatch();
+        }
+        catch (const std::exception& e)
+        {
+            lg2::debug("Failed to register log policy PropertiesChanged "
+                       "match: {ERROR}",
+                       "ERROR", e);
+        }
+    }
+    else
+    {
+        lg2::debug("Log policy provider not present; skipping "
+                   "PropertiesChanged match registration");
+    }
+}
+
+void Manager::onLogPolicyChanged(sdbusplus::message_t& msg)
+{
+    using Interface = std::string;
+    using Property = std::string;
+    using PropertyValue = std::variant<std::string, bool>;
+    using Properties = std::map<Property, PropertyValue>;
+
+    Interface interface;
+    Properties properties;
+    std::vector<Property> invalidated;
+
+    msg.read(interface, properties, invalidated);
+
+    if (interface != policyInterface)
+    {
+        return;
+    }
+
+    const auto policyIt = properties.find("Policy");
+    if (policyIt != properties.end())
+    {
+        if (const auto* value = std::get_if<std::string>(&policyIt->second))
+        {
+            cachedLogPolicy = *value;
+            return;
+        }
+    }
+
+    if (std::ranges::find(invalidated, "Policy") != invalidated.end())
+    {
+        refreshLogPolicy();
+    }
 }
 
 auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
@@ -221,18 +474,46 @@ auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
 {
     if (!Extensions::disableDefaultLogCaps())
     {
-        if (errLvl < Entry::sevLowerLimit)
+        if (cachedLogPolicy == policyLinear)
         {
-            if (realErrors.size() >= ERROR_CAP)
+            if (errLvl < Entry::sevLowerLimit)
             {
-                erase(realErrors.front());
+                if (realErrors.size() >= ERROR_CAP)
+                {
+                    lg2::info(
+                        "Linear log policy: error capacity reached ({ERROR_CAP}), "
+                        "rejecting new event",
+                        "ERROR_CAP", ERROR_CAP);
+                    return {};
+                }
+            }
+            else
+            {
+                if (infoErrors.size() >= ERROR_INFO_CAP)
+                {
+                    lg2::info(
+                        "Linear log policy: info capacity reached ({ERROR_CAP}), "
+                        "rejecting new event",
+                        "ERROR_CAP", ERROR_INFO_CAP);
+                    return {};
+                }
             }
         }
         else
         {
-            if (infoErrors.size() >= ERROR_INFO_CAP)
+            if (errLvl < Entry::sevLowerLimit)
             {
-                erase(infoErrors.front());
+                if (realErrors.size() >= ERROR_CAP)
+                {
+                    erase(realErrors.front());
+                }
+            }
+            else
+            {
+                if (infoErrors.size() >= ERROR_INFO_CAP)
+                {
+                    erase(infoErrors.front());
+                }
             }
         }
     }
