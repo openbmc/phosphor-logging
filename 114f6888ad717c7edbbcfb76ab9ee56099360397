@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df50cd33_9f3bf145",
+        "filename": "phosphor-rsyslog-config/server-conf.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-06-22T09:39:34Z",
+      "side": 1,
+      "message": "By accepting comments, you\u0027re saying \"it\u0027s okay to manually edit this system-generated file.\"? why would someone want to edit the system generated file?",
+      "revId": "114f6888ad717c7edbbcfb76ab9ee56099360397",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
