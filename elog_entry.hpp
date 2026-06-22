@@ -84,6 +84,8 @@ class Entry : public EntryIfaces
         version(fwVersion, true);
         purpose(VersionPurpose::BMC, true);
         path(filePath, true);
+        eventId("", true);
+        resolution("", true);
 
         // Emit deferred signal.
         this->emit_object_added();
@@ -103,6 +105,19 @@ class Entry : public EntryIfaces
         parent(parent)
     {
         id(entryId, true);
+        severity(Entry::Level::Error, true);
+        timestamp(0, true);
+        updateTimestamp(0, true);
+        message("", true);
+        additionalData({}, true);
+        associations({}, true);
+        sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved(
+            false, true);
+        version("", true);
+        purpose(VersionPurpose::BMC, true);
+        path("", true);
+        eventId("", true);
+        resolution("", true);
     };
 
     /**
