@@ -85,6 +85,9 @@ class Manager : public details::ServerObject<details::ManagerIface>
         }
     };
 
+    /** @brief Retrieve current SEL policy from Logging settings. */
+    virtual std::string getSelPolicy();
+
     /*
      * @fn commit()
      * @brief sd_bus Commit method implementation callback.
