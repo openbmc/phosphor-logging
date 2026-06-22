@@ -30,8 +30,18 @@ class TestJsonSerialization : public testing::Test
 TEST_F(TestJsonSerialization, testJsonPath)
 {
     auto id = 99;
+    // Use fully initialized constructor because serializeJSON() reads all
+    // JSON fields, not just ID.
+    phosphor::logging::AssociationList associations{};
+    std::map<std::string, std::string> testData{};
+    uint64_t timestamp{0};
+    std::string message{"json path test"};
+    std::string fwLevel{"test-fw"};
+    std::string inputPath = getEntrySerializePath(id);
     auto e = std::make_unique<Entry>(
-        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, manager);
+        bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, timestamp,
+        Entry::Level::Informational, std::move(message), std::move(testData),
+        std::move(associations), fwLevel, inputPath, manager);
     auto path = serializeJSON(*e);
     EXPECT_EQ(path.c_str(), dir / (std::to_string(id) + ".json"));
 }
