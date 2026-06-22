@@ -13,7 +13,7 @@ namespace logging
 namespace test
 {
 
-class TestJsonSerialization : public testing::Test
+class TestJsonSerialization : public SerializationTestBase
 {
   public:
     TestJsonSerialization()
