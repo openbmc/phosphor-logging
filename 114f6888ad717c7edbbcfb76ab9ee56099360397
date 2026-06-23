@@ -16,6 +16,24 @@
       "message": "By accepting comments, you\u0027re saying \"it\u0027s okay to manually edit this system-generated file.\"? why would someone want to edit the system generated file?",
       "revId": "114f6888ad717c7edbbcfb76ab9ee56099360397",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eadad9f0_45fbb4ea",
+        "filename": "phosphor-rsyslog-config/server-conf.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-06-23T11:43:04Z",
+      "side": 1,
+      "message": "This change is not to encourage manual edits of a system-managed file. It makes restore parsing more robust when comment or blank lines appear before the forwarding rule (for example from provisioning/config tooling).\n\nPreviously, parsing assumed the rule was on the first line, which could cause restore to fall back to defaults. This fix skips comment/blank lines and parses the first valid entry, while keeping the file management model unchanged.",
+      "parentUuid": "df50cd33_9f3bf145",
+      "revId": "114f6888ad717c7edbbcfb76ab9ee56099360397",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
