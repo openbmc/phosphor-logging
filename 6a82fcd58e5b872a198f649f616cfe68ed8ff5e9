@@ -52,6 +52,103 @@
       "parentUuid": "d1d30160_064e7099",
       "revId": "6a82fcd58e5b872a198f649f616cfe68ed8ff5e9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "009400ea_64c4cda9",
+        "filename": "config/config.h.meson",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-23T22:00:31Z",
+      "side": 1,
+      "message": "just FYI, these are being moved to a new header with https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/91301. I suspect it will merge soon.",
+      "revId": "6a82fcd58e5b872a198f649f616cfe68ed8ff5e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "052767b7_103a067c",
+        "filename": "elog_entry.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-23T22:00:31Z",
+      "side": 1,
+      "message": "I don\u0027t see this used in this file or the header, so maybe not needed here and instead in extensions.hpp?\n\nWherever it does end up, maybe just have it aliased to the vector itself, so people can do \u0027const AdditionalDataVec\u0026\u0027 so it\u0027s easy to tell what it is.  or maybe since it\u0027s a simple enough type the alias isn\u0027t necessary.",
+      "range": {
+        "startLine": 28,
+        "startChar": 6,
+        "endLine": 28,
+        "endChar": 24
+      },
+      "revId": "6a82fcd58e5b872a198f649f616cfe68ed8ff5e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f098406_49213bfc",
+        "filename": "elog_serialize.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-23T22:00:31Z",
+      "side": 1,
+      "message": "it doesn\u0027t like just the\noemJson \u003d e.oem()\n?",
+      "revId": "6a82fcd58e5b872a198f649f616cfe68ed8ff5e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8934f87d_8f7dfb37",
+        "filename": "log_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1046,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-23T22:00:31Z",
+      "side": 1,
+      "message": "nit: can drop the what()",
+      "range": {
+        "startLine": 1046,
+        "startChar": 67,
+        "endLine": 1046,
+        "endChar": 76
+      },
+      "revId": "6a82fcd58e5b872a198f649f616cfe68ed8ff5e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a68a7194_842f02e3",
+        "filename": "test/serialization_test_json.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-23T22:00:31Z",
+      "side": 1,
+      "message": "I think it would be good to add a testcase here to test your deserialize JSON code.  unless that test exists elsewhere and I missed it",
+      "revId": "6a82fcd58e5b872a198f649f616cfe68ed8ff5e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
