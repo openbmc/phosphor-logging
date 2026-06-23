@@ -34,6 +34,24 @@
       "parentUuid": "ff4835e3_87dcd8e3",
       "revId": "6a82fcd58e5b872a198f649f616cfe68ed8ff5e9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c95507a7_84036f5b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-06-23T11:48:14Z",
+      "side": 1,
+      "message": "i couldn\u0027t get topic based ci working not sur am missing some steps here . ran docker based ci unit tests locally \n[----------] 2 tests from ElogEntryTest\n[ RUN      ] ElogEntryTest.OemSetGet\n[       OK ] ElogEntryTest.OemSetGet (0 ms)\n[ RUN      ] ElogEntryTest.OemMultiVendorStructure\n[       OK ] ElogEntryTest.OemMultiVendorStructure (0 ms)\n[----------] 2 tests from ElogEntryTest (0 ms total)",
+      "parentUuid": "d1d30160_064e7099",
+      "revId": "6a82fcd58e5b872a198f649f616cfe68ed8ff5e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
