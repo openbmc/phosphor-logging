@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a594eff9_3f649f44",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 32
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-24T21:43:32Z",
+      "side": 1,
+      "message": "I\u0027m not a fan of this term.  It\u0027s an IPMI term that isn\u0027t used anywhere else in the logging codebase.\n\nI probably won\u0027t review much more until a common term is substituted.",
+      "range": {
+        "startLine": 7,
+        "startChar": 20,
+        "endLine": 7,
+        "endChar": 25
+      },
+      "revId": "620605f85b69511bbfc7c562aa29c5278bf76e4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3fab6e2_71649382",
+        "filename": "log_manager.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-24T21:43:32Z",
+      "side": 1,
+      "message": "I couldn\u0027t seem to find the commit that adds these in PDI. Can you point me to it?",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 59
+      },
+      "revId": "620605f85b69511bbfc7c562aa29c5278bf76e4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
