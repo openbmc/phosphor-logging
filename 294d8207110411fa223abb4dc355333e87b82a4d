@@ -34,6 +34,24 @@
       "parentUuid": "425b6a25_7e193fb6",
       "revId": "294d8207110411fa223abb4dc355333e87b82a4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93373764_54b11f26",
+        "filename": "config/constants.hpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-24T19:13:58Z",
+      "side": 1,
+      "message": "it isn\u0027t a public header, so you can just move it direclty phosphor-logging/",
+      "parentUuid": "083ec156_e361d98e",
+      "revId": "294d8207110411fa223abb4dc355333e87b82a4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
