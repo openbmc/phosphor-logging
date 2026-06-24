@@ -16,6 +16,24 @@
       "message": "would it be better to cache the value and update it via a\nPropertiesChanged signal instead of querying it on each entry?",
       "revId": "ae365632bd83d2ac1bf45e9eca785388bd3fc26d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9df58fa_43ddef98",
+        "filename": "log_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-06-24T10:37:08Z",
+      "side": 1,
+      "message": "Addressed. I have replaced per-entry SelPolicy D-Bus lookups with a cached policy in Manager. The cache is initialized once and updated via PropertiesChanged on xyz.openbmc_project.Logging.Settings, so createEntry now uses cachedSelPolicy and avoids hot-path D-Bus calls.",
+      "parentUuid": "3be3020a_4d25e37a",
+      "revId": "ae365632bd83d2ac1bf45e9eca785388bd3fc26d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
