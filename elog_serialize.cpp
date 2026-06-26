@@ -227,13 +227,13 @@ bool deserializeJSON(const fs::path& path, Entry& e)
         }
         e.associations(associations, true);
 
-        e.version(j.at("version").get<std::string>(), true);
+        e.version(j.value("version", std::string{}), true);
         e.purpose(sdbusplus::server::xyz::openbmc_project::software::Version::
                       VersionPurpose::BMC,
                   true);
-        e.updateTimestamp(j.at("updateTimestamp").get<uint64_t>(), true);
-        e.eventId(j.at("eventId").get<std::string>(), true);
-        e.resolution(j.at("resolution").get<std::string>(), true);
+        e.updateTimestamp(j.value("updateTimestamp", e.timestamp()), true);
+        e.eventId(j.value("eventId", std::string{}), true);
+        e.resolution(j.value("resolution", std::string{}), true);
 
         return true;
     }
