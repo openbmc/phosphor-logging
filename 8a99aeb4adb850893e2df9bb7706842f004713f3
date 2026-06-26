@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e957b93_3adb77de",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 31
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-26T21:41:05Z",
+      "side": 1,
+      "message": "I\u0027m really sorry, I missed this before. Since this is in the phosphor-logging repo, there is no need to preface the commit message with the repo name.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 17
+      },
+      "revId": "8a99aeb4adb850893e2df9bb7706842f004713f3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
