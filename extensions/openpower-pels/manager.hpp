@@ -1,7 +1,6 @@
 #pragma once
 
-#include "config.h"
-
+#include "constants.hpp"
 #include "data_interface.hpp"
 #include "event_logger.hpp"
 #include "host_notifier.hpp"
