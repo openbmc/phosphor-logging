@@ -16,6 +16,24 @@
       "message": "what happened here?  If some new compile/clang fail popped up, can you move this to a separate commit that goes before this one?\n\nOther than that, everything looks good.",
       "revId": "c9bcb1456e1f4b1de3f5092d76954cf7daa15774",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b637c05_d389a633",
+        "filename": "elog_serialize.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-06-26T05:53:24Z",
+      "side": 1,
+      "message": "Acknowledged, thanks.\nhttps://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/91750\nI\u0027ve split the JSON deserialization fix into a separate commit",
+      "parentUuid": "1f369b47_d53532f5",
+      "revId": "c9bcb1456e1f4b1de3f5092d76954cf7daa15774",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
