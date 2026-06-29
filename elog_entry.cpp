@@ -15,6 +15,14 @@ namespace phosphor
 namespace logging
 {
 
+void Entry::persist()
+{
+    // Persist entry state to storage (binary + JSON)
+    // Centralized helper to avoid duplication across setter
+    serialize(*this);
+    serializeJSON(*this);
+}
+
 // TODO Add interfaces to handle the error log id numbering
 
 void Entry::delete_()
@@ -65,8 +73,7 @@ bool Entry::resolved(bool value)
                           .count();
         updateTimestamp(ms);
 
-        serialize(*this);
-        serializeJSON(*this);
+        persist();
     }
 
     return current;
@@ -81,8 +88,7 @@ std::string Entry::eventId(std::string value)
         current =
             sdbusplus::server::xyz::openbmc_project::logging::Entry::eventId(
                 value);
-        serialize(*this);
-        serializeJSON(*this);
+        persist();
     }
 
     return current;
@@ -97,8 +103,7 @@ std::string Entry::resolution(std::string value)
         current =
             sdbusplus::server::xyz::openbmc_project::logging::Entry::resolution(
                 value);
-        serialize(*this);
-        serializeJSON(*this);
+        persist();
     }
 
     return current;
