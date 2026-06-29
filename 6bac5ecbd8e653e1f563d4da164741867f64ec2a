@@ -16,6 +16,24 @@
       "message": "This isn\u0027t the only place at() was used.  It\u0027s still used 7 times above.\n\nThere is already code in place here to catch corrupt JSON, below in the catch.  \nWith how unlikely this is to happen, I think I\u0027d prefer to just keep it how it is and delete the file.  At least that way we get good debug data.",
       "revId": "6bac5ecbd8e653e1f563d4da164741867f64ec2a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43810723_e1f96194",
+        "filename": "elog_serialize.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-06-29T03:56:48Z",
+      "side": 1,
+      "message": "@spinler@us.ibm.com\n\nhttps://jenkins.openbmc.org/job/ci-repository/138375/console\n\nI switched to j.value() earlier because I was seeing a failure with j.at() at that point. After reworking the changes, I’m no longer able to reproduce that issue and j.at() works as expected.\nGiven that we already handle corrupt JSON via exceptions and cleanup, it’s better to keep the strict behavior rather than introduce defaulting.\n\nill revert the changes",
+      "parentUuid": "ed38d6c3_91ddb824",
+      "revId": "6bac5ecbd8e653e1f563d4da164741867f64ec2a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
