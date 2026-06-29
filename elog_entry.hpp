@@ -181,6 +181,9 @@ class Entry : public EntryIfaces
      * @param[in] source - The event source object used
      */
     void closeFD(int fd, sdeventplus::source::EventBase& source);
+
+    /** @brief Persist the entry state */
+    void persist();
 };
 
 } // namespace logging
