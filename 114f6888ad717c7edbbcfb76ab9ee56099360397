@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "40672a17_30c1deb1",
+        "filename": "phosphor-rsyslog-config/server-conf.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-06-29T04:16:22Z",
+      "side": 1,
+      "message": "If parseConfig() is made tolerant to comments and blank lines, but\nwriteConfig() rewrites the file into a single line and removes everything else,\nare we intentionally not preserving existing content?\n\nWhat\u0027s the expected behavior here?",
+      "parentUuid": "12d5ca48_2bf6cf02",
+      "revId": "114f6888ad717c7edbbcfb76ab9ee56099360397",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df50cd33_9f3bf145",
