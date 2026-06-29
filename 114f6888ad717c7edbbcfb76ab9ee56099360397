@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "704b5c37_17e2ba3a",
+        "filename": "phosphor-rsyslog-config/server-conf.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-29T21:22:19Z",
+      "side": 1,
+      "message": "Agreed.  writeConfig() would just overwrite anything.",
+      "parentUuid": "40672a17_30c1deb1",
+      "revId": "114f6888ad717c7edbbcfb76ab9ee56099360397",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "df50cd33_9f3bf145",
         "filename": "phosphor-rsyslog-config/server-conf.cpp",
         "patchSetId": 1
