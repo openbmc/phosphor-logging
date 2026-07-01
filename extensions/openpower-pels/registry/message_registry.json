@@ -6881,6 +6881,35 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.State.BMC.Redundancy.FailoverFailed",
+            "Subsystem": "bmc_firmware",
+            "ComponentID": "0x8000",
+            "Severity": "unrecoverable",
+            "SRC": {
+                "ReasonCode": "0x8006",
+                "Words6To9": {}
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "BMC0002" }
+                    ]
+                }
+            ],
+            "Documentation": {
+                "Description": "The requested BMC failover did not occur",
+                "Message": "The requested BMC failover did not occur",
+                "Notes": [
+                    "A failover was requested from the active BMC, but the BMC was never reset",
+                    "so the failover must have failed."
+                ]
+            },
+            "JournalCapture": {
+                "NumLines": 75
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.Memory.MemoryECC.Error.isLoggingLimitReached",
             "Subsystem": "cec_hardware",
             "ComponentID": "0xF300",
