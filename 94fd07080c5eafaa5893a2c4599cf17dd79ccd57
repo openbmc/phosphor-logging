@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "636f937c_4c4ca66b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 37
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-01T22:06:09Z",
+      "side": 1,
+      "message": "didn\u0027t quite finish the review, will pick up after the holidays",
+      "revId": "94fd07080c5eafaa5893a2c4599cf17dd79ccd57",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3fb8983_b93eee05",
+        "filename": "elog_entry.hpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-01T22:06:09Z",
+      "side": 1,
+      "message": "seem unrelated",
+      "range": {
+        "startLine": 107,
+        "startChar": 51,
+        "endLine": 107,
+        "endChar": 63
+      },
+      "revId": "94fd07080c5eafaa5893a2c4599cf17dd79ccd57",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de6af8c8_63d861a0",
+        "filename": "elog_entry.hpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-01T22:06:09Z",
+      "side": 1,
+      "message": "This has been working fine for years for as far as I know.  why the changes?",
+      "revId": "94fd07080c5eafaa5893a2c4599cf17dd79ccd57",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28ce42cb_4caf1b34",
+        "filename": "log_manager.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-01T22:06:09Z",
+      "side": 1,
+      "message": "the settings service name and object path are already hardcoded elsewhere in this file (and you are too below), so you may as well just hardcode here.",
+      "revId": "94fd07080c5eafaa5893a2c4599cf17dd79ccd57",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f8cb44e_a2280247",
+        "filename": "log_manager.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-01T22:06:09Z",
+      "side": 1,
+      "message": "you would add the interface to the default settings config for all systems so everyone would have this interface and not see this message?",
+      "range": {
+        "startLine": 295,
+        "startChar": 0,
+        "endLine": 296,
+        "endChar": 37
+      },
+      "revId": "94fd07080c5eafaa5893a2c4599cf17dd79ccd57",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
