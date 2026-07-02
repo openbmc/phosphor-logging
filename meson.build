@@ -195,6 +195,7 @@ executable(
     cpp_args: log_manager_ext_args,
     dependencies: [conf_h_dep, log_manager_deps, phosphor_logging_dep],
     install: true,
+    install_dir: get_option('libexecdir') / 'phosphor-logging',
     link_with: log_manager_lib,
 )
 
@@ -224,6 +225,7 @@ executable(
     'logging_test.cpp',
     dependencies: [pdi_dep, phosphor_logging_dep, sdbusplus_dep],
     install: true,
+    install_dir: get_option('libexecdir') / 'phosphor-logging',
 )
 executable(
     'callout-test',
@@ -236,6 +238,7 @@ executable(
         sdeventplus_dep,
     ],
     install: true,
+    install_dir: get_option('libexecdir') / 'phosphor-logging',
 )
 
 subdir('dist')

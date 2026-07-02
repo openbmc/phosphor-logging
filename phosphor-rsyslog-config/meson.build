@@ -15,4 +15,5 @@ executable(
         sdeventplus_dep,
     ],
     install: true,
+    install_dir: get_option('libexecdir') / 'phosphor-logging',
 )
