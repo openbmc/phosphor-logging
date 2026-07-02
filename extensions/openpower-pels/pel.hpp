@@ -417,7 +417,7 @@ class PEL
                             const JournalBase& journal);
 
     /**
-     * @brief API to collect the addditional details of the DIMM callouts in
+     * @brief API to collect the additional details of the DIMM callouts in
      * the PEL as a JSON object in adSysInfoData.
      *
      * @param[in] src - Unique pointer to the SRC object

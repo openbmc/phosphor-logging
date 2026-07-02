@@ -19,7 +19,7 @@ namespace phal
 {
 
 /**
- * @brief Helper function to get gard type based on
+ * @brief Helper function to get guard type based on
  *        the given GardType string
  *
  * @param[in] guardTypeStr guard type enum value as a string

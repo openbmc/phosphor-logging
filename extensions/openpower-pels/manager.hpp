@@ -466,7 +466,7 @@ class Manager : public PELInterface
      *
      * @param[in] pel - The PEL to use
      *
-     * @return bool - false for Repositor::for_each().
+     * @return bool - false for Repository::for_each().
      */
     bool updateResolution(const openpower::pels::PEL& pel);
 
