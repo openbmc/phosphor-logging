@@ -628,7 +628,7 @@ class Repository
     std::map<LogID, PELAttributes> _pelAttributes;
 
     /**
-     * @brief Subcriptions for new PELs.
+     * @brief Subscriptions for new PELs.
      */
     std::map<std::string, AddCallback> _addSubscriptions;
 

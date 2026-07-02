@@ -197,7 +197,7 @@ static auto log_convert(const char* h, log_flag<Fs...> f, const V& v)
     prohibit(f, signed_val);
     prohibit(f, unsigned_val);
 
-    // Utiilty to handle conversion to a 'const char*' depending on V:
+    // Utility to handle conversion to a 'const char*' depending on V:
     //  - 'const char*' and similar use static cast.
     //  - 'std::filesystem::path' use c_str() function.
     //  - 'std::string' and 'std::string_view' use data() function.
