@@ -2,7 +2,7 @@
 Description=Rsyslog config updater
 
 [Service]
-ExecStart=/usr/bin/phosphor-rsyslog-conf
+ExecStart=/usr/libexec/phosphor-logging/phosphor-rsyslog-conf
 Restart=always
 Type=dbus
 BusName=xyz.openbmc_project.Syslog.Config
