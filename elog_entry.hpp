@@ -84,25 +84,42 @@ class Entry : public EntryIfaces
         version(fwVersion, true);
         purpose(VersionPurpose::BMC, true);
         path(filePath, true);
+        eventId("", true);
+        resolution("", true);
 
         // Emit deferred signal.
         this->emit_object_added();
     };
 
     /** @brief Constructor that puts an "empty" error object on the bus,
-     *         with only the id property populated. Rest of the properties
-     *         to be set by the caller. Caller should emit the added signal.
+     *         with default property values populated. Caller may update the
+     *         properties before emitting the added signal.
      *  @param[in] bus - Bus to attach to.
-     *  @param[in] path - Path to attach at.
+     *  @param[in] objectPath - Path to attach at.
      *  @param[in] id - The error entry id.
      *  @param[in] parent - The error's parent.
      */
-    Entry(sdbusplus::bus_t& bus, const std::string& path, uint32_t entryId,
+    Entry(sdbusplus::bus_t& bus, const std::string& objectPath,
+          uint32_t entryId,
           internal::Manager& parent) :
-        EntryIfaces(bus, path.c_str(), EntryIfaces::action::defer_emit),
+        EntryIfaces(bus, objectPath.c_str(), EntryIfaces::action::defer_emit),
         parent(parent)
     {
         id(entryId, true);
+        severity(Entry::Level::Error, true);
+        timestamp(0, true);
+        updateTimestamp(0, true);
+        message("", true);
+        additionalData({}, true);
+        associations({}, true);
+        assocs = associations();
+        sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved(
+            false, true);
+        version("", true);
+        purpose(VersionPurpose::BMC, true);
+        path("", true);
+        eventId("", true);
+        resolution("", true);
     };
 
     /**
