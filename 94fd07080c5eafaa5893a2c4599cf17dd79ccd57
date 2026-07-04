@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "698c5150_a6ff9e1c",
+        "filename": "elog_entry.hpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-07-04T14:39:44Z",
+      "side": 1,
+      "message": "Agreed. That rename was unrelated to the log-policy change, so I reverted it and kept the original constructor argument style in elog_entry.hpp",
+      "parentUuid": "c3fb8983_b93eee05",
+      "range": {
+        "startLine": 107,
+        "startChar": 51,
+        "endLine": 107,
+        "endChar": 63
+      },
+      "revId": "94fd07080c5eafaa5893a2c4599cf17dd79ccd57",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de6af8c8_63d861a0",
@@ -54,6 +78,24 @@
       "writtenOn": "2026-07-01T22:06:09Z",
       "side": 1,
       "message": "This has been working fine for years for as far as I know.  why the changes?",
+      "revId": "94fd07080c5eafaa5893a2c4599cf17dd79ccd57",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8e8b315_cae6d41d",
+        "filename": "elog_entry.hpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-07-04T14:39:44Z",
+      "side": 1,
+      "message": "Agreed. The default severity initialization in the minimal constructor was unnecessary for this series and could change long-standing behavior, so I removed it. The minimal constructor is back to id-only initialization in elog_entry.hpp, matching prior behavior.",
+      "parentUuid": "de6af8c8_63d861a0",
       "revId": "94fd07080c5eafaa5893a2c4599cf17dd79ccd57",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -75,6 +117,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b424fe91_40bd9c3b",
+        "filename": "log_manager.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-07-04T14:39:44Z",
+      "side": 1,
+      "message": "Makes sense. I consolidated the settings service/object/interface/property strings as shared file-level constants and reused them across all call sites, including this one and the existing QuiesceOnHwError path.",
+      "parentUuid": "28ce42cb_4caf1b34",
+      "revId": "94fd07080c5eafaa5893a2c4599cf17dd79ccd57",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0f8cb44e_a2280247",
@@ -88,6 +148,30 @@
       "writtenOn": "2026-07-01T22:06:09Z",
       "side": 1,
       "message": "you would add the interface to the default settings config for all systems so everyone would have this interface and not see this message?",
+      "range": {
+        "startLine": 295,
+        "startChar": 0,
+        "endLine": 296,
+        "endChar": 37
+      },
+      "revId": "94fd07080c5eafaa5893a2c4599cf17dd79ccd57",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59da8d92_e2dc477e",
+        "filename": "log_manager.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-07-04T14:39:44Z",
+      "side": 1,
+      "message": "Good point. I removed the noisy “interface not found” info path and now silently fall back to Circular policy when Logging.Settings is absent, so platforms without that interface continue to work without log spam.",
+      "parentUuid": "0f8cb44e_a2280247",
       "range": {
         "startLine": 295,
         "startChar": 0,
