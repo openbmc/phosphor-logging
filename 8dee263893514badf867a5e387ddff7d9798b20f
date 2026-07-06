@@ -16,6 +16,24 @@
       "message": "elog\u003c\u003e is a valid provided logging API.",
       "revId": "8dee263893514badf867a5e387ddff7d9798b20f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e271c6c_4b921047",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-07-06T15:17:05Z",
+      "side": 1,
+      "message": "Understood. Abandoning since this was the only change.",
+      "parentUuid": "3192fce5_dda18a9e",
+      "revId": "8dee263893514badf867a5e387ddff7d9798b20f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
