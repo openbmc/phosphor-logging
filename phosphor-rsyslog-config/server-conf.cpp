@@ -155,7 +155,7 @@ std::string Server::address(std::string value)
     catch (const std::exception& e)
     {
         lg2::error("Exception: {ERR}", "ERR", e);
-        elog<InternalFailure>();
+        throw InternalFailure();
     }
 
     return result;
@@ -184,7 +184,7 @@ uint16_t Server::port(uint16_t value)
     catch (const std::exception& e)
     {
         lg2::error("Exception: {ERR}", "ERR", e);
-        elog<InternalFailure>();
+        throw InternalFailure();
     }
 
     return result;
@@ -213,7 +213,7 @@ NetworkClient::TransportProtocol Server::transportProtocol(
     catch (const std::exception& e)
     {
         lg2::error("Exception: {ERR}", "ERR", e);
-        elog<InternalFailure>();
+        throw InternalFailure();
     }
 
     return result;
