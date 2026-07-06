@@ -3947,6 +3947,10 @@
             "JournalCapture": {
                 "Sections": [
                     {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 30
+                    },
+                    {
                         "SyslogID": "phosphor-psu-monitor",
                         "NumLines": 30
                     },
@@ -3992,6 +3996,10 @@
             },
             "JournalCapture": {
                 "Sections": [
+                    {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 30
+                    },
                     {
                         "SyslogID": "phosphor-psu-monitor",
                         "NumLines": 30
@@ -4039,6 +4047,10 @@
             "JournalCapture": {
                 "Sections": [
                     {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 30
+                    },
+                    {
                         "SyslogID": "phosphor-psu-monitor",
                         "NumLines": 30
                     },
@@ -4084,6 +4096,10 @@
             },
             "JournalCapture": {
                 "Sections": [
+                    {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 30
+                    },
                     {
                         "SyslogID": "phosphor-psu-monitor",
                         "NumLines": 30
