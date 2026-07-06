@@ -71,6 +71,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ff6ba5b_5a176d59",
+        "filename": "config/config.h.meson",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-07-06T10:43:32Z",
+      "side": 1,
+      "message": "Thanks will rebase once this commit is in.",
+      "parentUuid": "009400ea_64c4cda9",
+      "revId": "6a82fcd58e5b872a198f649f616cfe68ed8ff5e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "052767b7_103a067c",
@@ -84,6 +102,30 @@
       "writtenOn": "2026-06-23T22:00:31Z",
       "side": 1,
       "message": "I don\u0027t see this used in this file or the header, so maybe not needed here and instead in extensions.hpp?\n\nWherever it does end up, maybe just have it aliased to the vector itself, so people can do \u0027const AdditionalDataVec\u0026\u0027 so it\u0027s easy to tell what it is.  or maybe since it\u0027s a simple enough type the alias isn\u0027t necessary.",
+      "range": {
+        "startLine": 28,
+        "startChar": 6,
+        "endLine": 28,
+        "endChar": 24
+      },
+      "revId": "6a82fcd58e5b872a198f649f616cfe68ed8ff5e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc6cd39e_5f0047ea",
+        "filename": "elog_entry.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-07-06T10:43:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "052767b7_103a067c",
       "range": {
         "startLine": 28,
         "startChar": 6,
@@ -111,6 +153,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "075816d1_f63cfaae",
+        "filename": "elog_serialize.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-07-06T10:43:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3f098406_49213bfc",
+      "revId": "6a82fcd58e5b872a198f649f616cfe68ed8ff5e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8934f87d_8f7dfb37",
@@ -134,6 +194,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9229bb23_a01329b6",
+        "filename": "log_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1046,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-07-06T10:43:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8934f87d_8f7dfb37",
+      "range": {
+        "startLine": 1046,
+        "startChar": 67,
+        "endLine": 1046,
+        "endChar": 76
+      },
+      "revId": "6a82fcd58e5b872a198f649f616cfe68ed8ff5e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a68a7194_842f02e3",
@@ -147,6 +231,24 @@
       "writtenOn": "2026-06-23T22:00:31Z",
       "side": 1,
       "message": "I think it would be good to add a testcase here to test your deserialize JSON code.  unless that test exists elsewhere and I missed it",
+      "revId": "6a82fcd58e5b872a198f649f616cfe68ed8ff5e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2563e606_62085339",
+        "filename": "test/serialization_test_json.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-07-06T10:43:32Z",
+      "side": 1,
+      "message": "https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/90968/8/test/serialization_test_properties.cpp#14 includes properties level serilization/deserlize code. updaed with oem filed here . is this good ?",
+      "parentUuid": "a68a7194_842f02e3",
       "revId": "6a82fcd58e5b872a198f649f616cfe68ed8ff5e9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
