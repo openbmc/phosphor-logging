@@ -888,6 +888,221 @@
         },
 
         {
+            "Name": "org.open_power.PHAL.Error.AddrTranslation",
+            "Subsystem": "cec_hardware",
+            "ComponentID": "0x3000",
+            "Severity": "unrecoverable",
+
+            "SRC": {
+                "ReasonCode": "0x300D",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "BMC0001" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "Address translation failure",
+                "Message": "SCOM address translation failed",
+                "Notes": [
+                    "SCOM address translation failed, typically due to",
+                    "invalid addresses, unsupported chip units, or",
+                    "translation API failures.",
+                    "Debug traces will be captured in AdditionalData section"
+                ]
+            }
+        },
+
+        {
+            "Name": "org.open_power.PHAL.Error.InvalidTarget",
+            "Subsystem": "cec_hardware",
+            "ComponentID": "0x3000",
+            "Severity": "unrecoverable",
+
+            "SRC": {
+                "ReasonCode": "0x300E",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "BMC0001" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "Invalid target",
+                "Message": "Target pointer is null or invalid",
+                "Notes": [
+                    "A target pointer is null or invalid (not a valid",
+                    "target object). This indicates a programming error or",
+                    "corrupted target data.",
+                    "Debug traces will be captured in AdditionalData section"
+                ]
+            }
+        },
+
+        {
+            "Name": "org.open_power.PHAL.Error.InvalidTargetType",
+            "Subsystem": "cec_hardware",
+            "ComponentID": "0x3000",
+            "Severity": "unrecoverable",
+
+            "SRC": {
+                "ReasonCode": "0x3010",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "BMC0001" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "Invalid target type",
+                "Message": "Target has unsupported or invalid type",
+                "Notes": [
+                    "A target has an unsupported or invalid type for the",
+                    "requested operation.",
+                    "Debug traces will be captured in AdditionalData section"
+                ]
+            }
+        },
+
+        {
+            "Name": "org.open_power.PHAL.Error.SbeiOperation",
+            "Subsystem": "cec_hardware",
+            "ComponentID": "0x3000",
+            "Severity": "unrecoverable",
+
+            "SRC": {
+                "ReasonCode": "0x3011",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "BMC0001" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "SBEI operation failure",
+                "Message": "SBE Interface operation failed",
+                "Notes": [
+                    "An SBEI (SBE Interface) operation failed.",
+                    "This could be due to communication errors, unexpected",
+                    "response sizes, or other SBE interface issues.",
+                    "Debug traces will be captured in AdditionalData section"
+                ]
+            }
+        },
+
+        {
+            "Name": "org.open_power.PHAL.Error.SppeUpdate",
+            "Subsystem": "cec_hardware",
+            "ComponentID": "0x3000",
+            "Severity": "unrecoverable",
+
+            "SRC": {
+                "ReasonCode": "0x3012",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "BMC0001" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "SPPE update failure",
+                "Message": "SPPE boot or update algorithm failed",
+                "Notes": [
+                    "An SPPE boot/update algorithm failure occurred.",
+                    "This could be related to boot side, update side, or",
+                    "LID issues.",
+                    "Debug traces will be captured in AdditionalData section"
+                ]
+            }
+        },
+
+        {
+            "Name": "org.open_power.PHAL.Error.Transport",
+            "Subsystem": "cec_hardware",
+            "ComponentID": "0x3000",
+            "Severity": "unrecoverable",
+
+            "SRC": {
+                "ReasonCode": "0x3013",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "BMC0001" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "Transport layer failure",
+                "Message": "Hardware transport layer operation failed",
+                "Notes": [
+                    "A transport layer failure occurred (CFAM, SCOM,",
+                    "SBEFIFO, etc.). This indicates a hardware",
+                    "communication error.",
+                    "Debug traces will be captured in AdditionalData section"
+                ]
+            }
+        },
+
+        {
+            "Name": "org.open_power.PHAL.Error.TargetNotFound",
+            "Subsystem": "cec_hardware",
+            "ComponentID": "0x3000",
+            "Severity": "unrecoverable",
+
+            "SRC": {
+                "ReasonCode": "0x3014",
+                "Words6To9": {}
+            },
+
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "Procedure": "BMC0001" }
+                    ]
+                }
+            ],
+
+            "Documentation": {
+                "Description": "Target not found",
+                "Message": "Target is not found or cannot be located",
+                "Notes": [
+                    "A target is not found, missing, or cannot be located for",
+                    "hardware operations.",
+                    "Debug traces will be captured in AdditionalData section"
+                ]
+            }
+        },
+
+        {
             "Name": "org.open_power.OCC.Firmware.Error.PresenceMismatch",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x2600",
