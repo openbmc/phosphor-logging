@@ -34,6 +34,24 @@
       "parentUuid": "376bcfd1_02214c3a",
       "revId": "b4b3759aacd5bdfcbeaa95745db8a6db6acf71fb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57f865b9_7f567008",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-07-07T16:20:47Z",
+      "side": 1,
+      "message": "Acknowledged - ill keep the executable test scripts in /usr/bin.",
+      "parentUuid": "482fdb91_6c58eb52",
+      "revId": "b4b3759aacd5bdfcbeaa95745db8a6db6acf71fb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

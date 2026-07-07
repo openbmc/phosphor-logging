@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a834c4d_d834a820",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-07-07T16:20:47Z",
+      "side": 1,
+      "message": "Moved callout-test and logging-test back to their original install location, /usr/bin.",
+      "revId": "f8ba6e3a16ef1b051ec5880b40fa0e96fc794180",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
