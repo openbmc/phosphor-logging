@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfbbade5_c2ecb8c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-07-08T18:09:55Z",
+      "side": 1,
+      "message": "Changed commit message prefix from \"phosphor-logging:\" to \"meson:\"",
+      "revId": "a81ad84f833304509041094499d027d25aa3aae6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
