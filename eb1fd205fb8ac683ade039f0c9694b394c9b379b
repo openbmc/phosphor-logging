@@ -1,0 +1,347 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a8a3ca3_f8e2f2a2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 55
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-09T22:06:59Z",
+      "side": 1,
+      "message": "Please also update the main README with the new functionality.",
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bfe5bf5_e9f1bb2a",
+        "filename": "elog_entry.hpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-09T22:06:59Z",
+      "side": 1,
+      "message": "why did you change this? I don\u0027t see why it\u0027s related.",
+      "range": {
+        "startLine": 102,
+        "startChar": 52,
+        "endLine": 102,
+        "endChar": 56
+      },
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b349a81_833d0aef",
+        "filename": "elog_entry.hpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-09T22:06:59Z",
+      "side": 1,
+      "message": "why did you change this?  I don\u0027t see why it\u0027s related.",
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7443529c_f18abc24",
+        "filename": "log_manager.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-09T22:06:59Z",
+      "side": 1,
+      "message": "is rolling over a worry?",
+      "range": {
+        "startLine": 118,
+        "startChar": 12,
+        "endLine": 118,
+        "endChar": 30
+      },
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d76446e4_cbc60ef8",
+        "filename": "log_manager.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-09T22:06:59Z",
+      "side": 1,
+      "message": "why does this need a try if getLogPolicy already has one?",
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ce7f70e_6f46a1a6",
+        "filename": "log_manager.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-09T22:06:59Z",
+      "side": 1,
+      "message": "this won\u0027t throw, so you can just make the match a normal member of the class and create it in the constructor.",
+      "range": {
+        "startLine": 299,
+        "startChar": 0,
+        "endLine": 304,
+        "endChar": 61
+      },
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "104e0edf_bf5eb363",
+        "filename": "log_manager.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-09T22:06:59Z",
+      "side": 1,
+      "message": "I\u0027m not sure why you\u0027re checking this? I\u0027ve never seen this check in any openbmc code.",
+      "range": {
+        "startLine": 323,
+        "startChar": 0,
+        "endLine": 329,
+        "endChar": 5
+      },
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1142c600_41fe0dba",
+        "filename": "log_manager.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-09T22:06:59Z",
+      "side": 1,
+      "message": "same comment about nested try/catches as above.",
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc598131_f0c75063",
+        "filename": "log_manager.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-09T22:06:59Z",
+      "side": 1,
+      "message": "in general you want to create the match before reading the property so you don\u0027t miss a window, but with my comment above that won\u0027t be an issue.",
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cbb06d2_242d6b89",
+        "filename": "log_manager.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-09T22:06:59Z",
+      "side": 1,
+      "message": "I\u0027m not following what\u0027s going on with \u0027invalidated\u0027 at all in this function",
+      "range": {
+        "startLine": 381,
+        "startChar": 0,
+        "endLine": 383,
+        "endChar": 26
+      },
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa02ac57_cc6cdf5e",
+        "filename": "log_manager.hpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-09T22:06:59Z",
+      "side": 1,
+      "message": "why is this virtual?",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 11
+      },
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7269ee41_8312e169",
+        "filename": "log_manager.hpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-09T22:06:59Z",
+      "side": 1,
+      "message": "it\u0027s a match, not a callback.",
+      "range": {
+        "startLine": 369,
+        "startChar": 61,
+        "endLine": 369,
+        "endChar": 70
+      },
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c238ebd2_cb72e688",
+        "filename": "log_manager.hpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-09T22:06:59Z",
+      "side": 1,
+      "message": "can just drop the \u0027cached\u0027.",
+      "range": {
+        "startLine": 372,
+        "startChar": 16,
+        "endLine": 372,
+        "endChar": 22
+      },
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b566e63a_0b7af74b",
+        "filename": "test/serialization_test_json.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-09T22:06:59Z",
+      "side": 1,
+      "message": "seems unrelated?",
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d152455e_95ada3c5",
+        "filename": "test/serialization_test_path.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-09T22:06:59Z",
+      "side": 1,
+      "message": "seems unrelated",
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01330359_417d598c",
+        "filename": "test/serialization_test_properties.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-09T22:06:59Z",
+      "side": 1,
+      "message": "all of these seem unrelated",
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80bfc2aa_4369ad2b",
+        "filename": "test/serialization_tests.hpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-09T22:06:59Z",
+      "side": 1,
+      "message": "why was this necessary?",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 38,
+        "endChar": 48
+      },
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
