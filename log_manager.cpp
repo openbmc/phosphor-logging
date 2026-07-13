@@ -226,7 +226,7 @@ auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
         {
             if (realErrors.size() >= ERROR_CAP)
             {
-                erase(realErrors.front());
+                erase(getEvictionCandidate(realErrors));
             }
         }
         else
@@ -610,6 +610,20 @@ size_t Manager::eraseAll()
         }
     }
     return entriesSize;
+}
+
+uint32_t Manager::getEvictionCandidate(const std::list<uint32_t>& ids)
+{
+    for (auto id : ids)
+    {
+        auto it = entries.find(id);
+        if (it != entries.end() && it->second->resolved())
+        {
+            return id;
+        }
+    }
+
+    return ids.front();
 }
 
 void Manager::erase(uint32_t entryId)

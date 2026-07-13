@@ -117,6 +117,16 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     void erase(uint32_t entryId);
 
+    /** @brief Choose which entry to evict when a severity cap is reached.
+     *
+     * Prefers the oldest resolved entry so that unresolved entries are
+     * retained; falls back to the oldest entry when none are resolved.
+     *
+     * @param[in] ids - ordered (oldest first) entry IDs for a severity class.
+     * @return the entry ID to erase.
+     */
+    uint32_t getEvictionCandidate(const std::list<uint32_t>& ids);
+
     /** @brief Construct error d-bus objects from their persisted
      *         representations.
      */
