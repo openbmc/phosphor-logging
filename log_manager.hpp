@@ -75,14 +75,15 @@ class Manager : public details::ServerObject<details::ManagerIface>
      *  @param[in] bus - Bus to attach to.
      *  @param[in] path - Path to attach at.
      */
-    Manager(sdbusplus::bus_t& bus, const char* objPath) :
+    Manager(sdbusplus::bus_t& bus, const char* objPath,
+            const std::filesystem::path& bmcPosFile = bmcPositionFile) :
         details::ServerObject<details::ManagerIface>(bus, objPath), busLog(bus),
         entryId(0), fwVersion(readFWVersion()),
         event(sdeventplus::Event::get_default())
     {
         if constexpr (REDUNDANT_BMC)
         {
-            bmcPosMgr = std::make_unique<BMCPosMgr>();
+            bmcPosMgr = std::make_unique<BMCPosMgr>(bmcPosFile);
         }
     };
 
@@ -112,11 +113,23 @@ class Manager : public details::ServerObject<details::ManagerIface>
     uint32_t commitWithLvl(uint64_t transactionId, std::string errMsg,
                            uint32_t errLvl) override;
 
+    /** @brief Map of Entry dbus objects, keyed by and ordered by their ID. */
+    using EntryMap = std::map<uint32_t, std::unique_ptr<Entry>>;
+
     /** @brief Erase specified entry d-bus object
      *
      * @param[in] entryId - unique identifier of the entry
      */
     void erase(uint32_t entryId);
+
+    /** @brief Choose which entry to evict when the real-error cap is reached.
+     *
+     * Prefers the oldest resolved error in the oldest half of the list, falling
+     * back to the oldest error when none are resolved there.
+     *
+     * @return iterator into entries for the entry to erase.
+     */
+    EntryMap::iterator getEvictionCandidate();
 
     /** @brief Construct error d-bus objects from their persisted
      *         representations.
@@ -240,9 +253,15 @@ class Manager : public details::ServerObject<details::ManagerIface>
     void setupErrorFileWatch();
 
     /** @brief Persistent map of Entry dbus objects and their ID */
-    std::map<uint32_t, std::unique_ptr<Entry>> entries;
+    EntryMap entries;
 
   private:
+    /** @brief Erase the entry referenced by the given map iterator.
+     *
+     * @param[in] entryIt - iterator into entries for the entry to erase.
+     */
+    void erase(EntryMap::iterator entryIt);
+
     /*
      * @fn _commit()
      * @brief commit() helper
