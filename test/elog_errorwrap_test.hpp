@@ -11,6 +11,7 @@
 #include <sdbusplus/bus.hpp>
 
 #include <filesystem>
+#include <fstream>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -70,8 +71,9 @@ void journalImpl::sd_journal_close(sd_journal*)
 class MockJournal : public Manager
 {
   public:
-    MockJournal(sdbusplus::bus_t& bus, const char* objPath) :
-        Manager(bus, objPath) {};
+    MockJournal(sdbusplus::bus_t& bus, const char* objPath,
+                const std::filesystem::path& bmcPosFile) :
+        Manager(bus, objPath, bmcPosFile) {};
     MOCK_METHOD0(journalSync, void());
     MOCK_METHOD2(sd_journal_open, int(sd_journal**, int));
     MOCK_METHOD4(sd_journal_get_data,
@@ -86,9 +88,19 @@ class TestLogManager : public testing::Test
     MockJournal manager;
     TestLogManager() :
         bus(sdbusplus::bus::new_default()),
-        manager(bus, "/xyz/openbmc_test/abc")
+        manager(bus, "/xyz/openbmc_test/abc", makeBmcPositionFile())
     {
         fs::create_directories(paths::error());
+    }
+
+    // Give the manager a valid BMC position so entry IDs are a deterministic
+    // monotonic counter, avoiding time-based ID collisions when filling the
+    // cap.
+    static std::filesystem::path makeBmcPositionFile()
+    {
+        auto path = fs::temp_directory_path() / "test_elog_errorwrap_bmc_pos";
+        std::ofstream{path} << "0";
+        return path;
     }
 
     ~TestLogManager()
