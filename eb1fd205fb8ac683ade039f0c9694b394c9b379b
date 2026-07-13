@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6cc6fcb_35488379",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 55
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-07-13T05:19:15Z",
+      "side": 1,
+      "message": "Addressed. I have updated the main README with the new log retention policy behavior.",
+      "parentUuid": "2a8a3ca3_f8e2f2a2",
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3bfe5bf5_e9f1bb2a",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-07-09T22:06:59Z",
       "side": 1,
       "message": "why did you change this? I don\u0027t see why it\u0027s related.",
+      "range": {
+        "startLine": 102,
+        "startChar": 52,
+        "endLine": 102,
+        "endChar": 56
+      },
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81582a4d_1b141a9c",
+        "filename": "elog_entry.hpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-07-13T05:19:15Z",
+      "side": 1,
+      "message": "Updated. That unrelated change was dropped; no functional change to this part is included now.",
+      "parentUuid": "3bfe5bf5_e9f1bb2a",
       "range": {
         "startLine": 102,
         "startChar": 52,
@@ -58,6 +100,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3c68e81_b10906ff",
+        "filename": "elog_entry.hpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-07-13T05:19:15Z",
+      "side": 1,
+      "message": "Done. That unrelated change was dropped; this line is no longer part of the policy-change.",
+      "parentUuid": "5b349a81_833d0aef",
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7443529c_f18abc24",
@@ -71,6 +131,30 @@
       "writtenOn": "2026-07-09T22:06:59Z",
       "side": 1,
       "message": "is rolling over a worry?",
+      "range": {
+        "startLine": 118,
+        "startChar": 12,
+        "endLine": 118,
+        "endChar": 30
+      },
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e29e4abf_e35ba484",
+        "filename": "log_manager.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-07-13T05:19:15Z",
+      "side": 1,
+      "message": "Removed the rollover concern logic from this change and kept behavior aligned with existing flow.",
+      "parentUuid": "7443529c_f18abc24",
       "range": {
         "startLine": 118,
         "startChar": 12,
@@ -98,6 +182,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "844d366f_7be47c3d",
+        "filename": "log_manager.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-07-13T05:19:15Z",
+      "side": 1,
+      "message": "Removed the extra/nested try handling; retained the existing error-handling model.",
+      "parentUuid": "d76446e4_cbc60ef8",
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4ce7f70e_6f46a1a6",
@@ -111,6 +213,30 @@
       "writtenOn": "2026-07-09T22:06:59Z",
       "side": 1,
       "message": "this won\u0027t throw, so you can just make the match a normal member of the class and create it in the constructor.",
+      "range": {
+        "startLine": 299,
+        "startChar": 0,
+        "endLine": 304,
+        "endChar": 61
+      },
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "beb1b0f1_77765f95",
+        "filename": "log_manager.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-07-13T05:19:15Z",
+      "side": 1,
+      "message": "Converted this to a normal class member match and create it in the constructor.",
+      "parentUuid": "4ce7f70e_6f46a1a6",
       "range": {
         "startLine": 299,
         "startChar": 0,
@@ -144,6 +270,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04359f3c_20aa2dbf",
+        "filename": "log_manager.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-07-13T05:19:15Z",
+      "side": 1,
+      "message": "Removed the isBusAvailable check and fallback path as suggested.",
+      "parentUuid": "104e0edf_bf5eb363",
+      "range": {
+        "startLine": 323,
+        "startChar": 0,
+        "endLine": 329,
+        "endChar": 5
+      },
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1142c600_41fe0dba",
@@ -157,6 +307,24 @@
       "writtenOn": "2026-07-09T22:06:59Z",
       "side": 1,
       "message": "same comment about nested try/catches as above.",
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ed2da34_4d273dd6",
+        "filename": "log_manager.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-07-13T05:19:15Z",
+      "side": 1,
+      "message": "Updated. Removed the nested try/catch path there as well.",
+      "parentUuid": "1142c600_41fe0dba",
       "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -178,6 +346,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdb8c023_7b03ad4c",
+        "filename": "log_manager.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-07-13T05:19:15Z",
+      "side": 1,
+      "message": "Addressed. Match creation now happens in constructor initialization before policy read, so the missed-update window is avoided.",
+      "parentUuid": "dc598131_f0c75063",
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4cbb06d2_242d6b89",
@@ -191,6 +377,30 @@
       "writtenOn": "2026-07-09T22:06:59Z",
       "side": 1,
       "message": "I\u0027m not following what\u0027s going on with \u0027invalidated\u0027 at all in this function",
+      "range": {
+        "startLine": 381,
+        "startChar": 0,
+        "endLine": 383,
+        "endChar": 26
+      },
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d0201df_7cd67d04",
+        "filename": "log_manager.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-07-13T05:19:15Z",
+      "side": 1,
+      "message": "The function now explicitly handles invalidated: if property value is present, use it; otherwise refresh only when the retention property is invalidated.",
+      "parentUuid": "4cbb06d2_242d6b89",
       "range": {
         "startLine": 381,
         "startChar": 0,
@@ -224,6 +434,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3618a6b4_c2ca5592",
+        "filename": "log_manager.hpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-07-13T05:19:15Z",
+      "side": 1,
+      "message": "I have removed the added virtual usage for this change path and kept the interface non-virtual as suggested.",
+      "parentUuid": "fa02ac57_cc6cdf5e",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 11
+      },
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7269ee41_8312e169",
@@ -237,6 +471,30 @@
       "writtenOn": "2026-07-09T22:06:59Z",
       "side": 1,
       "message": "it\u0027s a match, not a callback.",
+      "range": {
+        "startLine": 369,
+        "startChar": 61,
+        "endLine": 369,
+        "endChar": 70
+      },
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6272d14_7063e29c",
+        "filename": "log_manager.hpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-07-13T05:19:15Z",
+      "side": 1,
+      "message": "Addressed. Renamed to a match-oriented name (logPolicyChangedMatch) since this is a D-Bus match object.",
+      "parentUuid": "7269ee41_8312e169",
       "range": {
         "startLine": 369,
         "startChar": 61,
@@ -270,6 +528,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "37d7293d_aed76de3",
+        "filename": "log_manager.hpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-07-13T05:19:15Z",
+      "side": 1,
+      "message": "Updated. Dropped the cached wording and kept it as logPolicy.",
+      "parentUuid": "c238ebd2_cb72e688",
+      "range": {
+        "startLine": 372,
+        "startChar": 16,
+        "endLine": 372,
+        "endChar": 22
+      },
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b566e63a_0b7af74b",
@@ -283,6 +565,24 @@
       "writtenOn": "2026-07-09T22:06:59Z",
       "side": 1,
       "message": "seems unrelated?",
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "136a434c_e8b9e903",
+        "filename": "test/serialization_test_json.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-07-13T05:19:15Z",
+      "side": 1,
+      "message": "Removed unrelated test-comment-only changes; kept only the actual CI fix needed for serialization round-trip path collision.",
+      "parentUuid": "b566e63a_0b7af74b",
       "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -304,6 +604,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4f2de90_dc517a79",
+        "filename": "test/serialization_test_path.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-07-13T05:19:15Z",
+      "side": 1,
+      "message": "Removed unrelated comment/change and kept this test minimal.",
+      "parentUuid": "d152455e_95ada3c5",
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "01330359_417d598c",
@@ -321,6 +639,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5239170c_f3d00f49",
+        "filename": "test/serialization_test_properties.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-07-13T05:19:15Z",
+      "side": 1,
+      "message": "Removed unrelated refactor and kept only the required fix.",
+      "parentUuid": "01330359_417d598c",
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "80bfc2aa_4369ad2b",
@@ -334,6 +670,30 @@
       "writtenOn": "2026-07-09T22:06:59Z",
       "side": 1,
       "message": "why was this necessary?",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 38,
+        "endChar": 48
+      },
+      "revId": "eb1fd205fb8ac683ade039f0c9694b394c9b379b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5d7e800_9ad5c51c",
+        "filename": "test/serialization_tests.hpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-07-13T05:19:15Z",
+      "side": 1,
+      "message": "This was required to fix the test compile/setup issue and bind Manager construction to the shared test bus fixture correctly.",
+      "parentUuid": "80bfc2aa_4369ad2b",
       "range": {
         "startLine": 38,
         "startChar": 4,
