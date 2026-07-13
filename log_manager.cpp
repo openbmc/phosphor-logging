@@ -226,7 +226,7 @@ auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
         {
             if (realErrors.size() >= ERROR_CAP)
             {
-                erase(realErrors.front());
+                erase(getEvictionCandidate());
             }
         }
         else
@@ -611,81 +611,111 @@ size_t Manager::eraseAll()
     return entriesSize;
 }
 
+Manager::EntryMap::iterator Manager::getEvictionCandidate()
+{
+    // realErrors is oldest-first; scan only the oldest half so recent history
+    // is retained.
+    const auto limit = realErrors.size() / 2;
+    for (auto id : realErrors | std::views::take(limit))
+    {
+        auto it = entries.find(id);
+        if (it != entries.end() && it->second->resolved())
+        {
+            return it;
+        }
+    }
+
+    return entries.find(realErrors.front());
+}
+
 void Manager::erase(uint32_t entryId)
 {
     auto entryFound = entries.find(entryId);
     if (entries.end() != entryFound)
     {
-        for (auto& func : Extensions::getDeleteProhibitedFunctions())
-        {
-            try
-            {
-                bool prohibited = false;
-                func(entryId, prohibited);
-                if (prohibited)
-                {
-                    throw sdbusplus::xyz::openbmc_project::Common::Error::
-                        Unavailable();
-                }
-            }
-            catch (const sdbusplus::xyz::openbmc_project::Common::Error::
-                       Unavailable& e)
-            {
-                throw;
-            }
-            catch (const std::exception& e)
-            {
-                lg2::error("An extension's deleteProhibited function threw an "
-                           "exception: {ERROR}",
-                           "ERROR", e);
-            }
-        }
-
-        // Delete the persistent representation of this error.
-        fs::path errorPath(paths::error());
-        errorPath /= std::to_string(entryId);
-        fs::remove(errorPath);
-
-        fs::path jsonPath(paths::error_json());
-        jsonPath /= std::to_string(entryId) + ".json";
-        fs::remove(jsonPath);
-
-        auto removeId = [](std::list<uint32_t>& ids, uint32_t id) {
-            auto it = std::find(ids.begin(), ids.end(), id);
-            if (it != ids.end())
-            {
-                ids.erase(it);
-            }
-        };
-        if (entryFound->second->severity() >= Entry::sevLowerLimit)
-        {
-            removeId(infoErrors, entryId);
-        }
-        else
-        {
-            removeId(realErrors, entryId);
-        }
-        entries.erase(entryFound);
-
-        checkAndRemoveBlockingError(entryId);
-
-        for (auto& remove : Extensions::getDeleteFunctions())
-        {
-            try
-            {
-                remove(entryId);
-            }
-            catch (const std::exception& e)
-            {
-                lg2::error("An extension's delete function threw an exception: "
-                           "{ERROR}",
-                           "ERROR", e);
-            }
-        }
+        erase(entryFound);
     }
     else
     {
         lg2::error("Invalid entry ID ({ID}) to delete", "ID", entryId);
+    }
+}
+
+void Manager::erase(EntryMap::iterator entryFound)
+{
+    if (entryFound == entries.end())
+    {
+        return;
+    }
+
+    auto entryId = entryFound->first;
+
+    for (auto& func : Extensions::getDeleteProhibitedFunctions())
+    {
+        try
+        {
+            bool prohibited = false;
+            func(entryId, prohibited);
+            if (prohibited)
+            {
+                throw sdbusplus::xyz::openbmc_project::Common::Error::
+                    Unavailable();
+            }
+        }
+        catch (
+            const sdbusplus::xyz::openbmc_project::Common::Error::Unavailable&
+                e)
+        {
+            throw;
+        }
+        catch (const std::exception& e)
+        {
+            lg2::error("An extension's deleteProhibited function threw an "
+                       "exception: {ERROR}",
+                       "ERROR", e);
+        }
+    }
+
+    // Delete the persistent representation of this error.
+    fs::path errorPath(paths::error());
+    errorPath /= std::to_string(entryId);
+    fs::remove(errorPath);
+
+    fs::path jsonPath(paths::error_json());
+    jsonPath /= std::to_string(entryId) + ".json";
+    fs::remove(jsonPath);
+
+    auto removeId = [](std::list<uint32_t>& ids, uint32_t id) {
+        auto it = std::find(ids.begin(), ids.end(), id);
+        if (it != ids.end())
+        {
+            ids.erase(it);
+        }
+    };
+    if (entryFound->second->severity() >= Entry::sevLowerLimit)
+    {
+        removeId(infoErrors, entryId);
+    }
+    else
+    {
+        removeId(realErrors, entryId);
+    }
+    entries.erase(entryFound);
+
+    checkAndRemoveBlockingError(entryId);
+
+    for (auto& remove : Extensions::getDeleteFunctions())
+    {
+        try
+        {
+            remove(entryId);
+        }
+        catch (const std::exception& e)
+        {
+            lg2::error("An extension's delete function threw an exception: "
+                       "{ERROR}",
+                       "ERROR", e);
+        }
     }
 }
 

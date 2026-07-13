@@ -112,11 +112,26 @@ class Manager : public details::ServerObject<details::ManagerIface>
     uint32_t commitWithLvl(uint64_t transactionId, std::string errMsg,
                            uint32_t errLvl) override;
 
+    /** @brief Map of Entry dbus objects, keyed by and ordered by their ID. */
+    using EntryMap = std::map<uint32_t, std::unique_ptr<Entry>>;
+
     /** @brief Erase specified entry d-bus object
      *
      * @param[in] entryId - unique identifier of the entry
      */
     void erase(uint32_t entryId);
+
+    /** @brief Choose which entry to evict when a severity cap is reached.
+     *
+     * Iterates the entries map (ordered oldest-first by ID) and prefers the
+     * oldest resolved real error within the oldest half, so that unresolved
+     * entries and recent history are retained; falls back to the oldest real
+     * error when none are resolved in that range.
+     *
+     * @return iterator to the entry to erase, or entries.end() if there are no
+     *         real errors.
+     */
+    EntryMap::iterator getEvictionCandidate();
 
     /** @brief Construct error d-bus objects from their persisted
      *         representations.
@@ -240,9 +255,18 @@ class Manager : public details::ServerObject<details::ManagerIface>
     void setupErrorFileWatch();
 
     /** @brief Persistent map of Entry dbus objects and their ID */
-    std::map<uint32_t, std::unique_ptr<Entry>> entries;
+    EntryMap entries;
 
   private:
+    /** @brief Erase the entry referenced by the given map iterator.
+     *
+     * Shared implementation for erase(uint32_t); avoids re-looking-up an entry
+     * when the caller already holds its iterator.
+     *
+     * @param[in] entryIt - iterator into entries for the entry to erase.
+     */
+    void erase(EntryMap::iterator entryIt);
+
     /*
      * @fn _commit()
      * @brief commit() helper
