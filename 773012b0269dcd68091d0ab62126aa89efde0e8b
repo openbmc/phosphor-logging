@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "db1755f9_9c996cbb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-14T18:22:11Z",
+      "side": 1,
+      "message": "There\u0027s a commit in progress https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/91570 that is trying the implement the (I presume) Redfish LogService OverwritePolicy WrapsWhenFull vs NeverOverwrites.\n\nFrom the redfish wording, I feel this is still in line with it:\n\"When full, new entries to the log overwrite earlier entries.\"\n\nIf agreed, can just resolve this.  Mostly just wanted to point out that commit exists in case someone has an issue with it.",
+      "revId": "773012b0269dcd68091d0ab62126aa89efde0e8b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3d8c1e93_1e8efcab",
         "filename": "log_manager.cpp",
         "patchSetId": 1
