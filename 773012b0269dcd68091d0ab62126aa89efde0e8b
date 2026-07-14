@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3d8c1e93_1e8efcab",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-07-14T17:35:56Z",
+      "side": 1,
+      "message": "It is kind of unfortunate how the efficiency of this works.  We end up having to search through the list to find a candidate and then on line 229 we call line 629 to find it again.  Basically 2x the work when we already have an iterator, probably, here.",
+      "revId": "773012b0269dcd68091d0ab62126aa89efde0e8b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d8183a2a_969a60aa",
         "filename": "log_manager.cpp",
         "patchSetId": 1
@@ -14,6 +31,23 @@
       "writtenOn": "2026-07-14T17:30:35Z",
       "side": 1,
       "message": "Can we limit this to the first half of the list?  It\u0027s helpful to have the \"whole picture\" for recent history.",
+      "revId": "773012b0269dcd68091d0ab62126aa89efde0e8b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "837478d9_6b1b05cb",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 619,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-07-14T17:35:56Z",
+      "side": 1,
+      "message": "This ends up being an O(n*log(n)) operation to delete a log when it use to be log(n).\n\nCan\u0027t we simply iterate through entries in order, which is O(n), to find the candidate?",
       "revId": "773012b0269dcd68091d0ab62126aa89efde0e8b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
