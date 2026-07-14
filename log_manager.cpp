@@ -466,8 +466,7 @@ void Manager::quiesceOnError(const uint32_t entryId)
     auto callback = std::make_unique<sdbusplus::match>(
         this->busLog,
         propertiesChanged(entryPath, "xyz.openbmc_project.Logging.Entry"),
-        std::bind(std::mem_fn(&Manager::onEntryResolve), this,
-                  std::placeholders::_1));
+        std::bind_front(&Manager::onEntryResolve, this));
 
     propChangedEntryCallback.insert(
         std::make_pair(entryId, std::move(callback)));

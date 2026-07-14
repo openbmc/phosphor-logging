@@ -123,8 +123,7 @@ sdbusplus::message::unix_fd Entry::getEntry()
     // D-Bus.
     sdeventplus::Event event = sdeventplus::Event::get_default();
     fdCloseEventSource = std::make_unique<sdeventplus::source::Defer>(
-        event, std::bind(std::mem_fn(&Entry::closeFD), this, fd,
-                         std::placeholders::_1));
+        event, std::bind_front(&Entry::closeFD, this, fd));
 
     return fd;
 }
