@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8183a2a_969a60aa",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-07-14T17:30:35Z",
+      "side": 1,
+      "message": "Can we limit this to the first half of the list?  It\u0027s helpful to have the \"whole picture\" for recent history.",
+      "revId": "773012b0269dcd68091d0ab62126aa89efde0e8b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
