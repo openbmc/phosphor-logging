@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d2e23c4_1ea3564c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-15T13:41:27Z",
+      "side": 1,
+      "message": "not necessary",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 59
+      },
+      "revId": "33b37b31bd39e19e67f6f82b3a78f58554da0171",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5824f9c8_24521fcb",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 7291,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-15T13:41:27Z",
+      "side": 1,
+      "message": "Please make a new component id for Time,and update the componentID and reasonCode.\nhttps://github.com/openbmc/phosphor-logging/blob/master/extensions/openpower-pels/registry/O_component_ids.json",
+      "revId": "33b37b31bd39e19e67f6f82b3a78f58554da0171",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47f333b5_3e395514",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 7300,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-15T13:41:27Z",
+      "side": 1,
+      "message": "as discussed, this needs a callout",
+      "revId": "33b37b31bd39e19e67f6f82b3a78f58554da0171",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
