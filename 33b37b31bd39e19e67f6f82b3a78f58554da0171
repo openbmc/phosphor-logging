@@ -56,6 +56,24 @@
       "message": "as discussed, this needs a callout",
       "revId": "33b37b31bd39e19e67f6f82b3a78f58554da0171",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e78647a0_54c4ab38",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 7300,
+      "author": {
+        "id": 1002831
+      },
+      "writtenOn": "2026-07-15T15:02:16Z",
+      "side": 1,
+      "message": "Matt, this was an intentional decision after good discussion with the PE team. We chose to include the recovery guidance directly in the PEL message instead of using a procedure callout, so the required action is immediately visible to the user.",
+      "parentUuid": "47f333b5_3e395514",
+      "revId": "33b37b31bd39e19e67f6f82b3a78f58554da0171",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
