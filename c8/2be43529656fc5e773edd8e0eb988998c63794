@@ -1,0 +1,9 @@
+Code-Review+2: Matt Spinler <spinler@us.ibm.com>
+Code-Review+1: Vijaysankar Ravi <vijaysankarr@ami.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: Palaniappan Arunachalam <palaniappana@ami.com>
+Submitted-at: Mon, 20 Jul 2026 05:24:13 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/91944
+Comments-Total: 1
+Project: openbmc/phosphor-logging
+Branch: refs/heads/master
