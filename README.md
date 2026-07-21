@@ -431,8 +431,8 @@ The BMC will send everything. Any kind of filtering and appropriate storage will
 have to be managed on the rsyslog server. Various examples are available on the
 internet. Here are few pointers :
 <https://www.rsyslog.com/storing-and-forwarding-remote-messages/>
-<https://www.rsyslog.com/doc/rsyslog%255Fconf%255Ffilter.html>
-<https://www.thegeekdiary.com/understanding-rsyslog-filter-options/>
+<https://docs.rsyslog.com/doc/configuration/filters.html>
+<https://docs.rsyslog.com/doc/configuration/index.html>
 
 ### Configuring rsyslog server for remote logging
 
