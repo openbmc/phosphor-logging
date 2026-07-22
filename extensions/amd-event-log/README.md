@@ -72,6 +72,17 @@ event information derived from the log context.
 
 ---
 
+## AEL Reverse Lookup Table
+
+- Provides mapping of Redfish events to AMD-specific identifiers (AFID,
+  originOfCondition)
+- Uses a JSON-defined reverse LUT generated at build time
+- Eliminates runtime parsing via compile-time generated C++ code
+- Ensures deterministic and efficient lookup behavior
+- Supports OEM customization through Yocto-based JSON override
+
+---
+
 ## Extensibility
 
 The AMD extension infrastructure is designed to support additional AMD-specific
