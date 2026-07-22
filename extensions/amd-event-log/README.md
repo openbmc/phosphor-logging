@@ -75,6 +75,17 @@ These fields are expected to be stable and documented.
 
 ---
 
+## AEL Reverse Lookup Table
+
+- Provides mapping of Redfish events to AMD-specific identifiers (AFID,
+  originOfCondition)
+- Uses a JSON-defined reverse LUT generated at build time
+- Eliminates runtime parsing via compile-time generated C++ code
+- Ensures deterministic and efficient lookup behavior
+- Supports OEM customization through Yocto-based JSON override
+
+---
+
 ### Rules
 
 - Fields prefixed with `AEL.` are reserved for AMD-defined semantics
