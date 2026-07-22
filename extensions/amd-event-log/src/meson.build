@@ -23,6 +23,7 @@ lut_gen = custom_target(
 )
 
 ael_sources = files(
+    'ael_info.cpp',
     'amd_afid_utils.cpp',
     'entry_points.cpp',
 )
