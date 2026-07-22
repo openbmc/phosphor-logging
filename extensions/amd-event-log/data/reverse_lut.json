@@ -1,0 +1,75 @@
+{
+    "version": "1.2.1",
+    "generated_at": "2026-05-27 14:56:52.533657",
+    "fallthrough_afid": 12999,
+    "lookup": {
+        "xyz.openbmc_project.State.Leak.Detector.LeakDetectedWarning": {
+            "NAME=/xyz/openbmc_project/state/leak/detector/EAM0_Cold_Plate": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/ABC,test,ABC",
+                "afid": 1
+            },
+            "NAME=/xyz/openbmc_project/state/leak/detector/EAM1_Cold_Plate": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/ABC",
+                "afid": 2
+            },
+            "NAME=/xyz/openbmc_project/state/leak/detector/EAM2_Cold_Plate": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/ABC",
+                "afid": 3
+            },
+            "NAME=/xyz/openbmc_project/state/leak/detector/EAM3_Cold_Plate": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/ABC",
+                "afid": 4
+            },
+            "NAME=/xyz/openbmc_project/state/leak/detector/CPU_DIMM_Cold_Plate": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/ABC",
+                "afid": 5
+            }
+        },
+        "xyz.openbmc_project.State.Leak.Detector.LeakDetectedCritical": {
+            "DEVICE=/xyz/openbmc_project/state/leak/detector/Manifold_1": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/DEF",
+                "afid": 6
+            },
+            "DEVICE=/xyz/openbmc_project/state/leak/detector/Manifold_2": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/DEF",
+                "afid": 7
+            }
+        },
+        "xyz.openbmc_project.Sensor.Threshold.ReadingAboveLowerCriticalThreshold": {
+            "SensorName=BRB_L_VR_*_VOLT_V": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/XYZ",
+                "afid": 8
+            },
+            "SensorName=BRB_L_VR_*_CURR_A": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/XYZ",
+                "afid": 9
+            },
+            "SensorName=BRB_L_*_TEMP_C|EAM0_*_Temp_C|EAM1_*_Temp_C": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/XYZ",
+                "afid": 10
+            },
+            "SensorName=BRB_L_VR_*_PWR_W": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/XYZ",
+                "afid": 11
+            }
+        },
+        "xyz.openbmc_project.Sensor.Threshold.ReadingAboveUpperHardShutdownThreshold": {
+            "SensorName=MB_*_VOLT_V": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/ABC",
+                "afid": 12
+            },
+            "SensorName=MB_VR_*_CURR_A": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/ABC",
+                "afid": 13
+            },
+            "SensorName=MB_*_TEMP_C": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/ABC",
+                "afid": 14
+            },
+            "SensorName=MB_*_TEMP_W": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/ABC",
+                "afid": 15
+            }
+        }
+    }
+}
