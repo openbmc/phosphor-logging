@@ -1,29 +1,54 @@
+#include "ael_info.hpp"
 #include "extensions.hpp"
 
 #include <phosphor-logging/lg2.hpp>
+
+#include <ranges>
+#include <string>
 
 namespace phosphor::logging::extensions::ael
 {
 
 using namespace phosphor::logging;
 
-/**
- * @brief AMD OEM provider (minimal infra)
- */
-static void amdOemProvider(OemType& oem, const std::string& /*msg*/,
-                           uint32_t /*id*/, Entry::Level /*level*/,
-                           const AdditionalDataVec& /*additionalData*/,
-                           const AssociationList& /*associations*/)
+static void amdOemProvider(OemType& oem, const std::string& msg,
+                           uint32_t /*id*/, Entry::Level level,
+                           const AdditionalDataVec& additionalData,
+                           const AssociationList& associations)
 {
     try
     {
-        // Ensure vendor section exists
+        const AELInfo info =
+            AELInfoProvider(msg, level, additionalData, associations).get();
+
+        if (info.afid == 0 && info.fruList.empty())
+        {
+            lg2::info("amdOemProvider: no AEL data found");
+            return;
+        }
+
         auto& amd = oem["AMD"];
-        (void)amd;
+
+        amd[std::string(fields::Version)] = info.version;
+
+        if (info.afid != 0)
+        {
+            amd[std::string(fields::AFID)] = std::to_string(info.afid);
+        }
+
+        if (!info.fruList.empty())
+        {
+            const auto joined = info.fruList | std::views::join_with(',');
+            const std::string frus(joined.begin(), joined.end());
+
+            amd[std::string(fields::FruList)] = frus;
+
+            lg2::debug("FruList=[{FRUS}]", "FRUS", frus);
+        }
     }
-    catch (...)
+    catch (const std::exception& e)
     {
-        lg2::error("amdOemProvider: exception while creating OEM section");
+        lg2::error("amdOemProvider exception: {ERROR}", "ERROR", e.what());
     }
 }
 
