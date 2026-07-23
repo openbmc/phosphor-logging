@@ -736,7 +736,10 @@ void Manager::restore()
 
         if (filePath.extension() == ".json")
         {
-            deserializeJSON(filePath, *e);
+            if (!deserializeJSON(filePath, *e))
+            {
+                continue;
+            }
             e->path(filePath, true);
         }
         else
