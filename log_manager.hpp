@@ -8,6 +8,7 @@
 #include "xyz/openbmc_project/Logging/Internal/Manager/server.hpp"
 
 #include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdeventplus/source/io.hpp>
 #include <xyz/openbmc_project/Collection/DeleteAll/server.hpp>
@@ -425,7 +426,7 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
      */
     void deleteAll() override
     {
-        log<level::INFO>("Deleting all log entries");
+        lg2::info("Deleting all log entries");
         auto numbersOfLogs = manager.eraseAll();
         manager.createFromEvent(
             LoggingCleared("NUMBER_OF_LOGS", numbersOfLogs));
