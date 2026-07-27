@@ -2,7 +2,7 @@
 
 #include "xyz/openbmc_project/Network/Client/server.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/object.hpp>
 
@@ -13,7 +13,6 @@ namespace phosphor
 namespace rsyslog_config
 {
 
-using namespace phosphor::logging;
 using NetworkClient = sdbusplus::xyz::openbmc_project::Network::server::Client;
 using Iface = sdbusplus::server::object_t<NetworkClient>;
 namespace sdbusRule = sdbusplus::match_rules;
@@ -56,7 +55,9 @@ class Server : public Iface
         }
         catch (const std::exception& e)
         {
-            log<level::ERR>(e.what());
+            lg2::error(
+                "Exception while processing server configuration. ERROR={ERROR}",
+                "ERROR", e);
         }
 
         emit_object_added();
