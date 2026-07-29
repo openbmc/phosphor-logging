@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e789bdf_eb5e044a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-29T22:10:51Z",
+      "side": 1,
+      "message": "a few more words please",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 13
+      },
+      "revId": "77c5f9927859c2ee378b6226bcfa864395a3ed49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04f5de87_4471f153",
+        "filename": "log_manager.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-29T22:10:51Z",
+      "side": 1,
+      "message": "can remove?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 35
+      },
+      "revId": "77c5f9927859c2ee378b6226bcfa864395a3ed49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8440405_80c54744",
+        "filename": "phosphor-rsyslog-config/server-conf.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-29T22:10:51Z",
+      "side": 1,
+      "message": "can remove?",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 35
+      },
+      "revId": "77c5f9927859c2ee378b6226bcfa864395a3ed49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43f6542b_9dc3429f",
+        "filename": "phosphor-rsyslog-config/server-conf.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-29T22:10:51Z",
+      "side": 1,
+      "message": "lg2 knows about exceptions, so can just pass in e.",
+      "range": {
+        "startLine": 62,
+        "startChar": 24,
+        "endLine": 62,
+        "endChar": 33
+      },
+      "revId": "77c5f9927859c2ee378b6226bcfa864395a3ed49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
