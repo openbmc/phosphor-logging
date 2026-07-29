@@ -16,6 +16,24 @@
       "message": "parse will throw if the JSON is invalid.  may want to catch that?",
       "revId": "5ea4ca9fb6906d170acaa12f9f828bf959ddb9cf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5edac0a1_76c34dc1",
+        "filename": "log_create_main.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2026-07-29T17:48:35Z",
+      "side": 1,
+      "message": "Done! Thanks for catching that.",
+      "parentUuid": "bbd337c1_68e08628",
+      "revId": "5ea4ca9fb6906d170acaa12f9f828bf959ddb9cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
