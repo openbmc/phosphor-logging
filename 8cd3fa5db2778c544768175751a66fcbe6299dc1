@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4524a927_982743b0",
+        "filename": "log_manager.cpp",
+        "patchSetId": 69
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-07-29T10:12:13Z",
+      "side": 1,
+      "message": "Changed .str to .string() method call on the object_path as suggested.",
+      "parentUuid": "872f62b0_a0ec5902",
+      "range": {
+        "startLine": 228,
+        "startChar": 12,
+        "endLine": 228,
+        "endChar": 25
+      },
+      "revId": "8cd3fa5db2778c544768175751a66fcbe6299dc1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "393286bf_7d2ec71a",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-07-27T21:49:45Z",
       "side": 1,
       "message": "you can get rid of this check invalidated field and check.  I\u0027ve never seen it necessary in OpenBMC unless you have an explicit reason to say otherwise.",
+      "range": {
+        "startLine": 298,
+        "startChar": 4,
+        "endLine": 299,
+        "endChar": 26
+      },
+      "revId": "8cd3fa5db2778c544768175751a66fcbe6299dc1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "218f89dd_db7ec80a",
+        "filename": "log_manager.cpp",
+        "patchSetId": 69
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-07-29T10:12:13Z",
+      "side": 1,
+      "message": "Removed the invalidated field check and the unnecessary logic that was checking if the property wasn\u0027t in the invalidated list. Simplified the function to check the properties directly and fall back to getLogPolicy() if needed. I have also removed the now-unused invalidated variable from the message read call to keep the code clean.",
+      "parentUuid": "393286bf_7d2ec71a",
       "range": {
         "startLine": 298,
         "startChar": 4,
