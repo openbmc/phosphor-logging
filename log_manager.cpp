@@ -590,7 +590,6 @@ size_t Manager::eraseAll()
             ++iter;
             erase(e);
         }
-        entryId = 0;
     }
     else
     {
@@ -614,17 +613,6 @@ size_t Manager::eraseAll()
             {
                 entriesSize--;
             }
-        }
-        if (!entries.empty())
-        {
-            entryId = std::ranges::max_element(entries, [](const auto& a,
-                                                           const auto& b) {
-                          return a.first < b.first;
-                      })->first;
-        }
-        else
-        {
-            entryId = 0;
         }
     }
     return entriesSize;
