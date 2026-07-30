@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d68f67e6_777b6ac3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-30T17:07:17Z",
+      "side": 1,
+      "message": "This was originally put in on purpose with https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/44848.  So please work it out with @mine260309@gmail.com",
+      "revId": "ddc23dbc213c25058089369edc6ed2b50ce70a94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
