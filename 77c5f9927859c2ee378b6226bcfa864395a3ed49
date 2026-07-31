@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3ca3676_8e66b7ff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-07-31T05:25:33Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7e789bdf_eb5e044a",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 13
+      },
+      "revId": "77c5f9927859c2ee378b6226bcfa864395a3ed49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04f5de87_4471f153",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-07-29T22:10:51Z",
       "side": 1,
       "message": "can remove?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 35
+      },
+      "revId": "77c5f9927859c2ee378b6226bcfa864395a3ed49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c0d50da_dc796f8f",
+        "filename": "log_manager.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-07-31T05:25:33Z",
+      "side": 1,
+      "message": "log.hpp is intentionally retained because log_manager.hpp still declares\n\nextern const std::map\u003cstd::string, level\u003e g_errLevelMap;\n\nwhich depends on the legacy phosphor::logging::level type defined in\nlog.hpp. Replacing it requires corresponding changes in elog-lookup\ngeneration and related elog templates",
+      "parentUuid": "04f5de87_4471f153",
       "range": {
         "startLine": 11,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa6fde3f_eea43690",
+        "filename": "phosphor-rsyslog-config/server-conf.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-07-31T05:25:33Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c8440405_80c54744",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 35
+      },
+      "revId": "77c5f9927859c2ee378b6226bcfa864395a3ed49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "43f6542b_9dc3429f",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-07-29T22:10:51Z",
       "side": 1,
       "message": "lg2 knows about exceptions, so can just pass in e.",
+      "range": {
+        "startLine": 62,
+        "startChar": 24,
+        "endLine": 62,
+        "endChar": 33
+      },
+      "revId": "77c5f9927859c2ee378b6226bcfa864395a3ed49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da2e3589_2440722a",
+        "filename": "phosphor-rsyslog-config/server-conf.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-07-31T05:25:33Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "43f6542b_9dc3429f",
       "range": {
         "startLine": 62,
         "startChar": 24,
