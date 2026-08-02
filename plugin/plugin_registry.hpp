@@ -27,9 +27,9 @@ class PluginRegistry
     PluginRegistry() = default;
 
     PluginRegistry(const PluginRegistry&) = delete;
-    PluginRegistry(PluginRegistry&&) = delete;
+    PluginRegistry(PluginRegistry&&) = default;
     PluginRegistry& operator=(const PluginRegistry&) = delete;
-    PluginRegistry& operator=(PluginRegistry&&) = delete;
+    PluginRegistry& operator=(PluginRegistry&&) = default;
 
     ~PluginRegistry() = default;
 
