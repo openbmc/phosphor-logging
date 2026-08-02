@@ -39,6 +39,7 @@ endif
 subdir('config')
 subdir('tools')
 subdir('lib')
+subdir('plugin')
 
 if get_option('libonly')
     subdir_done()
@@ -171,6 +172,7 @@ log_manager_sources = [
         'util.cpp',
     ),
 ]
+log_manager_sources += plugin_sources
 log_manager_deps = [
     cereal_dep,
     conf_h_dep,
