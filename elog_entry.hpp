@@ -91,9 +91,6 @@ class Entry : public EntryIfaces
         version(fwVersion, true);
         purpose(VersionPurpose::BMC, true);
         path(filePath, true);
-
-        // Emit deferred signal.
-        this->emit_object_added();
     }
     /** @brief Constructor that puts an "empty" error object on the bus,
      *         with only the id property populated. Rest of the properties
