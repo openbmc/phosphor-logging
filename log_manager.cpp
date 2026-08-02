@@ -290,6 +290,8 @@ auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
     serialize(*e);
     serializeJSON(*e);
 
+    e->emit_object_added();
+
     if (isQuiesceOnErrorEnabled() && (errLvl < Entry::sevLowerLimit) &&
         isCalloutPresent(*e))
     {
