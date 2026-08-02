@@ -1028,6 +1028,29 @@ bool Manager::refreshFromDisk(uint32_t id)
     return true;
 }
 
+PluginList Manager::createPlugins(const std::string& objectPath,
+                                  const plugin::DescriptorList& descriptors)
+{
+    PluginList plugins;
+
+    PluginContext context{
+        busLog,
+        objectPath,
+    };
+
+    for (const auto& descriptor : descriptors)
+    {
+        auto plugin = pluginManager.create(context, *descriptor);
+
+        if (plugin != nullptr)
+        {
+            plugins.emplace_back(std::move(plugin));
+        }
+    }
+
+    return plugins;
+}
+
 } // namespace internal
 } // namespace logging
 } // namespace phosphor

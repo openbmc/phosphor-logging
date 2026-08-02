@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 #include <string_view>
+#include <vector>
 
 namespace phosphor::logging
 {
@@ -61,5 +62,10 @@ class Plugin
 
 /** Unique ownership of a runtime plugin instance. */
 using PluginPtr = std::unique_ptr<Plugin>;
+
+/**
+ * @brief Collection of runtime plugins associated with a log entry.
+ */
+using PluginList = std::vector<PluginPtr>;
 
 } // namespace phosphor::logging

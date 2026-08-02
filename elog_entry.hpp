@@ -2,6 +2,7 @@
 
 #include "config.h"
 
+#include "plugin/plugin.hpp"
 #include "xyz/openbmc_project/Logging/Entry/server.hpp"
 #include "xyz/openbmc_project/Object/Delete/server.hpp"
 #include "xyz/openbmc_project/Software/Version/server.hpp"
@@ -60,16 +61,19 @@ class Entry : public EntryIfaces
      *  @param[in] additionalDataErr - The error metadata.
      *  @param[in] objects - The list of associations.
      *  @param[in] fwVersion - The BMC code version.
-     *  @param[in] filePath - Serialization path
+     *  @param[in] filePath - Serialization path.
      *  @param[in] parent - The error's parent.
+     *  @param[in] plugins - Runtime plugins associated with
+     *                       the entry.
      */
     Entry(sdbusplus::bus_t& bus, const std::string& objectPath, uint32_t idErr,
           uint64_t timestampErr, Level severityErr, std::string&& msgErr,
           std::map<std::string, std::string>&& additionalDataErr,
           AssociationList&& objects, const std::string& fwVersion,
-          const std::string& filePath, internal::Manager& parent) :
+          const std::string& filePath, internal::Manager& parent,
+          PluginList plugins = {}) :
         EntryIfaces(bus, objectPath.c_str(), EntryIfaces::action::defer_emit),
-        parent(parent)
+        parent(parent), plugins(std::move(plugins))
     {
         id(idErr, true);
         severity(severityErr, true);
@@ -78,7 +82,8 @@ class Entry : public EntryIfaces
         message(std::move(msgErr), true);
         additionalData(std::move(additionalDataErr), true);
         associations(std::move(objects), true);
-        // Store a copy of associations in case we need to recreate
+
+        // Store a copy of associations in case we need to recreate.
         assocs = associations();
         sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved(
             false, true);
@@ -89,8 +94,7 @@ class Entry : public EntryIfaces
 
         // Emit deferred signal.
         this->emit_object_added();
-    };
-
+    }
     /** @brief Constructor that puts an "empty" error object on the bus,
      *         with only the id property populated. Rest of the properties
      *         to be set by the caller. Caller should emit the added signal.
@@ -172,6 +176,14 @@ class Entry : public EntryIfaces
      *        has been returned from the getEntry D-Bus method.
      */
     std::unique_ptr<sdeventplus::source::Defer> fdCloseEventSource;
+
+    /**
+     * @brief Runtime plugins associated with this entry.
+     *
+     * Plugins remain active for the lifetime of the
+     * owning log entry.
+     */
+    PluginList plugins;
 
     /**
      * @brief Closes the file descriptor passed in.
