@@ -87,4 +87,34 @@ TEST(PluginManagerTest, CreateUnknownPlugin)
     EXPECT_EQ(manager.create(context, descriptor), nullptr);
 }
 
+TEST(PluginManagerTest, CreateMultiplePlugins)
+{
+    PluginRegistry registry;
+
+    registry.registerPlugin(testInterface, std::make_unique<TestFactory>());
+
+    PluginManager manager(registry);
+
+    auto bus = sdbusplus::bus::new_default();
+
+    std::string objectPath = "/xyz/openbmc_project/logging/entry/1";
+
+    PluginContext context{
+        bus,
+        objectPath,
+    };
+
+    TestDescriptor descriptor1;
+    TestDescriptor descriptor2;
+
+    auto plugin1 = manager.create(context, descriptor1);
+    auto plugin2 = manager.create(context, descriptor2);
+
+    ASSERT_NE(plugin1, nullptr);
+    ASSERT_NE(plugin2, nullptr);
+
+    EXPECT_EQ(plugin1->interface(), testInterface);
+    EXPECT_EQ(plugin2->interface(), testInterface);
+}
+
 } // namespace phosphor::logging::test
