@@ -29,4 +29,6 @@ struct Request
     nlohmann::json data;
 };
 
+using RequestList = std::vector<Request>;
+
 } // namespace phosphor::logging::plugin
