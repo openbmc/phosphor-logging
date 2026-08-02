@@ -1,0 +1,57 @@
+#include "plugin/cper_processed_plugin.hpp"
+
+#include <stdexcept>
+
+namespace phosphor::logging::plugin::cper::processed
+{
+
+Plugin::Plugin(const PluginContext& context, const Descriptor& descriptor) :
+    Interface(context.bus, context.objectPath.c_str())
+{
+    const auto& properties = descriptor.properties();
+
+    diagnosticDataType(properties.diagnosticDataType, true);
+    notificationType(properties.notificationType, true);
+    sectionType(properties.sectionType, true);
+    oem(properties.oem, true);
+}
+
+std::string_view Plugin::interface() const
+{
+    return cper::processed::interface;
+}
+
+PluginPtr Factory::create(const PluginContext& context,
+                          const plugin::Descriptor& descriptor) const
+{
+    if (descriptor.interface() != cper::processed::interface)
+    {
+        throw std::invalid_argument(
+            "CPER Processed factory received non-CPER Processed descriptor");
+    }
+
+    const auto& cperDescriptor = dynamic_cast<const Descriptor&>(descriptor);
+
+    return std::make_unique<Plugin>(context, cperDescriptor);
+}
+
+void registerPlugin(PluginRegistry& registry)
+{
+    registry.registerPlugin(cper::processed::interface,
+                            std::make_unique<Factory>());
+}
+
+plugin::DescriptorPtr Factory::createDescriptor(
+    const plugin::Request& request) const
+{
+    Properties properties{};
+
+    properties.diagnosticDataType = ContentType::CPER;
+    properties.notificationType =
+        request.data.value(notificationTypeKey, std::string{});
+    properties.sectionType = request.data.value(sectionTypeKey, std::string{});
+    properties.oem = request.data.value(oemKey, OemMetadata{});
+
+    return std::make_unique<Descriptor>(std::move(properties));
+}
+} // namespace phosphor::logging::plugin::cper::processed

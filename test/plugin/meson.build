@@ -33,3 +33,21 @@ test(
         ),
     ),
 )
+
+test(
+    'test_plugin_cper_processed',
+    executable(
+        'test-plugin-cper-processed',
+        'cper_processed_plugin_test.cpp',
+        link_with: [log_manager_lib],
+        dependencies: [
+            gtest_dep,
+            gmock_dep,
+            log_manager_deps,
+        ],
+        include_directories: include_directories(
+            '../../',
+            '../../gen',
+        ),
+    ),
+)
