@@ -44,6 +44,7 @@ class Descriptor : public phosphor::logging::plugin::Descriptor
                std::string notificationType, std::string sectionType,
                int cperFd,
                nlohmann::json oemMetadata = nlohmann::json::object());
+
     /**
      * Return the plugin type.
      *
