@@ -310,8 +310,10 @@ auto Manager::createFromEvent(
     sdbusplus::exception::generated_event_base&& event)
     -> sdbusplus::object_path
 {
-    auto [msg, level, data] = lg2::details::extractEvent(std::move(event));
-    return this->createEntry(msg, level, std::move(data));
+    auto eventInfo = lg2::details::extractEvent(std::move(event));
+
+    return this->createEntry(eventInfo.message, eventInfo.level,
+                             std::move(eventInfo.additionalData));
 }
 
 bool Manager::isQuiesceOnErrorEnabled()
