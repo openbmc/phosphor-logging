@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ba1fb9f_46d38688",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-08-04T14:12:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c3ec308_d402523e",
+      "range": {
+        "startLine": 465,
+        "startChar": 66,
+        "endLine": 466,
+        "endChar": 55
+      },
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "79cfa95c_5ebbc178",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Agree, but its a temporary workaround. we should leave this function as it while removing workaround.",
       "parentUuid": "79cfa95c_5ebbc178",
+      "range": {
+        "startLine": 468,
+        "startChar": 10,
+        "endLine": 469,
+        "endChar": 37
+      },
+      "revId": "30e674006d55292500ffff67febac7b08ee9fd75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20afcf31_ec715217",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-08-04T14:12:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3befe8ca_dddd9d81",
       "range": {
         "startLine": 468,
         "startChar": 10,
