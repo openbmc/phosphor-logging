@@ -2031,7 +2031,7 @@
         },
 
         {
-            "Name": "org.open_power.Attn.Error.Vital",
+            "Name": "org.open_power.Attn.Error.Sbe",
             "Subsystem": "processor_chip",
 
             "SRC": {
@@ -2040,10 +2040,10 @@
             },
 
             "Documentation": {
-                "Description": "Status shows SBE vital attention active",
-                "Message": "SBE vital attention detected",
+                "Description": "Status shows an SBE attention active",
+                "Message": "SBE attention detected",
                 "Notes": [
-                    "This entry is for any SBE vital attention event ",
+                    "This entry is for any SBE attention event ",
                     "reported by the attention handler component"
                 ]
             }
