@@ -218,7 +218,9 @@ void Manager::_commit(uint64_t transactionId [[maybe_unused]],
 
 auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
                           std::map<std::string, std::string> additionalData,
-                          const FFDCEntries& ffdc) -> sdbusplus::object_path
+                          const FFDCEntries& ffdc,
+                          plugin::DescriptorList descriptors)
+    -> sdbusplus::object_path
 {
     if (!Extensions::disableDefaultLogCaps())
     {
@@ -281,11 +283,14 @@ auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
     auto additionalDataVec = util::additional_data::combine(additionalData);
     processMetadata(errMsg, additionalDataVec, objects);
 
+    auto plugins = createPlugins(objPath, descriptors);
+
     auto e = std::make_unique<Entry>(
         busLog, objPath, entryId,
         ms, // Milliseconds since 1970
         errLvl, std::move(errMsg), std::move(additionalData),
-        std::move(objects), fwVersion, getEntrySerializePath(entryId), *this);
+        std::move(objects), fwVersion, getEntrySerializePath(entryId), *this,
+        std::move(plugins));
 
     serialize(*e);
     serializeJSON(*e);
@@ -817,7 +822,58 @@ auto Manager::create(const std::string& message, Entry::Level severity,
                      const std::map<std::string, std::string>& additionalData,
                      const FFDCEntries& ffdc) -> sdbusplus::object_path
 {
-    return createEntry(message, severity, additionalData, ffdc);
+    plugin::DescriptorList descriptors;
+
+    auto extIt = additionalData.find("_EXTENSIONS");
+
+    if (extIt != additionalData.end())
+    {
+        try
+        {
+            auto extensions = nlohmann::json::parse(extIt->second);
+
+            const std::unordered_map<std::string_view, plugin::Type>
+                extensionMap{
+                    {"xyz.openbmc_project.Logging.Diagnostic.CPER",
+                     plugin::Type::cper},
+                };
+
+            std::vector<plugin::Info> plugins;
+
+            for (const auto& [interfaceName, extensionData] :
+                 extensions.items())
+            {
+                auto it = extensionMap.find(interfaceName);
+
+                if (it == extensionMap.end())
+                {
+                    lg2::debug("Skipping unsupported extension "
+                               "interface '{INTERFACE}'",
+                               "INTERFACE", interfaceName);
+                    continue;
+                }
+
+                plugins.emplace_back(plugin::Info{
+                    .type = it->second,
+                    .data = extensionData,
+                });
+            }
+
+            descriptors = buildPluginDescriptors(plugins);
+
+            lg2::info("Created {COUNT} plugin descriptor(s)", "COUNT",
+                      descriptors.size());
+        }
+        catch (const std::exception& e)
+        {
+            lg2::error("Failed to parse _EXTENSIONS: "
+                       "{ERROR}",
+                       "ERROR", e.what());
+        }
+    }
+
+    return createEntry(message, severity, additionalData, ffdc,
+                       std::move(descriptors));
 }
 
 void Manager::setupErrorFileWatch()
