@@ -5,6 +5,7 @@
 #include "bmc_pos_mgr.hpp"
 #include "elog_block.hpp"
 #include "elog_entry.hpp"
+#include "plugin/plugin_service.hpp"
 #include "xyz/openbmc_project/Logging/Internal/Manager/server.hpp"
 
 #include <phosphor-logging/lg2.hpp>
@@ -280,18 +281,30 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     void doExtensionLogCreate(const Entry& entry, const FFDCEntries& ffdc);
 
-    /** @brief Common wrapper for creating an Entry object
+    /**
+     * @brief Create a log entry.
      *
-     * @param[in] errMsg - The error exception message associated with the
-     *                     error log to be committed.
-     * @param[in] errLvl - level of the error
-     * @param[in] additionalData - The AdditionalData property for the error
-     * @param[in] ffdc - A vector of FFDC file info. Defaults to an empty
-     * vector.
+     * Creates a log entry using the supplied event
+     * information, FFDC data, and plugin requests.
+     *
+     * Plugin requests are resolved through the plugin
+     * framework to create runtime plugin instances
+     * associated with the log entry.
+     *
+     * @param[in] errMsg Error message.
+     * @param[in] errLvl Error severity.
+     * @param[in] additionalData Additional event data.
+     * @param[in] ffdc FFDC entries associated with the
+     *                 log entry.
+     * @param[in] requests Plugin requests associated
+     *                     with the log entry.
+     *
+     * @return Object path of the created log entry.
      */
     auto createEntry(std::string errMsg, Entry::Level errLvl,
                      std::map<std::string, std::string> additionalData,
-                     const FFDCEntries& ffdc = FFDCEntries{})
+                     const FFDCEntries& ffdc = {},
+                     plugin::RequestList requests = {})
         -> sdbusplus::object_path;
 
     /** @brief Notified on entry property changes
@@ -339,6 +352,28 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     void errorFileChanged(sdeventplus::source::IO& io, int fd,
                           uint32_t revents);
+
+    /**
+     * @brief Build plugin requests from extension metadata.
+     *
+     * Consumes the _EXTENSIONS entry from AdditionalData and
+     * translates extension metadata into plugin requests.
+     *
+     * Unsupported or malformed extension metadata is ignored.
+     *
+     * The _EXTENSIONS entry acts as a transport container for
+     * plugin request metadata and is removed from AdditionalData
+     * after processing.
+     *
+     * @param[in,out] additionalData Event AdditionalData.
+     *
+     * @return Generated plugin requests.
+     */
+    plugin::RequestList buildPluginRequests(
+        std::map<std::string, std::string>& additionalData);
+
+    /** Runtime plugin integration service. */
+    PluginService pluginService;
 
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus_t& busLog;
