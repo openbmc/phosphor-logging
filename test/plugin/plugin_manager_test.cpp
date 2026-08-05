@@ -19,15 +19,30 @@ class TestPlugin : public phosphor::logging::Plugin
     }
 };
 
-class TestFactory : public phosphor::logging::PluginFactory
+namespace
+{
+
+class TestFactory : public PluginFactory
 {
   public:
-    std::unique_ptr<phosphor::logging::Plugin> create(
-        const PluginContext&, const plugin::Descriptor&) const override
+    std::unique_ptr<plugin::Descriptor> createDescriptor(
+        const plugin::Info& info) const override
     {
+        (void)info;
+        return nullptr;
+    }
+
+    std::unique_ptr<Plugin> create(
+        const PluginContext& context,
+        const plugin::Descriptor& descriptor) const override
+    {
+        (void)context;
+        (void)descriptor;
+
         return std::make_unique<TestPlugin>();
     }
 };
+} // namespace
 
 class TestDescriptor : public phosphor::logging::plugin::Descriptor
 {
