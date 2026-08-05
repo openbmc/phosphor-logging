@@ -2,6 +2,8 @@
 
 #include <fcntl.h>
 
+#include <nlohmann/json.hpp>
+
 #include <stdexcept>
 #include <system_error>
 #include <utility>
@@ -28,14 +30,17 @@ PluginPtr Factory::create(const PluginContext& context,
 
 plugin::DescriptorPtr Factory::createDescriptor(const plugin::Info& info) const
 {
-    (void)info;
+    auto notificationType = info.data.value("NotificationType", std::string{});
 
-    /*
-     * CPER descriptors require a producer supplied file
-     * descriptor and cannot currently be generated from
-     * PluginInfo metadata.
-     */
-    return nullptr;
+    auto sectionType = info.data.value("SectionType", std::string{});
+
+    auto cperFd = info.data.value(cper::cperFdKey, -1);
+
+    auto oem = info.data.value("Oem", nlohmann::json::object());
+
+    return std::make_unique<Descriptor>(
+        DiagnosticDataType::CPER, std::move(notificationType),
+        std::move(sectionType), cperFd, std::move(oem));
 }
 
 Plugin::Plugin(const PluginContext& context, const Descriptor& descriptor,
