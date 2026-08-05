@@ -93,6 +93,13 @@ static auto data_from_json(sdbusplus::exception::generated_event_base& t)
             continue;
         }
 
+        // Plugin transport metadata is handled separately.
+        if (item.key() == "_EXTENSIONS")
+        {
+            result.emplace(item.key(), item.value().dump());
+            continue;
+        }
+
         if (item.value().type() == nlohmann::json::value_t::string)
         {
             result.emplace(item.key(), item.value());
