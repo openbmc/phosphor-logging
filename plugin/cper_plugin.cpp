@@ -26,6 +26,18 @@ PluginPtr Factory::create(const PluginContext& context,
                                     std::move(artifact));
 }
 
+plugin::DescriptorPtr Factory::createDescriptor(const plugin::Info& info) const
+{
+    (void)info;
+
+    /*
+     * CPER descriptors require a producer supplied file
+     * descriptor and cannot currently be generated from
+     * PluginInfo metadata.
+     */
+    return nullptr;
+}
+
 Plugin::Plugin(const PluginContext& context, const Descriptor& descriptor,
                std::filesystem::path artifactPath) :
     CperIface(context.bus, context.objectPath.c_str()),
