@@ -9,45 +9,42 @@ namespace phosphor::logging
 {
 
 /**
- * @class PluginFactory
+ * @brief Base interface for plugin factories.
  *
- * @brief Base interface for runtime plugin factories.
+ * Plugin factories create runtime plugin instances from
+ * plugin descriptors.
  *
- * Plugin factories are responsible for constructing
- * runtime plugin instances from plugin descriptors.
- *
- * Individual plugin implementations may provide
- * plugin-specific factory implementations that derive
- * from this interface.
- *
- * Registration and integration with the plugin
- * management infrastructure will be introduced by
- * subsequent changes.
+ * Concrete plugin implementations may provide factory
+ * implementations that validate descriptor contents and
+ * construct the corresponding runtime plugin object.
  */
 class PluginFactory
 {
   public:
     PluginFactory() = default;
+    virtual ~PluginFactory() = default;
+
     PluginFactory(const PluginFactory&) = delete;
     PluginFactory(PluginFactory&&) = delete;
     PluginFactory& operator=(const PluginFactory&) = delete;
     PluginFactory& operator=(PluginFactory&&) = delete;
-    virtual ~PluginFactory() = default;
 
     /**
      * @brief Create a runtime plugin instance.
      *
-     * Constructs a plugin implementation from the
-     * supplied creation context and descriptor.
+     * Construct a plugin from the supplied context and
+     * descriptor.
      *
      * @param[in] context Plugin creation context.
-     * @param[in] descriptor Plugin creation descriptor.
+     * @param[in] descriptor Plugin descriptor.
      *
-     * @return Runtime plugin instance.
+     * @return Newly created plugin instance.
      */
-    virtual std::unique_ptr<Plugin> create(
-        const PluginContext& context,
-        const plugin::Descriptor& descriptor) const = 0;
+    virtual PluginPtr create(const PluginContext& context,
+                             const plugin::Descriptor& descriptor) const = 0;
 };
+
+/** Unique ownership of a plugin factory. */
+using PluginFactoryPtr = std::unique_ptr<PluginFactory>;
 
 } // namespace phosphor::logging
