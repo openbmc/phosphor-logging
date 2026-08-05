@@ -17,6 +17,12 @@ namespace phosphor::logging::plugin::cper
 using CperIface =
     sdbusplus::server::xyz::openbmc_project::logging::diagnostic::CPER;
 
+inline constexpr auto pluginType = "cper";
+inline constexpr auto notificationTypeKey = "notificationType";
+inline constexpr auto sectionTypeKey = "sectionType";
+inline constexpr auto cperFdKey = "cperFd";
+inline constexpr auto oemKey = "oem";
+
 /**
  * @brief CPER plugin implementation.
  *
@@ -87,34 +93,23 @@ class Factory : public phosphor::logging::PluginFactory
 
     ~Factory() override = default;
 
-    /**
-     * @brief Create a runtime CPER plugin.
-     *
-     * @param[in] context Plugin creation context.
-     * @param[in] descriptor CPER descriptor.
-     *
-     * @return Runtime CPER plugin instance.
-     */
     PluginPtr create(const PluginContext& context,
                      const plugin::Descriptor& descriptor) const override;
 
     /**
-     * @brief Create a CPER descriptor from plugin request data.
-     *
-     * CPER descriptors require a producer supplied file
-     * descriptor and therefore cannot currently be derived
-     * from PluginInfo metadata alone.
+     * @brief Create a CPER descriptor.
      *
      * @param[in] info Plugin request information.
      *
-     * @return nullptr.
+     * @return CPER descriptor.
      */
     plugin::DescriptorPtr createDescriptor(
         const plugin::Info& info) const override;
 
   private:
     /**
-     * @brief Root directory used for persisted CPER artifacts.
+     * @brief Root directory used to store persisted
+     *        CPER artifacts.
      */
     std::filesystem::path artifactRoot;
 };
