@@ -34,6 +34,7 @@ openpower_pels = {
             callouts_gen,
             generated_sources,
             log_manager_ext_sources,
+            plugin_sources,
         ],
         'deps': [cereal_dep],
     },
