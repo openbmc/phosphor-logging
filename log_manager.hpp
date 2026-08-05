@@ -295,18 +295,27 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     void doExtensionLogCreate(const Entry& entry, const FFDCEntries& ffdc);
 
-    /** @brief Common wrapper for creating an Entry object
+    /**
+     * @brief Create a log entry.
      *
-     * @param[in] errMsg - The error exception message associated with the
-     *                     error log to be committed.
-     * @param[in] errLvl - level of the error
-     * @param[in] additionalData - The AdditionalData property for the error
-     * @param[in] ffdc - A vector of FFDC file info. Defaults to an empty
-     * vector.
+     * Creates a log entry using the supplied event
+     * information, FFDC data, and plugin descriptors.
+     *
+     * @param[in] errMsg Error message.
+     * @param[in] errLvl Error severity.
+     * @param[in] additionalData Additional event data.
+     * @param[in] ffdc FFDC entries associated with the
+     *                 log entry.
+     * @param[in] descriptors Plugin descriptors
+     *                        associated with the log
+     *                        entry.
+     *
+     * @return Object path of the created log entry.
      */
     auto createEntry(std::string errMsg, Entry::Level errLvl,
                      std::map<std::string, std::string> additionalData,
-                     const FFDCEntries& ffdc = FFDCEntries{})
+                     const FFDCEntries& ffdc = {},
+                     plugin::DescriptorList descriptors = {})
         -> sdbusplus::object_path;
 
     /** @brief Notified on entry property changes
@@ -354,6 +363,21 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     void errorFileChanged(sdeventplus::source::IO& io, int fd,
                           uint32_t revents);
+
+    /**
+     * @brief Build plugin descriptors from extension metadata.
+     *
+     * Consumes the _EXTENSIONS entry from AdditionalData and
+     * translates extension requests into plugin descriptors.
+     *
+     * Unsupported extensions are ignored.
+     *
+     * @param[in,out] additionalData Event AdditionalData.
+     *
+     * @return Generated plugin descriptors.
+     */
+    plugin::DescriptorList buildExtensionDescriptors(
+        std::map<std::string, std::string>& additionalData);
 
     /**
      * @brief Create runtime plugins for a log entry.
