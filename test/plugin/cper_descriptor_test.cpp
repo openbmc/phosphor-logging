@@ -30,4 +30,12 @@ TEST(CperDescriptorTest, ConstructorStoresMetadata)
     EXPECT_EQ(descriptor.oem().at("Key"), "Value");
 }
 
+TEST(CperDescriptorTest, EmptyOEMMetadata)
+{
+    Descriptor descriptor(DiagnosticDataType::CPER, "notification-guid",
+                          "section-guid", 42, {});
+
+    EXPECT_TRUE(descriptor.oem().empty());
+}
+
 } // namespace phosphor::logging::plugin::cper
