@@ -1,5 +1,7 @@
 #pragma once
 
+#include "plugin/plugin_info.hpp"
+
 #include <sdbusplus/exception.hpp>
 #include <xyz/openbmc_project/Logging/Entry/client.hpp>
 
@@ -11,6 +13,7 @@ namespace lg2::details
 {
 
 using Entry = sdbusplus::client::xyz::openbmc_project::logging::Entry<>;
+using PluginInfo = phosphor::logging::plugin::Info;
 
 /**
  * Information extracted from a generated event.
@@ -25,6 +28,9 @@ struct EventInfo
 
     /** Event metadata. */
     std::map<std::string, std::string> additionalData;
+
+    /** Optional plugin requests associated with the event. */
+    std::vector<PluginInfo> plugins;
 };
 
 /** Extract information from a generated event.
