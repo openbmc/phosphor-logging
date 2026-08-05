@@ -21,12 +21,23 @@ class TestPlugin : public phosphor::logging::Plugin
     }
 };
 
-class TestFactory : public phosphor::logging::PluginFactory
+class TestFactory : public PluginFactory
 {
   public:
-    std::unique_ptr<phosphor::logging::Plugin> create(
-        const PluginContext&, const plugin::Descriptor&) const override
+    std::unique_ptr<plugin::Descriptor> createDescriptor(
+        const plugin::Info& info) const override
     {
+        (void)info;
+        return nullptr;
+    }
+
+    std::unique_ptr<Plugin> create(
+        const PluginContext& context,
+        const plugin::Descriptor& descriptor) const override
+    {
+        (void)context;
+        (void)descriptor;
+
         return std::make_unique<TestPlugin>();
     }
 };
@@ -37,6 +48,22 @@ class TestDescriptor : public phosphor::logging::plugin::Descriptor
     std::string_view interface() const override
     {
         return testInterface;
+    }
+};
+
+class NullPluginFactory : public PluginFactory
+{
+  public:
+    std::unique_ptr<plugin::Descriptor> createDescriptor(
+        const plugin::Info&) const override
+    {
+        return nullptr;
+    }
+
+    std::unique_ptr<Plugin> create(const PluginContext&,
+                                   const plugin::Descriptor&) const override
+    {
+        return nullptr;
     }
 };
 
@@ -113,8 +140,31 @@ TEST(PluginManagerTest, CreateMultiplePlugins)
     ASSERT_NE(plugin1, nullptr);
     ASSERT_NE(plugin2, nullptr);
 
+    EXPECT_NE(plugin1.get(), plugin2.get());
+
     EXPECT_EQ(plugin1->interface(), testInterface);
     EXPECT_EQ(plugin2->interface(), testInterface);
+}
+
+TEST(PluginManagerTest, FactoryCreateFails)
+{
+    PluginRegistry registry;
+
+    registry.registerPlugin(testInterface,
+                            std::make_unique<NullPluginFactory>());
+
+    PluginManager manager(registry);
+
+    auto bus = sdbusplus::bus::new_default();
+
+    PluginContext context{
+        bus,
+        "/xyz/openbmc_project/logging/entry/1",
+    };
+
+    TestDescriptor descriptor;
+
+    EXPECT_EQ(manager.create(context, descriptor), nullptr);
 }
 
 } // namespace phosphor::logging::test

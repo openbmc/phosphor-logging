@@ -1051,6 +1051,28 @@ PluginList Manager::createPlugins(const std::string& objectPath,
     return plugins;
 }
 
+auto Manager::buildPluginDescriptors(
+    const std::vector<plugin::Info>& plugins) const -> plugin::DescriptorList
+{
+    plugin::DescriptorList descriptors;
+
+    for (const auto& info : plugins)
+    {
+        auto descriptor = pluginRegistry.createDescriptor(info);
+
+        if (descriptor == nullptr)
+        {
+            lg2::warning("Unknown plugin interface '{INTERFACE}'", "INTERFACE",
+                         info.interface);
+            continue;
+        }
+
+        descriptors.emplace_back(std::move(descriptor));
+    }
+
+    return descriptors;
+}
+
 } // namespace internal
 } // namespace logging
 } // namespace phosphor
