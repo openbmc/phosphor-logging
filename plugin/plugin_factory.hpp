@@ -2,6 +2,7 @@
 
 #include "plugin/plugin.hpp"
 #include "plugin/plugin_descriptor.hpp"
+#include "plugin/plugin_request.hpp"
 
 #include <memory>
 
@@ -42,6 +43,19 @@ class PluginFactory
      */
     virtual PluginPtr create(const PluginContext& context,
                              const plugin::Descriptor& descriptor) const = 0;
+
+    /**
+     * @brief Create a plugin descriptor.
+     *
+     * Converts plugin request information into a
+     * runtime descriptor.
+     *
+     * @param[in] request Plugin request information.
+     *
+     * @return Plugin descriptor.
+     */
+    virtual plugin::DescriptorPtr createDescriptor(
+        const plugin::Request& request) const = 0;
 };
 
 /** Unique ownership of a plugin factory. */

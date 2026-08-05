@@ -54,6 +54,21 @@ class PluginRegistry
      */
     const PluginFactory* lookup(std::string_view interface) const;
 
+    /**
+     * @brief Create a plugin descriptor.
+     *
+     * Resolves the plugin interface specified by the plugin
+     * request and invokes the corresponding registered
+     * factory to generate a descriptor.
+     *
+     * @param[in] request Plugin request information.
+     *
+     * @return Generated plugin descriptor or nullptr if the
+     *         plugin interface is not registered.
+     */
+    plugin::DescriptorPtr createDescriptor(
+        const plugin::Request& request) const;
+
   private:
     /** Registered plugin factories. */
     std::unordered_map<std::string, PluginFactoryPtr> registry;
