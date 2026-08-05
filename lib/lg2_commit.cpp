@@ -113,6 +113,7 @@ auto extractEvent(sdbusplus::exception::generated_event_base&& event)
         .message = event.name(),
         .level = severity_from_syslog(event.severity()),
         .additionalData = data_from_json(event),
+        .plugins = {},
     };
 }
 
