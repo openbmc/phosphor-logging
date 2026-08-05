@@ -23,4 +23,17 @@ const PluginFactory* PluginRegistry::lookup(std::string_view interface) const
     return it->second.get();
 }
 
+plugin::DescriptorPtr PluginRegistry::createDescriptor(
+    const plugin::Info& info) const
+{
+    auto factory = lookup(info.interface);
+
+    if (factory == nullptr)
+    {
+        return nullptr;
+    }
+
+    return factory->createDescriptor(info);
+}
+
 } // namespace phosphor::logging

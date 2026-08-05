@@ -370,6 +370,23 @@ class Manager : public details::ServerObject<details::ManagerIface>
     PluginList createPlugins(const std::string& objectPath,
                              const plugin::DescriptorList& descriptors);
 
+    /**
+     * @brief Generate plugin descriptors.
+     *
+     * Uses registered plugin factories to translate
+     * plugin requests into runtime descriptors.
+     *
+     * Plugin requests are attached to an event through
+     * Event::extend() and extracted as part of
+     * EventInfo during log creation.
+     *
+     * @param[in] plugins Requested plugins.
+     *
+     * @return Generated plugin descriptors.
+     */
+    plugin::DescriptorList buildPluginDescriptors(
+        const std::vector<plugin::Info>& plugins) const;
+
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus_t& busLog;
 
