@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cb37c0d_0e0c5917",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002472
+      },
+      "writtenOn": "2026-08-06T17:32:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c27e3e9_900acc58",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 4
+      },
+      "revId": "cb0027e9783cbc4074b830906056fb12c3aa7984",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "29a5cd91_79f04a77",
@@ -37,6 +61,24 @@
       "writtenOn": "2026-07-29T16:19:37Z",
       "side": 1,
       "message": "since no Action Flags are specified here, it will get \u0027report\u0027, \u0027service action\u0027 and \u0027callhome\u0027 set by default.  since service action flag is set, it needs a callout.\n\nSo best to either add some callout (even BCM0001 BMC code), or set the action flags yourself, like to report and call home.",
+      "revId": "cb0027e9783cbc4074b830906056fb12c3aa7984",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ed9e0f9_c3b75beb",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 936,
+      "author": {
+        "id": 1002472
+      },
+      "writtenOn": "2026-08-06T17:32:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29a5cd91_79f04a77",
       "revId": "cb0027e9783cbc4074b830906056fb12c3aa7984",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
