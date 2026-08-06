@@ -1156,6 +1156,113 @@ TEST_F(RegistryTest, TestGetCalloutsWithOnlyDefaults)
     EXPECT_EQ(callouts[1].symbolicFRUTrusted, "");
 }
 
+TEST_F(RegistryTest, TestGetCalloutsUsingADWithSystems)
+{
+    auto json = R"(
+    {
+        "ADName": "RAIL_NAME",
+        "CalloutsWithTheirADValues":
+        [
+            {
+                "System": "system1",
+                "ADValues":
+                [
+                    {
+                        "ADValue": "VDD",
+                        "CalloutList":
+                        [
+                            { "Priority": "high", "LocCode": "P1-C1" }
+                        ]
+                    },
+                    {
+                        "ADValue": "VIO",
+                        "CalloutList":
+                        [
+                            { "Priority": "high", "LocCode": "P1-C2" }
+                        ]
+                    }
+                ]
+            },
+            {
+                "Systems": ["system2", "system3"],
+                "ADValues":
+                [
+                    {
+                        "ADValue": "VIO",
+                        "CalloutList":
+                        [
+                            { "Priority": "high", "LocCode": "P1-C4" }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ADValues":
+                [
+                    {
+                        "ADValue": "VDD",
+                        "CalloutList":
+                        [
+                            { "Priority": "high", "Procedure": "BMC0001" }
+                        ]
+                    }
+                ]
+            }
+        ]
+    })"_json;
+
+    std::vector<std::string> systemNames{"system1"};
+
+    AdditionalData adVDD{
+        std::map<std::string, std::string>{{"RAIL_NAME", "VDD"}}};
+    AdditionalData adVIO{
+        std::map<std::string, std::string>{{"RAIL_NAME", "VIO"}}};
+    AdditionalData adVDN{
+        std::map<std::string, std::string>{{"RAIL_NAME", "VDN"}}};
+
+    // system1 + VDD -> P1-C1
+    auto callouts = Registry::getCallouts(json, systemNames, adVDD);
+    ASSERT_EQ(callouts.size(), 1);
+    EXPECT_EQ(callouts[0].locCode, "P1-C1");
+    EXPECT_EQ(callouts[0].priority, "high");
+
+    // system1 + VIO -> P1-C2
+    callouts = Registry::getCallouts(json, systemNames, adVIO);
+    ASSERT_EQ(callouts.size(), 1);
+    EXPECT_EQ(callouts[0].locCode, "P1-C2");
+
+    // system1 + ADValue not present -> empty
+    callouts = Registry::getCallouts(json, systemNames, adVDN);
+    EXPECT_TRUE(callouts.empty());
+
+    // system2 (matches Systems array) + VIO -> P1-C4
+    systemNames[0] = "system2";
+    callouts = Registry::getCallouts(json, systemNames, adVIO);
+    ASSERT_EQ(callouts.size(), 1);
+    EXPECT_EQ(callouts[0].locCode, "P1-C4");
+
+    // system2 + VDD not in system2 entry -> empty
+    callouts = Registry::getCallouts(json, systemNames, adVDD);
+    EXPECT_TRUE(callouts.empty());
+
+    // system3 (also in Systems array) + VIO -> P1-C4
+    systemNames[0] = "system3";
+    callouts = Registry::getCallouts(json, systemNames, adVIO);
+    ASSERT_EQ(callouts.size(), 1);
+    EXPECT_EQ(callouts[0].locCode, "P1-C4");
+
+    // system4 not in any entry -> falls back to default -> VDD -> BMC0001
+    systemNames[0] = "system4";
+    callouts = Registry::getCallouts(json, systemNames, adVDD);
+    ASSERT_EQ(callouts.size(), 1);
+    EXPECT_EQ(callouts[0].procedure, "BMC0001");
+    EXPECT_EQ(callouts[0].locCode, "");
+
+    // system4 + VIO not in default entry -> empty
+    callouts = Registry::getCallouts(json, systemNames, adVIO);
+    EXPECT_TRUE(callouts.empty());
+}
+
 TEST_F(RegistryTest, TestNoSubsystem)
 {
     auto path = RegistryTest::writeData(registryData);

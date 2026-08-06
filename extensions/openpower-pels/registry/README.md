@@ -528,6 +528,82 @@ example, the 'air_mover' callout will be added if 'PROC_NUM' isn't 0.
 
 ```
 
+#### Callouts example based on system type with an AdditionalData field
+
+An alternative layout for `CalloutsUsingAD` places the system type as the outer
+discriminator and the AdditionalData value as the inner one. This is useful when
+the set of possible AD values differs per system type.
+
+In this layout each entry in `CalloutsWithTheirADValues` carries an optional
+`System` or `Systems` key and a required `ADValues` array. Each item in
+`ADValues` has an `ADValue` string and a `CalloutList`. An entry without a
+`System` or `Systems` key is the default and is used when no system-specific
+entry matches.
+
+```json
+"CalloutsUsingAD":
+{
+    "ADName": "RAIL_NAME",
+    "CalloutsWithTheirADValues":
+    [
+        {
+            "System": "system1",
+            "ADValues":
+            [
+                {
+                    "ADValue": "VDD",
+                    "CalloutList":
+                    [
+                        { "Priority": "high", "LocCode": "P1-C1" }
+                    ]
+                },
+                {
+                    "ADValue": "VIO",
+                    "CalloutList":
+                    [
+                        { "Priority": "high", "LocCode": "P1-C2" }
+                    ]
+                }
+            ]
+        },
+        {
+            "Systems": ["system2", "system3"],
+            "ADValues":
+            [
+                {
+                    "ADValue": "VIO",
+                    "CalloutList":
+                    [
+                        { "Priority": "high", "LocCode": "P1-C4" }
+                    ]
+                }
+            ]
+        },
+        {
+            "ADValues":
+            [
+                {
+                    "ADValue": "VDD",
+                    "CalloutList":
+                    [
+                        { "Priority": "high", "Procedure": "BMC0001" }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+```
+
+In this example, on `system1` the FRU at P1-C1 is called out when RAIL_NAME is
+VDD, and P1-C2 when it is VIO. On `system2` or `system3` only VIO is handled,
+calling out P1-C4. On every other system the default entry is used, calling out
+the maintenance procedure BMC0001 when RAIL_NAME is VDD. If the AD value is not
+found in the matched entry an empty callout list is returned.
+
+Note that this layout cannot be mixed with the `ADValue`/`Callouts` layout
+within the same `CalloutsWithTheirADValues` array.
+
 #### CalloutType
 
 This field can be used to modify the failing component type field in the callout
@@ -631,6 +707,7 @@ The general process for adding new entries to the message registry is:
 
 4. One can test what PELs are generated from these new entries without writing
    any code to create the corresponding event logs:
+
    1. Copy the modified message_registry.json into `/etc/phosphor-logging/` on
       the BMC. That directory may need to be created.
    2. Use busctl to call the Create method to create an event log corresponding
