@@ -613,6 +613,226 @@ TEST_F(SRCTest, RegistryCalloutTest)
     }
 }
 
+// Test that CalloutsUsingAD with the system-outer layout (System/ADValues)
+// selects the right callouts based on both system type and AD value.
+TEST_F(SRCTest, RegistryCalloutWithADAndSystemsTest)
+{
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+
+    // System-outer layout:
+    entry.callouts = R"(
+        {
+            "ADName": "RAIL_NAME",
+            "CalloutsWithTheirADValues":
+            [
+                {
+                    "System": "systemA",
+                    "ADValues":
+                    [
+                        {
+                            "ADValue": "VDD",
+                            "CalloutList":
+                            [
+                                { "Priority": "high",   "LocCode": "P1-C1" },
+                                { "Priority": "medium", "Procedure": "BMC0001" }
+                            ]
+                        },
+                        {
+                            "ADValue": "VIO",
+                            "CalloutList":
+                            [
+                                { "Priority": "high", "SymbolicFRU": "service_docs" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Systems": ["systemB", "systemC"],
+                    "ADValues":
+                    [
+                        {
+                            "ADValue": "VDD",
+                            "CalloutList":
+                            [
+                                { "Priority": "high", "LocCode": "P1-C5" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "ADValues":
+                    [
+                        {
+                            "ADValue": "VDD",
+                            "CalloutList":
+                            [
+                                { "Priority": "high", "LocCode": "P1-C9" }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        })"_json;
+
+    {
+        // systemA + VDD -> P1-C1 and BMC0001 procedure
+        std::map<std::string, std::string> adData{{"RAIL_NAME", "VDD"}};
+        AdditionalData ad{adData};
+        NiceMock<MockDataInterface> dataIface;
+        std::vector<std::string> names{"systemA"};
+
+        EXPECT_CALL(dataIface, getSystemNames).WillOnce(Return(names));
+        EXPECT_CALL(dataIface, expandLocationCode("P1-C1", 0))
+            .WillOnce(Return("Ufcs-P1-C1"));
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("P1-C1", 0, false))
+            .WillOnce(Return(std::vector<std::string>{
+                "/xyz/openbmc_project/inventory/system/chassis/P1-C1"}));
+        EXPECT_CALL(dataIface,
+                    getHWCalloutFields(
+                        "/xyz/openbmc_project/inventory/system/chassis/P1-C1",
+                        _, _, _))
+            .WillOnce(
+                DoAll(SetArgReferee<1>("1234567"), SetArgReferee<2>("AAAA"),
+                      SetArgReferee<3>("123456789ABC")));
+
+        SRC src{entry, ad, dataIface};
+
+        auto& callouts = src.callouts()->callouts();
+        ASSERT_EQ(callouts.size(), 2);
+
+        EXPECT_EQ(callouts[0]->locationCode(), "Ufcs-P1-C1");
+        EXPECT_EQ(callouts[0]->priority(), 'H');
+        auto& fru1 = callouts[0]->fruIdentity();
+        EXPECT_EQ(fru1->getPN().value(), "1234567");
+        EXPECT_EQ(fru1->failingComponentType(), src::FRUIdentity::hardwareFRU);
+
+        EXPECT_EQ(callouts[1]->locationCodeSize(), 0);
+        EXPECT_EQ(callouts[1]->priority(), 'M');
+        auto& fru2 = callouts[1]->fruIdentity();
+        EXPECT_EQ(fru2->getMaintProc().value(), "BMC0001");
+        EXPECT_EQ(fru2->failingComponentType(),
+                  src::FRUIdentity::maintenanceProc);
+    }
+
+    {
+        // systemA + VIO -> symbolic FRU service_docs
+        std::map<std::string, std::string> adData{{"RAIL_NAME", "VIO"}};
+        AdditionalData ad{adData};
+        NiceMock<MockDataInterface> dataIface;
+        std::vector<std::string> names{"systemA"};
+
+        EXPECT_CALL(dataIface, getSystemNames).WillOnce(Return(names));
+
+        SRC src{entry, ad, dataIface};
+
+        auto& callouts = src.callouts()->callouts();
+        ASSERT_EQ(callouts.size(), 1);
+        EXPECT_EQ(callouts[0]->priority(), 'H');
+        auto& fru1 = callouts[0]->fruIdentity();
+        EXPECT_EQ(fru1->getPN().value(), "SVCDOCS");
+        EXPECT_EQ(fru1->failingComponentType(), src::FRUIdentity::symbolicFRU);
+    }
+
+    {
+        // systemB (matches Systems array) + VDD -> P1-C5
+        std::map<std::string, std::string> adData{{"RAIL_NAME", "VDD"}};
+        AdditionalData ad{adData};
+        NiceMock<MockDataInterface> dataIface;
+        std::vector<std::string> names{"systemB"};
+
+        EXPECT_CALL(dataIface, getSystemNames).WillOnce(Return(names));
+        EXPECT_CALL(dataIface, expandLocationCode("P1-C5", 0))
+            .WillOnce(Return("Ufcs-P1-C5"));
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("P1-C5", 0, false))
+            .WillOnce(Return(std::vector<std::string>{
+                "/xyz/openbmc_project/inventory/system/chassis/P1-C5"}));
+        EXPECT_CALL(dataIface,
+                    getHWCalloutFields(
+                        "/xyz/openbmc_project/inventory/system/chassis/P1-C5",
+                        _, _, _))
+            .WillOnce(
+                DoAll(SetArgReferee<1>("2345678"), SetArgReferee<2>("BBBB"),
+                      SetArgReferee<3>("23456789ABCD")));
+
+        SRC src{entry, ad, dataIface};
+
+        auto& callouts = src.callouts()->callouts();
+        ASSERT_EQ(callouts.size(), 1);
+        EXPECT_EQ(callouts[0]->locationCode(), "Ufcs-P1-C5");
+        EXPECT_EQ(callouts[0]->priority(), 'H');
+        auto& fru1 = callouts[0]->fruIdentity();
+        EXPECT_EQ(fru1->getPN().value(), "2345678");
+        EXPECT_EQ(fru1->failingComponentType(), src::FRUIdentity::hardwareFRU);
+    }
+
+    {
+        // systemC (also in Systems array) + VDD -> P1-C5
+        std::map<std::string, std::string> adData{{"RAIL_NAME", "VDD"}};
+        AdditionalData ad{adData};
+        NiceMock<MockDataInterface> dataIface;
+        std::vector<std::string> names{"systemC"};
+
+        EXPECT_CALL(dataIface, getSystemNames).WillOnce(Return(names));
+        EXPECT_CALL(dataIface, expandLocationCode("P1-C5", 0))
+            .WillOnce(Return("Ufcs-P1-C5"));
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("P1-C5", 0, false))
+            .WillOnce(Return(std::vector<std::string>{
+                "/xyz/openbmc_project/inventory/system/chassis/P1-C5"}));
+        EXPECT_CALL(dataIface,
+                    getHWCalloutFields(
+                        "/xyz/openbmc_project/inventory/system/chassis/P1-C5",
+                        _, _, _))
+            .WillOnce(
+                DoAll(SetArgReferee<1>("2345678"), SetArgReferee<2>("BBBB"),
+                      SetArgReferee<3>("23456789ABCD")));
+
+        SRC src{entry, ad, dataIface};
+
+        auto& callouts = src.callouts()->callouts();
+        ASSERT_EQ(callouts.size(), 1);
+        EXPECT_EQ(callouts[0]->locationCode(), "Ufcs-P1-C5");
+        EXPECT_EQ(callouts[0]->priority(), 'H');
+        auto& fru1 = callouts[0]->fruIdentity();
+        EXPECT_EQ(fru1->getPN().value(), "2345678");
+        EXPECT_EQ(fru1->failingComponentType(), src::FRUIdentity::hardwareFRU);
+    }
+
+    {
+        // systemD (no match) + VDD -> default entry -> P1-C9
+        std::map<std::string, std::string> adData{{"RAIL_NAME", "VDD"}};
+        AdditionalData ad{adData};
+        NiceMock<MockDataInterface> dataIface;
+        std::vector<std::string> names{"systemD"};
+
+        EXPECT_CALL(dataIface, getSystemNames).WillOnce(Return(names));
+        EXPECT_CALL(dataIface, expandLocationCode("P1-C9", 0))
+            .WillOnce(Return("Ufcs-P1-C9"));
+        EXPECT_CALL(dataIface, getInventoryFromLocCode("P1-C9", 0, false))
+            .WillOnce(Return(std::vector<std::string>{
+                "/xyz/openbmc_project/inventory/system/chassis/P1-C9"}));
+        EXPECT_CALL(dataIface,
+                    getHWCalloutFields(
+                        "/xyz/openbmc_project/inventory/system/chassis/P1-C9",
+                        _, _, _))
+            .WillOnce(
+                DoAll(SetArgReferee<1>("3456789"), SetArgReferee<2>("CCCC"),
+                      SetArgReferee<3>("3456789ABCDE")));
+
+        SRC src{entry, ad, dataIface};
+
+        auto& callouts = src.callouts()->callouts();
+        ASSERT_EQ(callouts.size(), 1);
+        EXPECT_EQ(callouts[0]->locationCode(), "Ufcs-P1-C9");
+        EXPECT_EQ(callouts[0]->priority(), 'H');
+        auto& fru1 = callouts[0]->fruIdentity();
+        EXPECT_EQ(fru1->getPN().value(), "3456789");
+        EXPECT_EQ(fru1->failingComponentType(), src::FRUIdentity::hardwareFRU);
+    }
+}
+
 // Test that a symbolic FRU with a trusted location code callout
 // from the registry can get its location from the
 // CALLOUT_INVENTORY_PATH AdditionalData entry.
