@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70cb16a8_6c844f6a",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1008,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-08-06T18:17:51Z",
+      "side": 1,
+      "message": "same comment as in previous commit about not bailing out early",
+      "revId": "a07de8a942391aeaa2c795a14ea015d5d498e93b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1ff2ff2_79a2b2c8",
+        "filename": "test/openpower-pels/src_test.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1982,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-08-06T18:17:51Z",
+      "side": 1,
+      "message": "would it be hard to do a bad path one where the AD key doesn\u0027t exist?",
+      "revId": "a07de8a942391aeaa2c795a14ea015d5d498e93b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
