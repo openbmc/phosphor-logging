@@ -315,6 +315,21 @@ bool calloutUsesAdditionalData(const nlohmann::json& json)
 }
 
 /**
+ * @brief Says if the CalloutsWithTheirADValues array uses the system-outer
+ *        layout, where each entry has a System/Systems key and an ADValues
+ *        array, rather than an ADValue key and a Callouts array.
+ *
+ * @param[in] json - The CalloutsUsingAD JSON object
+ *
+ * @return bool - true if the system-outer layout is in use
+ */
+bool calloutsWithADUseSystems(const nlohmann::json& json)
+{
+    const auto& entries = json["CalloutsWithTheirADValues"];
+    return !entries.empty() && entries[0].contains("ADValues");
+}
+
+/**
  * @brief Finds the callouts to use when there is no AdditionalData,
  *        but the system type may be used as a key.
  *
@@ -556,6 +571,125 @@ std::vector<RegistryCallout> getCalloutsWithoutAD(
 }
 
 /**
+ * @brief Returns the callouts to use when the system type is the outer
+ *        check and an AdditionalData value is the inner one.
+ *
+ * The JSON looks like:
+ *    {
+ *        "ADName": "RAIL_NAME",
+ *        "CalloutsWithTheirADValues":
+ *        [
+ *            {
+ *                "System": "system1",
+ *                "ADValues":
+ *                [
+ *                    {
+ *                        "ADValue": "VDD",
+ *                        "CalloutList":
+ *                        [
+ *                            { "Priority": "high", "LocCode": "P1-C1" }
+ *                        ]
+ *                    }
+ *                ]
+ *            },
+ *            {
+ *                "ADValues":
+ *                [
+ *                    {
+ *                        "ADValue": "VDD",
+ *                        "CalloutList":
+ *                        [
+ *                            { "Priority": "high", "Procedure": "BMC0001" }
+ *                        ]
+ *                    }
+ *                ]
+ *            }
+ *        ]
+ *    }
+ *
+ * Entries without a System/Systems key are the default and are used when no
+ * system-specific entry matches.
+ *
+ * @param[in] json - The CalloutsUsingAD JSON object
+ * @param[in] systemNames - List of compatible system type names
+ * @param[in] adValue - The AdditionalData value to match
+ *
+ * @return std::vector<RegistryCallout> - The callouts to use
+ */
+std::vector<RegistryCallout> getCalloutsUsingADWithSystems(
+    const nlohmann::json& json, const std::vector<std::string>& systemNames,
+    const std::string& adValue)
+{
+    const auto& entries = json["CalloutsWithTheirADValues"];
+
+    // Find the best-matching entry: prefer a System/Systems match over the
+    // default (no System/Systems key) entry.
+    const nlohmann::json* defaultEntry = nullptr;
+    const nlohmann::json* matchedEntry = nullptr;
+
+    for (const auto& entry : entries)
+    {
+        if (entry.contains("System"))
+        {
+            if (std::ranges::find(systemNames,
+                                  entry["System"].get<std::string>()) !=
+                systemNames.end())
+            {
+                matchedEntry = &entry;
+                break;
+            }
+            continue;
+        }
+
+        if (entry.contains("Systems"))
+        {
+            auto systems = entry["Systems"].get<std::vector<std::string>>();
+            auto inSystemNames = [&systemNames](const auto& s) {
+                return std::ranges::find(systemNames, s) != systemNames.end();
+            };
+            if (std::ranges::any_of(systems, inSystemNames))
+            {
+                matchedEntry = &entry;
+                break;
+            }
+            continue;
+        }
+
+        // Entry with no System/Systems is the default
+        if (!defaultEntry)
+        {
+            defaultEntry = &entry;
+        }
+    }
+
+    const nlohmann::json* entry = matchedEntry ? matchedEntry : defaultEntry;
+    if (!entry)
+    {
+        return std::vector<RegistryCallout>{};
+    }
+
+    // Within the matched entry, find the ADValue and return its CalloutList.
+    const auto& adValues = (*entry)["ADValues"];
+    auto it = std::find_if(
+        adValues.begin(), adValues.end(), [&adValue](const nlohmann::json& j) {
+            return adValue == j["ADValue"].get<std::string>();
+        });
+
+    if (it == adValues.end())
+    {
+        return std::vector<RegistryCallout>{};
+    }
+
+    std::vector<RegistryCallout> calloutEntries;
+    for (const auto& callout : (*it)["CalloutList"])
+    {
+        calloutEntries.push_back(makeRegistryCallout(callout));
+    }
+
+    return calloutEntries;
+}
+
+/**
  * @brief Returns the callouts to use when an AdditionalData key is
  *        required to find the correct entries.
  *
@@ -610,6 +744,12 @@ std::vector<RegistryCallout> getCalloutsUsingAD(
                      "KEY", keyName);
         throw std::runtime_error{
             "Missing AdditionalData entry for this callout"};
+    }
+
+    // Use the system-outer layout if the entries have ADValues keys.
+    if (calloutsWithADUseSystems(json))
+    {
+        return getCalloutsUsingADWithSystems(json, systemNames, *adValue);
     }
 
     const auto& callouts = json["CalloutsWithTheirADValues"];

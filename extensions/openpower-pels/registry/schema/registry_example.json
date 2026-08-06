@@ -58,6 +58,90 @@
                     }
                 ]
             }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Power.RailFault",
+            "Subsystem": "power",
+            "Severity": "unrecoverable",
+            "ActionFlags": ["service_action", "report"],
+            "SRC": {
+                "ReasonCode": "0x2040",
+                "Words6To9": {
+                    "6": {
+                        "Description": "Failing rail number",
+                        "AdditionalDataPropSource": "RAIL_NUM"
+                    }
+                }
+            },
+            "Documentation": {
+                "Description": "A power rail fault",
+                "Message": "A power rail fault occurred"
+            },
+            "CalloutsUsingAD": {
+                "ADName": "RAIL_NAME",
+                "CalloutsWithTheirADValues": [
+                    {
+                        "System": "com.ibm.Hardware.Chassis.Model.Huygens",
+                        "ADValues": [
+                            {
+                                "ADValue": "VDD",
+                                "CalloutList": [
+                                    {
+                                        "Priority": "high",
+                                        "LocCode": "P1-C1"
+                                    }
+                                ]
+                            },
+                            {
+                                "ADValue": "VIO",
+                                "CalloutList": [
+                                    {
+                                        "Priority": "high",
+                                        "LocCode": "P1-C2"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "Systems": ["system2", "system3"],
+                        "ADValues": [
+                            {
+                                "ADValue": "VDDA",
+                                "CalloutList": [
+                                    {
+                                        "Priority": "high",
+                                        "LocCode": "P1-C3"
+                                    }
+                                ]
+                            },
+                            {
+                                "ADValue": "VIO",
+                                "CalloutList": [
+                                    {
+                                        "Priority": "high",
+                                        "LocCode": "P1-C4"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ADValues": [
+                            {
+                                "ADValue": "VDD",
+                                "CalloutList": [
+                                    {
+                                        "Priority": "high",
+                                        "Procedure": "BMC0001"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
         }
     ]
 }
