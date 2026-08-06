@@ -62,6 +62,23 @@
       },
       "revId": "2a5a67275f6ade73319a74117e00729ac187e6a0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fb78b3d_583f0b43",
+        "filename": "test/openpower-pels/src_test.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1931,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-08-06T18:19:03Z",
+      "side": 1,
+      "message": "any bad path tests you can do?",
+      "revId": "2a5a67275f6ade73319a74117e00729ac187e6a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
