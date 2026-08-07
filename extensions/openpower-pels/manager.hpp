@@ -513,7 +513,7 @@ class Manager : public PELInterface
      * the BMC power/thermal or fans component ID, clear the deconfig flag.
      *
      * @param[in] locationCode - The location code to look for
-     * @param[inout] pel - The PEL to check and modify.
+     * @param[in out] pel - The PEL to check and modify.
      * @return bool - true if the flag was cleared for this PEL
      */
     static bool clearPowerThermalDeconfigFlag(const std::string& locationCode,

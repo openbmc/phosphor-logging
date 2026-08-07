@@ -72,7 +72,7 @@ std::string prettyJSON(const orderedJSON& json)
     // }
 
     // Replace the { and the following newline, and the } and its
-    // preceeding newline.
+    // preceding newline.
     jsonString.erase(0, 2);
 
     auto pos = jsonString.find_last_of('}');
