@@ -77,7 +77,7 @@ class BMCPosMgr
     /**
      * @brief Sets the position prefix in the entry ID
      *
-     * @param[inout] id - The entry ID
+     * @param[in,out] id - The entry ID
      */
     void setPrefixInEntryId(uint32_t& id) const;
 
@@ -87,7 +87,7 @@ class BMCPosMgr
      *
      *        e.g. 0x00FFFFFF will roll over to 0x00000000
      *
-     * @param[inout] The ID that may be rolled over
+     * @param[in out] The ID that may be rolled over
      */
     void checkEntryIdRollover(uint32_t& id) const;
 
