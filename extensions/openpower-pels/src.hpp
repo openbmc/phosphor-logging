@@ -581,7 +581,7 @@ class SRC : public Section
     CalloutPriority getPriorityFromJSON(const nlohmann::json& json);
 
     /**
-     * @brief Exracts MRU values and their priorities from the
+     * @brief Extracts MRU values and their priorities from the
      *        input JSON array.
      *
      * @param[in] mruJSON - The JSON array
