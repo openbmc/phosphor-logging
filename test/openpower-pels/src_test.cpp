@@ -1813,7 +1813,7 @@ TEST_F(SRCTest, TestProgressCodeField)
     SRC src{entry, ad, dataIface};
     EXPECT_TRUE(src.valid());
 
-    // Verify that the hex vlue is set at the right hexword
+    // Verify that the hex value is set at the right hexword
     EXPECT_EQ(src.hexwordData()[2], 0xCC009184);
 }
 
