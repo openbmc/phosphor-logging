@@ -289,7 +289,7 @@ std::vector<uint8_t> pelFactory(uint32_t id, char creatorID, uint8_t severity,
         // UD sections must be 4B aligned
         assert(udSection.size() % 4 == 0);
 
-        // Set the new size in the section heder
+        // Set the new size in the section header
         Stream udStream{udSection};
         udStream.offset(2);
         udStream << static_cast<uint16_t>(udSection.size());
