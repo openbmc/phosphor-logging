@@ -18,7 +18,7 @@ logging.
 To build this package, do the following steps:
 
 1. meson builddir
-2. ninja -c builddir
+2. ninja -C builddir
 
 ## Structured Logging
 
