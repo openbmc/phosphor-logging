@@ -1040,6 +1040,26 @@ bool Manager::refreshFromDisk(uint32_t id)
     return true;
 }
 
+void Manager::extendPluginInfo(plugin::Info& info)
+{
+    for (auto& fn : Extensions::getPluginExtensionFunctions())
+    {
+        try
+        {
+            fn(info);
+        }
+        catch (const std::exception& e)
+        {
+            lg2::warning("Ignoring plugin extension exception: {ERROR}",
+                         "ERROR", e.what());
+        }
+        catch (...)
+        {
+            lg2::warning("Ignoring unknown plugin extension exception");
+        }
+    }
+}
+
 auto Manager::buildExtensionDescriptors(
     std::map<std::string, std::string>& additionalData)
     -> plugin::DescriptorList
@@ -1061,19 +1081,26 @@ auto Manager::buildExtensionDescriptors(
 
         for (const auto& [interface, data] : extensions.items())
         {
-            plugins.emplace_back(plugin::Info{
+            plugin::Info info{
                 .interface = interface,
                 .data = data,
-            });
+            };
+
+            //
+            // Allow registered extensions to augment
+            // plugin metadata prior to descriptor creation.
+            //
+            extendPluginInfo(info);
+
+            plugins.emplace_back(std::move(info));
         }
 
         descriptors = buildPluginDescriptors(plugins);
     }
     catch (const std::exception& e)
     {
-        lg2::error("Failed to process extension metadata: "
-                   "{ERROR}",
-                   "ERROR", e.what());
+        lg2::error("Failed to process extension metadata: {ERROR}", "ERROR",
+                   e.what());
     }
 
     //

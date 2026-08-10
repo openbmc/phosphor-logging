@@ -365,6 +365,17 @@ class Manager : public details::ServerObject<details::ManagerIface>
                           uint32_t revents);
 
     /**
+     * @brief Run registered plugin extension callbacks.
+     *
+     * Invokes all registered plugin extension callbacks for
+     * the specified plugin information structure.
+     *
+     * @param[in,out] info
+     *     Plugin information structure to extend.
+     */
+    void extendPluginInfo(plugin::Info& info);
+
+    /**
      * @brief Build plugin descriptors from extension metadata.
      *
      * Consumes the _EXTENSIONS entry from AdditionalData and

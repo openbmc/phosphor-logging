@@ -47,6 +47,11 @@ void logIDWithHwIsolation2(std::vector<uint32_t>& logIDs)
     logIDs.push_back(2);
 }
 
+void pluginExtension1(plugin::Info& info)
+{
+    info.data["Injected"] = "true";
+}
+
 DISABLE_LOG_ENTRY_CAPS()
 REGISTER_EXTENSION_FUNCTION(startup1)
 REGISTER_EXTENSION_FUNCTION(startup2)
@@ -58,6 +63,7 @@ REGISTER_EXTENSION_FUNCTION(logIDWithHwIsolation1)
 REGISTER_EXTENSION_FUNCTION(logIDWithHwIsolation2)
 REGISTER_EXTENSION_FUNCTION(deleteLog1)
 REGISTER_EXTENSION_FUNCTION(deleteLog2)
+REGISTER_PLUGIN_EXTENSION(pluginExtension1)
 
 TEST(ExtensionsTest, FunctionCallTest)
 {
@@ -114,4 +120,26 @@ TEST(ExtensionsTest, FunctionCallTest)
     }
 
     EXPECT_TRUE(Extensions::disableDefaultLogCaps());
+}
+
+TEST(ExtensionsTest, PluginExtensionFunctionTest)
+{
+    EXPECT_EQ(Extensions::getPluginExtensionFunctions().size(), 1);
+
+    plugin::Info info{
+        .interface = "test.interface",
+        .data = {},
+    };
+
+    auto& callbacks = Extensions::getPluginExtensionFunctions();
+
+    for (auto& fn : callbacks)
+    {
+        fn(info);
+    }
+
+    auto it = info.data.find("Injected");
+
+    ASSERT_NE(it, info.data.end());
+    EXPECT_EQ(*it, "true");
 }
