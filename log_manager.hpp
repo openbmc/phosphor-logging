@@ -354,6 +354,17 @@ class Manager : public details::ServerObject<details::ManagerIface>
                           uint32_t revents);
 
     /**
+     * @brief Run registered plugin request extension callbacks.
+     *
+     * Invokes all registered plugin request extension
+     * callbacks for the supplied request.
+     *
+     * @param[in,out] request
+     *     Plugin request to extend.
+     */
+    void extendPluginRequest(plugin::Request& request);
+
+    /**
      * @brief Build plugin requests from extension metadata.
      *
      * Consumes the _EXTENSIONS entry from AdditionalData and
