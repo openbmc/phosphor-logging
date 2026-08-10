@@ -50,7 +50,7 @@ inline auto getLevel(const std::string& errMsg)
     auto levelmap = g_errLevelMap.find(errMsg);
     if (levelmap != g_errLevelMap.end())
     {
-        reqLevel = static_cast<Entry::Level>(levelmap->second);
+        reqLevel = levelmap->second;
     }
 
     return reqLevel;

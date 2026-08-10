@@ -5,7 +5,6 @@
 #include <map>
 #include <vector>
 #include <log_manager.hpp>
-#include <phosphor-logging/log.hpp>
 
 namespace phosphor
 {
@@ -43,7 +42,21 @@ const std::map<std::string,std::vector<std::string>> g_errMetaMap = {
     % endfor
 };
 
-const std::map<std::string,level> g_errLevelMap = {
+<%
+    # Map legacy syslog-style level names to Entry::Level enumerators.
+    levelToEntry = {
+        "EMERG": "Emergency",
+        "ALERT": "Alert",
+        "CRIT": "Critical",
+        "ERR": "Error",
+        "WARNING": "Warning",
+        "NOTICE": "Notice",
+        "INFO": "Informational",
+        "DEBUG": "Debug",
+    }
+%>\
+
+const std::map<std::string, Entry::Level> g_errLevelMap = {
     % for a in errors:
 <%
     name = a
@@ -51,7 +64,7 @@ const std::map<std::string,level> g_errLevelMap = {
         index = name.rfind('.')
         name = name[:index] + ".Error" + name[index:]
 %>\
-    {"${name}",level::${error_lvl[a]}},
+    {"${name}", Entry::Level::${levelToEntry[error_lvl[a]]}},
     % endfor
 };
 

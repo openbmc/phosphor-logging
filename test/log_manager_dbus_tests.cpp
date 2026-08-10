@@ -3,6 +3,8 @@
 #include "log_manager.hpp"
 #include "paths.hpp"
 
+#include <systemd/sd-journal.h>
+
 #include <phosphor-logging/commit.hpp>
 #include <sdbusplus/async.hpp>
 #include <sdbusplus/server/manager.hpp>

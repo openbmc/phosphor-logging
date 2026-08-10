@@ -8,7 +8,6 @@
 #include "xyz/openbmc_project/Logging/Internal/Manager/server.hpp"
 
 #include <phosphor-logging/lg2.hpp>
-#include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdeventplus/source/io.hpp>
 #include <xyz/openbmc_project/Collection/DeleteAll/server.hpp>
@@ -24,7 +23,7 @@ namespace logging
 {
 
 extern const std::map<std::string, std::vector<std::string>> g_errMetaMap;
-extern const std::map<std::string, level> g_errLevelMap;
+extern const std::map<std::string, Entry::Level> g_errLevelMap;
 
 using CreateIface = sdbusplus::server::xyz::openbmc_project::logging::Create;
 using DeleteAllIface =
