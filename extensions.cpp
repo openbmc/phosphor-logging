@@ -47,5 +47,11 @@ Extensions::DefaultErrorCaps& Extensions::getDefaultErrorCaps()
     return defaultErrorCaps;
 }
 
+PluginExtensionFunctions& Extensions::getPluginExtensionFunctions()
+{
+    static PluginExtensionFunctions callbacks;
+    return callbacks;
+}
+
 } // namespace logging
 } // namespace phosphor
