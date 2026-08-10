@@ -72,11 +72,29 @@ using LogIDsWithHwIsolationFunctions =
 using ExtensionLogAssociation =
     std::function<void(uint32_t, const std::string&)>;
 
+/**
+ * @brief Plugin extension callback function type.
+ *
+ * This function allows extensions to augment plugin metadata
+ * before plugin descriptors are created.
+ *
+ * Extensions may append additional metadata to a plugin's
+ * configuration payload prior to descriptor creation.
+ *
+ * Callbacks should not modify plugin-defined fields and should
+ * only contribute extension-specific metadata.
+ *
+ * @param[in,out] info
+ *     Plugin information structure being processed.
+ */
+using PluginExtensionFunction = std::function<void(plugin::Info& info)>;
+
 using StartupFunctions = std::vector<StartupFunction>;
 using CreateFunctions = std::vector<CreateFunction>;
 using DeleteFunctions = std::vector<DeleteFunction>;
 using DeleteProhibitedFunctions = std::vector<DeleteProhibitedFunction>;
 using ExtensionLogAssociations = std::vector<ExtensionLogAssociation>;
+using PluginExtensionFunctions = std::vector<PluginExtensionFunction>;
 
 /**
  * @brief Register an extension hook function
@@ -101,6 +119,24 @@ using ExtensionLogAssociations = std::vector<ExtensionLogAssociation>;
     namespace disable_caps##_ns                                                \
     {                                                                          \
         Extensions e{Extensions::DefaultErrorCaps::disable};                   \
+    }
+
+/**
+ * @brief Register a plugin extension function.
+ *
+ * Call this macro at global scope to register a plugin
+ * extension callback.
+ *
+ * Registered callbacks are invoked after plugin metadata
+ * is parsed and before plugin descriptors are created.
+ *
+ * @param func
+ *     Plugin extension callback.
+ */
+#define REGISTER_PLUGIN_EXTENSION(func)                                        \
+    namespace func##_plugin_ns                                                 \
+    {                                                                          \
+        Extensions e{func};                                                    \
     }
 
 /**
@@ -223,6 +259,19 @@ class Extensions
     }
 
     /**
+     * @brief Constructor to register a plugin extension function.
+     *
+     * Functions registered with this constructor are invoked
+     * before plugin descriptors are created.
+     *
+     * @param[in] func - Plugin extension callback.
+     */
+    explicit Extensions(PluginExtensionFunction func)
+    {
+        getPluginExtensionFunctions().push_back(std::move(func));
+    }
+
+    /**
      * @brief Returns the Startup functions
      * @return StartupFunctions - the Startup functions
      */
@@ -264,6 +313,15 @@ class Extensions
      * @return ExtensionLogAssociations - the ExtensionLogAssociation functions
      */
     static ExtensionLogAssociations& getExtensionLogAssociationFunctions();
+
+    /**
+     * @brief Returns the registered plugin extension callbacks.
+     *
+     * Provides access to all registered plugin extension callbacks.
+     *
+     * @return PluginExtensionFunctions&
+     */
+    static PluginExtensionFunctions& getPluginExtensionFunctions();
 
     /**
      * @brief Say if the default log capping policy should be disabled
