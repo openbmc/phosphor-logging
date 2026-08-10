@@ -1043,6 +1043,26 @@ bool Manager::refreshFromDisk(uint32_t id)
     return true;
 }
 
+void Manager::extendPluginRequest(plugin::Request& request)
+{
+    for (auto& fn : Extensions::getPluginRequestExtensionFunctions())
+    {
+        try
+        {
+            fn(request);
+        }
+        catch (const std::exception& e)
+        {
+            lg2::warning("Ignoring plugin request extension exception: {ERROR}",
+                         "ERROR", e.what());
+        }
+        catch (...)
+        {
+            lg2::warning("Ignoring unknown plugin request extension exception");
+        }
+    }
+}
+
 auto Manager::buildPluginRequests(
     std::map<std::string, std::string>& additionalData) -> plugin::RequestList
 {
@@ -1061,10 +1081,19 @@ auto Manager::buildPluginRequests(
 
         for (const auto& [interface, data] : extensions.items())
         {
-            requests.emplace_back(plugin::Request{
+            plugin::Request request{
                 .interface = interface,
                 .data = data,
-            });
+            };
+
+            //
+            // Allow registered extensions to augment
+            // plugin request metadata prior to plugin
+            // processing.
+            //
+            extendPluginRequest(request);
+
+            requests.emplace_back(std::move(request));
         }
     }
     catch (const std::exception& e)
