@@ -52,6 +52,17 @@ void pluginExtension1(plugin::Info& info)
     info.data["Injected"] = "true";
 }
 
+void runtimeMetadataProvider1(
+    nlohmann::json& metadata, const std::string& message, Entry::Level level,
+    const std::map<std::string, std::string>& additionalData)
+{
+    (void)level;
+    (void)additionalData;
+
+    metadata["Message"] = message;
+    metadata["Provider"] = "Provider1";
+}
+
 DISABLE_LOG_ENTRY_CAPS()
 REGISTER_EXTENSION_FUNCTION(startup1)
 REGISTER_EXTENSION_FUNCTION(startup2)
@@ -64,6 +75,7 @@ REGISTER_EXTENSION_FUNCTION(logIDWithHwIsolation2)
 REGISTER_EXTENSION_FUNCTION(deleteLog1)
 REGISTER_EXTENSION_FUNCTION(deleteLog2)
 REGISTER_PLUGIN_EXTENSION(pluginExtension1)
+REGISTER_RUNTIME_METADATA_PROVIDER(runtimeMetadataProvider1)
 
 TEST(ExtensionsTest, FunctionCallTest)
 {
@@ -142,4 +154,22 @@ TEST(ExtensionsTest, PluginExtensionFunctionTest)
 
     ASSERT_NE(it, info.data.end());
     EXPECT_EQ(*it, "true");
+}
+
+TEST(ExtensionsTest, RuntimeMetadataProviderTest)
+{
+    EXPECT_EQ(Extensions::getRuntimeMetadataFunctions().size(), 1);
+
+    nlohmann::json metadata = nlohmann::json::object();
+
+    std::map<std::string, std::string> additionalData;
+
+    for (auto& fn : Extensions::getRuntimeMetadataFunctions())
+    {
+        fn(metadata, "test-message", Entry::Level::Informational,
+           additionalData);
+    }
+
+    EXPECT_EQ(metadata["Message"], "test-message");
+    EXPECT_EQ(metadata["Provider"], "Provider1");
 }

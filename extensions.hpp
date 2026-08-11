@@ -89,13 +89,40 @@ using ExtensionLogAssociation =
  */
 using PluginExtensionFunction = std::function<void(plugin::Info& info)>;
 
+/**
+ * @brief Runtime metadata provider callback.
+ *
+ * Runtime metadata providers may contribute additional
+ * metadata derived from log creation context.
+ *
+ * The metadata object is owned by the framework and is
+ * shared across all registered providers. Providers may
+ * append or update metadata entries as required.
+ *
+ * @param[in,out] metadata
+ *     Aggregated runtime metadata object.
+ *
+ * @param[in] message
+ *     Error log message.
+ *
+ * @param[in] level
+ *     Error severity level.
+ *
+ * @param[in] additionalData
+ *     Event additional data.
+ *
+ */
+using RuntimeMetadataFunction = std::function<void(
+    nlohmann::json& metadata, const std::string& message, Entry::Level level,
+    const std::map<std::string, std::string>& additionalData)>;
+
 using StartupFunctions = std::vector<StartupFunction>;
 using CreateFunctions = std::vector<CreateFunction>;
 using DeleteFunctions = std::vector<DeleteFunction>;
 using DeleteProhibitedFunctions = std::vector<DeleteProhibitedFunction>;
 using ExtensionLogAssociations = std::vector<ExtensionLogAssociation>;
 using PluginExtensionFunctions = std::vector<PluginExtensionFunction>;
-
+using RuntimeMetadataFunctions = std::vector<RuntimeMetadataFunction>;
 /**
  * @brief Register an extension hook function
  *
@@ -135,6 +162,21 @@ using PluginExtensionFunctions = std::vector<PluginExtensionFunction>;
  */
 #define REGISTER_PLUGIN_EXTENSION(func)                                        \
     namespace func##_plugin_ns                                                 \
+    {                                                                          \
+        Extensions e{func};                                                    \
+    }
+
+/**
+ * @brief Register a runtime metadata provider.
+ *
+ * Call this macro at global scope to register a callback
+ * that contributes runtime metadata during log creation.
+ *
+ * @param func
+ *     Runtime metadata provider callback.
+ */
+#define REGISTER_RUNTIME_METADATA_PROVIDER(func)                               \
+    namespace func##_runtime_metadata_ns                                       \
     {                                                                          \
         Extensions e{func};                                                    \
     }
@@ -272,6 +314,18 @@ class Extensions
     }
 
     /**
+     * @brief Constructor to register a runtime metadata
+     *        provider.
+     *
+     * @param[in] func
+     *     Runtime metadata provider callback.
+     */
+    explicit Extensions(RuntimeMetadataFunction func)
+    {
+        getRuntimeMetadataFunctions().push_back(std::move(func));
+    }
+
+    /**
      * @brief Returns the Startup functions
      * @return StartupFunctions - the Startup functions
      */
@@ -322,6 +376,14 @@ class Extensions
      * @return PluginExtensionFunctions&
      */
     static PluginExtensionFunctions& getPluginExtensionFunctions();
+
+    /**
+     * @brief Returns registered runtime metadata providers.
+     *
+     * @return Reference to registered runtime metadata
+     *         provider callbacks.
+     */
+    static RuntimeMetadataFunctions& getRuntimeMetadataFunctions();
 
     /**
      * @brief Say if the default log capping policy should be disabled

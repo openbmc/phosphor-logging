@@ -37,6 +37,11 @@ extern const std::map<
     std::function<phosphor::logging::metadata::associations::Type>>
     meta;
 
+namespace
+{
+constexpr auto extensionsKey = "_EXTENSIONS";
+} // namespace
+
 namespace phosphor
 {
 namespace logging
@@ -826,6 +831,16 @@ auto Manager::create(const std::string& message, Entry::Level severity,
 
     auto descriptors = buildExtensionDescriptors(data);
 
+    if (!descriptors.empty())
+    {
+        auto metadata = collectRuntimeMetadata(message, severity, data);
+
+        if (!metadata.empty())
+        {
+            data[extensionsKey] = metadata.dump();
+        }
+    }
+
     return createEntry(message, severity, std::move(data), ffdc,
                        std::move(descriptors));
 }
@@ -1155,6 +1170,32 @@ auto Manager::buildPluginDescriptors(
     }
 
     return descriptors;
+}
+
+nlohmann::json Manager::collectRuntimeMetadata(
+    const std::string& message, Entry::Level level,
+    const std::map<std::string, std::string>& additionalData)
+{
+    auto metadata = nlohmann::json::object();
+
+    for (auto& fn : Extensions::getRuntimeMetadataFunctions())
+    {
+        try
+        {
+            fn(metadata, message, level, additionalData);
+        }
+        catch (const std::exception& e)
+        {
+            lg2::warning("Ignoring runtime metadata exception: {ERROR}",
+                         "ERROR", e.what());
+        }
+        catch (...)
+        {
+            lg2::warning("Ignoring unknown runtime metadata exception");
+        }
+    }
+
+    return metadata;
 }
 
 } // namespace internal

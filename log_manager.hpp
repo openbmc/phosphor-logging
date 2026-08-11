@@ -422,6 +422,32 @@ class Manager : public details::ServerObject<details::ManagerIface>
     plugin::DescriptorList buildPluginDescriptors(
         const std::vector<plugin::Info>& plugins) const;
 
+    /**
+     * @brief Collect runtime metadata from registered providers.
+     *
+     * Internal helper used by the logging path to invoke all
+     * registered runtime metadata provider functions and
+     * aggregate their contributions into a single JSON object.
+     *
+     * @param[in] message
+     *     Log message associated with the entry.
+     *
+     * @param[in] level
+     *     Severity level of the entry.
+     *
+     * @param[in] additionalData
+     *     Additional data supplied during log creation.
+     *
+     * @return Aggregated runtime metadata collected from all
+     *         registered providers.
+     *
+     * @note
+     *     This API is intended for internal use only.
+     */
+    static nlohmann::json collectRuntimeMetadata(
+        const std::string& message, Entry::Level level,
+        const std::map<std::string, std::string>& additionalData);
+
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus_t& busLog;
 
