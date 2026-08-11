@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd1bbf89_9ca4ae4b",
+        "filename": "lib/lg2_commit.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-08-11T07:07:51Z",
+      "side": 1,
+      "message": "nit: \u003cvector\u003e is unused here and both includers don\u0027t rely on it transitively (log_manager.cpp includes it directly) — safe to drop",
+      "revId": "fff03dda0a5d879603f15fe04806574abb32f586",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
