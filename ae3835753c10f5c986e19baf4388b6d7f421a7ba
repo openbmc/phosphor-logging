@@ -16,6 +16,24 @@
       "message": "I feel like I already asked you this but now can\u0027t remember.  Why was this necessary?",
       "revId": "ae3835753c10f5c986e19baf4388b6d7f421a7ba",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d25a4ac6_5aa2a6c7",
+        "filename": "extensions/openpower-pels/data_interface.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-08-11T02:03:27Z",
+      "side": 1,
+      "message": "This change was added during the AEL enablement work to resolve the CI failures. I am currently in the process of re-enabling AEL on top of this commit chain and will share further updates based on the CI validation results.",
+      "parentUuid": "a41eb138_551d98de",
+      "revId": "ae3835753c10f5c986e19baf4388b6d7f421a7ba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
