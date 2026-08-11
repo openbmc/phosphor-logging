@@ -53,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad5723e3_7506658b",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-08-11T00:34:13Z",
+      "side": 1,
+      "message": "\u003e It is kind of unfortunate how the efficiency of this works.  We end up having to search through the list to find a candidate and then on line 229 we call line 629 to find it again.  Basically 2x the work when we already have an iterator, probably, here.\n\nDone returned an iterator and used it in other API.",
+      "parentUuid": "3d8c1e93_1e8efcab",
+      "revId": "773012b0269dcd68091d0ab62126aa89efde0e8b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d8183a2a_969a60aa",
@@ -70,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "11079b38_ef484530",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-08-11T00:34:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d8183a2a_969a60aa",
+      "revId": "773012b0269dcd68091d0ab62126aa89efde0e8b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "837478d9_6b1b05cb",
@@ -83,6 +119,24 @@
       "writtenOn": "2026-07-14T17:35:56Z",
       "side": 1,
       "message": "This ends up being an O(n*log(n)) operation to delete a log when it use to be log(n).\n\nCan\u0027t we simply iterate through entries in order, which is O(n), to find the candidate?",
+      "revId": "773012b0269dcd68091d0ab62126aa89efde0e8b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe9929d7_5eee996b",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 619,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-08-11T00:34:13Z",
+      "side": 1,
+      "message": "@patrick@stwcx.xyz\nIterating entries can\u0027t work — it\u0027s ID-ordered, not age-ordered (realErrors list stores the error entries by age), so it would evict the wrong entry.\n\nLet me know if you have any other thoughts ?",
+      "parentUuid": "837478d9_6b1b05cb",
       "revId": "773012b0269dcd68091d0ab62126aa89efde0e8b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
