@@ -54,5 +54,11 @@ PluginRequestExtensionFunctions&
     return callbacks;
 }
 
+RuntimeMetadataFunctions& Extensions::getRuntimeMetadataFunctions()
+{
+    static RuntimeMetadataFunctions providers;
+    return providers;
+}
+
 } // namespace logging
 } // namespace phosphor
