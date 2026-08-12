@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7599ece_9dd85d85",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-08-12T06:14:20Z",
+      "side": 1,
+      "message": "createPlugins() isn\u0027t wrapped in a try/catch. If a plugin create() ever throws, would that prevent the base log entry from being created?\n Just wondering if that is intentional, or if plugin failures should be isolated so the underlying error log is still recorded",
+      "revId": "35a7bed2b536a3f68dab26856dfa9e90a715a825",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
