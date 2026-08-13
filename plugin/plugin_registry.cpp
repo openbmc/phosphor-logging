@@ -36,4 +36,17 @@ plugin::DescriptorPtr PluginRegistry::createDescriptor(
     return factory->createDescriptor(info);
 }
 
+nlohmann::json PluginRegistry::buildPayload(
+    std::string_view interface, const nlohmann::json& metadata) const
+{
+    const auto* factory = lookup(interface);
+
+    if (factory == nullptr)
+    {
+        return metadata;
+    }
+
+    return factory->buildPayload(metadata);
+}
+
 } // namespace phosphor::logging

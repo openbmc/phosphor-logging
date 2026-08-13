@@ -33,6 +33,29 @@ class TestFactory : public PluginFactory
     }
 };
 
+class PayloadFactory : public PluginFactory
+{
+  public:
+    std::unique_ptr<plugin::Descriptor> createDescriptor(
+        const plugin::Info&) const override
+    {
+        return nullptr;
+    }
+
+    std::unique_ptr<Plugin> create(const PluginContext&,
+                                   const plugin::Descriptor&) const override
+    {
+        return nullptr;
+    }
+
+    nlohmann::json buildPayload(const nlohmann::json& metadata) const override
+    {
+        return {
+            {"Payload", metadata},
+        };
+    }
+};
+
 } // namespace
 
 TEST(PluginRegistryTest, RegisterAndLookupFactory)
@@ -79,6 +102,34 @@ TEST(PluginRegistryTest, CreateDescriptorUnknownInterface)
     auto descriptor = registry.createDescriptor(info);
 
     EXPECT_EQ(descriptor, nullptr);
+}
+
+TEST(PluginRegistryTest, BuildPayloadUnknownInterface)
+{
+    PluginRegistry registry;
+
+    nlohmann::json metadata{
+        {"Key", "Value"},
+    };
+
+    auto payload = registry.buildPayload("unknown.interface", metadata);
+
+    EXPECT_EQ(payload, metadata);
+}
+
+TEST(PluginRegistryTest, BuildPayloadUsesFactory)
+{
+    PluginRegistry registry;
+
+    registry.registerPlugin(testInterface, std::make_unique<PayloadFactory>());
+
+    nlohmann::json metadata{
+        {"Key", "Value"},
+    };
+
+    auto payload = registry.buildPayload(testInterface, metadata);
+
+    EXPECT_EQ(payload["Payload"]["Key"], "Value");
 }
 
 } // namespace phosphor::logging
