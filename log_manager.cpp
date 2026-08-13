@@ -302,7 +302,10 @@ auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
         std::move(objects), fwVersion, getEntrySerializePath(entryId), *this,
         std::move(eventExtensions));
 
-    serialize(*e);
+    if constexpr (PERSIST_CEREAL)
+    {
+        serialize(*e);
+    }
     serializeJSON(*e);
 
     e->emit_object_added();
@@ -653,10 +656,12 @@ void Manager::erase(uint32_t entryId)
         entryFound->second->cleanupExtensions();
 
         // Delete the persistent representation of this error.
-        fs::path errorPath(paths::error());
-        errorPath /= std::to_string(entryId);
-        fs::remove(errorPath);
-
+        if constexpr (PERSIST_CEREAL)
+        {
+            fs::path errorPath(paths::error());
+            errorPath /= std::to_string(entryId);
+            fs::remove(errorPath);
+        }
         fs::path jsonPath(paths::error_json());
         jsonPath /= std::to_string(entryId) + ".json";
         fs::remove(jsonPath);
