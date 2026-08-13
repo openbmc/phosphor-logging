@@ -17,7 +17,10 @@ namespace logging
 
 void Entry::persist()
 {
-    serialize(*this);
+    if constexpr (PERSIST_CEREAL)
+    {
+        serialize(*this);
+    }
     serializeJSON(*this);
 }
 
