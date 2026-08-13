@@ -17,6 +17,12 @@ conf_data.set(
 redundant_bmc = get_option('redundant-bmc')
 conf_data.set10('redundant_bmc', redundant_bmc)
 
+cereal_persist = get_option('cereal-persist')
+if not cereal_persist and redundant_bmc
+    error('cereal-persistence is required when redundant-bmc is enabled')
+endif
+conf_data.set10('persist_cereal', cereal_persist)
+
 cxx = meson.get_compiler('cpp')
 if cxx.has_header('poll.h')
     add_project_arguments('-DPLDM_HAS_POLL=1', language: 'cpp')

@@ -61,3 +61,9 @@ option(
     value: true,
     description: 'Enable support for redundant BMC systems',
 )
+option(
+    'cereal-persist',
+    type: 'boolean',
+    value: true,
+    description: 'persist entries in the legacy Cereal format. Reading',
+)
