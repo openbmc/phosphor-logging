@@ -287,7 +287,10 @@ auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
         errLvl, std::move(errMsg), std::move(additionalData),
         std::move(objects), fwVersion, getEntrySerializePath(entryId), *this);
 
-    serialize(*e);
+    if constexpr (PERSIST_CEREAL)
+    {
+        serialize(*e);
+    }
     serializeJSON(*e);
 
     if (isQuiesceOnErrorEnabled() && (errLvl < Entry::sevLowerLimit) &&
@@ -644,10 +647,12 @@ void Manager::erase(uint32_t entryId)
         }
 
         // Delete the persistent representation of this error.
-        fs::path errorPath(paths::error());
-        errorPath /= std::to_string(entryId);
-        fs::remove(errorPath);
-
+        if constexpr (PERSIST_CEREAL)
+        {
+            fs::path errorPath(paths::error());
+            errorPath /= std::to_string(entryId);
+            fs::remove(errorPath);
+        }
         fs::path jsonPath(paths::error_json());
         jsonPath /= std::to_string(entryId) + ".json";
         fs::remove(jsonPath);
