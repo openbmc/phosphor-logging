@@ -6,6 +6,7 @@
 #include "plugin/plugin_registry.hpp"
 #include "plugin/plugin_request.hpp"
 
+#include <nlohmann/json.hpp>
 #include <xyz/openbmc_project/Logging/Extension/CPER/Processed/server.hpp>
 
 namespace phosphor::logging::plugin::cper::processed
@@ -96,6 +97,19 @@ class Factory : public phosphor::logging::PluginFactory
      */
     plugin::DescriptorPtr createDescriptor(
         const plugin::Request& request) const override;
+
+    /**
+     * @brief Build CPERProcessed extension payload.
+     *
+     * Converts runtime metadata into the payload stored under
+     * the CPER entry within the _EXTENSIONS transport object.
+     *
+     * @param[in] metadata Runtime metadata.
+     *
+     * @return CPER extension payload.
+     */
+    nlohmann::json buildExtensionPayload(
+        const nlohmann::json& metadata) const override;
 };
 
 /**
