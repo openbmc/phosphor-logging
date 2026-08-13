@@ -91,6 +91,14 @@ class Factory : public phosphor::logging::PluginFactory
 
     ~Factory() override = default;
 
+    /**
+     * @brief Create a runtime CPER plugin.
+     *
+     * @param[in] context Plugin creation context.
+     * @param[in] descriptor CPER descriptor.
+     *
+     * @return Runtime CPER plugin instance.
+     */
     PluginPtr create(const PluginContext& context,
                      const plugin::Descriptor& descriptor) const override;
 
@@ -103,6 +111,18 @@ class Factory : public phosphor::logging::PluginFactory
      */
     plugin::DescriptorPtr createDescriptor(
         const plugin::Info& info) const override;
+
+    /**
+     * @brief Build CPER extension payload.
+     *
+     * Converts runtime metadata into the payload stored under
+     * the CPER entry within the _EXTENSIONS transport object.
+     *
+     * @param[in] metadata Runtime metadata.
+     *
+     * @return CPER extension payload.
+     */
+    nlohmann::json buildPayload(const nlohmann::json& metadata) const override;
 
   private:
     /**
