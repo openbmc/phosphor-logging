@@ -112,6 +112,18 @@ class Factory : public phosphor::logging::PluginFactory
     plugin::DescriptorPtr createDescriptor(
         const plugin::Info& info) const override;
 
+    /**
+     * @brief Build CPER extension payload.
+     *
+     * Converts runtime metadata into the payload stored under
+     * the CPER entry within the _EXTENSIONS transport object.
+     *
+     * @param[in] metadata Runtime metadata.
+     *
+     * @return CPER extension payload.
+     */
+    nlohmann::json buildPayload(const nlohmann::json& metadata) const override;
+
   private:
     /**
      * @brief Root directory used to store persisted

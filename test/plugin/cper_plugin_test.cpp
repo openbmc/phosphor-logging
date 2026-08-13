@@ -269,4 +269,34 @@ TEST_F(CperPluginTest, GetCPERBinaryReturnsPersistedArtifact)
     ::close(fd);
 }
 
+TEST_F(CperPluginTest, BuildPayload)
+{
+    Factory factory;
+
+    nlohmann::json metadata{
+        {"AMD",
+         {
+             {"AEL.VERSION", "1.0"},
+             {"AEL.AFID", "4660"},
+         }},
+    };
+
+    auto payload = factory.buildPayload(metadata);
+
+    ASSERT_TRUE(payload.contains(oemKey));
+
+    EXPECT_EQ(payload[oemKey]["AMD"], metadata["AMD"].dump());
+}
+
+TEST_F(CperPluginTest, BuildPayloadEmptyMetadata)
+{
+    Factory factory;
+
+    auto payload = factory.buildPayload(nlohmann::json::object());
+
+    ASSERT_TRUE(payload.contains(oemKey));
+
+    EXPECT_TRUE(payload[oemKey].empty());
+}
+
 } // namespace phosphor::logging::plugin::cper
