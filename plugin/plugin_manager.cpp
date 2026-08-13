@@ -60,4 +60,10 @@ PluginPtr PluginManager::create(const PluginContext& context,
     return factory->create(context, descriptor);
 }
 
+nlohmann::json PluginManager::buildExtensionPayload(
+    std::string_view interface, const nlohmann::json& metadata) const
+{
+    return registry.buildExtensionPayload(interface, metadata);
+}
+
 } // namespace phosphor::logging
