@@ -999,7 +999,10 @@ void Manager::serializeLogEntry(uint32_t obmcLogID)
     auto entryN = _logManager.entries.find(obmcLogID);
     if (entryN != _logManager.entries.end())
     {
-        serialize(*entryN->second);
+        if constexpr (PERSIST_CEREAL)
+        {
+            serialize(*entryN->second);
+        }
         serializeJSON(*entryN->second);
     }
 }
