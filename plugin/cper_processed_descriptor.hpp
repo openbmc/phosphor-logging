@@ -18,7 +18,7 @@ using ContentType =
 using OemMetadata = std::map<std::string, std::string>;
 
 inline constexpr std::string_view interface =
-    "xyz.openbmc_project.Logging.Extension.CPER::Processed";
+    "xyz.openbmc_project.Logging.Extension.CPER.Processed";
 
 /**
  * @brief CPER Processed interface properties.
