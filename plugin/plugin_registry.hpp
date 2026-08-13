@@ -69,6 +69,21 @@ class PluginRegistry
     plugin::DescriptorPtr createDescriptor(
         const plugin::Request& request) const;
 
+    /**
+     * @brief Build extension payload for a plugin.
+     *
+     * Resolves the specified plugin interface and invokes the
+     * registered plugin factory to construct the payload stored
+     * in _EXTENSIONS.
+     *
+     * @param[in] interface Plugin interface name.
+     * @param[in] metadata Plugin metadata.
+     *
+     * @return Plugin payload.
+     */
+    nlohmann::json buildExtensionPayload(std::string_view interface,
+                                         const nlohmann::json& metadata) const;
+
   private:
     /** Registered plugin factories. */
     std::unordered_map<std::string, PluginFactoryPtr> registry;

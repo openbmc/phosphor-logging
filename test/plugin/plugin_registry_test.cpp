@@ -41,6 +41,30 @@ class TestFactory : public PluginFactory
     }
 };
 
+class PayloadFactory : public PluginFactory
+{
+  public:
+    std::unique_ptr<plugin::Descriptor> createDescriptor(
+        const plugin::Request&) const override
+    {
+        return nullptr;
+    }
+
+    std::unique_ptr<Plugin> create(const PluginContext&,
+                                   const plugin::Descriptor&) const override
+    {
+        return nullptr;
+    }
+
+    nlohmann::json buildExtensionPayload(
+        const nlohmann::json& metadata) const override
+    {
+        return {
+            {"Payload", metadata},
+        };
+    }
+};
+
 } // namespace
 
 TEST(PluginRegistryTest, RegisterAndLookupFactory)
@@ -89,6 +113,35 @@ TEST(PluginRegistryTest, CreateDescriptorUnknownInterface)
     auto descriptor = registry.createDescriptor(request);
 
     EXPECT_EQ(descriptor, nullptr);
+}
+
+TEST(PluginRegistryTest, BuildExtensionPayloadUnknownInterface)
+{
+    PluginRegistry registry;
+
+    nlohmann::json metadata{
+        {"Key", "Value"},
+    };
+
+    auto payload =
+        registry.buildExtensionPayload("unknown.interface", metadata);
+
+    EXPECT_EQ(payload, metadata);
+}
+
+TEST(PluginRegistryTest, BuildExtensionPayloadUsesFactory)
+{
+    PluginRegistry registry;
+
+    registry.registerPlugin(testInterface, std::make_unique<PayloadFactory>());
+
+    nlohmann::json metadata{
+        {"Key", "Value"},
+    };
+
+    auto payload = registry.buildExtensionPayload(testInterface, metadata);
+
+    EXPECT_EQ(payload["Payload"]["Key"], "Value");
 }
 
 } // namespace phosphor::logging
