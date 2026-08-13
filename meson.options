@@ -68,3 +68,10 @@ option(
     value: true,
     description: 'Enable support for redundant BMC systems',
 )
+
+option(
+    'runtime-metadata-plugin',
+    type: 'string',
+    value: '',
+    description: 'Plugin interface used for runtime metadata',
+)
