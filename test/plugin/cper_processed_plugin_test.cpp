@@ -134,4 +134,29 @@ TEST_F(PluginTest, EmptyOemMetadata)
     EXPECT_TRUE(plugin.oem().empty());
 }
 
+TEST_F(PluginTest, BuildPayload)
+{
+    Factory factory;
+    nlohmann::json metadata{
+        {"AMD",
+         {
+             {"AEL.VERSION", "1.0"},
+             {"AEL.AFID", "4660"},
+         }},
+    };
+
+    auto payload = factory.buildExtensionPayload(metadata);
+    ASSERT_TRUE(payload.contains(oemKey));
+    EXPECT_EQ(payload[oemKey]["AMD"], metadata["AMD"].dump());
+}
+
+TEST_F(PluginTest, BuildExtensionPayloadEmptyMetadata)
+{
+    Factory factory;
+    auto payload = factory.buildExtensionPayload(nlohmann::json::object());
+
+    ASSERT_TRUE(payload.contains(oemKey));
+    EXPECT_TRUE(payload[oemKey].empty());
+}
+
 } // namespace phosphor::logging::plugin::cperprocessed
