@@ -56,6 +56,25 @@ class PluginFactory
      */
     virtual plugin::DescriptorPtr createDescriptor(
         const plugin::Info& info) const = 0;
+
+    /**
+     * @brief Build plugin transport payload.
+     *
+     * Converts plugin-specific metadata into the payload stored
+     * under the plugin interface within the _EXTENSIONS
+     * additional-data field.
+     *
+     * The default implementation returns the input metadata
+     * unchanged.
+     *
+     * @param[in] metadata Plugin metadata.
+     *
+     * @return Extension payload.
+     */
+    virtual nlohmann::json buildPayload(const nlohmann::json& metadata) const
+    {
+        return metadata;
+    }
 };
 
 /** Unique ownership of a plugin factory. */

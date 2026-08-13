@@ -829,17 +829,22 @@ auto Manager::create(const std::string& message, Entry::Level severity,
 {
     auto data = additionalData;
 
-    auto descriptors = buildExtensionDescriptors(data);
+    constexpr std::string_view pluginInterface{RUNTIME_METADATA_PLUGIN};
 
-    if (!descriptors.empty())
+    if (!pluginInterface.empty())
     {
         auto metadata = collectRuntimeMetadata(message, severity, data);
 
         if (!metadata.empty())
         {
-            data[extensionsKey] = metadata.dump();
+            auto payload =
+                pluginRegistry.buildPayload(pluginInterface, metadata);
+
+            updateExtensions(data, pluginInterface, payload);
         }
     }
+
+    auto descriptors = buildExtensionDescriptors(data);
 
     return createEntry(message, severity, std::move(data), ffdc,
                        std::move(descriptors));
@@ -1196,6 +1201,32 @@ nlohmann::json Manager::collectRuntimeMetadata(
     }
 
     return metadata;
+}
+
+void Manager::updateExtensions(
+    std::map<std::string, std::string>& additionalData,
+    std::string_view interface, const nlohmann::json& payload)
+{
+    nlohmann::json extensions = nlohmann::json::object();
+
+    auto extIt = additionalData.find(extensionsKey);
+
+    if (extIt != additionalData.end())
+    {
+        try
+        {
+            extensions = nlohmann::json::parse(extIt->second);
+        }
+        catch (const std::exception& e)
+        {
+            lg2::warning("Failed to parse extension metadata: {ERROR}", "ERROR",
+                         e.what());
+        }
+    }
+
+    extensions[std::string(interface)] = payload;
+
+    additionalData[extensionsKey] = extensions.dump();
 }
 
 } // namespace internal

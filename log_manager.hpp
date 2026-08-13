@@ -448,6 +448,24 @@ class Manager : public details::ServerObject<details::ManagerIface>
         const std::string& message, Entry::Level level,
         const std::map<std::string, std::string>& additionalData);
 
+    /**
+     * @brief Add or update plugin metadata in the extension container.
+     *
+     * Stores the supplied payload under the provided interface name
+     * within the _EXTENSIONS additional-data field.
+     *
+     * If the extension container already exists, the new payload is
+     * merged with existing entries. Existing plugin data for other
+     * interfaces is preserved.
+     *
+     * @param[in,out] additionalData AdditionalData map.
+     * @param[in] interface Plugin interface name.
+     * @param[in] payload Plugin-specific payload.
+     */
+    static void updateExtensions(
+        std::map<std::string, std::string>& additionalData,
+        std::string_view interface, const nlohmann::json& payload);
+
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus_t& busLog;
 
