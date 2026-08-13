@@ -5,6 +5,8 @@
 #include "plugin/plugin_registry.hpp"
 #include "plugin/plugin_request.hpp"
 
+#include <nlohmann/json.hpp>
+
 namespace phosphor::logging
 {
 
@@ -53,6 +55,21 @@ class PluginManager
      */
     PluginList create(const PluginContext& context,
                       const plugin::RequestList& requests) const;
+
+    /**
+     * @brief Build an extension payload.
+     *
+     * Resolves the specified plugin interface and delegates
+     * payload construction to the corresponding registered
+     * plugin implementation.
+     *
+     * @param[in] interface Extension interface name.
+     * @param[in] metadata Runtime metadata.
+     *
+     * @return Extension payload.
+     */
+    nlohmann::json buildExtensionPayload(std::string_view interface,
+                                         const nlohmann::json& metadata) const;
 
   private:
     /**
