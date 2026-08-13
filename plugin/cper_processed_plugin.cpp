@@ -56,4 +56,20 @@ plugin::DescriptorPtr ProcessedFactory::createDescriptor(
 
     return std::make_unique<ProcessedDescriptor>(std::move(properties));
 }
+
+nlohmann::json ProcessedFactory::buildExtensionPayload(
+    const nlohmann::json& metadata) const
+{
+    auto oem = nlohmann::json::object();
+
+    for (const auto& [ns, value] : metadata.items())
+    {
+        oem[ns] = value.dump();
+    }
+
+    return {
+        {oemKey, std::move(oem)},
+    };
+}
+
 } // namespace phosphor::logging::plugin::cper
