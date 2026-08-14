@@ -1,0 +1,163 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc554864_1a8caf99",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-08-14T05:39:21Z",
+      "side": 1,
+      "message": "Once your Gerrit access issue is resolved, I can transfer the change ownership to you. I\u0027ve also added my review comments for your consideration.",
+      "revId": "90b9ed5503753148128865c1f04d2806a8f0d56a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df275423_5486bcfb",
+        "filename": "extensions/amd-event-log/codegen/generate_lut.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-08-14T05:39:21Z",
+      "side": 1,
+      "message": "matchPattern() performs suffix matching using s.substr(s.size() - suf.size()) without validating the input length first. Consider adding a guard such as:\nif (s.size() \u003c pre.size() + suf.size())\n{\n    return false;\n} \nThis avoids size underflow",
+      "revId": "90b9ed5503753148128865c1f04d2806a8f0d56a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5befd9f0_bd172640",
+        "filename": "extensions/amd-event-log/codegen/generate_lut.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-08-14T05:39:21Z",
+      "side": 1,
+      "message": "The current API does not clearly distinguish between a successful LUT match and a fallback result, since unmatched events also return a valid AFIDInfo.\n\nRecommendation: Either return std::nullopt for unmatched events, or include an explicit lookup status in the result (e.g. Matched, MissingKey, PatternMismatch, MessageNotFound). This preserves lookup outcome information, avoids ambiguity between valid and fallback results, and provides better diagnostics for consumers.",
+      "revId": "90b9ed5503753148128865c1f04d2806a8f0d56a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acabf264_e931448d",
+        "filename": "extensions/amd-event-log/codegen/generate_lut_tests.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-08-14T05:39:21Z",
+      "side": 1,
+      "message": "There is no logic that checks whether an AFID is reused across multiple leaves. is this intentionally ?",
+      "revId": "90b9ed5503753148128865c1f04d2806a8f0d56a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d601c7a4_4a923150",
+        "filename": "extensions/amd-event-log/data/tools/validate_lut.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-08-14T05:39:21Z",
+      "side": 1,
+      "message": "Nit: Overlap detection currently uses different matching semantics than matchPattern(). Consider aligning validation with the runtime matcher to prevent ambiguous pattern definitions.\nFor example:\nMB_*_TEMP_C\nMB_CPU_TEMP_C\nBoth patterns can match the same input, but may not be detected by the current overlap checks. Is this intentional?",
+      "revId": "90b9ed5503753148128865c1f04d2806a8f0d56a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21ad4e83_fb88f736",
+        "filename": "extensions/amd-event-log/data/tools/validate_lut.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-08-14T05:39:21Z",
+      "side": 1,
+      "message": "NIT: Duplicate origin paths not detected \nif len(origins) !\u003d len(set(origins)):\n    raise ValueError(\n        f\"Duplicate originOfCondition entries at {path}: {origins}\"\n    )",
+      "revId": "90b9ed5503753148128865c1f04d2806a8f0d56a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a2240b0_ced7c995",
+        "filename": "extensions/amd-event-log/data/tools/validate_lut.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-08-14T05:39:21Z",
+      "side": 1,
+      "message": "Empty LUT Accepted\nConsider validating that the  section contains at least one message entry. An empty LUT currently passes validation and generates a database that always returns the fallback AFID, which is likely a configuration error rather than a valid deployment scenario.\n\nif not lookup:\nraise ValueError(\"lookup must contain at least one message entry\")",
+      "revId": "90b9ed5503753148128865c1f04d2806a8f0d56a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96c87c0f_d383776e",
+        "filename": "extensions/amd-event-log/src/amd_afid_utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-08-14T05:39:21Z",
+      "side": 1,
+      "message": "The current API only returns std::nullopt for an empty message, while other lookup failures return the fallback AFID. Consider aligning this with the LUT lookup semantics by returning std::nullopt (or an explicit lookup status) for unmatched events.",
+      "revId": "90b9ed5503753148128865c1f04d2806a8f0d56a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d33e279a_c7d2d2eb",
+        "filename": "extensions/amd-event-log/src/amd_afid_utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-08-14T05:39:21Z",
+      "side": 1,
+      "message": "NIT: The original vector-based interface recomention by me, was  made sense to align with the phosphor-logging additional data format. However, the new design wrapper already exposes additionalData as a std::map\u003cstd::string, std::string\u003e and then converts it back to a std::vector\u003cstd::string\u003e solely for lookup. Consider updating the generated lookup API to consume the parsed key/value representation directly and avoid the extra conversion step. This would simplify the implementation and align more naturally with the caller-facing API.",
+      "range": {
+        "startLine": 25,
+        "startChar": 40,
+        "endLine": 25,
+        "endChar": 50
+      },
+      "revId": "90b9ed5503753148128865c1f04d2806a8f0d56a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
