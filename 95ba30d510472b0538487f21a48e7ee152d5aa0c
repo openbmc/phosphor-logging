@@ -16,6 +16,24 @@
       "message": "nit: oemKey can be made consistent to what appears on the interface(e.g \"Oem\"). If not used can remove these constexpr",
       "revId": "95ba30d510472b0538487f21a48e7ee152d5aa0c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d17ec14_2a427937",
+        "filename": "plugin/cper_plugin.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-08-14T04:56:35Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "51bfb7a9_1a9f34a5",
+      "revId": "95ba30d510472b0538487f21a48e7ee152d5aa0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
