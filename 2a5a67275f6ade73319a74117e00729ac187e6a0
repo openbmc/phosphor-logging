@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d68dbdd4_a284bbf3",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1005,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-08-14T07:28:07Z",
+      "side": 1,
+      "message": "I have added that in the default case `chassisNumber` will be `-1` so that on trying to fetch the expanded location code it will fail if we don\u0027t explicitly set in the registry or fetch based on BMC Chassis position.",
+      "parentUuid": "7308db62_531b37b1",
+      "revId": "2a5a67275f6ade73319a74117e00729ac187e6a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0260fc7a_17fdd8df",
         "filename": "test/openpower-pels/src_test.cpp",
         "patchSetId": 7
