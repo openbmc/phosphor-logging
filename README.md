@@ -527,3 +527,4 @@ a 0xFF will be encoded as the ID.
 This option is enabled automatically in bitbake when the 'redundant-bmc' machine
 feature is enabled. This is done by including 'redundant-bmc.inc' in the
 appropriate system conf file.
+
