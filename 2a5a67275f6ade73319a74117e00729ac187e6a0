@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4aa47d48_be80c874",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-08-14T00:00:37Z",
+      "side": 1,
+      "message": "it is not necessary that the \"ChassisNumber\" needs to be added in the message registry, I can rephrase it as \"If none mentioned in registry\"",
+      "parentUuid": "34954ea7_8591f1b5",
+      "revId": "2a5a67275f6ade73319a74117e00729ac187e6a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "647cece9_18772d40",
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7308db62_531b37b1",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1005,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-08-14T00:00:37Z",
+      "side": 1,
+      "message": "In this case the location code will be expanded based on the default chassis as 0 and the unexpanded loc code. But it will be in `addLocationCodeOnlyCallout` section.",
+      "parentUuid": "647cece9_18772d40",
+      "revId": "2a5a67275f6ade73319a74117e00729ac187e6a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0260fc7a_17fdd8df",
         "filename": "test/openpower-pels/src_test.cpp",
         "patchSetId": 7
@@ -48,6 +84,30 @@
       "writtenOn": "2026-08-06T18:02:45Z",
       "side": 1,
       "message": "0",
+      "range": {
+        "startLine": 1898,
+        "startChar": 31,
+        "endLine": 1898,
+        "endChar": 33
+      },
+      "revId": "2a5a67275f6ade73319a74117e00729ac187e6a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60771730_ac1cc2e1",
+        "filename": "test/openpower-pels/src_test.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1898,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-08-14T00:00:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0260fc7a_17fdd8df",
       "range": {
         "startLine": 1898,
         "startChar": 31,
@@ -81,6 +141,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "932ac575_fad520bf",
+        "filename": "test/openpower-pels/src_test.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1905,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-08-14T00:00:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68c526a0_24dd07f0",
+      "range": {
+        "startLine": 1905,
+        "startChar": 57,
+        "endLine": 1905,
+        "endChar": 58
+      },
+      "revId": "2a5a67275f6ade73319a74117e00729ac187e6a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5fb78b3d_583f0b43",
@@ -94,6 +178,24 @@
       "writtenOn": "2026-08-06T18:19:03Z",
       "side": 1,
       "message": "any bad path tests you can do?",
+      "revId": "2a5a67275f6ade73319a74117e00729ac187e6a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dad1eecd_68bd171d",
+        "filename": "test/openpower-pels/src_test.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1931,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-08-14T00:00:37Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5fb78b3d_583f0b43",
       "revId": "2a5a67275f6ade73319a74117e00729ac187e6a0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
