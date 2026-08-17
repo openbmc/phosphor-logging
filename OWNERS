@@ -37,6 +37,7 @@ owners:
 
 reviewers:
 - geissonator@yahoo.com
+- palaniappana@ami.com
 
 matchers:
 
@@ -50,3 +51,6 @@ openbmc:
 - name: Matt Spinler
   email: spinler@us.ibm.com
   discord: mspinler
+- name: Palaniappan Arunachalam
+  email: palaniappana@ami.com
+  discord: pal0710
