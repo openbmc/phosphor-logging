@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91ec3183_7f05a11d",
+        "filename": "extensions/amd-event-log/codegen/generate_lut.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1003018
+      },
+      "writtenOn": "2026-08-17T14:14:58Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ad38f13c_1e99ef35",
+      "range": {
+        "startLine": 145,
+        "startChar": 29,
+        "endLine": 145,
+        "endChar": 41
+      },
+      "revId": "90b9ed5503753148128865c1f04d2806a8f0d56a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df275423_5486bcfb",
@@ -54,6 +78,24 @@
       "writtenOn": "2026-08-14T05:39:21Z",
       "side": 1,
       "message": "matchPattern() performs suffix matching using s.substr(s.size() - suf.size()) without validating the input length first. Consider adding a guard such as:\nif (s.size() \u003c pre.size() + suf.size())\n{\n    return false;\n} \nThis avoids size underflow",
+      "revId": "90b9ed5503753148128865c1f04d2806a8f0d56a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a91343a_0632dcba",
+        "filename": "extensions/amd-event-log/codegen/generate_lut.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1003018
+      },
+      "writtenOn": "2026-08-17T14:14:58Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "df275423_5486bcfb",
       "revId": "90b9ed5503753148128865c1f04d2806a8f0d56a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -77,6 +119,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "554068eb_2a22c7c2",
+        "filename": "extensions/amd-event-log/codegen/generate_lut.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1003018
+      },
+      "writtenOn": "2026-08-17T14:14:58Z",
+      "side": 1,
+      "message": "OriginOfCondition is not returned for unmatched events. Only the fallback AFID from the LUT is returned for failure case. How will the consumer use the distinctive return for the failure case? We still want the fallback AFID to be used in this case. Would adding a warning log message here help with the ambiguity?",
+      "parentUuid": "5befd9f0_bd172640",
+      "revId": "90b9ed5503753148128865c1f04d2806a8f0d56a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "acabf264_e931448d",
         "filename": "extensions/amd-event-log/codegen/generate_lut_tests.py",
         "patchSetId": 3
@@ -88,6 +148,24 @@
       "writtenOn": "2026-08-14T05:39:21Z",
       "side": 1,
       "message": "There is no logic that checks whether an AFID is reused across multiple leaves. is this intentionally ?",
+      "revId": "90b9ed5503753148128865c1f04d2806a8f0d56a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fa5b5ba_c1f668d2",
+        "filename": "extensions/amd-event-log/codegen/generate_lut_tests.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1003018
+      },
+      "writtenOn": "2026-08-17T14:14:58Z",
+      "side": 1,
+      "message": "Yes, this provides flexibility to use the same AFID across different message with different OriginOfCondition if needed. Main thing to check is pattern overlap which will result in ambiguous data being returned.",
+      "parentUuid": "acabf264_e931448d",
       "revId": "90b9ed5503753148128865c1f04d2806a8f0d56a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -109,6 +187,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b8190d5_be8429f3",
+        "filename": "extensions/amd-event-log/data/tools/validate_lut.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1003018
+      },
+      "writtenOn": "2026-08-17T14:14:58Z",
+      "side": 1,
+      "message": "no, this is a bug. I have a patch to address this.",
+      "parentUuid": "d601c7a4_4a923150",
+      "revId": "90b9ed5503753148128865c1f04d2806a8f0d56a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21ad4e83_fb88f736",
@@ -122,6 +218,24 @@
       "writtenOn": "2026-08-14T05:39:21Z",
       "side": 1,
       "message": "NIT: Duplicate origin paths not detected \nif len(origins) !\u003d len(set(origins)):\n    raise ValueError(\n        f\"Duplicate originOfCondition entries at {path}: {origins}\"\n    )",
+      "revId": "90b9ed5503753148128865c1f04d2806a8f0d56a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80d79ab5_2049e05e",
+        "filename": "extensions/amd-event-log/data/tools/validate_lut.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1003018
+      },
+      "writtenOn": "2026-08-17T14:14:58Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "21ad4e83_fb88f736",
       "revId": "90b9ed5503753148128865c1f04d2806a8f0d56a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -143,6 +257,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71ad54a6_a6b83710",
+        "filename": "extensions/amd-event-log/data/tools/validate_lut.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1003018
+      },
+      "writtenOn": "2026-08-17T14:14:58Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7a2240b0_ced7c995",
+      "revId": "90b9ed5503753148128865c1f04d2806a8f0d56a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96c87c0f_d383776e",
@@ -160,6 +292,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50feead6_1b6fb762",
+        "filename": "extensions/amd-event-log/src/amd_afid_utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1003018
+      },
+      "writtenOn": "2026-08-17T14:14:58Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "96c87c0f_d383776e",
+      "revId": "90b9ed5503753148128865c1f04d2806a8f0d56a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d33e279a_c7d2d2eb",
@@ -173,6 +323,30 @@
       "writtenOn": "2026-08-14T05:39:21Z",
       "side": 1,
       "message": "NIT: The original vector-based interface recomention by me, was  made sense to align with the phosphor-logging additional data format. However, the new design wrapper already exposes additionalData as a std::map\u003cstd::string, std::string\u003e and then converts it back to a std::vector\u003cstd::string\u003e solely for lookup. Consider updating the generated lookup API to consume the parsed key/value representation directly and avoid the extra conversion step. This would simplify the implementation and align more naturally with the caller-facing API.",
+      "range": {
+        "startLine": 25,
+        "startChar": 40,
+        "endLine": 25,
+        "endChar": 50
+      },
+      "revId": "90b9ed5503753148128865c1f04d2806a8f0d56a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e6e0ff6_716b357c",
+        "filename": "extensions/amd-event-log/src/amd_afid_utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1003018
+      },
+      "writtenOn": "2026-08-17T14:14:58Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d33e279a_c7d2d2eb",
       "range": {
         "startLine": 25,
         "startChar": 40,
