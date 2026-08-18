@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bf1e37f_19ba5fb6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-08-18T16:06:09Z",
+      "side": 1,
+      "message": "Please actually test the commits.  if you didn\u0027t add unit tests, but you added new function, then I don\u0027t see how this path could have been tested.",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 23
+      },
+      "revId": "929ea76e0a16fd805145c3ebd3dbb14b52414849",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
