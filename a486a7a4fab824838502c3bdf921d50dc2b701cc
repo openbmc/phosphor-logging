@@ -16,6 +16,24 @@
       "message": "Please test on a system.",
       "revId": "a486a7a4fab824838502c3bdf921d50dc2b701cc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbf5cc55_183a175b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-08-19T06:51:50Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3e225d76_808e5bc9",
+      "revId": "a486a7a4fab824838502c3bdf921d50dc2b701cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
