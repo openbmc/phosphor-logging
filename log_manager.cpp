@@ -704,10 +704,15 @@ void Manager::restore()
     }
 
     // The directory location might have JSON or Cereal serialized logs (or
-    // both).  Use a map to deduplicate to just the individual event IDs and
-    // then deserialize them.
-    std::map<uint32_t, std::filesystem::path> files{};
-    // Prioritize for JSON first.
+    // both).  Keep track of both paths per event ID so that a failed JSON
+    // restore can fall back to the Cereal file instead of dropping the entry.
+    struct Candidates
+    {
+        fs::path json;
+        fs::path cereal;
+    };
+    std::map<uint32_t, Candidates> files{};
+
     for (auto& file : fs::directory_iterator(jsondir))
     {
         auto id = file.path().filename().string();
@@ -717,48 +722,75 @@ void Manager::restore()
         }
 
         uint32_t idNum = std::stoul(id.substr(0, id.size() - 5));
-        files.try_emplace(idNum, file.path());
+        files[idNum].json = file.path();
     }
-    // Look for Cereal.
     for (auto& file : fs::directory_iterator(dir))
     {
         auto id = file.path().filename().string();
         uint32_t idNum = std::stoul(id);
 
-        files.try_emplace(idNum, file.path());
+        files[idNum].cereal = file.path();
     }
 
-    for (const auto& [idNum, filePath] : files)
-    {
-        auto e = std::make_unique<Entry>(
-            busLog, std::string(OBJ_ENTRY) + '/' + std::to_string(idNum), idNum,
+    // Deserialize one candidate file into a freshly constructed entry.  A
+    // previous failed attempt may have left the entry partially populated, so
+    // the object is always recreated before it is used.
+    auto tryRestore = [&](std::unique_ptr<Entry>& entry, uint32_t id,
+                          const fs::path& path, bool isJson) {
+        entry.reset();
+        entry = std::make_unique<Entry>(
+            busLog, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id,
             *this);
 
-        if (filePath.extension() == ".json")
+        if (!(isJson ? deserializeJSON(path, *entry)
+                     : deserialize(path, *entry)))
         {
-            if (!deserializeJSON(filePath, *e))
-            {
-                continue;
-            }
-            e->path(filePath, true);
-        }
-        else
-        {
-            deserialize(filePath, *e);
-
-            // If we got here, either we didn't record the file in JSON
-            // previously, such as due to an upgrade, or it is corrupted.
-            // Rewrite the JSON now and ensure the path is adjusted.
-            auto jsonPath = serializeJSON(*e);
-            e->path(jsonPath, true);
+            lg2::error("Failed to deserialize error entry {ID} from {PATH}",
+                       "ID", id, "PATH", path);
+            return false;
         }
 
-        // Sanity check for proper deserialization.
-        if (!sanity(static_cast<uint32_t>(idNum), e->id()))
+        // The ID stored inside the file has to match the file name.  If it does
+        // not, the content cannot be trusted even though parsing succeeded.
+        if (!sanity(id, entry->id()))
         {
             lg2::error(
                 "Unable to find or parse error entry {ID_NUM}/?{ENTRY_ID}: {PATH}",
-                "ID_NUM", idNum, "ENTRY_ID", e->id(), "PATH", filePath);
+                "ID_NUM", id, "ENTRY_ID", entry->id(), "PATH", path);
+            return false;
+        }
+        return true;
+    };
+
+    for (const auto& [idNum, candidates] : files)
+    {
+        std::unique_ptr<Entry> e;
+
+        if (!candidates.json.empty() &&
+            tryRestore(e, idNum, candidates.json, true))
+        {
+            e->path(candidates.json, true);
+        }
+        else if (!candidates.cereal.empty() &&
+                 tryRestore(e, idNum, candidates.cereal, false))
+        {
+            if (!candidates.json.empty())
+            {
+                lg2::warning(
+                    "Restored error entry {ID} from {PATH} after its JSON file "
+                    "could not be used",
+                    "ID", idNum, "PATH", candidates.cereal);
+            }
+
+            // Either the JSON was never written (e.g. an entry created by an
+            // older code level) or it is unusable.  Write it now that the entry
+            // is known to be good, so a corrupt file can never be turned into a
+            // new, syntactically valid JSON file.
+            e->path(serializeJSON(*e), true);
+        }
+        else
+        {
+            // Both candidates failed; tryRestore() already logged the reason.
             continue;
         }
 
