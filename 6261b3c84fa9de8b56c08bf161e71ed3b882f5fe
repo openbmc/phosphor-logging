@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ddcffd86_62284756",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-08-19T12:06:33Z",
+      "side": 1,
+      "message": "Looks like this workaround won’t work since the VPD changes remove the explicit node number details from the unexpanded location code. Therefore, we should remove this workaround from this patch.\n\nHowever, the corresponding VPD D-Bus API should still support the node number when it is provided as an argument so we cannot merge this commit until VPD support is available.\n\nhttps://gerrit.openbmc.org/c/openbmc/openpower-vpd-parser/+/92692",
+      "parentUuid": "7562a046_20d413c9",
+      "range": {
+        "startLine": 465,
+        "startChar": 11,
+        "endLine": 466,
+        "endChar": 55
+      },
+      "revId": "6261b3c84fa9de8b56c08bf161e71ed3b882f5fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7857dd1d_b68babdc",
         "filename": "extensions/openpower-pels/log_id.cpp",
         "patchSetId": 10
