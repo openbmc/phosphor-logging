@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2956a464_ef469b23",
+        "filename": "log_manager.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-08-20T10:29:15Z",
+      "side": 1,
+      "message": "Hard-coding plugin::cper::registerPlugin here means adding a new\nplugin requires editing Manager\u0027s constructor again - contradicts\nthe framework doc\u0027s \"Logging Manager remains independent\" goal.\nIs a registration hook/table planned instead?",
+      "revId": "7091b4bcfb190bd9564920d01e97aaf0c376d28d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
