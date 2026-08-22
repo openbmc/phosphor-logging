@@ -16,6 +16,24 @@
       "message": "The flow of collecting the runtime metadata, building payload, descriptions is all happening from Manager class. May be Manager class can delegate it to plugin Manager?",
       "revId": "251cecba501ad477380625eb2e87e2391cd63ffa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36927bdb_209935b2",
+        "filename": "plugin/plugin_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-08-22T16:01:58Z",
+      "side": 1,
+      "message": "Good point. For now I intentionally kept PluginManager focused on runtime plugin creation only. Descriptor generation and payload construction are handled by plugin factories so that event-processing logic remains separate from runtime plugin management. This keeps PluginManager as a thin coordinator between the registry, factories, and plugins. As the framework grows, we can certainly revisit moving additional plugin workflows behind PluginManager if that provides a clearer abstraction.",
+      "parentUuid": "7bf57912_edbac328",
+      "revId": "251cecba501ad477380625eb2e87e2391cd63ffa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
