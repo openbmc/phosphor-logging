@@ -2727,6 +2727,50 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Power.PowerSequencer.UnexpectedChassisStatus",
+            "Subsystem": "power_sequencer",
+            "ComponentID": "0x2700",
+            "Severity": "non_error",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x1F06",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Chassis was in an unexpected state during a power on or power off",
+                "Message": "Chassis was in an unexpected state during a power on or power off",
+                "Notes": []
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-psu-monitor",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-state-manager",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "systemd",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-regulators",
+                        "NumLines": 5
+                    }
+                ]
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.State.Shutdown.Power.Error.Blackout",
             "Subsystem": "power",
             "ActionFlags": ["report", "service_action"],
