@@ -36,15 +36,11 @@ owners:
 - spinler@us.ibm.com
 
 reviewers:
-- geissonator@yahoo.com
 - palaniappana@ami.com
 
 matchers:
 
 openbmc:
-- name: Andrew Geissler
-  email: geissonator@yahoo.com
-  discord: geissonator
 - name: Deepak Kodihalli
   email: deepak.kodihalli.83@gmail.com
   discord: dkodihal
