@@ -22,6 +22,8 @@ conf_data.set(
     get_option('runtime-metadata-plugin'),
 )
 
+conf_data.set('max_cper_raw_binary_size', get_option('max-cper-raw-binary-size'))
+
 cxx = meson.get_compiler('cpp')
 if cxx.has_header('poll.h')
     add_project_arguments('-DPLDM_HAS_POLL=1', language: 'cpp')

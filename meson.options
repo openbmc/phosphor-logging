@@ -75,3 +75,10 @@ option(
     value: '',
     description: 'Plugin interface used for runtime metadata',
 )
+
+option(
+    'max-cper-raw-binary-size',
+    type: 'integer',
+    value: 16384,
+    description: 'Maximum supported raw CPER binary size in bytes',
+)
