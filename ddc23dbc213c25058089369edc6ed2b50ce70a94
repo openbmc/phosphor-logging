@@ -3,6 +3,29 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "39201eab_99da16c7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-08-26T19:04:12Z",
+      "side": 1,
+      "message": "Handed out to what?  I\u0027m just curious about the use case.  It is hard to say without understanding the use case but this feels like one side of two things that are tightly coupled being erased.  Why wasn\u0027t the other thing erased too?",
+      "range": {
+        "startLine": 13,
+        "startChar": 24,
+        "endLine": 14,
+        "endChar": 16
+      },
+      "revId": "ddc23dbc213c25058089369edc6ed2b50ce70a94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d68f67e6_777b6ac3",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
