@@ -6,6 +6,7 @@
     "2800": "BMC: fans",
     "3000": "BMC: host processor control",
     "3100": "BMC: hardware isolation",
+    "3200": "BMC: RBMC CFAM daemon",
     "3400": "BMC: state manager",
     "3500": "BMC: common host processor errors",
     "3600": "BMC: code management",

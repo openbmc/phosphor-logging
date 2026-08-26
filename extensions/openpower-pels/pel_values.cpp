@@ -228,7 +228,9 @@ const std::map<std::string, std::string> maintenanceProcedures = {
     // BMC can't enable redundancy
     {"bmc_redundancy_not_enabled", "BMC000B"},
     // BMC must be passive because of an error
-    {"bmc_passive_due_to_error", "BMC000C"}};
+    {"bmc_passive_due_to_error", "BMC000C"},
+    // The BMC card needs replacing
+    {"bmc_card", "BMC000D"}};
 
 /**
  * @brief Map of the registry names for the symbolic FRUs to their
