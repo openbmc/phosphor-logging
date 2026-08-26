@@ -1067,6 +1067,63 @@
         },
 
         {
+            "Name": "org.open_power.RBMC.CFAM.NoLocalCFAM",
+            "Subsystem": "cec_hardware",
+            "ComponentID": "0x3200",
+
+            "SRC": {
+                "ReasonCode": "0x3201",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "The BMC's local CFAM is not accessible",
+                "Message": "The BMC's local CFAM is not accessible",
+                "Notes": ["On Huygens, this CFAM is on the BMC card FRU."]
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "LocCode": "BD00-SP00" }
+                    ]
+                }
+            ],
+            "JournalCapture": {
+                "NumLines": 50
+            }
+        },
+
+        {
+            "Name": "org.open_power.RBMC.CFAM.LocalCFAMAccessError",
+            "Subsystem": "cec_hardware",
+            "ComponentID": "0x3200",
+
+            "SRC": {
+                "ReasonCode": "0x3202",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "There was a failure accessing the BMC's local CFAM",
+                "Message": "There was a failure accessing the BMC's local CFAM",
+                "Notes": [
+                    "There was a read or write failure accessing the BMC's local CFAM.",
+                    "On Huygens, this CFAM is on the BMC card FRU."
+                ]
+            },
+            "Callouts": [
+                {
+                    "CalloutList": [
+                        { "Priority": "high", "LocCode": "BD00-SP00" }
+                    ]
+                }
+            ],
+            "JournalCapture": {
+                "NumLines": 50
+            }
+        },
+
+        {
             "Name": "org.open_power.OCC.Firmware.Error.PresenceMismatch",
             "Subsystem": "bmc_firmware",
             "ComponentID": "0x2600",
