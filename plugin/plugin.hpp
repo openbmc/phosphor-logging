@@ -54,6 +54,14 @@ class Plugin
      * @return Plugin interface name.
      */
     virtual std::string_view interface() const = 0;
+
+    /**
+     * @brief Invoked before the owning log entry is deleted.
+     *
+     * Plugins may override this method to release any
+     * plugin-owned resources associated with the entry.
+     */
+    virtual void onDelete() {}
 };
 
 /** Unique ownership of a runtime plugin instance. */
