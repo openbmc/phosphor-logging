@@ -2,6 +2,9 @@
 #include "plugin/cper_raw_plugin.hpp"
 #include "plugin/plugin_registry.hpp"
 
+#include <filesystem>
+#include <fstream>
+
 #include <gtest/gtest.h>
 
 namespace phosphor::logging::plugin::cperraw

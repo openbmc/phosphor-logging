@@ -61,6 +61,11 @@ class Plugin : public phosphor::logging::Plugin, public RawIface
      */
     sdbusplus::message::unix_fd getCPERRaw() override;
 
+    /**
+     * @brief Cleanup plugin-owned resources.
+     */
+    void onDelete() override;
+
   private:
     /** Persisted CPER artifact reference. */
     utils::ArtifactRef artifact_;

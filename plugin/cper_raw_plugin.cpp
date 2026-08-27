@@ -37,6 +37,11 @@ sdbusplus::message::unix_fd Plugin::getCPERRaw()
     return sdbusplus::message::unix_fd(fd);
 }
 
+void Plugin::onDelete()
+{
+    utils::removeArtifact(artifact_);
+}
+
 PluginPtr Factory::create(const PluginContext& context,
                           const plugin::Descriptor& descriptor) const
 {
