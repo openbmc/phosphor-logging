@@ -19,6 +19,13 @@ class TestPlugin : public Plugin
     {
         return testInterface;
     }
+
+    void onDelete() override
+    {
+        deleted = true;
+    }
+
+    bool deleted = false;
 };
 
 class TestDescriptor : public plugin::Descriptor
@@ -135,6 +142,17 @@ TEST(PluginManagerTest, CreateMultiplePlugins)
     EXPECT_EQ(plugins[0]->interface(), testInterface);
 
     EXPECT_EQ(plugins[1]->interface(), testInterface);
+}
+
+TEST(PluginLifecycleTest, DeleteCallback)
+{
+    TestPlugin plugin;
+
+    EXPECT_FALSE(plugin.deleted);
+
+    plugin.onDelete();
+
+    EXPECT_TRUE(plugin.deleted);
 }
 
 } // namespace phosphor::logging::test
