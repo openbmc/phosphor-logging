@@ -22,9 +22,21 @@ void Entry::persist()
 }
 
 // TODO Add interfaces to handle the error log id numbering
-
 void Entry::delete_()
 {
+    for (auto& plugin : plugins)
+    {
+        try
+        {
+            plugin->onDelete();
+        }
+        catch (const std::exception& e)
+        {
+            lg2::error("Plugin delete callback failed: {ERROR}", "ERROR",
+                       e.what());
+        }
+    }
+
     parent.erase(id());
 }
 
