@@ -57,6 +57,8 @@ event information derived from the log context.
 | `AEL.VERSION`  | Version of the AEL schema                          |
 | `AEL.AFID`     | AMD Field ID identifying the error                 |
 | `AEL.FRU_LIST` | Inventory object path(s) associated with the fault |
+| `AEL.RACK_ID`  | Rack identifier associated with the event          |
+| `AEL.REDFISH`  | Optional pre-rendered AMD OEM Redfish payload      |
 
 ### Example
 
@@ -69,6 +71,89 @@ event information derived from the log context.
   }
 }
 ```
+
+### Redfish Projection
+
+The AEL framework supports projecting AMD runtime metadata into an AMD OEM
+Redfish representation.
+
+By default, the framework generates a Redfish payload from available AEL
+metadata.
+
+Applications may optionally provide a fully rendered OEM Redfish payload using
+the `AEL.REDFISH` field. When present, the supplied payload is treated as the
+authoritative AMD OEM representation and automatic projection is skipped.
+
+This supports two usage models:
+
+- Metadata-driven projection using AEL fields such as `AEL.AFID`,
+  `AEL.FRU_LIST`, and `AEL.RACK_ID`.
+- Direct passthrough of a fully rendered AMD OEM Redfish payload using
+  `AEL.REDFISH`.
+
+#### Metadata-Based Projection
+
+Input:
+
+```json
+{
+  "AMD": {
+    "AEL.AFID": "12001",
+    "AEL.FRU_LIST": "/xyz/openbmc_project/inventory/system/chassis"
+  }
+}
+```
+
+Projected Output:
+
+```json
+{
+  "@odata.type": "#AMD_Message.v1_0_0.AMD_Message",
+  "AMDFieldIdentifiers": [
+    {
+      "AFID": 12001,
+      "Description": "Compute Tray Error"
+    }
+  ]
+}
+```
+
+#### Pre-rendered OEM Payload (Passthrough)
+
+Input:
+
+```json
+{
+  "AMD": {
+    "AEL.REDFISH": {
+      "@odata.type": "#AMD_Message.v1_0_0.AMD_Message",
+      "AMDFieldIdentifiers": [
+        {
+          "AFID": 12001,
+          "Description": "Compute Tray Error"
+        }
+      ]
+    }
+  }
+}
+```
+
+Output:
+
+```json
+{
+  "@odata.type": "#AMD_Message.v1_0_0.AMD_Message",
+  "AMDFieldIdentifiers": [
+    {
+      "AFID": 12001,
+      "Description": "Compute Tray Error"
+    }
+  ]
+}
+```
+
+When `AEL.REDFISH` is present, the payload is used directly and no additional
+AEL metadata processing or Redfish projection is performed.
 
 ---
 
