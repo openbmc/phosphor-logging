@@ -57,6 +57,13 @@ static void amdRuntimeMetadataProvider(
 
             lg2::debug("FruList=[{FRUS}]", "FRUS", frus);
         }
+
+	CommonInfo commonInfo = getCommonInfo();
+    if (commonInfo.rackId)
+    {
+        amd[std::string(fields::RackId)] = *commonInfo.rackId;
+    }
+
     }
     catch (const std::exception& e)
     {
