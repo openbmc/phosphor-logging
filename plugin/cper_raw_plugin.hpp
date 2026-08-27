@@ -62,6 +62,11 @@ class Plugin : public phosphor::logging::Plugin, public Interface
      */
     sdbusplus::message::unix_fd getFileHandle() override;
 
+    /**
+     * @brief Cleanup plugin-owned resources.
+     */
+    void onDelete() override;
+
   private:
     /** Persisted CPER artifact reference. */
     utils::ArtifactRef artifact_;
