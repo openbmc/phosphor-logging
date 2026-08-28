@@ -1,3 +1,5 @@
+#include "log_create_extensions.hpp"
+
 #include <CLI/CLI.hpp>
 #include <nlohmann/json.hpp>
 #include <phosphor-logging/commit.hpp>
@@ -9,6 +11,8 @@
 
 #include <iostream>
 #include <string>
+#include <utility>
+#include <vector>
 
 void list_all()
 {
@@ -19,8 +23,10 @@ void list_all()
     }
 }
 
-int generate_event(const std::string& eventId, const nlohmann::json& data,
-                   std::optional<int> severity)
+int generate_event(
+    const std::string& eventId, const nlohmann::json& data,
+    std::optional<int> severity,
+    const std::vector<std::pair<std::string, std::string>>& extends)
 {
     if (eventId.empty())
     {
@@ -36,6 +42,10 @@ int generate_event(const std::string& eventId, const nlohmann::json& data,
     }
     catch (sdbusplus::exception::generated_event_base& e)
     {
+        for (const auto& [interface, payload] : extends)
+        {
+            extendLogEvent(e, interface, nlohmann::json::parse(payload));
+        }
         auto path = lg2::commit(std::move(e), severity);
         std::cout << path.str << std::endl;
         return 0;
@@ -66,6 +76,14 @@ int main(int argc, char** argv)
     std::string event{};
     auto event_option = app.add_option("event", event, "Event name");
 
+    std::vector<std::pair<std::string, std::string>> extends;
+    app.add_option(
+           "--extend", extends,
+           "Extend the event with data for an extension interface. Takes an "
+           "interface name and a JSON object. May be repeated.")
+        ->type_size(2)
+        ->allow_extra_args(false);
+
     bool listOnly = false;
     app.add_flag("-l,--list", listOnly, "List all events")
         ->excludes(event_option);
@@ -78,5 +96,14 @@ int main(int argc, char** argv)
         return 0;
     }
 
-    return generate_event(event, nlohmann::json::parse(jsonStr), severity);
+    try
+    {
+        return generate_event(event, nlohmann::json::parse(jsonStr), severity,
+                              extends);
+    }
+    catch (std::exception& e)
+    {
+        std::cerr << "Unable to create event: " << e.what() << std::endl;
+        return 1;
+    }
 }
