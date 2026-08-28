@@ -337,7 +337,7 @@ TEST_F(SRCTest, InventoryCalloutNoLocCodeTest)
 
     EXPECT_CALL(dataIface, getLocationCode("motherboard"))
         .Times(1)
-        .WillOnce(InvokeWithoutArgs(func));
+        .WillOnce(func);
 
     EXPECT_CALL(dataIface, getHWCalloutFields(_, _, _, _)).Times(0);
 
@@ -379,7 +379,7 @@ TEST_F(SRCTest, InventoryCalloutNoVPDTest)
 
     EXPECT_CALL(dataIface, getHWCalloutFields("motherboard", _, _, _))
         .Times(1)
-        .WillOnce(InvokeWithoutArgs(func));
+        .WillOnce(func);
 
     SRC src{entry, ad, dataIface};
     EXPECT_TRUE(src.valid());
