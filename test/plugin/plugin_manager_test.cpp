@@ -51,6 +51,12 @@ class TestFactory : public PluginFactory
     {
         return std::make_unique<TestPlugin>();
     }
+
+    PluginPtr deserialize(const PluginContext&,
+                          const nlohmann::json&) const override
+    {
+        return std::make_unique<TestPlugin>();
+    }
 };
 
 } // namespace
@@ -135,6 +141,39 @@ TEST(PluginLifecycleTest, DeleteCallback)
     plugin.onDelete();
 
     EXPECT_TRUE(plugin.deleted);
+}
+
+TEST(PluginManagerTest, DeserializePlugin)
+{
+    PluginRegistry registry;
+    registry.registerPlugin(testInterface, std::make_unique<TestFactory>());
+    PluginManager manager(std::move(registry));
+    auto bus = sdbusplus::bus::new_default();
+    PluginContext context{
+        bus,
+        "/xyz/openbmc_project/logging/entry/1",
+    };
+    nlohmann::json data = {{testInterface, nlohmann::json::object()}};
+    auto plugins = manager.deserialize(context, data);
+
+    ASSERT_EQ(plugins.size(), 1);
+    EXPECT_EQ(plugins.front()->interface(), testInterface);
+}
+
+TEST(PluginManagerTest, DeserializeUnknownPlugin)
+{
+    PluginRegistry registry;
+    PluginManager manager(std::move(registry));
+    auto bus = sdbusplus::bus::new_default();
+    PluginContext context{
+        bus,
+        "/xyz/openbmc_project/logging/entry/1",
+    };
+    nlohmann::json data = {
+        {"xyz.openbmc_project.Logging.Unknown", nlohmann::json::object()}};
+    auto plugins = manager.deserialize(context, data);
+
+    EXPECT_TRUE(plugins.empty());
 }
 
 } // namespace phosphor::logging::test

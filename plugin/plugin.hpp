@@ -1,5 +1,6 @@
 #pragma once
 
+#include <nlohmann/json.hpp>
 #include <sdbusplus/bus.hpp>
 
 #include <memory>
@@ -62,6 +63,18 @@ class Plugin
      * plugin-owned resources associated with the entry.
      */
     virtual void onDelete() {}
+
+    /**
+     * @brief Serialize plugin owned state.
+     *
+     * Default implementation persists no state.
+     *
+     * @return Serialized plugin state.
+     */
+    virtual nlohmann::json serialize() const
+    {
+        return {};
+    }
 };
 
 /** Unique ownership of a runtime plugin instance. */

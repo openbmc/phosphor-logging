@@ -66,4 +66,27 @@ nlohmann::json PluginManager::buildExtensionPayload(
     return registry.buildExtensionPayload(interface, metadata);
 }
 
+PluginList PluginManager::deserialize(const PluginContext& context,
+                                      const nlohmann::json& data) const
+{
+    PluginList plugins;
+
+    for (const auto& [interface, state] : data.items())
+    {
+        auto factory = registry.lookup(interface);
+        if (factory == nullptr)
+        {
+            continue;
+        }
+
+        auto plugin = factory->deserialize(context, state);
+        if (plugin != nullptr)
+        {
+            plugins.emplace_back(std::move(plugin));
+        }
+    }
+
+    return plugins;
+}
+
 } // namespace phosphor::logging

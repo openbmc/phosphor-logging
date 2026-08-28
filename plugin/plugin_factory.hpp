@@ -4,6 +4,8 @@
 #include "plugin/plugin_descriptor.hpp"
 #include "plugin/plugin_request.hpp"
 
+#include <nlohmann/json.hpp>
+
 #include <memory>
 
 namespace phosphor::logging
@@ -75,6 +77,23 @@ class PluginFactory
         const nlohmann::json& metadata) const
     {
         return metadata;
+    }
+
+    /**
+     * @brief Restore plugin from serialized state.
+     *
+     * Plugins supporting persistence may override
+     * this method.
+     *
+     * @param[in] context Plugin runtime context.
+     * @param[in] data Serialized plugin state.
+     *
+     * @return Restored plugin instance.
+     */
+    virtual PluginPtr deserialize(const PluginContext&,
+                                  const nlohmann::json&) const
+    {
+        return nullptr;
     }
 };
 

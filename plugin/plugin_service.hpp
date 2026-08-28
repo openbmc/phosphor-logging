@@ -65,6 +65,19 @@ class PluginService
     nlohmann::json buildExtensionPayload(std::string_view interface,
                                          const nlohmann::json& metadata);
 
+    /**
+     * @brief Restore runtime plugins.
+     *
+     * Delegates plugin restoration to PluginManager.
+     *
+     * @param[in] context Plugin runtime context.
+     * @param[in] data Serialized plugin state.
+     *
+     * @return Restored plugin instances.
+     */
+    PluginList deserialize(const PluginContext& context,
+                           const nlohmann::json& data) const;
+
   private:
     /** Plugin framework manager. */
     PluginManager manager;

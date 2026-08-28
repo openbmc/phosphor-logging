@@ -175,6 +175,13 @@ fs::path serializeJSON(const Entry& e, const fs::path& dir)
     j["eventId"] = e.eventId();
     j["resolution"] = e.resolution();
 
+    j["plugins"] = nlohmann::json::object();
+
+    for (const auto& plugin : e.getPlugins())
+    {
+        j["plugins"][std::string(plugin->interface())] = plugin->serialize();
+    }
+
     std::ofstream os(path.c_str());
     os << j.dump(4);
     return path;
@@ -272,6 +279,21 @@ bool deserialize(const fs::path& path, Entry& e)
         fs::rename(path, saveDir / "corrupt_error");
         return false;
     }
+}
+
+nlohmann::json deserializePlugins(const fs::path& path)
+{
+    std::ifstream is(path.c_str());
+
+    nlohmann::json j;
+    is >> j;
+
+    if (auto it = j.find("plugins"); it != j.end())
+    {
+        return *it;
+    }
+
+    return nlohmann::json::object();
 }
 
 } // namespace logging

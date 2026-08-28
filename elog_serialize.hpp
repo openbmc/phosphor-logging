@@ -57,5 +57,14 @@ bool deserialize(const fs::path& path, Entry& e);
 fs::path getEntrySerializePath(uint32_t id,
                                const fs::path& dir = fs::path(paths::error()));
 
+/**
+ * @brief Extract serialized plugin state.
+ *
+ * @param[in] path JSON entry file.
+ *
+ * @return Serialized plugin state.
+ */
+nlohmann::json deserializePlugins(const fs::path& path);
+
 } // namespace logging
 } // namespace phosphor

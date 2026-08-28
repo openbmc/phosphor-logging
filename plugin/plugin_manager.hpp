@@ -71,6 +71,20 @@ class PluginManager
     nlohmann::json buildExtensionPayload(std::string_view interface,
                                          const nlohmann::json& metadata) const;
 
+    /**
+     * @brief Restore runtime plugins from persisted state.
+     *
+     * Uses the registered plugin factories to recreate
+     * runtime plugin instances.
+     *
+     * @param[in] context Plugin runtime context.
+     * @param[in] data Serialized plugin state.
+     *
+     * @return Restored plugin instances.
+     */
+    PluginList deserialize(const PluginContext& context,
+                           const nlohmann::json& data) const;
+
   private:
     /**
      * @brief Create a plugin instance.

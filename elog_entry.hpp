@@ -162,6 +162,29 @@ class Entry : public EntryIfaces
      */
     sdbusplus::message::unix_fd getEntry() override;
 
+    /**
+     * @brief Get runtime plugins associated with this entry.
+     *
+     * @return Runtime plugins.
+     */
+    const PluginList& getPlugins() const
+    {
+        return plugins;
+    }
+
+    /**
+     * @brief Replace runtime plugins associated with this entry.
+     *
+     * Transfers ownership of the supplied runtime
+     * plugins to the entry.
+     *
+     * @param[in] plugins Runtime plugins.
+     */
+    void setPlugins(PluginList plugins)
+    {
+        this->plugins = std::move(plugins);
+    }
+
   private:
     /** @brief This entry's associations */
     AssociationList assocs = {};

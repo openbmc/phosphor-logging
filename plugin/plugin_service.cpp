@@ -15,4 +15,10 @@ nlohmann::json PluginService::buildExtensionPayload(
     return manager.buildExtensionPayload(interface, metadata);
 }
 
+PluginList PluginService::deserialize(const PluginContext& context,
+                                      const nlohmann::json& data) const
+{
+    return manager.deserialize(context, data);
+}
+
 } // namespace phosphor::logging

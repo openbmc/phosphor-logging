@@ -757,6 +757,16 @@ void Manager::restore()
             {
                 continue;
             }
+
+            auto pluginData = deserializePlugins(filePath);
+            PluginContext context{
+                busLog,
+                std::string(OBJ_ENTRY) + '/' + std::to_string(idNum),
+            };
+            auto plugins = pluginService.deserialize(context, pluginData);
+
+            e->setPlugins(std::move(plugins));
+
             e->path(filePath, true);
         }
         else
