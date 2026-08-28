@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb201cd0_79e64a3e",
+        "filename": "bmc_pos_mgr.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-08-28T21:51:25Z",
+      "side": 1,
+      "message": "this isn\u0027t valid doxygen.  Looks like [in,out] is.",
+      "range": {
+        "startLine": 80,
+        "startChar": 14,
+        "endLine": 80,
+        "endChar": 20
+      },
+      "revId": "3e360813c652f534b47d2ca136e7cdc5bb3f4ab3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
