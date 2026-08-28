@@ -62,6 +62,21 @@ foreach t : tests
     )
 endforeach
 
+log_create_extensions_test = executable(
+    'test-log-create-extensions',
+    'log_create_extensions_test.cpp',
+    '../log_create_extensions.cpp',
+    dependencies: [
+        conf_h_dep,
+        gtest_dep,
+        nlohmann_json_dep,
+        pdi_dep,
+        sdbusplus_dep,
+    ],
+    include_directories: include_directories('..'),
+)
+test('test_log_create_extensions', log_create_extensions_test)
+
 tests_non_parallel = [
     'elog_quiesce_test',
     'elog_update_ts_test',

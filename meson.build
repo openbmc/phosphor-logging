@@ -201,7 +201,7 @@ executable(
 
 executable(
     'log-create',
-    'log_create_main.cpp',
+    ['log_create_main.cpp', 'log_create_extensions.cpp'],
     dependencies: [
         CLI11_dep,
         nlohmann_json_dep,
