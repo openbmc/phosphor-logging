@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "771cbefc_4f968e4c",
+        "filename": "log_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1057,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-08-28T06:23:34Z",
+      "side": 1,
+      "message": "lg2 understands exception,can remove the what()",
+      "revId": "9d3aa62ec59c72121ec3a081c1cbe7a64d1f5421",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
