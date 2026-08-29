@@ -16,6 +16,24 @@
       "message": "nit: Should we log a warning here? This would help debug",
       "revId": "4cced17cd493bbdd82cc1e41bc8532c62b9de1b3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c26ceb6b_20bf55d9",
+        "filename": "plugin/plugin_registry.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-08-29T10:51:54Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ec41b33f_5415aa8d",
+      "revId": "4cced17cd493bbdd82cc1e41bc8532c62b9de1b3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
