@@ -115,4 +115,45 @@ TEST_F(CperRawPluginTest, DescriptorReturnsArtifact)
     EXPECT_EQ(descriptor.properties().artifact.path, artifactPath);
 }
 
+TEST_F(CperRawPluginTest, Serialize)
+{
+    Plugin plugin(makeContext(), makeDescriptor());
+    auto data = plugin.serialize();
+
+    EXPECT_EQ(data.at(artifactPathKey).get<std::filesystem::path>(),
+              std::filesystem::path("/tmp/cperraw-artifact"));
+}
+
+TEST_F(CperRawPluginTest, Deserialize)
+{
+    Factory factory;
+    auto plugin = factory.deserialize(
+        makeContext(),
+        {
+            {artifactPathKey, std::filesystem::path("/tmp/cperraw-artifact")},
+        });
+    ASSERT_NE(plugin, nullptr);
+
+    EXPECT_EQ(plugin->interface(), cper::raw::interface);
+}
+
+TEST_F(CperRawPluginTest, SerializeDeserializeRoundTrip)
+{
+    auto descriptor = makeDescriptor();
+    const auto expectedArtifact = descriptor.properties().artifact.path;
+    Plugin original(makeContext(), std::move(descriptor));
+    auto serialized = original.serialize();
+
+    Factory factory;
+    auto restored = factory.deserialize(
+        makeContext("/xyz/openbmc_project/logging/entry/2"), serialized);
+    ASSERT_NE(restored, nullptr);
+
+    EXPECT_EQ(restored->interface(), cper::raw::interface);
+    EXPECT_EQ(restored->serialize(), serialized);
+    EXPECT_EQ(
+        restored->serialize().at(artifactPathKey).get<std::filesystem::path>(),
+        expectedArtifact);
+}
+
 } // namespace phosphor::logging::plugin::cper::raw

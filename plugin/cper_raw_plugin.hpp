@@ -13,6 +13,7 @@ namespace phosphor::logging::plugin::cper::raw
 
 inline constexpr auto dataKey = "Data";
 inline constexpr auto cperRawArtifactSuffix = "cperraw";
+inline constexpr auto artifactPathKey = "ArtifactPath";
 
 /** CPER Raw runtime D-Bus interface. */
 using Interface = sdbusplus::server::xyz::openbmc_project::logging::cper::Raw;
@@ -67,6 +68,16 @@ class Plugin : public phosphor::logging::Plugin, public Interface
      */
     void onDelete() override;
 
+    /**
+     * @brief Serialize CPER Raw plugin state.
+     *
+     * Persists the artifact reference associated with the
+     * log entry.
+     *
+     * @return Serialized plugin state.
+     */
+    nlohmann::json serialize() const override;
+
   private:
     /** Persisted CPER artifact reference. */
     utils::ArtifactRef artifact_;
@@ -112,6 +123,20 @@ class Factory : public phosphor::logging::PluginFactory
      */
     plugin::DescriptorPtr createDescriptor(
         const plugin::Request& request) const override;
+
+    /**
+     * @brief Restore a CPER Raw plugin instance.
+     *
+     * Reconstructs a CPER Raw descriptor from persisted
+     * plugin state and recreates the runtime plugin.
+     *
+     * @param[in] context Plugin runtime context.
+     * @param[in] data Serialized plugin state.
+     *
+     * @return Restored plugin instance.
+     */
+    PluginPtr deserialize(const PluginContext& context,
+                          const nlohmann::json& data) const override;
 };
 
 /**

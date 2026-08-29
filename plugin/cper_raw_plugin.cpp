@@ -36,6 +36,13 @@ void Plugin::onDelete()
     utils::removeArtifact(artifact_);
 }
 
+nlohmann::json Plugin::serialize() const
+{
+    return {
+        {artifactPathKey, artifact_.path},
+    };
+}
+
 PluginPtr Factory::create(const PluginContext& context,
                           const plugin::Descriptor& descriptor) const
 {
@@ -84,6 +91,20 @@ plugin::DescriptorPtr Factory::createDescriptor(
     };
 
     return std::make_unique<Descriptor>(std::move(properties));
+}
+
+PluginPtr Factory::deserialize(const PluginContext& context,
+                               const nlohmann::json& data) const
+{
+    Properties properties{
+        .artifact =
+            utils::ArtifactRef{
+                .path = data.at(artifactPathKey).get<std::filesystem::path>(),
+            },
+    };
+    Descriptor descriptor(std::move(properties));
+
+    return create(context, descriptor);
 }
 
 } // namespace phosphor::logging::plugin::cper::raw
