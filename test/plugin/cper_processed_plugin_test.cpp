@@ -36,6 +36,17 @@ class PluginTest : public ::testing::Test
         return Descriptor(std::move(properties));
     }
 
+    static nlohmann::json makeSerializedData(ContentType type,
+                                             OemMetadata oem = {})
+    {
+        return {
+            {diagnosticDataTypeKey, type},
+            {notificationTypeKey, "notification-guid"},
+            {sectionTypeKey, "section-guid"},
+            {oemKey, std::move(oem)},
+        };
+    }
+
     std::unique_ptr<sdbusplus::bus_t> bus;
 };
 
@@ -157,6 +168,40 @@ TEST_F(PluginTest, BuildExtensionPayloadEmptyMetadata)
 
     ASSERT_TRUE(payload.contains(oemKey));
     EXPECT_TRUE(payload[oemKey].empty());
+}
+
+TEST_F(PluginTest, Serialize)
+{
+    auto plugin = Plugin(makeContext(), makeDescriptor(ContentType::CPER,
+                                                       {{"Vendor", "Value"}}));
+    auto data = plugin.serialize();
+
+    EXPECT_EQ(data.at(diagnosticDataTypeKey).get<ContentType>(),
+              ContentType::CPER);
+    EXPECT_EQ(data.at(notificationTypeKey).get<std::string>(),
+              "notification-guid");
+    EXPECT_EQ(data.at(sectionTypeKey).get<std::string>(), "section-guid");
+    EXPECT_EQ(data.at(oemKey).get<OemMetadata>(),
+              (OemMetadata{{"Vendor", "Value"}}));
+}
+
+TEST_F(PluginTest, Deserialize)
+{
+    Factory factory;
+
+    auto plugin = factory.deserialize(
+        makeContext(),
+        makeSerializedData(ContentType::CPER, {{"Vendor", "Value"}}));
+
+    ASSERT_NE(plugin, nullptr);
+
+    auto* cperPlugin = dynamic_cast<Plugin*>(plugin.get());
+    ASSERT_NE(cperPlugin, nullptr);
+
+    EXPECT_EQ(cperPlugin->diagnosticDataType(), ContentType::CPER);
+    EXPECT_EQ(cperPlugin->notificationType(), "notification-guid");
+    EXPECT_EQ(cperPlugin->sectionType(), "section-guid");
+    EXPECT_EQ(cperPlugin->oem(), (OemMetadata{{"Vendor", "Value"}}));
 }
 
 } // namespace phosphor::logging::plugin::cper::processed

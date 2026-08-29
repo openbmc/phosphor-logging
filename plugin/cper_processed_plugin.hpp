@@ -54,6 +54,13 @@ class Plugin : public phosphor::logging::Plugin, public Interface
      * @return Plugin interface name.
      */
     std::string_view interface() const override;
+
+    /**
+     * @brief Serialize plugin state.
+     *
+     * @return Serialized CPER Processed properties.
+     */
+    nlohmann::json serialize() const override;
 };
 
 /**
@@ -110,6 +117,17 @@ class Factory : public phosphor::logging::PluginFactory
      */
     nlohmann::json buildExtensionPayload(
         const nlohmann::json& metadata) const override;
+
+    /**
+     * @brief Restore CPER Processed plugin.
+     *
+     * @param[in] context Plugin runtime context.
+     * @param[in] data Serialized plugin state.
+     *
+     * @return Restored plugin instance.
+     */
+    PluginPtr deserialize(const PluginContext& context,
+                          const nlohmann::json& data) const override;
 };
 
 /**

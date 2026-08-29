@@ -21,6 +21,16 @@ std::string_view Plugin::interface() const
     return cper::processed::interface;
 }
 
+nlohmann::json Plugin::serialize() const
+{
+    return {
+        {diagnosticDataTypeKey, diagnosticDataType()},
+        {notificationTypeKey, notificationType()},
+        {sectionTypeKey, sectionType()},
+        {oemKey, oem()},
+    };
+}
+
 PluginPtr Factory::create(const PluginContext& context,
                           const plugin::Descriptor& descriptor) const
 {
@@ -68,6 +78,22 @@ nlohmann::json Factory::buildExtensionPayload(
     return {
         {oemKey, std::move(oem)},
     };
+}
+
+PluginPtr Factory::deserialize(const PluginContext& context,
+                               const nlohmann::json& data) const
+{
+    Properties properties{};
+
+    properties.diagnosticDataType =
+        data.at(diagnosticDataTypeKey).get<ContentType>();
+    properties.notificationType =
+        data.at(notificationTypeKey).get<std::string>();
+    properties.sectionType = data.at(sectionTypeKey).get<std::string>();
+    properties.oem = data.at(oemKey).get<OemMetadata>();
+    Descriptor descriptor{std::move(properties)};
+
+    return create(context, descriptor);
 }
 
 } // namespace phosphor::logging::plugin::cper::processed
