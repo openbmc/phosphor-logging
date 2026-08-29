@@ -16,6 +16,24 @@
       "message": "In the case where RUNTIME_METADATA_PLUGIN is populated does it immediately deserialize here?",
       "revId": "e2e859be8f3d57fc128e503edba94f642921a66e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4346d06_773eb598",
+        "filename": "log_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1218,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-08-29T11:42:30Z",
+      "side": 1,
+      "message": "Yes. updateExtensions() only updates the _EXTENSIONS additional-data container. It stores the supplied payload under the given interface name and preserves any existing extension entries by merging with the current JSON object. No plugin instances are created here; the function is only maintaining the serialized extension metadata.",
+      "parentUuid": "aef23206_88bbe555",
+      "revId": "e2e859be8f3d57fc128e503edba94f642921a66e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
