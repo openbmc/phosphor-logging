@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1dcbfc8_6ea1b0b7",
+        "filename": "plugin/cper_processed_plugin.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-08-31T19:27:40Z",
+      "side": 1,
+      "message": "There is a serious problem if we are having to do this.  The generated bindings do exactly this already.",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 63
+      },
+      "revId": "ad780aba2d1db9629f1c9e663f8e7995d7c55f6f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
