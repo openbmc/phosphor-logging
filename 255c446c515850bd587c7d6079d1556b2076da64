@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4a58787_120657d6",
+        "filename": "lib/lg2_commit.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-08-31T19:17:13Z",
+      "side": 1,
+      "message": "nit: should we use \u0027extensions\u0027 in here?  Maybe \u0027event-extension\u0027?\n\nI don\u0027t really like that we\u0027re using a different name inside phosphor-logging than what the design talks to.  I understand you have an \"internal extension\" (such as PEL) but that to me is more of a plugin than this.",
+      "range": {
+        "startLine": 33,
+        "startChar": 31,
+        "endLine": 33,
+        "endChar": 38
+      },
+      "revId": "255c446c515850bd587c7d6079d1556b2076da64",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8295c98_514baeb4",
+        "filename": "plugin/README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-08-31T19:17:13Z",
+      "side": 1,
+      "message": "I\u0027m having a lot of trouble understanding this document (and I even know what you\u0027re trying to do).  There just isn\u0027t enough front-loaded information (ie. background) and the words in general are too sparse.\n\nRather than give you specific review comments, I had an LLM take this document, and the two documents from docs (designs/event-logging and designs/cper-event-logs), and asked it to write a cohesive document tying them all together (with the design you are proposing here).  Please don\u0027t treat it as a document to replace this one, but as a reference on how wording can be improved here.\n\nhttps://gist.github.com/williamspatrick/e7f224907660264883473da73c630956\n\nThere is a lot in this gist link that is \"clearly written by AI\", but there are also some parts it does a decent job on.",
+      "revId": "255c446c515850bd587c7d6079d1556b2076da64",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "988cad51_1902476d",
+        "filename": "plugin/plugin_request.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-08-31T19:17:13Z",
+      "side": 1,
+      "message": "Why aren\u0027t we using Interface here?",
+      "revId": "255c446c515850bd587c7d6079d1556b2076da64",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca18ea93_cff80eaa",
+        "filename": "plugin/plugin_type.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-08-31T19:17:13Z",
+      "side": 1,
+      "message": "nit: This might be a good type to add in sdbusplus directly.  We already have object_path.",
+      "revId": "255c446c515850bd587c7d6079d1556b2076da64",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dcd7071_eb084c60",
+        "filename": "plugin/plugin_type.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-08-31T19:17:13Z",
+      "side": 1,
+      "message": "nit: I don\u0027t see a need for a whole new header just for one type.  Can you consolidate?",
+      "revId": "255c446c515850bd587c7d6079d1556b2076da64",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
