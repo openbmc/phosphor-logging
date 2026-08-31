@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e38aad1_554247e5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-08-31T06:38:08Z",
+      "side": 1,
+      "message": "nit: commit message \"This commit introduces...\" can drop \"This commit\" since the message already describes the commit.",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 11
+      },
+      "revId": "0321744fc385617791dd72075e1ab34a718c9ac8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b614910_275a2b10",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-08-31T06:38:08Z",
+      "side": 1,
+      "message": "Please consider adding a Tested: section.",
+      "revId": "0321744fc385617791dd72075e1ab34a718c9ac8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
