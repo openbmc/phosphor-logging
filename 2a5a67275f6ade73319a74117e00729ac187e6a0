@@ -89,6 +89,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7d74736_08b246d7",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1005,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-08-31T23:38:26Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d68dbdd4_a284bbf3",
+      "revId": "2a5a67275f6ade73319a74117e00729ac187e6a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0260fc7a_17fdd8df",

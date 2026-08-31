@@ -16,6 +16,24 @@
       "message": "Why are we using default value `0` here?",
       "revId": "bc21d6c85d075b84f6791717106bd53fb07aeb9c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57f1ea91_b465aed1",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1014,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-08-31T23:38:26Z",
+      "side": 1,
+      "message": "Default changing to be 1 for node 0 chassis.",
+      "parentUuid": "fda0c0e1_ffabb637",
+      "revId": "bc21d6c85d075b84f6791717106bd53fb07aeb9c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
