@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "845a5a9a_5690280d",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-08-31T23:18:14Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "084bd514_d2ca27ad",
+      "revId": "ef0f6f4dd2ccaf9782a83f69983b725aaae3a3c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "31e94895_2c03d104",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2dc50205_bd571be4",
+        "filename": "extensions/openpower-pels/data_interface.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-08-31T23:18:14Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "31e94895_2c03d104",
+      "revId": "ef0f6f4dd2ccaf9782a83f69983b725aaae3a3c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5fb19b39_bd41fdf5",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-08-19T12:06:33Z",
       "side": 1,
       "message": "What happens in non-redundant BMC and in multi-chassis system?\n\nWhat happens in single chassis system?",
+      "revId": "ef0f6f4dd2ccaf9782a83f69983b725aaae3a3c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61395094_8d4288fd",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1288,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-08-31T23:18:14Z",
+      "side": 1,
+      "message": "In case of non-redundant multi-chassis system, chassis 1 is considered default.",
+      "parentUuid": "5fb19b39_bd41fdf5",
       "revId": "ef0f6f4dd2ccaf9782a83f69983b725aaae3a3c7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -89,6 +143,30 @@
       "side": 1,
       "message": "+1",
       "parentUuid": "6b550683_dffde78e",
+      "range": {
+        "startLine": 1296,
+        "startChar": 0,
+        "endLine": 1297,
+        "endChar": 23
+      },
+      "revId": "ef0f6f4dd2ccaf9782a83f69983b725aaae3a3c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1bbe973_161a544e",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1297,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-08-31T23:18:14Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1e86eb0e_bab722e1",
       "range": {
         "startLine": 1296,
         "startChar": 0,
