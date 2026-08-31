@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "492322f7_68eaac6c",
+        "filename": "plugin/plugin.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-08-31T19:23:34Z",
+      "side": 1,
+      "message": "Why do we need a virtual class hierarchy here?\n\nI would expect phosphor-logging to be able to \"host\" every extension on its own.  We\u0027ve implemented it in a way where you can directly take the JSON and instantiate the interface-binding from it.  I don\u0027t know why we need any kind of virtual hierarchy here.",
+      "revId": "33005a7483478c4984021451581c549485f81b35",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
