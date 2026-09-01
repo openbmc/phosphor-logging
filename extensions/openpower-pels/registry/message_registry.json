@@ -2814,6 +2814,10 @@
                         "NumLines": 15
                     },
                     {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 15
+                    },
+                    {
                         "SyslogID": "systemd",
                         "NumLines": 15
                     }
