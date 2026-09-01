@@ -715,17 +715,31 @@ void Manager::restore()
         {
             continue;
         }
-
-        uint32_t idNum = std::stoul(id.substr(0, id.size() - 5));
-        files.try_emplace(idNum, file.path());
+        try
+        {
+            uint32_t idNum = std::stoul(id.substr(0, id.size() - 5));
+            files.try_emplace(idNum, file.path());
+        }
+        catch (const std::exception& e)
+        {
+            lg2::error("Skipping malformed log filename {NAME}: {ERROR}",
+                       "NAME", id, "ERROR", e);
+        }
     }
     // Look for Cereal.
     for (auto& file : fs::directory_iterator(dir))
     {
         auto id = file.path().filename().string();
-        uint32_t idNum = std::stoul(id);
-
-        files.try_emplace(idNum, file.path());
+        try
+        {
+            uint32_t idNum = std::stoul(id);
+            files.try_emplace(idNum, file.path());
+        }
+        catch (const std::exception& e)
+        {
+            lg2::error("Skipping malformed log filename {NAME}: {ERROR}",
+                       "NAME", id, "ERROR", e);
+        }
     }
 
     for (const auto& [idNum, filePath] : files)
