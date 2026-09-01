@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dc2c46db_c4ab771e",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1004,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-09-01T09:50:51Z",
+      "side": 1,
+      "message": "Then the PEL will be created with BMC chassis as 1, since it is non-redundant system. \n\nShould in this assumption be removed and PEL to be created with location code only callout.",
+      "parentUuid": "f1579de5_e8b62b57",
+      "range": {
+        "startLine": 1004,
+        "startChar": 40,
+        "endLine": 1004,
+        "endChar": 53
+      },
+      "revId": "3c53cd10e8eb018e799e0211896432d176e15793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7ef4617a_55882805",
         "filename": "extensions/openpower-pels/src.cpp",
         "patchSetId": 13
