@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51a404c5_51014bdd",
+        "filename": "extensions/openpower-pels/registry/schema/schema.json",
+        "patchSetId": 13
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-09-01T08:57:04Z",
+      "side": 1,
+      "message": "Do we need to said this limit?",
+      "revId": "3c53cd10e8eb018e799e0211896432d176e15793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36e2e9b9_32117b6e",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1004,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-09-01T08:57:04Z",
+      "side": 1,
+      "message": "Same comment that I posted in another change, why is it specific redundant BMC system?",
+      "range": {
+        "startLine": 1004,
+        "startChar": 40,
+        "endLine": 1004,
+        "endChar": 53
+      },
+      "revId": "3c53cd10e8eb018e799e0211896432d176e15793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ef4617a_55882805",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1019,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-09-01T08:57:04Z",
+      "side": 1,
+      "message": "Same comment that I posted in another change, do we need to call DBus API to get inventory details if the chassis number is `-1`?",
+      "revId": "3c53cd10e8eb018e799e0211896432d176e15793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
