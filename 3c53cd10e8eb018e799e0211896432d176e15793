@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f1579de5_e8b62b57",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1004,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-09-01T09:41:26Z",
+      "side": 1,
+      "message": "What happens if we attempt to create PEL before BMC position is available in the non-redundant BMC multi-chassis system?",
+      "parentUuid": "5e8422ab_9ebda6f1",
+      "range": {
+        "startLine": 1004,
+        "startChar": 40,
+        "endLine": 1004,
+        "endChar": 53
+      },
+      "revId": "3c53cd10e8eb018e799e0211896432d176e15793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7ef4617a_55882805",
         "filename": "extensions/openpower-pels/src.cpp",
         "patchSetId": 13
@@ -96,6 +120,24 @@
       "side": 1,
       "message": "It is made -1 so as to fail to let it pass to L1081 and have the location code only callout. Instead in both the scenarios I can have a check if chassisNumber \u003e\u003d 0 then to call the DBus API.",
       "parentUuid": "7ef4617a_55882805",
+      "revId": "3c53cd10e8eb018e799e0211896432d176e15793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45a25b28_071e96fd",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1019,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-09-01T09:41:26Z",
+      "side": 1,
+      "message": "IMO, its unnecessary DBus Call, I will leave it to you and Matt on this..I dont have strong preference.",
+      "parentUuid": "16654c8b_e3379237",
       "revId": "3c53cd10e8eb018e799e0211896432d176e15793",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
