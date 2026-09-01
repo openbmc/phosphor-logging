@@ -4,6 +4,7 @@
 #include "ascii_string.hpp"
 #include "callouts.hpp"
 #include "data_interface.hpp"
+#include "log_id.hpp"
 #include "pel_types.hpp"
 #include "registry.hpp"
 #include "section.hpp"
@@ -19,7 +20,6 @@ constexpr uint8_t srcSectionSubtype = 0x01;
 constexpr size_t numSRCHexDataWords = 8;
 constexpr uint8_t srcVersion = 0x02;
 constexpr uint8_t bmcSRCFormat = 0x55;
-constexpr uint8_t primaryBMCPosition = 0x10;
 constexpr size_t baseSRCSize = 72;
 
 enum class DetailLevel
@@ -389,14 +389,19 @@ class SRC : public Section
     }
 
     /**
-     * @brief Sets the hex word field that specifies which BMC
-     *        (primary vs backup) created the error.
-     *
-     * Can be hardcoded until there are systems with redundant BMCs.
+     * @brief Sets the BMC position in hex data word data.
+     *        Encoding:
+     *          BMC A -> 0b0001
+     *          BMC B -> 0b0010
+     *        If the position is not available, no bits are set.
      */
     inline void setBMCPosition()
     {
-        _hexData[1] |= primaryBMCPosition;
+        auto pos = position::getBMCPosition();
+        if (pos.has_value())
+        {
+            _hexData[1] |= static_cast<uint32_t>(1) << pos.value();
+        }
     }
 
     /**
