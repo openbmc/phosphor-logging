@@ -208,7 +208,7 @@ TEST_F(SRCTest, CreateTestNoCallouts)
     EXPECT_EQ(hexwords[2 - 2] & 0xF0000000, 0);    // Partition dump status
     EXPECT_EQ(hexwords[2 - 2] & 0x00F00000, 0);    // Partition boot type
     EXPECT_EQ(hexwords[2 - 2] & 0x000000FF, 0x55); // SRC format
-    EXPECT_EQ(hexwords[3 - 2] & 0x000000FF, 0x10); // BMC position
+    EXPECT_EQ(hexwords[3 - 2] & 0x000000FF, 0x01); // BMC position
 
     // Validate more fields here as the code starts filling them in.
 
@@ -2221,4 +2221,83 @@ TEST_F(SRCTest, DynamicChassisNumberMissingADKeyTest)
     EXPECT_EQ(
         debugData[0],
         "Missing AdditionalData key for chassis number: MISSING_CHASSIS_KEY");
+}
+
+// Test that setBMCPosition sets the correct bit for BMC A (position 0).
+// BMC A encoding: bit 0 set -> 0x01
+TEST_F(SRCTest, BMCPositionBmcATest)
+{
+    // Ensure bmcPosition is set to BMC A (0)
+    position::bmcPosition = 0;
+
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+
+    AdditionalData ad;
+    NiceMock<MockDataInterface> dataIface;
+
+    SRC src{entry, ad, dataIface};
+
+    EXPECT_TRUE(src.valid());
+
+    const auto& hexwords = src.hexwordData();
+    // BMC A: 1 << 0 = 0x01
+    EXPECT_EQ(hexwords[3 - 2] & 0x000000FF, 0x01); // BMC position
+}
+
+// Test that setBMCPosition sets the correct bit for BMC B (position 1).
+// BMC B encoding: bit 1 set -> 0x02
+TEST_F(SRCTest, BMCPositionBmcBTest)
+{
+    // Set bmcPosition to BMC B (1)
+    position::bmcPosition = 1;
+
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+
+    AdditionalData ad;
+    NiceMock<MockDataInterface> dataIface;
+
+    SRC src{entry, ad, dataIface};
+
+    EXPECT_TRUE(src.valid());
+
+    const auto& hexwords = src.hexwordData();
+    // BMC B: 1 << 1 = 0x02
+    EXPECT_EQ(hexwords[3 - 2] & 0x000000FF, 0x02); // BMC position
+
+    // Restore bmcPosition to default for subsequent tests
+    position::bmcPosition = 0;
+}
+
+// Test that setBMCPosition sets no bits when the position is
+// invalid/unavailable. getBMCPosition() returns nullopt when bmcPosition == 0xF
+// (invalidPELIDPosition).
+TEST_F(SRCTest, BMCPositionInvalidTest)
+{
+    // 0xF is the invalidPELIDPosition constant in log_id.cpp
+    position::bmcPosition = 0xF;
+
+    message::Entry entry;
+    entry.src.type = 0xBD;
+    entry.src.reasonCode = 0xABCD;
+    entry.subsystem = 0x42;
+
+    AdditionalData ad;
+    NiceMock<MockDataInterface> dataIface;
+
+    SRC src{entry, ad, dataIface};
+
+    EXPECT_TRUE(src.valid());
+
+    const auto& hexwords = src.hexwordData();
+    // Invalid position: no bits should be set in the BMC position field
+    EXPECT_EQ(hexwords[3 - 2] & 0x000000FF, 0x00); // BMC position
+
+    // Restore bmcPosition to default for subsequent tests
+    position::bmcPosition = 0;
 }
