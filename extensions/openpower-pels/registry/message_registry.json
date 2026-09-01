@@ -2810,6 +2810,10 @@
                         "NumLines": 30
                     },
                     {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 30
+                    },
+                    {
                         "SyslogID": "phosphor-chassis-state-manager",
                         "NumLines": 15
                     },
