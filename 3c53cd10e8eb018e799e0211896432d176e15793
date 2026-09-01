@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5e8422ab_9ebda6f1",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1004,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-09-01T09:37:59Z",
+      "side": 1,
+      "message": "Based on the previous comment, so as to keep the flow and automatically hit the location code only callout, I have made this change from the previous. The redundancy check is so that for non-redundant system BMC chassis will be 1 by default. But the location code only callout will be only in case BMC chassis is not found for non-redundant BMC system.",
+      "parentUuid": "36e2e9b9_32117b6e",
+      "range": {
+        "startLine": 1004,
+        "startChar": 40,
+        "endLine": 1004,
+        "endChar": 53
+      },
+      "revId": "3c53cd10e8eb018e799e0211896432d176e15793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7ef4617a_55882805",
         "filename": "extensions/openpower-pels/src.cpp",
         "patchSetId": 13
@@ -54,6 +78,24 @@
       "writtenOn": "2026-09-01T08:57:04Z",
       "side": 1,
       "message": "Same comment that I posted in another change, do we need to call DBus API to get inventory details if the chassis number is `-1`?",
+      "revId": "3c53cd10e8eb018e799e0211896432d176e15793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16654c8b_e3379237",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1019,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-09-01T09:37:59Z",
+      "side": 1,
+      "message": "It is made -1 so as to fail to let it pass to L1081 and have the location code only callout. Instead in both the scenarios I can have a check if chassisNumber \u003e\u003d 0 then to call the DBus API.",
+      "parentUuid": "7ef4617a_55882805",
       "revId": "3c53cd10e8eb018e799e0211896432d176e15793",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
