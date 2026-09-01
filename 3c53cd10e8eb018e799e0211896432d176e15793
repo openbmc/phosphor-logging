@@ -115,6 +115,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "48e1203c_66ee9430",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1004,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-01T20:02:16Z",
+      "side": 1,
+      "message": "Most likely if BMC position isn\u0027t available, yet, then also the vpd service wouldn\u0027t be available to expand location codes.\n\nBut ideally since it is a 1 BMC system we still fill in as much of the callout as possible.",
+      "parentUuid": "dc2c46db_c4ab771e",
+      "range": {
+        "startLine": 1004,
+        "startChar": 40,
+        "endLine": 1004,
+        "endChar": 53
+      },
+      "revId": "3c53cd10e8eb018e799e0211896432d176e15793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7ef4617a_55882805",
         "filename": "extensions/openpower-pels/src.cpp",
         "patchSetId": 13
@@ -162,6 +186,24 @@
       "side": 1,
       "message": "IMO, its unnecessary DBus Call, I will leave it to you and Matt on this..I dont have strong preference.",
       "parentUuid": "16654c8b_e3379237",
+      "revId": "3c53cd10e8eb018e799e0211896432d176e15793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee1cdc10_3d1b1679",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1019,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-01T20:02:16Z",
+      "side": 1,
+      "message": "If you know it\u0027s going to  fail, you could leave out the call.",
+      "parentUuid": "45a25b28_071e96fd",
       "revId": "3c53cd10e8eb018e799e0211896432d176e15793",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
