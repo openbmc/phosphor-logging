@@ -39,6 +39,24 @@
       "message": "Please consider adding a Tested: section.",
       "revId": "0321744fc385617791dd72075e1ab34a718c9ac8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bd32362_f41f08f3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002753
+      },
+      "writtenOn": "2026-09-01T01:32:01Z",
+      "side": 1,
+      "message": "Done, thanks for the feedback!",
+      "parentUuid": "3b614910_275a2b10",
+      "revId": "0321744fc385617791dd72075e1ab34a718c9ac8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
