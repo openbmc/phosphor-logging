@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7449ba85_1486f68a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-09-01T05:37:11Z",
+      "side": 1,
+      "message": "Tested on restart: a CPER Raw entry loses its CPER.Raw interface after systemctl restart. serialize() writes the state (still present in the entry JSON), but Raw has no deserialize() override, so PluginFactory::deserialize() returns the base nullptr and the plugin is dropped on restore. serialize() being mandatory while deserialize() is optional lets a plugin persist state it can\u0027t restore",
+      "revId": "13418cf90c6d302d98fbb6a518a68f3bc42c2e8a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
