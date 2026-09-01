@@ -22,6 +22,30 @@
       },
       "revId": "3e360813c652f534b47d2ca136e7cdc5bb3f4ab3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d002e816_987b99f8",
+        "filename": "bmc_pos_mgr.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1003004
+      },
+      "writtenOn": "2026-09-01T05:35:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb201cd0_79e64a3e",
+      "range": {
+        "startLine": 80,
+        "startChar": 14,
+        "endLine": 80,
+        "endChar": 20
+      },
+      "revId": "3e360813c652f534b47d2ca136e7cdc5bb3f4ab3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
