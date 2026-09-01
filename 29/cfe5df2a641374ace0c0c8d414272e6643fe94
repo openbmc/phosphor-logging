@@ -1,0 +1,10 @@
+Code-Review+1: Abhijeet Singh <abhijeet.singh@amd.com>
+Code-Review+2: Matt Spinler <spinler@us.ibm.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Patrick Williams <patrick@stwcx.xyz>
+Submitted-by: Matt Spinler <spinler@us.ibm.com>
+Submitted-at: Tue, 01 Sep 2026 18:17:15 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/92618
+Comments-Total: 1
+Project: openbmc/phosphor-logging
+Branch: refs/heads/master
