@@ -294,7 +294,7 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
               "BD612030                        ");
     // Check if the eventId creation is good
     EXPECT_EQ(manager.getEventId(pel),
-              "BD612030 00000055 00000010 00000000 00000000 00000000 00000000 "
+              "BD612030 00000055 00000001 00000000 00000000 00000000 00000000 "
               "00000000 00000000");
     // Check if resolution property creation is good
     EXPECT_EQ(manager.getResolution(pel),

@@ -208,7 +208,7 @@ TEST_F(SRCTest, CreateTestNoCallouts)
     EXPECT_EQ(hexwords[2 - 2] & 0xF0000000, 0);    // Partition dump status
     EXPECT_EQ(hexwords[2 - 2] & 0x00F00000, 0);    // Partition boot type
     EXPECT_EQ(hexwords[2 - 2] & 0x000000FF, 0x55); // SRC format
-    EXPECT_EQ(hexwords[3 - 2] & 0x000000FF, 0x10); // BMC position
+    EXPECT_EQ(hexwords[3 - 2] & 0x000000FF, 0x01); // BMC position
 
     // Validate more fields here as the code starts filling them in.
 
