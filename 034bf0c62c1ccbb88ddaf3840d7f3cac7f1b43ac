@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1486fd87_31d609e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-09-01T05:09:19Z",
+      "side": 1,
+      "message": "From my understanding, \nhttps://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/93264 covers the same functionality with the updated PluginRequest design. Is there any functionality in this patch that is not already provided there?",
+      "revId": "034bf0c62c1ccbb88ddaf3840d7f3cac7f1b43ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
