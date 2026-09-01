@@ -81,6 +81,47 @@
       "parentUuid": "c04e9fb0_63913300",
       "revId": "5f1d9daccb0fcfa35dc7acf5870ce80fb402b810",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a743b7f_2b769642",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1304,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-01T18:35:49Z",
+      "side": 1,
+      "message": "If this were to run on a rainier and try to do a callout, it would pass chassisNumber\u003d1 to the VPD manager call.  Would that even work?  (this can happen on our rbmc-prototype system which uses rainier callouts)",
+      "parentUuid": "45adfe4c_47326571",
+      "revId": "5f1d9daccb0fcfa35dc7acf5870ce80fb402b810",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1034c1de_74f31051",
+        "filename": "test/openpower-pels/src_test.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1703,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-01T18:35:49Z",
+      "side": 1,
+      "message": "it should still create a callout with this P0 loc code I think?  can you check for that?",
+      "range": {
+        "startLine": 1703,
+        "startChar": 19,
+        "endLine": 1703,
+        "endChar": 41
+      },
+      "revId": "5f1d9daccb0fcfa35dc7acf5870ce80fb402b810",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
