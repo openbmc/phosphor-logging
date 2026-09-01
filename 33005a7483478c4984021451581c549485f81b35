@@ -16,6 +16,24 @@
       "message": "Why do we need a virtual class hierarchy here?\n\nI would expect phosphor-logging to be able to \"host\" every extension on its own.  We\u0027ve implemented it in a way where you can directly take the JSON and instantiate the interface-binding from it.  I don\u0027t know why we need any kind of virtual hierarchy here.",
       "revId": "33005a7483478c4984021451581c549485f81b35",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac39f2c4_f2724a88",
+        "filename": "plugin/plugin.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-09-01T04:24:00Z",
+      "side": 1,
+      "message": "The intent of the hierarchy is less about the current CPER Processed implementation and more about providing a common lifecycle for extensions. Some extensions can be instantiated directly from JSON, but others require additional processing before a runtime object can be created.\n\nFor example, CPER Raw translates a binary payload into a persisted artifact and later needs to reconstruct itself from persisted state. We also have use cases where the logging framework may enrich extension data with common OEM information or create extensions internally rather than from user-provided JSON.\n\nSome of these use cases are utilized by later reviews in this series,\n\nThe current abstraction allows plugin creation to be driven from multiple sources (extension JSON, framework-generated metadata, deserialization, etc.) while keeping plugin-specific logic out of the common logging infrastructure.\n\nThat said, I\u0027m not strongly attached to the current hierarchy itself. If there\u0027s a simpler design that can support framework-generated extensions, metadata enrichment, input transformations, and persistence/recovery without introducing plugin-specific knowledge into phosphor-logging core, I\u0027m happy to explore it.",
+      "parentUuid": "492322f7_68eaac6c",
+      "revId": "33005a7483478c4984021451581c549485f81b35",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
