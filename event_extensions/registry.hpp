@@ -3,6 +3,8 @@
 #include "extension.hpp"
 #include "request.hpp"
 
+#include <nlohmann/json.hpp>
+
 #include <functional>
 #include <string>
 #include <string_view>
@@ -18,10 +20,25 @@ using CreateCallback =
     std::function<ExtensionPtr(const Context&, const Request&)>;
 
 /**
+ * @brief Callback used to restore a runtime extension.
+ */
+using RestoreCallback =
+    std::function<ExtensionPtr(const Context&, const nlohmann::json&)>;
+
+/**
+ * @brief Extension registration callbacks.
+ */
+struct Registration
+{
+    CreateCallback createCallback;
+    RestoreCallback restoreCallback;
+};
+
+/**
  * @brief Registry of event extensions.
  *
  * Maintains the mapping between extension interface names
- * and extension creation callbacks.
+ * and extension registration callbacks.
  */
 class Registry
 {
@@ -37,23 +54,23 @@ class Registry
      * @brief Register an extension.
      *
      * @param[in] interface Extension interface name.
-     * @param[in] createCallback Extension creation callback.
+     * @param[in] registration Extension registration callbacks.
      */
     void registerExtension(std::string_view interface,
-                           CreateCallback createCallback);
+                           Registration registration);
 
     /**
-     * @brief Lookup an extension creation callback.
+     * @brief Lookup an extension registration.
      *
      * @param[in] interface Extension interface name.
      *
-     * @return Registered callback or nullptr if no
+     * @return Registered callbacks or nullptr if no
      *         extension is registered.
      */
-    const CreateCallback* find(std::string_view interface) const;
+    const Registration* find(std::string_view interface) const;
 
   private:
-    std::unordered_map<std::string, CreateCallback> registrations;
+    std::unordered_map<std::string, Registration> registrations;
 };
 
 } // namespace phosphor::logging::event_extensions

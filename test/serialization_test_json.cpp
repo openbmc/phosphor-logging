@@ -166,7 +166,8 @@ TEST_F(TestJsonSerialization, testJsonRoundTrip)
 
     auto output = std::make_unique<Entry>(
         bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, manager);
-    EXPECT_TRUE(deserializeJSON(jsonPath, *output));
+    nlohmann::json restoredEventExtensions;
+    EXPECT_TRUE(deserializeJSON(jsonPath, *output, restoredEventExtensions));
 
     EXPECT_EQ(input->id(), output->id());
     EXPECT_EQ(input->severity(), output->severity());
@@ -192,7 +193,8 @@ TEST_F(TestJsonSerialization, testDeserializeCorruptedJson)
 
     auto output = std::make_unique<Entry>(
         bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, manager);
-    EXPECT_FALSE(deserializeJSON(jsonPath, *output));
+    nlohmann::json restoredEventExtensions;
+    EXPECT_FALSE(deserializeJSON(jsonPath, *output, restoredEventExtensions));
 }
 
 TEST_F(TestJsonSerialization, testDeserializeMissingField)
@@ -212,7 +214,8 @@ TEST_F(TestJsonSerialization, testDeserializeMissingField)
 
     auto output = std::make_unique<Entry>(
         bus, std::string(OBJ_ENTRY) + '/' + std::to_string(id), id, manager);
-    EXPECT_FALSE(deserializeJSON(jsonPath, *output));
+    nlohmann::json restoredEventExtensions;
+    EXPECT_FALSE(deserializeJSON(jsonPath, *output, restoredEventExtensions));
 }
 
 } // namespace test
