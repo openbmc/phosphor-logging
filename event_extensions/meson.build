@@ -3,3 +3,5 @@ event_extensions_sources = files(
     'registry.cpp',
     'manager.cpp',
 )
+
+subdir('cper')
