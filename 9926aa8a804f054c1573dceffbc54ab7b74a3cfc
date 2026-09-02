@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6be1aeca_593aebac",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1002065
+      },
+      "writtenOn": "2026-09-02T12:27:46Z",
+      "side": 1,
+      "message": "This work seems to be mainly based off https://gerrit.openbmc.org/c/openbmc/docs/+/92736. I think this should be linked in the commit message.\n\nWould it make sense to also link to https://github.com/openbmc/docs/commit/854f0893e6f6015912e2ebf72d6350dec6e9a34e and https://gerrit.openbmc.org/c/openbmc/docs/+/93615 ? both designs seem to mention this work as well",
+      "revId": "9926aa8a804f054c1573dceffbc54ab7b74a3cfc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
