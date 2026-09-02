@@ -770,11 +770,14 @@ void Manager::restore()
 
         if (isJson)
         {
-            if (!deserializeJSON(filePath, *e))
+            nlohmann::json eventExtensions;
+            if (!deserializeJSON(filePath, *e, eventExtensions))
             {
                 continue;
             }
             e->path(filePath, true);
+
+            restoreEventExtensions(*e, eventExtensions);
         }
         else if (!deserialize(filePath, *e))
         {
@@ -1109,6 +1112,21 @@ auto Manager::buildEventExtensionRequests(
     return requests;
 }
 
+void Manager::restoreEventExtensions(Entry& entry,
+                                     const nlohmann::json& eventExtensions)
+{
+    if (eventExtensions.empty())
+    {
+        return;
+    }
+    event_extensions::Context context{
+        busLog,
+        std::string(OBJ_ENTRY) + '/' + std::to_string(entry.id()),
+    };
+    auto restoredExtensions =
+        eventExtensionManager.restore(context, eventExtensions);
+    entry.setEventExtensions(std::move(restoredExtensions));
+}
 } // namespace internal
 } // namespace logging
 } // namespace phosphor

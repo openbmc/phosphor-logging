@@ -1,5 +1,6 @@
 #pragma once
 
+#include <nlohmann/json.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/message/types.hpp>
 
@@ -58,7 +59,14 @@ class Extension
      * Extensions may override this method to release
      * extension-owned resources.
      */
-    virtual void onDelete() {}
+    virtual void onDelete() = 0;
+
+    /**
+     * @brief Serialize extension state.
+     *
+     * @return Extension-specific serialized state.
+     */
+    virtual nlohmann::json serialize() const = 0;
 };
 
 using ExtensionPtr = std::unique_ptr<Extension>;

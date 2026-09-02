@@ -17,6 +17,7 @@
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
 #include <xyz/openbmc_project/Logging/event.hpp>
 
+#include <filesystem>
 #include <list>
 
 namespace phosphor
@@ -361,6 +362,19 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     event_extensions::RequestList buildEventExtensionRequests(
         std::map<std::string, std::string>& additionalData);
+
+    /**
+     * @brief Restore persisted event extensions.
+     *
+     * Recreates runtime event extensions from serialized
+     * extension data.
+     *
+     * @param[in,out] entry Entry receiving restored extensions.
+     * @param[in] eventExtensions Serialized event extension data
+     *                            indexed by interface name.
+     */
+    void restoreEventExtensions(Entry& entry,
+                                const nlohmann::json& eventExtensions);
 
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus_t& busLog;

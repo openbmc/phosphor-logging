@@ -16,11 +16,10 @@ ExtensionList Manager::create(const Context& context,
                               const RequestList& requests) const
 {
     ExtensionList extensions;
-
     for (const auto& request : requests)
     {
-        const auto* createCallback = registry.find(request.interface);
-        if (createCallback == nullptr)
+        const auto* registration = registry.find(request.interface);
+        if (registration == nullptr)
         {
             lg2::warning("No event extension registered for "
                          "{INTERFACE}",
@@ -28,7 +27,29 @@ ExtensionList Manager::create(const Context& context,
             continue;
         }
 
-        auto extension = createCallback->operator()(context, request);
+        auto extension = registration->createCallback(context, request);
+        if (extension != nullptr)
+        {
+            extensions.emplace_back(std::move(extension));
+        }
+    }
+
+    return extensions;
+}
+
+ExtensionList Manager::restore(const Context& context,
+                               const nlohmann::json& data) const
+{
+    ExtensionList extensions;
+    for (const auto& [interface, payload] : data.items())
+    {
+        const auto* registration = registry.find(interface);
+        if (registration == nullptr)
+        {
+            continue;
+        }
+
+        auto extension = registration->restoreCallback(context, payload);
         if (extension != nullptr)
         {
             extensions.emplace_back(std::move(extension));
