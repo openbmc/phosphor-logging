@@ -5,6 +5,7 @@
 #include "bmc_pos_mgr.hpp"
 #include "elog_block.hpp"
 #include "elog_entry.hpp"
+#include "event_extensions/manager.hpp"
 #include "xyz/openbmc_project/Logging/Internal/Manager/server.hpp"
 
 #include <phosphor-logging/lg2.hpp>
@@ -287,11 +288,14 @@ class Manager : public details::ServerObject<details::ManagerIface>
      * @param[in] errLvl - level of the error
      * @param[in] additionalData - The AdditionalData property for the error
      * @param[in] ffdc - A vector of FFDC file info. Defaults to an empty
-     * vector.
+     *                  vector.
+     * @param[in] requests Event extension requests
+     *                     associated with the log entry.
      */
     auto createEntry(std::string errMsg, Entry::Level errLvl,
                      std::map<std::string, std::string> additionalData,
-                     const FFDCEntries& ffdc = FFDCEntries{})
+                     const FFDCEntries& ffdc = FFDCEntries{},
+                     const event_extensions::RequestList& requests = {})
         -> sdbusplus::object_path;
 
     /** @brief Notified on entry property changes
@@ -340,6 +344,21 @@ class Manager : public details::ServerObject<details::ManagerIface>
     void errorFileChanged(sdeventplus::source::IO& io, int fd,
                           uint32_t revents);
 
+    /**
+     * @brief Build event extension requests from additional
+     *        data.
+     *
+     * Extracts extension metadata from the _EXTENSIONS
+     * transport field and converts it into runtime event
+     * extension requests.
+     *
+     * @param[in,out] additionalData Event additional data.
+     *
+     * @return Event extension requests.
+     */
+    event_extensions::RequestList buildEventExtensionRequests(
+        std::map<std::string, std::string>& additionalData);
+
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus_t& busLog;
 
@@ -386,6 +405,17 @@ class Manager : public details::ServerObject<details::ManagerIface>
      * entry directory.
      */
     int errDirWatcherWD = -1;
+
+    /** Event extension framework manager. */
+    event_extensions::Manager extensionManager;
+
+    /**
+     * @brief Event extension framework manager.
+     *
+     * Owns registered event extension providers and creates
+     * runtime event extensions for log entries.
+     */
+    event_extensions::Manager eventExtensionManager;
 };
 
 } // namespace internal

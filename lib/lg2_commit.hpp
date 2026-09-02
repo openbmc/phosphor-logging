@@ -1,5 +1,7 @@
 #pragma once
 
+#include "event_extensions/request.hpp"
+
 #include <sdbusplus/exception.hpp>
 #include <xyz/openbmc_project/Logging/Entry/client.hpp>
 
@@ -24,6 +26,9 @@ struct EventInfo
 
     /** Event metadata. */
     std::map<std::string, std::string> additionalData;
+
+    /** Optional event extension requests. */
+    phosphor::logging::event_extensions::RequestList extensions;
 };
 
 /** Extract information from a generated event.
