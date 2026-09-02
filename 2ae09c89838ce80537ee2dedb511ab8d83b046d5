@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8aa79404_97cee633",
+        "filename": "extensions/openpower-pels/src.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-09-02T04:19:06Z",
+      "side": 1,
+      "message": "@spinler@us.ibm.com It seems that, in Hex Data Word 3, bits 0–2 are used for the Redundant Service Processor Indication. Therefore, I think we should set this field only for a redundant BMC system. If the BMC position is not available, we should leave the field unset, both in redundant and non-redundant BMC systems.\n\nI also assume this code is triggered only for BMC-generated PELs, since this field identifies the SRC originator.\n\nThe old code does not set bits 0–2.",
+      "revId": "2ae09c89838ce80537ee2dedb511ab8d83b046d5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
