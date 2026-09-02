@@ -1,5 +1,6 @@
 #pragma once
 
+#include <nlohmann/json.hpp>
 #include <sdbusplus/bus.hpp>
 
 #include <memory>
@@ -58,6 +59,16 @@ class Extension
      * extension-owned resources.
      */
     virtual void onDelete() {}
+
+    /**
+     * @brief Serialize extension state.
+     *
+     * @return Extension-specific serialized state.
+     */
+    virtual nlohmann::json serialize() const
+    {
+        return {};
+    }
 };
 
 using ExtensionPtr = std::unique_ptr<Extension>;

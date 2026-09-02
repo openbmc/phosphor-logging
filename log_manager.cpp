@@ -753,6 +753,16 @@ void Manager::restore()
                 continue;
             }
             e->path(filePath, true);
+
+            // Event extension
+            auto eventExtensionData = deserializeEventExtensions(filePath);
+            event_extensions::Context context{
+                busLog,
+                std::string(OBJ_ENTRY) + '/' + std::to_string(idNum),
+            };
+            auto eventExtensions =
+                eventExtensionManager.restore(context, eventExtensionData);
+            e->setEventExtensions(std::move(eventExtensions));
         }
         else
         {
