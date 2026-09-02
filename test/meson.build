@@ -23,6 +23,8 @@ if get_option('openpower-pel-extension').allowed()
     subdir('openpower-pels')
 endif
 
+subdir('event_extensions')
+
 tests = [
     'bmc_pos_mgr_test',
     'extensions_test',
