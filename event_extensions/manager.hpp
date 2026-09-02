@@ -4,6 +4,8 @@
 #include "registry.hpp"
 #include "request.hpp"
 
+#include <nlohmann/json.hpp>
+
 namespace phosphor::logging::event_extensions
 {
 
@@ -37,6 +39,17 @@ class Manager
      */
     ExtensionList create(const Context& context,
                          const RequestList& requests) const;
+
+    /**
+     * @brief Restore extensions from serialized data.
+     *
+     * @param[in] context Runtime creation context.
+     * @param[in] data Serialized extension state.
+     *
+     * @return Restored extensions.
+     */
+    ExtensionList restore(const Context& context,
+                          const nlohmann::json& data) const;
 
   private:
     Registry registry;

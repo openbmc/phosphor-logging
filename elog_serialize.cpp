@@ -274,5 +274,20 @@ bool deserialize(const fs::path& path, Entry& e)
     }
 }
 
+nlohmann::json deserializeEventExtensions(const fs::path& path)
+{
+    std::ifstream is(path.c_str());
+
+    nlohmann::json j;
+    is >> j;
+
+    if (auto it = j.find("eventExtensions"); it != j.end())
+    {
+        return *it;
+    }
+
+    return nlohmann::json::object();
+}
+
 } // namespace logging
 } // namespace phosphor
