@@ -1,0 +1,41 @@
+#include "event_extensions/manager.hpp"
+
+#include "event_extensions/builtins.hpp"
+
+#include <phosphor-logging/lg2.hpp>
+
+namespace phosphor::logging::event_extensions
+{
+
+Manager::Manager()
+{
+    registerBuiltins(registry);
+}
+
+ExtensionList Manager::create(const Context& context,
+                              const RequestList& requests) const
+{
+    ExtensionList extensions;
+
+    for (const auto& request : requests)
+    {
+        const auto* createCallback = registry.find(request.interface);
+        if (createCallback == nullptr)
+        {
+            lg2::warning("No event extension registered for "
+                         "{INTERFACE}",
+                         "INTERFACE", request.interface);
+            continue;
+        }
+
+        auto extension = createCallback->operator()(context, request);
+        if (extension != nullptr)
+        {
+            extensions.emplace_back(std::move(extension));
+        }
+    }
+
+    return extensions;
+}
+
+} // namespace phosphor::logging::event_extensions
