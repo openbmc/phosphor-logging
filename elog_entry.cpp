@@ -25,6 +25,24 @@ void Entry::persist()
 
 void Entry::delete_()
 {
+    for (auto& eventExtension : eventExtensions)
+    {
+        try
+        {
+            eventExtension->onDelete();
+        }
+        catch (const std::exception& e)
+        {
+            lg2::error("Event extension delete callback failed: {ERROR}",
+                       "ERROR", e.what());
+        }
+        catch (...)
+        {
+            lg2::error(
+                "Event extension delete callback failed: unknown exception");
+        }
+    }
+
     parent.erase(id());
 }
 

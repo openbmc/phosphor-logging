@@ -218,7 +218,9 @@ void Manager::_commit(uint64_t transactionId [[maybe_unused]],
 
 auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
                           std::map<std::string, std::string> additionalData,
-                          const FFDCEntries& ffdc) -> sdbusplus::object_path
+                          const FFDCEntries& ffdc,
+                          const event_extensions::RequestList& requests)
+    -> sdbusplus::object_path
 {
     if (!Extensions::disableDefaultLogCaps())
     {
@@ -281,11 +283,19 @@ auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
     auto additionalDataVec = util::additional_data::combine(additionalData);
     processMetadata(errMsg, additionalDataVec, objects);
 
+    event_extensions::Context context{
+        busLog,
+        objPath,
+    };
+
+    auto eventExtensions = extensionManager.create(context, requests);
+
     auto e = std::make_unique<Entry>(
         busLog, objPath, entryId,
         ms, // Milliseconds since 1970
         errLvl, std::move(errMsg), std::move(additionalData),
-        std::move(objects), fwVersion, getEntrySerializePath(entryId), *this);
+        std::move(objects), fwVersion, getEntrySerializePath(entryId), *this,
+        std::move(eventExtensions));
 
     serialize(*e);
     serializeJSON(*e);
@@ -815,7 +825,11 @@ auto Manager::create(const std::string& message, Entry::Level severity,
                      const std::map<std::string, std::string>& additionalData,
                      const FFDCEntries& ffdc) -> sdbusplus::object_path
 {
-    return createEntry(message, severity, additionalData, ffdc);
+    auto data = additionalData;
+    auto requests = buildEventExtensionRequests(data);
+
+    return createEntry(message, severity, std::move(data), ffdc,
+                       std::move(requests));
 }
 
 void Manager::setupErrorFileWatch()
@@ -1026,6 +1040,46 @@ bool Manager::refreshFromDisk(uint32_t id)
     existingEntry->path(path, true);
 
     return true;
+}
+
+auto Manager::buildEventExtensionRequests(
+    std::map<std::string, std::string>& additionalData)
+    -> event_extensions::RequestList
+{
+    event_extensions::RequestList requests;
+
+    auto extIt = additionalData.find("_EXTENSIONS");
+    if (extIt == additionalData.end())
+    {
+        return requests;
+    }
+
+    try
+    {
+        auto extensions = nlohmann::json::parse(extIt->second);
+
+        for (const auto& [interface, data] : extensions.items())
+        {
+            requests.emplace_back(event_extensions::Request{
+                .interface = interface,
+                .data = data,
+            });
+        }
+    }
+    catch (const std::exception& e)
+    {
+        lg2::error("Failed to process event extension metadata: "
+                   "{ERROR}",
+                   "ERROR", e.what());
+    }
+
+    /*
+     * Extension metadata is transport-only and should
+     * not be persisted as entry additional data.
+     */
+    additionalData.erase(extIt);
+
+    return requests;
 }
 
 } // namespace internal
