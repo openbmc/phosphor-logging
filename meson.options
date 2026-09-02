@@ -61,3 +61,10 @@ option(
     value: true,
     description: 'Enable support for redundant BMC systems',
 )
+
+option(
+    'max-cper-raw-binary-size',
+    type: 'integer',
+    value: 16384,
+    description: 'Maximum supported raw CPER binary size in bytes',
+)
