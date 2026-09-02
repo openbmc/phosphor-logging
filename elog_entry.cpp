@@ -28,6 +28,22 @@ void Entry::delete_()
     parent.erase(id());
 }
 
+void Entry::cleanupExtensions()
+{
+    for (auto& eventExtension : eventExtensions)
+    {
+        try
+        {
+            eventExtension->onDelete();
+        }
+        catch (const std::exception& e)
+        {
+            lg2::error("Event extension delete callback failed: {ERROR}",
+                       "ERROR", e);
+        }
+    }
+}
+
 bool Entry::resolved(bool value)
 {
     auto current =

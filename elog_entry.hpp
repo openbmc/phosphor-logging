@@ -2,6 +2,7 @@
 
 #include "config.h"
 
+#include "event_extensions/extension.hpp"
 #include "xyz/openbmc_project/Logging/Entry/server.hpp"
 #include "xyz/openbmc_project/Object/Delete/server.hpp"
 #include "xyz/openbmc_project/Software/Version/server.hpp"
@@ -62,14 +63,16 @@ class Entry : public EntryIfaces
      *  @param[in] fwVersion - The BMC code version.
      *  @param[in] filePath - Serialization path
      *  @param[in] parent - The error's parent.
+     *  @param[in] eventExtensions - Event extensions
      */
     Entry(sdbusplus::bus_t& bus, const std::string& objectPath, uint32_t idErr,
           uint64_t timestampErr, Level severityErr, std::string&& msgErr,
           std::map<std::string, std::string>&& additionalDataErr,
           AssociationList&& objects, const std::string& fwVersion,
-          const std::string& filePath, internal::Manager& parent) :
+          const std::string& filePath, internal::Manager& parent,
+          event_extensions::ExtensionList eventExtensions = {}) :
         EntryIfaces(bus, objectPath.c_str(), EntryIfaces::action::defer_emit),
-        parent(parent)
+        parent(parent), eventExtensions(std::move(eventExtensions))
     {
         id(idErr, true);
         severity(severityErr, true);
@@ -147,6 +150,20 @@ class Entry : public EntryIfaces
      */
     void delete_() override;
 
+    /**
+     * @brief Invoke registered event-extension cleanup callbacks.
+     *
+     * This method executes the onDelete() handler for all event
+     * extensions associated with the entry. It is called from
+     * Manager::erase() so that extension-specific cleanup is
+     * performed consistently for all deletion paths, including
+     * Delete and DeleteAll operations.
+     *
+     * Any exception thrown by an extension is logged and ignored
+     * to allow deletion processing to continue.
+     */
+    void cleanupExtensions();
+
     /** @brief Severity level to check in cap.
      *  @details Errors with severity lesser than this will be
      *           considered as low priority and maximum ERROR_INFO_CAP
@@ -184,6 +201,14 @@ class Entry : public EntryIfaces
 
     /** @brief Persist the entry state */
     void persist();
+
+    /**
+     * @brief Runtime extensions associated with this entry.
+     *
+     * Extensions remain active for the lifetime of the
+     * owning log entry.
+     */
+    event_extensions::ExtensionList eventExtensions;
 };
 
 } // namespace logging
