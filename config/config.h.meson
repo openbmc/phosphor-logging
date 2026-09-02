@@ -5,6 +5,7 @@ inline constexpr auto RSYSLOG_SERVER_CONFIG_FILE = "@rsyslog_server_conf@";
 extern const bool IS_UNIT_TEST;
 static constexpr size_t ERROR_CAP = @error_cap@;
 static constexpr size_t ERROR_INFO_CAP = @error_info_cap@;
+static constexpr size_t MAX_CPER_RAW_BINARY_SIZE = @max_cper_raw_binary_size@;
 static constexpr bool LG2_COMMIT_DBUS = @lg2_commit_dbus@;
 static constexpr bool LG2_COMMIT_JOURNAL = @lg2_commit_journal@;
 static constexpr bool REDUNDANT_BMC = @redundant_bmc@;
