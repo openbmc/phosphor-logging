@@ -1,15 +1,17 @@
-#include "event_extensions/builtins.hpp"
-
-#include "event_extensions/cper/processed.hpp"
 #include "event_extensions/cper/raw.hpp"
+#include "event_extensions/registry.hpp"
+
+#include <gtest/gtest.h>
 
 namespace phosphor::logging::event_extensions
 {
 
-void registerBuiltins(Registry& registry)
+TEST(CPERRawTest, RegisterProvider)
 {
-    cper::processed::registerProvider(registry);
+    Registry registry;
     cper::raw::registerProvider(registry);
+
+    EXPECT_NE(registry.lookup(cper::raw::interface), nullptr);
 }
 
 } // namespace phosphor::logging::event_extensions
