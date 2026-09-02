@@ -1,1 +1,2 @@
 subdir('processed')
+subdir('raw')
