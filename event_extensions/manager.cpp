@@ -37,4 +37,26 @@ ExtensionList Manager::create(const Context& context,
     return extensions;
 }
 
+ExtensionList Manager::restore(const Context& context,
+                               const nlohmann::json& data) const
+{
+    ExtensionList extensions;
+
+    for (const auto& [interface, payload] : data.items())
+    {
+        const auto* provider = registry.lookup(interface);
+        if (provider == nullptr)
+        {
+            continue;
+        }
+
+        auto extension = provider->restore(context, payload);
+        if (extension != nullptr)
+        {
+            extensions.emplace_back(std::move(extension));
+        }
+    }
+
+    return extensions;
+}
 } // namespace phosphor::logging::event_extensions
