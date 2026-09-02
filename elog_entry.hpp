@@ -163,6 +163,30 @@ class Entry : public EntryIfaces
      */
     sdbusplus::message::unix_fd getEntry() override;
 
+    /**
+     * @brief Get runtime event extensions associated with
+     *        this entry.
+     *
+     * @return Runtime event extensions.
+     */
+    const event_extensions::ExtensionList& getEventExtensions() const
+    {
+        return eventExtensions;
+    }
+
+    /**
+     * @brief Replace runtime event extensions associated with this entry.
+     *
+     * Transfers ownership of the supplied runtime event
+     * extensions to the entry.
+     *
+     * @param[in] eventExtensions Runtime event extensions.
+     */
+    void setEventExtensions(event_extensions::ExtensionList eventExtensions)
+    {
+        this->eventExtensions = std::move(eventExtensions);
+    }
+
   private:
     /** @brief This entry's associations */
     AssociationList assocs = {};
