@@ -5,3 +5,4 @@ event_extensions_sources = files(
 )
 
 subdir('cper')
+subdir('utils')
