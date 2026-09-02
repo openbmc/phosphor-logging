@@ -57,5 +57,14 @@ bool deserialize(const fs::path& path, Entry& e);
 fs::path getEntrySerializePath(uint32_t id,
                                const fs::path& dir = fs::path(paths::error()));
 
+/**
+ * @brief Deserialize persisted event extension data.
+ *
+ * @param[in] path Log entry JSON file.
+ *
+ * @return Event extension data indexed by interface name.
+ */
+nlohmann::json deserializeEventExtensions(const fs::path& path);
+
 } // namespace logging
 } // namespace phosphor
