@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0aaace0e_52f20fc8",
+        "filename": "event_extensions/cper/raw.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-09-03T08:52:24Z",
+      "side": 1,
+      "message": "lg2 understands exceptions, so you can drop the .what()",
+      "revId": "ab1d9f1ad23646c151c1326ea1ab68237e43e8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
