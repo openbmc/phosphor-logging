@@ -6194,6 +6194,27 @@
         },
 
         {
+            "Name": "com.ibm.Panel.Error.InternalFailure",
+            "Subsystem": "cec_op_panel",
+            "ComponentID": "0x5000",
+
+            "SRC": {
+                "ReasonCode": "0x5006",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Panel internal error",
+                "Message": "An internal error occurred in the Panel application.",
+                "Notes": ["The journal should contain more information"]
+            },
+
+            "JournalCapture": {
+                "NumLines": 30
+            }
+        },
+
+        {
             "Name": "org.open_power.Host.Boot.Error.WatchdogTimedOut",
             "Subsystem": "cec_sp_hostboot_iface",
             "ComponentID": "0xC100",
