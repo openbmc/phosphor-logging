@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62177816_e2636aad",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-09-03T09:22:01Z",
+      "side": 1,
+      "message": "This Patch \nhttps://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/93483 \nmakes Cereal persistence optional (cereal-persist\u003dfalse). With it disabled, errors/ stays empty, so this fallback logic has nothing to fall back to if the JSON gets corrupted — the entry is just dropped. What\u0027s the intended behavior here once cereal-persist\u003dfalse?",
+      "revId": "42b1425c8e6755f8d365cc44bc1f31dc60d5e071",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b2e9a25_a11b485f",
+        "filename": "log_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 758,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-09-03T09:22:01Z",
+      "side": 1,
+      "message": "drop the stray ?",
+      "revId": "42b1425c8e6755f8d365cc44bc1f31dc60d5e071",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
