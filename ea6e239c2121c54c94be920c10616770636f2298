@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "74ac280f_e755d001",
+        "filename": "elog_entry.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-09-03T08:46:37Z",
+      "side": 1,
+      "message": "parent.erase(id()) destroys this before the eventExtensions loop below runs on it (use-after-free); move the extension onDelete() loop before parent.erase(id()).",
+      "revId": "ea6e239c2121c54c94be920c10616770636f2298",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "24324925_ec575a2f",
         "filename": "event_extensions/provider.hpp",
         "patchSetId": 2
