@@ -122,6 +122,30 @@
       },
       "revId": "5f1d9daccb0fcfa35dc7acf5870ce80fb402b810",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70814779_fd03d01c",
+        "filename": "test/openpower-pels/src_test.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1703,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-09-05T11:04:01Z",
+      "side": 1,
+      "message": "It is a check with the chassis number as a string type. I think it is irrelevant to the test case, hence changing.",
+      "parentUuid": "1034c1de_74f31051",
+      "range": {
+        "startLine": 1703,
+        "startChar": 19,
+        "endLine": 1703,
+        "endChar": 41
+      },
+      "revId": "5f1d9daccb0fcfa35dc7acf5870ce80fb402b810",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
