@@ -376,6 +376,56 @@ class Manager : public details::ServerObject<details::ManagerIface>
     void restoreEventExtensions(Entry& entry,
                                 const nlohmann::json& eventExtensions);
 
+    /**
+     * @brief Collect runtime metadata from registered providers.
+     *
+     * Invokes all registered runtime metadata providers and
+     * aggregates their contributions into a single metadata
+     * object.
+     *
+     * Runtime metadata providers are intended to contribute
+     * extension-specific metadata derived from runtime
+     * platform state.
+     *
+     * @param[in] message
+     *     Log message associated with the entry.
+     *
+     * @param[in] level
+     *     Severity level of the entry.
+     *
+     * @param[in] additionalData
+     *     Additional data supplied during log creation.
+     *
+     * @return Aggregated runtime metadata collected from all
+     *         registered providers.
+     */
+    static nlohmann::json collectRuntimeMetadata(
+        const std::string& message, Entry::Level level,
+        const std::map<std::string, std::string>& additionalData);
+
+    /**
+     * @brief Add or update extension metadata.
+     *
+     * Stores the supplied payload under the specified
+     * extension interface within the _EXTENSIONS
+     * transport object.
+     *
+     * Existing metadata associated with other extension
+     * interfaces is preserved.
+     *
+     * @param[in,out] additionalData
+     *     Additional data map.
+     *
+     * @param[in] interface
+     *     Extension interface name.
+     *
+     * @param[in] payload
+     *     Extension payload.
+     */
+    static void updateExtensions(
+        std::map<std::string, std::string>& additionalData,
+        std::string_view interface, const nlohmann::json& payload);
+
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus_t& busLog;
 

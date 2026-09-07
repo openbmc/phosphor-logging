@@ -50,6 +50,18 @@ class Manager
     ExtensionList restore(const Context& context,
                           const nlohmann::json& data) const;
 
+    /**
+     * @brief Build an extension-specific payload from
+     *        runtime metadata.
+     *
+     * @param[in] interface Extension interface name.
+     * @param[in] metadata Aggregated runtime metadata.
+     *
+     * @return Extension payload.
+     */
+    nlohmann::json buildRuntimeMetadataPayload(
+        std::string_view interface, const nlohmann::json& metadata) const;
+
   private:
     Registry registry;
 };
