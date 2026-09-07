@@ -48,12 +48,25 @@ ExtensionPtr restore(const Context& context, const nlohmann::json& data)
                                        std::move(properties));
 }
 
+nlohmann::json buildRuntimeMetadataPayload(const nlohmann::json& metadata)
+{
+    nlohmann::json oem;
+    for (const auto& [name, value] : metadata.items())
+    {
+        oem[name] = value.dump();
+    }
+
+    return {{"Oem", std::move(oem)}};
+}
+
 void registerExtension(Registry& registry)
 {
-    registry.registerExtension(interface, {
-                                              .createCallback = create,
-                                              .restoreCallback = restore,
-                                          });
+    registry.registerExtension(
+        interface, {
+                       .createCallback = create,
+                       .restoreCallback = restore,
+                       .runtimeMetadataCallback = buildRuntimeMetadataPayload,
+                   });
 }
 
 } // namespace phosphor::logging::event_extensions::cper::processed
