@@ -68,3 +68,10 @@ option(
     value: 16384,
     description: 'Maximum supported raw CPER binary size in bytes',
 )
+
+option(
+    'runtime-metadata-plugin',
+    type: 'string',
+    value: '',
+    description: 'Enable runtime extension enrichment',
+)
