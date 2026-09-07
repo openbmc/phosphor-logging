@@ -72,11 +72,32 @@ using LogIDsWithHwIsolationFunctions =
 using ExtensionLogAssociation =
     std::function<void(uint32_t, const std::string&)>;
 
+/**
+ * @brief Runtime metadata provider callback.
+ *
+ * Providers may contribute extension payload data during
+ * log creation.
+ *
+ * The supplied payload object is shared across all
+ * registered providers. Each provider may add or update
+ * extension metadata associated with the configured
+ * runtime extension interface.
+ *
+ * @param[in,out] payload Aggregated extension payload.
+ * @param[in] message Error log message.
+ * @param[in] level Error severity.
+ * @param[in] additionalData Log additional data.
+ */
+using RuntimeMetadataFunction = std::function<void(
+    nlohmann::json& payload, const std::string& message, Entry::Level level,
+    const std::map<std::string, std::string>& additionalData)>;
+
 using StartupFunctions = std::vector<StartupFunction>;
 using CreateFunctions = std::vector<CreateFunction>;
 using DeleteFunctions = std::vector<DeleteFunction>;
 using DeleteProhibitedFunctions = std::vector<DeleteProhibitedFunction>;
 using ExtensionLogAssociations = std::vector<ExtensionLogAssociation>;
+using RuntimeMetadataFunctions = std::vector<RuntimeMetadataFunction>;
 
 /**
  * @brief Register an extension hook function
@@ -101,6 +122,20 @@ using ExtensionLogAssociations = std::vector<ExtensionLogAssociation>;
     namespace disable_caps##_ns                                                \
     {                                                                          \
         Extensions e{Extensions::DefaultErrorCaps::disable};                   \
+    }
+
+/**
+ * @brief Register a runtime metadata provider.
+ *
+ * Registers a callback that contributes runtime
+ * metadata during log creation.
+ *
+ * @param[in] func Runtime metadata provider callback.
+ */
+#define REGISTER_RUNTIME_METADATA_PROVIDER(func)                               \
+    namespace func##_runtime_metadata_ns                                       \
+    {                                                                          \
+        Extensions e{func};                                                    \
     }
 
 /**
@@ -223,6 +258,19 @@ class Extensions
     }
 
     /**
+     * @brief Register a runtime metadata provider.
+     *
+     * Adds the specified provider to the runtime metadata
+     * provider registry.
+     *
+     * @param[in] func Runtime metadata provider callback.
+     */
+    explicit Extensions(RuntimeMetadataFunction func)
+    {
+        getRuntimeMetadataFunctions().push_back(std::move(func));
+    }
+
+    /**
      * @brief Returns the Startup functions
      * @return StartupFunctions - the Startup functions
      */
@@ -273,6 +321,14 @@ class Extensions
     {
         return getDefaultErrorCaps() == DefaultErrorCaps::disable;
     }
+
+    /**
+     * @brief Get registered runtime metadata providers.
+     *
+     * @return Reference to the registered runtime metadata
+     *         providers.
+     */
+    static RuntimeMetadataFunctions& getRuntimeMetadataFunctions();
 };
 
 } // namespace logging

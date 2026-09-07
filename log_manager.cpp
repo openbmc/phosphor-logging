@@ -37,6 +37,11 @@ extern const std::map<
     std::function<phosphor::logging::metadata::associations::Type>>
     meta;
 
+namespace
+{
+constexpr auto extensionsKey = "_EXTENSIONS";
+} // namespace
+
 namespace phosphor
 {
 namespace logging
@@ -856,6 +861,25 @@ auto Manager::create(const std::string& message, Entry::Level severity,
                      const FFDCEntries& ffdc) -> sdbusplus::object_path
 {
     auto data = additionalData;
+    constexpr std::string_view extensionInterface{RUNTIME_METADATA_PLUGIN};
+    /*
+     * Generate runtime metadata only when a runtime metadata plugin
+     * is configured and the caller has not already supplied extension
+     * data through _EXTENSIONS.
+     */
+    if (!extensionInterface.empty() && !data.contains("_EXTENSIONS"))
+    {
+        auto metadata = collectRuntimeMetadata(message, severity, data);
+        if (!metadata.empty())
+        {
+            auto payload = eventExtensionManager.buildRuntimeMetadataPayload(
+                extensionInterface, metadata);
+            if (!payload.empty())
+            {
+                updateExtensions(data, extensionInterface, payload);
+            }
+        }
+    }
     auto requests = buildEventExtensionRequests(data);
 
     return createEntry(message, severity, std::move(data), ffdc,
@@ -866,13 +890,13 @@ void Manager::setupErrorFileWatch()
 {
     auto errDir = paths::error();
 
-    // In the redundant BMC sync flow, files are written to a temporary path
-    // first and moved into place only after the write completes. Using
-    // IN_MOVED_TO ensures we react only when the finalized file appears in the
-    // target directory.
+    // In the redundant BMC sync flow, files are written to a temporary
+    // path first and moved into place only after the write completes.
+    // Using IN_MOVED_TO ensures we react only when the finalized file
+    // appears in the target directory.
     //
-    // IN_DELETE handles synced file removals so the corresponding in-memory
-    // event log entry is also removed.
+    // IN_DELETE handles synced file removals so the corresponding
+    // in-memory event log entry is also removed.
     uint32_t mask = IN_MOVED_TO | IN_DELETE;
 
     if (!util::setupInotifyWatch(errDir, mask, errDirInotifyFD,
@@ -1127,6 +1151,53 @@ void Manager::restoreEventExtensions(Entry& entry,
         eventExtensionManager.restore(context, eventExtensions);
     entry.setEventExtensions(std::move(restoredExtensions));
 }
+
+void Manager::updateExtensions(
+    std::map<std::string, std::string>& additionalData,
+    std::string_view interface, const nlohmann::json& payload)
+{
+    nlohmann::json extensions = nlohmann::json::object();
+
+    auto extIt = additionalData.find(extensionsKey);
+    if (extIt != additionalData.end())
+    {
+        try
+        {
+            extensions = nlohmann::json::parse(extIt->second);
+        }
+        catch (const std::exception& e)
+        {
+            lg2::warning("Failed to parse extension metadata: {ERROR}", "ERROR",
+                         e);
+        }
+    }
+
+    extensions[std::string(interface)] = payload;
+    additionalData[extensionsKey] = extensions.dump();
+}
+
+nlohmann::json Manager::collectRuntimeMetadata(
+    const std::string& message, Entry::Level level,
+    const std::map<std::string, std::string>& additionalData)
+{
+    auto metadata = nlohmann::json::object();
+
+    for (auto& provider : Extensions::getRuntimeMetadataFunctions())
+    {
+        try
+        {
+            provider(metadata, message, level, additionalData);
+        }
+        catch (const std::exception& e)
+        {
+            lg2::warning("Ignoring runtime metadata exception: {ERROR}",
+                         "ERROR", e.what());
+        }
+    }
+
+    return metadata;
+}
+
 } // namespace internal
 } // namespace logging
 } // namespace phosphor

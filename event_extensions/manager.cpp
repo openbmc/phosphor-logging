@@ -59,4 +59,22 @@ ExtensionList Manager::restore(const Context& context,
     return extensions;
 }
 
+nlohmann::json Manager::buildRuntimeMetadataPayload(
+    std::string_view interface, const nlohmann::json& metadata) const
+{
+    const auto* registration = registry.find(interface);
+
+    if (registration == nullptr)
+    {
+        return {};
+    }
+
+    if (!registration->runtimeMetadataCallback)
+    {
+        return metadata;
+    }
+
+    return registration->runtimeMetadataCallback(metadata);
+}
+
 } // namespace phosphor::logging::event_extensions
