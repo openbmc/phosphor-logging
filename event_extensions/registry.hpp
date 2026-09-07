@@ -26,12 +26,24 @@ using RestoreCallback =
     std::function<ExtensionPtr(const Context&, const nlohmann::json&)>;
 
 /**
+ * @brief Callback used to transform runtime metadata
+ *        into an extension-specific payload.
+ *
+ * @param[in] metadata Aggregated runtime metadata.
+ *
+ * @return Extension-specific payload.
+ */
+using RuntimeMetadataCallback =
+    std::function<nlohmann::json(const nlohmann::json&)>;
+
+/**
  * @brief Extension registration callbacks.
  */
 struct Registration
 {
     CreateCallback createCallback;
     RestoreCallback restoreCallback;
+    RuntimeMetadataCallback runtimeMetadataCallback{};
 };
 
 /**

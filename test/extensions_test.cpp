@@ -47,6 +47,24 @@ void logIDWithHwIsolation2(std::vector<uint32_t>& logIDs)
     logIDs.push_back(2);
 }
 
+void runtimeMetadataProvider1(
+    nlohmann::json& metadata, const std::string& message, Entry::Level level,
+    const std::map<std::string, std::string>& additionalData)
+{
+    (void)level;
+    (void)additionalData;
+
+    metadata["Message"] = message;
+    metadata["Provider"] = "Provider1";
+}
+
+void runtimeMetadataProvider2(nlohmann::json& metadata, const std::string&,
+                              Entry::Level,
+                              const std::map<std::string, std::string>&)
+{
+    metadata["Provider2"] = true;
+}
+
 DISABLE_LOG_ENTRY_CAPS()
 REGISTER_EXTENSION_FUNCTION(startup1)
 REGISTER_EXTENSION_FUNCTION(startup2)
@@ -58,6 +76,8 @@ REGISTER_EXTENSION_FUNCTION(logIDWithHwIsolation1)
 REGISTER_EXTENSION_FUNCTION(logIDWithHwIsolation2)
 REGISTER_EXTENSION_FUNCTION(deleteLog1)
 REGISTER_EXTENSION_FUNCTION(deleteLog2)
+REGISTER_RUNTIME_METADATA_PROVIDER(runtimeMetadataProvider1)
+REGISTER_RUNTIME_METADATA_PROVIDER(runtimeMetadataProvider2)
 
 TEST(ExtensionsTest, FunctionCallTest)
 {
@@ -114,4 +134,32 @@ TEST(ExtensionsTest, FunctionCallTest)
     }
 
     EXPECT_TRUE(Extensions::disableDefaultLogCaps());
+}
+
+TEST(ExtensionsTest, RuntimeMetadataProviderTest)
+{
+    nlohmann::json metadata = nlohmann::json::object();
+    std::map<std::string, std::string> additionalData;
+    for (auto& provider : Extensions::getRuntimeMetadataFunctions())
+    {
+        provider(metadata, "test-message", Entry::Level::Informational,
+                 additionalData);
+    }
+
+    EXPECT_EQ(metadata["Message"], "test-message");
+    EXPECT_EQ(metadata["Provider"], "Provider1");
+}
+
+TEST(ExtensionsTest, RuntimeMetadataProvidersAggregate)
+{
+    nlohmann::json metadata = nlohmann::json::object();
+    std::map<std::string, std::string> additionalData;
+    for (auto& provider : Extensions::getRuntimeMetadataFunctions())
+    {
+        provider(metadata, "test-message", Entry::Level::Informational,
+                 additionalData);
+    }
+
+    EXPECT_EQ(metadata["Provider"], "Provider1");
+    EXPECT_TRUE(metadata["Provider2"]);
 }
