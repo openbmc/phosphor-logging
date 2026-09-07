@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8d7c80b_78efe269",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 1275,
+      "author": {
+        "id": 1000427
+      },
+      "writtenOn": "2026-09-07T02:15:19Z",
+      "side": 1,
+      "message": "Just a suggestion: I noticed that `1` is being used as the default value in a few places. If this is intentional, please add a comment explaining why and define a `constexpr`, such as `DEFAULT_BMC_CHASSIS_NO`, and use it here and at line 1290 (as well as any other applicable locations).",
+      "revId": "43ca9108a7aba35a06fa3ada97346987d19ecd4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
