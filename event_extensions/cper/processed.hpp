@@ -123,4 +123,20 @@ ExtensionPtr restore(const Context& context, const nlohmann::json& data);
  */
 void registerExtension(Registry& registry);
 
+/**
+ * @brief Build a CPER payload from runtime metadata.
+ *
+ * Converts aggregated runtime metadata into the payload
+ * format expected by the CPER Processed extension.
+ *
+ * Runtime metadata namespaces are added under the Oem
+ * property. Existing CPER schema properties such as
+ * NotificationType and SectionType are not modified.
+ *
+ * @param[in] metadata Aggregated runtime metadata.
+ *
+ * @return CPER extension payload.
+ */
+nlohmann::json buildRuntimeMetadataPayload(const nlohmann::json& metadata);
+
 } // namespace phosphor::logging::event_extensions::cper::processed
