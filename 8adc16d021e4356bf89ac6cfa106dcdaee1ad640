@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96c6d160_8dc72e69",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 1015,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-09T21:59:21Z",
+      "side": 1,
+      "message": "same comment as in other commit, just set to max()?",
+      "range": {
+        "startLine": 1015,
+        "startChar": 31,
+        "endLine": 1015,
+        "endChar": 58
+      },
+      "revId": "8adc16d021e4356bf89ac6cfa106dcdaee1ad640",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
