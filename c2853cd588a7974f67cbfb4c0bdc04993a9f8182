@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dde9368_711d03d6",
+        "filename": "bmc_pos_mgr.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-09T21:49:13Z",
+      "side": 1,
+      "message": "should be done consistent with on line 80",
+      "revId": "c2853cd588a7974f67cbfb4c0bdc04993a9f8182",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04b2c26f_9594cb15",
+        "filename": "extensions/openpower-pels/manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-09T21:49:13Z",
+      "side": 1,
+      "message": "same comment as in other file",
+      "revId": "c2853cd588a7974f67cbfb4c0bdc04993a9f8182",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
