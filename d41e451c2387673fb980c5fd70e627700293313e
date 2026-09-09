@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ae00850_7d25d31c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-09T21:52:47Z",
+      "side": 1,
+      "message": "i\u0027m just having a hard time deciding if this commit is even worth the effort.",
+      "revId": "d41e451c2387673fb980c5fd70e627700293313e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
