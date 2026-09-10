@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b1b012f_fd6e7c34",
+        "filename": "elog_entry.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-09-10T03:54:40Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "74ac280f_e755d001",
+      "revId": "ea6e239c2121c54c94be920c10616770636f2298",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "24324925_ec575a2f",
