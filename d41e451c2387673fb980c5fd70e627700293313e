@@ -16,6 +16,24 @@
       "message": "i\u0027m just having a hard time deciding if this commit is even worth the effort.",
       "revId": "d41e451c2387673fb980c5fd70e627700293313e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "702f75ef_c6503039",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-09-10T05:22:31Z",
+      "side": 1,
+      "message": "The main motivation wasn\u0027t the conversion removal itself. This was part of reducing remaining dependencies on the legacy logging types used by log.hpp and moving the code toward the newer lg2-based interfaces. The conversion cleanup was just a side effect.",
+      "parentUuid": "1ae00850_7d25d31c",
+      "revId": "d41e451c2387673fb980c5fd70e627700293313e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
