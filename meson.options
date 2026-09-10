@@ -1,6 +1,13 @@
 option('libonly', type: 'boolean', description: 'Build library only')
 option('tests', type: 'feature', description: 'Build tests')
 option(
+    'amd-event-log',
+    type: 'feature',
+    description: 'Enable AMD Event Logging (AEL) extension',
+    value: 'disabled',
+)
+
+option(
     'openpower-pel-extension',
     type: 'feature',
     description: 'Create PELs',
