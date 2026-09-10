@@ -1,0 +1,107 @@
+{
+    "version": "1.2.1",
+    "generated_at": "2026-05-27 14:56:52.533657",
+    "fallthrough_afid": 10000009,
+    "rackUnitPosition": "/xyz/openbmc_project/inventory/system/board/NFC_Tag",
+    "schema": "#VENDOR_Message.v1_0_0.VENDOR_Message",
+    "lookup": {
+        "xyz.openbmc_project.State.Leak.Detector.LeakDetectedWarning": {
+            "NAME=/xyz/openbmc_project/state/leak/detector/SENSOR_1": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/ABC",
+                "afid": 10000001,
+                "description": "Compute Tray Error",
+                "redfishMapping": "/redfish/v1/Chassis/ABC"
+            },
+            "NAME=/xyz/openbmc_project/state/leak/detector/SENSOR_2": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/ABC",
+                "afid": 10000002,
+                "description": "Compute Tray Error",
+                "redfishMapping": "/redfish/v1/Chassis/ABC"
+            },
+            "NAME=/xyz/openbmc_project/state/leak/detector/SENSOR_3": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/ABC",
+                "afid": 10000003,
+                "description": "Compute Tray Error",
+                "redfishMapping": "/redfish/v1/Chassis/ABC"
+            },
+            "NAME=/xyz/openbmc_project/state/leak/detector/SENSOR_4": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/ABC",
+                "afid": 10000004,
+                "description": "Compute Tray Error",
+                "redfishMapping": "/redfish/v1/Chassis/ABC"
+            },
+            "NAME=/xyz/openbmc_project/state/leak/detector/SENSOR_5": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/ABC",
+                "afid": 10000005,
+                "description": "Compute Tray Error",
+                "redfishMapping": "/redfish/v1/Chassis/ABC"
+            }
+        },
+        "xyz.openbmc_project.State.Leak.Detector.LeakDetectedCritical": {
+            "DEVICE=/xyz/openbmc_project/state/leak/detector/SENSOR_1": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/DEF",
+                "afid": 10000006,
+                "description": "Compute Tray Error",
+                "redfishMapping": "/redfish/v1/Chassis/DEF"
+            },
+            "DEVICE=/xyz/openbmc_project/state/leak/detector/SENSOR_2": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/DEF",
+                "afid": 10000007,
+                "description": "Compute Tray Error",
+                "redfishMapping": "/redfish/v1/Chassis/DEF"
+            }
+        },
+        "xyz.openbmc_project.Sensor.Threshold.ReadingAboveLowerCriticalThreshold": {
+            "SENSOR_NAME=ABC_*_VOLT_V": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/XYZ",
+                "afid": 10000008,
+                "description": "Compute Tray Error",
+                "redfishMapping": "/redfish/v1/Chassis/XYZ"
+            },
+            "SENSOR_NAME=ABC_*_CURR_A": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/XYZ",
+                "afid": 10000009,
+                "description": "Compute Tray Error",
+                "redfishMapping": "/redfish/v1/Chassis/XYZ"
+            },
+            "SENSOR_NAME=ABC_*_TEMP_C|XYZ_*_Temp_C|DEF_*_Temp_C": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/XYZ",
+                "afid": 100000010,
+                "description": "Compute Tray Error",
+                "redfishMapping": "/redfish/v1/Chassis/XYZ"
+            },
+            "SensorName=XYZ_*_PWR_W": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/XYZ",
+                "afid": 100000011,
+                "description": "Compute Tray Error",
+                "redfishMapping": "/redfish/v1/Chassis/XYZ"
+            }
+        },
+        "xyz.openbmc_project.Sensor.Threshold.ReadingAboveUpperHardShutdownThreshold": {
+            "SENSOR_NAME=ABC_*_VOLT_V": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/ABC",
+                "afid": 100000012,
+                "description": "Compute Tray Error",
+                "redfishMapping": "/redfish/v1/Chassis/ABC"
+            },
+            "SENSOR_NAME=XYZ_*_CURR_A": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/XYZ",
+                "afid": 100000013,
+                "description": "Compute Tray Error",
+                "redfishMapping": "/redfish/v1/Chassis/XYZ"
+            },
+            "SENSOR_NAME=DEF_*_TEMP_C": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/DEF",
+                "afid": 100000014,
+                "description": "Compute Tray Error",
+                "redfishMapping": "/redfish/v1/Chassis/DEF"
+            },
+            "SENSOR_NAME=ABC*_TEMP_W": {
+                "originOfCondition": "/xyz/openbmc_project/inventory/system/Board/ABC",
+                "afid": 100000015,
+                "description": "Compute Tray Error",
+                "redfishMapping": "/redfish/v1/Chassis/ABC"
+            }
+        }
+    }
+}
