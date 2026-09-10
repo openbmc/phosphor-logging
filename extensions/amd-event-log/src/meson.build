@@ -24,6 +24,9 @@ lut_gen = custom_target(
 
 ael_sources = files(
     'amd_afid_utils.cpp',
+    'ael_common_info.cpp',
+    'ael_info.cpp',
+    'entry_points.cpp',
 )
 
 log_manager_ext_sources += ael_sources
