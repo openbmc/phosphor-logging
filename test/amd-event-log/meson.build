@@ -19,3 +19,20 @@ test(
     ),
 )
 
+test(
+    'amd_redfish_projector_test',
+    executable(
+        'amd_redfish_projector_test',
+        [
+            'amd_redfish_projector_test.cpp',
+            '../../extensions/amd-event-log/src/redfish/amd_redfish_projector.cpp',
+            '../../extensions/amd-event-log/src/redfish/amd_redfish_utils.cpp',
+        ],
+        include_directories: [
+            include_directories('../../extensions/amd-event-log/include'),
+        ],
+        dependencies: [
+            gtest_dep,
+        ],
+    ),
+)
