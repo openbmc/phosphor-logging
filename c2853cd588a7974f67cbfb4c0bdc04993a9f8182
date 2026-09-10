@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "37c6d2a1_7283b6ca",
+        "filename": "bmc_pos_mgr.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1003004
+      },
+      "writtenOn": "2026-09-10T04:35:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8dde9368_711d03d6",
+      "revId": "c2853cd588a7974f67cbfb4c0bdc04993a9f8182",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04b2c26f_9594cb15",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-09-09T21:49:13Z",
       "side": 1,
       "message": "same comment as in other file",
+      "revId": "c2853cd588a7974f67cbfb4c0bdc04993a9f8182",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03db908e_8afe6aec",
+        "filename": "extensions/openpower-pels/manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 1003004
+      },
+      "writtenOn": "2026-09-10T04:35:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04b2c26f_9594cb15",
       "revId": "c2853cd588a7974f67cbfb4c0bdc04993a9f8182",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
