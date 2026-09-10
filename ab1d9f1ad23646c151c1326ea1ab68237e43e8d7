@@ -16,6 +16,24 @@
       "message": "lg2 understands exceptions, so you can drop the .what()",
       "revId": "ab1d9f1ad23646c151c1326ea1ab68237e43e8d7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33feb063_57c9e655",
+        "filename": "event_extensions/cper/raw.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-09-10T04:08:37Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0aaace0e_52f20fc8",
+      "revId": "ab1d9f1ad23646c151c1326ea1ab68237e43e8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
