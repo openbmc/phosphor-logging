@@ -16,6 +16,24 @@
       "message": "Looks like you are using `1` as the default chassis number in multiple places (in your previous changes as well). Please define a `constexpr` for the default chassis number and use it consistently wherever applicable. Also, please add a comment explaining why `1` is being used as the default value.\n\nSorry, I missed posting this comment earlier.",
       "revId": "cfae4f44a62debd763e2ca30fba5fc850ebe2805",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c603285_9cd59f88",
+        "filename": "extensions/openpower-pels/src.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 982,
+      "author": {
+        "id": 1002351
+      },
+      "writtenOn": "2026-09-10T07:28:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d53d5a58_230ce53e",
+      "revId": "cfae4f44a62debd763e2ca30fba5fc850ebe2805",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
