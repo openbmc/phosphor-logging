@@ -2316,6 +2316,14 @@
                         "NumLines": 15
                     },
                     {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-availability-monitor",
+                        "NumLines": 30
+                    },
+                    {
                         "SyslogID": "systemd",
                         "NumLines": 15
                     }
@@ -2370,6 +2378,14 @@
                         "NumLines": 15
                     },
                     {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-availability-monitor",
+                        "NumLines": 30
+                    },
+                    {
                         "SyslogID": "systemd",
                         "NumLines": 15
                     }
@@ -2421,6 +2437,14 @@
                     {
                         "SyslogID": "phosphor-chassis-state-manager",
                         "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-availability-monitor",
+                        "NumLines": 30
                     },
                     {
                         "SyslogID": "systemd",
@@ -2481,6 +2505,14 @@
                         "NumLines": 15
                     },
                     {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-availability-monitor",
+                        "NumLines": 30
+                    },
+                    {
                         "SyslogID": "systemd",
                         "NumLines": 15
                     }
@@ -2534,6 +2566,14 @@
                         "NumLines": 15
                     },
                     {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-availability-monitor",
+                        "NumLines": 30
+                    },
+                    {
                         "SyslogID": "systemd",
                         "NumLines": 15
                     }
@@ -2573,6 +2613,14 @@
                     },
                     {
                         "SyslogID": "phosphor-psu-code-manager",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-availability-monitor",
                         "NumLines": 30
                     }
                 ]
@@ -2632,6 +2680,14 @@
                     {
                         "SyslogID": "phosphor-psu-code-manager",
                         "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-availability-monitor",
+                        "NumLines": 30
                     }
                 ]
             }
@@ -2678,6 +2734,14 @@
                     },
                     {
                         "SyslogID": "phosphor-psu-code-manager",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-availability-monitor",
                         "NumLines": 30
                     }
                 ]
@@ -2731,6 +2795,14 @@
                         "NumLines": 15
                     },
                     {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-availability-monitor",
+                        "NumLines": 30
+                    },
+                    {
                         "SyslogID": "systemd",
                         "NumLines": 15
                     }
@@ -2776,6 +2848,14 @@
                     {
                         "SyslogID": "phosphor-chassis-state-manager",
                         "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-availability-monitor",
+                        "NumLines": 30
                     },
                     {
                         "SyslogID": "systemd",
@@ -2873,6 +2953,14 @@
                         "NumLines": 15
                     },
                     {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-availability-monitor",
+                        "NumLines": 30
+                    },
+                    {
                         "SyslogID": "systemd",
                         "NumLines": 15
                     }
@@ -2919,6 +3007,14 @@
                     {
                         "SyslogID": "phosphor-chassis-state-manager",
                         "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-availability-monitor",
+                        "NumLines": 30
                     },
                     {
                         "SyslogID": "systemd",
