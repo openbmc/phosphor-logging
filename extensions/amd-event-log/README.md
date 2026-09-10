@@ -11,8 +11,6 @@ enables AMD-specific processing during log creation.
 The extension framework allows AMD-specific logic to enrich log entries without
 modifying the core logging implementation.
 
----
-
 ## AMD Metadata Namespace
 
 AMD-specific metadata is stored under the `"AMD"` namespace within the runtime
@@ -35,8 +33,6 @@ metadata object managed by phosphor-logging.
 3. Existing fields should remain backward compatible.
 4. Consumers should ignore unrecognized fields.
 
----
-
 ## Runtime Metadata
 
 The AMD extension framework supports enriching log entries with AMD-specific
@@ -44,8 +40,6 @@ runtime metadata.
 
 Metadata is generated during log creation and stored under the `"AMD"` namespace
 as structured JSON.
-
----
 
 ## AEL Metadata
 
@@ -60,6 +54,7 @@ event information derived from the log context.
 | `AEL.AFID`     | AMD Field ID identifying the error                 |
 | `AEL.FRU_LIST` | Inventory object path(s) associated with the fault |
 | `AEL.RACK_ID`  | Rack identifier associated with the event          |
+| `AEL.REDFISH`  | Optional pre-rendered AMD OEM Redfish payload      |
 
 ### Example
 
@@ -73,7 +68,51 @@ event information derived from the log context.
 }
 ```
 
----
+## Redfish Projection
+
+The AEL framework supports projecting AMD runtime metadata into an AMD OEM
+Redfish representation.
+
+By default, the framework generates a Redfish payload from available AEL
+metadata.
+
+Applications may optionally provide a fully rendered OEM Redfish payload using
+the `AEL.REDFISH` field. When present, the supplied payload is treated as the
+authoritative AMD OEM representation and automatic projection is skipped.
+
+This supports two usage models:
+
+1. Metadata-driven projection using AEL fields such as `AEL.AFID`,
+   `AEL.FRU_LIST`, and `AEL.RACK_ID`.
+2. Direct passthrough of a fully rendered AMD OEM Redfish payload using
+   `AEL.REDFISH`.
+
+### Metadata-Based Projection
+
+#### Input
+
+```json
+{
+  "AMD": {
+    "AEL.AFID": "12001",
+    "AEL.FRU_LIST": "/xyz/openbmc_project/inventory/system/chassis"
+  }
+}
+```
+
+#### Projected Output
+
+```json
+{
+  "@odata.type": "#AMD_Message.v1_0_0.AMD_Message",
+  "AMDFieldIdentifiers": [
+    {
+      "AFID": 12001,
+      "Description": "Compute Tray Error"
+    }
+  ]
+}
+```
 
 ### Pre-rendered OEM Payload (Passthrough)
 
@@ -112,8 +151,6 @@ event information derived from the log context.
 When `AEL.REDFISH` is present, the payload is used directly and no additional
 AEL metadata processing or Redfish projection is performed.
 
----
-
 ## AEL Reverse Lookup Table
 
 1. Provides mapping of Redfish events to AMD-specific identifiers (`AFID`,
@@ -122,8 +159,6 @@ AEL metadata processing or Redfish projection is performed.
 3. Eliminates runtime parsing via compile-time generated C++ code.
 4. Ensures deterministic and efficient lookup behavior.
 5. Supports OEM customization through Yocto-based JSON override.
-
----
 
 ## Extensibility
 
