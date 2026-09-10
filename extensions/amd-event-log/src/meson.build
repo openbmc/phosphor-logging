@@ -22,6 +22,8 @@ lut_gen = custom_target(
     build_by_default: true,
 )
 
+subdir('redfish')
+
 ael_sources = files(
     'amd_afid_utils.cpp',
     'ael_common_info.cpp',
@@ -30,6 +32,7 @@ ael_sources = files(
 )
 
 log_manager_ext_sources += ael_sources
+log_manager_ext_sources += redfish_sources
 log_manager_ext_sources += [lut_gen]
 
 log_manager_ext_inc += [
