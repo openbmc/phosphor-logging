@@ -2903,7 +2903,15 @@
                     },
                     {
                         "SyslogID": "phosphor-regulators",
-                        "NumLines": 5
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-availability-monitor",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 15
                     }
                 ]
             }
@@ -3069,7 +3077,15 @@
                     },
                     {
                         "SyslogID": "phosphor-regulators",
-                        "NumLines": 5
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-availability-monitor",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 15
                     }
                 ]
             }
@@ -3194,7 +3210,15 @@
                     },
                     {
                         "SyslogID": "phosphor-regulators",
-                        "NumLines": 5
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-availability-monitor",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 15
                     }
                 ]
             }
@@ -4170,7 +4194,15 @@
                     },
                     {
                         "SyslogID": "phosphor-regulators",
-                        "NumLines": 5
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-availability-monitor",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 15
                     }
                 ]
             }
@@ -4598,7 +4630,15 @@
                     },
                     {
                         "SyslogID": "phosphor-regulators",
-                        "NumLines": 5
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-availability-monitor",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 15
                     }
                 ]
             }
@@ -4648,7 +4688,15 @@
                     },
                     {
                         "SyslogID": "phosphor-regulators",
-                        "NumLines": 5
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-availability-monitor",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 15
                     }
                 ]
             }
@@ -4698,7 +4746,15 @@
                     },
                     {
                         "SyslogID": "phosphor-regulators",
-                        "NumLines": 5
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-availability-monitor",
+                        "NumLines": 15
+                    },
+                    {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 15
                     }
                 ]
             }
