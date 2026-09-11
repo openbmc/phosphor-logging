@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f865e415_7686c1a7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-11T21:41:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a6b1e46e_80d8cd19",
+      "range": {
+        "startLine": 12,
+        "startChar": 20,
+        "endLine": 13,
+        "endChar": 36
+      },
+      "revId": "42b1425c8e6755f8d365cc44bc1f31dc60d5e071",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "62177816_e2636aad",
@@ -55,6 +79,24 @@
       "side": 1,
       "message": "Intended behaviour with cereal-persist\u003dfalse: \nThe entry is dropped and the failure is logged. That is deliberate - with no second copy there is nothing to recover from, and dropping one unreadable entry is the correct outcome.\n \nConcretely, restore() now records both paths per ID:\n    files[idNum].json   \u003d ...   // scanned from errors-json/\n    files[idNum].cereal \u003d ...   // scanned from errors/\n \nWith cereal-persist\u003dfalse, errors/ has no file for newly created entries, so candidates.cereal stays empty and deserialize() is never reached:\n    else if (!candidates.cereal.empty() \u0026\u0026\n             tryRestore(e, idNum, candidates.cereal, false))\n \nThe fallback is therefore a no-op if the JSON gets corrupted in that configuration and the entry is skipped after logging:\n    Failed to deserialize error entry \u003cid\u003e from \u003cpath\u003e\n \nThe recovery half of this patch is opportunistic.\n  - A zero-filled Cereal file deserializes WITHOUT throwing. A zeroed class version selects the oldest load() branch, so every field reads back as 0 and the entry ends up with id \u003d\u003d 0.\n  - serializeJSON() then runs BEFORE the sanity check and writes errors-json/0.json - a syntactically valid file that no in-memory entry owns, so eraseAll() never deletes it.\n  - The next boot restores it as an Emergency severity entry with a 1970 timestamp on D-Bus.\n \nVerified on AST2700, /var/lib on UBIFS with both settings:\n\nJSON zero-filled, Cereal intact\ncereal-persist\u003dtrue : recovered\ncereal-persist\u003dfalse: recovered (legacy files)\n\nJSON zero-filled, Cereal absent\ncereal-persist\u003dtrue : dropped + logged\ncereal-persist\u003dfalse: dropped + logged\n\nCereal zero-filled, JSON absent\ncereal-persist\u003dtrue : skipped, no 0.json\ncereal-persist\u003dfalse: skipped, no 0.json",
       "parentUuid": "62177816_e2636aad",
+      "revId": "42b1425c8e6755f8d365cc44bc1f31dc60d5e071",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f94f3814_00ef44c4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-11T21:41:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0cd7b1f6_01ac33d8",
       "revId": "42b1425c8e6755f8d365cc44bc1f31dc60d5e071",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -112,6 +154,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "68697908_1c9726cf",
+        "filename": "log_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-11T21:41:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cdfdd6bc_be5194f4",
+      "revId": "42b1425c8e6755f8d365cc44bc1f31dc60d5e071",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2b2e9a25_a11b485f",
@@ -143,6 +203,24 @@
       "side": 1,
       "message": "It came from the original upstream message, but agreed it is a typo. I can correct this if needed.",
       "parentUuid": "2b2e9a25_a11b485f",
+      "revId": "42b1425c8e6755f8d365cc44bc1f31dc60d5e071",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0add5b6_9ba20945",
+        "filename": "log_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 758,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-11T21:41:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ccd9f72_7a40b9d0",
       "revId": "42b1425c8e6755f8d365cc44bc1f31dc60d5e071",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
