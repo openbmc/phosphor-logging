@@ -96,6 +96,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cdfdd6bc_be5194f4",
+        "filename": "log_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 1002753
+      },
+      "writtenOn": "2026-09-11T05:10:34Z",
+      "side": 1,
+      "message": "Hi Matt, Thanks your feedback. I\u0027ve dropped this opportunistic fallback code and kept only the fix for the zero-filled Cereal binaries.",
+      "parentUuid": "0a78dad4_c47627a6",
+      "revId": "42b1425c8e6755f8d365cc44bc1f31dc60d5e071",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2b2e9a25_a11b485f",
         "filename": "log_manager.cpp",
         "patchSetId": 10
