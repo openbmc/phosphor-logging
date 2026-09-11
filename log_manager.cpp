@@ -736,7 +736,9 @@ void Manager::restore()
             busLog, std::string(OBJ_ENTRY) + '/' + std::to_string(idNum), idNum,
             *this);
 
-        if (filePath.extension() == ".json")
+        const bool isJson = (filePath.extension() == ".json");
+
+        if (isJson)
         {
             if (!deserializeJSON(filePath, *e))
             {
@@ -744,24 +746,29 @@ void Manager::restore()
             }
             e->path(filePath, true);
         }
-        else
+        else if (!deserialize(filePath, *e))
         {
-            deserialize(filePath, *e);
-
-            // If we got here, either we didn't record the file in JSON
-            // previously, such as due to an upgrade, or it is corrupted.
-            // Rewrite the JSON now and ensure the path is adjusted.
-            auto jsonPath = serializeJSON(*e);
-            e->path(jsonPath, true);
+            continue;
         }
 
         // Sanity check for proper deserialization.
         if (!sanity(static_cast<uint32_t>(idNum), e->id()))
         {
             lg2::error(
-                "Unable to find or parse error entry {ID_NUM}/?{ENTRY_ID}: {PATH}",
+                "Unable to find or parse error entry {ID_NUM}/{ENTRY_ID}: {PATH}",
                 "ID_NUM", idNum, "ENTRY_ID", e->id(), "PATH", filePath);
             continue;
+        }
+
+        if (!isJson)
+        {
+            // Either the JSON file was never written, such as for an entry
+            // created by a code level that predates it, or it could not be
+            // used.  Write it now that the entry has passed the checks above,
+            // so that a damaged file can never be turned into a new,
+            // syntactically valid JSON file.
+            auto jsonPath = serializeJSON(*e);
+            e->path(jsonPath, true);
         }
 
         // Add the event to the appropriate queue.
