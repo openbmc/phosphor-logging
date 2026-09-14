@@ -4251,7 +4251,7 @@
         {
             "Name": "xyz.openbmc_project.Power.BMC.Reset.ChassisPreviouslyLostPower",
             "Subsystem": "input_power_source",
-            "ActionFlags": ["service_action", "report", "call_home"],
+            "ActionFlags": ["report"],
             "ComponentID": "0x2700",
             "SRC": {
                 "Type": "11",
@@ -4323,7 +4323,7 @@
                 "Description": "Chassis present detection is incorrect.",
                 "Message": "Chassis present detection is incorrect",
                 "Notes": [
-                    "Callout fsi cables, then Barton loc code, the Comal code."
+                     "Callouts added based on CALLOUT_DEVICE_PATH"
                 ]
             },
             "JournalCapture": {
@@ -4373,7 +4373,7 @@
                 "Description": "Chassis present detection is missing but it should be present.",
                 "Message": "Chassis is reported as missing when previously it was present",
                 "Notes": [
-                    "Callout fsi cables, then other Barton/Jolleyville loc code, then this Barton loc code, then Comal loc code."
+                     "Callouts added based on CALLOUT_DEVICE_PATH"
                 ]
             },
             "JournalCapture": {
