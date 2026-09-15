@@ -109,13 +109,14 @@ std::string Entry::resolution(std::string value)
 
 sdbusplus::message::unix_fd Entry::getEntry()
 {
-    std::string jsonPath = path() + ".json";
+    std::string jsonPath =
+        (paths::error_json() / (std::to_string(id()) + ".json")).string();
     int fd = open(jsonPath.c_str(), O_RDONLY | O_NONBLOCK);
     if (fd == -1)
     {
         auto e = errno;
         lg2::error("Failed to open Entry File ERRNO={ERRNO}, PATH={PATH}",
-                   "ERRNO", e, "PATH", path());
+                   "ERRNO", e, "PATH", jsonPath);
         throw sdbusplus::xyz::openbmc_project::Common::File::Error::Open();
     }
 
