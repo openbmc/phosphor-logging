@@ -16,6 +16,69 @@
       "message": "Verified JSON persistence and extension restoration after service restart in QEMU",
       "revId": "b686df35d643d917bfd75686383ae668c01a186d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c66cb5a4_08bf189b",
+        "filename": "event_extensions/extension.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-16T21:53:11Z",
+      "side": 1,
+      "message": "Maybe this should be a pure virtual to enforce the derived class to at least think about their serialization needs?  Same with onDelete really.",
+      "range": {
+        "startLine": 68,
+        "startChar": 27,
+        "endLine": 68,
+        "endChar": 44
+      },
+      "revId": "b686df35d643d917bfd75686383ae668c01a186d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49c0e532_52089e91",
+        "filename": "log_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-16T21:53:11Z",
+      "side": 1,
+      "message": "restoreFromDisk and refreshFromDisk also create new Entry objects.  While it\u0027s currently only used for redundant BMC stuff that may not currently use these new extensions, it\u0027d be nice if you also put added this support. (could maybe make it a function then)",
+      "revId": "b686df35d643d917bfd75686383ae668c01a186d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3985fb5_1a30e4da",
+        "filename": "log_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 760,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-16T21:53:11Z",
+      "side": 1,
+      "message": "so this opens and reads the file for a second time?  is there any way to do it inside deserializeJSON so it only happens once?",
+      "range": {
+        "startLine": 760,
+        "startChar": 38,
+        "endLine": 760,
+        "endChar": 75
+      },
+      "revId": "b686df35d643d917bfd75686383ae668c01a186d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
