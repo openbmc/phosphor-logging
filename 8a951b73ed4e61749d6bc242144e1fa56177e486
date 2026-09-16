@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51550d5d_82472943",
+        "filename": "meson.options",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-16T20:38:23Z",
+      "side": 1,
+      "message": "nit:  Persist\n\nAlso, what is that last \u0027Reading\u0027?  maybe something got cut off?",
+      "range": {
+        "startLine": 68,
+        "startChar": 18,
+        "endLine": 68,
+        "endChar": 19
+      },
+      "revId": "8a951b73ed4e61749d6bc242144e1fa56177e486",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
