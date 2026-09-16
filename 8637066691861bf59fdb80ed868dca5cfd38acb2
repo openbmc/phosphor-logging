@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1e2df91_c36b925c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-09-16T05:24:47Z",
+      "side": 1,
+      "message": "fix resolves the issue, LGTM",
+      "revId": "8637066691861bf59fdb80ed868dca5cfd38acb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
