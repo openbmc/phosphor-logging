@@ -106,6 +106,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "37075a57_b4efea05",
+        "filename": "event_extensions/manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-16T21:57:12Z",
+      "side": 1,
+      "message": "nevermind, I see you changed this area later.",
+      "parentUuid": "6293b21c_da537a3b",
+      "range": {
+        "startLine": 31,
+        "startChar": 24,
+        "endLine": 31,
+        "endChar": 69
+      },
+      "revId": "d87fb055cd551030065390da2cf7b617578a87c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "16ec71c6_31a36374",
         "filename": "log_manager.hpp",
         "patchSetId": 6
