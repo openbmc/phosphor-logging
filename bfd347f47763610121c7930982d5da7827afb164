@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "582b6768_bfd3b995",
+        "filename": "event_extensions/utils/artifact.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-18T21:52:19Z",
+      "side": 1,
+      "message": "why is this necessary?",
+      "range": {
+        "startLine": 103,
+        "startChar": 7,
+        "endLine": 103,
+        "endChar": 37
+      },
+      "revId": "bfd347f47763610121c7930982d5da7827afb164",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b024082_33de23e3",
+        "filename": "event_extensions/utils/artifact.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-18T21:52:19Z",
+      "side": 1,
+      "message": "this won\u0027t throw if you pass in the error_code",
+      "revId": "bfd347f47763610121c7930982d5da7827afb164",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6359a1fb_172c4341",
+        "filename": "event_extensions/utils/artifact.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-18T21:52:19Z",
+      "side": 1,
+      "message": "Seems exactly the same as std::optional\u003cpath\u003e",
+      "range": {
+        "startLine": 19,
+        "startChar": 6,
+        "endLine": 19,
+        "endChar": 18
+      },
+      "revId": "bfd347f47763610121c7930982d5da7827afb164",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96530bd8_b3a243cc",
+        "filename": "event_extensions/utils/artifact.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-18T21:52:19Z",
+      "side": 1,
+      "message": "There\u0027s a PERSIST_PATH_ROOT in config.h\n\nin fact you could even add a new function to paths.cpp for this.",
+      "range": {
+        "startLine": 39,
+        "startChar": 4,
+        "endLine": 39,
+        "endChar": 31
+      },
+      "revId": "bfd347f47763610121c7930982d5da7827afb164",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcfa6441_41605ac8",
+        "filename": "test/event_extensions/artifact_test.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-18T21:52:19Z",
+      "side": 1,
+      "message": "In CI the the same test can be running in parallel on the same machine for different jobs, so you\u0027d want to us mkdtemp here.",
+      "revId": "bfd347f47763610121c7930982d5da7827afb164",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
