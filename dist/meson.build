@@ -10,6 +10,13 @@ install_data(
     install_dir: systemd_system_unit_dir,
 )
 
+if get_option('cper-processor').allowed()
+    install_data(
+        'xyz.openbmc_project.Logging.CPER.Processor.service',
+        install_dir: systemd_system_unit_dir,
+    )
+endif
+
 install_data(
     'busconfig/phosphor-logging.conf',
     'busconfig/phosphor-rsyslog-config.conf',
