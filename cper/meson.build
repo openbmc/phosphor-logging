@@ -1,0 +1,20 @@
+libcper_dep = dependency(
+    'libcper-cxx',
+    fallback: ['libcper', 'libcper_cxx_dep'],
+    default_options: ['bindings-cxx=enabled'],
+    include_type: 'system',
+)
+
+executable(
+    'phosphor-cper-processor',
+    'processor.cpp',
+    'processor_main.cpp',
+    dependencies: [
+        libcper_dep,
+        pdi_dep,
+        phosphor_logging_dep,
+        sdbusplus_dep,
+    ],
+    install: true,
+    install_dir: get_option('libexecdir') / 'phosphor-logging',
+)
