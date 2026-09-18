@@ -244,6 +244,10 @@ executable(
     install: true,
 )
 
+if get_option('cper-processor').allowed()
+    subdir('cper')
+endif
+
 subdir('dist')
 
 if get_option('tests').allowed()
