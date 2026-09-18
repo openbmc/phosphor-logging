@@ -61,3 +61,9 @@ option(
     value: true,
     description: 'Enable support for redundant BMC systems',
 )
+
+option(
+    'cper-processor',
+    type: 'feature',
+    description: 'Enable CPER processing daemon',
+)
