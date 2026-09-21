@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa42ac57_82c05b83",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-21T16:05:03Z",
+      "side": 1,
+      "message": "nit: gerrit turns this into a hyperlink but embeds the \u0027(\u0027 so it\u0027s broken.",
+      "range": {
+        "startLine": 11,
+        "startChar": 20,
+        "endLine": 11,
+        "endChar": 50
+      },
+      "revId": "b78eedb7c90888030ea56d7d31352020a05abe65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
