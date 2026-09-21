@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1a24097_ee74baf4",
+        "filename": "log_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-21T16:22:24Z",
+      "side": 0,
+      "message": "Missing the check here too",
+      "revId": "5ab5c9868283b56dfa49827d1939387a5ad52b64",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
