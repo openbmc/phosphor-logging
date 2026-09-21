@@ -22,6 +22,23 @@
       },
       "revId": "b78eedb7c90888030ea56d7d31352020a05abe65",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe5294d3_14918cf9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-21T17:52:29Z",
+      "side": 1,
+      "message": "will also need to rework around https://github.com/openbmc/phosphor-logging/blob/master/meson.build#L50 to not pick up the cereal dependency anymore.  And after this is merged also conditionally remove the dep from the recipe",
+      "revId": "b78eedb7c90888030ea56d7d31352020a05abe65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
