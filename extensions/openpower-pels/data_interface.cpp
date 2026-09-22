@@ -108,7 +108,7 @@ std::pair<std::string, std::string>
     auto base = locationCode;
     std::string connector{};
 
-    auto pos = base.find("-T");
+    auto pos = std::min(base.rfind("-T"), base.rfind("-J"));
     if (pos != std::string::npos)
     {
         connector = base.substr(pos);
@@ -471,26 +471,15 @@ std::string DataInterface::addLocationCodePrefix(
 std::string DataInterface::expandLocationCode(const std::string& locationCode,
                                               uint16_t chassisNumber) const
 {
-    // Location codes for connectors are the location code of the FRU they are
-    // on, plus a '-Tx' segment.  Remove this last segment before expanding it
-    // and then add it back in afterwards.  This way, the connector doesn't have
-    // to be in the model just so that it can be expanded.
-    auto [baseLoc, connectorLoc] = extractConnectorFromLocCode(locationCode);
-
     auto method =
         _bus.new_method_call(service_name::vpdManager, object_path::vpdManager,
                              interface::vpdManager, "GetExpandedLocationCode");
 
-    method.append(addLocationCodePrefix(baseLoc), chassisNumber);
+    method.append(addLocationCodePrefix(locationCode), chassisNumber);
 
     auto reply = _bus.call(method, dbusTimeout);
 
     auto expandedLocationCode = reply.unpack<std::string>();
-
-    if (!connectorLoc.empty())
-    {
-        expandedLocationCode += connectorLoc;
-    }
 
     return expandedLocationCode;
 }
