@@ -432,12 +432,13 @@ class DataInterfaceBase
     /**
      * @brief Split location code into base and connector segments
      *
-     * A location code that ends in '-Tx', where 'x' is a number,
+     * A location code that ends in '-Tx' or '-Jxx', where 'x' is a number,
      * represents a connector, such as a USB cable connector.
      *
      * This function splits the passed in location code into a
      * base and connector segment.  e.g.:
      *   P0-T1 -> ['P0', '-T1']
+     *   P0-J00 -> [ 'P0', '-J00']
      *   P0 -> ['P0', '']
      *
      * @param[in] locationCode - location code to split
