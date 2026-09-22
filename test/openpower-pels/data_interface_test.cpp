@@ -16,6 +16,14 @@ TEST(DataInterfaceTest, ExtractConnectorLocCode)
 
     {
         auto [base, connector] =
+            DataInterface::extractConnectorFromLocCode("Ufcs-P0-C2-J01");
+
+        EXPECT_EQ(base, "Ufcs-P0-C2");
+        EXPECT_EQ(connector, "-J01");
+    }
+
+    {
+        auto [base, connector] =
             DataInterface::extractConnectorFromLocCode("Ufcs-P0-C2");
 
         EXPECT_EQ(base, "Ufcs-P0-C2");
