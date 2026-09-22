@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "09e5e117_d3b1344e",
+        "filename": "README.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-09-22T06:58:44Z",
+      "side": 1,
+      "message": "Agreed will add updates as part of CPER extension commit.",
+      "parentUuid": "8131448d_4fde38de",
+      "revId": "d87fb055cd551030065390da2cf7b617578a87c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7c668062_8faf02b4",
         "filename": "elog_entry.cpp",
         "patchSetId": 6
@@ -31,6 +49,24 @@
       "writtenOn": "2026-09-16T09:01:03Z",
       "side": 1,
       "message": "DeleteAll bypasses Entry::delete_(), leaving CPER artifacts behind. Please move extension cleanup into Manager::erase(), after deletion-prohibited checks and before entry destruction.",
+      "revId": "d87fb055cd551030065390da2cf7b617578a87c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd12e932_3a9bb378",
+        "filename": "elog_entry.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-09-22T06:58:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7c668062_8faf02b4",
       "revId": "d87fb055cd551030065390da2cf7b617578a87c0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -58,6 +94,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca44c8c8_f3ebb9d2",
+        "filename": "elog_entry.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-09-22T06:58:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1c8cde1e_8b6cb030",
+      "range": {
+        "startLine": 37,
+        "startChar": 31,
+        "endLine": 37,
+        "endChar": 40
+      },
+      "revId": "d87fb055cd551030065390da2cf7b617578a87c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a95307ed_596f1368",
@@ -71,6 +131,30 @@
       "writtenOn": "2026-09-16T21:36:49Z",
       "side": 1,
       "message": "Probably not necessary, and I think it\u0027s fair to require event extensions to only throw exceptions or risk crashing.",
+      "range": {
+        "startLine": 39,
+        "startChar": 5,
+        "endLine": 39,
+        "endChar": 19
+      },
+      "revId": "d87fb055cd551030065390da2cf7b617578a87c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45d52f09_8f1b1c3a",
+        "filename": "elog_entry.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-09-22T06:58:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a95307ed_596f1368",
       "range": {
         "startLine": 39,
         "startChar": 5,
@@ -128,6 +212,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbeb529f_4edd2710",
+        "filename": "event_extensions/manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-09-22T06:58:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "37075a57_b4efea05",
+      "range": {
+        "startLine": 31,
+        "startChar": 24,
+        "endLine": 31,
+        "endChar": 69
+      },
+      "revId": "d87fb055cd551030065390da2cf7b617578a87c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16ec71c6_31a36374",
@@ -141,6 +249,24 @@
       "writtenOn": "2026-09-16T21:36:49Z",
       "side": 1,
       "message": "maybe worth mentioning: and then deletes it from additionalData.",
+      "revId": "d87fb055cd551030065390da2cf7b617578a87c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82e29f9a_f1b3f6d5",
+        "filename": "log_manager.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-09-22T06:58:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16ec71c6_31a36374",
       "revId": "d87fb055cd551030065390da2cf7b617578a87c0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
