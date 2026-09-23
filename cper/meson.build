@@ -8,15 +8,18 @@ libcper_dep = dependency(
 executable(
     'phosphor-cper-processor',
     'decoder.cpp',
+    'oem_registry.cpp',
     'processor.cpp',
     'processor_main.cpp',
     dependencies: [
+        CLI11_dep,
         libcper_dep,
         nlohmann_json_dep,
         pdi_dep,
         phosphor_logging_dep,
         sdbusplus_dep,
     ],
+    export_dynamic: true,
     install: true,
     install_dir: get_option('libexecdir') / 'phosphor-logging',
 )
