@@ -1,5 +1,7 @@
 #pragma once
 
+#include "oem_registry.hpp"
+
 #include <sdbusplus/async.hpp>
 #include <sdbusplus/message/native_types.hpp>
 #include <xyz/openbmc_project/Logging/CPER/Types/common.hpp>
@@ -47,11 +49,22 @@ class Decoder
         Informational = 3,
     };
 
+    /** Result of libcper processing plus the section GUIDs it contained. */
+    struct LibCperResult
+    {
+        OemData oem{};
+        Guid guid{};
+        Severity severity = Severity::Recoverable;
+        std::vector<Guid> sectionGuids{};
+    };
+
     Decoder() = default;
     ~Decoder();
 
-    /** Start the background decode worker. */
-    void start();
+    /** Start the background decode worker and load OEM plugins. */
+    void start(
+        const std::filesystem::path& pluginDir = OemRegistry::defaultDir);
+
     /** Stop the background decode worker. */
     void stop();
 
@@ -71,7 +84,11 @@ class Decoder
         -> ProcessedProps;
 
     auto parseLibCPER(ContentType type, std::span<const std::uint8_t> raw)
-        -> std::tuple<OemData, Guid, Severity>;
+        -> LibCperResult;
+
+    // Run matched OEM plugins and merge their entries into `result.oem`.
+    void runOem(ContentType type, std::span<const std::uint8_t> raw,
+                LibCperResult& result);
 
     static auto severity(uint32_t code) -> Severity;
 
@@ -81,6 +98,7 @@ class Decoder
 
     void setCommitter(Committer handler);
 
+    OemRegistry oemRegistry{};
     sdbusplus::async::context worker;
     std::thread thread;
     bool started = false;
