@@ -39,4 +39,8 @@ install_headers(
     subdir: 'phosphor-logging/lg2',
 )
 
+if get_option('cper-processor').allowed()
+    install_headers('cper.hpp', subdir: 'phosphor-logging')
+endif
+
 install_headers('test/sdjournal_mock.hpp', subdir: 'phosphor-logging/test')
