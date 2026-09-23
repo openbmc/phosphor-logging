@@ -77,6 +77,22 @@ log_create_extensions_test = executable(
 )
 test('test_log_create_extensions', log_create_extensions_test)
 
+if get_option('cper-processor').allowed()
+    cper_decode_test = executable(
+        'test-cper-decode',
+        'cper_decode_test.cpp',
+        '../cper/decoder.cpp',
+        dependencies: [
+            gtest_dep,
+            libcper_dep,
+            pdi_dep,
+            phosphor_logging_dep,
+            sdbusplus_dep,
+        ],
+    )
+    test('test_cper_decode', cper_decode_test)
+endif
+
 tests_non_parallel = [
     'elog_quiesce_test',
     'elog_update_ts_test',
