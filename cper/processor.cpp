@@ -8,6 +8,7 @@
 #include <cerrno>
 #include <cstdint>
 #include <ranges>
+#include <utility>
 #include <vector>
 
 namespace phosphor::logging::cper
@@ -17,7 +18,7 @@ PHOSPHOR_LOG2_USING;
 namespace
 {
 auto readCPERBinary(int fd) -> std::vector<uint8_t>;
-}
+} // namespace
 
 void Processor::method_call(process_t, sdbusplus::object_path source,
                             ContentType type, sdbusplus::message::unix_fd data)
@@ -26,11 +27,12 @@ void Processor::method_call(process_t, sdbusplus::object_path source,
 
     info("CPER Process request: source={SOURCE} type={TYPE} size={SIZE}",
          "SOURCE", source.str, "TYPE", type, "SIZE", raw.size());
+
+    decoder.queue(std::move(source), type, std::move(raw));
 }
 
 namespace
 {
-
 auto readCPERBinary(int fd) -> std::vector<uint8_t>
 {
     // The sender may leave the offset at EOF, so rewind when possible.
@@ -65,7 +67,6 @@ auto readCPERBinary(int fd) -> std::vector<uint8_t>
 
     return data;
 }
-
 } // namespace
 
 } // namespace phosphor::logging::cper
