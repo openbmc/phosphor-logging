@@ -1,10 +1,13 @@
 #include "../cper/decoder.hpp"
 
 #include <nlohmann/json.hpp>
+#include <phosphor-logging/cper.hpp>
 
 #include <array>
 #include <chrono>
 #include <cstdint>
+#include <filesystem>
+#include <fstream>
 #include <future>
 #include <memory>
 #include <span>
@@ -48,6 +51,8 @@ constexpr std::array<std::uint8_t, 280> memoryCper{
 namespace phosphor::logging::cper::test
 {
 
+namespace v1 = phosphor::logging::cper::v1;
+
 class DecoderTest : public ::testing::Test
 {
   protected:
@@ -64,7 +69,7 @@ class DecoderTest : public ::testing::Test
     }
 
     auto parseLibCPER(ContentType type, std::span<const std::uint8_t> raw)
-        -> std::tuple<Decoder::OemData, Decoder::Guid, Decoder::Severity>
+        -> Decoder::LibCperResult
     {
         return decoder->parseLibCPER(type, raw);
     }
@@ -83,6 +88,32 @@ class DecoderTest : public ::testing::Test
     void setCommitter(Decoder::Committer handler)
     {
         decoder->setCommitter(std::move(handler));
+    }
+
+    void runOem(ContentType type, std::span<const std::uint8_t> raw,
+                Decoder::LibCperResult& result)
+    {
+        decoder->runOem(type, raw, result);
+    }
+
+    void addOem(std::string guid, v1::Handler handler)
+    {
+        decoder->oemRegistry.add(std::move(guid), std::move(handler));
+    }
+
+    // Copy the test plugin into a temp dir and load it for real via dlopen.
+    auto loadTestPlugin() -> std::filesystem::path
+    {
+        auto dir =
+            std::filesystem::temp_directory_path() /
+            ("cper-oem-test-" +
+             std::to_string(::testing::UnitTest::GetInstance()->random_seed()));
+        std::filesystem::create_directories(dir);
+        // shared_module names the output libcper_oem_test_plugin.so.
+        auto dest = dir / "libcper_oem_test_plugin.so";
+        std::filesystem::copy_file(CPER_OEM_TEST_PLUGIN, dest);
+        decoder->oemRegistry.load(dir);
+        return dir;
     }
 
     // Queue on the worker and wait for the captured event (30s timeout).
@@ -110,15 +141,15 @@ class DecoderTest : public ::testing::Test
 
 TEST_F(DecoderTest, MemoryRecordParses)
 {
-    auto [oem, guid, sev] = parseLibCPER(ContentType::CPER, memoryCper);
+    auto result = parseLibCPER(ContentType::CPER, memoryCper);
 
     // Null notification-type GUID, Corrected severity.
-    EXPECT_EQ(guid, "00000000-0000-0000-0000-000000000000");
-    EXPECT_EQ(sev, Decoder::Severity::Corrected);
+    EXPECT_EQ(result.guid, "00000000-0000-0000-0000-000000000000");
+    EXPECT_EQ(result.severity, Decoder::Severity::Corrected);
 
-    ASSERT_EQ(oem.size(), 1);
-    ASSERT_TRUE(oem.contains("OpenBMC"));
-    const auto inner = nlohmann::json::parse(oem.at("OpenBMC"));
+    ASSERT_EQ(result.oem.size(), 1);
+    ASSERT_TRUE(result.oem.contains("OpenBMC"));
+    const auto inner = nlohmann::json::parse(result.oem.at("OpenBMC"));
     ASSERT_TRUE(inner.is_object());
     EXPECT_EQ(inner.at("@odata.type"), "#OpenBMC.v0_0_0.CPER");
     EXPECT_EQ(inner.at("header").at("recordLength"), 280);
@@ -129,16 +160,22 @@ TEST_F(DecoderTest, MemoryRecordParses)
                   .at("memoryErrorType")
                   .at("name"),
               "Unknown");
+
+    // One section GUID extracted for OEM dispatch.
+    ASSERT_EQ(result.sectionGuids.size(), 1);
+    EXPECT_EQ(result.sectionGuids.front(),
+              "a5bc1114-6f64-4ede-b863-3e83ed7c83b1");
 }
 
 TEST_F(DecoderTest, GarbageIsEmpty)
 {
     const std::vector<std::uint8_t> garbage{'n', 'o', 't', ' ',
                                             'c', 'p', 'e', 'r'};
-    auto [oem, guid, sev] = parseLibCPER(ContentType::CPER, garbage);
-    EXPECT_TRUE(oem.empty());
-    EXPECT_TRUE(guid.empty());
-    EXPECT_EQ(sev, Decoder::Severity::Recoverable);
+    auto result = parseLibCPER(ContentType::CPER, garbage);
+    EXPECT_TRUE(result.oem.empty());
+    EXPECT_TRUE(result.guid.empty());
+    EXPECT_TRUE(result.sectionGuids.empty());
+    EXPECT_EQ(result.severity, Decoder::Severity::Recoverable);
 }
 
 TEST_F(DecoderTest, ProcessCommitsCorrectedEvent)
@@ -146,7 +183,7 @@ TEST_F(DecoderTest, ProcessCommitsCorrectedEvent)
     auto json = runProcess(
         sdbusplus::object_path{"/xyz/openbmc_project/inventory/DIMM_0"},
         ContentType::CPER,
-        std::vector<std::uint8_t>(memoryCper.begin(), memoryCper.end()));
+        std::vector<std::uint8_t>(std::from_range, memoryCper));
 
     // Corrected severity.
     ASSERT_TRUE(json.contains("xyz.openbmc_project.State.CPER.Corrected"));
@@ -189,15 +226,145 @@ TEST_F(DecoderTest, SeverityMapping)
 
 TEST_F(DecoderTest, PropertiesCarriesOem)
 {
-    auto [oem, guid, sev] = parseLibCPER(ContentType::CPER, memoryCper);
-    EXPECT_EQ(sev, Decoder::Severity::Corrected);
-    auto props =
-        processedProps(ContentType::CPER, std::move(oem), std::move(guid));
+    auto result = parseLibCPER(ContentType::CPER, memoryCper);
+    EXPECT_EQ(result.severity, Decoder::Severity::Corrected);
+    auto props = processedProps(ContentType::CPER, std::move(result.oem),
+                                std::move(result.guid));
     EXPECT_EQ(props.diagnostic_data_type, ContentType::CPER);
     EXPECT_EQ(props.notification_type, "00000000-0000-0000-0000-000000000000");
     EXPECT_TRUE(props.section_type.empty());
     ASSERT_EQ(props.oem.size(), 1);
     EXPECT_TRUE(props.oem.contains("OpenBMC"));
+}
+
+TEST_F(DecoderTest, OemHandlerMergesEntry)
+{
+    auto result = parseLibCPER(ContentType::CPER, memoryCper);
+    ASSERT_EQ(result.sectionGuids.size(), 1);
+
+    bool called = false;
+    addOem(result.sectionGuids.front(),
+           [&](v1::Type type, std::span<const std::uint8_t> raw,
+               const v1::Oem& base,
+               std::span<const v1::Guid> guids) -> v1::Entry {
+               called = true;
+               EXPECT_EQ(type, v1::Type::CPER);
+               EXPECT_EQ(raw.size(), memoryCper.size());
+               EXPECT_TRUE(base.contains("OpenBMC"));
+               if (guids.size() != 1)
+               {
+                   ADD_FAILURE() << "Expected one matched GUID";
+                   return {.key = "", .value = {}};
+               }
+               EXPECT_EQ(guids.front(), result.sectionGuids.front());
+               return {.key = "Vendor", .value = {{"field", 1}}};
+           });
+    runOem(ContentType::CPER, memoryCper, result);
+
+    EXPECT_TRUE(called);
+    ASSERT_TRUE(result.oem.contains("Vendor"));
+    EXPECT_EQ(nlohmann::json::parse(result.oem.at("Vendor")).at("field"), 1);
+    // Base entry untouched.
+    EXPECT_TRUE(result.oem.contains("OpenBMC"));
+}
+
+TEST_F(DecoderTest, OemSkipsUnmatchedGuids)
+{
+    auto result = parseLibCPER(ContentType::CPER, memoryCper);
+    addOem("ffffffff-ffff-ffff-ffff-ffffffffffff",
+           [](v1::Type, std::span<const std::uint8_t>, const v1::Oem&,
+              std::span<const v1::Guid>) -> v1::Entry {
+               ADD_FAILURE() << "Unmatched handler must not run";
+               return {.key = "Nope", .value = {}};
+           });
+    runOem(ContentType::CPER, memoryCper, result);
+    EXPECT_EQ(result.oem.size(), 1);
+}
+
+TEST_F(DecoderTest, OemFailureSkipsEntry)
+{
+    auto result = parseLibCPER(ContentType::CPER, memoryCper);
+    addOem(result.sectionGuids.front(),
+           [](v1::Type, std::span<const std::uint8_t>, const v1::Oem&,
+              std::span<const v1::Guid>) -> v1::Entry {
+               throw std::runtime_error("decode blew up");
+           });
+    EXPECT_NO_THROW(runOem(ContentType::CPER, memoryCper, result));
+    EXPECT_EQ(result.oem.size(), 1);
+}
+
+TEST_F(DecoderTest, OemRejectsReservedAndDuplicateKeys)
+{
+    auto result = parseLibCPER(ContentType::CPER, memoryCper);
+    // Empty, reserved, and duplicate keys are skipped.
+    addOem(result.sectionGuids.front(),
+           [](v1::Type, std::span<const std::uint8_t>, const v1::Oem&,
+              std::span<const v1::Guid>) -> v1::Entry {
+               return {.key = "", .value = {}};
+           });
+    runOem(ContentType::CPER, memoryCper, result);
+    EXPECT_EQ(result.oem.size(), 1);
+
+    // Duplicate keys across plugins: first wins.
+    auto result2 = parseLibCPER(ContentType::CPER, memoryCper);
+    addOem("aaaaaaaa-0000-0000-0000-000000000000",
+           [](v1::Type, std::span<const std::uint8_t>, const v1::Oem&,
+              std::span<const v1::Guid>) -> v1::Entry {
+               return {.key = "Dup", .value = {{"n", 1}}};
+           });
+    result2.sectionGuids.push_back("aaaaaaaa-0000-0000-0000-000000000000");
+    runOem(ContentType::CPER, memoryCper, result2);
+    ASSERT_TRUE(result2.oem.contains("Dup"));
+    EXPECT_EQ(nlohmann::json::parse(result2.oem.at("Dup")).at("n"), 1);
+}
+
+TEST_F(DecoderTest, OemDuplicateGuidFirstWins)
+{
+    auto result = parseLibCPER(ContentType::CPER, memoryCper);
+    addOem(result.sectionGuids.front(),
+           [](v1::Type, std::span<const std::uint8_t>, const v1::Oem&,
+              std::span<const v1::Guid>) -> v1::Entry {
+               return {.key = "First", .value = {}};
+           });
+    addOem(result.sectionGuids.front(),
+           [](v1::Type, std::span<const std::uint8_t>, const v1::Oem&,
+              std::span<const v1::Guid>) -> v1::Entry {
+               return {.key = "Second", .value = {}};
+           });
+    runOem(ContentType::CPER, memoryCper, result);
+    EXPECT_TRUE(result.oem.contains("First"));
+    EXPECT_FALSE(result.oem.contains("Second"));
+}
+
+TEST_F(DecoderTest, OemPluginLoadsFromDirectory)
+{
+    auto dir = loadTestPlugin();
+    auto result = parseLibCPER(ContentType::CPER, memoryCper);
+    runOem(ContentType::CPER, memoryCper, result);
+
+    // The fixture plugin decodes the memory section GUID.
+    ASSERT_TRUE(result.oem.contains("TestOem")) << dir.string();
+    const auto entry = nlohmann::json::parse(result.oem.at("TestOem"));
+    EXPECT_EQ(entry.at("rawSize"), memoryCper.size());
+    EXPECT_EQ(entry.at("matched"), 1);
+    EXPECT_EQ(entry.at("baseKeys"), 1);
+    std::filesystem::remove_all(dir);
+}
+
+TEST_F(DecoderTest, OemPluginMergesIntoEvent)
+{
+    auto dir = loadTestPlugin();
+    auto json = runProcess(
+        sdbusplus::object_path{"/xyz/openbmc_project/inventory/DIMM_0"},
+        ContentType::CPER,
+        std::vector<std::uint8_t>(std::from_range, memoryCper));
+
+    const auto& processed = json.at("xyz.openbmc_project.State.CPER.Corrected")
+                                .at("_EXTENSIONS")
+                                .at("xyz.openbmc_project.Logging.Extension."
+                                    "CPER.Processed");
+    ASSERT_TRUE(processed.at("Oem").contains("TestOem")) << dir.string();
+    std::filesystem::remove_all(dir);
 }
 
 } // namespace phosphor::logging::cper::test

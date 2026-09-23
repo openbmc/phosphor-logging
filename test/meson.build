@@ -78,17 +78,34 @@ log_create_extensions_test = executable(
 test('test_log_create_extensions', log_create_extensions_test)
 
 if get_option('cper-processor').allowed()
-    cper_decode_test = executable(
-        'test-cper-decode',
-        'cper_decode_test.cpp',
-        '../cper/decoder.cpp',
+    cper_oem_test_plugin = shared_module(
+        'cper_oem_test_plugin',
+        'cper/oem_test_plugin.cpp',
         dependencies: [
-            gtest_dep,
-            libcper_dep,
+            nlohmann_json_dep,
             pdi_dep,
             phosphor_logging_dep,
             sdbusplus_dep,
         ],
+        install: false,
+    )
+    cper_decode_test = executable(
+        'test-cper-decode',
+        'cper_decode_test.cpp',
+        '../cper/decoder.cpp',
+        '../cper/oem_registry.cpp',
+        dependencies: [
+            gtest_dep,
+            libcper_dep,
+            nlohmann_json_dep,
+            pdi_dep,
+            phosphor_logging_dep,
+            sdbusplus_dep,
+        ],
+        cpp_args: '-DCPER_OEM_TEST_PLUGIN="@0@"'.format(
+            cper_oem_test_plugin.full_path(),
+        ),
+        export_dynamic: true,
     )
     test('test_cper_decode', cper_decode_test)
 endif
