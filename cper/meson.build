@@ -7,10 +7,12 @@ libcper_dep = dependency(
 
 executable(
     'phosphor-cper-processor',
+    'decoder.cpp',
     'processor.cpp',
     'processor_main.cpp',
     dependencies: [
         libcper_dep,
+        nlohmann_json_dep,
         pdi_dep,
         phosphor_logging_dep,
         sdbusplus_dep,
