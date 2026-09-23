@@ -1,18 +1,33 @@
 #include "processor.hpp"
 
+#include <CLI/CLI.hpp>
 #include <sdbusplus/async.hpp>
 #include <sdbusplus/server/manager.hpp>
 
+#include <filesystem>
+#include <string>
+
 using phosphor::logging::cper::Decoder;
+using phosphor::logging::cper::OemRegistry;
 using phosphor::logging::cper::Processor;
 
-int main()
+int main(int argc, char** argv)
 {
+    CLI::App app{"phosphor-cper-processor"};
+
+    std::string pluginDir{OemRegistry::defaultDir};
+    app.add_option("-p,--plugin-dir", pluginDir,
+                   "Directory to load OEM decoder plugins from")
+        ->capture_default_str()
+        ->check(CLI::ExistingDirectory);
+
+    CLI11_PARSE(app, argc, argv);
+
     sdbusplus::async::context ctx;
     sdbusplus::server::manager_t manager{ctx, Processor::instance_path};
 
     Decoder decoder{};
-    decoder.start();
+    decoder.start(std::filesystem::path{pluginDir});
 
     Processor processor{ctx, Processor::instance_path, decoder};
 
