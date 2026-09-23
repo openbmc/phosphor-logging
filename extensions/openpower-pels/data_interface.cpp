@@ -87,6 +87,7 @@ constexpr auto invItem = "xyz.openbmc_project.Inventory.Item";
 constexpr auto invFan = "xyz.openbmc_project.Inventory.Item.Fan";
 constexpr auto invPowerSupply =
     "xyz.openbmc_project.Inventory.Item.PowerSupply";
+constexpr auto invChassis = "xyz.openbmc_project.Inventory.Item.Chassis";
 constexpr auto inventoryManager = "xyz.openbmc_project.Inventory.Manager";
 constexpr auto systemdMgr = "org.freedesktop.systemd1.Manager";
 constexpr auto redundancy = "xyz.openbmc_project.State.BMC.Redundancy";
@@ -570,9 +571,24 @@ void DataInterface::setCriticalAssociation(const std::string& objectPath) const
 
     auto association = std::get<AssociationsProperty>(getAssociationValue);
 
-    AssociationTuple critAssociation{
-        "health_rollup", "critical",
-        "/xyz/openbmc_project/inventory/system/chassis"};
+    // Use GetAncestors via the object mapper to find the chassis ancestor
+    // of objectPath (the first path that implements Inventory.Item.Chassis).
+    std::string chassisPath{"/xyz/openbmc_project/inventory/system/chassis"};
+
+    auto method = _bus.new_method_call(service_name::objectMapper,
+                                       object_path::objectMapper,
+                                       interface::objectMapper, "GetAncestors");
+    method.append(objectPath, DBusInterfaceList{interface::invChassis});
+
+    // GetAncestors returns map<path, map<service, interfaces>>
+    // sorted longest-path-first; the first entry is the closest ancestor.
+    auto ancestors = _bus.call(method, dbusTimeout).unpack<DBusSubTree>();
+    if (!ancestors.empty())
+    {
+        chassisPath = ancestors.begin()->first;
+    }
+
+    AssociationTuple critAssociation{"health_rollup", "critical", chassisPath};
 
     if (std::find(association.begin(), association.end(), critAssociation) ==
         association.end())
