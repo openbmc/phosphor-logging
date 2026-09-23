@@ -120,6 +120,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "63b4a74b_8b5feffd",
+        "filename": "event_extensions/cper/processed.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-23T21:55:33Z",
+      "side": 1,
+      "message": "So Processed and Raw are different extensions?  Seems like they\u0027d be in different directories then and they could just be called extension.hpp.",
+      "parentUuid": "7faaf288_1326228e",
+      "revId": "079f4a799703de8f8ad12f75271b3705dc27016d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5e8ab974_6fecd16a",
         "filename": "event_extensions/cper/processed.hpp",
         "patchSetId": 7
