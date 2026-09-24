@@ -1314,7 +1314,14 @@ nlohmann::json getDIMMInfo(const auto& pel)
             return true;
         }
     };
-    std::ranges::any_of(pel.optionalSections(), hasDIMMInfo);
+
+    for (const auto& section : pel.optionalSections())
+    {
+        if (hasDIMMInfo(section))
+        {
+            break;
+        }
+    }
 
     return dimmInfo;
 }
