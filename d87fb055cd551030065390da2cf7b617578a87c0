@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "548125f3_1afebeb7",
+        "filename": "README.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-25T21:02:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "09e5e117_d3b1344e",
+      "revId": "d87fb055cd551030065390da2cf7b617578a87c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c668062_8faf02b4",
@@ -284,6 +302,30 @@
       "writtenOn": "2026-09-16T21:36:49Z",
       "side": 1,
       "message": "duplicate?",
+      "range": {
+        "startLine": 412,
+        "startChar": 0,
+        "endLine": 418,
+        "endChar": 52
+      },
+      "revId": "d87fb055cd551030065390da2cf7b617578a87c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2870aaa4_33d56a1c",
+        "filename": "log_manager.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-25T21:02:15Z",
+      "side": 1,
+      "message": "This is still a problem I would think?",
+      "parentUuid": "bcd91bcf_da02c3c1",
       "range": {
         "startLine": 412,
         "startChar": 0,
