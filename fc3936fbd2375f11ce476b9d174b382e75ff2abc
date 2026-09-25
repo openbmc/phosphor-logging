@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6633972_88ffa1ef",
+        "filename": "cper/decoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-09-25T12:11:52Z",
+      "side": 1,
+      "message": "if libcper doesn\u0027t have a decoder for a section GUID and ends up keeping the section payload as base64 in the OpenBMC data, and an OEM plugin later decodes that same section into structured JSON, do we expect both representations to remain in the final event? I\u0027m wondering whether that could lead to significant duplication for larger OEM sections.",
+      "revId": "fc3936fbd2375f11ce476b9d174b382e75ff2abc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
