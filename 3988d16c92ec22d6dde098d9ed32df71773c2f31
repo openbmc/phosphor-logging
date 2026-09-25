@@ -16,6 +16,24 @@
       "message": "Do we need a size check here, or is the caller expected to guarantee the CPER payload size is within supported limits?",
       "revId": "3988d16c92ec22d6dde098d9ed32df71773c2f31",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "244ac8a4_ac5a2941",
+        "filename": "cper/processor.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-09-25T12:54:22Z",
+      "side": 1,
+      "message": "For now I suggest we keep it simple and let the CPER producers keep it under an agreed to size limit. I don’t really want a bunch of compile flags around “what is the right size limit”.",
+      "parentUuid": "700c63e7_0af6fe68",
+      "revId": "3988d16c92ec22d6dde098d9ed32df71773c2f31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
