@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1f2e01d_1efa3aeb",
+        "filename": "cper/decoder.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-09-25T11:17:05Z",
+      "side": 1,
+      "message": "Nit: doxygen documentation is missing.",
+      "revId": "391c3762352ffd4fe90501bfc87c035a5657085d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
