@@ -192,6 +192,24 @@
       "message": "In CI the the same test can be running in parallel on the same machine for different jobs, so you\u0027d want to us mkdtemp here.",
       "revId": "bfd347f47763610121c7930982d5da7827afb164",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f3d98b1_561d8d0e",
+        "filename": "test/event_extensions/artifact_test.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-25T21:18:33Z",
+      "side": 1,
+      "message": "missed?",
+      "parentUuid": "dcfa6441_41605ac8",
+      "revId": "bfd347f47763610121c7930982d5da7827afb164",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
