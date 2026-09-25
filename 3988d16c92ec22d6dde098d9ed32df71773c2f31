@@ -34,6 +34,24 @@
       "parentUuid": "700c63e7_0af6fe68",
       "revId": "3988d16c92ec22d6dde098d9ed32df71773c2f31",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "afb99fd9_e16c8f24",
+        "filename": "cper/processor.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-09-25T13:05:56Z",
+      "side": 1,
+      "message": "Agreed. The only thing I\u0027d watch is the final payload size after decoding and OEM processing, since that\u0027s what ultimately goes over D-Bus and needs to stay within D-Bus limits.",
+      "parentUuid": "244ac8a4_ac5a2941",
+      "revId": "3988d16c92ec22d6dde098d9ed32df71773c2f31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
