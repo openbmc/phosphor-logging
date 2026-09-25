@@ -1082,7 +1082,7 @@ void DataInterface::subscribeToSystemdSignals()
         _systemdSlot = method.call_async([this](sdbusplus::message_t&& msg) {
             // Initializing with nullptr to indicate that it is not subscribed
             // to any signal.
-            this->_systemdSlot = sdbusplus::slot_t(nullptr);
+            this->_systemdSlot = sdbusplus::slot(nullptr);
             if (msg.is_method_error())
             {
                 auto* error = msg.get_error();
@@ -1137,7 +1137,7 @@ void DataInterface::unsubscribeFromSystemdSignals()
                                  interface::systemdMgr, "Unsubscribe");
         _systemdSlot = method.call_async([this](sdbusplus::message_t&& msg) {
             // Unsubscribing the _systemdSlot from the subscribed signal
-            this->_systemdSlot = sdbusplus::slot_t(nullptr);
+            this->_systemdSlot = sdbusplus::slot(nullptr);
             if (msg.is_method_error())
             {
                 auto* error = msg.get_error();

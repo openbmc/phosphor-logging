@@ -1109,7 +1109,7 @@ class DataInterface : public DataInterfaceBase
     /**
      * @brief A slot object for async dbus call
      */
-    sdbusplus::slot_t _systemdSlot;
+    sdbusplus::slot _systemdSlot;
 };
 
 } // namespace pels
