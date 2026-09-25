@@ -34,6 +34,24 @@
       "parentUuid": "ed5e984f_1174dc80",
       "revId": "9897bf2da6e50d4deca4bb772a8ef792a1c0af2b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14bb6fcc_a7014b69",
+        "filename": "elog_serialize.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-25T21:11:07Z",
+      "side": 1,
+      "message": "fixed?",
+      "parentUuid": "46ad76b8_df040ba9",
+      "revId": "9897bf2da6e50d4deca4bb772a8ef792a1c0af2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d6df16e_ee863330",
+        "filename": "elog_serialize.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-25T21:11:07Z",
+      "side": 1,
+      "message": "I guess I\u0027m missing where this one is called, and why the lines you have above in deserializeJSON aren\u0027t enough",
+      "revId": "27f46812749dccf378925a8450e6f85f938e3714",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
