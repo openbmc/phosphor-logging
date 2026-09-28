@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8351d5c_95e9bd61",
+        "filename": "cper/processor.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-09-28T17:22:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4066dc18_05189b42",
+      "revId": "6ac5b746b14e27e042564c2b029a33c1c47789c2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fc1faa8f_998659dc",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-09-25T11:03:14Z",
       "side": 1,
       "message": "sdbusplus::message::object_path ?",
+      "range": {
+        "startLine": 22,
+        "startChar": 55,
+        "endLine": 22,
+        "endChar": 60
+      },
+      "revId": "6ac5b746b14e27e042564c2b029a33c1c47789c2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e0e498d_c3ae5889",
+        "filename": "cper/processor.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-09-28T17:22:44Z",
+      "side": 1,
+      "message": "This isn\u0027t really necessary but I did it anyhow.",
+      "parentUuid": "fc1faa8f_998659dc",
       "range": {
         "startLine": 22,
         "startChar": 55,
