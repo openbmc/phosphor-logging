@@ -334,6 +334,30 @@
       },
       "revId": "d87fb055cd551030065390da2cf7b617578a87c0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c787a697_edf52424",
+        "filename": "log_manager.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-09-29T05:45:18Z",
+      "side": 1,
+      "message": "Good catch , yes this is issue Keeping one manager . looks lie refactoring mess.",
+      "parentUuid": "2870aaa4_33d56a1c",
+      "range": {
+        "startLine": 412,
+        "startChar": 0,
+        "endLine": 418,
+        "endChar": 52
+      },
+      "revId": "d87fb055cd551030065390da2cf7b617578a87c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
