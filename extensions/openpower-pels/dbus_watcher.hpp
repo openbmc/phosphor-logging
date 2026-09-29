@@ -63,6 +63,8 @@ class DBusWatcher
  *    the property is on D-Bus at the time.
  * 2) The property changes (via a property changed signal).
  * 3) An interfacesAdded signal is received with that property.
+ * 4) A nameOwnerChanged signal is received for the owning service
+ *    (only when ownerService is provided).
  *
  * The DataInterface class is used to access D-Bus, and is a template
  * to avoid any circular include issues as that class is one of the
@@ -102,10 +104,7 @@ class PropertyWatcher : public DBusWatcher
                     const DataIface& dataIface, PropertySetFunc func) :
         DBusWatcher(path, interface), _name(propertyName), _setFunc(func)
     {
-        _matches.emplace_back(
-            bus, match_rules::propertiesChanged(_path, _interface),
-            std::bind(std::mem_fn(&PropertyWatcher::propChanged), this,
-                      std::placeholders::_1));
+        addPropertiesChangedMatch(bus);
 
         _matches.emplace_back(
             bus,
@@ -146,6 +145,78 @@ class PropertyWatcher : public DBusWatcher
                     PropertySetFunc func) :
         PropertyWatcher(bus, path, interface, propertyName, "", dataIface, func)
     {}
+
+    /**
+     * @brief Constructor
+     *
+     * Reads the property if it is on D-Bus, and sets up the match objects
+     * for the propertiesChanged and nameOwnerChanged signals.
+     *
+     * Unlike the other constructors, this registers nameOwnerChanged
+     * match and propertyChanged signal match. This is used when the
+     * owning service may acquire its well-known D-Bus name after its
+     * objects are created, meaning the interfacesAdded signal may be
+     * missed. The nameOwnerChanged watch ensures the property is read
+     * as soon as the service acquires its bus name.
+     *
+     * @param[in] bus - The sdbusplus bus object
+     * @param[in] path - The D-Bus path of the property
+     * @param[in] interface - The D-Bus interface that contains the property
+     * @param[in] propertyName - The property name
+     * @param[in] service - The D-Bus service to use for the property read.
+     *                      Can be empty to look it up instead.
+     * @param[in] ownerService - The well-known D-Bus name of the service
+     *                           that owns the property. When given, a
+     *                           nameOwnerChanged watch filtered to this name
+     *                          is registered so the property is read
+     *                          when the service acquires its D-Bus name.
+     * @param[in] dataIface - The DataInterface object
+     * @param[in] func - The callback used any time the property is read
+     */
+    PropertyWatcher(sdbusplus::bus_t& bus, const std::string& path,
+                    const std::string& interface,
+                    const std::string& propertyName, const std::string& service,
+                    const std::string& ownerService, const DataIface& dataIface,
+                    PropertySetFunc func) :
+        DBusWatcher(path, interface), _name(propertyName), _setFunc(func)
+    {
+        // Register PropertiesChanged watch for runtime value updates.
+        addPropertiesChangedMatch(bus);
+
+        // Register NameOwnerChanged watch
+        // Filtered at the D-Bus daemon level to ownerService only
+        _matches.emplace_back(
+            bus, match_rules::nameOwnerChanged(ownerService),
+            [this, &dataIface, ownerService](sdbusplus::message_t& msg) {
+                std::string name, oldOwner, newOwner;
+                msg.read(name, oldOwner, newOwner);
+
+                // newOwner non-empty means the service acquired its
+                // bus name — read the property now using the unique
+                // name.
+                if (!newOwner.empty())
+                {
+                    try
+                    {
+                        read(dataIface, newOwner);
+                    }
+                    catch (const sdbusplus::exception_t& e)
+                    {
+                        // Path doesn't exist now
+                    }
+                }
+            });
+
+        // Initial read.
+        try
+        {
+            read(dataIface, service);
+        }
+        catch (const sdbusplus::exception_t& e)
+        {
+            // Path doesn't exist now
+        }
+    }
 
     /**
      * @brief Reads the property on D-Bus, and calls
@@ -220,6 +291,20 @@ class PropertyWatcher : public DBusWatcher
     }
 
   private:
+    /**
+     * @brief Helper API to registers a propertiesChanged match for _path
+     *        and _interface.
+     *
+     * @param[in] bus - The sdbusplus bus object
+     */
+    void addPropertiesChangedMatch(sdbusplus::bus_t& bus)
+    {
+        _matches.emplace_back(
+            bus, match_rules::propertiesChanged(_path, _interface),
+            std::bind(std::mem_fn(&PropertyWatcher::propChanged), this,
+                      std::placeholders::_1));
+    }
+
     /**
      * @brief The D-Bus property name
      */

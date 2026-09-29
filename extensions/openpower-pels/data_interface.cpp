@@ -39,6 +39,7 @@ constexpr auto pldm = "xyz.openbmc_project.PLDM";
 constexpr auto inventoryManager = "xyz.openbmc_project.Inventory.Manager";
 constexpr auto entityManager = "xyz.openbmc_project.EntityManager";
 constexpr auto systemd = "org.freedesktop.systemd1";
+constexpr auto settingsMgr = "xyz.openbmc_project.Settings";
 } // namespace service_name
 
 namespace object_path
@@ -145,10 +146,10 @@ DataInterface::DataInterface(sdbusplus::bus_t& bus) :
             }
         }));
 
-    // Watch the host PEL enable property
+    // Watch the host PEL enable property [PC + NameOwnerChanged Signals]
     _properties.emplace_back(std::make_unique<PropertyWatcher<DataInterface>>(
-        bus, object_path::enableHostPELs, interface::enable, "Enabled", *this,
-        [this](const auto& value) {
+        bus, object_path::enableHostPELs, interface::enable, "Enabled", "",
+        service_name::settingsMgr, *this, [this](const auto& value) {
             if (std::get<bool>(value) != this->_sendPELsToHost)
             {
                 lg2::info("The send PELs to host setting changed to {VAL}",
