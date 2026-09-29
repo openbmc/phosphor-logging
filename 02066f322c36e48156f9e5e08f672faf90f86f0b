@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86a2f87b_45595632",
+        "filename": "event_extensions/cper/raw/extension.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-09-29T10:59:15Z",
+      "side": 1,
+      "message": "nit: processed::restore() wraps its body in try/catch and returns nullptr on failure — worth doing the same here for consistency? data.at() / get\u003cpath\u003e() can throw if the persisted state isn\u0027t what we expect, and nothing up the stack catches it.",
+      "revId": "02066f322c36e48156f9e5e08f672faf90f86f0b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
