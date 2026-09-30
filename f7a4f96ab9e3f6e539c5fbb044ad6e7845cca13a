@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19de3c01_071d730b",
+        "filename": "event_extensions/cper/processed/extension.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-09-30T06:34:50Z",
+      "side": 1,
+      "message": "In the Tested: example the request passes \"DiagnosticDataType\":\"...ContentType.CPER\", but create() sets this from a constant and never reads that key from request.data?  but serialize() writes the key and restore() reads it back",
+      "revId": "f7a4f96ab9e3f6e539c5fbb044ad6e7845cca13a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
