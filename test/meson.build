@@ -26,6 +26,7 @@ endif
 tests = [
     'bmc_pos_mgr_test',
     'extensions_test',
+    'lg2_test',
     'log_manager_dbus_tests',
     'remote_logging_test_address',
     'remote_logging_test_config',
