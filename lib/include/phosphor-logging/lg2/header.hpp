@@ -1,10 +1,13 @@
 #pragma once
 
 #include <phosphor-logging/lg2/concepts.hpp>
+#include <phosphor-logging/lg2/flags.hpp>
 
 #include <algorithm>
 #include <array>
 #include <string_view>
+#include <tuple>
+#include <utility>
 
 namespace lg2::details
 {
@@ -84,5 +87,56 @@ struct header_str_conversion<T>
 /** std-style _t alias for header_str_conversion. */
 template <typename T>
 using header_str_conversion_t = typename header_str_conversion<T>::type;
+
+/** Recursive pack converter for lg2 arguments to convert headers into
+ *  header_str while preserving flags and values.
+ */
+template <typename... Ts>
+struct convert_args;
+
+template <>
+struct convert_args<>
+{
+    using type = std::tuple<>;
+};
+
+// Case 1: Header, Flag, Value, Rest...
+template <typename H, typename F, typename V, typename... Rest>
+    requires is_log_flag_v<F>
+struct convert_args<H, F, V, Rest...>
+{
+    using type = decltype(std::tuple_cat(
+        std::declval<std::tuple<header_str_conversion_t<H>, F, V>>(),
+        std::declval<typename convert_args<Rest...>::type>()));
+};
+
+// Case 2: Header, Value, Rest... (when second argument is not a flag)
+template <typename H, typename V, typename... Rest>
+    requires (!is_log_flag_v<V>)
+struct convert_args<H, V, Rest...>
+{
+    using type = decltype(std::tuple_cat(
+        std::declval<std::tuple<header_str_conversion_t<H>, V>>(),
+        std::declval<typename convert_args<Rest...>::type>()));
+};
+
+// Case 3: Single trailing argument (expected to be a header missing data)
+template <typename H>
+struct convert_args<H>
+{
+    using type = std::tuple<header_str_conversion_t<H>>;
+};
+
+// Fallback: preserve remaining types
+template <typename T, typename... Rest>
+struct convert_args<T, Rest...>
+{
+    using type = decltype(std::tuple_cat(
+        std::declval<std::tuple<T>>(),
+        std::declval<typename convert_args<Rest...>::type>()));
+};
+
+template <typename... Ts>
+using convert_args_t = typename convert_args<Ts...>::type;
 
 } // namespace lg2::details
