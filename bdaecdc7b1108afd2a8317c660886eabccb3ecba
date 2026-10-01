@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ea4aec5_db45ec3d",
+        "filename": "log_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 864,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-10-01T22:07:22Z",
+      "side": 1,
+      "message": "What if there were 2 different extension types that needed metadata?",
+      "range": {
+        "startLine": 864,
+        "startChar": 31,
+        "endLine": 864,
+        "endChar": 49
+      },
+      "revId": "bdaecdc7b1108afd2a8317c660886eabccb3ecba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd933968_8dd8b838",
+        "filename": "log_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 870,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-10-01T22:07:22Z",
+      "side": 1,
+      "message": "nit: can just use contains() on a map",
+      "range": {
+        "startLine": 870,
+        "startChar": 39,
+        "endLine": 870,
+        "endChar": 77
+      },
+      "revId": "bdaecdc7b1108afd2a8317c660886eabccb3ecba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "192e15f5_452acf62",
+        "filename": "log_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 921,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-10-01T22:07:22Z",
+      "side": 1,
+      "message": "not sure why this was changed?  or the one below",
+      "revId": "bdaecdc7b1108afd2a8317c660886eabccb3ecba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afabbe6e_abb2e922",
+        "filename": "log_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1171,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-10-01T22:07:22Z",
+      "side": 1,
+      "message": "nit: can just use \u0027e\u0027",
+      "range": {
+        "startLine": 1171,
+        "startChar": 25,
+        "endLine": 1171,
+        "endChar": 34
+      },
+      "revId": "bdaecdc7b1108afd2a8317c660886eabccb3ecba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0244cce5_c442d190",
+        "filename": "log_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1199,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-10-01T22:07:22Z",
+      "side": 1,
+      "message": "not necessary",
+      "range": {
+        "startLine": 1196,
+        "startChar": 8,
+        "endLine": 1199,
+        "endChar": 9
+      },
+      "revId": "bdaecdc7b1108afd2a8317c660886eabccb3ecba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36ad4918_845d36d2",
+        "filename": "meson.options",
+        "patchSetId": 8
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-10-01T22:07:22Z",
+      "side": 1,
+      "message": "this makes it sound like a boolean, but it isn\u0027t?",
+      "range": {
+        "startLine": 76,
+        "startChar": 17,
+        "endLine": 76,
+        "endChar": 55
+      },
+      "revId": "bdaecdc7b1108afd2a8317c660886eabccb3ecba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd03a625_62934fd7",
+        "filename": "test/extensions_test.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-10-01T22:07:22Z",
+      "side": 1,
+      "message": "would prefer to use [[maybe_unused]]",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 25
+      },
+      "revId": "bdaecdc7b1108afd2a8317c660886eabccb3ecba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
