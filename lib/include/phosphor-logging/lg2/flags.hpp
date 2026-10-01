@@ -17,6 +17,19 @@ struct log_flag
     static constexpr auto value = (0 | ... | Fs::value);
 };
 
+/** Type trait to determine if a type is a log_flag. */
+template <typename T>
+struct is_log_flag : std::false_type
+{};
+
+template <typename... Fs>
+struct is_log_flag<log_flag<Fs...>> : std::true_type
+{};
+
+template <typename T>
+inline constexpr bool is_log_flag_v =
+    is_log_flag<std::remove_cvref_t<T>>::value;
+
 /** Constant for the "zero" flag. */
 static constexpr auto log_flag_seq_start =
     std::integral_constant<uint64_t, 0>{};

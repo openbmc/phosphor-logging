@@ -11,25 +11,33 @@
 #include <phosphor-logging/lg2/level.hpp>
 
 #include <source_location>
+#include <tuple>
+#include <utility>
 
 namespace lg2
 {
-/** Implementation of the structured logging `lg2::log` interface. */
-template <level S = level::debug, details::any_but<std::source_location>... Ts>
-struct log
+namespace details
 {
+template <typename IndexSeq, level S, typename... Ts>
+struct log_impl;
+
+template <size_t... Is, level S, typename... Ts>
+struct log_impl<std::index_sequence<Is...>, S, Ts...>
+{
+    using ConvertedTuple = convert_args_t<Ts&&...>;
+
     /** log with a custom source_location.
      *
      *  @param[in] s - The custom source location.
      *  @param[in] msg - The message to log.
      *  @param[in] ts - The rest of the arguments.
      */
-    explicit log(const std::source_location& s, const char* msg,
-                 details::header_str_conversion_t<Ts&&>... ts)
+    explicit log_impl(const std::source_location& s, const char* msg,
+                      std::tuple_element_t<Is, ConvertedTuple>... ts)
     {
         details::log_conversion::start(
             S, s, msg,
-            std::forward<details::header_str_conversion_t<Ts&&>>(ts)...);
+            std::forward<std::tuple_element_t<Is, ConvertedTuple>>(ts)...);
     }
 
     /** default log (source_location is determined by calling location).
@@ -38,15 +46,31 @@ struct log
      *  @param[in] ts - The rest of the arguments.
      *  @param[in] s - The derived source_location.
      */
-    explicit log(
-        const char* msg, details::header_str_conversion_t<Ts&&>... ts,
+    explicit log_impl(
+        const char* msg, std::tuple_element_t<Is, ConvertedTuple>... ts,
         const std::source_location& s = std::source_location::current()) :
-        log(s, msg, std::forward<details::header_str_conversion_t<Ts&&>>(ts)...)
+        log_impl(s, msg,
+                 std::forward<std::tuple_element_t<Is, ConvertedTuple>>(ts)...)
     {}
 
     // Give a nicer compile error if someone tries to log without a message.
-    log() = delete;
+    log_impl() = delete;
 };
+} // namespace details
+
+/** Implementation of the structured logging `lg2::log` interface. */
+template <level S = level::debug, details::any_but<std::source_location>... Ts>
+struct log : details::log_impl<std::index_sequence_for<Ts...>, S, Ts...>
+{
+    using details::log_impl<std::index_sequence_for<Ts...>, S, Ts...>::log_impl;
+};
+
+template <typename... Ts>
+explicit log(const char*, Ts&&...) -> log<level::debug, Ts...>;
+
+template <typename... Ts>
+explicit log(const std::source_location&, const char*, Ts&&...)
+    -> log<level::debug, Ts...>;
 
 /** Macro to define aliases for lg2::level(...) -> lg2::log<level>(...)
  *
