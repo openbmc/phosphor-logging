@@ -16,6 +16,24 @@
       "message": "See a good way to always watch that QuiesceOnHwError in Settings as well instead of reading it every time?",
       "revId": "d2383a791cc01c2addf7c3149275f5c87191b741",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad33a153_2cd76bc8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2026-10-01T06:42:58Z",
+      "side": 1,
+      "message": "Sure, I will check and address it on a separate patch.",
+      "parentUuid": "33a05007_39d3b06e",
+      "revId": "d2383a791cc01c2addf7c3149275f5c87191b741",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
