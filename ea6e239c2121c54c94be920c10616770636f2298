@@ -51,6 +51,24 @@
       "message": "Looking for feedback on the Provider abstraction. It\u0027s currently stateless and primarily acts as a factory for create/restore operations. An alternative would be a registration-based model using callbacks directly. I kept the Provider abstraction to keep extension-specific logic out of Manager,",
       "revId": "ea6e239c2121c54c94be920c10616770636f2298",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a73f3c83_f65363b8",
+        "filename": "event_extensions/provider.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-10-02T02:26:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24324925_ec575a2f",
+      "revId": "ea6e239c2121c54c94be920c10616770636f2298",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
