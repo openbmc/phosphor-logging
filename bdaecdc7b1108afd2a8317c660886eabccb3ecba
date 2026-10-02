@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b820ad6a_d76b0c27",
+        "filename": "log_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 864,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-10-02T07:02:18Z",
+      "side": 1,
+      "message": "The current scope is limited to populating OEM metadata for the requested extension when the event does not already provide that extension. To keep the design simple, runtime enrichment is currently based on the user-configured interface only.\n\nSupporting multiple extension types or interface overloading would require additional framework behavior and conflict handling. We can address that as a follow-up if there is a concrete use case.",
+      "parentUuid": "0ea4aec5_db45ec3d",
+      "range": {
+        "startLine": 864,
+        "startChar": 31,
+        "endLine": 864,
+        "endChar": 49
+      },
+      "revId": "bdaecdc7b1108afd2a8317c660886eabccb3ecba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cd933968_8dd8b838",
         "filename": "log_manager.cpp",
         "patchSetId": 8
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-01T22:07:22Z",
       "side": 1,
       "message": "nit: can just use contains() on a map",
+      "range": {
+        "startLine": 870,
+        "startChar": 39,
+        "endLine": 870,
+        "endChar": 77
+      },
+      "revId": "bdaecdc7b1108afd2a8317c660886eabccb3ecba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1191b92a_4a74e9ac",
+        "filename": "log_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 870,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-10-02T07:02:18Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cd933968_8dd8b838",
       "range": {
         "startLine": 870,
         "startChar": 39,
@@ -64,6 +112,41 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "418b445c_e69adb2d",
+        "filename": "log_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 921,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-10-02T07:02:18Z",
+      "side": 1,
+      "message": "Done, not sure what caused this  fixed below chnages also.",
+      "parentUuid": "192e15f5_452acf62",
+      "revId": "bdaecdc7b1108afd2a8317c660886eabccb3ecba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c23af994_c254189a",
+        "filename": "log_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1090,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-10-02T07:02:18Z",
+      "side": 1,
+      "message": "Fixed this also",
+      "revId": "bdaecdc7b1108afd2a8317c660886eabccb3ecba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "afabbe6e_abb2e922",
@@ -77,6 +160,30 @@
       "writtenOn": "2026-10-01T22:07:22Z",
       "side": 1,
       "message": "nit: can just use \u0027e\u0027",
+      "range": {
+        "startLine": 1171,
+        "startChar": 25,
+        "endLine": 1171,
+        "endChar": 34
+      },
+      "revId": "bdaecdc7b1108afd2a8317c660886eabccb3ecba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a2a8f15_00a9cf03",
+        "filename": "log_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1171,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-10-02T07:02:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "afabbe6e_abb2e922",
       "range": {
         "startLine": 1171,
         "startChar": 25,
@@ -110,6 +217,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "269edbc9_6887047a",
+        "filename": "log_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1199,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-10-02T07:02:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0244cce5_c442d190",
+      "range": {
+        "startLine": 1196,
+        "startChar": 8,
+        "endLine": 1199,
+        "endChar": 9
+      },
+      "revId": "bdaecdc7b1108afd2a8317c660886eabccb3ecba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36ad4918_845d36d2",
@@ -133,6 +264,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c65b7f0a_76504ed1",
+        "filename": "meson.options",
+        "patchSetId": 8
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-10-02T07:02:18Z",
+      "side": 1,
+      "message": "Changed the description to \"Enable runtime extension enrichment using the specified interface\". The enrichment path is only enabled when an interface is explicitly configured, so this wording better reflects the current behavior.",
+      "parentUuid": "36ad4918_845d36d2",
+      "range": {
+        "startLine": 76,
+        "startChar": 17,
+        "endLine": 76,
+        "endChar": 55
+      },
+      "revId": "bdaecdc7b1108afd2a8317c660886eabccb3ecba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd03a625_62934fd7",
@@ -146,6 +301,30 @@
       "writtenOn": "2026-10-01T22:07:22Z",
       "side": 1,
       "message": "would prefer to use [[maybe_unused]]",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 25
+      },
+      "revId": "bdaecdc7b1108afd2a8317c660886eabccb3ecba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e88f5c6e_9d7af202",
+        "filename": "test/extensions_test.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-10-02T07:02:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd03a625_62934fd7",
       "range": {
         "startLine": 54,
         "startChar": 0,
