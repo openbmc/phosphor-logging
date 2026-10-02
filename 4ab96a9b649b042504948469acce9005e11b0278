@@ -33,6 +33,24 @@
       "message": "nit: not usually an extra space between try/catch",
       "revId": "4ab96a9b649b042504948469acce9005e11b0278",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e69daa83_029ca73c",
+        "filename": "event_extensions/cper/raw/extension.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-10-02T06:27:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5e7694ff_4fcf5b53",
+      "revId": "4ab96a9b649b042504948469acce9005e11b0278",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
