@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "422d819c_a0a04625",
+        "filename": "extensions/amd-event-log/include/ael_common_info.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-10-06T21:52:56Z",
+      "side": 1,
+      "message": "This field is a map now on D-Bus...  Are you sure this is necessary?",
+      "revId": "bf109c04667075577edaa7fd27e6cac0cc08e18d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
