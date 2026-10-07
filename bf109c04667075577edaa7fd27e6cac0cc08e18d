@@ -16,6 +16,24 @@
       "message": "This field is a map now on D-Bus...  Are you sure this is necessary?",
       "revId": "bf109c04667075577edaa7fd27e6cac0cc08e18d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87534b02_e98f030c",
+        "filename": "extensions/amd-event-log/include/ael_common_info.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-10-07T07:01:02Z",
+      "side": 1,
+      "message": "Good catch , initial patch series i got requiremnt to convert this , later started using dbus data directly. , curentky this is not used n teh code , thanks for this comment , removed this now.",
+      "parentUuid": "422d819c_a0a04625",
+      "revId": "bf109c04667075577edaa7fd27e6cac0cc08e18d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
