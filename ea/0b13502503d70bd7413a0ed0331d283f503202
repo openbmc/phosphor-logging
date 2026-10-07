@@ -1,0 +1,11 @@
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Jayanth Othayoth <ojayanth@gmail.com>
+Code-Review+1: Palaniappan Arunachalam <palaniappana@ami.com>
+Code-Review+2: Matt Spinler <spinler@us.ibm.com>
+Code-Review+1: <sandeepkumar.sanku@amd.com>
+Submitted-by: Jayanth Othayoth <ojayanth@gmail.com>
+Submitted-at: Wed, 07 Oct 2026 03:24:52 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/94409
+Comments-Total: 3
+Project: openbmc/phosphor-logging
+Branch: refs/heads/master
