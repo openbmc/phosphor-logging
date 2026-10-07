@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d2a6d0a_32a165db",
+        "filename": "extensions/amd-event-log/include/ael_info.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-10-07T21:59:17Z",
+      "side": 1,
+      "message": "Do you really need a separate \u0027include\u0027 directory? (i could have missed this in earlier commits)",
+      "revId": "54a86d2d66dca9d3798039463c6081c586a4aa43",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
