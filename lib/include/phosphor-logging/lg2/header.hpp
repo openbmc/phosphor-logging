@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cstddef>
 #include <string_view>
 
 namespace lg2::details
@@ -15,10 +16,15 @@ struct header_str
     // Hold the header string value.
     std::string_view value;
 
-    /** Constructor which performs validation. */
-    template <typename T>
-    consteval header_str(const T& s) : value(s)
+    /** Constructor which performs validation on string literal arrays. */
+    template <std::size_t N>
+    consteval header_str(const char (&s)[N]) : value(s, N - 1)
     {
+        if (s[N - 1] != '\0')
+        {
+            report_error("Header string must be null-terminated.");
+        }
+
         if (value.size() == 0)
         {
             report_error(
