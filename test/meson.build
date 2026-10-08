@@ -126,6 +126,8 @@ if get_option('cper-processor').allowed()
     )
 endif
 
+subdir('failures')
+
 tests_non_parallel = [
     'elog_quiesce_test',
     'elog_update_ts_test',
