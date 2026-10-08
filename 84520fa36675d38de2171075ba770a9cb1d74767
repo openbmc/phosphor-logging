@@ -22,6 +22,30 @@
       },
       "revId": "84520fa36675d38de2171075ba770a9cb1d74767",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e585d40c_405323fc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1003197
+      },
+      "writtenOn": "2026-10-08T20:39:05Z",
+      "side": 1,
+      "message": "My goal is to improve runtime efficiency and to reduce the size of the compiled code. Without this CL, the following code triggers a build error because the string value has type const char * instead of std::string:\n\n```\n    EXPECT_NO_THROW(lg2::info(\"Simple message: {STR}\", \"STR\",\n                              \"lowercase value with spaces\"));\n```",
+      "parentUuid": "584c9c20_b1cfb223",
+      "range": {
+        "startLine": 11,
+        "startChar": 10,
+        "endLine": 12,
+        "endChar": 33
+      },
+      "revId": "84520fa36675d38de2171075ba770a9cb1d74767",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
