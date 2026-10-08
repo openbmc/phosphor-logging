@@ -47,6 +47,15 @@ TEST(Lg2HeaderTest, BaselineHeaders)
     static_assert(
         std::is_same_v<lg2::details::header_str_conversion_t<std::string>,
                        std::string>);
+
+    // header_str can only be constructed from string literal arrays, not raw
+    // pointers or string_views (preventing non-null-terminated buffer reads)
+    static_assert(
+        !std::is_constructible_v<lg2::details::header_str, const char*>);
+    static_assert(
+        !std::is_constructible_v<lg2::details::header_str, std::string_view>);
+    static_assert(
+        !std::is_constructible_v<lg2::details::header_str, std::string>);
 }
 
 // Tests for basic lg2 logging functionality that work with baseline lg2
