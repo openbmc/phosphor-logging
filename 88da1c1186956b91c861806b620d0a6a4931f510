@@ -22,6 +22,30 @@
       },
       "revId": "88da1c1186956b91c861806b620d0a6a4931f510",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9aaa7ad9_dd3059f0",
+        "filename": "extensions/amd-event-log/src/entry_points.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-10-08T21:57:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3872d1c_bd256693",
+      "range": {
+        "startLine": 35,
+        "startChar": 20,
+        "endLine": 35,
+        "endChar": 40
+      },
+      "revId": "88da1c1186956b91c861806b620d0a6a4931f510",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
