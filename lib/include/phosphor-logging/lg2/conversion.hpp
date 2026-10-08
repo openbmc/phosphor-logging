@@ -383,8 +383,7 @@ class log_conversion
                      log_flag<Fs...> f, V&& v, Ss&&... ss)
     {
         static_assert(!std::is_same_v<header_str, std::decay_t<V>>,
-                      "Found header_str as value; suggest using std::string to "
-                      "avoid unintended conversion.");
+                      "lg2::details::header_str cannot be used as a value.");
 
         // These two if conditions are similar, except that one calls 'done'
         // since Ss is empty and the other calls the next 'step'.
@@ -408,12 +407,12 @@ class log_conversion
 
     /** Handle conversion of a { Header, Value } argument set. */
     template <typename... Ts, typename V, typename... Ss>
+        requires(!is_log_flag_v<V>)
     static void step(std::tuple<Ts...>&& ts, const header_str& h, V&& v,
                      Ss&&... ss)
     {
         static_assert(!std::is_same_v<header_str, std::decay_t<V>>,
-                      "Found header_str as value; suggest using std::string to "
-                      "avoid unintended conversion.");
+                      "lg2::details::header_str cannot be used as a value.");
         // These two if conditions are similar, except that one calls 'done'
         // since Ss is empty and the other calls the next 'step'.
 
@@ -448,6 +447,14 @@ class log_conversion
      */
     template <typename... Ts>
     static void step(std::tuple<Ts...>&&, header_str)
+    {
+        static_assert(std::is_same_v<std::tuple<Ts...>, header_str>,
+                      "Found header field without expected data.");
+    }
+
+    /** Finding a header and flag at the end without data is an error. */
+    template <typename... Ts, log_flags... Fs>
+    static void step(std::tuple<Ts...>&&, header_str, log_flag<Fs...>)
     {
         static_assert(std::is_same_v<std::tuple<Ts...>, header_str>,
                       "Found header field without expected data.");

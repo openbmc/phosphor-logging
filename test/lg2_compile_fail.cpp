@@ -6,12 +6,12 @@
 
 #include <phosphor-logging/lg2.hpp>
 
-#include <string>
-
 void lg2CompileFail()
 {
 #if defined(CASE_TRAILING_HEADER)
     lg2::info("m", "KEY");
+#elif defined(CASE_TRAILING_HEADER_FLAG)
+    lg2::info("m", "KEY", lg2::hex);
 #elif defined(CASE_FLAG_BEFORE_HEADER)
     lg2::info("m", lg2::hex, "KEY", 5);
 #elif defined(CASE_MISALIGNED_PAIRS)
@@ -21,8 +21,8 @@ void lg2CompileFail()
 #elif defined(CASE_RESERVED_HEADER)
     lg2::info("m", "MESSAGE", 1);
 #elif defined(CASE_PROHIBITED_FLAG)
-    lg2::info("m", "KEY", lg2::dec, std::string("str"));
+    lg2::info("m", "KEY", lg2::dec, "str");
 #else
-    lg2::info("m", "KEY", std::string("value"), "HEX", lg2::hex, 5);
+    lg2::info("m", "KEY", "value", "HEX", lg2::hex, 5);
 #endif
 }
