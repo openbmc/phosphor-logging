@@ -83,7 +83,7 @@ struct header_str_conversion
 template <maybe_constexpr_string T>
 struct header_str_conversion<T>
 {
-    using type = const header_str&;
+    using type = header_str;
 };
 
 /** std-style _t alias for header_str_conversion. */
