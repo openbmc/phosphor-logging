@@ -21,6 +21,7 @@ import sys
 # text is compiler-specific; both GCC and Clang mention report_error.
 CASES = {
     "TRAILING_HEADER": "Found header field without expected data.",
+    "TRAILING_HEADER_FLAG": "Found header field without expected data.",
     "FLAG_BEFORE_HEADER": "Found value without expected header field.",
     "MISALIGNED_PAIRS": "Found value without expected header field.",
     "LOWERCASE_HEADER": "report_error",
