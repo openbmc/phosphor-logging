@@ -16,6 +16,24 @@
       "message": "Do you really need a separate \u0027include\u0027 directory? (i could have missed this in earlier commits)",
       "revId": "54a86d2d66dca9d3798039463c6081c586a4aa43",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab05bcc6_97a323a5",
+        "filename": "extensions/amd-event-log/include/ael_info.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-10-08T05:10:36Z",
+      "side": 1,
+      "message": "In the next commit adding two more hpp files in the include folder.",
+      "parentUuid": "5d2a6d0a_32a165db",
+      "revId": "54a86d2d66dca9d3798039463c6081c586a4aa43",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
