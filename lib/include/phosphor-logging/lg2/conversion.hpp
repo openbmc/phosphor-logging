@@ -11,6 +11,7 @@
 #include <filesystem>
 #include <format>
 #include <source_location>
+#include <string>
 #include <string_view>
 #include <tuple>
 #include <type_traits>
@@ -197,10 +198,13 @@ static auto log_convert(const char* h, log_flag<Fs...> f, const V& v)
     prohibit(f, signed_val);
     prohibit(f, unsigned_val);
 
-    // Utility to handle conversion to a 'const char*' depending on V:
+    // Utility to handle conversion to a NUL-terminated string depending on V:
     //  - 'const char*' and similar use static cast.
     //  - 'std::filesystem::path' use c_str() function.
-    //  - 'std::string' and 'std::string_view' use data() function.
+    //  - 'std::string' use c_str() function.
+    //  - Anything else (e.g. 'std::string_view') is not guaranteed to be
+    //    NUL-terminated, so copy it into a 'std::string'.  The tuple keeps
+    //    the copy alive and 'apply_done' passes its data() to 'do_log'.
     auto str_data = [](const V& v) {
         if constexpr (std::is_same_v<const char*, std::decay_t<V>> ||
                       std::is_same_v<char*, std::decay_t<V>>)
@@ -212,13 +216,18 @@ static auto log_convert(const char* h, log_flag<Fs...> f, const V& v)
         {
             return v.c_str();
         }
+        else if constexpr (std::is_same_v<std::string, std::decay_t<V>>)
+        {
+            return v.c_str();
+        }
         else
         {
-            return v.data();
+            return std::string(std::string_view(v));
         }
     };
 
-    // Add 'str' flag, force to 'const char*' for variadic passing.
+    // Add 'str' flag, force to 'const char*' (or a 'std::string' that is
+    // squashed to 'const char*' in 'apply_done') for variadic passing.
     return std::make_tuple(h, (f | str).value, str_data(v));
 }
 
