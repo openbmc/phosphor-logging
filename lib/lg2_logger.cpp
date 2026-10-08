@@ -138,6 +138,13 @@ static void noop_extra_output(level, const std::source_location&,
 static void cerr_extra_output(level l, const std::source_location& s,
                               const std::string& m)
 {
+    // Make sure that std::cerr has been constructed, even if this function is
+    // called from a static initializer that runs before the static
+    // initializers of this translation unit. This is only necessary for C++
+    // standard libraries that construct std::cerr from the static
+    // initializers of each translation unit that includes <iostream>.
+    static const std::ios_base::Init iosInit;
+
     static const int maxLogLevel = []() {
         const char* logLevel = getenv("LG2_LOG_LEVEL");
         if (logLevel == nullptr)
@@ -232,16 +239,30 @@ static void cerr_extra_output(level l, const std::source_location& s,
     std::cerr << stream.str() << std::endl;
 }
 
+// The settings below are function-local statics rather than namespace-scope
+// statics so that they are initialized on first use. lg2 may be called from
+// the static initializers of other translation units, which may run before
+// the dynamic initializers of this translation unit.
+
 // Use the cerr output method if we are on a TTY or if explicitly set via
 // environment variable.
-static auto extra_output_method =
-    (isatty(fileno(stderr)) || nullptr != getenv("LG2_FORCE_STDERR"))
-        ? cerr_extra_output
-        : noop_extra_output;
+static auto extra_output_method()
+    -> void (*)(level, const std::source_location&, const std::string&)
+{
+    static const auto method =
+        (isatty(fileno(stderr)) || nullptr != getenv("LG2_FORCE_STDERR"))
+            ? cerr_extra_output
+            : noop_extra_output;
+    return method;
+}
 
 // Skip sending debug messages to journald if "DEBUG_INVOCATION" is not set
 // per systemd.exec manpage.
-static auto send_debug_to_journal = nullptr != getenv("DEBUG_INVOCATION");
+static bool send_debug_to_journal()
+{
+    static const bool send = nullptr != getenv("DEBUG_INVOCATION");
+    return send;
+}
 
 // Do_log implementation.
 void do_log(level l, const std::source_location& s, const char* m, ...)
@@ -329,11 +350,11 @@ void do_log(level l, const std::source_location& s, const char* m, ...)
     });
 
     // Output the iovec.
-    if (send_debug_to_journal || l != level::debug)
+    if (send_debug_to_journal() || l != level::debug)
     {
         sd_journal_sendv(iov.data(), strings.size());
     }
-    extra_output_method(l, s, message);
+    extra_output_method()(l, s, message);
 }
 
 } // namespace lg2::details
