@@ -146,14 +146,11 @@ start with underscores. If these requirements are ignored, the journal API
 silently drops journal requests. In order to prevent silent bugs, the code
 performs compile-time checking of these requirements.
 
-The code that enables compile-time header checking imposes two constraints:
-
-1. Keys / headers must be passed as constant C-string values.
-   - `"KEY"` is valid; `"KEY"s` or `variable_key` is not.
-2. Any constant C-string may be interpreted as a key and give non-obvious
-   compile warnings about format violations.
-   - Constant C-strings (`"a string"`) should be passed as a C++ literal
-     (`"a string"s`) instead.
+The code that enables compile-time header checking requires that keys /
+headers be passed as constant C-string values: `"KEY"` is valid; `"KEY"s` or
+`variable_key` is not. Only arguments in key positions are checked; constant
+C-strings passed as values (`"KEY", "a string"`) are logged as ordinary
+strings.
 
 ### stderr output
 
