@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3872d1c_bd256693",
+        "filename": "extensions/amd-event-log/src/entry_points.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-10-08T21:36:44Z",
+      "side": 1,
+      "message": "still other string casts here (i haven\u0027t checked any more files)",
+      "range": {
+        "startLine": 35,
+        "startChar": 20,
+        "endLine": 35,
+        "endChar": 40
+      },
+      "revId": "88da1c1186956b91c861806b620d0a6a4931f510",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
