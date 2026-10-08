@@ -22,6 +22,30 @@
       },
       "revId": "f158cb1eddbee618a071aeda644b915ad6b5070c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23f0583a_7ec62a74",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-10-08T15:00:48Z",
+      "side": 1,
+      "message": "probably not worth the time it takes to fix this for an automated commit",
+      "parentUuid": "5ef46bcb_90e252cf",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 16
+      },
+      "revId": "f158cb1eddbee618a071aeda644b915ad6b5070c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
