@@ -65,6 +65,21 @@ foreach t : tests
     )
 endforeach
 
+# lg2_logger.cpp is compiled into this test (instead of linking the shared
+# library) and listed after the test source so that the static initializer in
+# the test runs before the dynamic initializers of lg2_logger.cpp.
+test(
+    'test_lg2_static_init',
+    executable(
+        'test-lg2_static_init',
+        'lg2_static_init_test.cpp',
+        '../lib/lg2_logger.cpp',
+        dependencies: [libsystemd_dep, sdbusplus_dep],
+        include_directories: phosphor_logging_includes,
+    ),
+    env: ['LG2_FORCE_STDERR=1'],
+)
+
 log_create_extensions_test = executable(
     'test-log-create-extensions',
     'log_create_extensions_test.cpp',
