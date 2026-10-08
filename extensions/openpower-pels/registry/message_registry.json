@@ -8005,11 +8005,11 @@
 
             "Documentation": {
                 "Description": "BMC RTC read failure",
-                "Message": "Failed to read the RTC. System date may be invalid. If NTP is disabled, set the correct date/time via ASMI before powering on",
+                "Message": "Failed to read the RTC. System date may be invalid. If NTP is disabled or non functional, set the correct date/time via ASMI before powering on",
                 "Notes": [
                     "Generated when the BMC fails to read the RTC.",
                     "If NTP is enabled, the system time is expected to recover automatically after synchronization.",
-                    "If NTP is disabled, manually setting the correct system time updates the RTC ",
+                    "If NTP is disabled or non-functional, manually setting the correct system time updates the RTC ",
                     "RTC hardware replacement is generally not required unless the failure persists.."
                 ]
             }
