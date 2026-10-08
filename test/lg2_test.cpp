@@ -1,0 +1,67 @@
+#include <phosphor-logging/lg2.hpp>
+#include <phosphor-logging/lg2/flags.hpp>
+#include <phosphor-logging/lg2/header.hpp>
+
+#include <string>
+#include <string_view>
+#include <type_traits>
+
+#include <gtest/gtest.h>
+
+// Tests for log_flag bit operations and values in baseline lg2
+TEST(Lg2FlagsTest, BaselineFlags)
+{
+    // Verify bitwise OR combinations
+    constexpr auto combined = lg2::hex | lg2::field16;
+    static_assert((combined.value & lg2::hex.value) == lg2::hex.value);
+    static_assert((combined.value & lg2::field16.value) == lg2::field16.value);
+
+    EXPECT_NE(lg2::hex.value, 0u);
+    EXPECT_NE(lg2::field16.value, 0u);
+    EXPECT_EQ(combined.value, lg2::hex.value | lg2::field16.value);
+}
+
+// Tests for header_str compile-time validation and header_str_conversion_t
+TEST(Lg2HeaderTest, BaselineHeaders)
+{
+    // Valid headers
+    constexpr lg2::details::header_str h1 = "VALID_HEADER";
+    static_assert(h1.value == "VALID_HEADER");
+
+    constexpr lg2::details::header_str h2 = "COUNT123";
+    static_assert(h2.value == "COUNT123");
+
+    static constexpr char h3_arr[] = "ARRAY_HEADER";
+    constexpr lg2::details::header_str h3 = h3_arr;
+    static_assert(h3.value == "ARRAY_HEADER");
+
+    EXPECT_STREQ(h1.data(), "VALID_HEADER");
+    EXPECT_STREQ(static_cast<const char*>(h1), "VALID_HEADER");
+    EXPECT_STREQ(h3.data(), "ARRAY_HEADER");
+
+    // header_str_conversion_t: non-strings are left unchanged
+    static_assert(
+        std::is_same_v<lg2::details::header_str_conversion_t<int>, int>);
+    static_assert(
+        std::is_same_v<lg2::details::header_str_conversion_t<double>, double>);
+    static_assert(
+        std::is_same_v<lg2::details::header_str_conversion_t<std::string>,
+                       std::string>);
+}
+
+// Tests for basic lg2 logging functionality that work with baseline lg2
+TEST(Lg2LogTest, BasicLogging)
+{
+    using namespace std::string_literals;
+
+    EXPECT_NO_THROW(lg2::error("Message without fields"));
+
+    EXPECT_NO_THROW(
+        lg2::debug("Debug with hex flag: {VAL}", "VAL", lg2::hex, 0xABCD));
+
+    EXPECT_NO_THROW(lg2::debug("Debug with compound flags: {VAL}", "VAL",
+                               lg2::hex | lg2::field16, 0x1234u));
+
+    EXPECT_NO_THROW(
+        lg2::info("Message with std::string: {STR}", "STR", "a string"s));
+}
