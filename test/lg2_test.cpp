@@ -4,6 +4,7 @@
 
 #include <string>
 #include <string_view>
+#include <tuple>
 #include <type_traits>
 
 #include <gtest/gtest.h>
@@ -73,4 +74,21 @@ TEST(Lg2LogTest, BasicLogging)
 
     EXPECT_NO_THROW(
         lg2::info("Message with std::string: {STR}", "STR", "a string"s));
+}
+
+// Verify that string_view values are converted into a NUL-terminated string
+// that holds only the characters covered by the view.
+TEST(Lg2LogTest, StringViewNotNulTerminated)
+{
+    constexpr char buf[] = {'a', 'b', 'c', 'X', 'Y', 'Z'};
+    const std::string_view sv{buf, 3};
+
+    auto t = lg2::details::log_convert("STR", lg2::details::log_flag<>{}, sv);
+    static_assert(
+        std::is_same_v<std::tuple_element_t<2, decltype(t)>, std::string>);
+    EXPECT_EQ(std::get<1>(t), lg2::str.value);
+    EXPECT_EQ(std::get<2>(t), "abc");
+    EXPECT_STREQ(std::get<2>(t).c_str(), "abc");
+
+    EXPECT_NO_THROW(lg2::info("string_view: {STR}", "STR", sv));
 }
