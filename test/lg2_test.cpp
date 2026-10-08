@@ -49,6 +49,11 @@ TEST(Lg2HeaderTest, BaselineHeaders)
         std::is_same_v<lg2::details::header_str_conversion_t<std::string>,
                        std::string>);
 
+    // header_str_conversion_t: string literals are converted to header_str
+    static_assert(
+        std::is_same_v<lg2::details::header_str_conversion_t<const char[13]>,
+                       lg2::details::header_str>);
+
     // header_str can only be constructed from string literal arrays, not raw
     // pointers or string_views (preventing non-null-terminated buffer reads)
     static_assert(
