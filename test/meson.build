@@ -80,6 +80,20 @@ log_create_extensions_test = executable(
 )
 test('test_log_create_extensions', log_create_extensions_test)
 
+# Verify that misuse of the lg2 API is rejected at compile time with the
+# expected diagnostic. Reuses the compiler command of lg2_test.cpp from
+# compile_commands.json.
+test(
+    'test_lg2_compile_fail',
+    python_prog,
+    args: [
+        files('lg2_compile_fail.py'),
+        meson.project_build_root(),
+        files('lg2_compile_fail.cpp'),
+    ],
+    timeout: 300,
+)
+
 tests_non_parallel = [
     'elog_quiesce_test',
     'elog_update_ts_test',
