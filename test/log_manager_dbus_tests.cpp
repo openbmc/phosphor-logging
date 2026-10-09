@@ -55,11 +55,10 @@ class TestLogManagerDbus : public ::testing::Test
             client_ctx(), server_ctx(), objManager(server_ctx, OBJ_LOGGING),
             iMgr(server_ctx, OBJ_INTERNAL), mgr(server_ctx, OBJ_LOGGING, iMgr)
         {
+            server_ctx.request_name(BUSNAME_LOGGING);
+
             // Create a thread for the daemon.
-            task = std::thread([this]() {
-                server_ctx.request_name(BUSNAME_LOGGING);
-                server_ctx.run();
-            });
+            task = std::thread([this]() { server_ctx.run(); });
         }
 
         ~fixture_data()
