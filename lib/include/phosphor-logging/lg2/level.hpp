@@ -17,4 +17,4 @@ enum class level
     debug = LOG_DEBUG,
 };
 
-}
+} // namespace lg2
