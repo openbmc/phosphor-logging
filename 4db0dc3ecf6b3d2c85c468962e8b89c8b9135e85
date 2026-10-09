@@ -33,6 +33,24 @@
       "message": "Could you add a Tested: section?",
       "revId": "4db0dc3ecf6b3d2c85c468962e8b89c8b9135e85",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee8ca564_8e4633e7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002932
+      },
+      "writtenOn": "2026-10-09T11:14:15Z",
+      "side": 1,
+      "message": "Never mind, I see the added static_assert tests already validate the change.",
+      "parentUuid": "c3123aaa_54e3e577",
+      "revId": "4db0dc3ecf6b3d2c85c468962e8b89c8b9135e85",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
