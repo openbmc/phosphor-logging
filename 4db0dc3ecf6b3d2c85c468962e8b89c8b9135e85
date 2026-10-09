@@ -51,6 +51,24 @@
       "parentUuid": "c3123aaa_54e3e577",
       "revId": "4db0dc3ecf6b3d2c85c468962e8b89c8b9135e85",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15349e2a_90aa2cde",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003197
+      },
+      "writtenOn": "2026-10-09T13:05:41Z",
+      "side": 1,
+      "message": "This was found by asking C++ static analyzer software to scan all code in the lib/ directory.",
+      "parentUuid": "be8d2ecd_ce3f855f",
+      "revId": "4db0dc3ecf6b3d2c85c468962e8b89c8b9135e85",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
