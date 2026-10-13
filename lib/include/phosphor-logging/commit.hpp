@@ -11,7 +11,10 @@ namespace lg2
 /** Commit a generated event/error.
  *
  *  @param e - The event to commit.
- *  @return The object path of the resulting event.
+ *  @return The object path of the resulting event. The path is empty if the
+ *          event has been filtered out or if the logging service does not
+ *          report the path of new events (older phosphor-dbus-interfaces
+ *          releases).
  *
  *  Note: Similar to elog(), this will use the default dbus connection to
  *  perform the operation.
@@ -34,7 +37,10 @@ void resolve(const sdbusplus::object_path& logPath);
  *
  *  @param ctx - The async context to use.
  *  @param e - The event to commit.
- *  @return The object path of the resulting event.
+ *  @return The object path of the resulting event. The path is empty if the
+ *          event has been filtered out or if the logging service does not
+ *          report the path of new events (older phosphor-dbus-interfaces
+ *          releases).
  */
 auto commit(sdbusplus::async::context& ctx,
             sdbusplus::exception::generated_event_base&& e,
