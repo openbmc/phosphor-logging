@@ -19,6 +19,10 @@ python_prog = find_program('python3', native: true)
 libsystemd_dep = dependency('libsystemd')
 
 sdbusplus_dep = dependency('sdbusplus')
+sdbusplus_includes = sdbusplus_dep.partial_dependency(
+    compile_args: true,
+    includes: true,
+)
 sdbusplusplus_prog = find_program('sdbus++', native: true)
 sdbuspp_gen_meson_prog = find_program('sdbus++-gen-meson', native: true)
 sdbusplusplus_depfiles = files()
@@ -263,7 +267,7 @@ endif
 executable(
     'log-resolve',
     'log_resolve_main.cpp',
-    dependencies: [CLI11_dep, pdi_dep, phosphor_logging_dep],
+    dependencies: [conf_h_dep, CLI11_dep, pdi_dep, phosphor_logging_dep],
     install: true,
 )
 
