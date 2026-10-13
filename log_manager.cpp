@@ -367,15 +367,30 @@ bool Manager::isQuiesceOnErrorEnabled()
 
 bool Manager::isCalloutPresent(const Entry& entry)
 {
-    for (const auto& c : std::views::keys(entry.additionalData()))
-    {
-        if (c.find("CALLOUT_") != std::string::npos)
+    return [&](const auto& self) {
+        if constexpr (requires { std::views::keys(self.additionalData()); })
         {
-            return true;
+            for (const auto& c : std::views::keys(self.additionalData()))
+            {
+                if (c.find("CALLOUT_") != std::string::npos)
+                {
+                    return true;
+                }
+            }
         }
-    }
+        else
+        {
+            for (const auto& c : self.additionalData())
+            {
+                if (c.find("CALLOUT_") != std::string::npos)
+                {
+                    return true;
+                }
+            }
+        }
 
-    return false;
+        return false;
+    }(entry);
 }
 
 void Manager::findAndRemoveResolvedBlocks()
@@ -505,12 +520,37 @@ void Manager::doExtensionLogCreate(const Entry& entry, const FFDCEntries& ffdc)
         assocs.push_back(e);
     }
 
+    auto adMap = [](const auto& self) -> std::map<std::string, std::string> {
+        if constexpr (requires {
+                          {
+                              self.additionalData()
+                          } -> std::convertible_to<
+                              std::map<std::string, std::string>>;
+                      })
+        {
+            return self.additionalData();
+        }
+        else if constexpr (requires {
+                               {
+                                   self.additionalData2()
+                               } -> std::convertible_to<
+                                   std::map<std::string, std::string>>;
+                           })
+        {
+            return self.additionalData2();
+        }
+        else
+        {
+            return util::additional_data::parse(self.additionalData());
+        }
+    }(entry);
+
     for (auto& create : Extensions::getCreateFunctions())
     {
         try
         {
             create(entry.message(), entry.id(), entry.timestamp(),
-                   entry.severity(), entry.additionalData(), assocs, ffdc);
+                   entry.severity(), adMap, assocs, ffdc);
         }
         catch (const std::exception& e)
         {

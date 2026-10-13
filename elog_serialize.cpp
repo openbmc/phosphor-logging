@@ -35,8 +35,19 @@ namespace logging
 template <class Archive>
 void save(Archive& a, const Entry& e, const std::uint32_t /*version*/)
 {
-    a(e.id(), e.severity(), e.timestamp(), e.message(),
-      util::additional_data::combine(e.additionalData()), e.associations(),
+    auto ad = [&](const auto& self) {
+        if constexpr (requires {
+                          util::additional_data::combine(self.additionalData());
+                      })
+        {
+            return util::additional_data::combine(self.additionalData());
+        }
+        else
+        {
+            return self.additionalData();
+        }
+    }(e);
+    a(e.id(), e.severity(), e.timestamp(), e.message(), ad, e.associations(),
       e.resolved(), e.version(), e.updateTimestamp(), e.eventId(),
       e.resolution());
 }
@@ -122,7 +133,29 @@ void load(Archive& a, Entry& e, const std::uint32_t version)
     e.severity(severity, true);
     e.timestamp(timestamp, true);
     e.message(message, true);
-    e.additionalData(additionalData, true);
+    [&](auto& self) {
+        if constexpr (requires { self.additionalData(additionalData, true); })
+        {
+            self.additionalData(additionalData, true);
+            if constexpr (requires {
+                              self.additionalData2(additionalData, true);
+                          })
+            {
+                self.additionalData2(additionalData, true);
+            }
+        }
+        else
+        {
+            self.additionalData(util::additional_data::combine(additionalData),
+                                true);
+            if constexpr (requires {
+                              self.additionalData2(additionalData, true);
+                          })
+            {
+                self.additionalData2(additionalData, true);
+            }
+        }
+    }(e);
     e.sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved(
         resolved, true);
     e.associations(associations, true);
@@ -160,7 +193,29 @@ fs::path serializeJSON(const Entry& e, const fs::path& dir)
     j["severity"] = static_cast<int>(e.severity());
     j["timestamp"] = e.timestamp();
     j["message"] = e.message();
-    j["additionalData"] = e.additionalData();
+    [&](const auto& self) {
+        if constexpr (requires {
+                          {
+                              self.additionalData()
+                          } -> std::same_as<std::map<std::string, std::string>>;
+                      })
+        {
+            j["additionalData"] = self.additionalData();
+        }
+        else if constexpr (requires {
+                               {
+                                   self.additionalData2()
+                               } -> std::same_as<
+                                   std::map<std::string, std::string>>;
+                           })
+        {
+            j["additionalData"] = self.additionalData2();
+        }
+        else
+        {
+            j["additionalData"] = self.additionalData();
+        }
+    }(e);
 
     nlohmann::json assocArray = nlohmann::json::array();
     for (const auto& [forward, reverse, endpoint] : e.associations())
@@ -230,9 +285,23 @@ bool deserializeJSON(const fs::path& path, Entry& e,
                    true);
         e.timestamp(j.at("timestamp").get<uint64_t>(), true);
         e.message(j.at("message").get<std::string>(), true);
-        e.additionalData(
-            j.at("additionalData").get<std::map<std::string, std::string>>(),
-            true);
+        auto adMap =
+            j.at("additionalData").get<std::map<std::string, std::string>>();
+        [&](auto& self) {
+            if constexpr (requires { self.additionalData(adMap, true); })
+            {
+                self.additionalData(adMap, true);
+            }
+            else
+            {
+                self.additionalData(util::additional_data::combine(adMap),
+                                    true);
+            }
+            if constexpr (requires { self.additionalData2(adMap, true); })
+            {
+                self.additionalData2(adMap, true);
+            }
+        }(e);
         e.sdbusplus::server::xyz::openbmc_project::logging::Entry::resolved(
             j.at("resolved").get<bool>(), true);
 
