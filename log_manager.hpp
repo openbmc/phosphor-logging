@@ -15,7 +15,9 @@
 #include <xyz/openbmc_project/Collection/DeleteAll/server.hpp>
 #include <xyz/openbmc_project/Logging/Create/server.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
+#if __has_include(<xyz/openbmc_project/Logging/event.hpp>)
 #include <xyz/openbmc_project/Logging/event.hpp>
+#endif
 
 #include <filesystem>
 #include <list>
@@ -33,7 +35,9 @@ using DeleteAllIface =
     sdbusplus::server::xyz::openbmc_project::collection::DeleteAll;
 
 using Severity = sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level;
+#if __has_include(<xyz/openbmc_project/Logging/event.hpp>)
 using LoggingCleared = sdbusplus::event::xyz::openbmc_project::Logging::Cleared;
+#endif
 
 namespace details
 {
@@ -522,8 +526,12 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
     {
         lg2::info("Deleting all log entries");
         auto numbersOfLogs = manager.eraseAll();
+#if __has_include(<xyz/openbmc_project/Logging/event.hpp>)
         manager.createFromEvent(
             LoggingCleared("NUMBER_OF_LOGS", numbersOfLogs));
+#else
+        (void)numbersOfLogs;
+#endif
     }
 
     /** @brief D-Bus method call implementation to create an event log.
