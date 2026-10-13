@@ -61,7 +61,7 @@ inline auto getLevel(const std::string& errMsg)
     return reqLevel;
 }
 
-Manager::~Manager()
+Manager::~Manager() noexcept
 {
     if constexpr (REDUNDANT_BMC)
     {

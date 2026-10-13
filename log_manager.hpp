@@ -75,7 +75,7 @@ class Manager : public details::ServerObject<details::ManagerIface>
     Manager& operator=(const Manager&) = delete;
     Manager(Manager&&) = delete;
     Manager& operator=(Manager&&) = delete;
-    virtual ~Manager();
+    virtual ~Manager() noexcept;
 
     /** @brief Constructor to put object onto bus at a dbus path.
      *  @param[in] bus - Bus to attach to.
@@ -503,7 +503,7 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
     Manager& operator=(const Manager&) = delete;
     Manager(Manager&&) = delete;
     Manager& operator=(Manager&&) = delete;
-    virtual ~Manager() = default;
+    virtual ~Manager() noexcept = default;
 
     /** @brief Constructor to put object onto bus at a dbus path.
      *         Defer signal registration (pass true for deferSignal to the
