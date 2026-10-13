@@ -21,6 +21,8 @@
 
 #include <filesystem>
 #include <list>
+#include <type_traits>
+#include <utility>
 
 namespace phosphor
 {
@@ -534,6 +536,18 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
 #endif
     }
 
+    using CreateReturn = decltype(std::declval<CreateIface>().create(
+        std::declval<std::string>(), std::declval<Severity>(),
+        std::declval<std::map<std::string, std::string>>()));
+
+    using CreateWithFFDCReturn =
+        decltype(std::declval<CreateIface>().createWithFFDCFiles(
+            std::declval<std::string>(), std::declval<Severity>(),
+            std::declval<std::map<std::string, std::string>>(),
+            std::declval<std::vector<
+                std::tuple<CreateIface::FFDCFormat, uint8_t, uint8_t,
+                           sdbusplus::message::unix_fd>>>()));
+
     /** @brief D-Bus method call implementation to create an event log.
      *
      * @param[in] errMsg - The error exception message associated with the
@@ -543,9 +557,10 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
      */
     auto create(std::string message, Severity severity,
                 std::map<std::string, std::string> additionalData)
-        -> sdbusplus::object_path override
+        -> CreateReturn override
     {
-        return manager.create(message, severity, additionalData);
+        return static_cast<CreateReturn>(
+            manager.create(message, severity, additionalData));
     }
 
     /** @brief D-Bus method call implementation to create an event log with FFDC
@@ -563,9 +578,10 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
         std::map<std::string, std::string> additionalData,
         std::vector<std::tuple<CreateIface::FFDCFormat, uint8_t, uint8_t,
                                sdbusplus::message::unix_fd>>
-            ffdc) -> sdbusplus::object_path override
+            ffdc) -> CreateWithFFDCReturn override
     {
-        return manager.create(message, severity, additionalData, ffdc);
+        return static_cast<CreateWithFFDCReturn>(
+            manager.create(message, severity, additionalData, ffdc));
     }
 
   private:
