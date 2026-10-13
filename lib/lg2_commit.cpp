@@ -4,6 +4,8 @@
 
 #include <sys/syslog.h>
 
+#include <type_traits>
+
 #include <nlohmann/json.hpp>
 #include <phosphor-logging/commit.hpp>
 #include <phosphor-logging/lg2.hpp>
@@ -208,11 +210,16 @@ auto commit(sdbusplus::async::context& ctx,
 
     if constexpr (LG2_COMMIT_DBUS)
     {
-        co_return co_await Create(ctx)
-            .service(Create::default_service)
-            .path(Create::instance_path)
-            .create(t.name(), details::severity_from_syslog(severity),
-                    details::data_from_json(t));
+        co_return co_await (
+            Create(ctx)
+                .service(Create::default_service)
+                .path(Create::instance_path)
+                .create(t.name(), details::severity_from_syslog(severity),
+                        details::data_from_json(t)) |
+            sdbusplus::async::execution::then(
+                [](auto&&... args) -> sdbusplus::object_path {
+                    return {std::forward<decltype(args)>(args)...};
+                }));
     }
     co_return {};
 }
