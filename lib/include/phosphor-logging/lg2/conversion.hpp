@@ -59,8 +59,10 @@ template <typename T>
 concept exception_type = std::derived_from<std::decay_t<T>, std::exception>;
 
 template <typename T>
-concept sdbusplus_object_path =
-    std::derived_from<std::decay_t<T>, sdbusplus::object_path>;
+concept sdbusplus_object_path = requires(std::decay_t<T> v) {
+    { v.str } -> std::convertible_to<std::string>;
+    { v.filename() } -> std::convertible_to<std::string>;
+};
 
 template <typename T>
 concept has_to_string = requires(T&& t) { to_string(t); };
