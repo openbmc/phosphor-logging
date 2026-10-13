@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b38c59c_04196abd",
+        "filename": "log_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2026-10-13T19:57:13Z",
+      "side": 1,
+      "message": "Can we throw static asserts on ERROR_CAP and ERROR_INFO_CAP to expect them to be greater than zero instead of having to check the constant. I am sure the compiler optimizes this out so this should not show any runtime expense. It would make it easier to read.",
+      "revId": "1597caba256185b047c8ab4cdfae5a1e7e1a33e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
