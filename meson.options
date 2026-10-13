@@ -82,3 +82,10 @@ option(
     value: '',
     description: 'Enable runtime extension enrichment using the specified interface',
 )
+
+option(
+    'log-create',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build log-create executable',
+)
