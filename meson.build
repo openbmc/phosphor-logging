@@ -13,6 +13,7 @@ project(
     version: '1.0.0',
 )
 cpp = meson.get_compiler('cpp')
+fs = import('fs')
 
 python_prog = find_program('python3', native: true)
 libsystemd_dep = dependency('libsystemd')
@@ -212,18 +213,37 @@ executable(
     link_with: log_manager_lib,
 )
 
-executable(
-    'log-create',
-    ['log_create_main.cpp', 'log_create_extensions.cpp'],
-    dependencies: [
-        CLI11_dep,
-        nlohmann_json_dep,
-        pdi_dep,
-        phosphor_logging_dep,
-        sdbusplus_dep,
-    ],
-    install: true,
-)
+if pdi_dep.type_name() == 'internal'
+    has_log_create_headers = (
+        fs.is_file(yamldir / 'xyz/openbmc_project/Logging.events.yaml') and
+        fs.is_file(
+            yamldir / 'xyz/openbmc_project/Logging/Extension/CPER/Processed.interface.yaml',
+        )
+    )
+else
+    has_log_create_headers = (
+        cpp.has_header('xyz/openbmc_project/Logging/event.hpp', dependencies: pdi_dep) and
+        cpp.has_header(
+            'xyz/openbmc_project/Logging/Extension/CPER/Processed/common.hpp',
+            dependencies: pdi_dep,
+        )
+    )
+endif
+
+if get_option('log-create').require(has_log_create_headers, error_message: 'Missing headers required for log-create').allowed()
+    executable(
+        'log-create',
+        ['log_create_main.cpp', 'log_create_extensions.cpp'],
+        dependencies: [
+            CLI11_dep,
+            nlohmann_json_dep,
+            pdi_dep,
+            phosphor_logging_dep,
+            sdbusplus_dep,
+        ],
+        install: true,
+    )
+endif
 
 executable(
     'log-resolve',
