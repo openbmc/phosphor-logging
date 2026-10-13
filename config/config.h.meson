@@ -12,4 +12,29 @@ static constexpr bool REDUNDANT_BMC = @redundant_bmc@;
 static constexpr auto RUNTIME_METADATA_PLUGIN = "@runtime_metadata_plugin@";
 static constexpr bool PERSIST_CEREAL = @persist_cereal@;
 
+#mesondefine HAVE_SDBUSPLUS_OBJECT_PATH
+#mesondefine HAVE_SDBUSPLUS_MATCH
+
+#include <sdbusplus/message/native_types.hpp>
+#if !HAVE_SDBUSPLUS_MATCH
+#include <sdbusplus/bus/match.hpp>
+#endif
+
+namespace sdbusplus
+{
+#if HAVE_SDBUSPLUS_OBJECT_PATH
+namespace message
+{
+using object_path = sdbusplus::object_path;
+}
+#else
+using object_path = message::object_path;
+#endif
+
+#if !HAVE_SDBUSPLUS_MATCH
+using match = bus::match_t;
+namespace match_rules = bus::match::rules;
+#endif
+}
+
 // vim: ft=cpp
