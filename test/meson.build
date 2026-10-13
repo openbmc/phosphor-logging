@@ -32,7 +32,6 @@ tests = [
     'bmc_pos_mgr_test',
     'extensions_test',
     'lg2_test',
-    'log_manager_dbus_tests',
     'remote_logging_test_address',
     'remote_logging_test_config',
     'remote_logging_test_port',
@@ -41,6 +40,24 @@ tests = [
     'serialization_test_path',
     'serialization_test_properties',
 ]
+
+# log_manager_dbus_tests uses the Logging.Cleared event from
+# <xyz/openbmc_project/Logging/event.hpp>, which older
+# phosphor-dbus-interfaces releases do not provide.
+if pdi_dep.type_name() == 'internal'
+    has_logging_event_hpp = fs.is_file(
+        yamldir / 'xyz/openbmc_project/Logging.events.yaml',
+    )
+else
+    has_logging_event_hpp = cpp.has_header(
+        'xyz/openbmc_project/Logging/event.hpp',
+        dependencies: pdi_dep,
+    )
+endif
+
+if has_logging_event_hpp
+    tests += ['log_manager_dbus_tests']
+endif
 
 if get_option('redundant-bmc')
     tests += ['log_manager_rbmc_sync_test']
