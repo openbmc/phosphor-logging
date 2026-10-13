@@ -1,5 +1,9 @@
 #pragma once
 
+#if __has_include("config.h")
+#include "config.h"
+#endif
+
 #include <nlohmann/json.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/message/types.hpp>
