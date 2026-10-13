@@ -2,8 +2,14 @@
 
 #include <sdbusplus/async.hpp>
 #include <sdbusplus/exception.hpp>
+#include <sdbusplus/message/native_types.hpp>
 
 #include <optional>
+
+namespace sdbusplus
+{
+using object_path = message::details::string_path_wrapper;
+}
 
 namespace lg2
 {
