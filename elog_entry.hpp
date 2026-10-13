@@ -3,6 +3,7 @@
 #include "config.h"
 
 #include "event_extensions/extension.hpp"
+#include "util.hpp"
 #include "xyz/openbmc_project/Logging/Entry/server.hpp"
 #include "xyz/openbmc_project/Object/Delete/server.hpp"
 #include "xyz/openbmc_project/Software/Version/server.hpp"
@@ -79,7 +80,36 @@ class Entry : public EntryIfaces
         timestamp(timestampErr, true);
         updateTimestamp(timestampErr, true);
         message(std::move(msgErr), true);
-        additionalData(std::move(additionalDataErr), true);
+        [&](auto& self) {
+            if constexpr (requires {
+                              self.additionalData(additionalDataErr, true);
+                          })
+            {
+                self.additionalData(std::move(additionalDataErr), true);
+                if constexpr (requires {
+                                  self.additionalData2(self.additionalData(),
+                                                       true);
+                              })
+                {
+                    self.additionalData2(self.additionalData(), true);
+                }
+            }
+            else if constexpr (requires {
+                                   self.additionalData2(additionalDataErr,
+                                                        true);
+                               })
+            {
+                self.additionalData2(std::move(additionalDataErr), true);
+                self.additionalData(
+                    util::additional_data::combine(self.additionalData2()),
+                    true);
+            }
+            else
+            {
+                self.additionalData(
+                    util::additional_data::combine(additionalDataErr), true);
+            }
+        }(*this);
         associations(std::move(objects), true);
         // Store a copy of associations in case we need to recreate
         assocs = associations();
