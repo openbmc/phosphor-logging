@@ -15,7 +15,7 @@ namespace rsyslog_config
 
 using NetworkClient = sdbusplus::xyz::openbmc_project::Network::server::Client;
 using Iface = sdbusplus::server::object_t<NetworkClient>;
-namespace sdbusRule = sdbusplus::match_rules;
+namespace sdbusRule = sdbusplus::bus::match::rules;
 
 /** @class Server
  *  @brief Configuration for rsyslog server
@@ -122,7 +122,7 @@ class Server : public Iface
         restart();
     }
 
-    sdbusplus::match hostnameChange;
+    sdbusplus::bus::match_t hostnameChange;
 };
 
 } // namespace rsyslog_config
