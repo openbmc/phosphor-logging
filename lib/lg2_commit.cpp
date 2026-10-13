@@ -12,6 +12,8 @@
 #include <xyz/openbmc_project/Logging/Create/client.hpp>
 #include <xyz/openbmc_project/Logging/Entry/client.hpp>
 
+#include <type_traits>
+
 namespace lg2
 {
 namespace details
@@ -208,11 +210,16 @@ auto commit(sdbusplus::async::context& ctx,
 
     if constexpr (LG2_COMMIT_DBUS)
     {
-        co_return co_await Create(ctx)
-            .service(Create::default_service)
-            .path(Create::instance_path)
-            .create(t.name(), details::severity_from_syslog(severity),
-                    details::data_from_json(t));
+        co_return co_await (
+            Create(ctx)
+                .service(Create::default_service)
+                .path(Create::instance_path)
+                .create(t.name(), details::severity_from_syslog(severity),
+                        details::data_from_json(t)) |
+            sdbusplus::async::execution::then(
+                [](auto&&... args) -> sdbusplus::object_path {
+                    return {std::forward<decltype(args)>(args)...};
+                }));
     }
     co_return {};
 }
