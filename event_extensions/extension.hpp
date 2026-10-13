@@ -1,5 +1,7 @@
 #pragma once
 
+#include "config.h"
+
 #include <nlohmann/json.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/message/types.hpp>

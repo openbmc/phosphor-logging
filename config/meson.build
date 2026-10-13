@@ -33,6 +33,23 @@ if cxx.has_header('poll.h')
     add_project_arguments('-DPLDM_HAS_POLL=1', language: 'cpp')
 endif
 
+conf_data.set10(
+    'HAVE_SDBUSPLUS_OBJECT_PATH',
+    cxx.has_type(
+        'sdbusplus::object_path',
+        prefix: '#include <sdbusplus/message/native_types.hpp>',
+        dependencies: sdbusplus_includes,
+    ),
+)
+conf_data.set10(
+    'HAVE_SDBUSPLUS_MATCH',
+    cxx.has_type(
+        'sdbusplus::match',
+        prefix: '#include <sdbusplus/bus/match.hpp>',
+        dependencies: sdbusplus_includes,
+    ),
+)
+
 conf_h_dep = declare_dependency(
     include_directories: include_directories('.', '..'),
     sources: configure_file(
