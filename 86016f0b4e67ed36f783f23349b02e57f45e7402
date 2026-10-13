@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9b88df1_63653069",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-10-13T21:26:07Z",
+      "side": 1,
+      "message": "I was hoping this would also fix standalone builds, but those still fail with\n\nC++ exception with description \"sd_bus_request_name: org.freedesktop.DBus.Error.AccessDenied: Permission denied\" thrown in SetUp().",
+      "revId": "86016f0b4e67ed36f783f23349b02e57f45e7402",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
