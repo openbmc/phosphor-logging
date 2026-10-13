@@ -83,20 +83,22 @@ test(
     env: ['LG2_FORCE_STDERR=1'],
 )
 
-log_create_extensions_test = executable(
-    'test-log-create-extensions',
-    'log_create_extensions_test.cpp',
-    '../log_create_extensions.cpp',
-    dependencies: [
-        conf_h_dep,
-        gtest_dep,
-        nlohmann_json_dep,
-        pdi_dep,
-        sdbusplus_dep,
-    ],
-    include_directories: include_directories('..'),
-)
-test('test_log_create_extensions', log_create_extensions_test)
+if build_log_create
+    log_create_extensions_test = executable(
+        'test-log-create-extensions',
+        'log_create_extensions_test.cpp',
+        '../log_create_extensions.cpp',
+        dependencies: [
+            conf_h_dep,
+            gtest_dep,
+            nlohmann_json_dep,
+            pdi_dep,
+            sdbusplus_dep,
+        ],
+        include_directories: include_directories('..'),
+    )
+    test('test_log_create_extensions', log_create_extensions_test)
+endif
 
 # Verify that misuse of the lg2 API is rejected at compile time with the
 # expected diagnostic. Reuses the compiler command of lg2_test.cpp from
