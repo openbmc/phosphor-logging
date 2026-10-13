@@ -2,8 +2,17 @@
 
 #include <sdbusplus/async.hpp>
 #include <sdbusplus/exception.hpp>
+#include <sdbusplus/message/native_types.hpp>
 
 #include <optional>
+
+// Older sdbusplus releases only define sdbusplus::message::object_path. Newer
+// releases define sdbusplus::object_path as an alias for the same type, so
+// this redeclaration is valid with both.
+namespace sdbusplus
+{
+using object_path = message::details::string_path_wrapper;
+}
 
 namespace lg2
 {
