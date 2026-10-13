@@ -1,3 +1,5 @@
+#include "config.h"
+
 #include <CLI/CLI.hpp>
 #include <phosphor-logging/commit.hpp>
 #include <xyz/openbmc_project/Logging/Entry/common.hpp>
