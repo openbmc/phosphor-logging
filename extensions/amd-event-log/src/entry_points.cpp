@@ -84,7 +84,7 @@ static void amdRuntimeMetadataProvider(
 {
     try
     {
-        auto redfishIt = additionalData.find(fields::Redfish);
+        auto redfishIt = additionalData.find(std::string(fields::Redfish));
         if (redfishIt != additionalData.end())
         {
             metadata["AMD"] = nlohmann::json::parse(redfishIt->second);
