@@ -186,6 +186,18 @@ Entry& Entry::operator=(const Entry& source)
         additionalData(source.additionalData());
     }
 
+    // Older phosphor-dbus-interfaces releases also have an AdditionalData2
+    // property. Keep it consistent with AdditionalData.
+    [](auto& self, const auto& src) {
+        if constexpr (requires { self.additionalData2(); })
+        {
+            if (self.additionalData2() != src.additionalData2())
+            {
+                self.additionalData2(src.additionalData2());
+            }
+        }
+    }(*this, source);
+
     if (serviceProviderNotify() != source.serviceProviderNotify())
     {
         serviceProviderNotify(source.serviceProviderNotify());
