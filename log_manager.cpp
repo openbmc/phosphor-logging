@@ -42,6 +42,9 @@ namespace
 constexpr auto extensionsKey = "_EXTENSIONS";
 } // namespace
 
+static_assert(ERROR_CAP > 0, "error_cap must be greater than zero");
+static_assert(ERROR_INFO_CAP > 0, "error_info_cap must be greater than zero");
+
 namespace phosphor
 {
 namespace logging
@@ -229,19 +232,14 @@ auto Manager::createEntry(std::string errMsg, Entry::Level errLvl,
 {
     if (!Extensions::disableDefaultLogCaps())
     {
+        // Make room for the new entry.
         if (errLvl < Entry::sevLowerLimit)
         {
-            if (realErrors.size() >= ERROR_CAP)
-            {
-                erase(realErrors.front());
-            }
+            trimToCap(realErrors, ERROR_CAP - 1);
         }
         else
         {
-            if (infoErrors.size() >= ERROR_INFO_CAP)
-            {
-                erase(infoErrors.front());
-            }
+            trimToCap(infoErrors, ERROR_INFO_CAP - 1);
         }
     }
 
@@ -829,6 +827,32 @@ void Manager::restore()
             }
         }
         lg2::debug("Last entry ID for this BMC is {ID}", "ID", entryId);
+    }
+
+    // The persisted entries can exceed the caps, so trim them now.  Each
+    // createEntry() would otherwise only erase one, keeping the excess forever.
+    if (!Extensions::disableDefaultLogCaps())
+    {
+        trimToCap(realErrors, ERROR_CAP);
+        trimToCap(infoErrors, ERROR_INFO_CAP);
+    }
+}
+
+void Manager::trimToCap(std::list<uint32_t>& ids, size_t cap)
+{
+    while (ids.size() > cap)
+    {
+        auto id = ids.front();
+        if (!entries.contains(id))
+        {
+            // An ID can be left in the list without an entry, such as when
+            // creating that entry failed after the ID was queued.  erase()
+            // can't remove it, so drop it here or it would block trimming.
+            lg2::error("Dropping log ID {ID} that has no entry", "ID", id);
+            ids.pop_front();
+            continue;
+        }
+        erase(id);
     }
 }
 

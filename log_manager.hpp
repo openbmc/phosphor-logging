@@ -429,6 +429,14 @@ class Manager : public details::ServerObject<details::ManagerIface>
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus_t& busLog;
 
+    /** @brief Erase the oldest entries in a list until it holds at most
+     *         cap IDs.
+     *
+     *  @param[in] ids - realErrors or infoErrors
+     *  @param[in] cap - the number of IDs to keep
+     */
+    void trimToCap(std::list<uint32_t>& ids, size_t cap);
+
     /** @brief List of error ids for high severity errors */
     std::list<uint32_t> realErrors;
 
