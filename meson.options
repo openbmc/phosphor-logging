@@ -88,3 +88,10 @@ option(
     value: true,
     description: 'Persist entries in the legacy Cereal format',
 )
+
+option(
+    'log-create',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build log-create executable',
+)
