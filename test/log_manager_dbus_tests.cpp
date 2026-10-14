@@ -3,12 +3,16 @@
 #include "log_manager.hpp"
 #include "paths.hpp"
 
+#include <systemd/sd-journal.h>
+#include <unistd.h>
+
 #include <phosphor-logging/commit.hpp>
 #include <sdbusplus/async.hpp>
 #include <sdbusplus/server/manager.hpp>
 #include <xyz/openbmc_project/Logging/Entry/client.hpp>
 #include <xyz/openbmc_project/Logging/event.hpp>
 
+#include <memory>
 #include <thread>
 
 #include <gmock/gmock.h>
@@ -98,23 +102,40 @@ class TestLogManagerDbus : public ::testing::Test
                 return journal_unavailable;
             }
 
-            sd_journal* j = nullptr;
-
-            sd_journal_open(&j, SD_JOURNAL_LOCAL_ONLY);
-            sd_journal_add_match(
-                j, "SYSLOG_IDENTIFIER=test-log_manager_dbus_tests", SIZE_MAX);
-
-            SD_JOURNAL_FOREACH_BACKWARDS(j)
+            sd_journal* raw_journal = nullptr;
+            if (sd_journal_open(&raw_journal, SD_JOURNAL_LOCAL_ONLY) < 0)
             {
-                const char* data = nullptr;
-                size_t length = 0;
+                return "";
+            }
+            std::unique_ptr<sd_journal, decltype(&sd_journal_close)> j(
+                raw_journal, sd_journal_close);
 
-                sd_journal_get_data(j, "MESSAGE", (const void**)&data, &length);
+            std::string pidMatch = "_PID=" + std::to_string(getpid());
+            sd_journal_add_match(
+                j.get(), "SYSLOG_IDENTIFIER=test-log_manager_dbus_tests", 0);
+            sd_journal_add_match(j.get(), pidMatch.c_str(), 0);
 
-                std::string entry(data, length);
-                if (entry.contains("OPENBMC_MESSAGE_ID="))
+            for (int retry = 0; retry < 50; ++retry)
+            {
+                SD_JOURNAL_FOREACH_BACKWARDS(j.get())
                 {
-                    return entry;
+                    const char* data = nullptr;
+                    size_t length = 0;
+
+                    if (sd_journal_get_data(j.get(), "MESSAGE",
+                                            (const void**)&data, &length) == 0)
+                    {
+                        std::string entry(data, length);
+                        if (entry.contains("OPENBMC_MESSAGE_ID="))
+                        {
+                            return entry;
+                        }
+                    }
+                }
+
+                if (sd_journal_wait(j.get(), 20000) < 0)
+                {
+                    break;
                 }
             }
         }
