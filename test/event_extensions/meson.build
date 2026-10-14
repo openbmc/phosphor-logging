@@ -3,7 +3,7 @@ test(
     executable(
         'test-event-extensions',
         'event_extensions_test.cpp',
-        link_with: [log_manager_lib],
+        link_with: [log_manager_lib, test_common_lib],
         dependencies: [
             gtest_dep,
             log_manager_deps,
@@ -20,7 +20,7 @@ test(
     executable(
         'test-cper-processed',
         'cper_processed_test.cpp',
-        link_with: [log_manager_lib],
+        link_with: [log_manager_lib, test_common_lib],
         dependencies: [
             gtest_dep,
             log_manager_deps,
@@ -39,6 +39,7 @@ test(
         'artifact_test.cpp',
         link_with: [
             log_manager_lib,
+            test_common_lib,
         ],
         dependencies: [
             gtest_dep,
@@ -57,8 +58,7 @@ test(
     executable(
         'test-cper-raw',
         'cper_raw_test.cpp',
-        '../common.cpp',
-        link_with: [log_manager_lib],
+        link_with: [log_manager_lib, test_common_lib],
         dependencies: [
             gtest_dep,
             log_manager_deps,

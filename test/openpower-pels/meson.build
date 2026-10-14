@@ -69,7 +69,7 @@ openpower_test_lib = static_library(
     'pel_paths.cpp',
     libpel_sources,
     peltool_sources,
-    '../common.cpp',
+    link_with: [test_common_lib],
     include_directories: [
         include_directories('../../', '../../gen'),
     ] + log_manager_ext_inc,
