@@ -20,9 +20,14 @@ class TestJsonSerialization : public MockedManagerTest
     {
         dir = paths::error_json();
         fs::create_directories(dir);
+        fs::create_directories(paths::error());
     }
 
-    ~TestJsonSerialization() {}
+    ~TestJsonSerialization()
+    {
+        fs::remove_all(dir);
+        fs::remove_all(paths::error());
+    }
 
     fs::path dir;
 };

@@ -27,9 +27,9 @@ class LogManagerRedundantBMCSyncTest : public ::testing::Test
         bus = sdbusplus::get_mocked_new(&sdbusMock);
         manager = std::make_unique<internal::Manager>(bus, OBJ_INTERNAL);
 
-        // paths::error() is shared across test binaries, so do not delete the
-        // whole directory here. Just make sure it exists and clean up only the
-        // file used by this test.
+        // Each test process has its own PERSIST_PATH_ROOT (see common.cpp).
+        // Make sure paths::error() exists and clean up only the file used by
+        // this test.
         fs::create_directories(paths::error());
 
         const auto* testInfo =
