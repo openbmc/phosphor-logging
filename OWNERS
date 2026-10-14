@@ -39,10 +39,10 @@ reviewers:
 - palaniappana@ami.com
 
 matchers:
-# AMD Event Log
- partial_regex: extensions/amd-event-log/
+- partial_regex: extensions/amd-event-log
   owners:
-      - ojayanth@gmail.com
+  - ojayanth@gmail.com
+
 openbmc:
 - name: Deepak Kodihalli
   email: deepak.kodihalli.83@gmail.com
