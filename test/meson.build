@@ -19,6 +19,13 @@ if not gtest_dep.found() or not gmock_dep.found()
     endif
 endif
 
+test_common_lib = static_library(
+    'test_common_lib',
+    'common.cpp',
+    dependencies: conf_h_dep,
+    include_directories: include_directories('..'),
+)
+
 if get_option('openpower-pel-extension').allowed()
     subdir('openpower-pels')
 endif
@@ -51,7 +58,6 @@ foreach t : tests
         executable(
             'test-' + t.underscorify(),
             t + '.cpp',
-            'common.cpp',
             '../phosphor-rsyslog-config/server-conf.cpp',
             dependencies: [
                 conf_h_dep,
@@ -62,7 +68,7 @@ foreach t : tests
                 phosphor_logging_dep,
             ],
             include_directories: include_directories('..', '../gen'),
-            link_with: log_manager_lib,
+            link_with: [log_manager_lib, test_common_lib],
         ),
     )
 endforeach
@@ -94,7 +100,6 @@ foreach t : tests_non_parallel
         executable(
             'test-' + t.underscorify(),
             t + '.cpp',
-            'common.cpp',
             '../phosphor-rsyslog-config/server-conf.cpp',
             dependencies: [
                 conf_h_dep,
@@ -104,7 +109,7 @@ foreach t : tests_non_parallel
                 phosphor_logging_dep,
             ],
             include_directories: include_directories('..', '../gen'),
-            link_with: log_manager_lib,
+            link_with: [log_manager_lib, test_common_lib],
         ),
         is_parallel: false,
     )
