@@ -724,7 +724,7 @@ TEST_F(HostNotifierTest, TestBadPEL)
         Repository repo1{repoPath};
 
         std::unique_ptr<HostInterface> hostIface1 =
-            std::make_unique<MockHostInterface>(event, dataIface);
+            std::make_unique<NiceMock<MockHostInterface>>(event, dataIface);
 
         HostNotifier notifier{repo1, dataIface, std::move(hostIface1)};
 
@@ -775,7 +775,7 @@ TEST_F(HostNotifierTest, TestDisable)
     {
         Repository repo1{repoPath};
         std::unique_ptr<HostInterface> hostIface1 =
-            std::make_unique<MockHostInterface>(event, dataIface);
+            std::make_unique<NiceMock<MockHostInterface>>(event, dataIface);
 
         HostNotifier notifier{repo1, dataIface, std::move(hostIface1)};
 

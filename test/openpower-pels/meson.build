@@ -15,6 +15,7 @@ openpower_pels = {
             '../../extensions/openpower-pels/host_notifier.cpp',
             '../../extensions/openpower-pels/repository.cpp',
         ],
+        'timeout': 120,
     },
     'json_utils': {},
     'log_id': {},
