@@ -37,6 +37,7 @@ openpower_pels = {
             event_extensions_sources,
         ],
         'deps': [cereal_dep],
+        'timeout': 120,
     },
     'pel_rules': {},
     'pel': {},
@@ -99,5 +100,6 @@ foreach t : openpower_pels.keys()
                 include_directories('../../', '../../gen'),
             ] + log_manager_ext_inc,
         ),
+        timeout: openpower_pels.get(t).get('timeout', 30),
     )
 endforeach

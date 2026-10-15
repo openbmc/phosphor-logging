@@ -126,9 +126,10 @@ void deletePELFile(uint32_t id)
 TEST_F(ManagerTest, TestCreateWithPEL)
 {
     std::unique_ptr<DataInterfaceBase> dataIface =
-        std::make_unique<MockDataInterface>();
+        std::make_unique<NiceMock<MockDataInterface>>();
 
-    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+    std::unique_ptr<JournalBase> journal =
+        std::make_unique<NiceMock<MockJournal>>();
 
     Manager manager{logManager, std::move(dataIface),
                     std::bind_front(&TestLogger::log, &logger),
@@ -166,9 +167,10 @@ TEST_F(ManagerTest, TestCreateWithPEL)
 TEST_F(ManagerTest, TestCreateWithInvalidPEL)
 {
     std::unique_ptr<DataInterfaceBase> dataIface =
-        std::make_unique<MockDataInterface>();
+        std::make_unique<NiceMock<MockDataInterface>>();
 
-    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+    std::unique_ptr<JournalBase> journal =
+        std::make_unique<NiceMock<MockJournal>>();
 
     Manager manager{logManager, std::move(dataIface),
                     std::bind_front(&TestLogger::log, &logger),
@@ -265,9 +267,10 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
     registryFile.close();
 
     std::unique_ptr<DataInterfaceBase> dataIface =
-        std::make_unique<MockDataInterface>();
+        std::make_unique<NiceMock<MockDataInterface>>();
 
-    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+    std::unique_ptr<JournalBase> journal =
+        std::make_unique<NiceMock<MockJournal>>();
 
     Manager manager{logManager, std::move(dataIface),
                     std::bind_front(&TestLogger::log, &logger),
@@ -369,9 +372,10 @@ TEST_F(ManagerTest, TestCreateWithMessageRegistry)
 TEST_F(ManagerTest, TestDBusMethods)
 {
     std::unique_ptr<DataInterfaceBase> dataIface =
-        std::make_unique<MockDataInterface>();
+        std::make_unique<NiceMock<MockDataInterface>>();
 
-    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+    std::unique_ptr<JournalBase> journal =
+        std::make_unique<NiceMock<MockJournal>>();
 
     Manager manager{logManager, std::move(dataIface),
                     std::bind_front(&TestLogger::log, &logger),
@@ -590,9 +594,10 @@ TEST_F(ManagerTest, TestESELToRawData)
 TEST_F(ManagerTest, TestCreateWithESEL)
 {
     std::unique_ptr<DataInterfaceBase> dataIface =
-        std::make_unique<MockDataInterface>();
+        std::make_unique<NiceMock<MockDataInterface>>();
 
-    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+    std::unique_ptr<JournalBase> journal =
+        std::make_unique<NiceMock<MockJournal>>();
 
     Manager manager{logManager, std::move(dataIface),
                     std::bind_front(&TestLogger::log, &logger),
@@ -642,9 +647,10 @@ TEST_F(ManagerTest, TestPruning)
     sdeventplus::Event e{sdEvent};
 
     std::unique_ptr<DataInterfaceBase> dataIface =
-        std::make_unique<MockDataInterface>();
+        std::make_unique<NiceMock<MockDataInterface>>();
 
-    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+    std::unique_ptr<JournalBase> journal =
+        std::make_unique<NiceMock<MockJournal>>();
 
     Manager manager{logManager, std::move(dataIface),
                     std::bind_front(&TestLogger::log, &logger),
@@ -714,9 +720,10 @@ TEST_F(ManagerTest, TestPELManualDelete)
     sdeventplus::Event e{sdEvent};
 
     std::unique_ptr<DataInterfaceBase> dataIface =
-        std::make_unique<MockDataInterface>();
+        std::make_unique<NiceMock<MockDataInterface>>();
 
-    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+    std::unique_ptr<JournalBase> journal =
+        std::make_unique<NiceMock<MockJournal>>();
 
     Manager manager{logManager, std::move(dataIface),
                     std::bind_front(&TestLogger::log, &logger),
@@ -788,9 +795,10 @@ TEST_F(ManagerTest, TestPELManualDeleteAll)
     sdeventplus::Event e{sdEvent};
 
     std::unique_ptr<DataInterfaceBase> dataIface =
-        std::make_unique<MockDataInterface>();
+        std::make_unique<NiceMock<MockDataInterface>>();
 
-    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+    std::unique_ptr<JournalBase> journal =
+        std::make_unique<NiceMock<MockJournal>>();
 
     Manager manager{logManager, std::move(dataIface),
                     std::bind_front(&TestLogger::log, &logger),
@@ -854,12 +862,13 @@ TEST_F(ManagerTest, TestPELManualDeleteAll)
 TEST_F(ManagerTest, TestServiceIndicators)
 {
     std::unique_ptr<DataInterfaceBase> dataIface =
-        std::make_unique<MockDataInterface>();
+        std::make_unique<NiceMock<MockDataInterface>>();
 
     MockDataInterface* mockIface =
         reinterpret_cast<MockDataInterface*>(dataIface.get());
 
-    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+    std::unique_ptr<JournalBase> journal =
+        std::make_unique<NiceMock<MockJournal>>();
 
     Manager manager{logManager, std::move(dataIface),
                     std::bind_front(&TestLogger::log, &logger),
@@ -966,9 +975,10 @@ TEST_F(ManagerTest, TestDuplicatePEL)
     size_t count = 0;
 
     std::unique_ptr<DataInterfaceBase> dataIface =
-        std::make_unique<MockDataInterface>();
+        std::make_unique<NiceMock<MockDataInterface>>();
 
-    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+    std::unique_ptr<JournalBase> journal =
+        std::make_unique<NiceMock<MockJournal>>();
 
     Manager manager{logManager, std::move(dataIface),
                     std::bind_front(&TestLogger::log, &logger),
@@ -1044,9 +1054,10 @@ TEST_F(ManagerTest, TestTerminateBitWithPELSevCriticalSysTerminate)
     registryFile.close();
 
     std::unique_ptr<DataInterfaceBase> dataIface =
-        std::make_unique<MockDataInterface>();
+        std::make_unique<NiceMock<MockDataInterface>>();
 
-    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+    std::unique_ptr<JournalBase> journal =
+        std::make_unique<NiceMock<MockJournal>>();
 
     Manager manager{logManager, std::move(dataIface),
                     std::bind_front(&TestLogger::log, &logger),
@@ -1126,7 +1137,7 @@ TEST_F(ManagerTest, TestFruPlug)
     registryFile.close();
 
     std::unique_ptr<DataInterfaceBase> dataIface =
-        std::make_unique<MockDataInterface>();
+        std::make_unique<NiceMock<MockDataInterface>>();
 
     MockDataInterface* mockIface =
         reinterpret_cast<MockDataInterface*>(dataIface.get());
@@ -1146,7 +1157,8 @@ TEST_F(ManagerTest, TestFruPlug)
     EXPECT_CALL(*mockIface, getInventoryFromLocCode("U1234-A3", 0, true))
         .WillRepeatedly(Return(std::vector<std::string>{"fan"}));
 
-    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+    std::unique_ptr<JournalBase> journal =
+        std::make_unique<NiceMock<MockJournal>>();
 
     Manager manager{logManager, std::move(dataIface),
                     std::bind_front(&TestLogger::log, &logger),
@@ -1269,7 +1281,7 @@ TEST_F(ManagerTest, TestPELDeleteWithoutHWIsolation)
     registryFile.close();
 
     std::unique_ptr<DataInterfaceBase> dataIface =
-        std::make_unique<MockDataInterface>();
+        std::make_unique<NiceMock<MockDataInterface>>();
 
     MockDataInterface* mockIface =
         reinterpret_cast<MockDataInterface*>(dataIface.get());
@@ -1290,7 +1302,8 @@ TEST_F(ManagerTest, TestPELDeleteWithoutHWIsolation)
                 "xyz.openbmc_project.HardwareIsolation.Entry")))
         .WillRepeatedly(Return(std::vector<std::string>{}));
 
-    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+    std::unique_ptr<JournalBase> journal =
+        std::make_unique<NiceMock<MockJournal>>();
     Manager manager{logManager, std::move(dataIface),
                     std::bind_front(&TestLogger::log, &logger),
                     std::move(journal)};
@@ -1370,7 +1383,7 @@ TEST_F(ManagerTest, TestPELDeleteWithHWIsolation)
     registryFile.close();
 
     std::unique_ptr<DataInterfaceBase> dataIface =
-        std::make_unique<MockDataInterface>();
+        std::make_unique<NiceMock<MockDataInterface>>();
 
     MockDataInterface* mockIface =
         reinterpret_cast<MockDataInterface*>(dataIface.get());
@@ -1390,7 +1403,8 @@ TEST_F(ManagerTest, TestPELDeleteWithHWIsolation)
         .WillRepeatedly(Return(std::vector<std::string>{
             "/xyz/openbmc_project/hardware_isolation/entry/1"}));
 
-    std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+    std::unique_ptr<JournalBase> journal =
+        std::make_unique<NiceMock<MockJournal>>();
     Manager manager{logManager, std::move(dataIface),
                     std::bind_front(&TestLogger::log, &logger),
                     std::move(journal)};
@@ -1446,8 +1460,9 @@ TEST_F(ManagerTest, TestCreatePELsWithBMCPosInID)
     // Create PELs with different BMC positions
     {
         std::unique_ptr<DataInterfaceBase> dataIface =
-            std::make_unique<MockDataInterface>();
-        std::unique_ptr<JournalBase> journal = std::make_unique<MockJournal>();
+            std::make_unique<NiceMock<MockDataInterface>>();
+        std::unique_ptr<JournalBase> journal =
+            std::make_unique<NiceMock<MockJournal>>();
 
         Manager manager{logManager, std::move(dataIface),
                         std::bind_front(&TestLogger::log, &logger),
