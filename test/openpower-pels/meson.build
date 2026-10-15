@@ -38,6 +38,7 @@ openpower_pels = {
             event_extensions_sources,
         ],
         'deps': [cereal_dep],
+        'timeout': 120,
     },
     'pel_rules': {},
     'pel': {},
