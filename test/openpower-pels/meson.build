@@ -15,6 +15,7 @@ openpower_pels = {
             '../../extensions/openpower-pels/host_notifier.cpp',
             '../../extensions/openpower-pels/repository.cpp',
         ],
+        'timeout': 120,
     },
     'json_utils': {},
     'log_id': {},
@@ -99,5 +100,6 @@ foreach t : openpower_pels.keys()
                 include_directories('../../', '../../gen'),
             ] + log_manager_ext_inc,
         ),
+        timeout: openpower_pels.get(t).get('timeout', 30),
     )
 endforeach
