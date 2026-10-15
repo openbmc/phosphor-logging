@@ -1,3 +1,5 @@
+#include "config.h"
+
 #include "event_extensions/utils/artifact.hpp"
 
 #include <fcntl.h>
@@ -133,7 +135,7 @@ ArtifactRef persistArtifact(std::span<const uint8_t> data,
             remaining -= rc;
         }
 
-        while (::fsync(fd.get()) < 0)
+        while (!IS_UNIT_TEST && ::fsync(fd.get()) < 0)
         {
             if (errno == EINTR)
             {
