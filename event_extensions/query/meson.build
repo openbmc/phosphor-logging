@@ -1,0 +1,1 @@
+subdir('search_hint')
