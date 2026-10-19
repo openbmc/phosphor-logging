@@ -3,6 +3,7 @@
 #include <nlohmann/json.hpp>
 #include <xyz/openbmc_project/Logging/Extension/CPER/Processed/common.hpp>
 #include <xyz/openbmc_project/Logging/Extension/CPER/Raw/common.hpp>
+#include <xyz/openbmc_project/Logging/Extension/Query/SearchHint/common.hpp>
 
 #include <functional>
 #include <stdexcept>
@@ -57,6 +58,7 @@ namespace extension =
 const HandlerMap handlers = {
     extender<extension::cper::Processed>(),
     extender<extension::cper::Raw>(),
+    extender<extension::query::SearchHint>(),
 };
 
 } // namespace

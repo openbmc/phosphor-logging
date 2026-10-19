@@ -14,6 +14,8 @@ namespace
 constexpr auto processInterface =
     "xyz.openbmc_project.Logging.Extension.CPER.Processed";
 constexpr auto rawInterface = "xyz.openbmc_project.Logging.Extension.CPER.Raw";
+constexpr auto searchHintInterface =
+    "xyz.openbmc_project.Logging.Extension.Query.SearchHint";
 
 /** Create a Cleared event, apply an extension, and return its serialization. */
 nlohmann::json extendEvent(const std::string& interface,
@@ -79,6 +81,19 @@ TEST(LogCreateExtensions, RawInterface)
                           .at("_EXTENSIONS")
                           .at(rawInterface);
     EXPECT_EQ(ext.at("Data"), nlohmann::json({1, 2, 3}));
+}
+
+TEST(LogCreateExtensions, SearchHintInterface)
+{
+    const auto extensions =
+        extendEvent(searchHintInterface,
+                    R"({"Service": "my-service", "Hint": "fan0-failed"})");
+
+    const auto& ext = extensions.at("xyz.openbmc_project.Logging.Cleared")
+                          .at("_EXTENSIONS")
+                          .at(searchHintInterface);
+    EXPECT_EQ(ext.at("Service"), "my-service");
+    EXPECT_EQ(ext.at("Hint"), "fan0-failed");
 }
 
 TEST(LogCreateExtensions, MultipleInterfaces)
