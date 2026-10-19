@@ -6,6 +6,7 @@
 #include "elog_entry.hpp"
 #include "elog_meta.hpp"
 #include "elog_serialize.hpp"
+#include "event_extensions/query/search_hint/extension.hpp"
 #include "extensions.hpp"
 #include "lib/lg2_commit.hpp"
 #include "paths.hpp"
@@ -334,6 +335,50 @@ auto Manager::createFromEvent(
 
     return this->createEntry(eventInfo.message, eventInfo.level,
                              std::move(eventInfo.additionalData));
+}
+
+auto Manager::findEntry(const std::string& service,
+                        const std::string& hint) const
+    -> std::optional<sdbusplus::object_path>
+{
+    namespace search_hint = event_extensions::query::search_hint;
+
+    const Entry* found = nullptr;
+    for (const auto& entry : std::views::values(entries))
+    {
+        if (entry->resolved())
+        {
+            continue;
+        }
+
+        for (const auto& extension : entry->getEventExtensions())
+        {
+            if (extension->interface() != search_hint::interface)
+            {
+                continue;
+            }
+
+            const auto* searchHint =
+                dynamic_cast<const search_hint::Extension*>(extension.get());
+            if ((searchHint != nullptr) && (searchHint->service() == service) &&
+                (searchHint->hint() == hint))
+            {
+                if ((found == nullptr) ||
+                    (entry->timestamp() >= found->timestamp()))
+                {
+                    found = entry.get();
+                }
+                break;
+            }
+        }
+    }
+
+    if (found == nullptr)
+    {
+        return std::nullopt;
+    }
+
+    return std::string(OBJ_ENTRY) + '/' + std::to_string(found->id());
 }
 
 bool Manager::isQuiesceOnErrorEnabled()

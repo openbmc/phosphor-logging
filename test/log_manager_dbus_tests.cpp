@@ -6,10 +6,13 @@
 #include <systemd/sd-journal.h>
 #include <unistd.h>
 
+#include <nlohmann/json.hpp>
 #include <phosphor-logging/commit.hpp>
 #include <sdbusplus/async.hpp>
 #include <sdbusplus/server/manager.hpp>
+#include <xyz/openbmc_project/Logging/Create/client.hpp>
 #include <xyz/openbmc_project/Logging/Entry/client.hpp>
+#include <xyz/openbmc_project/Logging/Manager/client.hpp>
 #include <xyz/openbmc_project/Logging/event.hpp>
 
 #include <memory>
@@ -22,6 +25,10 @@ namespace phosphor::logging::test
 {
 using LoggingCleared = sdbusplus::event::xyz::openbmc_project::Logging::Cleared;
 using LoggingEntry = sdbusplus::client::xyz::openbmc_project::logging::Entry<>;
+using LoggingCreate =
+    sdbusplus::client::xyz::openbmc_project::logging::Create<>;
+using LoggingManager =
+    sdbusplus::client::xyz::openbmc_project::logging::Manager<>;
 
 // Fixture to spawn the log-manager for dbus-based testing.
 class TestLogManagerDbus : public ::testing::Test
@@ -251,6 +258,93 @@ TEST_F(TestLogManagerDbus, CallCommitAsync)
             EXPECT_THAT(entry, ::testing::HasSubstr("\"NUMBER_OF_LOGS\":6"));
         }
     }
+}
+
+// Create entries with search hints and verify FindEntry returns the most
+// recent unresolved matching entry.
+TEST_F(TestLogManagerDbus, FindEntryBySearchHint)
+{
+    static constexpr auto searchHintInterface =
+        "xyz.openbmc_project.Logging.Extension.Query.SearchHint";
+    static constexpr auto resourceNotFound =
+        "xyz.openbmc_project.Common.Error.ResourceNotFound";
+
+    sdbusplus::object_path first{};
+    sdbusplus::object_path second{};
+    sdbusplus::object_path other{};
+    sdbusplus::object_path foundBeforeResolve{};
+    sdbusplus::object_path foundAfterResolve{};
+    std::string unexpectedError{};
+    std::string otherServiceError{};
+    std::string allResolvedError{};
+
+    auto createWithHint = [this](std::string service, std::string hint)
+        -> sdbusplus::async::task<sdbusplus::object_path> {
+        nlohmann::json extensions = {
+            {searchHintInterface, {{"Service", service}, {"Hint", hint}}}};
+
+        co_return co_await LoggingCreate(data->client_ctx)
+            .service(LoggingCreate::default_service)
+            .path(LoggingCreate::instance_path)
+            .create("xyz.openbmc_project.Logging.Error.Test",
+                    LoggingEntry::Level::Error,
+                    {{"_EXTENSIONS", extensions.dump()}});
+    };
+
+    auto findEntry =
+        [this](std::string service, std::string hint, std::string& error)
+        -> sdbusplus::async::task<sdbusplus::object_path> {
+        try
+        {
+            co_return co_await LoggingManager(data->client_ctx)
+                .service(LoggingManager::default_service)
+                .path(LoggingManager::instance_path)
+                .find_entry(service, hint);
+        }
+        catch (const sdbusplus::exception_t& e)
+        {
+            error = e.name();
+        }
+        co_return sdbusplus::object_path{};
+    };
+
+    auto resolve =
+        [this](sdbusplus::object_path path) -> sdbusplus::async::task<> {
+        co_await LoggingEntry(data->client_ctx)
+            .service(Entry::default_service)
+            .path(path.str)
+            .resolved(true);
+    };
+
+    auto test = [&]() -> sdbusplus::async::task<> {
+        first = co_await createWithHint("test-service", "test-hint");
+        other = co_await createWithHint("test-service", "other-hint");
+        second = co_await createWithHint("test-service", "test-hint");
+
+        foundBeforeResolve =
+            co_await findEntry("test-service", "test-hint", unexpectedError);
+
+        co_await resolve(second);
+        foundAfterResolve =
+            co_await findEntry("test-service", "test-hint", unexpectedError);
+
+        co_await findEntry("other-service", "test-hint", otherServiceError);
+
+        co_await resolve(first);
+        co_await findEntry("test-service", "test-hint", allResolvedError);
+    };
+
+    run(test());
+
+    ASSERT_FALSE(first.str.empty());
+    ASSERT_FALSE(second.str.empty());
+    ASSERT_FALSE(other.str.empty());
+
+    EXPECT_TRUE(unexpectedError.empty()) << unexpectedError;
+    EXPECT_EQ(foundBeforeResolve, second);
+    EXPECT_EQ(foundAfterResolve, first);
+    EXPECT_EQ(otherServiceError, resourceNotFound);
+    EXPECT_EQ(allResolvedError, resourceNotFound);
 }
 
 } // namespace phosphor::logging::test

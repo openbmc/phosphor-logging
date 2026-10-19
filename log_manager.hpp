@@ -13,12 +13,15 @@
 #include <sdbusplus/bus.hpp>
 #include <sdeventplus/source/io.hpp>
 #include <xyz/openbmc_project/Collection/DeleteAll/server.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
 #include <xyz/openbmc_project/Logging/Create/server.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
+#include <xyz/openbmc_project/Logging/Manager/server.hpp>
 #include <xyz/openbmc_project/Logging/event.hpp>
 
 #include <filesystem>
 #include <list>
+#include <optional>
 
 namespace phosphor
 {
@@ -31,6 +34,8 @@ extern const std::map<std::string, level> g_errLevelMap;
 using CreateIface = sdbusplus::server::xyz::openbmc_project::logging::Create;
 using DeleteAllIface =
     sdbusplus::server::xyz::openbmc_project::collection::DeleteAll;
+using LoggingManagerIface =
+    sdbusplus::server::xyz::openbmc_project::logging::Manager;
 
 using Severity = sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level;
 using LoggingCleared = sdbusplus::event::xyz::openbmc_project::Logging::Cleared;
@@ -206,6 +211,21 @@ class Manager : public details::ServerObject<details::ManagerIface>
      */
     auto createFromEvent(sdbusplus::exception::generated_event_base&& event)
         -> sdbusplus::object_path;
+
+    /** @brief Find the most recent unresolved entry with a search hint
+     *
+     *  Searches for entries extended with the
+     *  xyz.openbmc_project.Logging.Extension.Query.SearchHint interface
+     *  whose Service and Hint match the requested values.
+     *
+     * @param[in] service - The service which created the entry
+     * @param[in] hint - The hint associated with the entry
+     *
+     * @return The object path of the most recent matching unresolved
+     *         entry, or std::nullopt if none match.
+     */
+    auto findEntry(const std::string& service, const std::string& hint) const
+        -> std::optional<sdbusplus::object_path>;
 
     /** @brief Common wrapper for creating an Entry object
      *
@@ -485,13 +505,16 @@ class Manager : public details::ServerObject<details::ManagerIface>
 } // namespace internal
 
 /** @class Manager
- *  @brief Implementation for deleting all error log entries and
- *         creating new logs.
+ *  @brief Implementation for deleting all error log entries, creating
+ *         new logs, and querying existing logs.
  *  @details A concrete implementation for the
- *           xyz.openbmc_project.Collection.DeleteAll and
- *           xyz.openbmc_project.Logging.Create interfaces.
+ *           xyz.openbmc_project.Collection.DeleteAll,
+ *           xyz.openbmc_project.Logging.Create, and
+ *           xyz.openbmc_project.Logging.Manager interfaces.
  */
-class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
+class Manager :
+    public details::ServerObject<DeleteAllIface, CreateIface,
+                                 LoggingManagerIface>
 {
   public:
     Manager() = delete;
@@ -510,10 +533,10 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
      */
     Manager(sdbusplus::bus_t& bus, const std::string& path,
             internal::Manager& manager) :
-        details::ServerObject<DeleteAllIface, CreateIface>(
+        details::ServerObject<DeleteAllIface, CreateIface, LoggingManagerIface>(
             bus, path.c_str(),
-            details::ServerObject<DeleteAllIface,
-                                  CreateIface>::action::defer_emit),
+            details::ServerObject<DeleteAllIface, CreateIface,
+                                  LoggingManagerIface>::action::defer_emit),
         manager(manager) {};
 
     /** @brief Delete all d-bus objects.
@@ -558,6 +581,27 @@ class Manager : public details::ServerObject<DeleteAllIface, CreateIface>
             ffdc) -> sdbusplus::object_path override
     {
         return manager.create(message, severity, additionalData, ffdc);
+    }
+
+    /** @brief D-Bus method call implementation to find a log entry by hint
+     *
+     * @param[in] service - The service which created the entry
+     * @param[in] hint - The hint associated with the entry
+     *
+     * @return The object path of the most recent matching unresolved entry
+     *
+     * @throws ResourceNotFound if no unresolved entry matches.
+     */
+    auto findEntry(std::string service, std::string hint)
+        -> sdbusplus::object_path override
+    {
+        auto path = manager.findEntry(service, hint);
+        if (!path)
+        {
+            throw sdbusplus::error::xyz::openbmc_project::common::
+                ResourceNotFound();
+        }
+        return *path;
     }
 
   private:
