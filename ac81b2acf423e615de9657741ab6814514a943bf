@@ -34,6 +34,24 @@
       "parentUuid": "f8e4f97e_cb66d213",
       "revId": "ac81b2acf423e615de9657741ab6814514a943bf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6ad25b4_1775a401",
+        "filename": "test/log_manager_dbus_tests.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000188
+      },
+      "writtenOn": "2026-10-20T23:24:37Z",
+      "side": 1,
+      "message": "Yeah, that\u0027s kinda sad. It\u0027s just a caveat we need to watch out for in this code, because some other test suites do fork for some tests.",
+      "parentUuid": "07cc63b1_28aac52c",
+      "revId": "ac81b2acf423e615de9657741ab6814514a943bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
