@@ -16,6 +16,24 @@
       "message": "Can we match the process group instead? Maybe it doesn\u0027t matter because these scripts never fork, but it might be something we care.",
       "revId": "ac81b2acf423e615de9657741ab6814514a943bf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07cc63b1_28aac52c",
+        "filename": "test/log_manager_dbus_tests.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1003197
+      },
+      "writtenOn": "2026-10-20T23:23:39Z",
+      "side": 1,
+      "message": "This test runs both the server context (in a std::thread) and the client calls within the same process. Because threads share the same PID and no child processes are forked, all test journal entries share getpid().\n\nFurthermore, systemd-journald does not index POSIX process group IDs (_PGID does not exist in journald fields; _GID is the user/group ID). Matching by _PID is therefore both sufficient and the standard way to scope the journal query to this test run.",
+      "parentUuid": "f8e4f97e_cb66d213",
+      "revId": "ac81b2acf423e615de9657741ab6814514a943bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
