@@ -232,6 +232,13 @@ executable(
     install: true,
 )
 
+executable(
+    'log-find',
+    'log_find_main.cpp',
+    dependencies: [CLI11_dep, pdi_dep, sdbusplus_dep],
+    install: true,
+)
+
 # Generate test executables which run in obmc env (qemu, real hardware).
 executable(
     'logging-test',

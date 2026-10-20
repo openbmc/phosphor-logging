@@ -445,6 +445,31 @@ schema-specific D-Bus interfaces.
 creates a runtime `Extension` instance that is attached to and owned by the
 associated `Entry`.
 
+### Finding Log Entries by Search Hint
+
+A service may attach the
+`xyz.openbmc_project.Logging.Extension.Query.SearchHint` extension to a log
+entry it creates, providing its `Service` name and a `Hint` which is unique
+within that service. The service can later find the most recent unresolved entry
+with that hint (for example, to resolve it) using the `FindEntry` method of the
+`xyz.openbmc_project.Logging.Manager` interface on
+`/xyz/openbmc_project/logging`.
+
+The `log-find` CLI wraps this method:
+
+```sh
+# Print the D-Bus path of the matching entry.
+log-find --service fan-monitor --hint fan0
+
+# Print only the entry index.
+log-find --service fan-monitor --hint fan0 --id
+
+# Find and resolve the matching entry.
+log-resolve --path "$(log-find --service fan-monitor --hint fan0)"
+```
+
+`log-find` exits with a non-zero status if no unresolved entry matches.
+
 ### Configuring rsyslog server for remote logging
 
 The BMC is an rsyslog client. To stream out logs, it needs to talk to an rsyslog
