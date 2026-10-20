@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10f95d33_d48ef3d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-10-20T21:47:05Z",
+      "side": 1,
+      "message": "We don\u0027t usually go out of our way to add in support for building with older downstream libs.",
+      "revId": "883f93b00946f33ea45400d8f01f262f28ec5123",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
