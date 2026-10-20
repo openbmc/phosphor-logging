@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3c13923_5939807e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000188
+      },
+      "writtenOn": "2026-10-20T22:23:04Z",
+      "side": 1,
+      "message": "Is the build time config parameter really a reliable way to check this? I would think we technically need to check at runtime if the test harness sets a var. I wonder if it could just inject `eatmydata` in LD_PRELOAD when running tests.",
+      "revId": "36ac5d5d7325a9d09e907391e9ad7bb95bb541c6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
