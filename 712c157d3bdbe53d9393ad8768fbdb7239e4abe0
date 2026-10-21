@@ -34,6 +34,24 @@
       "parentUuid": "d2223cd4_2d07f9be",
       "revId": "712c157d3bdbe53d9393ad8768fbdb7239e4abe0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9db83bf1_71dca011",
+        "filename": "test/event_extensions/meson.build",
+        "patchSetId": 6
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1003197
+      },
+      "writtenOn": "2026-10-21T21:42:03Z",
+      "side": 1,
+      "message": "Done. test/common.cpp is now built once as the test_common_lib\nstatic library and is linked into all unit tests, including the\nopenpower-pels and event_extensions tests.",
+      "parentUuid": "a214c5c9_77eb75c6",
+      "revId": "712c157d3bdbe53d9393ad8768fbdb7239e4abe0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
