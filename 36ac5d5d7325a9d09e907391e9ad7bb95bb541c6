@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6d26df8b_67a4656f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003197
+      },
+      "writtenOn": "2026-10-21T21:15:54Z",
+      "side": 1,
+      "message": "`IS_UNIT_TEST` is a global boolean variable so this is a runtime test. Anyway, I will check whether I can drop this CL.",
+      "parentUuid": "e3dbe633_496e3493",
+      "revId": "36ac5d5d7325a9d09e907391e9ad7bb95bb541c6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9577efa1_1f0dda69",
         "filename": "event_extensions/utils/artifact.cpp",
         "patchSetId": 4
