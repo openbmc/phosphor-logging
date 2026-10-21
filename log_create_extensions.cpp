@@ -23,8 +23,29 @@ auto extender() -> HandlerMap::value_type
     return {
         std::string(T::interface),
         [](auto& event, const auto& json) {
+            if (!json.is_object())
+            {
+                throw std::invalid_argument(
+                    "Extension payload for interface '" +
+                    std::string(T::interface) + "' must be a JSON object");
+            }
             typename T::properties_t properties;
             json.get_to(properties);
+
+            // Round-trip back to JSON to detect user-specified keys that
+            // were silently ignored during deserialization (e.g. typos).
+            // from_json only consumes known properties, so any input key
+            // missing from the serialized output was never consumed.
+            nlohmann::json roundTrip = properties;
+            for (const auto& [key, _] : json.items())
+            {
+                if (!roundTrip.contains(key))
+                {
+                    throw std::invalid_argument(
+                        "Unknown key '" + key + "' for extension interface '" +
+                        std::string(T::interface) + "'");
+                }
+            }
             event.extend(properties);
         },
     };

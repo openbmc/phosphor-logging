@@ -18,7 +18,10 @@
  *                        "xyz.openbmc_project.Logging.Extension.CPER.Processed".
  * @param[in] json - JSON object matching the interface's properties.
  *
- * @throws std::invalid_argument if the interface is not registered.
+ * @throws std::invalid_argument if the interface is not registered, if the
+ *         payload is not a JSON object, or if the payload contains keys that
+ *         do not correspond to properties of the interface (i.e. keys that
+ *         were not consumed during deserialization).
  * @throws An exception from the interface's JSON deserialization (e.g. a
  *         nlohmann::json exception or sdbusplus::exception::InvalidEnumString)
  *         if the payload does not match the interface's properties.
