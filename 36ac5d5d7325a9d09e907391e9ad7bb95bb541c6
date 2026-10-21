@@ -16,6 +16,41 @@
       "message": "Is the build time config parameter really a reliable way to check this? I would think we technically need to check at runtime if the test harness sets a var. I wonder if it could just inject `eatmydata` in LD_PRELOAD when running tests.",
       "revId": "36ac5d5d7325a9d09e907391e9ad7bb95bb541c6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3dbe633_496e3493",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-10-21T05:52:11Z",
+      "side": 1,
+      "message": "+1  eatmydata would be the preferred long-term solution if CI/container support is available. For now, since the timeout is limited to this unit test and only the fsync() durability step is being skipped, the localized IS_UNIT_TEST check seemed like the simplest practical fix while keeping the core artifact functionality covered.",
+      "parentUuid": "a3c13923_5939807e",
+      "revId": "36ac5d5d7325a9d09e907391e9ad7bb95bb541c6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9577efa1_1f0dda69",
+        "filename": "event_extensions/utils/artifact.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-10-21T05:52:11Z",
+      "side": 1,
+      "message": "Can we wrap the entire fsync() retry block with if (!IS_UNIT_TEST) instead of adding the check to the while condition?",
+      "revId": "36ac5d5d7325a9d09e907391e9ad7bb95bb541c6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
