@@ -16,6 +16,24 @@
       "message": "Is this because of sleeps in the code? Can we avoid taking so much longer than the meson defaults?\n\nMaybe this should be grouped into the other timeout change?",
       "revId": "6da9e6272f98d9326bff495cb4b9e5de1c6d6413",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e851dfcc_20d04a78",
+        "filename": "test/openpower-pels/meson.build",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1003197
+      },
+      "writtenOn": "2026-10-21T21:41:01Z",
+      "side": 1,
+      "message": "The slowdown came from disk I/O in the CI container, not from sleeps in the code. Since 96079 (tmpfs /tmp) was merged, pel_manager takes under 7 s when built with ASan and UBSan, so I removed the timeout increase. The patch now only adds the NiceMock wrappers.",
+      "parentUuid": "cbb8f62d_893b9ea9",
+      "revId": "6da9e6272f98d9326bff495cb4b9e5de1c6d6413",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
