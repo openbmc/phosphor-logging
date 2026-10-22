@@ -1,5 +1,6 @@
 systemd_system_unit_dir = dependency('systemd').get_variable(
     'systemd_system_unit_dir',
+    pkgconfig_define: ['prefix', get_option('prefix')],
 )
 
 install_data(
