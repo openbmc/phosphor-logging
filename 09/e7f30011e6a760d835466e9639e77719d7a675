@@ -1,0 +1,8 @@
+Code-Review+1: William A. Kennington III <wak@google.com>
+Code-Review+2: Matt Spinler <spinler@us.ibm.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: <bvanassche@acm.org>
+Submitted-at: Thu, 22 Oct 2026 22:22:53 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/95444
+Project: openbmc/phosphor-logging
+Branch: refs/heads/master
