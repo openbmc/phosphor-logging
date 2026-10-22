@@ -34,6 +34,24 @@
       "parentUuid": "bc993bfb_9ecb52f9",
       "revId": "674d6f592369e31588734fe6a5e5f008b2c4dd21",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d21d70ae_873d2a50",
+        "filename": "test/openpower-pels/meson.build",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1003197
+      },
+      "writtenOn": "2026-10-22T14:25:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d651ccc4_41c950a6",
+      "revId": "674d6f592369e31588734fe6a5e5f008b2c4dd21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
