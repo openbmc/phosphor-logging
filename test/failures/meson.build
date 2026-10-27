@@ -16,8 +16,6 @@ lg2_check_args = {
 
 lg2_prologue = '''#include <phosphor-logging/lg2.hpp>
 
-#include <string>
-
 void lg2CompileFail()
 {
 '''
@@ -27,7 +25,7 @@ void lg2CompileFail()
 assert(
     cpp.compiles(
         lg2_prologue + '''
-    lg2::info("m", "KEY", std::string("value"), "HEX", lg2::hex, 5);
+    lg2::info("m", "KEY", "value", "HEX", lg2::hex, 5);
 }''',
         name: 'lg2 accepts a valid invocation',
         kwargs: lg2_check_args,
@@ -37,11 +35,12 @@ assert(
 
 lg2_negative_cases = {
     'TRAILING_HEADER': 'lg2::info("m", "KEY");',
+    'TRAILING_HEADER_FLAG': 'lg2::info("m", "KEY", lg2::hex);',
     'FLAG_BEFORE_HEADER': 'lg2::info("m", lg2::hex, "KEY", 5);',
     'MISALIGNED_PAIRS': 'lg2::info("m", "A", 1, 2, "B", 3);',
     'LOWERCASE_HEADER': 'lg2::info("m", "key", 1);',
     'RESERVED_HEADER': 'lg2::info("m", "MESSAGE", 1);',
-    'PROHIBITED_FLAG': 'lg2::info("m", "KEY", lg2::dec, std::string("str"));',
+    'PROHIBITED_FLAG': 'lg2::info("m", "KEY", lg2::dec, "str");',
 }
 
 foreach name, snippet : lg2_negative_cases
