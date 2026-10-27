@@ -1,6 +1,8 @@
 #include "decoder.hpp"
 
-#include <libcper.hpp>
+#include <json.h>
+#include <libcper/cper-parse.h>
+
 #include <nlohmann/json.hpp>
 #include <phosphor-logging/commit.hpp>
 #include <phosphor-logging/lg2.hpp>
@@ -8,6 +10,8 @@
 #include <xyz/openbmc_project/State/CPER/event.hpp>
 
 #include <algorithm>
+#include <exception>
+#include <memory>
 #include <unordered_map>
 #include <utility>
 
@@ -22,6 +26,52 @@ using Raw =
 
 namespace
 {
+
+/** Releases a json-c object with json_object_put() on destruction. */
+struct JsonObjectDeleter
+{
+    void operator()(json_object* obj) const noexcept
+    {
+        json_object_put(obj);
+    }
+};
+
+using JsonObjectPtr = std::unique_ptr<json_object, JsonObjectDeleter>;
+
+/** Convert a libcper json-c IR object to nlohmann::json.
+ *
+ *  Returns a null json value if the IR is null or cannot be converted.
+ */
+auto irToJson(JsonObjectPtr ir) -> nlohmann::json
+{
+    if (!ir)
+    {
+        return nullptr;
+    }
+
+    try
+    {
+        return nlohmann::json::parse(json_object_to_json_string(ir.get()));
+    }
+    catch (const std::exception&)
+    {
+        return nullptr;
+    }
+}
+
+/** Parse a full CPER record into libcper IR. */
+auto parseCPER(std::span<const std::uint8_t> raw) -> nlohmann::json
+{
+    return irToJson(JsonObjectPtr{cper_buf_to_ir(
+        reinterpret_cast<const unsigned char*>(raw.data()), raw.size())});
+}
+
+/** Parse a single CPER section (with descriptor) into libcper IR. */
+auto parseCPERSection(std::span<const std::uint8_t> raw) -> nlohmann::json
+{
+    return irToJson(JsonObjectPtr{cper_buf_single_section_to_ir(
+        reinterpret_cast<const unsigned char*>(raw.data()), raw.size())});
+}
 
 template <typename Event, typename... Extensions>
 auto extend(Event&& event, Extensions&&... extensions) -> Event&&
@@ -93,11 +143,10 @@ auto Decoder::parseLibCPER(ContentType type, std::span<const std::uint8_t> raw)
         switch (type)
         {
             case ContentType::CPER:
-                return {libcper::ir::parseCPER(raw),
-                        "/header/notificationType/guid",
+                return {parseCPER(raw), "/header/notificationType/guid",
                         "/header/severity/code", "/sectionDescriptors"};
             case ContentType::CPERSection:
-                return {libcper::ir::parseCPERSection(raw),
+                return {parseCPERSection(raw),
                         "/sectionDescriptor/sectionType/data",
                         "/sectionDescriptor/severity/code",
                         "/sectionDescriptor"};
