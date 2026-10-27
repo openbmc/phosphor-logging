@@ -3,6 +3,7 @@ openpower_pels = {
     'ascii_string': {},
     'bcd_time': {},
     'data_interface': {},
+    'dbus_types': {},
     'device_callouts': {},
     'event_logger': {},
     'extended_user_data': {},
