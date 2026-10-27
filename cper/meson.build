@@ -1,8 +1,12 @@
-libcper_dep = dependency(
-    'libcper-cxx',
-    fallback: ['libcper', 'libcper_cxx_dep'],
-    default_options: ['bindings-cxx=enabled'],
-    include_type: 'system',
+libcper_dep = declare_dependency(
+    dependencies: [
+        dependency(
+            'libcper',
+            fallback: ['libcper', 'libcper_parse_dep'],
+            include_type: 'system',
+        ),
+        dependency('json-c', include_type: 'system'),
+    ],
 )
 
 executable(
