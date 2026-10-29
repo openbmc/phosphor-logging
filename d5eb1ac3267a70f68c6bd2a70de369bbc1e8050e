@@ -16,6 +16,24 @@
       "message": "Inventing our own build system separate from meson for compile tests is not cool.\n\nI think you can do something similar to what an llm suggested here by making a test/failures/meson.build with explicit test cases in it:\n\n```\nAdd a cpp.compiles() loop in test/meson.build instead.\ncpp \u003d meson.get_compiler(\u0027cpp\u0027) (top-level meson.build:15) and phosphor_logging_dep (lib/meson.build:53) are already in scope, so Meson supplies the include paths, cpp_std\u003dc++23, and werror automatically — nothing to reconstruct by hand:\n# Each snippet must fail to compile; configure fails otherwise.\nlg2_negative_cases \u003d {\n  \u0027TRAILING_HEADER\u0027:   \u0027lg2::info(\"m\", \"KEY\");\u0027,\n  \u0027FLAG_BEFORE_HEADER\u0027:\u0027lg2::info(\"m\", lg2::hex, \"KEY\", 5);\u0027,\n  \u0027MISALIGNED_PAIRS\u0027:  \u0027lg2::info(\"m\", \"A\", 1, 2, \"B\", 3);\u0027,\n  \u0027LOWERCASE_HEADER\u0027:  \u0027lg2::info(\"m\", \"key\", 1);\u0027,\n  \u0027RESERVED_HEADER\u0027:   \u0027lg2::info(\"m\", \"MESSAGE\", 1);\u0027,\n  \u0027PROHIBITED_FLAG\u0027:   \u0027lg2::info(\"m\", \"KEY\", lg2::dec, std::string(\"str\"));\u0027,\n}\nforeach name, snippet : lg2_negative_cases\n  assert(\n    not cpp.compiles(\n      \u0027#include \u003cphosphor-logging/lg2.hpp\u003e\\nvoid f() { \u0027 + snippet + \u0027 }\u0027,\n      name : \u0027lg2 rejects \u0027 + name,\n      dependencies : phosphor_logging_dep,\n    ),\n    \u0027lg2 misuse unexpectedly compiled: \u0027 + name,\n  )\nendforeach\n# Control: valid code must compile, so a broken check can\u0027t silently pass.\nassert(\n  cpp.compiles(\n    \u0027#include \u003cphosphor-logging/lg2.hpp\u003e\\nvoid f() { lg2::info(\"m\", \"KEY\", std::string(\"value\")); }\u0027,\n    name : \u0027lg2 accepts valid invocation\u0027,\n    dependencies : phosphor_logging_dep,\n  ),\n  \u0027lg2 valid invocation did not compile\u0027,\n)\n```",
       "revId": "d5eb1ac3267a70f68c6bd2a70de369bbc1e8050e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccd0730e_428f352d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003197
+      },
+      "writtenOn": "2026-10-29T01:18:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70b0adb9_c5b270f5",
+      "revId": "d5eb1ac3267a70f68c6bd2a70de369bbc1e8050e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
