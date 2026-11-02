@@ -16,6 +16,24 @@
       "message": "As suggested in https://gerrit.openbmc.org/c/openbmc/libcper/+/94085, why not instead just temporarily change the default in meson.options to \u0027disabled\u0027 which is a 1 liner.",
       "revId": "e0352b4bbfef410af1131ecafe0569fe7b6a2c28",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d76a73d_0bf60d44",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003197
+      },
+      "writtenOn": "2026-11-02T23:28:07Z",
+      "side": 1,
+      "message": "Done. I replaced the libcper C API workaround with a one-line change that sets the default value of the cper-processor option to \u0027disabled\u0027. The commit message says that this change is temporary and should be reverted once https://gerrit.openbmc.org/c/openbmc/libcper/+/94085 has been merged.",
+      "parentUuid": "c4cfea87_c62d649c",
+      "revId": "e0352b4bbfef410af1131ecafe0569fe7b6a2c28",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
