@@ -22,6 +22,47 @@ TEST(Lg2FlagsTest, BaselineFlags)
     EXPECT_EQ(combined.value, lg2::hex.value | lg2::field16.value);
 }
 
+// Tests for is_log_flag type trait
+TEST(Lg2FlagsTest, IsLogFlag)
+{
+    // Basic log flags
+    static_assert(lg2::details::is_log_flag_v<decltype(lg2::hex)>);
+    static_assert(lg2::details::is_log_flag_v<decltype(lg2::dec)>);
+    static_assert(lg2::details::is_log_flag_v<decltype(lg2::bin)>);
+    static_assert(lg2::details::is_log_flag_v<decltype(lg2::floating)>);
+    static_assert(lg2::details::is_log_flag_v<decltype(lg2::signed_val)>);
+    static_assert(lg2::details::is_log_flag_v<decltype(lg2::unsigned_val)>);
+    static_assert(lg2::details::is_log_flag_v<decltype(lg2::field8)>);
+    static_assert(lg2::details::is_log_flag_v<decltype(lg2::field16)>);
+    static_assert(lg2::details::is_log_flag_v<decltype(lg2::field32)>);
+    static_assert(lg2::details::is_log_flag_v<decltype(lg2::field64)>);
+    static_assert(lg2::details::is_log_flag_v<decltype(lg2::str)>);
+
+    // Compound flags
+    static_assert(
+        lg2::details::is_log_flag_v<decltype(lg2::hex | lg2::field16)>);
+    static_assert(lg2::details::is_log_flag_v<decltype(lg2::dec | lg2::field32 |
+                                                       lg2::signed_val)>);
+
+    // References and const-qualifications
+    static_assert(lg2::details::is_log_flag<decltype(lg2::hex)>::value);
+    static_assert(lg2::details::is_log_flag<const decltype(lg2::hex)&>::value);
+    static_assert(lg2::details::is_log_flag_v<const decltype(lg2::hex)&>);
+    static_assert(lg2::details::is_log_flag_v<decltype(lg2::hex)&&>);
+
+    // Non-flags
+    static_assert(!lg2::details::is_log_flag_v<int>);
+    static_assert(!lg2::details::is_log_flag_v<const char*>);
+    static_assert(!lg2::details::is_log_flag_v<char[5]>);
+    static_assert(!lg2::details::is_log_flag_v<std::string>);
+    static_assert(!lg2::details::is_log_flag_v<std::string_view>);
+    static_assert(!lg2::details::is_log_flag_v<double>);
+
+    EXPECT_TRUE(lg2::details::is_log_flag_v<decltype(lg2::hex)>);
+    EXPECT_FALSE(lg2::details::is_log_flag_v<int>);
+    EXPECT_FALSE(lg2::details::is_log_flag_v<const char*>);
+}
+
 // Tests for header_str compile-time validation and header_str_conversion_t
 TEST(Lg2HeaderTest, BaselineHeaders)
 {
