@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4cfea87_c62d649c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-11-02T22:37:29Z",
+      "side": 1,
+      "message": "As suggested in https://gerrit.openbmc.org/c/openbmc/libcper/+/94085, why not instead just temporarily change the default in meson.options to \u0027disabled\u0027 which is a 1 liner.",
+      "revId": "e0352b4bbfef410af1131ecafe0569fe7b6a2c28",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
