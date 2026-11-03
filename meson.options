@@ -93,5 +93,6 @@ option(
 option(
     'cper-processor',
     type: 'feature',
+    value: 'disabled',
     description: 'Enable CPER processing daemon',
 )
