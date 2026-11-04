@@ -2866,6 +2866,78 @@
         },
 
         {
+            "Name": "xyz.openbmc_project.Power.GPIOFailureToWrite",
+            "Subsystem": "power",
+            "ActionFlags": ["service_action", "report", "call_home"],
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x1E01",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Failed to write GPIO value",
+                "Message": "Write to GPIO failed",
+                "Notes": [
+                    "The device should be ",
+                    "identified using CALLOUT_DEVICE_PATH in the ",
+                    "AdditionalData property of the event log."
+                ]
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    }
+                ]
+            }
+        },
+
+        {
+            "Name": "xyz.openbmc_project.Power.GPIOFailureToRead",
+            "Subsystem": "power",
+            "ActionFlags": ["service_action", "report", "call_home"],
+            "ComponentID": "0x2700",
+
+            "SRC": {
+                "Type": "11",
+                "ReasonCode": "0x1E03",
+                "Words6To9": {}
+            },
+
+            "Documentation": {
+                "Description": "Failed to read GPIO value",
+                "Message": "GPIO read failed",
+                "Notes": [
+                    "The device should be ",
+                    "identified using CALLOUT_DEVICE_PATH in the ",
+                    "AdditionalData property of the event log."
+                ]
+            },
+
+            "JournalCapture": {
+                "Sections": [
+                    {
+                        "SyslogID": "phosphor-chassis-power",
+                        "NumLines": 30
+                    },
+                    {
+                        "SyslogID": "phosphor-power-control",
+                        "NumLines": 30
+                    }
+                ]
+            }
+        },
+
+        {
             "Name": "xyz.openbmc_project.Power.PowerSequencer.UnexpectedChassisStatus",
             "Subsystem": "power_sequencer",
             "ComponentID": "0x2700",
