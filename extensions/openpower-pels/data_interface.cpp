@@ -12,7 +12,9 @@
 #include <filesystem>
 #include <format>
 
-#ifdef PEL_ENABLE_PHAL
+#if defined(PEL_ENABLE_PHAL_NEXT)
+#include <guard/guard_facade.H>
+#elif defined(PEL_ENABLE_PHAL)
 #include <libekb.H>
 #include <libpdbg.h>
 #include <libphal.H>
@@ -657,19 +659,32 @@ bool DataInterface::getQuiesceOnError() const
     return ret;
 }
 
-#ifdef PEL_ENABLE_PHAL
+#if defined(PEL_ENABLE_PHAL) || defined(PEL_ENABLE_PHAL_NEXT)
 void DataInterface::createGuardRecord(const std::vector<uint8_t>& binPath,
                                       GardType eGardType, uint32_t plid) const
 {
     try
     {
+#ifdef PEL_ENABLE_PHAL_NEXT
+        hostfw::guard::init(false);
+        hostfw::guard::create(binPath, plid, eGardType,
+                              /*overwriteRecord=*/true);
+#else
         libguard::libguard_init(false);
         libguard::create(binPath, plid, eGardType);
+#endif
     }
+#ifndef PEL_ENABLE_PHAL_NEXT
     catch (libguard::exception::GuardException& e)
     {
         lg2::error("Exception in libguard {ERROR}", "ERROR", e);
     }
+#else
+    catch (const std::exception& e)
+    {
+        lg2::error("Exception in hostfw::guard {ERROR}", "ERROR", e);
+    }
+#endif
 }
 #endif
 
@@ -849,7 +864,7 @@ bool DataInterfaceBase::isDIMM(const std::string& locCode)
     {
         return isDIMMType.value();
     }
-#ifndef PEL_ENABLE_PHAL
+#if !defined(PEL_ENABLE_PHAL) || defined(PEL_ENABLE_PHAL_NEXT)
     return false;
 #else
     else
