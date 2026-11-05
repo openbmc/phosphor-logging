@@ -3,9 +3,18 @@
 #include "dbus_types.hpp"
 #include "dbus_watcher.hpp"
 
-#ifdef PEL_ENABLE_PHAL
+#if defined(PEL_ENABLE_PHAL_NEXT)
+#include <guard/guard_facade.H>
+#include <guard/libguard/include/guard_record.H>
+
+using GardType = hostfw::guard::GARD_ErrorType;
+namespace libguard = hostfw::guard;
+#elif defined(PEL_ENABLE_PHAL)
 #include <libguard/guard_interface.hpp>
 #include <libguard/include/guard_record.hpp>
+
+using GardType = openpower::guard::GardType;
+namespace libguard = openpower::guard;
 #endif
 
 #include <phosphor-logging/lg2.hpp>
@@ -15,11 +24,6 @@
 #include <filesystem>
 #include <fstream>
 #include <unordered_map>
-
-#ifdef PEL_ENABLE_PHAL
-using GardType = openpower::guard::GardType;
-namespace libguard = openpower::guard;
-#endif
 
 namespace openpower
 {
@@ -447,7 +451,7 @@ class DataInterfaceBase
     static std::pair<std::string, std::string> extractConnectorFromLocCode(
         const std::string& locationCode);
 
-#ifdef PEL_ENABLE_PHAL
+#if defined(PEL_ENABLE_PHAL) || defined(PEL_ENABLE_PHAL_NEXT)
     /**
      * @brief Create guard record
      *
@@ -867,7 +871,7 @@ class DataInterface : public DataInterfaceBase
      */
     bool getQuiesceOnError() const override;
 
-#ifdef PEL_ENABLE_PHAL
+#if defined(PEL_ENABLE_PHAL) || defined(PEL_ENABLE_PHAL_NEXT)
     /**
      * @brief Create guard record
      *
