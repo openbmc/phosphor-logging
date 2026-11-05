@@ -25,6 +25,11 @@ if build_phal
     ]
     extra_args += ['-DPEL_ENABLE_PHAL']
     log_manager_ext_args += ['-DPEL_ENABLE_PHAL']
+elif phal_backend == 'next'
+    extra_sources += ['phal_service_actions.cpp']
+    extra_dependencies += [dependency('hostfw_phal')]
+    extra_args += ['-DPEL_ENABLE_PHAL_NEXT']
+    log_manager_ext_args += ['-DPEL_ENABLE_PHAL_NEXT']
 endif
 
 libpel_sources = files(
