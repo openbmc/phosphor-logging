@@ -20,8 +20,11 @@
 #include "stream.hpp"
 #include "user_data_formats.hpp"
 
-#ifdef PEL_ENABLE_PHAL
+#if defined(PEL_ENABLE_PHAL) || defined(PEL_ENABLE_PHAL_NEXT)
 #include "phal_service_actions.hpp"
+#endif
+
+#ifdef PEL_ENABLE_PHAL
 #include "sbe_ffdc_handler.hpp"
 
 #include <libguard/guard_interface.hpp>
@@ -167,7 +170,7 @@ PEL::PEL(const message::Entry& regEntry, uint32_t obmcLogID, uint64_t timestamp,
         addUserDataSection(std::move(ud));
     }
 
-#ifdef PEL_ENABLE_PHAL
+#if defined(PEL_ENABLE_PHAL) || defined(PEL_ENABLE_PHAL_NEXT)
     auto path = std::string(OBJ_ENTRY) + '/' + std::to_string(obmcLogID);
     openpower::pels::phal::createServiceActions(callouts, dataIface, plid());
 #endif
