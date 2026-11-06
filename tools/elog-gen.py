@@ -65,7 +65,7 @@ def check_error_inheritance(i_errors, i_parents):
 # Return the yaml files with their directory structure plus the file name
 # without the yaml extension, which will be used to set the namespaces.
 # Ex: file xyz/openbmc_project/Error/Callout/Device.errors.yaml
-# will have namespce xyz/openbmc_project/Error/Callout/Device
+# will have namespace xyz/openbmc_project/Error/Callout/Device
 def get_error_yaml_files(i_yaml_dir, i_test_dir):
     yaml_files = dict()
     if i_yaml_dir != "None":

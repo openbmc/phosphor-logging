@@ -149,7 +149,7 @@ int pdbgCallbackToGetTgtReqAttrsVal(struct pdbg_target* target,
  * values from it attributes list.
  *
  * @param[in] physBinPath to pass PHYS_BIN_PATH value
- * @param[out] targetInfo to pas buufer to fill with required attributes
+ * @param[out] targetInfo to pas buffer to fill with required attributes
  *
  * @return true on success otherwise false
  */

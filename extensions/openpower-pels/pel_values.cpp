@@ -149,7 +149,7 @@ const PELValues severityValues = {
 
     {0x60, "diagnostic_error", "Error detected during diagnostic test"},
     {0x61, "diagnostic_error_incorrect_results",
-     "Diagostic error, resource w/incorrect results"},
+     "Diagnostic error, resource w/incorrect results"},
 
     {0x71, "symptom_recovered", "Symptom Recovered"},
     {0x72, "symptom_predictive", "Symptom Predictive"},

@@ -1049,7 +1049,7 @@ TEST_F(PELTest, CreateWithJSONCalloutsTest)
 }
 
 // Test PELs with symbolic FRU callout.
-TEST_F(PELTest, CreateWithJSONSymblicCalloutTest)
+TEST_F(PELTest, CreateWithJSONSymbolicCalloutTest)
 {
     PelFFDCfile ffdcFile;
     ffdcFile.format = UserDataFormat::json;

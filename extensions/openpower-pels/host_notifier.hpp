@@ -33,7 +33,7 @@ namespace openpower::pels
  *
  * 3) The host sends the PEL to the OS, and then sends an AckPEL
  *    PLDM command to the PLDM daemon, who makes a D-Bus method
- *    call to this daemon, which calls HostNotifer::ackPEL().
+ *    call to this daemon, which calls HostNotifier::ackPEL().
  *
  *    After this, a PEL never needs to be sent again, but if the
  *    host is rebooted before the ack comes it will.

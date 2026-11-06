@@ -122,7 +122,7 @@ TEST_F(TestRemoteLogging, parseConfigBadIpv6InvalidPort)
     EXPECT_FALSE(ret);
 }
 
-TEST_F(TestRemoteLogging, parseConfigBadIpv6WihtoutColon)
+TEST_F(TestRemoteLogging, parseConfigBadIpv6WithoutColon)
 {
     // Bad case: invalid IPv6 address
     std::string str = "*.* @@[abcd:ef01::01]";
