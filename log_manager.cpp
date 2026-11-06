@@ -23,6 +23,7 @@
 #include <cassert>
 #include <charconv>
 #include <chrono>
+#include <cstdint>
 #include <cstdio>
 #include <cstring>
 #include <functional>
@@ -591,19 +592,30 @@ size_t Manager::eraseAll()
     // files per entry here, on a file system mounted with the sync option,
     // can block this (single) thread for tens of seconds with a full log,
     // so that Logging.Create calls from other services time out.
+    // A small log is cleared quickly enough the old way.
     std::optional<fs::path> staged;
     if constexpr (!REDUNDANT_BMC)
     {
-        staged = stageFilesForRemoval();
+        if (entries.size() >= stagingMinEntries)
+        {
+            staged = stageFilesForRemoval();
+        }
     }
     fileRemovalStaged = staged.has_value();
 
     std::set<uint32_t> erased;
-    auto eraseOne = [this, &erased](uint32_t id) {
+    std::set<std::string> erasedArtifacts;
+    auto eraseOne = [this, &erased, &erasedArtifacts](uint32_t id) {
+        std::vector<std::string> artifacts;
+        if (fileRemovalStaged)
+        {
+            artifacts = artifactFiles(id);
+        }
         erase(id);
         if (!entries.contains(id))
         {
             erased.insert(id);
+            erasedArtifacts.insert(artifacts.begin(), artifacts.end());
         }
     };
 
@@ -650,8 +662,8 @@ size_t Manager::eraseAll()
         fileRemovalStaged = false;
         if (staged)
         {
-            returnKeptFiles(*staged, erased);
-            scheduleRemoval(*staged);
+            returnKeptFiles(*staged, erased, erasedArtifacts);
+            commitStagedFiles(*staged);
         }
         throw;
     }
@@ -659,13 +671,68 @@ size_t Manager::eraseAll()
     fileRemovalStaged = false;
     if (staged)
     {
-        returnKeptFiles(*staged, erased);
-        scheduleRemoval(*staged);
+        returnKeptFiles(*staged, erased, erasedArtifacts);
+        auto path = commitStagedFiles(*staged);
         lg2::info("Erased {COUNT} entries, their files are removed in the "
                   "background from {PATH}",
-                  "COUNT", erased.size(), "PATH", *staged);
+                  "COUNT", erased.size(), "PATH", path);
     }
     return entriesSize;
+}
+
+fs::path Manager::commitStagedFiles(const fs::path& staged)
+{
+    // Only now, with the files of the entries that were kept moved back,
+    // may the directory be removed: rename it from <name>.partial to <name>.
+    // A restart before this point moves the files back (see
+    // resumePendingRemovals()), so a kept entry never loses its files.
+    auto committed = staged;
+    committed.replace_extension();
+    std::error_code ec;
+    fs::rename(staged, committed, ec);
+    if (ec)
+    {
+        lg2::error("Cannot rename {PATH}: {ERROR}", "PATH", staged, "ERROR",
+                   ec.message());
+        committed = staged;
+    }
+    scheduleRemoval(committed);
+    return committed;
+}
+
+void Manager::rollBackStagedFiles(const fs::path& staged)
+{
+    for (const auto& live :
+         {paths::error(), paths::error_json(), paths::artifact()})
+    {
+        std::error_code ec;
+        auto aside = staged / live.filename();
+        if (!fs::exists(aside, ec))
+        {
+            continue;
+        }
+        fs::create_directories(live, ec);
+
+        std::vector<fs::path> files;
+        for (const auto& f : fs::directory_iterator(aside, ec))
+        {
+            files.push_back(f.path());
+        }
+        for (const auto& f : files)
+        {
+            auto target = live / f.filename();
+            if (fs::exists(target, ec))
+            {
+                continue;
+            }
+            fs::rename(f, target, ec);
+            if (ec)
+            {
+                lg2::error("Cannot move {PATH} back: {ERROR}", "PATH", f,
+                           "ERROR", ec.message());
+            }
+        }
+    }
 }
 
 std::optional<fs::path> Manager::stageFilesForRemoval()
@@ -674,7 +741,8 @@ std::optional<fs::path> Manager::stageFilesForRemoval()
     auto stage =
         paths::pending_removal() /
         (std::to_string(entryId) + '-' +
-         std::to_string(steady_clock::now().time_since_epoch().count()));
+         std::to_string(steady_clock::now().time_since_epoch().count()) +
+         std::string(partialSuffix));
     fs::create_directories(stage, ec);
     if (ec)
     {
@@ -683,10 +751,18 @@ std::optional<fs::path> Manager::stageFilesForRemoval()
         return std::nullopt;
     }
 
-    const std::array<std::pair<fs::path, fs::path>, 2> dirs{
+    // The event extension artifacts (for example CPER Raw records) are
+    // removed by the extensions' onDelete(); with their directory moved
+    // aside, that finds no file and the files are removed with the rest.
+    const std::array<std::pair<fs::path, fs::path>, 3> dirs{
         {{paths::error(), stage / paths::error().filename()},
-         {paths::error_json(), stage / paths::error_json().filename()}}};
+         {paths::error_json(), stage / paths::error_json().filename()},
+         {paths::artifact(), stage / paths::artifact().filename()}}};
+    // moved: directories renamed aside and recreated empty. stuck: a
+    // directory renamed aside that could neither be recreated nor moved
+    // back; its files must not be removed.
     size_t moved = 0;
+    bool stuck = false;
     for (const auto& [live, aside] : dirs)
     {
         if (!fs::exists(live, ec))
@@ -702,6 +778,7 @@ std::optional<fs::path> Manager::stageFilesForRemoval()
             {
                 std::error_code ec2;
                 fs::rename(aside, live, ec2);
+                stuck = static_cast<bool>(ec2);
             }
         }
         if (ec)
@@ -724,17 +801,101 @@ std::optional<fs::path> Manager::stageFilesForRemoval()
             {
                 fs::remove(live, ec);
                 fs::rename(aside, live, ec);
+                stuck = stuck || static_cast<bool>(ec);
             }
         }
-        fs::remove_all(stage, ec);
+        if (stuck)
+        {
+            // Never remove these files: move them back now if possible,
+            // and again at the next start (the directory keeps its
+            // .partial name).
+            lg2::error("Cannot restore the entry directories, files left in "
+                       "{PATH}",
+                       "PATH", stage);
+            rollBackStagedFiles(stage);
+        }
+        else
+        {
+            fs::remove_all(stage, ec);
+        }
         return std::nullopt;
     }
     return stage;
 }
 
-void Manager::returnKeptFiles(const fs::path& staged,
-                              const std::set<uint32_t>& erased)
+std::vector<std::string> Manager::artifactFiles(uint32_t id) const
 {
+    // Collect every string in the extensions' persisted data that names a
+    // file in the artifact directory, whatever the key.
+    std::vector<std::string> files;
+    auto entry = entries.find(id);
+    if (entry == entries.end())
+    {
+        return files;
+    }
+    const auto dir = paths::artifact();
+    std::function<void(const nlohmann::json&)> walk =
+        [&](const nlohmann::json& j) {
+            if (j.is_string())
+            {
+                fs::path p{j.get<std::string>()};
+                if (p.parent_path() == dir)
+                {
+                    files.push_back(p.filename().string());
+                }
+            }
+            else if (j.is_structured())
+            {
+                for (const auto& v : j)
+                {
+                    walk(v);
+                }
+            }
+        };
+    for (const auto& extension : entry->second->getEventExtensions())
+    {
+        try
+        {
+            walk(extension->serialize());
+        }
+        catch (const std::exception& e)
+        {
+            lg2::error("Cannot read the artifacts of entry {ID}: {ERROR}", "ID",
+                       id, "ERROR", e);
+        }
+    }
+    return files;
+}
+
+void Manager::returnKeptFiles(const fs::path& staged,
+                              const std::set<uint32_t>& erased,
+                              const std::set<std::string>& erasedArtifacts)
+{
+    // Artifacts: only the files of erased entries stay to be removed.
+    {
+        std::error_code ec;
+        const auto live = paths::artifact();
+        std::vector<fs::path> files;
+        for (const auto& f :
+             fs::directory_iterator(staged / live.filename(), ec))
+        {
+            files.push_back(f.path());
+        }
+        for (const auto& f : files)
+        {
+            if (erasedArtifacts.contains(f.filename().string()))
+            {
+                continue;
+            }
+            fs::rename(f, live / f.filename(), ec);
+            if (ec)
+            {
+                lg2::error("Cannot move {PATH} back: {ERROR}", "PATH", f,
+                           "ERROR", ec.message());
+            }
+        }
+    }
+
     for (const auto& live : {paths::error(), paths::error_json()})
     {
         std::error_code ec;
@@ -778,6 +939,7 @@ void Manager::scheduleRemoval(const fs::path& staged)
 {
     pendingRemovals.push_back(staged / paths::error().filename());
     pendingRemovals.push_back(staged / paths::error_json().filename());
+    pendingRemovals.push_back(staged / paths::artifact().filename());
     pendingRemovals.push_back(staged);
 
     if (!pendingRemovalSource)
@@ -800,8 +962,21 @@ void Manager::resumePendingRemovals()
     }
     for (const auto& d : staged)
     {
-        lg2::info("Removing files of cleared entries left in {PATH}", "PATH",
-                  d);
+        if (d.extension() == fs::path(partialSuffix))
+        {
+            // The clear did not finish: files of the entries it kept may
+            // still be in here. Move every file back; restore() then reads
+            // them as before the clear.
+            lg2::info("Moving back the files of an unfinished clear from "
+                      "{PATH}",
+                      "PATH", d);
+            rollBackStagedFiles(d);
+        }
+        else
+        {
+            lg2::info("Removing files of cleared entries left in {PATH}",
+                      "PATH", d);
+        }
         scheduleRemoval(d);
     }
 }

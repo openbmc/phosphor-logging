@@ -23,6 +23,9 @@
 #include <list>
 #include <optional>
 #include <set>
+#include <string>
+#include <string_view>
+#include <vector>
 
 namespace phosphor
 {
@@ -343,9 +346,10 @@ class Manager : public details::ServerObject<details::ManagerIface>
      * @brief Move the persisted entry files out of the live directories
      *        before a clear of all entries.
      *
-     * Renames the errors and errors-json directories into a new directory
-     * under paths::pending_removal() and recreates them empty. This is one
-     * rename per directory instead of two unlinks per entry, so the clear
+     * Renames the errors, errors-json and artifacts directories into a new
+     * directory under paths::pending_removal() and recreates them empty.
+     * This is one rename per directory instead of two or three unlinks per
+     * entry, so the clear
      * does not block the D-Bus loop while the file system (which may be
      * mounted with the sync option) removes thousands of files.
      *
@@ -355,14 +359,42 @@ class Manager : public details::ServerObject<details::ManagerIface>
     std::optional<std::filesystem::path> stageFilesForRemoval();
 
     /**
+     * @brief Mark a staging directory as complete (drop its .partial
+     *        suffix) and queue it for removal.
+     *
+     * @param[in] staged - The staging directory from stageFilesForRemoval().
+     * @return The directory queued for removal.
+     */
+    std::filesystem::path commitStagedFiles(
+        const std::filesystem::path& staged);
+
+    /**
+     * @brief Move every file of a staging directory back into the live
+     *        directories (files that already exist there are left).
+     *
+     * @param[in] staged - The staging directory.
+     */
+    void rollBackStagedFiles(const std::filesystem::path& staged);
+
+    /**
      * @brief Move the files of entries that were not erased back into the
      *        live directories.
      *
      * @param[in] staged - The staging directory from stageFilesForRemoval().
      * @param[in] erased - The IDs of the entries that were erased.
+     * @param[in] erasedArtifacts - The artifact file names of those entries.
      */
     void returnKeptFiles(const std::filesystem::path& staged,
-                         const std::set<uint32_t>& erased);
+                         const std::set<uint32_t>& erased,
+                         const std::set<std::string>& erasedArtifacts);
+
+    /**
+     * @brief The names of the files in the artifact directory that the
+     *        event extensions of an entry refer to.
+     *
+     * @param[in] id - The entry ID.
+     */
+    std::vector<std::string> artifactFiles(uint32_t id) const;
 
     /**
      * @brief Queue a staging directory for removal in small batches from
@@ -513,6 +545,12 @@ class Manager : public details::ServerObject<details::ManagerIface>
 
     /** @brief Number of files removed per removePendingFiles() call. */
     static constexpr size_t removalBatchSize = 16;
+
+    /** @brief eraseAll() removes the files of fewer entries directly. */
+    static constexpr size_t stagingMinEntries = 50;
+
+    /** @brief Suffix of a staging directory whose clear has not finished. */
+    static constexpr std::string_view partialSuffix = ".partial";
 
     /**
      * @brief Directories with files of cleared entries that still have to be
