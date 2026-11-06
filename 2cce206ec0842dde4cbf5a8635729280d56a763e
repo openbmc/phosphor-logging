@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1941d74_80ecf512",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-11-06T19:04:09Z",
+      "side": 1,
+      "message": "PEL:",
+      "revId": "2cce206ec0842dde4cbf5a8635729280d56a763e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79a7e079_0b68b409",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-11-06T19:04:09Z",
+      "side": 1,
+      "message": "I think you\u0027ll want this to go before your other commit so it can compile.",
+      "revId": "2cce206ec0842dde4cbf5a8635729280d56a763e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34937ee9_a5cece99",
+        "filename": "meson.options",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-11-06T19:04:09Z",
+      "side": 1,
+      "message": "Since phosphor-logging is a common repo not just used by IBM, we may want to be more clear about what this is.  \n\nFor one thing, since it\u0027s part of the openpower-pel extension, how about prefix it with that, like openpower_pel_phal_backend? (or with hyphens)\n\nAnd then maybe in the description mention openpower, and something about what phal is.",
+      "revId": "2cce206ec0842dde4cbf5a8635729280d56a763e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
