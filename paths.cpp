@@ -24,4 +24,9 @@ auto artifact() -> std::filesystem::path
     return std::filesystem::path(PERSIST_PATH_ROOT) / "artifacts";
 }
 
+auto pending_removal() -> std::filesystem::path
+{
+    return std::filesystem::path(PERSIST_PATH_ROOT) / "pending-removal";
+}
+
 } // namespace phosphor::logging::paths

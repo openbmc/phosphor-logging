@@ -19,7 +19,9 @@
 #include <sdbusplus/vtable.hpp>
 #include <xyz/openbmc_project/State/Host/server.hpp>
 
+#include <array>
 #include <cassert>
+#include <charconv>
 #include <chrono>
 #include <cstdio>
 #include <cstring>
@@ -583,42 +585,282 @@ size_t Manager::eraseAll()
                        "ERROR", e);
         }
     }
-    size_t entriesSize = entries.size();
-    auto iter = entries.begin();
-    if (logIDWithHwIsolation.empty())
+
+    // Move the persisted files aside with one rename per directory and
+    // remove them later in small batches from the event loop. Removing two
+    // files per entry here, on a file system mounted with the sync option,
+    // can block this (single) thread for tens of seconds with a full log,
+    // so that Logging.Create calls from other services time out.
+    std::optional<fs::path> staged;
+    if constexpr (!REDUNDANT_BMC)
     {
-        while (iter != entries.end())
-        {
-            auto e = iter->first;
-            ++iter;
-            erase(e);
-        }
+        staged = stageFilesForRemoval();
     }
-    else
-    {
-        while (iter != entries.end())
+    fileRemovalStaged = staged.has_value();
+
+    std::set<uint32_t> erased;
+    auto eraseOne = [this, &erased](uint32_t id) {
+        erase(id);
+        if (!entries.contains(id))
         {
-            auto e = iter->first;
-            ++iter;
-            try
+            erased.insert(id);
+        }
+    };
+
+    size_t entriesSize = entries.size();
+    try
+    {
+        auto iter = entries.begin();
+        if (logIDWithHwIsolation.empty())
+        {
+            while (iter != entries.end())
             {
-                if (!std::ranges::contains(logIDWithHwIsolation, e))
+                auto e = iter->first;
+                ++iter;
+                eraseOne(e);
+            }
+        }
+        else
+        {
+            while (iter != entries.end())
+            {
+                auto e = iter->first;
+                ++iter;
+                try
                 {
-                    erase(e);
+                    if (!std::ranges::contains(logIDWithHwIsolation, e))
+                    {
+                        eraseOne(e);
+                    }
+                    else
+                    {
+                        entriesSize--;
+                    }
                 }
-                else
+                catch (const sdbusplus::xyz::openbmc_project::Common::Error::
+                           Unavailable& e)
                 {
                     entriesSize--;
                 }
             }
-            catch (const sdbusplus::xyz::openbmc_project::Common::Error::
-                       Unavailable& e)
+        }
+    }
+    catch (...)
+    {
+        fileRemovalStaged = false;
+        if (staged)
+        {
+            returnKeptFiles(*staged, erased);
+            scheduleRemoval(*staged);
+        }
+        throw;
+    }
+
+    fileRemovalStaged = false;
+    if (staged)
+    {
+        returnKeptFiles(*staged, erased);
+        scheduleRemoval(*staged);
+        lg2::info("Erased {COUNT} entries, their files are removed in the "
+                  "background from {PATH}",
+                  "COUNT", erased.size(), "PATH", *staged);
+    }
+    return entriesSize;
+}
+
+std::optional<fs::path> Manager::stageFilesForRemoval()
+{
+    std::error_code ec;
+    auto stage =
+        paths::pending_removal() /
+        (std::to_string(entryId) + '-' +
+         std::to_string(steady_clock::now().time_since_epoch().count()));
+    fs::create_directories(stage, ec);
+    if (ec)
+    {
+        lg2::error("Cannot create {PATH} for the cleared entries: {ERROR}",
+                   "PATH", stage, "ERROR", ec.message());
+        return std::nullopt;
+    }
+
+    const std::array<std::pair<fs::path, fs::path>, 2> dirs{
+        {{paths::error(), stage / paths::error().filename()},
+         {paths::error_json(), stage / paths::error_json().filename()}}};
+    size_t moved = 0;
+    for (const auto& [live, aside] : dirs)
+    {
+        if (!fs::exists(live, ec))
+        {
+            ++moved;
+            continue;
+        }
+        fs::rename(live, aside, ec);
+        if (!ec)
+        {
+            fs::create_directory(live, ec);
+            if (ec)
             {
-                entriesSize--;
+                std::error_code ec2;
+                fs::rename(aside, live, ec2);
+            }
+        }
+        if (ec)
+        {
+            lg2::error("Cannot move {PATH} aside: {ERROR}", "PATH", live,
+                       "ERROR", ec.message());
+            break;
+        }
+        ++moved;
+    }
+
+    if (moved != dirs.size())
+    {
+        // Undo the directories already moved, then let the caller remove
+        // the files one by one.
+        for (size_t i = 0; i < moved; ++i)
+        {
+            const auto& [live, aside] = dirs[i];
+            if (fs::exists(aside, ec))
+            {
+                fs::remove(live, ec);
+                fs::rename(aside, live, ec);
+            }
+        }
+        fs::remove_all(stage, ec);
+        return std::nullopt;
+    }
+    return stage;
+}
+
+void Manager::returnKeptFiles(const fs::path& staged,
+                              const std::set<uint32_t>& erased)
+{
+    for (const auto& live : {paths::error(), paths::error_json()})
+    {
+        std::error_code ec;
+        auto aside = staged / live.filename();
+        std::vector<fs::path> files;
+        for (const auto& f : fs::directory_iterator(aside, ec))
+        {
+            files.push_back(f.path());
+        }
+
+        for (const auto& f : files)
+        {
+            // Entry files are named <id> (cereal) and <id>.json (JSON).
+            auto name = f.filename().string();
+            if (name.ends_with(".json"))
+            {
+                name.resize(name.size() - 5);
+            }
+            uint32_t id = 0;
+            auto [ptr, err] =
+                std::from_chars(name.data(), name.data() + name.size(), id);
+            if (err == std::errc{} && ptr == name.data() + name.size() &&
+                erased.contains(id))
+            {
+                continue;
+            }
+
+            // Not an erased entry (kept by an extension, or not an entry
+            // file): put it back where it was.
+            fs::rename(f, live / f.filename(), ec);
+            if (ec)
+            {
+                lg2::error("Cannot move {PATH} back: {ERROR}", "PATH", f,
+                           "ERROR", ec.message());
             }
         }
     }
-    return entriesSize;
+}
+
+void Manager::scheduleRemoval(const fs::path& staged)
+{
+    pendingRemovals.push_back(staged / paths::error().filename());
+    pendingRemovals.push_back(staged / paths::error_json().filename());
+    pendingRemovals.push_back(staged);
+
+    if (!pendingRemovalSource)
+    {
+        pendingRemovalSource = std::make_unique<sdeventplus::source::Defer>(
+            event, std::bind_front(&Manager::removePendingFiles, this));
+        // Run only when no D-Bus message (or other event) is waiting.
+        pendingRemovalSource->set_priority(SD_EVENT_PRIORITY_IDLE);
+    }
+    pendingRemovalSource->set_enabled(sdeventplus::source::Enabled::On);
+}
+
+void Manager::resumePendingRemovals()
+{
+    std::error_code ec;
+    std::vector<fs::path> staged;
+    for (const auto& d : fs::directory_iterator(paths::pending_removal(), ec))
+    {
+        staged.push_back(d.path());
+    }
+    for (const auto& d : staged)
+    {
+        lg2::info("Removing files of cleared entries left in {PATH}", "PATH",
+                  d);
+        scheduleRemoval(d);
+    }
+}
+
+void Manager::removePendingFiles(sdeventplus::source::EventBase& source)
+{
+    size_t removed = 0;
+    while (!pendingRemovals.empty() && removed < removalBatchSize)
+    {
+        const auto dir = pendingRemovals.front();
+        std::error_code ec;
+        std::vector<fs::path> batch;
+        for (const auto& f : fs::directory_iterator(dir, ec))
+        {
+            batch.push_back(f.path());
+            if (batch.size() >= removalBatchSize - removed)
+            {
+                break;
+            }
+        }
+
+        if (batch.empty())
+        {
+            // Empty (or gone): remove the directory itself.
+            fs::remove(dir, ec);
+            if (ec)
+            {
+                lg2::error("Cannot remove {PATH}: {ERROR}", "PATH", dir,
+                           "ERROR", ec.message());
+            }
+            pendingRemovals.pop_front();
+            continue;
+        }
+
+        size_t failed = 0;
+        for (const auto& f : batch)
+        {
+            if (fs::remove_all(f, ec) == static_cast<std::uintmax_t>(-1) || ec)
+            {
+                ++failed;
+            }
+            ++removed;
+        }
+        if (failed == batch.size())
+        {
+            lg2::error("Cannot remove the files in {PATH}: {ERROR}", "PATH",
+                       dir, "ERROR", ec.message());
+            pendingRemovals.pop_front();
+        }
+        pendingRemovalCount += batch.size() - failed;
+    }
+
+    if (pendingRemovals.empty())
+    {
+        lg2::info("Removed {COUNT} files of cleared entries", "COUNT",
+                  pendingRemovalCount);
+        pendingRemovalCount = 0;
+        source.set_enabled(sdeventplus::source::Enabled::Off);
+    }
 }
 
 void Manager::erase(uint32_t entryId)
@@ -655,16 +897,20 @@ void Manager::erase(uint32_t entryId)
         // entry is removed.
         entryFound->second->cleanupExtensions();
 
-        // Delete the persistent representation of this error.
-        if constexpr (PERSIST_CEREAL)
+        // Delete the persistent representation of this error, unless
+        // eraseAll() moved the files aside to remove them later.
+        if (!fileRemovalStaged)
         {
-            fs::path errorPath(paths::error());
-            errorPath /= std::to_string(entryId);
-            fs::remove(errorPath);
+            if constexpr (PERSIST_CEREAL)
+            {
+                fs::path errorPath(paths::error());
+                errorPath /= std::to_string(entryId);
+                fs::remove(errorPath);
+            }
+            fs::path jsonPath(paths::error_json());
+            jsonPath /= std::to_string(entryId) + ".json";
+            fs::remove(jsonPath);
         }
-        fs::path jsonPath(paths::error_json());
-        jsonPath /= std::to_string(entryId) + ".json";
-        fs::remove(jsonPath);
 
         auto removeId = [](std::list<uint32_t>& ids, uint32_t id) {
             auto it = std::find(ids.begin(), ids.end(), id);
@@ -707,6 +953,8 @@ void Manager::erase(uint32_t entryId)
 
 void Manager::restore()
 {
+    resumePendingRemovals();
+
     auto sanity = [](const auto& id, const auto& restoredId) {
         return id == restoredId;
     };

@@ -11,5 +11,6 @@ auto error() -> std::filesystem::path;
 auto error_json() -> std::filesystem::path;
 auto extension() -> std::filesystem::path;
 auto artifact() -> std::filesystem::path;
+auto pending_removal() -> std::filesystem::path;
 
 } // namespace phosphor::logging::paths

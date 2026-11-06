@@ -11,14 +11,18 @@
 #include <phosphor-logging/lg2.hpp>
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
+#include <sdeventplus/source/event.hpp>
 #include <sdeventplus/source/io.hpp>
 #include <xyz/openbmc_project/Collection/DeleteAll/server.hpp>
 #include <xyz/openbmc_project/Logging/Create/server.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
 #include <xyz/openbmc_project/Logging/event.hpp>
 
+#include <deque>
 #include <filesystem>
 #include <list>
+#include <optional>
+#include <set>
 
 namespace phosphor
 {
@@ -336,6 +340,52 @@ class Manager : public details::ServerObject<details::ManagerIface>
     bool refreshFromDisk(uint32_t id);
 
     /**
+     * @brief Move the persisted entry files out of the live directories
+     *        before a clear of all entries.
+     *
+     * Renames the errors and errors-json directories into a new directory
+     * under paths::pending_removal() and recreates them empty. This is one
+     * rename per directory instead of two unlinks per entry, so the clear
+     * does not block the D-Bus loop while the file system (which may be
+     * mounted with the sync option) removes thousands of files.
+     *
+     * @return The staging directory, or std::nullopt if the files could not
+     *         be moved (the caller then removes the files one by one).
+     */
+    std::optional<std::filesystem::path> stageFilesForRemoval();
+
+    /**
+     * @brief Move the files of entries that were not erased back into the
+     *        live directories.
+     *
+     * @param[in] staged - The staging directory from stageFilesForRemoval().
+     * @param[in] erased - The IDs of the entries that were erased.
+     */
+    void returnKeptFiles(const std::filesystem::path& staged,
+                         const std::set<uint32_t>& erased);
+
+    /**
+     * @brief Queue a staging directory for removal in small batches from
+     *        the event loop, at idle priority, so D-Bus calls (for example
+     *        Logging.Create) are served while the files are removed.
+     *
+     * @param[in] staged - The staging directory.
+     */
+    void scheduleRemoval(const std::filesystem::path& staged);
+
+    /**
+     * @brief Queue the staging directories left by an earlier run (the
+     *        daemon or the BMC restarted before their removal finished).
+     */
+    void resumePendingRemovals();
+
+    /**
+     * @brief Event callback: remove up to removalBatchSize files of the
+     *        queued staging directories.
+     */
+    void removePendingFiles(sdeventplus::source::EventBase& source);
+
+    /**
      * @brief Handles inotify events for the error entry directory.
      *
      * @param[in] io - The event source object.
@@ -460,6 +510,28 @@ class Manager : public details::ServerObject<details::ManagerIface>
      * @brief Reference to the sd-event wrapper used to register event sources.
      */
     sdeventplus::Event event;
+
+    /** @brief Number of files removed per removePendingFiles() call. */
+    static constexpr size_t removalBatchSize = 16;
+
+    /**
+     * @brief Directories with files of cleared entries that still have to be
+     *        removed (each staging directory is queued after its
+     *        subdirectories).
+     */
+    std::deque<std::filesystem::path> pendingRemovals;
+
+    /** @brief Idle-priority event source that removes pendingRemovals. */
+    std::unique_ptr<sdeventplus::source::Defer> pendingRemovalSource;
+
+    /** @brief Files removed since the removal queue was last empty. */
+    size_t pendingRemovalCount = 0;
+
+    /**
+     * @brief Set while eraseAll() runs on staged files: erase() then leaves
+     *        the files to the batched removal.
+     */
+    bool fileRemovalStaged = false;
 
     /**
      * @brief File descriptor returned by inotify_init1() for the error entry
