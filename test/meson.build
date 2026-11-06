@@ -147,6 +147,7 @@ tests_non_parallel = [
     'elog_quiesce_test',
     'elog_update_ts_test',
     'elog_errorwrap_test',
+    'log_manager_clear_test',
 ]
 
 foreach t : tests_non_parallel
