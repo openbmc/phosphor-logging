@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "774b38fa_218b0e49",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-11-09T06:43:40Z",
+      "side": 1,
+      "message": "This adds a lot of cleanup logic to log-manager. Can we keep it simple by moving cleared files to a same-filesystem trash/ directory and let systemd-tmpfiles clean them up? Log-manager should only handle what needs to be kept and what can be deleted.",
+      "revId": "95f6e62096bdedb0b755c649a0786be262ce4895",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
