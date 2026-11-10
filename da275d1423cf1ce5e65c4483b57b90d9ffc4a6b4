@@ -22,6 +22,30 @@
       },
       "revId": "da275d1423cf1ce5e65c4483b57b90d9ffc4a6b4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "529348dc_2ae6ec25",
+        "filename": "extensions/openpower-pels/registry/message_registry.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 2869,
+      "author": {
+        "id": 1002833
+      },
+      "writtenOn": "2026-11-10T22:33:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "410f0b0c_cb2ba303",
+      "range": {
+        "startLine": 2869,
+        "startChar": 47,
+        "endLine": 2869,
+        "endChar": 66
+      },
+      "revId": "da275d1423cf1ce5e65c4483b57b90d9ffc4a6b4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
