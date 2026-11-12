@@ -50,6 +50,24 @@
       "message": "Since phosphor-logging is a common repo not just used by IBM, we may want to be more clear about what this is.  \n\nFor one thing, since it\u0027s part of the openpower-pel extension, how about prefix it with that, like openpower_pel_phal_backend? (or with hyphens)\n\nAnd then maybe in the description mention openpower, and something about what phal is.",
       "revId": "2cce206ec0842dde4cbf5a8635729280d56a763e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7661b155_fb9ba3ca",
+        "filename": "meson.options",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-11-12T22:52:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "34937ee9_a5cece99",
+      "revId": "2cce206ec0842dde4cbf5a8635729280d56a763e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
