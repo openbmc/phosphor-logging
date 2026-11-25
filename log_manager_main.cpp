@@ -8,6 +8,7 @@
 #include "paths.hpp"
 
 #include <phosphor-logging/lg2.hpp>
+#include <phosphor-logging/lg2/log_control.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/manager.hpp>
 #include <sdeventplus/event.hpp>
@@ -30,6 +31,8 @@ int main(int argc, char* argv[])
 
     // Add sdbusplus ObjectManager for the 'root' path of the logging manager.
     sdbusplus::server::manager_t objManager(bus, OBJ_LOGGING);
+
+    lg2::log_control logControl(bus);
 
     phosphor::logging::internal::Manager iMgr(bus, OBJ_INTERNAL);
 
