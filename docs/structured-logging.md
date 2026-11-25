@@ -131,6 +131,32 @@ error messages for incorrect parameters or format flags. Some examples are:
 Debug-level messages are only sent to journald if the `DEBUG_INVOCATION`
 environment variable is set, as suggested by the `systemd.exec` manpage.
 
+### Runtime log control
+
+A daemon may serve the standard `org.freedesktop.LogControl1` interface by
+constructing an `lg2::log_control` on its bus:
+
+```cpp
+#include <phosphor-logging/lg2/log_control.hpp>
+
+lg2::log_control logControl(bus);
+```
+
+The object is served at `/org/freedesktop/LogControl1`. Provided the unit
+declares `BusName=`, the level can then be changed without a restart:
+
+```sh
+systemctl service-log-level xyz.openbmc_project.Logging.service debug
+```
+
+`LogLevel` is the most verbose priority sent to journald, defaulting to `info`
+(or `debug` when `DEBUG_INVOCATION` is set). It does not affect the stderr
+output, which keeps using `LG2_LOG_LEVEL`. `LogTarget` is always `journal`;
+other targets are rejected. Writes are restricted to privileged callers.
+
+journald may also discard debug messages on its own if its `MaxLevelStore=` is
+below `debug`; raise it as well to see them.
+
 ### LOG2_FMTMSG key
 
 The API adds an extra journald key to represent the original message prior to
