@@ -35,6 +35,7 @@ install_headers(
     'lg2/flags.hpp',
     'lg2/header.hpp',
     'lg2/level.hpp',
+    'lg2/log_control.hpp',
     'lg2/logger.hpp',
     subdir: 'phosphor-logging/lg2',
 )

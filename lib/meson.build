@@ -25,6 +25,7 @@ phosphor_logging_lib = library(
     'phosphor_logging',
     'elog.cpp',
     'lg2_commit.cpp',
+    'lg2_log_control.cpp',
     'lg2_logger.cpp',
     'sdjournal.cpp',
     phosphor_logging_gen,

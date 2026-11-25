@@ -1,14 +1,19 @@
 #define SD_JOURNAL_SUPPRESS_LOCATION
 
+#include "lg2_logger.hpp"
+
 #include <systemd/sd-journal.h>
 #include <unistd.h>
 
 #include <phosphor-logging/lg2.hpp>
 
 #include <algorithm>
+#include <atomic>
 #include <bitset>
 #include <cstdarg>
 #include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <iostream>
 #include <mutex>
 #include <source_location>
@@ -256,12 +261,18 @@ static auto extra_output_method()
     return method;
 }
 
-// Skip sending debug messages to journald if "DEBUG_INVOCATION" is not set
-// per systemd.exec manpage.
-static bool send_debug_to_journal()
+// Debug messages are suppressed unless systemd started us with
+// "DEBUG_INVOCATION" per systemd.exec, or LogControl1 lowers the threshold
+// later.  "0" means systemd explicitly asked for non-debug.
+std::atomic<level>& log_threshold()
 {
-    static const bool send = nullptr != getenv("DEBUG_INVOCATION");
-    return send;
+    static std::atomic<level> threshold = []() {
+        const char* invocation = getenv("DEBUG_INVOCATION");
+        return (invocation != nullptr && strcmp(invocation, "0") != 0)
+                   ? level::debug
+                   : level::info;
+    }();
+    return threshold;
 }
 
 // Do_log implementation.
@@ -350,7 +361,7 @@ void do_log(level l, const std::source_location& s, const char* m, ...)
     });
 
     // Output the iovec.
-    if (send_debug_to_journal() || l != level::debug)
+    if (l <= log_threshold().load(std::memory_order_relaxed))
     {
         sd_journal_sendv(iov.data(), strings.size());
     }
